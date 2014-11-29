@@ -17,7 +17,7 @@ public final class ProductionRule
      * Internally, a production is a pair of a nonterminal symbol and the
      * sequence of symbols it can expand out to.
      */
-    private final Type nt;
+    private final Nonterminal nt;
     private final List<Symbol> production;
 
     /**
@@ -28,7 +28,7 @@ public final class ProductionRule
      * @param production The series of terminals and nonterminals it may be
      *        expanded to form.
      */
-    public ProductionRule(Type nt, List<Symbol> production) {
+    public ProductionRule(Nonterminal nt, List<Symbol> production) {
         /* Sanity-check the inputs */
         if (nt == null || production == null || production.isEmpty())
             throw new IllegalArgumentException("Arguments to Production must be non-null and non-empty.");
@@ -42,7 +42,7 @@ public final class ProductionRule
      *
      * @return The nonterminal associated with this production.
      */
-    public Type getNonterminal() {
+    public Nonterminal getNonterminal() {
         return nt;
     }
 

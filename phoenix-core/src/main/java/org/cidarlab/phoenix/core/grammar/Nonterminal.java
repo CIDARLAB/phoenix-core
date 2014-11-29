@@ -8,7 +8,7 @@ package org.cidarlab.phoenix.core.grammar;
  * 
  * @author Ernst Oberortner
  */
-public class Type 
+public class Nonterminal 
 	extends Symbol {
 	
     /**
@@ -17,7 +17,7 @@ public class Type
      *
      * @param name The name of the type.
      */
-    public Type(String name) {
+    public Nonterminal(String name) {
         super(name, false);
     }
 }

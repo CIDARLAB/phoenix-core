@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.cidarlab.phoenix.core.grammar.Grammar;
-import org.cidarlab.phoenix.core.grammar.Primitive;
+import org.cidarlab.phoenix.core.grammar.Terminal;
 import org.cidarlab.phoenix.core.grammar.ProductionRule;
 import org.cidarlab.phoenix.core.grammar.Symbol;
-import org.cidarlab.phoenix.core.grammar.Type;
+import org.cidarlab.phoenix.core.grammar.Nonterminal;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -42,36 +42,36 @@ public class GrammarTest {
 	public void testPrimitiveDefinitions() {
 
 		try {
-			new Primitive(null);
+			new Terminal(null);
 		} catch(Exception e) {
 			assertTrue(e.getLocalizedMessage().equals("Invalid name!"));
 		}
 
 		try {
-			new Primitive("");
+			new Terminal("");
 		} catch(Exception e) {
 			assertTrue(e.getLocalizedMessage().equals("Invalid name!"));
 		}
 		
-		assertTrue(new Primitive("part1").isTerminal());
+		assertTrue(new Terminal("part1").isTerminal());
 	}
 
 	@Test
 	public void testTypeDefinitions() {
 
 		try {
-			new Type(null);
+			new Nonterminal(null);
 		} catch(Exception e) {
 			assertTrue(e.getLocalizedMessage().equals("Invalid name!"));
 		}
 
 		try {
-			new Type("");
+			new Nonterminal("");
 		} catch(Exception e) {
 			assertTrue(e.getLocalizedMessage().equals("Invalid name!"));
 		}
 		
-		assertFalse(new Type("PartType").isTerminal());
+		assertFalse(new Nonterminal("PartType").isTerminal());
 	}
 	
 	@Test
@@ -89,9 +89,9 @@ public class GrammarTest {
 			assertTrue(e.getClass().equals(IllegalArgumentException.class));
 		}
 
-		Type nt = new Type("PartType");
+		Nonterminal nt = new Nonterminal("PartType");
 		List<Symbol> ts = new ArrayList<Symbol>();
-		ts.add(new Primitive("p1"));
+		ts.add(new Terminal("p1"));
 		ProductionRule pr = new ProductionRule(nt, ts);
 		assertTrue(pr.getNonterminal().equals(nt));
 		assertTrue(pr.getProduction().equals(ts));
@@ -112,9 +112,9 @@ public class GrammarTest {
 		}
 		
 		
-		Type nt = new Type("PartType");
+		Nonterminal nt = new Nonterminal("PartType");
 		List<Symbol> ts = new ArrayList<Symbol>();
-		ts.add(new Primitive("p1"));
+		ts.add(new Terminal("p1"));
 		List<ProductionRule> prs = new ArrayList<ProductionRule>();
 		prs.add(new ProductionRule(nt, ts));
 		Grammar g = new Grammar(prs, nt);

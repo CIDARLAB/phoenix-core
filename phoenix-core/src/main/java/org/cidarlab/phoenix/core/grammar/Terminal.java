@@ -8,7 +8,7 @@ package org.cidarlab.phoenix.core.grammar;
  * 
  * @author Ernst Oberortner
  */
-public final class Primitive 
+public final class Terminal 
 	extends Symbol {
 	
     /**
@@ -17,7 +17,7 @@ public final class Primitive
      *
      * @param name The name of the terminal.
      */
-    public Primitive(String name) {
+    public Terminal(String name) {
         super(name, true);
     }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
+ * This file should evolve into the core Phoenix decomposition grammar
  * 
  * @author Ernst Oberortner
  */

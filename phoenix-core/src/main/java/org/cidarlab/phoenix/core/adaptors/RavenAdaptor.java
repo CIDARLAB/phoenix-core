@@ -5,9 +5,10 @@
 package org.cidarlab.phoenix.core.adaptors;
 
 /**
- *
+ * This class has all methods for sending and receiving information to Raven
+ * 
  * @author evanappleton
  */
-public class benchlingAdaptor {
+public class RavenAdaptor {
     
 }

@@ -9,6 +9,6 @@ package org.cidarlab.phoenix.core.adaptors;
  * 
  * @author evanappleton
  */
-public class owlAdaptor {
+public class OwlAdaptor {
     
 }

@@ -16,15 +16,39 @@
     </plugins>
   </build>
   
-    <dependencies>
+  <dependencies>
     
-    	<!-- JUnit -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-		</dependency>
+      <!-- JUnit -->
+      <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>4.11</version>
+      </dependency>
+      
+      <!-- BioJava 3.1.0 -->
+      <dependency>
+          <groupId>org.biojava</groupId>
+          <artifactId>biojava3-core</artifactId>
+          <version>3.1.0</version>
+      </dependency>
+      
+      <!-- BioJava 1.9.0 -->
+      <dependency>
+          <groupId>org.biojava</groupId>
+          <artifactId>core</artifactId>
+          <version>1.9.0</version>
+      </dependency>
+                
+  </dependencies>
     
-    </dependencies>
+  <repositories>
+      
+      <!-- BioJava -->
+      <repository>
+          <id>biojava-maven-repo</id>
+          <name>BioJava repository</name>
+          <url>http://www.biojava.org/download/maven/</url>			
+      </repository>
+  </repositories>
     
 </project>

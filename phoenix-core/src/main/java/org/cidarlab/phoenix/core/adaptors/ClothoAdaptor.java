@@ -5,10 +5,10 @@
 package org.cidarlab.phoenix.core.adaptors;
 
 /**
- * This class has all methods for sending and receiving information to Eugene and miniEugene
+ * This class has all methods for sending and receiving information to Clotho
  * 
  * @author evanappleton
  */
-public class eugeneAdaptor {
+public class ClothoAdaptor {
     
 }

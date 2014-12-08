@@ -8,6 +8,6 @@ package org.cidarlab.phoenix.core.adaptors;
  *
  * @author evanappleton
  */
-public class analyticsAdaptor {
+public class AnalyticsAdaptor {
     
 }

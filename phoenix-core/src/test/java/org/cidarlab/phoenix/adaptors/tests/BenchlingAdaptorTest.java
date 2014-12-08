@@ -21,9 +21,9 @@ public class BenchlingAdaptorTest {
 
     //Run Genbank Parsing Test
     public void genbankParseTest() throws Exception {
-        String filePath = "/Users/evanappleton/phoenix/phoenix-core/phoenix-core/src/main/resources/BenchlingGenbankFiles/generic.gb";
+        String filePath = "/Users/evanappleton/phoenix/phoenix-core/phoenix-core/src/main/resources/BenchlingGenbankFiles/benchling_export_120514_multi.gb";
         File toLoad = new File(filePath);
-        BenchlingAdaptor.readGenbankFileBiojava3(toLoad); 
+        BenchlingAdaptor.readGenbankFileBiojava1(toLoad); 
     }
 
     /**

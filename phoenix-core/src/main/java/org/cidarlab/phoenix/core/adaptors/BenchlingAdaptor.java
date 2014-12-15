@@ -7,12 +7,9 @@ package org.cidarlab.phoenix.core.adaptors;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.LinkedHashMap;
 import org.biojava.bio.seq.Sequence;
 import org.biojava.bio.seq.SequenceIterator;
 import org.biojava.bio.seq.io.SeqIOTools;
-import org.biojava3.core.sequence.DNASequence;
-import org.biojava3.core.sequence.io.GenbankReaderHelper;
 
 /**
  *
@@ -22,18 +19,9 @@ import org.biojava3.core.sequence.io.GenbankReaderHelper;
  */
 public class BenchlingAdaptor {
     
-    //This method is for reading a Genbank file with Biojava 3.1.0
-    //This parsing method seems flawed and cannot read features properly, currently on hold
-    public static String readGenbankFileBiojava3 (File input) throws Exception {
-    
-        LinkedHashMap<String, DNASequence> readGenbankDNASequence = GenbankReaderHelper.readGenbankDNASequence(input, true);
-        
-        return "";
-    }
-    
     //This method is for reading a Genbank file with Biojava 1.9.0
     //This parsing method seems flawed and cannot read features properly, currently on hold
-    public static String readGenbankFileBiojava1 (File input) throws Exception {
+    public static String readGenbankFileBiojava (File input) throws Exception {
     
         BufferedReader reader = new BufferedReader(new FileReader(input.getAbsolutePath()));
         SequenceIterator readGenbank = SeqIOTools.readGenbank(reader);

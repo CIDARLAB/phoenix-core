@@ -203,7 +203,7 @@ public class BenchlingAdaptor {
     }
     
     /*
-     * Creates a Feature set
+     * Gets all features for a given file
      */
     public static HashSet<org.clothocad.model.Feature> getFeatures(File input) throws FileNotFoundException, NoSuchElementException, BioException {
 
@@ -270,84 +270,76 @@ public class BenchlingAdaptor {
     }
     
     /*
-     * Creates an annotation set
+     * Gets all annotations for a given BioJava sequence
      */
-    public static HashSet<Annotation> getAnnotations(File input) throws NoSuchElementException, BioException, FileNotFoundException {
-        
-        //Import file, begin reading
-        BufferedReader reader = new BufferedReader(new FileReader(input.getAbsolutePath()));
-        SequenceIterator readGenbank = SeqIOTools.readGenbank(reader);
+    public static HashSet<Annotation> getAnnotations(Sequence seq) {
+
         HashSet<Annotation> annotations = new HashSet<Annotation>();
-        
-        //This loops for each entry in a multi-part GenBank file
-        while (readGenbank.hasNext()) {
 
-            Sequence seq = readGenbank.nextSequence();
+        //Look at all features within part boundary to get basic parts and order to make a composite part
+        Iterator<org.biojava.bio.seq.Feature> features = seq.features();
+        while (features.hasNext()) {
 
-            //Look at all features within part boundary to get basic parts and order to make a composite part
-            Iterator<org.biojava.bio.seq.Feature> features = seq.features();
-            while (features.hasNext()) {
+            //Get Biojava features
+            org.biojava.bio.seq.Feature feature = features.next();
+            Location locus = feature.getLocation();
+            int startFeat = locus.getMin();
+            int endFeat = locus.getMax();
 
-                //Get Biojava features
-                org.biojava.bio.seq.Feature feature = features.next();
-                Location locus = feature.getLocation();
-                int startFeat = locus.getMin();
-                int endFeat = locus.getMax();
-
-                //Correct sequence for circular sequences by adding beginnning and end sequence
-                String seqString = seq.seqString();
+            //Correct sequence for circular sequences by adding beginnning and end sequence
+            String seqString = seq.seqString();
+            seqString = seqString.concat(seqString);
+            if (startFeat > endFeat) {
                 seqString = seqString.concat(seqString);
-                if (startFeat > endFeat) {
-                    seqString = seqString.concat(seqString);
-                    endFeat = endFeat + seqString.length();
-                }
-
-                //Check for linearity
-                boolean linearity;
-                if (seq.getAnnotation().getProperty("DIVISION").equals("circular")) {
-                    linearity = false;
-                } else {
-                    linearity = true;
-                }
-
-                //Check for strandedness
-                boolean ss;
-                if (seq.getAnnotation().getProperty("CIRCULAR").equals("ds-DNA")) {
-                    ss = false;
-                } else {
-                    ss = true;
-                }
-
-                //Get rest of feature information and apply it to the features
-                NucSeq nucSeq = new NucSeq(seqString.substring(startFeat, endFeat + 1), ss, linearity);
-                Color fwd = Color.decode(feature.getAnnotation().getProperty("ApEinfo_fwdcolor").toString());
-                Color rev = Color.decode(feature.getAnnotation().getProperty("ApEinfo_revcolor").toString());
-                String name = feature.getAnnotation().getProperty("label").toString();
-
-                org.clothocad.model.Feature clothoFeature = new Feature();
-                clothoFeature.setName(name);
-                clothoFeature.setSequence(nucSeq);
-                clothoFeature.setForwardColor(fwd);
-                clothoFeature.setReverseColor(rev);
-
-                //Create the annotation
-                endFeat = locus.getMax();
-                Annotation annotation = new Annotation(clothoFeature, nucSeq, fwd, rev, startFeat, endFeat, new Person(), true, "");
-                annotations.add(annotation);
+                endFeat = endFeat + seqString.length();
             }
+
+            //Check for linearity
+            boolean linearity;
+            if (seq.getAnnotation().getProperty("DIVISION").equals("circular")) {
+                linearity = false;
+            } else {
+                linearity = true;
+            }
+
+            //Check for strandedness
+            boolean ss;
+            if (seq.getAnnotation().getProperty("CIRCULAR").equals("ds-DNA")) {
+                ss = false;
+            } else {
+                ss = true;
+            }
+
+            //Get rest of feature information and apply it to the features
+            NucSeq nucSeq = new NucSeq(seqString.substring(startFeat, endFeat + 1), ss, linearity);
+            Color fwd = Color.decode(feature.getAnnotation().getProperty("ApEinfo_fwdcolor").toString());
+            Color rev = Color.decode(feature.getAnnotation().getProperty("ApEinfo_revcolor").toString());
+            String name = feature.getAnnotation().getProperty("label").toString();
+
+            org.clothocad.model.Feature clothoFeature = new Feature();
+            clothoFeature.setName(name);
+            clothoFeature.setSequence(nucSeq);
+            clothoFeature.setForwardColor(fwd);
+            clothoFeature.setReverseColor(rev);
+
+            //Create the annotation
+            endFeat = locus.getMax();
+            Annotation annotation = new Annotation(clothoFeature, nucSeq, fwd, rev, startFeat, endFeat, new Person(), true, "");
+            annotations.add(annotation);
         }
+
         return annotations;
     }
     
     /*
      * Creates an annotation set
      */
-    public static HashSet<NucSeq> getNucSeq(File input) throws FileNotFoundException, NoSuchElementException, BioException {
+    public static ArrayList<NucSeq> getNucSeq(File input) throws FileNotFoundException, NoSuchElementException, BioException {
 
         //Import file, begin reading
         BufferedReader reader = new BufferedReader(new FileReader(input.getAbsolutePath()));
         SequenceIterator readGenbank = SeqIOTools.readGenbank(reader);
-        HashSet<NucSeq> nucSeqs = new HashSet<NucSeq>();
+        ArrayList<NucSeq> nucSeqs = new ArrayList<NucSeq>();
 
         //This loops for each entry in a multi-part GenBank file
         while (readGenbank.hasNext()) {
@@ -372,10 +364,15 @@ public class BenchlingAdaptor {
 
             //Get rest of feature information and apply it to the features
             String seqString = seq.seqString();
-            NucSeq nucSeq = new NucSeq(seqString, ss, linearity);            
+            NucSeq nucSeq = new NucSeq(seqString, ss, linearity);
+            HashSet<Annotation> annotations = getAnnotations(seq);
+            for (Annotation ann : annotations) {
+                nucSeq.addAnnotation(ann);
+            }
             
             nucSeqs.add(nucSeq);
         }
+        
         return nucSeqs;
     }
     

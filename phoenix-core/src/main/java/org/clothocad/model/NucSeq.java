@@ -877,7 +877,7 @@ public class NucSeq
      * Add a user-defined non-Feature Annotation
      * @param annotation
      */
-    void addAnnotation(Annotation annotation){
+    public void addAnnotation(Annotation annotation){
         annotations = new HashSet<Annotation>();
         annotations.add(annotation);
     }

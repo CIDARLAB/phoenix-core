@@ -5,9 +5,9 @@
 package org.cidarlab.phoenix.core.adaptors;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 import static org.cidarlab.phoenix.core.adaptors.BenchlingAdaptor.*;
-import org.clothocad.model.Annotation;
 import org.clothocad.model.Feature;
 import org.clothocad.model.NucSeq;
 import org.clothocad.model.Part;
@@ -27,11 +27,12 @@ public class ClothoAdaptor {
     public static void clothoGenbankUpload(File input) throws Exception {
 
         //Get annotations, features, polynucleotides, nucseqs and parts from a multi-part genbank file
-        HashSet<Annotation> annotations = getAnnotations(input);
         HashSet<Feature> features = getFeatures(input);
         HashSet<Polynucleotide> polyNucs = getPolynucleotide(input);
-        HashSet<NucSeq> nucSeqs = getNucSeq(input);
+        ArrayList<NucSeq> nucSeqs = getNucSeq(input);
         HashSet<Part> parts = getMoCloParts(input);
+        
+        //
     }
     
 }

@@ -28,9 +28,9 @@ public class CompositePart extends Part {
 
     public CompositePart(List<Part> composition, Object additionalRequirements, Format f, Person author, String name, String shortdescription) {
         super(name, shortdescription, f, author);
-        if (!f.checkComposite(composition, additionalRequirements)) {
-            System.out.println("generateComposite: Doesn't obey format, return null");
-        }
+//        if (!f.checkComposite(composition, additionalRequirements)) {
+//            System.out.println("generateComposite: Doesn't obey format, return null");
+//        }
         setComposition(composition);
         setType(PartFunction.COMPOSITE);
     }

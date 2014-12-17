@@ -1,4 +1,4 @@
-LOCUS       DVL0_CD E0040m AAV      2849 bp ds-DNA     circular     01-DEC-2014
+LOCUS       DVL0_CD_E0040m_AAV      2849 bp ds-DNA     circular     01-DEC-2014
 DEFINITION  .
 KEYWORDS    "part-type:CDS" "source:CIDAR" "part-subtype:Reporter"             
             "cloned-by:DC" "fusion-sites:CD" "backbone:pSB1C3"
@@ -73,7 +73,7 @@ ORIGIN
      2761 aggcagaatt tcagataaaa aaaatcctta gctttcgcta aggatgattt ctggaattcg
      2821 cggccgcttc tagagactag tgggtctca
 //
-LOCUS       DVL0_CD E0040m DAS      2849 bp ds-DNA     circular     01-DEC-2014
+LOCUS       DVL0_CD_E0040m_DAS      2849 bp ds-DNA     circular     01-DEC-2014
 DEFINITION  .
 KEYWORDS    "antibiotic:Chloramphenicol" "plasmid:Diego C Box #1"              
             "part-subtype:Reporter" "seq-verify:Yes" "part-type:CDS"
@@ -148,7 +148,7 @@ ORIGIN
      2761 aggcagaatt tcagataaaa aaaatcctta gctttcgcta aggatgattt ctggaattcg
      2821 cggccgcttc tagagactag tgggtctca
 //
-LOCUS       DVL1_AE E0040m AAV      3182 bp ds-DNA     circular     01-DEC-2014
+LOCUS       DVL1_AE_E0040m_AAV      3182 bp ds-DNA     circular     01-DEC-2014
 DEFINITION  .
 KEYWORDS    "cloned-by:DC" "source:CIDAR" "part-subtype:Fluorescent Expression"
             "fusion-sites:AE" "backbone:pSB1K3" "glycerol:Evan Frozen Stock
@@ -238,7 +238,7 @@ ORIGIN
      3121 ctactagagt cacactggct caccttcggg tgggcctttc tgcgtttata GCTTATGTCT
      3181 TC
 //
-LOCUS       DVL1_AE E0040m DAS      3182 bp ds-DNA     circular     01-DEC-2014
+LOCUS       DVL1_AE_E0040m_DAS      3182 bp ds-DNA     circular     01-DEC-2014
 DEFINITION  .
 KEYWORDS    "fusion-sites:AE" "plasmid:Diego C Box #1" "glycerol:Evan Frozen   
             Stock DC-1-19" "part-type:Level 1" "antibiotic:Kanamycin"

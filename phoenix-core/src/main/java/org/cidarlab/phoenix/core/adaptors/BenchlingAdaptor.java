@@ -4,6 +4,7 @@
  */
 package org.cidarlab.phoenix.core.adaptors;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -11,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
-import org.biojava.bio.seq.Feature;
 import org.biojava.bio.seq.Sequence;
 import org.biojava.bio.seq.SequenceIterator;
 import org.biojava.bio.seq.io.SeqIOTools;
@@ -19,6 +19,8 @@ import org.biojava.bio.symbol.Location;
 import org.clothocad.model.Annotation;
 import org.clothocad.model.NucSeq;
 import org.clothocad.model.Part;
+import org.clothocad.model.Feature;
+import org.clothocad.model.Person;
 import org.clothocad.model.Polynucleotide;
 
 /**
@@ -45,6 +47,10 @@ public class BenchlingAdaptor {
             Sequence seq = readGenbank.nextSequence();
             Polynucleotide polyNuc = getPolynucleotide(seq);
             HashSet<Part> parts = getMoCloParts(seq);
+            HashSet<org.clothocad.model.Feature> features = getFeatures(seq);
+            HashSet<Annotation> annotations = getAnnotations(seq);
+            NucSeq nucSeq = getNucSeq(seq);
+            String blah = "";
         }
     }
 
@@ -122,7 +128,7 @@ public class BenchlingAdaptor {
         //Loop through features to make basic parts
         int count = 0;
         ArrayList<Part> partOrder = new ArrayList<Part>();
-        ArrayList<Feature> featureOrder = new ArrayList<Feature>();
+        ArrayList<org.biojava.bio.seq.Feature> featureOrder = new ArrayList<org.biojava.bio.seq.Feature>();
         
         //If the part range goes through index 0, the start index will be after the end index, so the sequence needs to be adjusted
         if (start > end) {
@@ -131,11 +137,11 @@ public class BenchlingAdaptor {
         }
         
         //Look at all features within part boundary to get basic parts and order to make a composite part
-        Iterator<Feature> features = seq.features();
+        Iterator<org.biojava.bio.seq.Feature> features = seq.features();
         while (features.hasNext()) {
             count++;
             
-            Feature feature = features.next();
+            org.biojava.bio.seq.Feature feature = features.next();
             Location locus = feature.getLocation();
             int startFeat = locus.getMin();
             int endFeat = locus.getMax();
@@ -155,7 +161,7 @@ public class BenchlingAdaptor {
                 //Order parts for composite part
                 boolean found = false;
                 for (int i = 0; i < featureOrder.size(); i++) {
-                    Feature feat = featureOrder.get(i);
+                    org.biojava.bio.seq.Feature feat = featureOrder.get(i);
                     
                     //Correct for wrap-around sequence edge cases
                     int startThisFeat = feat.getLocation().getMin();
@@ -199,22 +205,148 @@ public class BenchlingAdaptor {
     /*
      * Creates a Feature set
      */
-    public static HashSet<Feature> getFeatures() {
-        return null;
+    public static HashSet<org.clothocad.model.Feature> getFeatures(Sequence seq) {
+        
+        HashSet<Feature> clothoFeatures = new HashSet<Feature>();
+
+        //Look at all features within part boundary to get basic parts and order to make a composite part
+        Iterator<org.biojava.bio.seq.Feature> features = seq.features();
+        while (features.hasNext()) {
+            
+            //Get Biojava features
+            org.biojava.bio.seq.Feature feature = features.next();
+            Location locus = feature.getLocation();
+            int startFeat = locus.getMin();
+            int endFeat = locus.getMax();
+               
+            //Correct sequence for circular sequences by adding beginnning and end sequence
+            String seqString = seq.seqString();
+            seqString = seqString.concat(seqString);
+            if (startFeat > endFeat) {
+                seqString = seqString.concat(seqString);
+                endFeat = endFeat + seqString.length();
+            }
+            
+            //Check for linearity
+            boolean linearity;
+            if (seq.getAnnotation().getProperty("DIVISION").equals("circular")) {
+                linearity = false;
+            } else {
+                linearity = true;
+            }
+
+            //Check for strandedness
+            boolean ss;
+            if (seq.getAnnotation().getProperty("CIRCULAR").equals("ds-DNA")) {
+                ss = false;
+            } else {
+                ss = true;
+            }
+            
+            //Get rest of feature information and apply it to the features
+            NucSeq nucSeq = new NucSeq(seqString.substring(startFeat, endFeat + 1), ss, linearity);
+            Color fwd = Color.decode(feature.getAnnotation().getProperty("ApEinfo_fwdcolor").toString());
+            Color rev = Color.decode(feature.getAnnotation().getProperty("ApEinfo_revcolor").toString());
+            String name = feature.getAnnotation().getProperty("label").toString();
+            
+            org.clothocad.model.Feature clothoFeature = new Feature();
+            clothoFeature.setName(name);
+            clothoFeature.setSequence(nucSeq);
+            clothoFeature.setForwardColor(fwd);
+            clothoFeature.setReverseColor(rev);
+            
+            clothoFeatures.add(clothoFeature);
+        }
+        return clothoFeatures;
     }
     
     /*
      * Creates an annotation set
      */
-    public static HashSet<Annotation> getAnnotations() {
-        return null;
+    public static HashSet<Annotation> getAnnotations(Sequence seq) {
+        
+        HashSet<Annotation> annotations = new HashSet<Annotation>();
+
+        //Look at all features within part boundary to get basic parts and order to make a composite part
+        Iterator<org.biojava.bio.seq.Feature> features = seq.features();
+        while (features.hasNext()) {
+            
+            //Get Biojava features
+            org.biojava.bio.seq.Feature feature = features.next();
+            Location locus = feature.getLocation();
+            int startFeat = locus.getMin();
+            int endFeat = locus.getMax();
+               
+            //Correct sequence for circular sequences by adding beginnning and end sequence
+            String seqString = seq.seqString();
+            seqString = seqString.concat(seqString);
+            if (startFeat > endFeat) {
+                seqString = seqString.concat(seqString);
+                endFeat = endFeat + seqString.length();
+            }
+            
+            //Check for linearity
+            boolean linearity;
+            if (seq.getAnnotation().getProperty("DIVISION").equals("circular")) {
+                linearity = false;
+            } else {
+                linearity = true;
+            }
+
+            //Check for strandedness
+            boolean ss;
+            if (seq.getAnnotation().getProperty("CIRCULAR").equals("ds-DNA")) {
+                ss = false;
+            } else {
+                ss = true;
+            }
+            
+            //Get rest of feature information and apply it to the features
+            NucSeq nucSeq = new NucSeq(seqString.substring(startFeat, endFeat + 1), ss, linearity);
+            Color fwd = Color.decode(feature.getAnnotation().getProperty("ApEinfo_fwdcolor").toString());
+            Color rev = Color.decode(feature.getAnnotation().getProperty("ApEinfo_revcolor").toString());
+            String name = feature.getAnnotation().getProperty("label").toString();
+            
+            org.clothocad.model.Feature clothoFeature = new Feature();
+            clothoFeature.setName(name);
+            clothoFeature.setSequence(nucSeq);
+            clothoFeature.setForwardColor(fwd);
+            clothoFeature.setReverseColor(rev);
+            
+            //Create the annotation
+            endFeat = locus.getMax();
+            Annotation annotation = new Annotation(clothoFeature, nucSeq, fwd, rev, startFeat, endFeat, new Person(), true, "");
+            annotations.add(annotation);            
+        }
+        return annotations;
     }
     
     /*
      * Creates an annotation set
      */
-    public static HashSet<NucSeq> getSequences() {
-        return null;
+    public static NucSeq getNucSeq(Sequence seq) {
+        
+        //Check for linearity
+        boolean linearity;
+        if (seq.getAnnotation().getProperty("DIVISION").equals("circular")) {
+            linearity = false;
+        } else {
+            linearity = true;
+        }
+
+        //Check for strandedness
+        boolean ss;
+        if (seq.getAnnotation().getProperty("CIRCULAR").equals("ds-DNA")) {
+            ss = false;
+        } else {
+            ss = true;
+        }
+
+        //Get rest of feature information and apply it to the features
+        String seqString = seq.seqString();
+        NucSeq nucSeq = new NucSeq(seqString, ss, linearity);        
+        
+        return nucSeq;
     }
     
     private static String _BbsIfwd = "gaagac";

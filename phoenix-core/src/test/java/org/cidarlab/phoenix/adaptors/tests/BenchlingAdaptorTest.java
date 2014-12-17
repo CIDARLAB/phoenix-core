@@ -5,7 +5,7 @@
 package org.cidarlab.phoenix.adaptors.tests;
 
 import java.io.File;
-import org.cidarlab.phoenix.core.adaptors.BenchlingAdaptor;
+import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
 
 /**
  *
@@ -23,7 +23,7 @@ public class BenchlingAdaptorTest {
     public void genbankParseTest() throws Exception {
         String filePath = "/Users/evanappleton/phoenix/phoenix-core/phoenix-core/src/main/resources/BenchlingGenbankFiles/benchling_export_120514_multi.gb";
         File toLoad = new File(filePath);
-        BenchlingAdaptor.readGenbankFileBiojava(toLoad); 
+        ClothoAdaptor.clothoGenbankUpload(toLoad); 
     }
 
     /**

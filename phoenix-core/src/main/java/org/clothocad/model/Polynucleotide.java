@@ -3,13 +3,10 @@ package org.clothocad.model;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.clothocad.core.datums.ObjBase;
-import org.clothocad.core.datums.ObjectId;
 
 @Data()
 @NoArgsConstructor

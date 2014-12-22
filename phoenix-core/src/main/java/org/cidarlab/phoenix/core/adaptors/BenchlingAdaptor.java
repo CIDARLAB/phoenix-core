@@ -66,7 +66,7 @@ public class BenchlingAdaptor {
 
             //Basic information for polynucleotide
             polyNuc.setSequence(seq.seqString());
-            polyNuc.setAccession(seq.getName());
+            polyNuc.setAccession(seq.getName() + "_Polynucleotide");
             String description = seq.getAnnotation().getProperty("COMMENT").toString();
             polyNuc.setDescription(description);
             Date date = new Date(seq.getAnnotation().getProperty("MDAT").toString());
@@ -79,6 +79,7 @@ public class BenchlingAdaptor {
 
     /*
      * Creates a Part set from a Biojava sequence object
+     * This will create basic parts out of all incoming plasmids
      */
     public static HashSet<Part> getMoCloParts(File input) throws FileNotFoundException, NoSuchElementException, BioException {
         
@@ -124,79 +125,83 @@ public class BenchlingAdaptor {
                 start = seqString.length() - start;
             }
 
-            //Loop through features to make basic parts
-            int count = 0;
-            ArrayList<Part> partOrder = new ArrayList<Part>();
-            ArrayList<org.biojava.bio.seq.Feature> featureOrder = new ArrayList<org.biojava.bio.seq.Feature>();
-
             //If the part range goes through index 0, the start index will be after the end index, so the sequence needs to be adjusted
             if (start > end) {
                 seqString = seqString.concat(seqString);
                 end = end + seqString.length();
             }
 
-            //Look at all features within part boundary to get basic parts and order to make a composite part
-            Iterator<org.biojava.bio.seq.Feature> features = seq.features();
-            while (features.hasNext()) {
-                count++;
-
-                org.biojava.bio.seq.Feature feature = features.next();
-                Location locus = feature.getLocation();
-                int startFeat = locus.getMin();
-                int endFeat = locus.getMax();
-
-                //If they fit in the range of part start and end
-                if (endFeat < startFeat) {
-                    endFeat = endFeat + seqString.length();
-                }
-
-                //If this feature is within the part boundaries
-                if (startFeat > start && end > endFeat) {
-                    String bPartSeq = seqString.substring(startFeat - 1, endFeat);
-                    String name = feature.getAnnotation().getProperty("label").toString();
-                    Part bPart = Part.generateBasic(name, "", bPartSeq, null, null);
-                    partSet.add(bPart);
-
-                    //Order parts for composite part
-                    boolean found = false;
-                    for (int i = 0; i < featureOrder.size(); i++) {
-                        org.biojava.bio.seq.Feature feat = featureOrder.get(i);
-
-                        //Correct for wrap-around sequence edge cases
-                        int startThisFeat = feat.getLocation().getMin();
-                        if (feat.getLocation().getMin() > feat.getLocation().getMax()) {
-                            startThisFeat = startThisFeat + seqString.length();
-                        }
-
-                        //Place this part in the proper order of the composite part
-                        if (startFeat < startThisFeat) {
-                            featureOrder.add(i, feature);
-                            partOrder.add(i, bPart);
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    //If the feature was not before any particular feature
-                    if (!found) {
-                        featureOrder.add(feature);
-                        partOrder.add(bPart);
-                    }
-
-                    //If part oder empty, initialize
-                    if (featureOrder.isEmpty()) {
-                        partOrder.add(bPart);
-                        featureOrder.add(feature);
-                    }
-                }
-
-            }
-
-            //Add basic parts and composite to output if applicable
-            if (count > 1) {
-                Part composite = Part.generateComposite(partOrder, null, null, null, seq.getName(), seq.getAnnotation().getProperty("COMMENT").toString());
-                partSet.add(composite);
-            }
+            String partSeq = seqString.substring(start, end + 1);
+            Part part = Part.generateBasic(seq.getName(), seq.getAnnotation().getProperty("COMMENT").toString(), partSeq, null, null);
+            partSet.add(part);
+            
+//            //Loop through features to make basic parts
+//            int count = 0;
+//            ArrayList<Part> partOrder = new ArrayList<Part>();
+//            ArrayList<org.biojava.bio.seq.Feature> featureOrder = new ArrayList<org.biojava.bio.seq.Feature>();
+//    
+//            //Look at all features within part boundary to get basic parts and order to make a composite part
+//            Iterator<org.biojava.bio.seq.Feature> features = seq.features();
+//            while (features.hasNext()) {
+//                count++;
+//
+//                org.biojava.bio.seq.Feature feature = features.next();
+//                Location locus = feature.getLocation();
+//                int startFeat = locus.getMin();
+//                int endFeat = locus.getMax();
+//
+//                //If they fit in the range of part start and end
+//                if (endFeat < startFeat) {
+//                    endFeat = endFeat + seqString.length();
+//                }
+//
+//                //If this feature is within the part boundaries
+//                if (startFeat > start && end > endFeat) {
+//                    String bPartSeq = seqString.substring(startFeat - 1, endFeat);
+//                    String name = feature.getAnnotation().getProperty("label").toString();
+//                    Part bPart = Part.generateBasic(name, "", bPartSeq, null, null);
+//                    partSet.add(bPart);
+//
+//                    //Order parts for composite part
+//                    boolean found = false;
+//                    for (int i = 0; i < featureOrder.size(); i++) {
+//                        org.biojava.bio.seq.Feature feat = featureOrder.get(i);
+//
+//                        //Correct for wrap-around sequence edge cases
+//                        int startThisFeat = feat.getLocation().getMin();
+//                        if (feat.getLocation().getMin() > feat.getLocation().getMax()) {
+//                            startThisFeat = startThisFeat + seqString.length();
+//                        }
+//
+//                        //Place this part in the proper order of the composite part
+//                        if (startFeat < startThisFeat) {
+//                            featureOrder.add(i, feature);
+//                            partOrder.add(i, bPart);
+//                            found = true;
+//                            break;
+//                        }
+//                    }
+//
+//                    //If the feature was not before any particular feature
+//                    if (!found) {
+//                        featureOrder.add(feature);
+//                        partOrder.add(bPart);
+//                    }
+//
+//                    //If part oder empty, initialize
+//                    if (featureOrder.isEmpty()) {
+//                        partOrder.add(bPart);
+//                        featureOrder.add(feature);
+//                    }
+//                }
+//
+//            }
+//
+//            //Add basic parts and composite to output if applicable
+//            if (count > 1) {
+//                Part composite = Part.generateComposite(partOrder, null, null, null, seq.getName(), seq.getAnnotation().getProperty("COMMENT").toString());
+//                partSet.add(composite);
+//            }
 
         }
         return partSet;
@@ -281,7 +286,7 @@ public class BenchlingAdaptor {
         while (features.hasNext()) {
 
             //Get Biojava features
-            org.biojava.bio.seq.Feature feature = features.next();
+            org.biojava.bio.seq.StrandedFeature feature = (org.biojava.bio.seq.StrandedFeature) features.next();
             Location locus = feature.getLocation();
             int startFeat = locus.getMin();
             int endFeat = locus.getMax();
@@ -292,6 +297,11 @@ public class BenchlingAdaptor {
             if (startFeat > endFeat) {
                 seqString = seqString.concat(seqString);
                 endFeat = endFeat + seqString.length();
+            }
+            
+            boolean plusStrand = true;
+            if (!"+".equals(String.valueOf(feature.getStrand().getToken()))) {
+                plusStrand = false;
             }
 
             //Check for linearity
@@ -315,7 +325,7 @@ public class BenchlingAdaptor {
             Color fwd = Color.decode(feature.getAnnotation().getProperty("ApEinfo_fwdcolor").toString());
             Color rev = Color.decode(feature.getAnnotation().getProperty("ApEinfo_revcolor").toString());
             String name = feature.getAnnotation().getProperty("label").toString();
-
+                        
             org.clothocad.model.Feature clothoFeature = new Feature();
             clothoFeature.setName(name);
             clothoFeature.setSequence(nucSeq);
@@ -324,7 +334,7 @@ public class BenchlingAdaptor {
 
             //Create the annotation
             endFeat = locus.getMax();
-            Annotation annotation = new Annotation(clothoFeature, nucSeq, fwd, rev, startFeat, endFeat, new Person(), true, "");
+            Annotation annotation = new Annotation(clothoFeature, nucSeq, fwd, rev, startFeat, endFeat, new Person(), plusStrand, "");
             annotations.add(annotation);
         }
 
@@ -365,6 +375,7 @@ public class BenchlingAdaptor {
             //Get rest of feature information and apply it to the features
             String seqString = seq.seqString();
             NucSeq nucSeq = new NucSeq(seqString, ss, linearity);
+            nucSeq.setName(seq.getName() + "_NucSeq");
             HashSet<Annotation> annotations = getAnnotations(seq);
             for (Annotation ann : annotations) {
                 nucSeq.addAnnotation(ann);

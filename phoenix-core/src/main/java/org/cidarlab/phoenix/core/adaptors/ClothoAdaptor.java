@@ -8,7 +8,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import static org.cidarlab.phoenix.core.adaptors.BenchlingAdaptor.*;
 import org.clothocad.model.Feature;
 import org.clothocad.model.NucSeq;
@@ -16,6 +18,8 @@ import org.clothocad.model.Part;
 import org.clothocad.model.Polynucleotide;
 import org.clothoapi.clotho3javaapi.Clotho;
 import org.clothoapi.clotho3javaapi.ClothoConnection;
+import org.clothocad.model.Annotation;
+import org.clothocad.model.Person;
 
 /**
  * This class has all methods for sending and receiving information to Clotho
@@ -41,16 +45,13 @@ public class ClothoAdaptor {
         
         //Add all features, polynucleotides, nucseqs and parts to Clotho via Clotho Server API
         //Add polynucleotides
-        int count = 0;
         for (Polynucleotide pn : polyNucs) {
-            count++;
             
             //Polynucleotide schema
             Map createPolynucleotide = new HashMap();
             createPolynucleotide.put("schema","org.clothocad.model.Polynucleotide");
             createPolynucleotide.put("name",pn.getAccession());
-            createPolynucleotide.put("id",count);
-            createPolynucleotide.put("accession",pn.getAccession());
+            createPolynucleotide.put("accession",pn.getAccession().substring(0, pn.getAccession().length() - 15));
             createPolynucleotide.put("description",pn.getDescription());
             createPolynucleotide.put("sequence",pn.getSequence());
             createPolynucleotide.put("isLinear",pn.isLinear());
@@ -62,13 +63,11 @@ public class ClothoAdaptor {
         
         //Add features
         for (Feature f : features) {
-            count++;
             
             //Feature schema
             Map createFeature = new HashMap();
             createFeature.put("schema","org.clothocad.model.Feature");
             createFeature.put("name",f.getName());
-            createFeature.put("id",count);
             createFeature.put("forwardColor",f.getForwardColor().toString());
             createFeature.put("reverseColor",f.getReverseColor().toString());
             
@@ -86,13 +85,11 @@ public class ClothoAdaptor {
         
         //Add parts
         for (Part p : parts) {
-            count++;
             
             //Part schema
             Map createPart = new HashMap();
             createPart.put("schema","org.clothocad.model.Part");
             createPart.put("name",p.getName());
-            createPart.put("id",count);
             
             //NucSeq sub-schema
             Map createNucSeq = new HashMap();
@@ -108,17 +105,62 @@ public class ClothoAdaptor {
         
         //Add nucseqs
         for (NucSeq ns : nucSeqs) {
-            count++;
             
             //NucSeq schema
             Map createNucSeqMain = new HashMap();
             createNucSeqMain.put("schema","org.clothocad.model.NucSeq");
             createNucSeqMain.put("name",ns.getName());
-            createNucSeqMain.put("id",count);
             createNucSeqMain.put("sequence", ns.getSeq());
             createNucSeqMain.put("isCircular", ns.isCircular());
             createNucSeqMain.put("isSingleStranded", ns.isSingleStranded());
             
+            Set<Annotation> annotations = ns.getAnnotations();
+            List<Map> annotationList = new ArrayList<Map>(); 
+            
+            //Get all annotations
+            for (Annotation annotation : annotations) {
+                
+                Map createAnnotation = new HashMap();
+                createAnnotation.put("schema","org.clothocad.model.Annotation");
+                createAnnotation.put("start",annotation.getStart());
+                createAnnotation.put("end",annotation.getEnd());
+                createAnnotation.put("forwardColor",annotation.getForwardColor().toString());
+                createAnnotation.put("reverseColor",annotation.getReverseColor().toString());
+                createAnnotation.put("isForwardStrand", annotation.isForwardStrand());
+                
+                //Feature schema
+                Feature f = annotation.getFeature();
+                Map createFeature = new HashMap();
+                createFeature.put("schema", "org.clothocad.model.Feature");
+                createFeature.put("forwardColor", f.getForwardColor().toString());
+                createFeature.put("reverseColor", f.getReverseColor().toString());
+
+                //NucSeq sub-schema
+                Map createNucSeqSub = new HashMap();
+                createNucSeqSub.put("schema", "org.clothocad.model.NucSeq");
+                createNucSeqSub.put("sequence", f.getSequence().getSeq());
+                createNucSeqSub.put("isCircular", f.getSequence().isCircular());
+                createNucSeqSub.put("isSingleStranded", f.getSequence().isSingleStranded());
+
+                createFeature.put("sequence", createNucSeqSub);
+                
+                //Get this feature's Person
+                Person author = annotation.getAuthor();
+                Map createPerson = new HashMap();
+                createPerson.put("schema", "org.clothocad.model.Person");
+                createPerson.put("givenName", author.getGivenName());
+                createPerson.put("surName", author.getSurName());
+                createPerson.put("emailAddress", author.getEmailAddress());
+                
+                createAnnotation.put("feature", createFeature);
+                createAnnotation.put("author", createPerson);
+                
+                annotationList.add(createAnnotation);
+            }
+            
+            createNucSeqMain.put("annotations", annotationList);
+            
+            clothoObject.create(createNucSeqMain);
         }
         
         conn.closeConnection();

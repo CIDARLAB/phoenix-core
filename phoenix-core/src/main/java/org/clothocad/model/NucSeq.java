@@ -878,7 +878,9 @@ public class NucSeq
      * @param annotation
      */
     public void addAnnotation(Annotation annotation){
-        annotations = new HashSet<Annotation>();
+        if (annotations == null) {
+            annotations = new HashSet<Annotation>();
+        }
         annotations.add(annotation);
     }
 

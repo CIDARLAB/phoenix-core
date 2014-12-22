@@ -58,8 +58,12 @@ public class BenchlingAdaptor {
             }
 
             //Check for strandedness
-            if (seq.getAnnotation().getProperty("CIRCULAR").equals("ds-DNA")) {
-                polyNuc.setSingleStranded(false);
+            if (seq.getAnnotation().containsProperty("CIRCULAR")) {
+                if (seq.getAnnotation().getProperty("CIRCULAR").equals("ds-DNA")) {
+                    polyNuc.setSingleStranded(false);
+                } else {
+                    polyNuc.setSingleStranded(true);
+                }
             } else {
                 polyNuc.setSingleStranded(true);
             }
@@ -67,10 +71,14 @@ public class BenchlingAdaptor {
             //Basic information for polynucleotide
             polyNuc.setSequence(seq.seqString());
             polyNuc.setAccession(seq.getName() + "_Polynucleotide");
-            String description = seq.getAnnotation().getProperty("COMMENT").toString();
-            polyNuc.setDescription(description);
-            Date date = new Date(seq.getAnnotation().getProperty("MDAT").toString());
-            polyNuc.setSubmissionDate(date);
+            
+            if (seq.getAnnotation().containsProperty("COMMENT")) {
+                polyNuc.setDescription(seq.getAnnotation().getProperty("COMMENT").toString());
+            }
+            if (seq.getAnnotation().containsProperty("MDAT")) {
+                Date date = new Date(seq.getAnnotation().getProperty("MDAT").toString());
+                polyNuc.setSubmissionDate(date);
+            }
             
             polyNucs.add(polyNuc);
         }
@@ -108,13 +116,27 @@ public class BenchlingAdaptor {
             //Looks for flanking BbsI or BsaI sites if there are more than one, this method will break
             //This also assumes there are either exactly two of each site, not both or a mix
             if (searchSeq.contains(_BbsIfwd) && searchSeq.contains(_BbsIrev)) {
-                start = searchSeq.indexOf(_BbsIfwd) + 8 - 5;
-                end = searchSeq.indexOf(_BbsIrev) - 2 - 5;
+                
+                //If there is only one and exactly one BbsI site in each direction does it conform to MoClo format
+                if (searchSeq.indexOf(_BbsIfwd) == searchSeq.lastIndexOf(_BbsIfwd) && searchSeq.indexOf(_BbsIrev) == searchSeq.lastIndexOf(_BbsIrev)) {
+                    start = searchSeq.indexOf(_BbsIfwd) + 8 - 5;
+                    end = searchSeq.indexOf(_BbsIrev) - 2 - 5;
+                } else {
+                    continue;
+                }
+
             } else if (searchSeq.contains(_BsaIfwd) && searchSeq.contains(_BsaIrev)) {
-                start = searchSeq.indexOf(_BsaIfwd) + 7 - 5;
-                end = searchSeq.indexOf(_BsaIrev) - 1 - 5;
+
+                //If there is only one and exactly one BbsI site in each direction does it conform to MoClo format
+                if (searchSeq.indexOf(_BsaIfwd) == searchSeq.lastIndexOf(_BsaIfwd) && searchSeq.indexOf(_BsaIrev) == searchSeq.lastIndexOf(_BsaIrev)) {
+                    start = searchSeq.indexOf(_BsaIfwd) + 7 - 5;
+                    end = searchSeq.indexOf(_BsaIrev) - 1 - 5;
+                } else {
+                    continue;
+                }
+            
             } else {
-                return partSet;
+                continue;
             }
 
             //Correct for indexing
@@ -132,76 +154,13 @@ public class BenchlingAdaptor {
             }
 
             String partSeq = seqString.substring(start, end + 1);
-            Part part = Part.generateBasic(seq.getName(), seq.getAnnotation().getProperty("COMMENT").toString(), partSeq, null, null);
+            Part part;
+            if (seq.getAnnotation().containsProperty("COMMENT")) {
+                part = Part.generateBasic(seq.getName(), seq.getAnnotation().getProperty("COMMENT").toString(), partSeq, null, null);
+            } else {
+                part = Part.generateBasic(seq.getName(), "", partSeq, null, null);
+            }
             partSet.add(part);
-            
-//            //Loop through features to make basic parts
-//            int count = 0;
-//            ArrayList<Part> partOrder = new ArrayList<Part>();
-//            ArrayList<org.biojava.bio.seq.Feature> featureOrder = new ArrayList<org.biojava.bio.seq.Feature>();
-//    
-//            //Look at all features within part boundary to get basic parts and order to make a composite part
-//            Iterator<org.biojava.bio.seq.Feature> features = seq.features();
-//            while (features.hasNext()) {
-//                count++;
-//
-//                org.biojava.bio.seq.Feature feature = features.next();
-//                Location locus = feature.getLocation();
-//                int startFeat = locus.getMin();
-//                int endFeat = locus.getMax();
-//
-//                //If they fit in the range of part start and end
-//                if (endFeat < startFeat) {
-//                    endFeat = endFeat + seqString.length();
-//                }
-//
-//                //If this feature is within the part boundaries
-//                if (startFeat > start && end > endFeat) {
-//                    String bPartSeq = seqString.substring(startFeat - 1, endFeat);
-//                    String name = feature.getAnnotation().getProperty("label").toString();
-//                    Part bPart = Part.generateBasic(name, "", bPartSeq, null, null);
-//                    partSet.add(bPart);
-//
-//                    //Order parts for composite part
-//                    boolean found = false;
-//                    for (int i = 0; i < featureOrder.size(); i++) {
-//                        org.biojava.bio.seq.Feature feat = featureOrder.get(i);
-//
-//                        //Correct for wrap-around sequence edge cases
-//                        int startThisFeat = feat.getLocation().getMin();
-//                        if (feat.getLocation().getMin() > feat.getLocation().getMax()) {
-//                            startThisFeat = startThisFeat + seqString.length();
-//                        }
-//
-//                        //Place this part in the proper order of the composite part
-//                        if (startFeat < startThisFeat) {
-//                            featureOrder.add(i, feature);
-//                            partOrder.add(i, bPart);
-//                            found = true;
-//                            break;
-//                        }
-//                    }
-//
-//                    //If the feature was not before any particular feature
-//                    if (!found) {
-//                        featureOrder.add(feature);
-//                        partOrder.add(bPart);
-//                    }
-//
-//                    //If part oder empty, initialize
-//                    if (featureOrder.isEmpty()) {
-//                        partOrder.add(bPart);
-//                        featureOrder.add(feature);
-//                    }
-//                }
-//
-//            }
-//
-//            //Add basic parts and composite to output if applicable
-//            if (count > 1) {
-//                Part composite = Part.generateComposite(partOrder, null, null, null, seq.getName(), seq.getAnnotation().getProperty("COMMENT").toString());
-//                partSet.add(composite);
-//            }
 
         }
         return partSet;
@@ -241,26 +200,39 @@ public class BenchlingAdaptor {
                 }
 
                 //Check for linearity
-                boolean linearity;
-                if (seq.getAnnotation().getProperty("DIVISION").equals("circular")) {
-                    linearity = false;
-                } else {
-                    linearity = true;
+                boolean linearity = true;
+                if (seq.getAnnotation().containsProperty("DIVISION")) {
+                    if (seq.getAnnotation().getProperty("DIVISION").equals("circular")) {
+                        linearity = false;
+                    } else {
+                        linearity = true;
+                    }
                 }
 
                 //Check for strandedness
-                boolean ss;
-                if (seq.getAnnotation().getProperty("CIRCULAR").equals("ds-DNA")) {
-                    ss = false;
-                } else {
-                    ss = true;
+                boolean ss = true;
+                if (seq.getAnnotation().containsProperty("CIRCULAR")) {
+                    if (seq.getAnnotation().getProperty("CIRCULAR").equals("ds-DNA")) {
+                        ss = false;
+                    } else {
+                        ss = true;
+                    }
                 }
 
                 //Get rest of feature information and apply it to the features
                 NucSeq nucSeq = new NucSeq(seqString.substring(startFeat, endFeat + 1), ss, linearity);
-                Color fwd = Color.decode(feature.getAnnotation().getProperty("ApEinfo_fwdcolor").toString());
-                Color rev = Color.decode(feature.getAnnotation().getProperty("ApEinfo_revcolor").toString());
-                String name = feature.getAnnotation().getProperty("label").toString();
+                
+                Color fwd = null;
+                Color rev = null;
+                String name = "";
+                if (feature.getAnnotation().containsProperty("ApEinfo_fwdcolor") && feature.getAnnotation().containsProperty("ApEinfo_revcolor")) {
+                    fwd = Color.decode(feature.getAnnotation().getProperty("ApEinfo_fwdcolor").toString());
+                    rev = Color.decode(feature.getAnnotation().getProperty("ApEinfo_revcolor").toString());
+                } 
+                
+                if (feature.getAnnotation().containsProperty("label")) {
+                    name = feature.getAnnotation().getProperty("label").toString();
+                }
 
                 org.clothocad.model.Feature clothoFeature = new Feature();
                 clothoFeature.setName(name);
@@ -305,26 +277,39 @@ public class BenchlingAdaptor {
             }
 
             //Check for linearity
-            boolean linearity;
-            if (seq.getAnnotation().getProperty("DIVISION").equals("circular")) {
-                linearity = false;
-            } else {
-                linearity = true;
+            boolean linearity = true;
+            if (seq.getAnnotation().containsProperty("DIVISION")) {
+                if (seq.getAnnotation().getProperty("DIVISION").equals("circular")) {
+                    linearity = false;
+                } else {
+                    linearity = true;
+                }
             }
 
             //Check for strandedness
-            boolean ss;
-            if (seq.getAnnotation().getProperty("CIRCULAR").equals("ds-DNA")) {
-                ss = false;
-            } else {
-                ss = true;
+            boolean ss = true;
+            if (seq.getAnnotation().containsProperty("CIRCULAR")) {
+                if (seq.getAnnotation().getProperty("CIRCULAR").equals("ds-DNA")) {
+                    ss = false;
+                } else {
+                    ss = true;
+                }
             }
 
             //Get rest of feature information and apply it to the features
             NucSeq nucSeq = new NucSeq(seqString.substring(startFeat, endFeat + 1), ss, linearity);
-            Color fwd = Color.decode(feature.getAnnotation().getProperty("ApEinfo_fwdcolor").toString());
-            Color rev = Color.decode(feature.getAnnotation().getProperty("ApEinfo_revcolor").toString());
-            String name = feature.getAnnotation().getProperty("label").toString();
+
+            Color fwd = null;
+            Color rev = null;
+            String name = "";
+            if (feature.getAnnotation().containsProperty("ApEinfo_fwdcolor") && feature.getAnnotation().containsProperty("ApEinfo_revcolor")) {
+                fwd = Color.decode(feature.getAnnotation().getProperty("ApEinfo_fwdcolor").toString());
+                rev = Color.decode(feature.getAnnotation().getProperty("ApEinfo_revcolor").toString());
+            }
+
+            if (feature.getAnnotation().containsProperty("label")) {
+                name = feature.getAnnotation().getProperty("label").toString();
+            }
                         
             org.clothocad.model.Feature clothoFeature = new Feature();
             clothoFeature.setName(name);
@@ -357,19 +342,23 @@ public class BenchlingAdaptor {
             Sequence seq = readGenbank.nextSequence();
 
             //Check for linearity
-            boolean linearity;
-            if (seq.getAnnotation().getProperty("DIVISION").equals("circular")) {
-                linearity = false;
-            } else {
-                linearity = true;
+            boolean linearity = true;
+            if (seq.getAnnotation().containsProperty("DIVISION")) {
+                if (seq.getAnnotation().getProperty("DIVISION").equals("circular")) {
+                    linearity = false;
+                } else {
+                    linearity = true;
+                }
             }
 
             //Check for strandedness
-            boolean ss;
-            if (seq.getAnnotation().getProperty("CIRCULAR").equals("ds-DNA")) {
-                ss = false;
-            } else {
-                ss = true;
+            boolean ss = true;
+            if (seq.getAnnotation().containsProperty("CIRCULAR")) {
+                if (seq.getAnnotation().getProperty("CIRCULAR").equals("ds-DNA")) {
+                    ss = false;
+                } else {
+                    ss = true;
+                }
             }
 
             //Get rest of feature information and apply it to the features

@@ -43,91 +43,110 @@ public class ClothoAdaptor {
         ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
         Clotho clothoObject = new Clotho(conn);
         
-        //Add all features, polynucleotides, nucseqs and parts to Clotho via Clotho Server API
-        //Add polynucleotides
+        //Save all features, polynucleotides, nucseqs and parts to Clotho
+        createClothoPolynucleotides(polyNucs, clothoObject);
+        createClothoFeatures(features, clothoObject);
+        createClothoParts(parts, clothoObject);
+        createClothoNucSeqs(nucSeqs, clothoObject);
+        
+        conn.closeConnection();
+        
+    }
+
+    //Add polynucleotides to Clotho via Clotho Server API
+    public static void createClothoPolynucleotides(HashSet<Polynucleotide> polyNucs, Clotho clothoObject) {
+
         for (Polynucleotide pn : polyNucs) {
-            
+
             //Polynucleotide schema
             Map createPolynucleotide = new HashMap();
-            createPolynucleotide.put("schema","org.clothocad.model.Polynucleotide");
-            createPolynucleotide.put("name",pn.getAccession());
-            createPolynucleotide.put("accession",pn.getAccession().substring(0, pn.getAccession().length() - 15));
-            createPolynucleotide.put("description",pn.getDescription());
-            createPolynucleotide.put("sequence",pn.getSequence());
-            createPolynucleotide.put("isLinear",pn.isLinear());
-            createPolynucleotide.put("isSingleStranded",pn.isSingleStranded());
-            createPolynucleotide.put("submissionDate",pn.getSubmissionDate().toString());
-            
-            clothoObject.create(createPolynucleotide);
+            createPolynucleotide.put("schema", "org.clothocad.model.Polynucleotide");
+            createPolynucleotide.put("name", pn.getAccession());
+            createPolynucleotide.put("accession", pn.getAccession().substring(0, pn.getAccession().length() - 15));
+            createPolynucleotide.put("description", pn.getDescription());
+            createPolynucleotide.put("sequence", pn.getSequence());
+            createPolynucleotide.put("isLinear", pn.isLinear());
+            createPolynucleotide.put("isSingleStranded", pn.isSingleStranded());
+            createPolynucleotide.put("submissionDate", pn.getSubmissionDate().toString());
+
+            Clotho.create(createPolynucleotide);
         }
-        
-        //Add features
+    }
+
+    //Add features to Clotho via Clotho Server API
+    public static void createClothoFeatures(HashSet<Feature> features, Clotho clothoObject) {
+
         for (Feature f : features) {
-            
+
             //Feature schema
             Map createFeature = new HashMap();
-            createFeature.put("schema","org.clothocad.model.Feature");
-            createFeature.put("name",f.getName());
-            createFeature.put("forwardColor",f.getForwardColor().toString());
-            createFeature.put("reverseColor",f.getReverseColor().toString());
-            
+            createFeature.put("schema", "org.clothocad.model.Feature");
+            createFeature.put("name", f.getName());
+            createFeature.put("forwardColor", f.getForwardColor().toString());
+            createFeature.put("reverseColor", f.getReverseColor().toString());
+
             //NucSeq sub-schema
             Map createNucSeq = new HashMap();
-            createNucSeq.put("schema","org.clothocad.model.NucSeq");
+            createNucSeq.put("schema", "org.clothocad.model.NucSeq");
             createNucSeq.put("sequence", f.getSequence().getSeq());
             createNucSeq.put("isCircular", f.getSequence().isCircular());
             createNucSeq.put("isSingleStranded", f.getSequence().isSingleStranded());
-            
+
             createFeature.put("sequence", createNucSeq);
-            
-            clothoObject.create(createFeature);
+
+            Clotho.create(createFeature);
         }
-        
-        //Add parts
+    }
+
+    //Add parts to Clotho via Clotho Server API
+    public static void createClothoParts(HashSet<Part> parts, Clotho clothoObject) {
         for (Part p : parts) {
-            
+
             //Part schema
             Map createPart = new HashMap();
-            createPart.put("schema","org.clothocad.model.Part");
-            createPart.put("name",p.getName());
-            
+            createPart.put("schema", "org.clothocad.model.Part");
+            createPart.put("name", p.getName());
+
             //NucSeq sub-schema
             Map createNucSeq = new HashMap();
-            createNucSeq.put("schema","org.clothocad.model.NucSeq");
+            createNucSeq.put("schema", "org.clothocad.model.NucSeq");
             createNucSeq.put("sequence", p.getSequence().getSeq());
             createNucSeq.put("isCircular", p.getSequence().isCircular());
             createNucSeq.put("isSingleStranded", p.getSequence().isSingleStranded());
-            
+
             createPart.put("sequence", createNucSeq);
-            
-            clothoObject.create(createPart);            
+
+            Clotho.create(createPart);
         }
-        
-        //Add nucseqs
+    }
+
+    //Add nucseqs to Clotho via Clotho Server API
+    public static void createClothoNucSeqs(ArrayList<NucSeq> nucSeqs, Clotho clothoObject) {
+
         for (NucSeq ns : nucSeqs) {
-            
+
             //NucSeq schema
             Map createNucSeqMain = new HashMap();
-            createNucSeqMain.put("schema","org.clothocad.model.NucSeq");
-            createNucSeqMain.put("name",ns.getName());
+            createNucSeqMain.put("schema", "org.clothocad.model.NucSeq");
+            createNucSeqMain.put("name", ns.getName());
             createNucSeqMain.put("sequence", ns.getSeq());
             createNucSeqMain.put("isCircular", ns.isCircular());
             createNucSeqMain.put("isSingleStranded", ns.isSingleStranded());
-            
+
             Set<Annotation> annotations = ns.getAnnotations();
-            List<Map> annotationList = new ArrayList<Map>(); 
-            
+            List<Map> annotationList = new ArrayList<Map>();
+
             //Get all annotations
             for (Annotation annotation : annotations) {
-                
+
                 Map createAnnotation = new HashMap();
-                createAnnotation.put("schema","org.clothocad.model.Annotation");
-                createAnnotation.put("start",annotation.getStart());
-                createAnnotation.put("end",annotation.getEnd());
-                createAnnotation.put("forwardColor",annotation.getForwardColor().toString());
-                createAnnotation.put("reverseColor",annotation.getReverseColor().toString());
+                createAnnotation.put("schema", "org.clothocad.model.Annotation");
+                createAnnotation.put("start", annotation.getStart());
+                createAnnotation.put("end", annotation.getEnd());
+                createAnnotation.put("forwardColor", annotation.getForwardColor().toString());
+                createAnnotation.put("reverseColor", annotation.getReverseColor().toString());
                 createAnnotation.put("isForwardStrand", annotation.isForwardStrand());
-                
+
                 //Feature schema
                 Feature f = annotation.getFeature();
                 Map createFeature = new HashMap();
@@ -143,7 +162,7 @@ public class ClothoAdaptor {
                 createNucSeqSub.put("isSingleStranded", f.getSequence().isSingleStranded());
 
                 createFeature.put("sequence", createNucSeqSub);
-                
+
                 //Get this feature's Person
                 Person author = annotation.getAuthor();
                 Map createPerson = new HashMap();
@@ -151,19 +170,16 @@ public class ClothoAdaptor {
                 createPerson.put("givenName", author.getGivenName());
                 createPerson.put("surName", author.getSurName());
                 createPerson.put("emailAddress", author.getEmailAddress());
-                
+
                 createAnnotation.put("feature", createFeature);
                 createAnnotation.put("author", createPerson);
-                
+
                 annotationList.add(createAnnotation);
             }
-            
+
             createNucSeqMain.put("annotations", annotationList);
-            
-            clothoObject.create(createNucSeqMain);
+
+            Clotho.create(createNucSeqMain);
         }
-        
-        conn.closeConnection();
     }
-    
 }

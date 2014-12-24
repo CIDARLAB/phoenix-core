@@ -1,4 +1,4 @@
-package org.cidarlab.phoenix.core.grammar;
+package org.cidarlab.phoenix.core.formalgrammar;
 
 /**
  * In terms of Biology, a primitive represents a genetic part.

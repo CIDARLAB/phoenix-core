@@ -5,11 +5,11 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cidarlab.phoenix.core.grammar.Grammar;
-import org.cidarlab.phoenix.core.grammar.Terminal;
-import org.cidarlab.phoenix.core.grammar.ProductionRule;
-import org.cidarlab.phoenix.core.grammar.Symbol;
-import org.cidarlab.phoenix.core.grammar.Nonterminal;
+import org.cidarlab.phoenix.core.formalgrammar.Grammar;
+import org.cidarlab.phoenix.core.formalgrammar.Terminal;
+import org.cidarlab.phoenix.core.formalgrammar.ProductionRule;
+import org.cidarlab.phoenix.core.formalgrammar.Symbol;
+import org.cidarlab.phoenix.core.formalgrammar.Nonterminal;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

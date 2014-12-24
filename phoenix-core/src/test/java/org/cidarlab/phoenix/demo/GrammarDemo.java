@@ -1,11 +1,11 @@
 package org.cidarlab.phoenix.demo;
 
-import org.cidarlab.phoenix.core.grammar.Enumerator;
-import org.cidarlab.phoenix.core.grammar.Grammar;
-import org.cidarlab.phoenix.core.grammar.Terminal;
-import org.cidarlab.phoenix.core.grammar.ProductionRule;
-import org.cidarlab.phoenix.core.grammar.Symbol;
-import org.cidarlab.phoenix.core.grammar.Nonterminal;
+import org.cidarlab.phoenix.core.formalgrammar.Enumerator;
+import org.cidarlab.phoenix.core.formalgrammar.Grammar;
+import org.cidarlab.phoenix.core.formalgrammar.Terminal;
+import org.cidarlab.phoenix.core.formalgrammar.ProductionRule;
+import org.cidarlab.phoenix.core.formalgrammar.Symbol;
+import org.cidarlab.phoenix.core.formalgrammar.Nonterminal;
 
 import java.util.List;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package org.cidarlab.phoenix.core.grammar;
+package org.cidarlab.phoenix.core.formalgrammar;
 
 /**
  * A base class representing a symbol in a CFG, which can be either a terminal

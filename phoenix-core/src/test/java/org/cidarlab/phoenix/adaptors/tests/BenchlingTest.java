@@ -12,11 +12,7 @@ import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.biojava.bio.BioException;
-import static org.cidarlab.phoenix.core.adaptors.BenchlingAdaptor.getFeatures;
-import static org.cidarlab.phoenix.core.adaptors.BenchlingAdaptor.getMoCloParts;
-import static org.cidarlab.phoenix.core.adaptors.BenchlingAdaptor.getNucSeq;
-import static org.cidarlab.phoenix.core.adaptors.BenchlingAdaptor.getPolynucleotide;
-import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
+import org.cidarlab.phoenix.core.adaptors.BenchlingAdaptor;
 import org.clothocad.model.Feature;
 import org.clothocad.model.NucSeq;
 import org.clothocad.model.Part;
@@ -61,10 +57,10 @@ public class BenchlingTest {
             File input = new File(filePath);
             
             //Get features, polynucleotides, nucseqs and parts from a multi-part genbank file
-            HashSet<Feature> features = getFeatures(input);
-            HashSet<Polynucleotide> polyNucs = getPolynucleotide(input);
-            ArrayList<NucSeq> nucSeqs = getNucSeq(input);
-            HashSet<Part> parts = getMoCloParts(input);
+            HashSet<Feature> features = BenchlingAdaptor.getFeatures(input);
+            HashSet<Polynucleotide> polyNucs = BenchlingAdaptor.getPolynucleotide(input);
+            ArrayList<NucSeq> nucSeqs = BenchlingAdaptor.getNucSeq(input);
+            HashSet<Part> parts = BenchlingAdaptor.getMoCloParts(input);
             
         } catch (FileNotFoundException | NoSuchElementException | BioException ex) {
             Logger.getLogger(BenchlingTest.class.getName()).log(Level.SEVERE, null, ex);
@@ -80,10 +76,10 @@ public class BenchlingTest {
             File input = new File(filePath);
             
             //Get features, polynucleotides, nucseqs and parts from a multi-part genbank file
-            HashSet<Feature> features = getFeatures(input);
-            HashSet<Polynucleotide> polyNucs = getPolynucleotide(input);
-            ArrayList<NucSeq> nucSeqs = getNucSeq(input);
-            HashSet<Part> parts = getMoCloParts(input);
+            HashSet<Feature> features = BenchlingAdaptor.getFeatures(input);
+            HashSet<Polynucleotide> polyNucs = BenchlingAdaptor.getPolynucleotide(input);
+            ArrayList<NucSeq> nucSeqs = BenchlingAdaptor.getNucSeq(input);
+            HashSet<Part> parts = BenchlingAdaptor.getMoCloParts(input);
             
         } catch (FileNotFoundException | NoSuchElementException | BioException ex) {
             Logger.getLogger(BenchlingTest.class.getName()).log(Level.SEVERE, null, ex);

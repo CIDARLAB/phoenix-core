@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="0.001" errors="0" skipped="0" tests="4" name="org.cidarlab.phoenix.core.tests.GrammarTest">
+<testsuite failures="0" time="0.009" errors="0" skipped="0" tests="4" name="org.cidarlab.phoenix.core.tests.GrammarTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib"/>
@@ -61,8 +61,8 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="0" classname="org.cidarlab.phoenix.core.tests.GrammarTest" name="testGrammarDefinition"/>
+  <testcase time="0.006" classname="org.cidarlab.phoenix.core.tests.GrammarTest" name="testGrammarDefinition"/>
   <testcase time="0" classname="org.cidarlab.phoenix.core.tests.GrammarTest" name="testTypeDefinitions"/>
-  <testcase time="0" classname="org.cidarlab.phoenix.core.tests.GrammarTest" name="testProductionRulesDefinitions"/>
+  <testcase time="0.002" classname="org.cidarlab.phoenix.core.tests.GrammarTest" name="testProductionRulesDefinitions"/>
   <testcase time="0" classname="org.cidarlab.phoenix.core.tests.GrammarTest" name="testPrimitiveDefinitions"/>
 </testsuite>

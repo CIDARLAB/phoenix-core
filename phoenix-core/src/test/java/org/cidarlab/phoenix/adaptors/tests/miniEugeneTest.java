@@ -6,7 +6,6 @@ package org.cidarlab.phoenix.adaptors.tests;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
@@ -30,7 +29,7 @@ public class miniEugeneTest {
         String filePath = "/Users/evanappleton/phoenix/phoenix-core/phoenix-core/src/main/resources/miniEugeneFiles/oriented-tus.eug";
         File input = new File(filePath);
         
-        List<Component[]> allStructures = EugeneAdaptor.getStructures(input, -1);
+        List<Component[]> allStructures = EugeneAdaptor.getStructures(input, null);
         List<Component[]> oneStructure = EugeneAdaptor.getStructures(input, 1);
         
     }
@@ -42,7 +41,7 @@ public class miniEugeneTest {
         String filePath = "/Users/evanappleton/phoenix/phoenix-core/phoenix-core/src/main/resources/miniEugeneFiles/toggle-switch.eug";
         File input = new File(filePath);
         
-        List<Component[]> allStructures = EugeneAdaptor.getStructures(input, -1);
+        EugeneAdaptor.getStructures(input, null);
         
     }
     
@@ -54,7 +53,7 @@ public class miniEugeneTest {
         String filePath = "/Users/evanappleton/phoenix/phoenix-core/phoenix-core/src/main/resources/miniEugeneFiles/nor-gate-templates.eug";
         File input = new File(filePath);
         
-        List<Component[]> allStructures = EugeneAdaptor.getStructures(input, -1);
+        EugeneAdaptor.getStructures(input, null);
         
     }
     
@@ -65,7 +64,7 @@ public class miniEugeneTest {
         String filePath = "/Users/evanappleton/phoenix/phoenix-core/phoenix-core/src/main/resources/miniEugeneFiles/priority-encoder.eug";
         File input = new File(filePath);
         
-        List<Component[]> allStructures = EugeneAdaptor.getStructures(input, -1);
+        EugeneAdaptor.getStructures(input, 1);
         
     }
     

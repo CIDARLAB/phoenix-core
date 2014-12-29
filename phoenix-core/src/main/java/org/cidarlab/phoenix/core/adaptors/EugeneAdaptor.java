@@ -38,6 +38,7 @@ public class EugeneAdaptor {
         //Remove lines that are comments or empty lines
         ArrayList<String> rulesList = new ArrayList<String>();
         for (String line : split) {
+            line = line.trim();
             
             //Add lines to rules list
             if (!(line.startsWith("//") || line.isEmpty())) {
@@ -49,23 +50,19 @@ public class EugeneAdaptor {
         //Make miniEugene object and find solutions
         MiniEugene mE = new MiniEugene();
         mE.solve(rules, size);
-        List<Component[]> solutions = mE.getSolutions();
+        List<Component[]> solutions = new ArrayList<Component[]>();
         
         //Return number of solutions based upon input
         //If numSolutions is negative, return all, if it is greater than solution size, also return all
-        List<Component[]> returnSolutions = new ArrayList<>();
-        Integer solutionSetSize = solutions.size();
-        if (solutionSetSize >= numSolutions) {
-            for (int i = 0; i < numSolutions; i++) {
-                returnSolutions.add(solutions.get(i));
-            }
-        } else if (numSolutions < 0) {
-            returnSolutions.addAll(solutions);
+        if (numSolutions != null) {
+            mE.solve(rules, size, numSolutions);
+            solutions = mE.getSolutions();
         } else {
-            returnSolutions.addAll(solutions);
+            mE.solve(rules, size);
+            solutions = mE.getSolutions();
         }
         
-        return returnSolutions;
+        return solutions;
     }
     
     //This method converts Eugene components to Clotho modules

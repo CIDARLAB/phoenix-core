@@ -22,7 +22,6 @@ ENHANCEMENTS, OR MODIFICATIONS..
  */
 package org.clothocad.model;
 
-import org.clothocad.core.persistence.annotations.Reference;
 import java.util.List;
 import java.util.Map;
 import javax.validation.constraints.AssertTrue;
@@ -58,7 +57,6 @@ public abstract class Part extends ObjBase {
     
     @Setter
     @Getter
-    @Reference
     private Person author;
     
     @Getter

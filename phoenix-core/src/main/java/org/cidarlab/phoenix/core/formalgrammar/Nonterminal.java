@@ -1,4 +1,4 @@
-package org.cidarlab.phoenix.core.grammar;
+package org.cidarlab.phoenix.core.formalgrammar;
 
 /**
  * In Biology, a Type represents a ``family'' of biological components 

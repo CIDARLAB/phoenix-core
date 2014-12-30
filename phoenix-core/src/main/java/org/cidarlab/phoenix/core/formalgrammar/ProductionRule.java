@@ -1,4 +1,4 @@
-package org.cidarlab.phoenix.core.grammar;
+package org.cidarlab.phoenix.core.formalgrammar;
 
 import java.util.*;
 

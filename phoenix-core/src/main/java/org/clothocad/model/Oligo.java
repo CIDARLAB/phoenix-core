@@ -22,7 +22,6 @@ ENHANCEMENTS, OR MODIFICATIONS..
  */
 package org.clothocad.model;
 
-import org.clothocad.core.persistence.annotations.Reference;
 import org.clothocad.core.datums.ObjBase;
 
 import lombok.Getter;
@@ -43,7 +42,6 @@ public class Oligo extends ObjBase {
     
     @Setter
     @Getter
-    @Reference
     private Person author;
     
     @Getter

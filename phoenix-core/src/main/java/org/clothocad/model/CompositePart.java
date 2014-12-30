@@ -8,20 +8,16 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.clothocad.core.persistence.annotations.Add;
-import org.clothocad.core.persistence.annotations.ReferenceCollection;
 
 /**
  *
  * @author spaige
  */
 @NoArgsConstructor
-@Add(name="sequence", provider="getSequence")
 public class CompositePart extends Part {
 
     @Getter
     @Setter
-    @ReferenceCollection
     private List<Part> composition;
         
     private static final PartType partType= PartType.COMPOSITE;

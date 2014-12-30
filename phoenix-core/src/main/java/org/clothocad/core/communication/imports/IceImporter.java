@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
-import org.clothocad.core.persistence.Persistor;
 import org.clothocad.model.BasicPart;
 import org.clothocad.model.FreeForm;
 import org.clothocad.model.Part;
@@ -98,11 +97,7 @@ public class IceImporter {
         return out;
     }
 
-    public static void directImport(Persistor p, List<Integer> entries, int attempt) {
-        for (BasicPart entry : importData(entries)) {
-            p.save(entry);
-        }
-    }
+   
 
     private static BasicPart parseToPart(HashMap entity) {
         //String name, String shortdescription, String seq, Format form, Person author

@@ -4,7 +4,6 @@
  */
 package org.clothocad.model;
 
-import org.clothocad.core.persistence.annotations.Reference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,11 +27,9 @@ public class Lab extends SharableObjBase{
     private String website;
     @Getter
     @Setter
-    @Reference
     private Person PI;
     @Getter
     @Setter
-    @Reference
     private Institution institution;
     //TODO: validation: unique name criterion
 

@@ -22,7 +22,6 @@ ENHANCEMENTS, OR MODIFICATIONS..
  */
 package org.clothocad.model;
 
-import org.clothocad.core.persistence.annotations.Reference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,7 +35,6 @@ import org.clothocad.core.datums.SharableObjBase;
 public class Person extends SharableObjBase {
     @Getter
     @Setter
-    @Reference
     private Collection myCollection;
     
     @Getter

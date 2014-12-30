@@ -24,11 +24,10 @@ package org.clothocad.model;
 
 import java.awt.Color;
 
-import org.clothocad.core.datums.ObjBase;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.clothocad.core.persistence.annotations.Reference;
+import org.clothocad.core.datums.ObjBase;
 
 /**
  * An Annotation is a single line of genbank essentially.  It maps a Feature
@@ -145,13 +144,10 @@ public class Annotation extends ObjBase {
     @Getter
     private boolean isForwardStrand;
     @Getter
-    @Reference
     private Person author;
     @Getter
-    @Reference
     private Feature feature;
     @Getter
-    @Reference
     private NucSeq sequence;
     @Getter
     private int start, end;

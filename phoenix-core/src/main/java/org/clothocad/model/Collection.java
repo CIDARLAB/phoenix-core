@@ -33,8 +33,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.clothocad.core.datums.ObjBase;
 import org.clothocad.core.datums.ObjectId;
-import org.clothocad.core.persistence.annotations.Reference;
-import org.clothocad.core.persistence.annotations.ReferenceCollection;
+
 
 /**
  *
@@ -260,9 +259,9 @@ public class Collection extends ObjBase {
     private String description;
     
     @Getter
-    @Reference
+   
     private Person author;
-    @ReferenceCollection
+  
     //private List<ObjBase> items;
     private Map<ObjBase, Object> items;
             

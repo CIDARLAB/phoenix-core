@@ -22,7 +22,6 @@ ENHANCEMENTS, OR MODIFICATIONS..
  */
 package org.clothocad.model;
 
-import org.clothocad.core.persistence.annotations.Reference;
 import java.awt.Color;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -430,7 +429,6 @@ public class Feature extends SharableObjBase {
     -----------------*/
     @Setter
     @Getter
-    @Reference
     private NucSeq sequence;
     
     @Setter
@@ -442,7 +440,6 @@ public class Feature extends SharableObjBase {
     
     @Setter
     @Getter
-    @Reference
     private Person author;
     @Getter
     private short riskGroup;

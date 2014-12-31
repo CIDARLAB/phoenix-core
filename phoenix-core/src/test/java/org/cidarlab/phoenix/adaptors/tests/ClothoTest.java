@@ -8,6 +8,7 @@ import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
+import org.cidarlab.phoenix.core.controller.PhoenixController;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -40,10 +41,19 @@ public class ClothoTest {
             throws Exception {
     }
     
+    public String getFilepath()
+    {
+        String filepath="";
+        
+        filepath = PhoenixController.class.getClassLoader().getResource(".").getPath();
+        filepath = filepath.substring(0,filepath.indexOf("/target/"));
+        return filepath;
+    }
+    
     @Test
     public void testSinglePartUpload() {
         
-        String filePath = "/Users/evanappleton/phoenix/phoenix-core/phoenix-core/src/main/resources/BenchlingGenbankFiles/benchling_export_120514_single.gb";
+        String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/benchling_export_120514_single.gb";
         File toLoad = new File(filePath);
         try {
             ClothoAdaptor.clothoGenbankUpload(toLoad);
@@ -55,7 +65,7 @@ public class ClothoTest {
     @Test
     public void testMultiPartUpload() {
         
-        String filePath = "/Users/evanappleton/phoenix/phoenix-core/phoenix-core/src/main/resources/BenchlingGenbankFiles/benchling_export_120514_multi.gb";
+        String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/benchling_export_120514_multi.gb";
         File toLoad = new File(filePath);
         try {
             ClothoAdaptor.clothoGenbankUpload(toLoad);
@@ -67,7 +77,7 @@ public class ClothoTest {
     @Test
     public void testGenericUpload() {
         
-        String filePath = "/Users/evanappleton/phoenix/phoenix-core/phoenix-core/src/main/resources/BenchlingGenbankFiles/generic.gb";
+        String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/generic.gb";
         File toLoad = new File(filePath);
         try {
             ClothoAdaptor.clothoGenbankUpload(toLoad);

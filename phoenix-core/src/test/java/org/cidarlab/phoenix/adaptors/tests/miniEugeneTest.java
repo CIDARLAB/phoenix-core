@@ -21,29 +21,24 @@ import org.junit.Test;
  */
 public class miniEugeneTest {
     
-//    @BeforeClass
-//    public static void setUpBeforeClass()
-//            throws Exception {
-//    }
-//
-//    @AfterClass
-//    public static void tearDownAfterClass()
-//            throws Exception {
-//    }
-//
-//    @Before
-//    public void setUp()
-//            throws Exception {
-//    }
-//
-//    @After
-//    public void tearDown()
-//            throws Exception {
-//    }
-    
-    //Initialize miniEugene test object
-    public void miniEugeneTest() {
-        
+    @BeforeClass
+    public static void setUpBeforeClass()
+            throws Exception {
+    }
+
+    @AfterClass
+    public static void tearDownAfterClass()
+            throws Exception {
+    }
+
+    @Before
+    public void setUp()
+            throws Exception {
+    }
+
+    @After
+    public void tearDown()
+            throws Exception {
     }
     
     public String getFilepath()
@@ -57,7 +52,7 @@ public class miniEugeneTest {
     
     
     //Test for oriented TUs example on miniEugene site
-//    @Test
+    @Test
     public void orientedTUTest() throws IOException, MiniEugeneException {
         
         //Upload test file
@@ -69,7 +64,7 @@ public class miniEugeneTest {
     }
     
     //Test for toggle switches example on miniEugene site
-//    @Test
+    @Test
     public void toggleTest() throws IOException, MiniEugeneException {
         
         //Upload test file
@@ -82,7 +77,7 @@ public class miniEugeneTest {
     
     
     //Test for NOR gate example on miniEugene site
-//    @Test
+    @Test
     public void norGateTest() throws IOException, MiniEugeneException {
         
         //Upload test file
@@ -94,6 +89,7 @@ public class miniEugeneTest {
     }
     
     //Test for priority encoder example on miniEugene site
+    //This test is fairly extensive, comment out now for memory concerns
 //    @Test
     public void priorityEncoderTest() throws IOException, MiniEugeneException {
         
@@ -103,17 +99,4 @@ public class miniEugeneTest {
         
         EugeneAdaptor.getStructures(input, 1);        
     }
-    
-    //Run miniEugene tests
-    public static void main (String[] args) throws IOException, MiniEugeneException {
-        
-        miniEugeneTest test = new miniEugeneTest();
-        test.orientedTUTest();
-        test.toggleTest();
-        test.norGateTest();
-        test.priorityEncoderTest();
-        
-        String stop = "";
-    } 
-    
 }

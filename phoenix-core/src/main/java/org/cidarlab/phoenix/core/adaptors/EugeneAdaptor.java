@@ -57,10 +57,12 @@ public class EugeneAdaptor {
         //Return number of solutions based upon input
         //If numSolutions is negative, return all, if it is greater than solution size, also return all
         if (numSolutions != null) {
+            
             mE.solve(rules, size, numSolutions);
             List<Component[]> solutions = mE.getSolutions();
             phoenixModules = componentToModule(solutions);
         } else {
+            
             mE.solve(rules, size);
             List<Component[]> solutions = mE.getSolutions();
             phoenixModules = componentToModule(solutions);

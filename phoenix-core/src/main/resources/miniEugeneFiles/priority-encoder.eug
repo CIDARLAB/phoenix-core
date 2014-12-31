@@ -1,6 +1,6 @@
 // Size=33
 
-// *** OUT1
+// *** 6
 // DARK BLUE
 // COUNTING
 r1 exactly 1
@@ -12,9 +12,6 @@ r1 before c1
 r1 nextto c1
 c1 before t1 
 c1 nextto t1
-			
-// ORIENTATION
-all_forward
 
 // LIGHT BLUE
 // COUNTING
@@ -27,61 +24,39 @@ r2 before c2
 r2 nextto c2
 c2 before t2 
 c2 nextto t2
-			
-// ORIENTATION
-all_forward
 
-// out1 REPORTER
+// 6 REPORTER
 // COUNTING
-rOut1 exactly 1
-cOut1 exactly 1
-tOut1 exactly 1
+r6 exactly 1
+c6 exactly 1
+t6 exactly 1
 
 // POSITIONING
-rOut1 before cOut1
-rOut1 nextto cOut1
-cOut1 before tOut1 
-cOut1 nextto tOut1
-			
-// ORIENTATION
-all_forward
+r6 before c6
+r6 nextto c6
+c6 before t6 
+c6 nextto t6
 
+p02 exactly 1
+in2 induces p02
+p02 nextto p01
+p01 exactly 1
+in1 induces p01
+p01 nextto r1
+p02 before p01
 
-// input promoters of dark-blue
-// in2 -> pIn2 -> c1
-pIn2 exactly 1
-in2 induces pIn2
-pIn2 nextto pIn1
-// in1 -> pIn1 -> c1
-pIn1 exactly 1
-in1 induces pIn1
-pIn1 nextto r1
-// order of the promoters
-pIn2 before pIn1
-
-// input promoters of light-blue
-// c1 -> p1 -> c2 
-//***MODIFICATION OF ITERATION 2
-p1_2 exactly 1         
-//***MODIFICATION OF ITERATION2
-c1 represses p1_2      
-p1_2 nextto p0
-// 0 -> p0 -> c2
+p12 exactly 1         
+c1 represses p12      
+p12 nextto p0
 p0 exactly 1
 0 induces p0
 p0 nextto r2
-// order of the promoters
-p1_2 before p0
+p12 before p0
 
-// input promoter of out1 reporter
-// c2 -> p2 -> cRFP 
 p2 exactly 1
 c2 represses p2
-p2 nextto rOut1
+p2 nextto r6
 
-// *** OUT0
-// ORANGE
-// COUNTING
 r3 exactly 1
 c3 exactly 1
 t3 exactly 1
@@ -91,9 +66,6 @@ r3 before c3
 r3 nextto c3
 c3 before t3 
 c3 nextto t3
-			
-// ORIENTATION
-all_forward
 
 // LIGHT GREEN
 // COUNTING
@@ -121,75 +93,49 @@ r5 before c5
 r5 nextto c5
 c5 before t5 
 c5 nextto t5
-			
-// ORIENTATION
-all_forward
 
-// OUT0 REPORTER
+// 7 REPORTER
 // COUNTING
-rOut0 exactly 1
-cOut0 exactly 1
-tOut0 exactly 1
+r7 exactly 1
+c7 exactly 1
+t7 exactly 1
 
 // POSITIONING
-rOut0 before cOut0
-rOut0 nextto cOut0
-cOut0 before tOut0 
-cOut0 nextto tOut0
-			
-// ORIENTATION
-all_forward
-
+r7 before c7
+r7 nextto c7
+c7 before t7 
+c7 nextto t7
 
 // NOTE:
-// we have two pIn2 promoters in the design
+// we have two p02 promoters in the design
 // i.e. we need to name them differently
 
-// input promoters of orange
-//   - in2 -> pIn2 -> c3   
-// (named pIn2_3 since it drives c3)
-in2 induces pIn2_3
-pIn2_3 exactly 1
-pIn2_3 nextto r3 
-//   - p1 -> c3
-//***MODIFICATION OF ITERATION 2
-p1_3 exactly 1          
-//***MODIFICATION OF ITERATION2
-p1_3 nextto pIn2_3      
-// - positioning of the input promoters
-p1_3 before pIn2_3
+in2 induces p023
+p023 exactly 1
+p023 nextto r3 
+p13 exactly 1          
+p13 nextto p023
+p13 before p023
 
+in2 induces p024
+p024 exactly 1
+p024 nextto p00
+in0 induces p00
+p00 exactly 1
+p00 nextto r4
+p024 before p00
 
-// input promoters of light green
-//   - in2 -> pIn2 -> c4
-in2 induces pIn2_4
-pIn2_4 exactly 1
-pIn2_4 nextto pIn0
-//   - in0 -> pIn0 -> c4
-in0 induces pIn0
-pIn0 exactly 1
-pIn0 nextto r4
-// - positioning of the input promoters
-pIn2_4 before pIn0
-
-// input promoters of dark green
-//   - c3 -> p3 -> c5
 c3 represses p3
 p3 exactly 1
 p3 nextto p4
-//   - c4 -> p4 -> c5
 c4 represses p4
 p4 exactly 1
 p4 nextto r5
-// - positioning of its input promoters
 p3 before p4
 
-// input promoters of out0 reporter
-// c5 -> p5 -> cGFP
 c5 represses p5
 p5 exactly 1
-p5 nextto rOut0
+p5 nextto r7
 
-
-// WIRING out1 AND out0 DEVICES
-c1 represses p1_3
+// WIRING 6 AND 7 DEVICES
+c1 represses p13

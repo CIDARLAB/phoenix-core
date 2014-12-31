@@ -1,8 +1,0 @@
--------------------------------------------------------------------------------
-Test set: org.cidarlab.phoenix.core.tests.GrammarTest
--------------------------------------------------------------------------------
-<<<<<<< HEAD
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 sec
-=======
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.171 sec
->>>>>>> a031c91839ce3119b19a4ea79b10c50453cff1df

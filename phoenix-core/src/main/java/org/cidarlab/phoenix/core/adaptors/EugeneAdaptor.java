@@ -12,6 +12,9 @@ import org.cidarlab.minieugene.MiniEugene;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.util.FileUtil;
+import org.clothocad.model.Feature;
+import org.clothocad.model.NucSeq;
+import org.clothocad.model.Person;
 
 /**
  * This class has all methods for sending and receiving information to Eugene and miniEugene
@@ -21,7 +24,7 @@ import org.cidarlab.minieugene.util.FileUtil;
 public class EugeneAdaptor {
     
     //This method returns all structures for a given miniEugene file    
-    public static List<Component[]> getStructures(File input, Integer numSolutions) throws IOException, MiniEugeneException {
+    public static List<List<Feature>> getStructures(File input, Integer numSolutions) throws IOException, MiniEugeneException {
         
         //Split text into rules list
         String eugFileString = FileUtil.readFile(input);
@@ -49,24 +52,49 @@ public class EugeneAdaptor {
         
         //Make miniEugene object and find solutions
         MiniEugene mE = new MiniEugene();
-        mE.solve(rules, size);
-        List<Component[]> solutions = new ArrayList<Component[]>();
+        List<List<Feature>> phoenixModules = new ArrayList<List<Feature>>();
         
         //Return number of solutions based upon input
         //If numSolutions is negative, return all, if it is greater than solution size, also return all
         if (numSolutions != null) {
             mE.solve(rules, size, numSolutions);
-            solutions = mE.getSolutions();
+            List<Component[]> solutions = mE.getSolutions();
+            phoenixModules = componentToModule(solutions);
         } else {
             mE.solve(rules, size);
-            solutions = mE.getSolutions();
+            List<Component[]> solutions = mE.getSolutions();
+            phoenixModules = componentToModule(solutions);
         }
         
-        return solutions;
+        return phoenixModules;
     }
     
     //This method converts Eugene components to Clotho modules
-    public void componentToModule() {
+    public static List<List<Feature>> componentToModule(List<Component[]> eugeneDevices) {
         
+        List<List<Feature>> phoenixModules = new ArrayList<List<Feature>>();
+        
+        //For each device, translate all components to features
+        //These will be features without a sequence, only a type and direction
+        for (Component[] eugeneDevice : eugeneDevices) {
+            
+            ArrayList<Feature> phoenixModule = new ArrayList<Feature>();
+            for (Component c : eugeneDevice) {
+                
+                String type = c.getType().getName();
+                boolean isCDS = false;
+                if (type.equalsIgnoreCase("c") || type.equalsIgnoreCase("fc") || type.equalsIgnoreCase("rc")) {
+                    isCDS = true;
+                }
+                c.isForward();
+                
+                Feature f = Feature.generateFeature(c.getName(), "", new Person(), isCDS);
+                phoenixModule.add(f);
+            }
+            
+            phoenixModules.add(phoenixModule);            
+        }
+        
+        return phoenixModules;
     }
 }

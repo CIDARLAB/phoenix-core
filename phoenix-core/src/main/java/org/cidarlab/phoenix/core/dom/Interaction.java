@@ -61,7 +61,7 @@ public class Interaction
 		// the interaction.
 		public abstract List<Participation> initializeParticipants(NamedElement lhs, NamedElement rhs);
 	}
-	
+        
 	/**
 	 * Constructor for construction a binary interaction.
 	 * 

@@ -49,11 +49,20 @@ public class BenchlingTest {
             throws Exception {
     }
     
+    public String getFilepath()
+    {
+        String filepath="";
+        
+        filepath = BenchlingAdaptor.class.getClassLoader().getResource(".").getPath();
+        filepath = filepath.substring(0,filepath.indexOf("/target/"));
+        return filepath;
+    }
+    
+    
     @Test
     public void testSinglePartUpload() {
         try {
-            
-            String filePath = "/Users/evanappleton/phoenix/phoenix-core/phoenix-core/src/main/resources/BenchlingGenbankFiles/benchling_export_120514_single.gb";
+            String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/benchling_export_120514_single.gb";
             File input = new File(filePath);
             
             //Get features, polynucleotides, nucseqs and parts from a multi-part genbank file
@@ -72,7 +81,7 @@ public class BenchlingTest {
     public void testMultiPartUpload() {
         try {
             
-            String filePath = "/Users/evanappleton/phoenix/phoenix-core/phoenix-core/src/main/resources/BenchlingGenbankFiles/benchling_export_120514_multi.gb";
+            String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/benchling_export_120514_multi.gb";
             File input = new File(filePath);
             
             //Get features, polynucleotides, nucseqs and parts from a multi-part genbank file

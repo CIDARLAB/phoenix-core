@@ -12,8 +12,8 @@ import org.cidarlab.minieugene.MiniEugene;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.util.FileUtil;
+import org.cidarlab.phoenix.core.dom.Module;
 import org.clothocad.model.Feature;
-import org.clothocad.model.NucSeq;
 import org.clothocad.model.Person;
 
 /**
@@ -24,7 +24,7 @@ import org.clothocad.model.Person;
 public class EugeneAdaptor {
     
     //This method returns all structures for a given miniEugene file    
-    public static List<List<Feature>> getStructures(File input, Integer numSolutions) throws IOException, MiniEugeneException {
+    public static List<Module> getStructures(File input, Integer numSolutions) throws IOException, MiniEugeneException {
         
         //Split text into rules list
         String eugFileString = FileUtil.readFile(input);
@@ -39,7 +39,7 @@ public class EugeneAdaptor {
         }
         
         //Remove lines that are comments or empty lines
-        ArrayList<String> rulesList = new ArrayList<String>();
+        ArrayList<String> rulesList = new ArrayList<>();
         for (String line : split) {
             line = line.trim();
             
@@ -52,7 +52,7 @@ public class EugeneAdaptor {
         
         //Make miniEugene object and find solutions
         MiniEugene mE = new MiniEugene();
-        List<List<Feature>> phoenixModules = new ArrayList<List<Feature>>();
+        List<Module> phoenixModules = new ArrayList<>();
         
         //Return number of solutions based upon input
         //If numSolutions is negative, return all, if it is greater than solution size, also return all
@@ -72,15 +72,17 @@ public class EugeneAdaptor {
     }
     
     //This method converts Eugene components to Clotho modules
-    public static List<List<Feature>> componentToModule(List<Component[]> eugeneDevices) {
+    public static List<Module> componentToModule(List<Component[]> eugeneDevices) {
         
-        List<List<Feature>> phoenixModules = new ArrayList<List<Feature>>();
+        List<Module> phoenixModules = new ArrayList<>();
         
         //For each device, translate all components to features
         //These will be features without a sequence, only a type and direction
         for (Component[] eugeneDevice : eugeneDevices) {
             
-            ArrayList<Feature> phoenixModule = new ArrayList<Feature>();
+            Module phoenixModule = new Module();
+            
+            ArrayList<Feature> moduleFeatures = new ArrayList<>();
             for (Component c : eugeneDevice) {
                 
                 String type = c.getType().getName();
@@ -91,9 +93,10 @@ public class EugeneAdaptor {
                 c.isForward();
                 
                 Feature f = Feature.generateFeature(c.getName(), "", new Person(), isCDS);
-                phoenixModule.add(f);
+                moduleFeatures.add(f);
             }
             
+            phoenixModule.setModuleFeature(moduleFeatures);
             phoenixModules.add(phoenixModule);            
         }
         

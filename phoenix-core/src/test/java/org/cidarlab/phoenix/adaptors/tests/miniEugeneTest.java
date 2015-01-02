@@ -6,11 +6,9 @@ package org.cidarlab.phoenix.adaptors.tests;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.phoenix.core.adaptors.EugeneAdaptor;
 import org.cidarlab.phoenix.core.controller.PhoenixController;
-import org.clothocad.model.Feature;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -77,7 +75,7 @@ public class miniEugeneTest {
         EugeneAdaptor.getStructures(input, 1);        
     }
     
-    //Test for toggle switches example on miniEugene site
+    //Test for toggle switch with terminators and RBSs
     @Test
     public void fullToggleTest() throws IOException, MiniEugeneException {
         
@@ -95,6 +93,18 @@ public class miniEugeneTest {
         
         //Upload test file
         String filePath = getFilepath() + "/src/main/resources/miniEugeneFiles/nor-gate-templates.eug";
+        File input = new File(filePath);
+        
+        EugeneAdaptor.getStructures(input, null);
+        EugeneAdaptor.getStructures(input, 1);
+    }
+    
+    //Test for two NOR gate example
+    @Test
+    public void twoNorGateTest() throws IOException, MiniEugeneException {
+        
+        //Upload test file
+        String filePath = getFilepath() + "/src/main/resources/miniEugeneFiles/two-nor-gates.eug";
         File input = new File(filePath);
         
         EugeneAdaptor.getStructures(input, null);

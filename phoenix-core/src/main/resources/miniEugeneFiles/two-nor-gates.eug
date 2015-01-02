@@ -1,0 +1,51 @@
+// Size=14
+
+// COUNTING
+p01 exactly 1
+p02 exactly 1
+p03 exactly 1
+p1 exactly 1
+p2 exactly 1
+c1 exactly 1
+c2 exactly 1
+c3 exactly 1
+r1 exactly 1
+r2 exactly 1
+r3 exactly 1
+t1 exactly 1
+t2 exactly 1
+t3 exactly 1
+
+// INTERACTIONS
+in1 induces p01
+in2 induces p02
+in3 induces p03
+c2 represses p2
+c1 represses p1
+p01 drives c2
+p02 drives c2
+p2 drives c1
+p03 drives c1
+p1 drives c3
+
+//POSITIONING
+r1 nextto c1
+r1 before c1
+r2 nextto c2
+r2 before c2
+r3 nextto c3
+r3 before c3
+
+t1 after c1
+t2 after c2
+t3 after c3
+
+p03 after c2
+p2 after c2
+p1 after c2
+p1 after c1
+t2 before p2
+t1 before p1
+
+//ORIENTATION
+all_forward

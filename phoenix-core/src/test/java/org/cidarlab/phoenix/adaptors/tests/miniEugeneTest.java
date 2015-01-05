@@ -111,7 +111,7 @@ public class miniEugeneTest {
         String filePath = getFilepath() + "/src/main/resources/miniEugeneFiles/two-nor-gates.eug";
         File input = new File(filePath);
         
-        EugeneAdaptor.getStructures(input, null);
+//        EugeneAdaptor.getStructures(input, null);
         EugeneAdaptor.getStructures(input, 1);
     }
     
@@ -125,5 +125,17 @@ public class miniEugeneTest {
         File input = new File(filePath);
         
         EugeneAdaptor.getStructures(input, 1);        
+    }
+    
+    public miniEugeneTest() {
+        
+    }
+    
+    public static void main(String[] args) throws IOException, MiniEugeneException {
+        
+        miniEugeneTest me = new miniEugeneTest();
+        me.fullToggleTest();
+        System.out.println("finished");
+        
     }
 }

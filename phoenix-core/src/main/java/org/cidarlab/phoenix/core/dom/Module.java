@@ -50,12 +50,17 @@ public class Module {
     //Module features
     @Getter
     @Setter
-    private List<Feature> moduleFeature;
+    private List<Feature> moduleFeatures;
     
     //LTL function associated with this module
     @Getter
     @Setter
     private LTLFunction function;
+    
+    //Directionality
+    @Getter
+    @Setter
+    private boolean isForward;
     
     //Parent module(s)
     @Getter
@@ -67,19 +72,22 @@ public class Module {
     @Setter
     private List<Module> children;
     
-    
+    //Module stage
     @Getter
     @Setter
     private int stage;
     
+    //Inidication of root
     @Getter
     @Setter
     private boolean isRoot;
     
+    //Experiment associated with this module
     @Getter
     @Setter
     private Experiment experiment;
     
+    //Interaction associated with this module
     @Getter
     @Setter
     private Interaction interaction;

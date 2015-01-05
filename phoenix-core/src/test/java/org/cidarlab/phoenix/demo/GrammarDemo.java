@@ -127,11 +127,11 @@ public class GrammarDemo {
 		System.out.println(gTS.toString());
 		
 		
-//		/*
-//		 * ENUMERATE ALL
-//		 */
-//		Enumerator e = new Enumerator(gTS);
-//		e.enumerate();
+		/*
+		 * ENUMERATE ALL
+		 */
+		Enumerator e = new Enumerator(gTS);
+		e.enumerate();
 		
 	}
 	

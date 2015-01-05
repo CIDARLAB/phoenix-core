@@ -81,8 +81,11 @@ public class EugeneAdaptor {
         for (Component[] eugeneDevice : eugeneDevices) {
             
             Module phoenixModule = new Module();
+            phoenixModule.setForward(true);
             
             ArrayList<Feature> moduleFeatures = new ArrayList<>();
+            ArrayList<Module> primitiveModules = new ArrayList<>();
+            
             for (Component c : eugeneDevice) {
                 
                 String type = c.getType().getName();
@@ -90,13 +93,23 @@ public class EugeneAdaptor {
                 if (type.equalsIgnoreCase("c") || type.equalsIgnoreCase("fc") || type.equalsIgnoreCase("rc")) {
                     isCDS = true;
                 }
-                c.isForward();
                 
+                //Create a new feature and add it to module features
                 Feature f = Feature.generateFeature(c.getName(), "", new Person(), isCDS);
                 moduleFeatures.add(f);
+                
+                //Create a new primitive module
+                Module pm = new Module();
+                List<Feature> pmf = new ArrayList<>();
+                pmf.add(f);
+                pm.setModuleFeatures(pmf);
+                pm.setForward(c.isForward());
+                primitiveModules.add(pm);
             }
             
-            phoenixModule.setModuleFeature(moduleFeatures);
+            phoenixModule.setModuleFeatures(moduleFeatures);
+            phoenixModule.setChildren(primitiveModules);
+            phoenixModule.setRoot(true);
             phoenixModules.add(phoenixModule);            
         }
         

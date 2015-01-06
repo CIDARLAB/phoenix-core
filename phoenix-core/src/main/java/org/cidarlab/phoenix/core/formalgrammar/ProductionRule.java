@@ -30,7 +30,8 @@ public final class ProductionRule
      */
     public ProductionRule(Nonterminal nt, List<Symbol> production) {
         /* Sanity-check the inputs */
-        if (nt == null || production == null || production.isEmpty())
+//        if (nt == null || production == null || production.isEmpty())
+        if (nt == null || production == null)
             throw new IllegalArgumentException("Arguments to Production must be non-null and non-empty.");
 
         this.nt = nt;

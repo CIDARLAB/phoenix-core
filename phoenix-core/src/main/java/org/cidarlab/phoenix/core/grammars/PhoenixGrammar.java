@@ -41,9 +41,9 @@ public class PhoenixGrammar {
         terminals.add(new Terminal("t1"));
         terminals.add(new Terminal("t2"));
         terminals.add(new Terminal("t2"));
-//        terminals.add(new Terminal("s1"));
-//        terminals.add(new Terminal("s2"));
-//        terminals.add(new Terminal("s3"));
+        terminals.add(new Terminal("s1"));
+        terminals.add(new Terminal("s2"));
+        terminals.add(new Terminal("s3"));
         terminals.add(new Terminal("v1"));
         terminals.add(new Terminal("v2"));
         terminals.add(new Terminal("v3"));
@@ -142,41 +142,128 @@ public class PhoenixGrammar {
         trans_rfs.add(CDS);
         pR.add(new ProductionRule(TRANSLATION_RF, trans_rfs));
         
+        //TRANSCRIPT may have 1+ TRANSLATION_RF and 0+ SPACER
         //TRANSCRIPT -> TRANSLATION_RF, SPACER
         List<Symbol> trxs = new ArrayList<>();
 	trxs.add(TRANSLATION_RF);
         trxs.add(SPACER);
         pR.add(new ProductionRule(TRANSCRIPT, trxs));
         
+        //2+ TRANSLATION_RF
+        List<Symbol> trxs_multitrans = new ArrayList<>();
+	trxs_multitrans.add(TRANSLATION_RF);
+        trxs_multitrans.add(TRANSCRIPT);
+        pR.add(new ProductionRule(TRANSCRIPT, trxs_multitrans));
+        
+        //2+ SPACER
+        List<Symbol> trxs_nospacer = new ArrayList<>();
+	trxs_nospacer.add(TRANSCRIPT);
+        trxs_nospacer.add(SPACER);
+        pR.add(new ProductionRule(TRANSCRIPT, trxs_nospacer));
+        
+        //0 SPACER
+        List<Symbol> trxs_multispacer = new ArrayList<>();
+	trxs_multispacer.add(TRANSLATION_RF);
+        pR.add(new ProductionRule(TRANSCRIPT, trxs_multispacer));
+        
+        //TRANSCRIPTION_START may have 1+ PROMOTER or 0+ SPACER
         //TRANSCRIPTION_START -> PROMOTER, SPACER
         List<Symbol> trx_start = new ArrayList<>();
 	trx_start.add(PROMOTER);
         trx_start.add(SPACER);
         pR.add(new ProductionRule(TRANSCRIPTION_START, trx_start));
         
+        //2+ PROMOTER
+        List<Symbol> trx_start_multiprom = new ArrayList<>();
+	trx_start_multiprom.add(PROMOTER);
+        trx_start_multiprom.add(TRANSCRIPTION_START);
+        pR.add(new ProductionRule(TRANSCRIPTION_START, trx_start_multiprom));
+        
+        //2+ SPACER
+        List<Symbol> trx_start_multispacer = new ArrayList<>();
+	trx_start_multispacer.add(TRANSCRIPTION_START);
+        trx_start_multispacer.add(SPACER);
+        pR.add(new ProductionRule(TRANSCRIPTION_START, trx_start_multispacer));
+        
+        //0 SPACER
+        List<Symbol> trx_start_nospacer = new ArrayList<>();
+	trx_start_nospacer.add(PROMOTER);
+        pR.add(new ProductionRule(TRANSCRIPTION_START, trx_start_nospacer));
+        
+        //TRANSCRIPTION_START may have 1+ TERMINATOR or 0+ SPACER
         //TRANSCRIPTION_END -> TERMINATOR, SPACER
         List<Symbol> trx_end = new ArrayList<>();
 	trx_end.add(TERMINATOR);
         trx_end.add(SPACER);
         pR.add(new ProductionRule(TRANSCRIPTION_END, trx_end));
         
+        //2+ TERMINATOR
+        List<Symbol> trx_end_multiterm = new ArrayList<>();
+	trx_end_multiterm.add(TERMINATOR);
+        trx_end_multiterm.add(TRANSCRIPTION_END);
+        pR.add(new ProductionRule(TRANSCRIPTION_END, trx_end_multiterm));
+        
+        //2+ SPACER
+        List<Symbol> trx_end_multispacer = new ArrayList<>();
+	trx_end_multispacer.add(TRANSCRIPTION_END);
+        trx_end_multispacer.add(SPACER);
+        pR.add(new ProductionRule(TRANSCRIPTION_END, trx_end_multispacer));
+        
+        //0 SPACER
+        List<Symbol> trx_end_nospacer = new ArrayList<>();
+	trx_end_nospacer.add(TERMINATOR);
+        pR.add(new ProductionRule(TRANSCRIPTION_END, trx_end_nospacer));
+        
+        //TRANSCRIPTION_RF may have 1+ TRANSCRIPTION_START and 1+ TRANSCRIPT
         //TRANSCRIPTION_RF -> TRANSCRIPTION_START, TRANSCRIPT
         List<Symbol> trx_rf = new ArrayList<>();
 	trx_rf.add(TRANSCRIPTION_START);
         trx_rf.add(TRANSCRIPT);
         pR.add(new ProductionRule(TRANSCRIPTION_RF, trx_rf));
         
+        //TRANSCRIPTION_RF -> TRANSCRIPTION_START, TRANSCRIPT
+        List<Symbol> trx_rf_multitrxrf = new ArrayList<>();
+	trx_rf_multitrxrf.add(TRANSCRIPTION_START);
+        trx_rf_multitrxrf.add(TRANSCRIPTION_RF);
+        pR.add(new ProductionRule(TRANSCRIPTION_RF, trx_rf_multitrxrf));
+        
+        //TRANSCRIPTION_RF -> TRANSCRIPTION_START, TRANSCRIPT
+        List<Symbol> trx_rf_multitrx = new ArrayList<>();
+	trx_rf_multitrx.add(TRANSCRIPTION_RF);
+        trx_rf_multitrx.add(TRANSCRIPT);
+        pR.add(new ProductionRule(TRANSCRIPTION_RF, trx_rf_multitrx));
+        
+        //TRANSCRIPTION_RF may have 1+ TRANSCRIPT_RF and 1+ TRANSCRIPTION_END
         //TU -> TRANSCRIPTION_RF, TRANSCRIPTION_END
         List<Symbol> tu = new ArrayList<>();
 	tu.add(TRANSCRIPTION_RF);
         tu.add(TRANSCRIPTION_END);
         pR.add(new ProductionRule(TU, tu));
         
-        //TU -> TRANSCRIPTION_RF, TRANSCRIPTION_END
+        //2+ TRANSCRIPT_RF
+        List<Symbol> tu_multitrxrf = new ArrayList<>();
+	tu_multitrxrf.add(TRANSCRIPTION_RF);
+        tu_multitrxrf.add(TU);
+        pR.add(new ProductionRule(TU, tu_multitrxrf));
+        
+        //2+ TRANSCRIPTION_END
+        List<Symbol> tu_multitrxend = new ArrayList<>();
+	tu_multitrxend.add(TU);
+        tu_multitrxend.add(TRANSCRIPTION_END);
+        pR.add(new ProductionRule(TU, tu_multitrxend));
+        
+        //PLASMID may have 1+ TU
+        //PLASMID -> TU, VECTOR
         List<Symbol> plasmid = new ArrayList<>();
 	plasmid.add(TU);
         plasmid.add(VECTOR);
-        pR.add(new ProductionRule(PLASMID, plasmid));        
+        pR.add(new ProductionRule(PLASMID, plasmid));
+        
+        //PLASMID -> TU, VECTOR
+        List<Symbol> plasmid_multitu = new ArrayList<>();
+	plasmid_multitu.add(TU);
+        plasmid_multitu.add(PLASMID);
+        pR.add(new ProductionRule(PLASMID, plasmid_multitu));
         
         HashMap<Nonterminal, List<ProductionRule>> grammarMap = new HashMap<>();
         grammarMap.put(PLASMID, pR);

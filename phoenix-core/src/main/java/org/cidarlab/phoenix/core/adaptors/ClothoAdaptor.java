@@ -86,13 +86,10 @@ public class ClothoAdaptor {
             createFeature.put("reverseColor", f.getReverseColor().toString());
 
             //NucSeq sub-schema
-            Map createNucSeq = new HashMap();
-            createNucSeq.put("schema", "org.clothocad.model.NucSeq");
-            createNucSeq.put("sequence", f.getSequence().getSeq());
-            createNucSeq.put("isCircular", f.getSequence().isCircular());
-            createNucSeq.put("isSingleStranded", f.getSequence().isSingleStranded());
-
-            createFeature.put("sequence", createNucSeq);
+            Map createSequence = new HashMap();
+            createSequence.put("schema", "org.clothocad.model.Sequence");
+            createSequence.put("sequence", f.getSequence().getSequence());
+            createFeature.put("sequence", createSequence);
 
             Clotho.create(createFeature);
         }
@@ -134,7 +131,7 @@ public class ClothoAdaptor {
             createNucSeqMain.put("isSingleStranded", ns.isSingleStranded());
 
             Set<Annotation> annotations = ns.getAnnotations();
-            List<Map> annotationList = new ArrayList<Map>();
+            List<Map> annotationList = new ArrayList<>();
 
             //Get all annotations
             for (Annotation annotation : annotations) {
@@ -156,10 +153,8 @@ public class ClothoAdaptor {
 
                 //NucSeq sub-schema
                 Map createNucSeqSub = new HashMap();
-                createNucSeqSub.put("schema", "org.clothocad.model.NucSeq");
-                createNucSeqSub.put("sequence", f.getSequence().getSeq());
-                createNucSeqSub.put("isCircular", f.getSequence().isCircular());
-                createNucSeqSub.put("isSingleStranded", f.getSequence().isSingleStranded());
+                createNucSeqSub.put("schema", "org.clothocad.model.Sequence");
+                createNucSeqSub.put("sequence", f.getSequence().getSequence());
 
                 createFeature.put("sequence", createNucSeqSub);
 

@@ -95,5 +95,13 @@ public class BenchlingTest {
         }
 
     }
-    
+//    
+//    public BenchlingTest() {
+//        
+//    }
+//    
+//    public static void main(String[] args) {
+//        BenchlingTest t = new BenchlingTest();
+//        t.testSinglePartUpload();
+//    }
 }

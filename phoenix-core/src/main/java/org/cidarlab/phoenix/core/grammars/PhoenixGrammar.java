@@ -7,11 +7,7 @@ package org.cidarlab.phoenix.core.grammars;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import org.cidarlab.phoenix.core.formalgrammar.Grammar;
-import org.cidarlab.phoenix.core.formalgrammar.Nonterminal;
-import org.cidarlab.phoenix.core.formalgrammar.ProductionRule;
-import org.cidarlab.phoenix.core.formalgrammar.Symbol;
-import org.cidarlab.phoenix.core.formalgrammar.Terminal;
+import org.cidarlab.phoenix.core.formalgrammar.*;
 
 /**
  * This class defines the grammar with which genetic regulatory networks are decomposed

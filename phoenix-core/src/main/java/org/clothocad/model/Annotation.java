@@ -24,10 +24,10 @@ package org.clothocad.model;
 
 import java.awt.Color;
 
+import org.clothocad.core.datums.ObjBase;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.clothocad.core.datums.ObjBase;
 
 /**
  * An Annotation is a single line of genbank essentially.  It maps a Feature
@@ -37,6 +37,21 @@ import org.clothocad.core.datums.ObjBase;
 @NoArgsConstructor
 public class Annotation extends ObjBase {
 
+    @Getter
+    private String symbol;
+    @Getter
+    private boolean isForwardStrand;
+    @Getter
+   
+    private Person author;
+    @Getter
+  
+    private Feature feature;
+    @Getter
+    private int start, end;
+    @Getter
+    private Color forwardColor, reverseColor;
+	
     /**
      * Constructor for an Annotation that is not a Feature, just a region of colored sequence
      *
@@ -50,10 +65,9 @@ public class Annotation extends ObjBase {
      * @param plusstrandtrue
      * @param symbol  (can be null)
      */
-    public Annotation( String name, NucSeq nucseq, Color forColor, Color revColor, int start, int end, Person user, boolean plusstrandtrue, String symbol ) {
+    public Annotation(String name, Sequence seq, Color forColor, Color revColor, int start, int end, Person user, boolean plusstrandtrue, String symbol) {
         super(name);
 
-        sequence = nucseq;
         forwardColor = forColor;
         reverseColor = revColor;
         this.start = start;
@@ -61,7 +75,7 @@ public class Annotation extends ObjBase {
         author = user;
         isForwardStrand = plusstrandtrue;
         this.symbol = symbol;
-        nucseq.addAnnotation(this);
+        seq.addAnnotation(this);
     }
 
     /**
@@ -76,8 +90,8 @@ public class Annotation extends ObjBase {
      * @param plusstrandtrue
      * @param symbol
      */
-    public Annotation( Feature afeature, NucSeq nucseq, Color forColor, Color revColor, int start, int end, Person user, boolean plusstrandtrue, String symbol ) {
-        this(afeature.getName(), nucseq, forColor, revColor, start, end, user, plusstrandtrue, symbol);
+    public Annotation(Feature afeature, Sequence seq, Color forColor, Color revColor, int start, int end, Person user, boolean plusstrandtrue, String symbol) {
+        this(afeature.getName(), seq, forColor, revColor, start, end, user, plusstrandtrue, symbol);
         feature = afeature;
         if ( forColor == null ) {
             forwardColor = afeature.getForwardColor();
@@ -92,8 +106,6 @@ public class Annotation extends ObjBase {
             reverseColor = revColor;
         }
     }
-
-
 
     /**
      * Reverse the orientation of the annotation (reverse complement
@@ -134,25 +146,5 @@ public class Annotation extends ObjBase {
     public int getReverseColorAsInt() {
         return reverseColor.getRGB();
     }
-
-    /*-----------------
-    variables
-    -----------------*/
-    @Getter
-    private String symbol;
-
-    @Getter
-    private boolean isForwardStrand;
-    @Getter
-    private Person author;
-    @Getter
-    private Feature feature;
-    @Getter
-    private NucSeq sequence;
-    @Getter
-    private int start, end;
-    @Getter
-    private Color forwardColor, reverseColor;
-    
 
 }

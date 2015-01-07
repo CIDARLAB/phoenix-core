@@ -259,9 +259,8 @@ public class Collection extends ObjBase {
     private String description;
     
     @Getter
-   
     private Person author;
-  
+    
     //private List<ObjBase> items;
     private Map<ObjBase, Object> items;
             

@@ -7,6 +7,9 @@ package org.cidarlab.phoenix.core.grammars;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.cidarlab.phoenix.core.dom.Module;
+import org.cidarlab.phoenix.core.dom.Orientation;
+import org.cidarlab.phoenix.core.dom.PrimitiveModule;
 import org.cidarlab.phoenix.core.formalgrammar.Grammar;
 import org.cidarlab.phoenix.core.formalgrammar.Nonterminal;
 import org.cidarlab.phoenix.core.formalgrammar.ProductionRule;
@@ -284,4 +287,18 @@ public class PhoenixGrammar {
         
         return grammars;
     }   
+    
+    
+    public static void assignChildren(Module node) {
+        int stack =0;
+        for (PrimitiveModule subnodes : node.getSubmodules()) {
+            if (subnodes.getPrimitive().getOrientation().equals(Orientation.FORWARD)) {
+                if (subnodes.getPrimitive().getType().getName().equals("p")) {
+                    
+                } 
+            }
+        }
+    }
+    
+    
 }

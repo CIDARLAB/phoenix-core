@@ -28,7 +28,7 @@ public class Module {
         this.isRoot = false;
         this.children = new ArrayList<Module>();
         this.parents = new ArrayList<Module>();
-        
+        this.submodules = new ArrayList<>();
     }
     
     //Module constructor for root and stage
@@ -37,6 +37,7 @@ public class Module {
         this.isRoot = _isRoot;
         this.children = new ArrayList<Module>();
         this.parents = new ArrayList<Module>();  
+        this.submodules = new ArrayList<>();
     }
     
     //Get all neighbors i.e. parents and children
@@ -71,6 +72,11 @@ public class Module {
     @Getter
     @Setter
     private List<Module> children;
+    
+    // Sub Module (s)
+    @Getter
+    @Setter
+    private List<PrimitiveModule> submodules;
     
     //Module stage
     @Getter

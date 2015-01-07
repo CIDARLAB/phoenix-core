@@ -12,7 +12,12 @@ import org.cidarlab.minieugene.MiniEugene;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.util.FileUtil;
+import org.cidarlab.phoenix.core.dom.ComponentType;
 import org.cidarlab.phoenix.core.dom.Module;
+import org.cidarlab.phoenix.core.dom.Orientation;
+import org.cidarlab.phoenix.core.dom.Primitive;
+import org.cidarlab.phoenix.core.dom.PrimitiveModule;
+import static org.cidarlab.phoenix.core.grammars.PhoenixGrammar.assignChildren;
 import org.clothocad.model.Feature;
 import org.clothocad.model.Person;
 
@@ -84,7 +89,7 @@ public class EugeneAdaptor {
             phoenixModule.setForward(true);
             
             ArrayList<Feature> moduleFeatures = new ArrayList<>();
-            ArrayList<Module> primitiveModules = new ArrayList<>();
+            ArrayList<PrimitiveModule> primitiveModules = new ArrayList<>();
             
             for (Component c : eugeneDevice) {
                 
@@ -97,9 +102,16 @@ public class EugeneAdaptor {
                 //Create a new feature and add it to module features
                 Feature f = Feature.generateFeature(c.getName(), "", new Person(), isCDS);
                 moduleFeatures.add(f);
-                
+                ComponentType ctype = new ComponentType(type);
                 //Create a new primitive module
-                Module pm = new Module();
+                PrimitiveModule pm = new PrimitiveModule();
+                Primitive primitive = new Primitive(ctype,c.getName());
+                
+                primitive.setOrientation(Orientation.REVERSE);
+                if(c.isForward())
+                    primitive.setOrientation(Orientation.FORWARD);
+                
+                pm.setPrimitive(primitive);
                 List<Feature> pmf = new ArrayList<>();
                 pmf.add(f);
                 pm.setModuleFeatures(pmf);
@@ -108,7 +120,7 @@ public class EugeneAdaptor {
             }
             
             phoenixModule.setModuleFeatures(moduleFeatures);
-            phoenixModule.setChildren(primitiveModules);
+            phoenixModule.setSubmodules(primitiveModules); 
             phoenixModule.setRoot(true);
             phoenixModules.add(phoenixModule);            
         }

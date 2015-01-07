@@ -2,10 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.clothocad.model;
+package org.cidarlab.phoenix.core.dom;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.clothocad.model.Feature;
 
 /**
  *

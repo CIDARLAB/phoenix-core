@@ -66,7 +66,6 @@ public class BenchlingTest {
             File input = new File(filePath);
             
             //Get features, polynucleotides, nucseqs and parts from a multi-part genbank file
-            HashSet<Feature> features = BenchlingAdaptor.getFeatures(input);
             HashSet<Polynucleotide> polyNucs = BenchlingAdaptor.getPolynucleotide(input);
             ArrayList<NucSeq> nucSeqs = BenchlingAdaptor.getNucSeq(input);
             HashSet<Part> parts = BenchlingAdaptor.getMoCloParts(input);
@@ -85,7 +84,6 @@ public class BenchlingTest {
             File input = new File(filePath);
             
             //Get features, polynucleotides, nucseqs and parts from a multi-part genbank file
-            HashSet<Feature> features = BenchlingAdaptor.getFeatures(input);
             HashSet<Polynucleotide> polyNucs = BenchlingAdaptor.getPolynucleotide(input);
             ArrayList<NucSeq> nucSeqs = BenchlingAdaptor.getNucSeq(input);
             HashSet<Part> parts = BenchlingAdaptor.getMoCloParts(input);
@@ -93,15 +91,28 @@ public class BenchlingTest {
         } catch (FileNotFoundException | NoSuchElementException | BioException ex) {
             Logger.getLogger(BenchlingTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
-//    
-//    public BenchlingTest() {
-//        
-//    }
-//    
-//    public static void main(String[] args) {
-//        BenchlingTest t = new BenchlingTest();
-//        t.testSinglePartUpload();
-//    }
+    
+    public void testLibraryUpload() {
+        try {
+            
+            String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_feature_lib.gb";
+            File input = new File(filePath);
+            
+            //Get features, polynucleotides, nucseqs and parts from a multi-part genbank file
+            HashSet<Feature> features = BenchlingAdaptor.getFeatures(input);
+            
+        } catch (FileNotFoundException | NoSuchElementException | BioException ex) {
+            Logger.getLogger(BenchlingTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public BenchlingTest() {
+        
+    }
+    
+    public static void main(String[] args) {
+        BenchlingTest t = new BenchlingTest();
+        t.testLibraryUpload();
+    }
 }

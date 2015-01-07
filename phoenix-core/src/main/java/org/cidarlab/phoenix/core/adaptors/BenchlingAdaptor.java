@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -185,6 +186,7 @@ public class BenchlingAdaptor {
 
             //Look at all features within part boundary to get basic parts and order to make a composite part
             Iterator<org.biojava.bio.seq.Feature> features = seq.features();
+            
             while (features.hasNext()) {
 
                 //Get Biojava features
@@ -235,14 +237,36 @@ public class BenchlingAdaptor {
                 if (feature.getAnnotation().containsProperty("label")) {
                     name = feature.getAnnotation().getProperty("label").toString();
                 }
+                  
+                //If this sequence is a reference '.ref' part it should only have one feature
+                //If so, we are going to assign feature types
+                if (seq.countFeatures() == 1 && seq.getName().endsWith(".ref")) {
+                
+                    //Get tags from the part to create feature
+                    if (seq.getAnnotation().containsProperty("KEYWORDS")) {
+                        
+                        String tagstring = seq.getAnnotation().getProperty("KEYWORDS").toString();
+                        HashMap<String, String> tags = new HashMap<>();
+                        String[] tokens = tagstring.split(" ");
+                        for (String token : tokens) {
+                            token.substring(1, token.length()-1);
+                            String[] split = token.split(":");
+                            tags.put(split[0], split[1]);
+                        }
+                        
+                        String t = "";
+                    }
+                
+                } else {
 
-                org.clothocad.model.Feature clothoFeature = new Feature();
-                clothoFeature.setName(name);
-                clothoFeature.setSequence(nucSeq);
-                clothoFeature.setForwardColor(fwd);
-                clothoFeature.setReverseColor(rev);
+                    org.clothocad.model.Feature clothoFeature = new Feature();
+                    clothoFeature.setName(name);
+                    clothoFeature.setSequence(nucSeq);
+                    clothoFeature.setForwardColor(fwd);
+                    clothoFeature.setReverseColor(rev);
 
-                clothoFeatures.add(clothoFeature);
+                    clothoFeatures.add(clothoFeature);
+                }
             }
         }
         return clothoFeatures;

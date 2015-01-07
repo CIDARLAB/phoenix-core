@@ -50,8 +50,8 @@ import org.clothocad.core.datums.SharableObjBase;
 
 @NoArgsConstructor
 public class Feature extends SharableObjBase {
-	
-	@Setter
+
+    @Setter
     @Getter
     private Sequence sequence;
     @Setter
@@ -467,7 +467,7 @@ public class Feature extends SharableObjBase {
     
     // Feel free to add more of these
     public static enum FeatureRole {
-    	PROMOTER, CDS, RBS, TERMINATOR;
+    	PROMOTER, CDS, RBS, TERMINATOR, REPORTER, VECTOR;
     }
 
 }

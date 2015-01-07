@@ -168,6 +168,8 @@ public class BenchlingAdaptor {
     
     /*
      * Gets all features for a given file
+     * This method is intended to be used only on a reference set of features
+     * 
      */
     public static HashSet<org.clothocad.model.Feature> getFeatures(File input) throws FileNotFoundException, NoSuchElementException, BioException {
 

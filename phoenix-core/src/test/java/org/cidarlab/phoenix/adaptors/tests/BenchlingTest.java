@@ -93,28 +93,42 @@ public class BenchlingTest {
         }
     }
     
-    public void testLibraryUpload() {
+    @Test
+    public void testFeatureLibraryUpload() {
         try {
             
-            String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_fp_set.gb";
+            String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_feature_lib.gb";
             File input = new File(filePath);
             
             //Get features, polynucleotides, nucseqs and parts from a multi-part genbank file
-            HashSet<Feature> features = BenchlingAdaptor.getFeatures(input);
-            
-            String t = "";
+            BenchlingAdaptor.getFeatures(input);
             
         } catch (FileNotFoundException | NoSuchElementException | BioException ex) {
             Logger.getLogger(BenchlingTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public BenchlingTest() {
-        
+    @Test
+    public void testFluorophoreUpload() {
+        try {
+            
+            String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_fp_set.gb";
+            File input = new File(filePath);
+            
+            //Get features, polynucleotides, nucseqs and parts from a multi-part genbank file
+            BenchlingAdaptor.getFeatures(input);
+            
+        } catch (FileNotFoundException | NoSuchElementException | BioException ex) {
+            Logger.getLogger(BenchlingTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
-    public static void main(String[] args) {
-        BenchlingTest t = new BenchlingTest();
-        t.testLibraryUpload();
-    }
+//    
+//    public BenchlingTest() {
+//        
+//    }
+//    
+//    public static void main(String[] args) {
+//        BenchlingTest t = new BenchlingTest();
+//        t.testLibraryUpload();
+//    }
 }

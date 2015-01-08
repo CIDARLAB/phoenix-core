@@ -99,12 +99,12 @@ public class miniEugeneTest {
         String filePath = getFilepath() + "/src/main/resources/miniEugeneFiles/nor-gate-templates.eug";
         File input = new File(filePath);
         
-        EugeneAdaptor.getStructures(input, null);
+//        EugeneAdaptor.getStructures(input, null);
         EugeneAdaptor.getStructures(input, 1);
     }
     
     //Test for two NOR gate example
-    @Test
+//    @Test
     public void twoNorGateTest() throws IOException, MiniEugeneException {
         
         //Upload test file

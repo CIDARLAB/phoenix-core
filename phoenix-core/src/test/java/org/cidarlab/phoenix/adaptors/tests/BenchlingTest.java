@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.biojava.bio.BioException;
 import org.cidarlab.phoenix.core.adaptors.BenchlingAdaptor;
+import org.cidarlab.phoenix.core.dom.Fluorophore;
 import org.clothocad.model.Feature;
 import org.clothocad.model.NucSeq;
 import org.clothocad.model.Part;
@@ -116,19 +117,21 @@ public class BenchlingTest {
             File input = new File(filePath);
             
             //Get features, polynucleotides, nucseqs and parts from a multi-part genbank file
-            BenchlingAdaptor.getFeatures(input);
+            HashSet<Feature> features = BenchlingAdaptor.getFeatures(input);
+            HashSet<Fluorophore> FPs = BenchlingAdaptor.getFluorophores(features);
             
+            String t = "";
         } catch (FileNotFoundException | NoSuchElementException | BioException ex) {
             Logger.getLogger(BenchlingTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-//    
-//    public BenchlingTest() {
-//        
-//    }
-//    
-//    public static void main(String[] args) {
-//        BenchlingTest t = new BenchlingTest();
-//        t.testLibraryUpload();
-//    }
+    
+    public BenchlingTest() {
+        
+    }
+    
+    public static void main(String[] args) {
+        BenchlingTest t = new BenchlingTest();
+        t.testFluorophoreUpload();
+    }
 }

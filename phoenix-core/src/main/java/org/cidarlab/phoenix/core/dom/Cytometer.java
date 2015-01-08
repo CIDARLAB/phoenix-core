@@ -18,16 +18,16 @@ public class Cytometer {
     public Cytometer() {
         this.lasers = new HashMap<>();
         this.filters = new HashMap<>();
-        this.setting = new HashMap<>();
+        this.configuration = new HashMap<>();
         this.name = "";
     }
     
     //Parameterized cytometer constructor
-    public Cytometer(String name, HashMap<Integer, Integer> lasers, HashMap<Integer, Integer> filters, HashMap<HashMap<Integer, Integer>, HashMap<Integer, Integer>> setting) {
+    public Cytometer(String name, HashMap<Integer, Integer> lasers, HashMap<Integer, Integer> filters, HashMap<HashMap<Integer, Integer>, HashMap<Integer, Integer>> configuration) {
         this.name = name;
         this.lasers = lasers;
         this.filters = filters;
-        this.setting = setting;        
+        this.configuration = configuration;        
     }
     
     //Lasers -> Key: Wavelength, Value: Power
@@ -43,7 +43,7 @@ public class Cytometer {
     //Setting -> Key: Midpoint wavelength, Value: Width wavelength
     @Getter
     @Setter
-    private HashMap<HashMap<Integer, Integer>, HashMap<Integer, Integer>> setting;
+    private HashMap<HashMap<Integer, Integer>, HashMap<Integer, Integer>> configuration;
     
     //Name
     @Getter

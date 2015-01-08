@@ -239,8 +239,6 @@ public class BenchlingAdaptor {
                     name = feature.getAnnotation().getProperty("label").toString();
                 }
                 
-                
-                  
                 //If this sequence is a reference '.ref' part it should only have one feature
                 //If so, we are going to assign feature roles
 //                if (seq.countFeatures() == 1 && seq.getName().endsWith(".ref")) {
@@ -265,8 +263,8 @@ public class BenchlingAdaptor {
                         //Set role assuming type and sub-type are present
                         if (tags.containsKey("part-type") && tags.containsKey("part-subtype")) {
                             
-                            String type = tags.get("part-type").trim().replaceAll("\"", "");
-                            String subtype = tags.get("part-subtype").trim().replaceAll("\"", "");
+                            String type = tags.get("part-type").replaceAll("\"", "").trim();
+                            String subtype = tags.get("part-subtype").replaceAll("\"", "").trim();
                             
                             //Only in the case of a fluorescent protein do we make a special feature
                             if (subtype.contains("Fluorescent") && type.equalsIgnoreCase("CDS")) {
@@ -278,11 +276,11 @@ public class BenchlingAdaptor {
                                 fp.setReverseColor(rev);
                                 fp.setRole(Feature.FeatureRole.CDS_FLUORESCENT);
                                 
-                                if (tags.containsKey("brighness") && tags.containsKey("excitation") && tags.containsKey("emission") && tags.containsKey("oligomerization")) {
-                                    fp.setOligomerization(Integer.valueOf(tags.get("oligomerization")));
-                                    fp.setBrightness(Double.valueOf(tags.get("brightness")));
-                                    fp.setExcitation_max(Double.valueOf(tags.get("excitation")));
-                                    fp.setEmission_max(Double.valueOf(tags.get("emission")));
+                                if (tags.containsKey("brightness") && tags.containsKey("excitation") && tags.containsKey("emission") && tags.containsKey("oligomerization")) {
+                                    fp.setOligomerization(Integer.valueOf(tags.get("oligomerization").replaceAll("\"", "").trim()));
+                                    fp.setBrightness(Double.valueOf(tags.get("brightness").replaceAll("\"", "").trim()));
+                                    fp.setExcitation_max(Double.valueOf(tags.get("excitation").replaceAll("\"", "").trim()));
+                                    fp.setEmission_max(Double.valueOf(tags.get("emission").replaceAll("\"", "").trim()));
                                 }
                                 
                                 clothoFeatures.add(fp);
@@ -317,8 +315,6 @@ public class BenchlingAdaptor {
                                 
                                 clothoFeatures.add(clothoFeature);
                             }
-                        } else {
-                            String t = "";
                         }
                     }
                     
@@ -336,6 +332,21 @@ public class BenchlingAdaptor {
             }
         }
         return clothoFeatures;
+    }
+    
+    public static HashSet<Fluorophore> getFluorophores(HashSet<Feature> features) {
+        
+        HashSet<Fluorophore> FPs = new HashSet<>();
+        
+        //Look through feature set to return only a set of the FPs
+        for (Feature f : features) {
+            if (f.getClass().equals(Fluorophore.class)) {
+                Fluorophore fp = (Fluorophore) f;
+                FPs.add(fp);
+            }
+        }
+        
+        return FPs;
     }
     
     /*

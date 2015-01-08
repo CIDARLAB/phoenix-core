@@ -4,6 +4,8 @@
  */
 package org.cidarlab.phoenix.core.controller;
 
+import java.io.File;
+
 /**
  * This is the primary class for managing the workflow of tools within Phoenix
  * 
@@ -12,10 +14,12 @@ package org.cidarlab.phoenix.core.controller;
 public class PhoenixController {
     
     //Main Phoenix run method
+    //Remember to start Clotho before this run
     //Will begin as pure server-side, so might be called from a main method initially
-    public void run () {
+    public void run (File featureLib, File plasmidLib) {
         
         //Import data from Benchling to Clotho
+        
         
         //Recieve data from Clotho
         

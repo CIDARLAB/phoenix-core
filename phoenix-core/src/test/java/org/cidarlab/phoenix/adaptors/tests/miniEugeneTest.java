@@ -92,7 +92,7 @@ public class miniEugeneTest {
     
     
     //Test for NOR gate example on miniEugene site
-    @Test
+//    @Test
     public void norGateTest() throws IOException, MiniEugeneException {
         
         //Upload test file

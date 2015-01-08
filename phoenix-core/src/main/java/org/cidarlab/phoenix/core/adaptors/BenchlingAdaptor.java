@@ -178,18 +178,18 @@ public class BenchlingAdaptor {
         //Import file, begin reading
         BufferedReader reader = new BufferedReader(new FileReader(input.getAbsolutePath()));
         SequenceIterator readGenbank = SeqIOTools.readGenbank(reader);
-        HashSet<Feature> clothoFeatures = new HashSet<Feature>();
-
+        HashSet<Feature> clothoFeatures = new HashSet<>();
+        
         //This loops for each entry in a multi-part GenBank file
         while (readGenbank.hasNext()) {
-
+            
             Sequence seq = readGenbank.nextSequence();
 
             //Look at all features within part boundary to get basic parts and order to make a composite part
             Iterator<org.biojava.bio.seq.Feature> features = seq.features();
             
             while (features.hasNext()) {
-
+                
                 //Get Biojava features
                 org.biojava.bio.seq.Feature feature = features.next();
                 Location locus = feature.getLocation();
@@ -256,7 +256,7 @@ public class BenchlingAdaptor {
                             token = token.substring(token.indexOf("\"") + 1);
                             String[] split = token.split(":");
                             if (split.length == 2) {
-                                tags.put(split[0], split[1]);
+                                tags.put(split[0].trim(), split[1].trim());
                             }
                         }
                         
@@ -317,6 +317,7 @@ public class BenchlingAdaptor {
                             }
                         }
                     }
+                    break;
                     
                 } else {
                     

@@ -56,7 +56,7 @@ public class ClothoTest {
         String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/benchling_export_120514_single.gb";
         File toLoad = new File(filePath);
         try {
-            ClothoAdaptor.clothoGenbankUpload(toLoad);
+            ClothoAdaptor.clothoGenbankUpload(toLoad, false);
         } catch (Exception ex) {
             Logger.getLogger(ClothoTest.class.getName()).log(Level.SEVERE, null, ex);
         } 
@@ -68,7 +68,7 @@ public class ClothoTest {
         String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/benchling_export_120514_multi.gb";
         File toLoad = new File(filePath);
         try {
-            ClothoAdaptor.clothoGenbankUpload(toLoad);
+            ClothoAdaptor.clothoGenbankUpload(toLoad, false);
         } catch (Exception ex) {
             Logger.getLogger(ClothoTest.class.getName()).log(Level.SEVERE, null, ex);
         } 
@@ -80,9 +80,30 @@ public class ClothoTest {
         String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/generic.gb";
         File toLoad = new File(filePath);
         try {
-            ClothoAdaptor.clothoGenbankUpload(toLoad);
+            ClothoAdaptor.clothoGenbankUpload(toLoad, false);
         } catch (Exception ex) {
             Logger.getLogger(ClothoTest.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
+    
+    @Test
+    public void testFeatureUpload() {
+        
+        String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_feature_lib.gb";
+        File toLoad = new File(filePath);
+        try {
+            ClothoAdaptor.clothoGenbankUpload(toLoad, true);
+        } catch (Exception ex) {
+            Logger.getLogger(ClothoTest.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }
+      
+//    public ClothoTest() {
+//        
+//    }
+//    
+//    public static void main(String[] args) {
+//        ClothoTest t = new ClothoTest();
+//        t.testFeatureUpload();
+//    }
 }

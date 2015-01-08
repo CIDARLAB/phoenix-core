@@ -11,7 +11,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import static org.cidarlab.phoenix.core.adaptors.BenchlingAdaptor.*;
+import org.cidarlab.phoenix.core.adaptors.BenchlingAdaptor.*;
+import org.cidarlab.phoenix.core.dom.Fluorophore;
 import org.clothocad.model.Feature;
 import org.clothocad.model.NucSeq;
 import org.clothocad.model.Part;
@@ -32,22 +33,32 @@ public class ClothoAdaptor {
      * This method is for reading a Benchling-produced Multipart Genbank file with Biojava 1.9.0
      * It creates Clotho Polynucleotides, Parts, Sequences, Annotations and Features
      */
-    public static void clothoGenbankUpload(File input) throws Exception {
+    public static void clothoGenbankUpload(File input, boolean featureLib) throws Exception {
 
-        //Get features, polynucleotides, nucseqs and parts from a multi-part genbank file
-        HashSet<Feature> features = getFeatures(input);
-        HashSet<Polynucleotide> polyNucs = getPolynucleotide(input);
-        ArrayList<NucSeq> nucSeqs = getNucSeq(input);
-        HashSet<Part> parts = getMoCloParts(input);
-        
+        //Establish Clotho connection
         ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
         Clotho clothoObject = new Clotho(conn);
         
-        //Save all features, polynucleotides, nucseqs and parts to Clotho
-        createClothoPolynucleotides(polyNucs, clothoObject);
-        createClothoFeatures(features, clothoObject);
-        createClothoParts(parts, clothoObject);
-        createClothoNucSeqs(nucSeqs, clothoObject);
+        //If this file is a feature library, only get features and save those to Clotho
+        if (featureLib) {
+            HashSet<Feature> features = BenchlingAdaptor.getFeatures(input);
+            HashSet<Fluorophore> fluorophores = BenchlingAdaptor.getFluorophores(features);
+            features.removeAll(fluorophores);
+            createClothoFeatures(features, clothoObject);
+            createClothoFluorophores(fluorophores, clothoObject);
+            
+        } else {
+ 
+            //Get polynucleotides, nucseqs and parts from a multi-part genbank file     
+            HashSet<Polynucleotide> polyNucs = BenchlingAdaptor.getPolynucleotide(input);
+            ArrayList<NucSeq> nucSeqs = BenchlingAdaptor.getNucSeq(input);
+            HashSet<Part> parts = BenchlingAdaptor.getMoCloParts(input);
+
+            //Save all polynucleotides, nucseqs and parts to Clotho
+            createClothoPolynucleotides(polyNucs, clothoObject);
+            createClothoParts(parts, clothoObject);
+            createClothoNucSeqs(nucSeqs, clothoObject);
+        }
         
         conn.closeConnection();
         
@@ -92,6 +103,32 @@ public class ClothoAdaptor {
             createFeature.put("sequence", createSequence);
 
             Clotho.create(createFeature);
+        }
+    }
+    
+    //Add features to Clotho via Clotho Server API
+    public static void createClothoFluorophores(HashSet<Fluorophore> flourophores, Clotho clothoObject) {
+
+        for (Fluorophore f : flourophores) {
+
+            //Feature schema
+            Map createFluorophore = new HashMap();
+            createFluorophore.put("schema", "org.clothocad.phoenix.core.dom.Fluorophore");
+            createFluorophore.put("name", f.getName());
+            createFluorophore.put("forwardColor", f.getForwardColor().toString());
+            createFluorophore.put("reverseColor", f.getReverseColor().toString());
+            createFluorophore.put("brightness", f.getBrightness());
+            createFluorophore.put("emission_max", f.getEmission_max());
+            createFluorophore.put("excitation_max", f.getExcitation_max());
+            createFluorophore.put("oligomerization", f.getOligomerization());
+
+            //NucSeq sub-schema
+            Map createSequence = new HashMap();
+            createSequence.put("schema", "org.clothocad.model.Sequence");
+            createSequence.put("sequence", f.getSequence().getSequence());
+            createFluorophore.put("sequence", createSequence);
+
+            Clotho.create(createFluorophore);
         }
     }
 

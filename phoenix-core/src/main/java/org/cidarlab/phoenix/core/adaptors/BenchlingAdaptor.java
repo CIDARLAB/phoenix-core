@@ -20,6 +20,7 @@ import org.biojava.bio.seq.Sequence;
 import org.biojava.bio.seq.SequenceIterator;
 import org.biojava.bio.seq.io.SeqIOTools;
 import org.biojava.bio.symbol.Location;
+import org.cidarlab.phoenix.core.dom.Fluorophore;
 import org.clothocad.model.Annotation;
 import org.clothocad.model.NucSeq;
 import org.clothocad.model.Part;
@@ -237,36 +238,101 @@ public class BenchlingAdaptor {
                 if (feature.getAnnotation().containsProperty("label")) {
                     name = feature.getAnnotation().getProperty("label").toString();
                 }
+                
+                
                   
                 //If this sequence is a reference '.ref' part it should only have one feature
-                //If so, we are going to assign feature types
-                if (seq.countFeatures() == 1 && seq.getName().endsWith(".ref")) {
+                //If so, we are going to assign feature roles
+//                if (seq.countFeatures() == 1 && seq.getName().endsWith(".ref")) {
+                if (seq.getName().endsWith(".ref")) {    
                 
                     //Get tags from the part to create feature
                     if (seq.getAnnotation().containsProperty("KEYWORDS")) {
                         
+                        //Get tags from Benchling
                         String tagstring = seq.getAnnotation().getProperty("KEYWORDS").toString();
                         HashMap<String, String> tags = new HashMap<>();
-                        String[] tokens = tagstring.split(" ");
+                        String[] tokens = tagstring.split("\" ");
                         for (String token : tokens) {
-                            token.substring(1, token.length()-1);
+                            token.trim();
+                            token = token.substring(token.indexOf("\"") + 1);
                             String[] split = token.split(":");
-                            tags.put(split[0], split[1]);
+                            if (split.length == 2) {
+                                tags.put(split[0], split[1]);
+                            }
                         }
                         
-                        String t = "";
+                        //Set role assuming type and sub-type are present
+                        if (tags.containsKey("part-type") && tags.containsKey("part-subtype")) {
+                            
+                            String type = tags.get("part-type").trim().replaceAll("\"", "");
+                            String subtype = tags.get("part-subtype").trim().replaceAll("\"", "");
+                            
+                            //Only in the case of a fluorescent protein do we make a special feature
+                            if (subtype.contains("Fluorescent") && type.equalsIgnoreCase("CDS")) {
+                                
+                                Fluorophore fp = new Fluorophore();
+                                fp.setName(seq.getName());
+                                fp.setSequence(nucSeq);
+                                fp.setForwardColor(fwd);
+                                fp.setReverseColor(rev);
+                                fp.setRole(Feature.FeatureRole.CDS_FLUORESCENT);
+                                
+                                if (tags.containsKey("brighness") && tags.containsKey("excitation") && tags.containsKey("emission") && tags.containsKey("oligomerization")) {
+                                    fp.setOligomerization(Integer.valueOf(tags.get("oligomerization")));
+                                    fp.setBrightness(Double.valueOf(tags.get("brightness")));
+                                    fp.setExcitation_max(Double.valueOf(tags.get("excitation")));
+                                    fp.setEmission_max(Double.valueOf(tags.get("emission")));
+                                }
+                                
+                                clothoFeatures.add(fp);
+                                
+                            } else {
+                                
+                                org.clothocad.model.Feature clothoFeature = new Feature();
+                                clothoFeature.setName(seq.getName());
+                                clothoFeature.setSequence(nucSeq);
+                                clothoFeature.setForwardColor(fwd);
+                                clothoFeature.setReverseColor(rev);
+                                
+                                if (type.equalsIgnoreCase("promoter") && subtype.equalsIgnoreCase("constitutive")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.PROMOTER_CONSTITUTIVE);
+                                } else if (type.equalsIgnoreCase("promoter") && subtype.equalsIgnoreCase("repressible")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.PROMOTER_REPRESSIBLE);
+                                } else if (type.equalsIgnoreCase("promoter") && subtype.equalsIgnoreCase("inducible")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.PROMOTER_INDUCIBLE);
+                                } else if (type.equalsIgnoreCase("5'UTR")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.RBS);
+                                } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("repressor")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.CDS_REPRESSOR);
+                                } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("activator")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.CDS_REPRESSOR);
+                                } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("linker")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.CDS_LINKER);
+                                } else if (type.equalsIgnoreCase("CDS") && subtype.contains("Tag")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.CDS_TAG);
+                                } else if (type.equalsIgnoreCase("terminator")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.TERMINATOR);
+                                }
+                                
+                                clothoFeatures.add(clothoFeature);
+                            }
+                        } else {
+                            String t = "";
+                        }
                     }
-                
+                    
                 } else {
-
+                    
                     org.clothocad.model.Feature clothoFeature = new Feature();
                     clothoFeature.setName(name);
                     clothoFeature.setSequence(nucSeq);
                     clothoFeature.setForwardColor(fwd);
                     clothoFeature.setReverseColor(rev);
-
                     clothoFeatures.add(clothoFeature);
                 }
+                
+                
             }
         }
         return clothoFeatures;

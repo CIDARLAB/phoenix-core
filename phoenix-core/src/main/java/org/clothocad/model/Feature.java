@@ -467,7 +467,18 @@ public class Feature extends SharableObjBase {
     
     // Feel free to add more of these
     public static enum FeatureRole {
-    	PROMOTER, CDS, RBS, TERMINATOR, REPORTER, VECTOR;
+    	PROMOTER,
+        PROMOTER_REPRESSIBLE,
+        PROMOTER_INDUCIBLE,
+        PROMOTER_CONSTITUTIVE,
+        RBS,
+        CDS,
+        CDS_REPRESSOR,
+        CDS_ACTIVATOR,
+        CDS_LINKER,
+        CDS_TAG,
+        CDS_FLUORESCENT,
+        TERMINATOR;
     }
 
 }

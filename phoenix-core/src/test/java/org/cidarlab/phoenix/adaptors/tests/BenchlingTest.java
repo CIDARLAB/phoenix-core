@@ -96,11 +96,13 @@ public class BenchlingTest {
     public void testLibraryUpload() {
         try {
             
-            String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_feature_lib.gb";
+            String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_fp_set.gb";
             File input = new File(filePath);
             
             //Get features, polynucleotides, nucseqs and parts from a multi-part genbank file
             HashSet<Feature> features = BenchlingAdaptor.getFeatures(input);
+            
+            String t = "";
             
         } catch (FileNotFoundException | NoSuchElementException | BioException ex) {
             Logger.getLogger(BenchlingTest.class.getName()).log(Level.SEVERE, null, ex);

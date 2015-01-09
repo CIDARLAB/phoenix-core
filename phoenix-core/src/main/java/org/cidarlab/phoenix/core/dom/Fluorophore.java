@@ -20,14 +20,16 @@ public class Fluorophore extends Feature {
         this.brightness = 0.0;
         this.excitation_max = 0.0;
         this.emission_max = 0.0;
+        this.name = "";
     }
     
     //Default fluorophore constructor
-    public Fluorophore(Integer oligo, Double brightness, Double ex_max, Double em_max) {
+    public Fluorophore(String name, Integer oligo, Double brightness, Double ex_max, Double em_max) {
         this.oligomerization = oligo;
         this.brightness = brightness;
         this.excitation_max = ex_max;
         this.emission_max = em_max;
+        this.name = name;
     }
     
     //Oligomerization of fluorophore
@@ -49,4 +51,9 @@ public class Fluorophore extends Feature {
     @Setter
     @Getter
     private Double brightness;
+    
+    //Name of fluorophore
+    @Setter
+    @Getter
+    private String name;
 }

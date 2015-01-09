@@ -29,14 +29,16 @@ public class PhoenixController {
         
         //Map LTL decomposition to structure contstraint libraries
         
-        //Use feature library to create target modules
+        //Create target modules with miniEugene
         
-        //Decompose target modules with DecompositionGrammar to get feature graphs
+        //Decompose target modules with DecompositionGrammar to get module graphs
+        
+        //Determine which fluorophores to use and assign to placeholders in module graph
         
         //REPEAT
-        //Pass feature graphs to measurement and experiment grammars to get ExperimentDesign
+        //Pass feature graphs to experiment grammars to get ExperimentDesign
         
-        //Form part graph from feature graph via Raven optimizations
+        //Form part graph from module graph via Raven optimizations
         
         //Create instruction files
         

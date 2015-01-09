@@ -4,14 +4,9 @@
  */
 package org.cidarlab.phoenix.core.controller;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import lombok.Getter;
-import lombok.Setter;
 import org.cidarlab.phoenix.core.dom.Cytometer;
 import org.cidarlab.phoenix.core.dom.Fluorophore;
-import org.clothocad.model.Feature;
 
 /**
  * This class contains the methods for determining where to place fluorescent proteins in a phoenix
@@ -21,32 +16,13 @@ import org.clothocad.model.Feature;
  */
 public class FluorescentProteinSelector {
     
-    //Blank constructor
-    public FluorescentProteinSelector() {
-        this.cytometerConfiguration = new HashMap<>();
-        this.selectedFluorophores = new HashSet<>();
+    //Choose n FPs given a machine with lasers and filters, but no configuration
+    public static HashSet<Fluorophore> solve(HashSet<Fluorophore> FPs, Cytometer cytometer, Integer n){
+        return null;
     }
     
-    //Blank constructor
-    public FluorescentProteinSelector(HashMap<HashMap<Integer, Integer>, HashMap<Integer, Integer>> config, HashSet<Feature> fluorophores) {
-        this.cytometerConfiguration = config;
-        this.selectedFluorophores = fluorophores;
-    }
-    
-    //
-    
-    //Main solver method
-    public void solve(HashSet<Fluorophore> FPs, Cytometer cytometer){
-        
-    }
-    
-    //
-    @Getter
-    @Setter
-    private HashSet<Feature> selectedFluorophores;
-    
-    //LTL function associated with this module
-    @Getter
-    @Setter
-    private HashMap<HashMap<Integer, Integer>, HashMap<Integer, Integer>> cytometerConfiguration;
+    //From FP set, determine optimized configuration of lasers and filters for a machine
+    public static Cytometer getOptimizedCytomterConfiguration (HashSet<Fluorophore> FPs, Cytometer cytometer) {
+        return null;
+    }    
 }

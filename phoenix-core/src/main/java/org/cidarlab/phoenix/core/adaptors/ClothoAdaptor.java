@@ -115,8 +115,8 @@ public class ClothoAdaptor {
             Map createFluorophore = new HashMap();
             createFluorophore.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
             createFluorophore.put("name", f.getName());
-            createFluorophore.put("forwardColor", f.getForwardColor().toString());
-            createFluorophore.put("reverseColor", f.getReverseColor().toString());
+//            createFluorophore.put("forwardColor", f.getForwardColor().toString());
+//            createFluorophore.put("reverseColor", f.getReverseColor().toString());
             createFluorophore.put("brightness", f.getBrightness());
             createFluorophore.put("emission_max", f.getEmission_max());
             createFluorophore.put("excitation_max", f.getExcitation_max());

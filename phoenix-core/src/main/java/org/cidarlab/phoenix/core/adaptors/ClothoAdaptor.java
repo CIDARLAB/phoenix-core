@@ -150,7 +150,7 @@ public class ClothoAdaptor {
 
             createPart.put("sequence", createNucSeq);
 
-            Clotho.create(createPart);
+            clothoObject.create(createPart);
         }
     }
 

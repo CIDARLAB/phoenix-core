@@ -14,14 +14,6 @@ import org.clothocad.model.Feature;
  */
 public class Fluorophore extends Feature {
     
-    //Default fluorophore constructor
-    public Fluorophore() {
-        this.oligomerization = 0;
-        this.brightness = 0.0;
-        this.excitation_max = 0.0;
-        this.emission_max = 0.0;
-        this.name = "";
-    }
     
     //Default fluorophore constructor
     public Fluorophore(String name, Integer oligo, Double brightness, Double ex_max, Double em_max) {
@@ -31,6 +23,17 @@ public class Fluorophore extends Feature {
         this.emission_max = em_max;
         this.name = name;
     }
+    
+    //Default fluorophore constructor
+    public Fluorophore() {
+        this.oligomerization = 0;
+        this.brightness = 0.0;
+        this.excitation_max = 0.0;
+        this.emission_max = 0.0;
+        this.name = "";
+    }
+    
+    
     
     //Oligomerization of fluorophore
     @Setter

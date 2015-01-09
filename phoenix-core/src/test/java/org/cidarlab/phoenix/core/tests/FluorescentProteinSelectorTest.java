@@ -26,12 +26,12 @@ public class FluorescentProteinSelectorTest {
         
         //Test set of FPs
         HashSet<Fluorophore> FPs = new HashSet<>();
+        
         FPs.add(new Fluorophore("CyPet", 2, 53.0, 435.0, 477.0));
         FPs.add(new Fluorophore("wtGFP", 2, 100.0, 501.0, 511.0));
         FPs.add(new Fluorophore("DsRed", 4, 176.0, 558.0, 583.0));
         FPs.add(new Fluorophore("mRFP1", 1, 44.0, 584.0, 607.0));
         FPs.add(new Fluorophore("E2-Crimson", 4, 59.0, 611.0, 646.0));
-        
         return FPs;
     }
     

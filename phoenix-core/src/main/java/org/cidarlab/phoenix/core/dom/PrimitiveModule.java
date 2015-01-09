@@ -19,4 +19,13 @@ public class PrimitiveModule extends Module {
     @Getter
     @Setter        
     private Primitive primitive;
+    
+    public PrimitiveModule()
+    {
+    }
+    
+    public PrimitiveModule(Module node)
+    {
+    }
+    
 }

@@ -39,6 +39,7 @@ public class ClothoConnection {
             URI uri = new URI(clothoURI);
             factory.start();
             WebSocketClient wsClient = factory.newWebSocketClient();
+            wsClient.setMaxTextMessageSize(99999999);
             fut = wsClient.open(uri, clothoSocket);
             
             serverConnection = (WebSocket.Connection) fut.get(10, TimeUnit.SECONDS);

@@ -5,10 +5,12 @@
 package org.cidarlab.phoenix.adaptors.tests;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
 import org.cidarlab.phoenix.core.controller.PhoenixController;
+import org.clothocad.model.Feature;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -50,37 +52,37 @@ public class ClothoTest {
         return filepath;
     }
     
-    @Test
+//    @Test
     public void testSinglePartUpload() {
         
         String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/benchling_export_120514_single.gb";
         File toLoad = new File(filePath);
         try {
-            ClothoAdaptor.clothoGenbankUpload(toLoad, false);
+            ClothoAdaptor.clothoUpload(toLoad, false);
         } catch (Exception ex) {
             Logger.getLogger(ClothoTest.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
     
-    @Test
+//    @Test
     public void testMultiPartUpload() {
         
         String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/benchling_export_120514_multi.gb";
         File toLoad = new File(filePath);
         try {
-            ClothoAdaptor.clothoGenbankUpload(toLoad, false);
+            ClothoAdaptor.clothoUpload(toLoad, false);
         } catch (Exception ex) {
             Logger.getLogger(ClothoTest.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
     
-    @Test
+//    @Test
     public void testGenericUpload() {
         
         String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/generic.gb";
         File toLoad = new File(filePath);
         try {
-            ClothoAdaptor.clothoGenbankUpload(toLoad, false);
+            ClothoAdaptor.clothoUpload(toLoad, false);
         } catch (Exception ex) {
             Logger.getLogger(ClothoTest.class.getName()).log(Level.SEVERE, null, ex);
         } 
@@ -92,18 +94,25 @@ public class ClothoTest {
         String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_feature_lib.gb";
         File toLoad = new File(filePath);
         try {
-            ClothoAdaptor.clothoGenbankUpload(toLoad, true);
+            ClothoAdaptor.clothoUpload(toLoad, true);
         } catch (Exception ex) {
             Logger.getLogger(ClothoTest.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
+    
+//    @Test
+    public void testFeatureQuery() {
+        
+        HashSet<Feature> queryClothoFeatures = ClothoAdaptor.queryClothoFeatures();
+       
+    }
       
-//    public ClothoTest() {
-//        
-//    }
-//    
-//    public static void main(String[] args) {
-//        ClothoTest t = new ClothoTest();
-//        t.testFeatureUpload();
-//    }
+    public ClothoTest() {
+        
+    }
+    
+    public static void main(String[] args) {
+        ClothoTest t = new ClothoTest();
+        t.testFeatureQuery();
+    }
 }

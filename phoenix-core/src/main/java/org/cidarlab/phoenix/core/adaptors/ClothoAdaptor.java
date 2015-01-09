@@ -33,7 +33,7 @@ public class ClothoAdaptor {
      * This method is for reading a Benchling-produced Multipart Genbank file with Biojava 1.9.0
      * It creates Clotho Polynucleotides, Parts, Sequences, Annotations and Features
      */
-    public static void clothoGenbankUpload(File input, boolean featureLib) throws Exception {
+    public static Clotho clothoUpload(File input, boolean featureLib) throws Exception {
 
         //Establish Clotho connection
         ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
@@ -51,7 +51,7 @@ public class ClothoAdaptor {
  
             //Get polynucleotides, nucseqs and parts from a multi-part genbank file     
             HashSet<Polynucleotide> polyNucs = BenchlingAdaptor.getPolynucleotide(input);
-            ArrayList<NucSeq> nucSeqs = BenchlingAdaptor.getNucSeq(input);
+            HashSet<NucSeq> nucSeqs = BenchlingAdaptor.getNucSeq(input);
             HashSet<Part> parts = BenchlingAdaptor.getMoCloParts(input);
 
             //Save all polynucleotides, nucseqs and parts to Clotho
@@ -61,7 +61,7 @@ public class ClothoAdaptor {
         }
         
         conn.closeConnection();
-        
+        return clothoObject;
     }
 
     //Add polynucleotides to Clotho via Clotho Server API
@@ -113,7 +113,7 @@ public class ClothoAdaptor {
 
             //Feature schema
             Map createFluorophore = new HashMap();
-            createFluorophore.put("schema", "org.clothocad.phoenix.core.dom.Fluorophore");
+            createFluorophore.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
             createFluorophore.put("name", f.getName());
             createFluorophore.put("forwardColor", f.getForwardColor().toString());
             createFluorophore.put("reverseColor", f.getReverseColor().toString());
@@ -155,7 +155,7 @@ public class ClothoAdaptor {
     }
 
     //Add nucseqs to Clotho via Clotho Server API
-    public static void createClothoNucSeqs(ArrayList<NucSeq> nucSeqs, Clotho clothoObject) {
+    public static void createClothoNucSeqs(HashSet<NucSeq> nucSeqs, Clotho clothoObject) {
 
         for (NucSeq ns : nucSeqs) {
 
@@ -213,5 +213,41 @@ public class ClothoAdaptor {
 
             Clotho.create(createNucSeqMain);
         }
+    }
+    
+    //Get all Clotho Features
+    public static HashSet<Feature> queryClothoFeatures() {
+        
+        //Establish Clotho connection
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
+        
+        Map map = new HashMap();
+        map.put("schema", "org.clothocad.model.Feature");
+        Object query = clothoObject.query(map);
+        
+        conn.closeConnection();
+        
+        return null;
+    }
+    
+    //Get all Clotho Fluorophores
+    public static HashSet<Fluorophore> queryClothoFluorophores() {
+        return null;
+    }
+    
+    //Get all Clotho NucSeqs
+    public static HashSet<NucSeq> queryClothoNucSeqs() {
+        return null;
+    }
+    
+    //Get all Clotho Parts
+    public static HashSet<Part> queryClothoParts() {
+        return null;
+    }
+    
+    //Get all Clotho Polynucleotides
+    public static HashSet<Polynucleotide> queryClothoPolyNucleotides() {
+        return null;
     }
 }

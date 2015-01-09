@@ -68,7 +68,7 @@ public class BenchlingTest {
             
             //Get features, polynucleotides, nucseqs and parts from a multi-part genbank file
             HashSet<Polynucleotide> polyNucs = BenchlingAdaptor.getPolynucleotide(input);
-            ArrayList<NucSeq> nucSeqs = BenchlingAdaptor.getNucSeq(input);
+            HashSet<NucSeq> nucSeqs = BenchlingAdaptor.getNucSeq(input);
             HashSet<Part> parts = BenchlingAdaptor.getMoCloParts(input);
             
         } catch (FileNotFoundException | NoSuchElementException | BioException ex) {
@@ -86,7 +86,7 @@ public class BenchlingTest {
             
             //Get features, polynucleotides, nucseqs and parts from a multi-part genbank file
             HashSet<Polynucleotide> polyNucs = BenchlingAdaptor.getPolynucleotide(input);
-            ArrayList<NucSeq> nucSeqs = BenchlingAdaptor.getNucSeq(input);
+            HashSet<NucSeq> nucSeqs = BenchlingAdaptor.getNucSeq(input);
             HashSet<Part> parts = BenchlingAdaptor.getMoCloParts(input);
             
         } catch (FileNotFoundException | NoSuchElementException | BioException ex) {

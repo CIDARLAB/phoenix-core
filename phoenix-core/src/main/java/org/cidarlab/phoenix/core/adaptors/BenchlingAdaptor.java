@@ -433,12 +433,12 @@ public class BenchlingAdaptor {
     /*
      * Creates an annotation set
      */
-    public static ArrayList<NucSeq> getNucSeq(File input) throws FileNotFoundException, NoSuchElementException, BioException {
+    public static HashSet<NucSeq> getNucSeq(File input) throws FileNotFoundException, NoSuchElementException, BioException {
 
         //Import file, begin reading
         BufferedReader reader = new BufferedReader(new FileReader(input.getAbsolutePath()));
         SequenceIterator readGenbank = SeqIOTools.readGenbank(reader);
-        ArrayList<NucSeq> nucSeqs = new ArrayList<NucSeq>();
+        HashSet<NucSeq> nucSeqs = new HashSet<>();
 
         //This loops for each entry in a multi-part GenBank file
         while (readGenbank.hasNext()) {

@@ -4,6 +4,7 @@
  */
 package org.cidarlab.phoenix.core.adaptors;
 
+import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,6 +12,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.cidarlab.phoenix.core.adaptors.BenchlingAdaptor.*;
 import org.cidarlab.phoenix.core.dom.Fluorophore;
 import org.clothocad.model.Feature;
@@ -21,6 +24,7 @@ import org.clothoapi.clotho3javaapi.Clotho;
 import org.clothoapi.clotho3javaapi.ClothoConnection;
 import org.clothocad.model.Annotation;
 import org.clothocad.model.Person;
+import org.clothocad.model.Sequence;
 
 /**
  * This class has all methods for sending and receiving information to Clotho
@@ -115,8 +119,8 @@ public class ClothoAdaptor {
             Map createFluorophore = new HashMap();
             createFluorophore.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
             createFluorophore.put("name", f.getName());
-//            createFluorophore.put("forwardColor", f.getForwardColor().toString());
-//            createFluorophore.put("reverseColor", f.getReverseColor().toString());
+            createFluorophore.put("forwardColor", f.getForwardColor().toString());
+            createFluorophore.put("reverseColor", f.getReverseColor().toString());
             createFluorophore.put("brightness", f.getBrightness());
             createFluorophore.put("emission_max", f.getEmission_max());
             createFluorophore.put("excitation_max", f.getExcitation_max());
@@ -222,18 +226,97 @@ public class ClothoAdaptor {
         ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
         Clotho clothoObject = new Clotho(conn);
         
+        HashSet<Feature> features = new HashSet<>();
+        
         Map map = new HashMap();
         map.put("schema", "org.clothocad.model.Feature");
         Object query = clothoObject.query(map);
+        JSONArray array = (JSONArray) query;
+        
+        for (int i = 0; i < array.size(); i++) {
+            
+            Feature feature = new Feature();
+            
+            //Get feature fields
+            JSONObject jsonFeature = array.getJSONObject(i);
+            String fwdColorSt = jsonFeature.get("forwardColor").toString();
+            String[] rgbfwd = fwdColorSt.substring(15, fwdColorSt.length()-1).split(",");
+            Color fwdColor = new Color(Integer.valueOf(rgbfwd[0].substring(2)), Integer.valueOf(rgbfwd[1].substring(2)), Integer.valueOf(rgbfwd[2].substring(2)));
+            String revColorSt = jsonFeature.get("reverseColor").toString();
+            String[] rgbrev = revColorSt.substring(15, revColorSt.length()-1).split(",");
+            Color revColor = new Color(Integer.valueOf(rgbrev[0].substring(2)), Integer.valueOf(rgbrev[1].substring(2)), Integer.valueOf(rgbrev[2].substring(2)));
+            String name = jsonFeature.get("name").toString();
+            
+            //Get sequence object and fields
+            JSONObject jsonSequence = (JSONObject) jsonFeature.get("sequence");
+            String seq = jsonSequence.get("sequence").toString();            
+            NucSeq sequence = new NucSeq(seq);
+            
+            feature.setForwardColor(fwdColor);
+            feature.setReverseColor(revColor);
+            feature.setName(name);
+            feature.setSequence(sequence);
+            
+            features.add(feature);
+        } 
         
         conn.closeConnection();
         
-        return null;
+        return features;
     }
     
     //Get all Clotho Fluorophores
     public static HashSet<Fluorophore> queryClothoFluorophores() {
-        return null;
+        
+        //Establish Clotho connection
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
+        
+        HashSet<Fluorophore> fluorophores = new HashSet<>();
+        
+        Map map = new HashMap();
+        map.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
+        Object query = clothoObject.query(map);
+        JSONArray array = (JSONArray) query;
+        
+        for (int i = 0; i < array.size(); i++) {
+            
+            Fluorophore fluorophore = new Fluorophore();
+            
+            //Get fluorophore fields
+            JSONObject jsonFeature = array.getJSONObject(i);
+            String fwdColorSt = jsonFeature.get("forwardColor").toString();
+            String[] rgbfwd = fwdColorSt.substring(15, fwdColorSt.length()-1).split(",");
+            Color fwdColor = new Color(Integer.valueOf(rgbfwd[0].substring(2)), Integer.valueOf(rgbfwd[1].substring(2)), Integer.valueOf(rgbfwd[2].substring(2)));
+            String revColorSt = jsonFeature.get("reverseColor").toString();
+            String[] rgbrev = revColorSt.substring(15, revColorSt.length()-1).split(",");
+            Color revColor = new Color(Integer.valueOf(rgbrev[0].substring(2)), Integer.valueOf(rgbrev[1].substring(2)), Integer.valueOf(rgbrev[2].substring(2)));
+            String name = jsonFeature.get("name").toString();
+            Integer oligo = Integer.valueOf(jsonFeature.get("oligomerization").toString());
+            Double brightness = Double.valueOf(jsonFeature.get("brightness").toString());
+            Double ex = Double.valueOf(jsonFeature.get("excitation_max").toString());
+            Double em = Double.valueOf(jsonFeature.get("emission_max").toString());
+            
+            //Get sequence object and fields
+            JSONObject jsonSequence = (JSONObject) jsonFeature.get("sequence");
+            String seq = jsonSequence.get("sequence").toString();            
+            NucSeq sequence = new NucSeq(seq);
+            
+            fluorophore.setForwardColor(fwdColor);
+            fluorophore.setReverseColor(revColor);
+            fluorophore.setName(name);
+            fluorophore.setSequence(sequence);
+            fluorophore.setOligomerization(oligo);
+            fluorophore.setBrightness(brightness);
+            fluorophore.setEmission_max(em);
+            fluorophore.setExcitation_max(ex);
+            
+            fluorophores.add(fluorophore);
+        } 
+        
+        conn.closeConnection();
+        
+        return fluorophores;
     }
     
     //Get all Clotho NucSeqs

@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
 import org.cidarlab.phoenix.core.controller.PhoenixController;
+import org.cidarlab.phoenix.core.dom.Fluorophore;
 import org.clothocad.model.Feature;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -104,7 +105,7 @@ public class ClothoTest {
     public void testFeatureQuery() {
         
         HashSet<Feature> queryClothoFeatures = ClothoAdaptor.queryClothoFeatures();
-       
+        HashSet<Fluorophore> queryClothoFluorophores = ClothoAdaptor.queryClothoFluorophores();
     }
       
     public ClothoTest() {

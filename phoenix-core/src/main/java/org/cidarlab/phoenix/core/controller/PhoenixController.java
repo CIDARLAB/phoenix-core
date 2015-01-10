@@ -5,7 +5,9 @@
 package org.cidarlab.phoenix.core.controller;
 
 import java.io.File;
+import java.util.HashSet;
 import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
+import org.cidarlab.phoenix.core.dom.Fluorophore;
 
 /**
  * This is the primary class for managing the workflow of tools within Phoenix
@@ -24,6 +26,7 @@ public class PhoenixController {
         ClothoAdaptor.clothoUpload(featureLib, true);
         
         //Recieve data from Clotho
+        HashSet<Fluorophore> FPs = ClothoAdaptor.queryClothoFluorophores();
         
         //LTL function decomposition
         

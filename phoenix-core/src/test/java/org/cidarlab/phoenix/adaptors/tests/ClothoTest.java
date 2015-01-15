@@ -5,13 +5,10 @@
 package org.cidarlab.phoenix.adaptors.tests;
 
 import java.io.File;
-import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
 import org.cidarlab.phoenix.core.controller.PhoenixController;
-import org.cidarlab.phoenix.core.dom.Fluorophore;
-import org.clothocad.model.Feature;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -65,7 +62,7 @@ public class ClothoTest {
         } 
     }
     
-//    @Test
+    @Test
     public void testMultiPartUpload() {
         
         String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/benchling_export_120514_multi.gb";
@@ -101,19 +98,22 @@ public class ClothoTest {
         } 
     }
     
-//    @Test
+    @Test
     public void testFeatureQuery() {
         
-        HashSet<Feature> queryClothoFeatures = ClothoAdaptor.queryClothoFeatures();
-        HashSet<Fluorophore> queryClothoFluorophores = ClothoAdaptor.queryClothoFluorophores();
+        ClothoAdaptor.queryClothoFeatures();
+        ClothoAdaptor.queryClothoFluorophores();
+        ClothoAdaptor.queryClothoNucSeqs();
+        ClothoAdaptor.queryClothoPolyNucleotides();
+        ClothoAdaptor.queryClothoParts();
     }
-      
-    public ClothoTest() {
-        
-    }
-    
-    public static void main(String[] args) {
-        ClothoTest t = new ClothoTest();
-        t.testFeatureQuery();
-    }
+//      
+//    public ClothoTest() {
+//        
+//    }
+//    
+//    public static void main(String[] args) {
+//        ClothoTest t = new ClothoTest();
+//        t.testFeatureQuery();
+//    }
 }

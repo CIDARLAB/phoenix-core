@@ -8,6 +8,8 @@ import java.io.File;
 import java.util.HashSet;
 import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
 import org.cidarlab.phoenix.core.dom.Fluorophore;
+import org.clothocad.model.Feature;
+import org.clothocad.model.Part;
 
 /**
  * This is the primary class for managing the workflow of tools within Phoenix
@@ -40,8 +42,10 @@ public class PhoenixController {
         
         //REPEAT
         //Pass feature graphs to experiment grammars to get ExperimentDesign
+        HashSet<Feature> features = ClothoAdaptor.queryClothoFeatures();
         
         //Form part graph from module graph via Raven optimizations
+        HashSet<Part> parts = ClothoAdaptor.queryClothoParts();
         
         //Create instruction files
         

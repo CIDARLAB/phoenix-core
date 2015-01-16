@@ -73,9 +73,10 @@ public class PhoenixGrammar {
         //Layer -> PERHAPS IN BREAKDOWN...
 //        Nonterminal EXPRESSOR = new Nonterminal("EXPRESSOR");
 //        Nonterminal EXPRESSEE = new Nonterminal("EXPRESSEE");
+        
         //Layer
         Nonterminal TU = new Nonterminal("TU");
-        Nonterminal PLASMID = new Nonterminal("PLASMID");
+        Nonterminal INSERT = new Nonterminal("INSERT");
 
         /*---------------
          * PRODUCTION RULES
@@ -221,13 +222,13 @@ public class PhoenixGrammar {
         trx_rf.add(TRANSCRIPT);
         pR.add(new ProductionRule(TRANSCRIPTION_RF, trx_rf));
 
-        //TRANSCRIPTION_RF -> TRANSCRIPTION_START, TRANSCRIPT
+        //2+ TRANSCRIPTION_START
         List<Symbol> trx_rf_multitrxrf = new ArrayList<>();
         trx_rf_multitrxrf.add(TRANSCRIPTION_START);
         trx_rf_multitrxrf.add(TRANSCRIPTION_RF);
         pR.add(new ProductionRule(TRANSCRIPTION_RF, trx_rf_multitrxrf));
 
-        //TRANSCRIPTION_RF -> TRANSCRIPTION_START, TRANSCRIPT
+        //2+ TRANSCRIPT
         List<Symbol> trx_rf_multitrx = new ArrayList<>();
         trx_rf_multitrx.add(TRANSCRIPTION_RF);
         trx_rf_multitrx.add(TRANSCRIPT);
@@ -252,21 +253,38 @@ public class PhoenixGrammar {
         tu_multitrxend.add(TRANSCRIPTION_END);
         pR.add(new ProductionRule(TU, tu_multitrxend));
 
-        //PLASMID may have 1+ TU
-        //PLASMID -> TU, VECTOR
-        List<Symbol> plasmid = new ArrayList<>();
-        plasmid.add(TU);
-        plasmid.add(VECTOR);
-        pR.add(new ProductionRule(PLASMID, plasmid));
+        //INSERT may have 0+ SPACER, 1+ TU, 0+ SPACER
+        //INSERT -> TU
+        List<Symbol> insert_tu = new ArrayList<>();
+        insert_tu.add(TU);
+        pR.add(new ProductionRule(INSERT, insert_tu));
 
-        //PLASMID -> TU, VECTOR
-        List<Symbol> plasmid_multitu = new ArrayList<>();
-        plasmid_multitu.add(TU);
-        plasmid_multitu.add(PLASMID);
-        pR.add(new ProductionRule(PLASMID, plasmid_multitu));
+        //PRE-SPACERS
+        List<Symbol> insert_prespacer = new ArrayList<>();
+        insert_prespacer.add(SPACER);
+        insert_prespacer.add(INSERT);
+        pR.add(new ProductionRule(INSERT, insert_prespacer));
+        
+        //2+ TUs FRONT
+        List<Symbol> insert_multitu_front = new ArrayList<>();
+        insert_multitu_front.add(TU);
+        insert_multitu_front.add(INSERT);
+        pR.add(new ProductionRule(INSERT, insert_multitu_front));
+        
+        //POST-SPACERS
+        List<Symbol> insert_postspacer = new ArrayList<>();
+        insert_postspacer.add(INSERT);
+        insert_postspacer.add(SPACER);
+        pR.add(new ProductionRule(INSERT, insert_postspacer));
+        
+        //2+ TUs FRONT
+        List<Symbol> insert_multitu_back = new ArrayList<>();
+        insert_multitu_back.add(INSERT);
+        insert_multitu_back.add(TU);
+        pR.add(new ProductionRule(INSERT, insert_multitu_back));        
 
         HashMap<Nonterminal, List<ProductionRule>> grammarMap = new HashMap<>();
-        grammarMap.put(PLASMID, pR);
+        grammarMap.put(INSERT, pR);
         return grammarMap;
     }
 

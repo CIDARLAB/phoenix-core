@@ -24,7 +24,7 @@ public class Cytometer {
     }
     
     //Parameterized cytometer constructor
-    public Cytometer(String name, HashSet<String> lasers, HashSet<String> filters, HashMap<String, String> configuration) {
+    public Cytometer(String name, HashSet<String> lasers, HashSet<String> filters, HashMap<String, String[]> configuration) {
         this.name = name;
         this.lasers = lasers;
         this.filters = filters;
@@ -44,7 +44,7 @@ public class Cytometer {
     //Setting -> Key: Midpoint wavelength, Value: Width wavelength
     @Getter
     @Setter
-    private HashMap<String, String> configuration;
+    private HashMap<String, String[]> configuration;
     
     //Name
     @Getter

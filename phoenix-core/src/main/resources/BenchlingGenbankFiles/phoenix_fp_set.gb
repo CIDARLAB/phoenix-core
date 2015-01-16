@@ -1,8 +1,8 @@
 LOCUS       CyPet.ref                735 bp ds-DNA     linear       08-JAN-2015
 DEFINITION  .
-KEYWORDS    "part-subtype:Fluorescent Reporter" "oligomerization:2"            
-            "brightness:53" "part-type:CDS " "excitation:435" "emission:477"
-            "source:Addgene 14030"
+KEYWORDS    "brightness:53" "part-subtype:Fluorescent Reporter" "emission:477" 
+            "source:Addgene 14030" "part-type:CDS " "excitation:435"
+            "oligomerization:2"
 COMMENT     MoClo basic part: Fluorescent Reporter                             
 FEATURES             Location/Qualifiers
      CDS             715..732
@@ -30,9 +30,9 @@ ORIGIN
 //
 LOCUS       DsRed.ref                669 bp ds-DNA     linear       08-JAN-2015
 DEFINITION  .
-KEYWORDS    "part-type:CDS " "part-subtype:Fluorescent Reporter"               
-            "source:Addgene 26248" "brightness:176" "oligomerization:4"
-            "excitation:558" "emission:583"
+KEYWORDS    "brightness:176" "part-subtype:Fluorescent Reporter"               
+            "oligomerization:4" "excitation:558" "source:Addgene 26248"
+            "emission:583" "part-type:CDS "
 COMMENT     MoClo basic part: Fluorescent Reporter                             
 FEATURES             Location/Qualifiers
      misc_feature    1..666
@@ -53,88 +53,11 @@ ORIGIN
       601 cacaacgagg actacaccat cgtggagcag tacgagcgca ccgagggccg ccaccacctg
       661 ttcctgtaa
 //
-LOCUS       E0030.ref                723 bp ds-DNA     linear       08-JAN-2015
-DEFINITION  .
-KEYWORDS    "brightness:151" "part-subtype:Fluorescent Reporter" "emission:527"
-            "excitation:514" "part-type:CDS " "source:BBa" "oligomerization:2"
-COMMENT     MoClo basic part: Fluorescent Reporter                             
-FEATURES             Location/Qualifiers
-     misc_feature    1..717
-                     /label="EYFP"
-                     /ApEinfo_revcolor=#84b0dc
-                     /ApEinfo_fwdcolor=#84b0dc
-ORIGIN
-        1 atggtgagca agggcgagga gctgttcacc ggggtggtgc ccatcctggt cgagctggac
-       61 ggcgacgtaa acggccacaa gttcagcgtg tccggcgagg gcgagggcga tgccacctac
-      121 ggcaagctga ccctgaagtt catctgcacc accggcaagc tgcccgtgcc ctggcccacc
-      181 ctcgtgacca ccttcggcta cggcctgcaa tgcttcgccc gctaccccga ccacatgaag
-      241 ctgcacgact tcttcaagtc cgccatgccc gaaggctacg tccaggagcg caccatcttc
-      301 ttcaaggacg acggcaacta caagacccgc gccgaggtga agttcgaggg cgacaccctg
-      361 gtgaaccgca tcgagctgaa gggcatcgac ttcaaggagg acggcaacat cctggggcac
-      421 aagctggagt acaactacaa cagccacaac gtctatatca tggccgacaa gcagaagaac
-      481 ggcatcaagg tgaacttcaa gatccgccac aacatcgagg acggcagcgt gcagctcgcc
-      541 gaccactacc agcagaacac ccccatcggc gacggccccg tgctgctgcc cgacaaccac
-      601 tacctgagct accagtccgc cctgagcaaa gaccccaacg agaagcgcga tcacatggtc
-      661 ctgctggagt tcgtgaccgc cgccgggatc actctcggca tggacgagct gtacaagtaa
-      721 taa
-//
-LOCUS       E0040.ref                720 bp ds-DNA     linear       08-JAN-2015
-DEFINITION  .
-KEYWORDS    "brightness:100" "emission:511" "source:BBa"                       
-            "part-subtype:Fluorescent Reporter" "oligomerization:2"
-            "part-type:CDS " "excitation:501"
-COMMENT     MoClo basic part: Fluorescent Reporter. Contains a 3' illegal site 
-            for MoClo cloning.
-FEATURES             Location/Qualifiers
-     misc_feature    1..714
-                     /label="EGFP"
-                     /ApEinfo_revcolor=#9eafd2
-                     /ApEinfo_fwdcolor=#9eafd2
-ORIGIN
-        1 atgcgtaaag gagaagaact tttcactgga gttgtcccaa ttcttgttga attagatggt
-       61 gatgttaatg ggcacaaatt ttctgtcagt ggagagggtg aaggtgatgc aacatacgga
-      121 aaacttaccc ttaaatttat ttgcactact ggaaaactac ctgttccatg gccaacactt
-      181 gtcactactt tcggttatgg tgttcaatgc tttgcgagat acccagatca tatgaaacag
-      241 catgactttt tcaagagtgc catgcccgaa ggttatgtac aggaaagaac tatatttttc
-      301 aaagatgacg ggaactacaa gacacgtgct gaagtcaagt ttgaaggtga tacccttgtt
-      361 aatagaatcg agttaaaagg tattgatttt aaagaagatg gaaacattct tggacacaaa
-      421 ttggaataca actataactc acacaatgta tacatcatgg cagacaaaca aaagaatgga
-      481 atcaaagtta acttcaaaat tagacacaac attgaagatg gaagcgttca actagcagac
-      541 cattatcaac aaaatactcc aattggcgat ggccctgtcc ttttaccaga caaccattac
-      601 ctgtccacac aatctgccct ttcgaaagat cccaacgaaa agagagacca catggtcctt
-      661 cttgagtttg taacagctgc tgggattaca catggcatgg atgaactata caaataataa
-//
-LOCUS       E0040m.ref               720 bp ds-DNA     linear       08-JAN-2015
-DEFINITION  .
-KEYWORDS    "part-type:CDS " "excitation:501" "oligomerization:2"              
-            "part-subtype:Fluorescent Reporter" "brightness:100" "emission:511"
-            "source:BBa"
-COMMENT     MoClo basic part: Fluorescent Reporter. E0040m has a single        
-            mutation near the 3' end to remove a MoClo illegal site.
-FEATURES             Location/Qualifiers
-     misc_feature    1..714
-                     /label="EGFPm"
-                     /ApEinfo_revcolor=#c7b0e3
-                     /ApEinfo_fwdcolor=#c7b0e3
-ORIGIN
-        1 atgcgtaaag gagaagaact tttcactgga gttgtcccaa ttcttgttga attagatggt
-       61 gatgttaatg ggcacaaatt ttctgtcagt ggagagggtg aaggtgatgc aacatacgga
-      121 aaacttaccc ttaaatttat ttgcactact ggaaaactac ctgttccatg gccaacactt
-      181 gtcactactt tcggttatgg tgttcaatgc tttgcgagat acccagatca tatgaaacag
-      241 catgactttt tcaagagtgc catgcccgaa ggttatgtac aggaaagaac tatatttttc
-      301 aaagatgacg ggaactacaa gacacgtgct gaagtcaagt ttgaaggtga tacccttgtt
-      361 aatagaatcg agttaaaagg tattgatttt aaagaagatg gaaacattct tggacacaaa
-      421 ttggaataca actataactc acacaatgta tacatcatgg cagacaaaca aaagaatgga
-      481 atcaaagtta acttcaaaat tagacacaac attgaagatg gaagcgttca actagcagac
-      541 cattatcaac aaaatactcc aattggcgat ggccctgtcc ttttaccaga caaccattac
-      601 ctgtccacac aatctgccct ttcgaaagat cccaacgaaa agagagatca catggtcctt
-      661 cttgagtttg taacagctgc tgggattaca catggcatgg atgaactata caaataataa
-//
 LOCUS       E2-Crimson.ref           678 bp ds-DNA     linear       08-JAN-2015
 DEFINITION  .
-KEYWORDS    "emission:646" "part-type:CDS" "part-subtype:Fluorescent Reporter" 
-            "brightness:59" "excitation:611" "source:Glick Lab"
-            "oligomerization:4"
+KEYWORDS    "excitation:611" "brightness:59" "part-type:CDS"                   
+            "part-subtype:Fluorescent Reporter" "source:Glick Lab"
+            "oligomerization:4" "emission:646"
 COMMENT     MoClo Basic Part: Fluorescent Reporter                             
 FEATURES             Location/Qualifiers
      misc_feature    1..675
@@ -155,64 +78,11 @@ ORIGIN
       601 atcacctccc acaacgagga ctacaccgtg gtggagcagt acgagcgcgc cgaggcccgc
       661 caccacctgt tccagtag
 //
-LOCUS       E1010.ref                681 bp ds-DNA     linear       08-JAN-2015
-DEFINITION  .
-KEYWORDS    "excitation:584" "brightness:44" "part-type:CDS "                  
-            "oligomerization:1" "emission:607" "part-subtype:Fluorescent
-            Reporter" "source:BBa"
-COMMENT     MoClo basic part: Fluorescent Reporter. E1010 parts have a 5'      
-            mutation to remove an MoClo illegal site. Three MoClo illegal sites
-            remain.
-FEATURES             Location/Qualifiers
-     misc_feature    1..675
-                     /label="mRFP1.4"
-                     /ApEinfo_revcolor=#ff9ccd
-                     /ApEinfo_fwdcolor=#ff9ccd
-ORIGIN
-        1 atggcttcct ccgaagacgt tatcaaagag ttcatgcgtt tcaaagttcg tatggaaggt
-       61 tccgttaacg gtcacgagtt cgaaatcgaa ggtgaaggtg aaggtcgtcc gtacgaaggt
-      121 acccagaccg ctaaactgaa agttaccaaa ggtggtccgc tgccgttcgc ttgggacatc
-      181 ctgtccccgc agttccagta cggttccaaa gcttacgtta aacacccggc tgacatcccg
-      241 gactacctga aactgtcctt cccggaaggt ttcaaatggg aacgtgttat gaacttcgaa
-      301 gacggtggtg ttgttaccgt tacccaggac tcctccctgc aagacggtga gttcatctac
-      361 aaagttaaac tgcgtggtac caacttcccg tccgacggtc cggttatgca gaaaaaaacc
-      421 atgggttggg aagcttccac cgaacgtatg tacccggaag acggtgctct gaaaggtgaa
-      481 atcaaaatgc gtctgaaact gaaagacggt ggtcactacg acgctgaagt taaaaccacc
-      541 tacatggcta aaaaaccggt tcagctgccg ggtgcttaca aaaccgacat caaactggac
-      601 atcacctccc acaacgaaga ctacaccatc gttgaacagt acgaacgtgc tgaaggtcgt
-      661 cactccaccg gtgcttaata a
-//
-LOCUS       E1010m.ref               681 bp ds-DNA     linear       08-JAN-2015
-DEFINITION  .
-KEYWORDS    "excitation:584" "source:BBa" "emission:607" "oligomerization:1"   
-            "part-subtype:Fluorescent Reporter" "part-type:CDS "
-            "brightness:44"
-COMMENT     MoClo basic part: Fluorescent Reporter. E1010m has multple         
-            mutations to fix 4 MoClo illegal sites.
-FEATURES             Location/Qualifiers
-     misc_feature    1..675
-                     /label="mRFP1.4m"
-                     /ApEinfo_revcolor=#d6b295
-                     /ApEinfo_fwdcolor=#d6b295
-ORIGIN
-        1 atggcttcct ccgaggatgt tatcaaagag ttcatgcgtt tcaaagttcg tatggaaggt
-       61 tccgttaacg gtcacgagtt cgaaatcgaa ggtgaaggtg aaggtcgtcc gtacgaaggt
-      121 acccagaccg ctaaactgaa agttaccaaa ggtggtccgc tgccgttcgc ttgggacatc
-      181 ctgtccccgc agttccagta cggttccaaa gcttacgtta aacacccggc tgacatcccg
-      241 gactacctga aactgtcctt cccggaaggt ttcaaatggg aacgtgttat gaacttcgaa
-      301 gatggtggtg ttgttaccgt tacccaggac tcctccctgc aagacggtga gttcatctac
-      361 aaagttaaac tgcgtggtac caacttcccg tccgacggtc cggttatgca gaaaaaaacc
-      421 atgggttggg aagcttccac cgaacgtatg tacccggagg atggtgctct gaaaggtgaa
-      481 atcaaaatgc gtctgaaact gaaagacggt ggtcactacg acgctgaagt taaaaccacc
-      541 tacatggcta aaaaaccggt tcagctgccg ggtgcttaca aaaccgacat caaactggac
-      601 atcacctccc acaacgagga ctacaccatc gttgaacagt acgaacgtgc tgaaggtcgt
-      661 cactccaccg gtgcttaata a
-//
 LOCUS       EBFP2.ref                792 bp ds-DNA     linear       08-JAN-2015
 DEFINITION  .
-KEYWORDS    "part-subtype:Fluorescent Reporter" "source:Addgene 14891"         
-            "excitation:383" "oligomerization:2" "emission:448" "brightness:60"
-            "part-type:CDS"
+KEYWORDS    "oligomerization:2" "excitation:383" "brightness:60"               
+            "part-subtype:Fluorescent Reporter" "source:Addgene 14891"
+            "emission:448" "part-type:CDS"
 COMMENT     MoClo basic part: Fluorescent Reporter                             
 FEATURES             Location/Qualifiers
      misc_feature    1..789
@@ -235,11 +105,62 @@ ORIGIN
       721 tccgtgctga gcaaagaccc caacgagaag cgcgatcaca tggtcctgct ggagttccgc
       781 accgccgcct ga
 //
+LOCUS       EGFPm.ref                720 bp ds-DNA     linear       16-JAN-2015
+DEFINITION  .
+KEYWORDS    "part-type:CDS " "oligomerization:2" "brightness:100" "source:BBa" 
+            "excitation:501" "emission:511" "part-subtype:Fluorescent Reporter"
+COMMENT     MoClo basic part: Fluorescent Reporter. E0040m has a single        
+            mutation near the 3' end to remove a MoClo illegal site.
+FEATURES             Location/Qualifiers
+     misc_feature    1..714
+                     /label="EGFPm"
+                     /ApEinfo_revcolor=#c7b0e3
+                     /ApEinfo_fwdcolor=#c7b0e3
+ORIGIN
+        1 atgcgtaaag gagaagaact tttcactgga gttgtcccaa ttcttgttga attagatggt
+       61 gatgttaatg ggcacaaatt ttctgtcagt ggagagggtg aaggtgatgc aacatacgga
+      121 aaacttaccc ttaaatttat ttgcactact ggaaaactac ctgttccatg gccaacactt
+      181 gtcactactt tcggttatgg tgttcaatgc tttgcgagat acccagatca tatgaaacag
+      241 catgactttt tcaagagtgc catgcccgaa ggttatgtac aggaaagaac tatatttttc
+      301 aaagatgacg ggaactacaa gacacgtgct gaagtcaagt ttgaaggtga tacccttgtt
+      361 aatagaatcg agttaaaagg tattgatttt aaagaagatg gaaacattct tggacacaaa
+      421 ttggaataca actataactc acacaatgta tacatcatgg cagacaaaca aaagaatgga
+      481 atcaaagtta acttcaaaat tagacacaac attgaagatg gaagcgttca actagcagac
+      541 cattatcaac aaaatactcc aattggcgat ggccctgtcc ttttaccaga caaccattac
+      601 ctgtccacac aatctgccct ttcgaaagat cccaacgaaa agagagatca catggtcctt
+      661 cttgagtttg taacagctgc tgggattaca catggcatgg atgaactata caaataataa
+//
+LOCUS       EYFP.ref                 723 bp ds-DNA     linear       16-JAN-2015
+DEFINITION  .
+KEYWORDS    "emission:527" "excitation:514" "brightness:151"                   
+            "part-subtype:Fluorescent Reporter" "part-type:CDS "
+            "oligomerization:2" "source:BBa"
+COMMENT     MoClo basic part: Fluorescent Reporter                             
+FEATURES             Location/Qualifiers
+     misc_feature    1..717
+                     /label="EYFP"
+                     /ApEinfo_revcolor=#84b0dc
+                     /ApEinfo_fwdcolor=#84b0dc
+ORIGIN
+        1 atggtgagca agggcgagga gctgttcacc ggggtggtgc ccatcctggt cgagctggac
+       61 ggcgacgtaa acggccacaa gttcagcgtg tccggcgagg gcgagggcga tgccacctac
+      121 ggcaagctga ccctgaagtt catctgcacc accggcaagc tgcccgtgcc ctggcccacc
+      181 ctcgtgacca ccttcggcta cggcctgcaa tgcttcgccc gctaccccga ccacatgaag
+      241 ctgcacgact tcttcaagtc cgccatgccc gaaggctacg tccaggagcg caccatcttc
+      301 ttcaaggacg acggcaacta caagacccgc gccgaggtga agttcgaggg cgacaccctg
+      361 gtgaaccgca tcgagctgaa gggcatcgac ttcaaggagg acggcaacat cctggggcac
+      421 aagctggagt acaactacaa cagccacaac gtctatatca tggccgacaa gcagaagaac
+      481 ggcatcaagg tgaacttcaa gatccgccac aacatcgagg acggcagcgt gcagctcgcc
+      541 gaccactacc agcagaacac ccccatcggc gacggccccg tgctgctgcc cgacaaccac
+      601 tacctgagct accagtccgc cctgagcaaa gaccccaacg agaagcgcga tcacatggtc
+      661 ctgctggagt tcgtgaccgc cgccgggatc actctcggca tggacgagct gtacaagtaa
+      721 taa
+//
 LOCUS       iRFP.ref                 894 bp ds-DNA     linear       08-JAN-2015
 DEFINITION  .
-KEYWORDS    "brightness:100" "oligomerization:2" "part-subtype:Fluorescent     
-            Reporter" "source:Addgene 31855" "excitation:690" "part-type:CDS"
-            "emission:713"
+KEYWORDS    "brightness:100" "source:Addgene 31855" "part-type:CDS"            
+            "oligomerization:2" "excitation:690" "part-subtype:Fluorescent
+            Reporter" "emission:713"
 COMMENT     MoClo basic part: Fluorescent Reporter                             
 FEATURES             Location/Qualifiers
      misc_feature    1..891
@@ -265,9 +186,9 @@ ORIGIN
 //
 LOCUS       LSS-mOrange.ref          747 bp ds-DNA     linear       08-JAN-2015
 DEFINITION  .
-KEYWORDS    "excitation:437" "oligomerization:1" "source:Addgene 37129"        
-            "part-type:CDS" "brightness:77" "part-subtype:Fluorescent Reporter"
-            "emission:572"
+KEYWORDS    "brightness:77" "oligomerization:1" "part-type:CDS"                
+            "excitation:437" "emission:572" "source:Addgene 37129"
+            "part-subtype:Fluorescent Reporter"
 COMMENT     MoClo basic part: Fluorescent Reporter                             
 FEATURES             Location/Qualifiers
      misc_feature    1..744
@@ -291,9 +212,9 @@ ORIGIN
 //
 LOCUS       mAmetrine.ref            720 bp ds-DNA     linear       08-JAN-2015
 DEFINITION  .
-KEYWORDS    "part-type:CDS" "oligomerization:1" "brightness:77"                
-            "part-subtype:Fluorescent Reporter" "excitation:406" "emission:526"
-            "source:Addgene 18083"
+KEYWORDS    "excitation:406" "part-subtype:Fluorescent Reporter"               
+            "part-type:CDS" "brightness:77" "emission:526" "source:Addgene
+            18083" "oligomerization:1"
 COMMENT     MoClo basic part: Fluorescent Reporter                             
 FEATURES             Location/Qualifiers
      misc_feature    1..717
@@ -316,9 +237,9 @@ ORIGIN
 //
 LOCUS       mCitrine.ref             720 bp ds-DNA     linear       08-JAN-2015
 DEFINITION  .
-KEYWORDS    "oligomerization:1" "brightness:174" "source:Tsien Lab (UCSD)"     
-            "emission:529" "part-subtype:Fluorescent Reporter" "part-type:CDS "
-            "excitation:516"
+KEYWORDS    "excitation:516" "emission:529" "oligomerization:1"                
+            "brightness:174" "part-subtype:Fluorescent Reporter" "part-type:CDS
+            " "source:Tsien Lab (UCSD)"
 COMMENT     MoClo basic part: Fluorescent Reporter                             
 FEATURES             Location/Qualifiers
      misc_feature    1..717
@@ -341,9 +262,9 @@ ORIGIN
 //
 LOCUS       mNeptune.ref             735 bp ds-DNA     linear       08-JAN-2015
 DEFINITION  .
-KEYWORDS    "source:Tsien Lab (UCSD)" "brightness:25" "excitation:600"         
-            "oligomerization:1" "emission:650" "part-type:CDS"
-            "part-subtype:Fluorescent Reporter"
+KEYWORDS    "oligomerization:1" "source:Tsien Lab (UCSD)" "emission:650"       
+            "part-type:CDS" "part-subtype:Fluorescent Reporter" "brightness:25"
+            "excitation:600"
 COMMENT     MoClo basic part: Fluorescent Reporter                             
 FEATURES             Location/Qualifiers
      misc_feature    1..732
@@ -367,9 +288,9 @@ ORIGIN
 //
 LOCUS       mOrange.ref              687 bp ds-DNA     linear       08-JAN-2015
 DEFINITION  .
-KEYWORDS    "brightness:146" "part-subtype:Fluorescent Reporter"               
-            "oligomerization:1" "emission:562" "source:Addgene 29770"
-            "part-type:CDS " "excitation:548"
+KEYWORDS    "emission:562" "excitation:548" "source:Addgene 29770"             
+            "brightness:146" "part-type:CDS " "part-subtype:Fluorescent
+            Reporter" "oligomerization:1"
 COMMENT     MoClo basic part: Fluorescent Reporter                             
 FEATURES             Location/Qualifiers
      misc_feature    1..684
@@ -389,4 +310,55 @@ ORIGIN
       541 aagcccgtgc agctgcccgg cgcctacatc gtcggcatca agttggacat cacctcccac
       601 aacgaggact acaccatcgt ggaacagtac gaacgcgccg agggccgcca ctccaccggc
       661 ggcatggacg agctgtacaa gtagtaa
+//
+LOCUS       mRFP1.4m.ref             681 bp ds-DNA     linear       16-JAN-2015
+DEFINITION  .
+KEYWORDS    "part-type:CDS " "source:BBa" "emission:607" "oligomerization:1"   
+            "part-subtype:Fluorescent Reporter" "brightness:44"
+            "excitation:584"
+COMMENT     MoClo basic part: Fluorescent Reporter. E1010m has multple         
+            mutations to fix 4 MoClo illegal sites.
+FEATURES             Location/Qualifiers
+     misc_feature    1..675
+                     /label="mRFP1.4m"
+                     /ApEinfo_revcolor=#d6b295
+                     /ApEinfo_fwdcolor=#d6b295
+ORIGIN
+        1 atggcttcct ccgaggatgt tatcaaagag ttcatgcgtt tcaaagttcg tatggaaggt
+       61 tccgttaacg gtcacgagtt cgaaatcgaa ggtgaaggtg aaggtcgtcc gtacgaaggt
+      121 acccagaccg ctaaactgaa agttaccaaa ggtggtccgc tgccgttcgc ttgggacatc
+      181 ctgtccccgc agttccagta cggttccaaa gcttacgtta aacacccggc tgacatcccg
+      241 gactacctga aactgtcctt cccggaaggt ttcaaatggg aacgtgttat gaacttcgaa
+      301 gatggtggtg ttgttaccgt tacccaggac tcctccctgc aagacggtga gttcatctac
+      361 aaagttaaac tgcgtggtac caacttcccg tccgacggtc cggttatgca gaaaaaaacc
+      421 atgggttggg aagcttccac cgaacgtatg tacccggagg atggtgctct gaaaggtgaa
+      481 atcaaaatgc gtctgaaact gaaagacggt ggtcactacg acgctgaagt taaaaccacc
+      541 tacatggcta aaaaaccggt tcagctgccg ggtgcttaca aaaccgacat caaactggac
+      601 atcacctccc acaacgagga ctacaccatc gttgaacagt acgaacgtgc tgaaggtcgt
+      661 cactccaccg gtgcttaata a
+//
+LOCUS       T-Sapphire.ref           720 bp ds-DNA     linear       08-JAN-2015
+DEFINITION  .
+KEYWORDS    "part-subtype:Fluorescent Reporter" "source:Griesbeck"             
+            "emission:511" "part-type:CDS" "excitation:399" "oligomerization:2"
+            "brightness:78"
+COMMENT     MoClo basic part: Fluorescent Reporter                             
+FEATURES             Location/Qualifiers
+     misc_feature    1..717
+                     /label="T-Sapphire"
+                     /ApEinfo_revcolor=#84b0dc
+                     /ApEinfo_fwdcolor=#84b0dc
+ORIGIN
+        1 atggtgagca agggcgagga gctgttcacc ggggtggtgc ccatcctggt cgagctggac
+       61 ggcgacgtaa acggccacaa gttcagcgtg tccggcgagg gcgagggcga tgccacctac
+      121 ggcaagctga ccctgaagtt catctgcacc accggcaagc tgcccgtgcc ctggcccacc
+      181 ctcgtgacca ccttctccta cggcgtgatg gtgttcgccc gctaccccga ccacatgaag
+      241 cagcacgact tcttcaagtc cgccatgccc gaaggctacg tccaggagcg caccatcttc
+      301 ttcaaggacg acggcaacta caagacccgc gccgaggtga agttcgaggg cgacaccctg
+      361 gtgaaccgca tcgagctgaa gggcatcgac ttcaaggagg acggcaacat cctggggcac
+      421 aagctggagt acaacttcaa cagccacaac gtctatatca tggccgacaa gcagaagaac
+      481 ggcatcaagg ccaacttcaa gatccgccac aacatcgagg acggcggcgt gcagctcgcc
+      541 gaccactacc agcagaacac ccccatcggc gacggccccg tgctgctgcc cgacaaccac
+      601 tacctgagca tccagtccaa gctgagcaaa gaccccaacg agaagcgcga tcacatggtc
+      661 ctgctggagt tcgtgaccgc cgccgggatc actctgggca tggacgagct gtacaagtaa
 //

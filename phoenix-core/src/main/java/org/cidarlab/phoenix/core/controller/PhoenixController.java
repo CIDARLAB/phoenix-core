@@ -36,7 +36,7 @@ public class PhoenixController {
         
         //Create target modules with miniEugene
         
-        //Decompose target modules with DecompositionGrammar to get module graphs
+        //Decompose target modules with PhoenixGrammar to get module graphs
         
         //Determine which fluorophores to use and assign to placeholders in module graph
         

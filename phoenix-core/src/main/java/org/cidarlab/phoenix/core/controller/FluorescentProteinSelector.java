@@ -55,6 +55,9 @@ public class FluorescentProteinSelector {
             for (int i = 1; i < FITC_channel_FPs.size(); i++) {
                 Fluorophore candidate = FITC_channel_FPs.get(i);
                 
+                //Perhaps something here about proximity to laser wavelength
+                //This is going to be hard to do without full spectrums...
+                
                 //If this FP has a smaller oligomerization, pick this one
                 if (candidate.getOligomerization() < fitcFP.getOligomerization()) {
                     fitcFP = candidate;

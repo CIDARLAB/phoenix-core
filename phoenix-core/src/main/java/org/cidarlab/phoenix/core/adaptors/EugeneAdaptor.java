@@ -17,7 +17,6 @@ import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Orientation;
 import org.cidarlab.phoenix.core.dom.Primitive;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
-import static org.cidarlab.phoenix.core.grammars.PhoenixGrammar.assignChildren;
 import org.clothocad.model.Feature;
 import org.clothocad.model.Person;
 

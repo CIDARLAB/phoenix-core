@@ -88,7 +88,7 @@ public class ClothoTest {
         } 
     }
     
-//    @Test
+    @Test
     public void testFeatureUpload() {
         
         String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_feature_lib.gb";

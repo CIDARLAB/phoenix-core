@@ -465,6 +465,11 @@ public class Feature extends SharableObjBase {
         return author.getId();
     }
     
+    //Clotho ID
+    @Setter
+    @Getter
+    private String clothoID;
+    
     // Feel free to add more of these
     public static enum FeatureRole {
     	PROMOTER,

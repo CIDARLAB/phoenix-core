@@ -7,7 +7,9 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.clothocad.core.datums.ObjBase;
 import org.clothocad.core.datums.ObjectId;
 
@@ -68,4 +70,9 @@ public class Polynucleotide extends ObjBase implements Serializable {
     *    
     *}
 	**/
+        
+        //Clotho ID
+    @Setter
+    @Getter
+    private String clothoID;
 }

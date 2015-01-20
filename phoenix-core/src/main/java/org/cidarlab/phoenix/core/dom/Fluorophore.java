@@ -63,13 +63,18 @@ public class Fluorophore extends Feature {
     @Getter
     private String name;
     
-    //Fluorophore spectrum
+    //Fluorophore emission/absorption spectrum
     @Setter
     @Getter
     private HashMap<Double, Double> em_spectrum;
     
-    //Fluorophore spectrum
+    //Fluorophore excitation spectrum
     @Setter
     @Getter
     private HashMap<Double, Double> ex_spectrum;
+    
+    //Clotho ID
+    @Setter
+    @Getter
+    private String clothoID;
 }

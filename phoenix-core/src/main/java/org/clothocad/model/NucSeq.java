@@ -15,7 +15,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.clothocad.core.datums.ObjectId;
 
 @NoArgsConstructor
@@ -1341,5 +1343,10 @@ public class NucSeq
     //converts feature sequence from N to . when loaded
     //uppercases feature sequence
    private static Map<Feature, String> featureTable;
+   
+   //Clotho ID
+    @Setter
+    @Getter
+    private String clothoID;
 
 }

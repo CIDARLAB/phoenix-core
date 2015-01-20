@@ -111,7 +111,8 @@ public class ClothoAdaptor {
             for (Fluorophore fl : queryFluorophores) {
                 
                 //Match spectrums to fluorophore names
-                if (spectrum_name.contains(fl.getName().replaceAll(".ref", ""))) {
+                String flName = fl.getName();
+                if (spectrum_name.contains(flName.replaceAll(".ref", ""))) {
                     
                     //Match excitation or emmission spectra
                     if (spectrum_name.contains("EX") || spectrum_name.contains("AB")) {
@@ -122,6 +123,9 @@ public class ClothoAdaptor {
                 }
             }
         }
+        
+        createFluorophores(queryFluorophores, clothoObject);
+        HashSet<Fluorophore> queryFluorophores2 = queryFluorophores();
         
         String t = "";
         
@@ -151,6 +155,11 @@ public class ClothoAdaptor {
             createPolynucleotide.put("isLinear", pn.isLinear());
             createPolynucleotide.put("isSingleStranded", pn.isSingleStranded());
             createPolynucleotide.put("submissionDate", pn.getSubmissionDate().toString());
+            
+            //Clotho ID
+            if (pn.getClothoID() != null) {
+                createPolynucleotide.put("id", pn.getClothoID());
+            }
 
             Clotho.create(createPolynucleotide);
         }
@@ -173,6 +182,11 @@ public class ClothoAdaptor {
             createSequence.put("schema", "org.clothocad.model.Sequence");
             createSequence.put("sequence", f.getSequence().getSequence());
             createFeature.put("sequence", createSequence);
+            
+            //Clotho ID
+            if (f.getClothoID() != null) {
+                createFeature.put("id", f.getClothoID());
+            }
 
             Clotho.create(createFeature);
         }
@@ -194,23 +208,46 @@ public class ClothoAdaptor {
             createFluorophore.put("excitation_max", f.getExcitation_max());
             createFluorophore.put("oligomerization", f.getOligomerization());
             
-            //Emission and excitation spectrums
-            Map em_spectrum = new HashMap();
+            //Emission and excitation spectrums HashMaps
+            
+            JSONArray em_array = new JSONArray();
+            //Map em_spectrum = new HashMap();
+//            em_spectrum.put("schema", "java.util.HashMap");
+//            HashMap<Double, Double> em_spectrum = new HashMap<>();
             for (Double wavelength : f.getEm_spectrum().keySet()) {
-                em_spectrum.put(wavelength, f.getEm_spectrum().get(wavelength));
+                JSONObject em = new JSONObject();
+                em.put(wavelength, f.getEm_spectrum().get(wavelength).toString());
+                em_array.add(em);
+                //em_spectrum.put(wavelength, f.getEm_spectrum().get(wavelength));
             }
-            createFluorophore.put("em_spectrum", em_spectrum);
-            Map ex_spectrum = new HashMap();
+            //JSONObject em = new JSONObject();
+            JSONArray ex_array = new JSONArray();
+            //em.putAll(em_spectrum);
+            createFluorophore.put("em_spectrum", em_array);
+            
+            //Map ex_spectrum = new HashMap();
+//            ex_spectrum.put("schema", "java.util.HashMap");
+//            HashMap<Double, Double> em_spectrum = new HashMap<>();
             for (Double wavelength : f.getEx_spectrum().keySet()) {
-                ex_spectrum.put(wavelength, f.getEx_spectrum().get(wavelength));
+                JSONObject ex = new JSONObject();
+                ex.put(wavelength, f.getEx_spectrum().get(wavelength).toString());
+                //ex_spectrum.put(wavelength, f.getEx_spectrum().get(wavelength));
+                ex_array.add(ex);
             }
-            createFluorophore.put("ex_spectrum", ex_spectrum);
+            //JSONObject ex = new JSONObject();
+            //ex.putAll(ex_spectrum);
+            createFluorophore.put("ex_spectrum", ex_array);
 
             //NucSeq sub-schema
             Map createSequence = new HashMap();
             createSequence.put("schema", "org.clothocad.model.Sequence");
             createSequence.put("sequence", f.getSequence().getSequence());
             createFluorophore.put("sequence", createSequence);
+            
+            //Clotho ID
+            if (f.getClothoID() != null) {
+                createFluorophore.put("id", f.getClothoID());
+            }
 
             Clotho.create(createFluorophore);
         }
@@ -233,6 +270,11 @@ public class ClothoAdaptor {
             createNucSeq.put("isSingleStranded", p.getSequence().isSingleStranded());
 
             createPart.put("sequence", createNucSeq);
+            
+            //Clotho ID
+            if (p.getClothoID() != null) {
+                createPart.put("id", p.getClothoID());
+            }
 
             clothoObject.create(createPart);
         }
@@ -295,6 +337,11 @@ public class ClothoAdaptor {
             }
 
             createNucSeqMain.put("annotations", annotationList);
+            
+            //Clotho ID
+            if (ns.getClothoID() != null) {
+                createNucSeqMain.put("id", ns.getClothoID());
+            }
 
             Clotho.create(createNucSeqMain);
         }
@@ -343,6 +390,7 @@ public class ClothoAdaptor {
             feature.setReverseColor(revColor);
             feature.setName(name);
             feature.setSequence(sequence);
+            feature.setClothoID(jsonFeature.get("id").toString());
             
             features.add(feature);
         } 
@@ -385,16 +433,26 @@ public class ClothoAdaptor {
             Double em = Double.valueOf(jsonFluorophore.get("emission_max").toString());
             
             HashMap<Double, Double> em_spectrum = new HashMap<>();
-            Map jsonEm_spectrum = (Map) jsonFluorophore.get("em_spectrum");
-            for (Object x : jsonEm_spectrum.keySet()) {
-                em_spectrum.put(Double.valueOf(x.toString()), Double.valueOf(jsonEm_spectrum.get(x.toString()).toString()));
+            JSONArray jsonEm_spectrum = (JSONArray) jsonFluorophore.get("em_spectrum");
+            for (int j = 0; j < jsonEm_spectrum.size(); j++) {
+                JSONObject jsonObject = jsonEm_spectrum.getJSONObject(j);
+                for (Object key : jsonObject.keySet()) {
+                    em_spectrum.put(Double.valueOf(key.toString()), Double.valueOf(jsonObject.get(key).toString()));
+                }
+//                em_spectrum.put(Double.valueOf(jsonObject.keySet().), Double.valueOf(jsonEm_spectrum.get(x.toString()).toString()));
             }
             fluorophore.setEm_spectrum(em_spectrum);
             
             HashMap<Double, Double> ex_spectrum = new HashMap<>();
-            Map jsonEx_spectrum = (Map) jsonFluorophore.get("ex_spectrum");
-            for (Object wavelength : jsonEx_spectrum.keySet()) {
-                ex_spectrum.put(Double.valueOf(wavelength.toString()), Double.valueOf(jsonEx_spectrum.get(wavelength.toString()).toString()));
+//            Map jsonEx_spectrum = (Map) jsonFluorophore.get("ex_spectrum");
+            JSONArray jsonEx_spectrum = (JSONArray) jsonFluorophore.get("ex_spectrum");
+//            for (Object wavelength : jsonEx_spectrum.keySet()) {
+//                ex_spectrum.put(Double.valueOf(wavelength.toString()), Double.valueOf(jsonEx_spectrum.get(wavelength.toString()).toString()));
+            for (int k = 0; k < jsonEx_spectrum.size(); k++) {
+                JSONObject jsonObject = jsonEx_spectrum.getJSONObject(k);
+                for (Object key : jsonObject.keySet()) {
+                    em_spectrum.put(Double.valueOf(key.toString()), Double.valueOf(jsonObject.get(key).toString()));
+                }
             }
             fluorophore.setEx_spectrum(ex_spectrum);
             
@@ -411,6 +469,7 @@ public class ClothoAdaptor {
             fluorophore.setBrightness(brightness);
             fluorophore.setEmission_max(em);
             fluorophore.setExcitation_max(ex);
+            fluorophore.setClothoID(jsonFluorophore.get("id").toString());
             
             fluorophores.add(fluorophore);
         } 
@@ -443,6 +502,7 @@ public class ClothoAdaptor {
             boolean ss = Boolean.parseBoolean(jsonNucSeq.get("isSingleStranded").toString());
             
             NucSeq ns = new NucSeq(seq, ss, circular);
+            ns.setClothoID(jsonNucSeq.get("id").toString());
             ns.setName(jsonNucSeq.get("name").toString());
             
             //Get all Annotations
@@ -534,6 +594,8 @@ public class ClothoAdaptor {
             ns.setName(jsonPart.get("name").toString());
             
             Part p = Part.generateBasic(name, "", seq, null, null);
+            p.setClothoID(jsonPart.get("id").toString());
+            
             parts.add(p);
         }
         conn.closeConnection();
@@ -557,19 +619,20 @@ public class ClothoAdaptor {
 
         for (int i = 0; i < array.size(); i++) {
                         
-            Polynucleotide polynuc = new Polynucleotide();
+            Polynucleotide pn = new Polynucleotide();
             
             //Get Polynucleotide fields
             JSONObject jsonPolynuc = array.getJSONObject(i);
-            polynuc.setName(jsonPolynuc.get("name").toString());
-            polynuc.setAccession(jsonPolynuc.get("accession").toString());
-            polynuc.setDescription(jsonPolynuc.get("description").toString());
-            polynuc.setSequence(jsonPolynuc.get("sequence").toString());
-            polynuc.setLinear(Boolean.parseBoolean(jsonPolynuc.get("isLinear").toString()));
-            polynuc.setSingleStranded(Boolean.parseBoolean(jsonPolynuc.get("isSingleStranded").toString()));
-            polynuc.setSubmissionDate(new Date(jsonPolynuc.get("submissionDate").toString()));
+            pn.setName(jsonPolynuc.get("name").toString());
+            pn.setAccession(jsonPolynuc.get("accession").toString());
+            pn.setDescription(jsonPolynuc.get("description").toString());
+            pn.setSequence(jsonPolynuc.get("sequence").toString());
+            pn.setLinear(Boolean.parseBoolean(jsonPolynuc.get("isLinear").toString()));
+            pn.setSingleStranded(Boolean.parseBoolean(jsonPolynuc.get("isSingleStranded").toString()));
+            pn.setSubmissionDate(new Date(jsonPolynuc.get("submissionDate").toString()));
+            pn.setClothoID(jsonPolynuc.get("id").toString());
             
-            polynucs.add(polynuc);
+            polynucs.add(pn);
         }
         conn.closeConnection();
         

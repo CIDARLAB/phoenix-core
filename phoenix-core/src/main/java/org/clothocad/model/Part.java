@@ -111,6 +111,11 @@ public abstract class Part extends SharableObjBase {
     }
 
     public abstract NucSeq getSequence();
+    
+    //Clotho ID
+    @Setter
+    @Getter
+    private String clothoID;
 
     public static Part retrieveByName(String name) {
         //query connection for one part whose name contains the provided string    

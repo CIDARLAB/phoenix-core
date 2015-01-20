@@ -17,13 +17,14 @@ public class Fluorophore extends Feature {
     
     
     //Default fluorophore constructor
-    public Fluorophore(String name, Integer oligo, Double brightness, Double ex_max, Double em_max, HashMap<Double, Double> spectrum) {
+    public Fluorophore(String name, Integer oligo, Double brightness, Double ex_max, Double em_max, HashMap<Double, Double> em_spectrum, HashMap<Double,Double> ex_spectrum) {
         this.oligomerization = oligo;
         this.brightness = brightness;
         this.excitation_max = ex_max;
         this.emission_max = em_max;
         this.name = name;
-        this.spectrum = spectrum;
+        this.em_spectrum = em_spectrum;
+        this.ex_spectrum = ex_spectrum;
     }
     
     //Default fluorophore constructor
@@ -33,7 +34,8 @@ public class Fluorophore extends Feature {
         this.excitation_max = 0.0;
         this.emission_max = 0.0;
         this.name = "";
-        this.spectrum = new HashMap<>();
+        this.em_spectrum = new HashMap<>();
+        this.ex_spectrum = new HashMap<>();
     }
     
     //Oligomerization of fluorophore
@@ -64,5 +66,10 @@ public class Fluorophore extends Feature {
     //Fluorophore spectrum
     @Setter
     @Getter
-    private HashMap<Double, Double> spectrum;
+    private HashMap<Double, Double> em_spectrum;
+    
+    //Fluorophore spectrum
+    @Setter
+    @Getter
+    private HashMap<Double, Double> ex_spectrum;
 }

@@ -78,8 +78,8 @@ public class ClothoAdaptor {
     public static Clotho uploadFluorescenceSpectrums (File input) throws FileNotFoundException, IOException {
         
         //Establish Clotho connection
-//        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
-//        Clotho clothoObject = new Clotho(conn);
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
         
         //Import file, begin reading
         BufferedReader reader = new BufferedReader(new FileReader(input.getAbsolutePath()));
@@ -106,14 +106,35 @@ public class ClothoAdaptor {
         }
         
         //Look for each Fluorophore and see if their names match any of these spectrums
-//        HashSet<Fluorophore> queryFluorophores = queryFluorophores();
+        HashSet<Fluorophore> queryFluorophores = queryFluorophores();
+        for (String spectrum_name : spectralMaps.keySet()) {
+            for (Fluorophore fl : queryFluorophores) {
+                
+                //Match spectrums to fluorophore names
+                if (spectrum_name.contains(fl.getName().replaceAll(".ref", ""))) {
+                    
+                    //Match excitation or emmission spectra
+                    if (spectrum_name.contains("EX") || spectrum_name.contains("AB")) {
+                        fl.setEx_spectrum(spectralMaps.get(spectrum_name));
+                    } else if (spectrum_name.contains("EM")) {
+                        fl.setEm_spectrum(spectralMaps.get(spectrum_name));
+                    }
+                }
+            }
+        }
         
         String t = "";
         
-//        conn.closeConnection();
-//        return clothoObject;
-        return null;
+        conn.closeConnection();
+        return clothoObject;
+//        return null;
     }
+    
+    /*
+     * 
+     * CLOTHO OBJECT CREATION METHODS
+     * 
+     */
 
     //Add polynucleotides to Clotho via Clotho Server API
     public static void createPolynucleotides(HashSet<Polynucleotide> polyNucs, Clotho clothoObject) {
@@ -173,11 +194,17 @@ public class ClothoAdaptor {
             createFluorophore.put("excitation_max", f.getExcitation_max());
             createFluorophore.put("oligomerization", f.getOligomerization());
             
-            Map spectrum = new HashMap();
-            for (Double x : f.getSpectrum().keySet()) {
-                spectrum.put(x, f.getSpectrum().get(x));
+            //Emission and excitation spectrums
+            Map em_spectrum = new HashMap();
+            for (Double wavelength : f.getEm_spectrum().keySet()) {
+                em_spectrum.put(wavelength, f.getEm_spectrum().get(wavelength));
             }
-            createFluorophore.put("spectrum", spectrum);
+            createFluorophore.put("em_spectrum", em_spectrum);
+            Map ex_spectrum = new HashMap();
+            for (Double wavelength : f.getEx_spectrum().keySet()) {
+                ex_spectrum.put(wavelength, f.getEx_spectrum().get(wavelength));
+            }
+            createFluorophore.put("ex_spectrum", ex_spectrum);
 
             //NucSeq sub-schema
             Map createSequence = new HashMap();
@@ -244,7 +271,7 @@ public class ClothoAdaptor {
                 createFeature.put("schema", "org.clothocad.model.Feature");
                 createFeature.put("forwardColor", f.getForwardColor().toString());
                 createFeature.put("reverseColor", f.getReverseColor().toString());
-                createFeature.put("name", f.getName());
+                createFeature.put("name", f.getName().replaceAll(".ref", ""));
 
                 //NucSeq sub-schema
                 Map createNucSeqSub = new HashMap();
@@ -272,6 +299,12 @@ public class ClothoAdaptor {
             Clotho.create(createNucSeqMain);
         }
     }
+    
+    /*
+     * 
+     * CLOTHO OBJECT QUERY METHODS
+     * 
+     */    
     
     //Get all Clotho Features
     public static HashSet<Feature> queryFeatures() {
@@ -351,12 +384,19 @@ public class ClothoAdaptor {
             Double ex = Double.valueOf(jsonFluorophore.get("excitation_max").toString());
             Double em = Double.valueOf(jsonFluorophore.get("emission_max").toString());
             
-            HashMap<Double, Double> spectrum = new HashMap<>();
-            Map jsonSpectrum = (Map) jsonFluorophore.get("spectrum");
-            for (Object x : jsonSpectrum.keySet()) {
-                spectrum.put(Double.valueOf(x.toString()), Double.valueOf(jsonSpectrum.get(x.toString()).toString()));
+            HashMap<Double, Double> em_spectrum = new HashMap<>();
+            Map jsonEm_spectrum = (Map) jsonFluorophore.get("em_spectrum");
+            for (Object x : jsonEm_spectrum.keySet()) {
+                em_spectrum.put(Double.valueOf(x.toString()), Double.valueOf(jsonEm_spectrum.get(x.toString()).toString()));
             }
-            fluorophore.setSpectrum(spectrum);
+            fluorophore.setEm_spectrum(em_spectrum);
+            
+            HashMap<Double, Double> ex_spectrum = new HashMap<>();
+            Map jsonEx_spectrum = (Map) jsonFluorophore.get("ex_spectrum");
+            for (Object wavelength : jsonEx_spectrum.keySet()) {
+                ex_spectrum.put(Double.valueOf(wavelength.toString()), Double.valueOf(jsonEx_spectrum.get(wavelength.toString()).toString()));
+            }
+            fluorophore.setEx_spectrum(ex_spectrum);
             
             //Get sequence object and fields
             JSONObject jsonSequence = (JSONObject) jsonFluorophore.get("sequence");

@@ -162,7 +162,7 @@ public class ClothoAdaptor {
 
         for (Fluorophore f : flourophores) {
 
-            //Feature schema
+            //Fluorophore schema
             Map createFluorophore = new HashMap();
             createFluorophore.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
             createFluorophore.put("name", f.getName());
@@ -172,6 +172,12 @@ public class ClothoAdaptor {
             createFluorophore.put("emission_max", f.getEmission_max());
             createFluorophore.put("excitation_max", f.getExcitation_max());
             createFluorophore.put("oligomerization", f.getOligomerization());
+            
+            Map spectrum = new HashMap();
+            for (Double x : f.getSpectrum().keySet()) {
+                spectrum.put(x, f.getSpectrum().get(x));
+            }
+            createFluorophore.put("spectrum", spectrum);
 
             //NucSeq sub-schema
             Map createSequence = new HashMap();
@@ -344,6 +350,13 @@ public class ClothoAdaptor {
             Double brightness = Double.valueOf(jsonFluorophore.get("brightness").toString());
             Double ex = Double.valueOf(jsonFluorophore.get("excitation_max").toString());
             Double em = Double.valueOf(jsonFluorophore.get("emission_max").toString());
+            
+            HashMap<Double, Double> spectrum = new HashMap<>();
+            Map jsonSpectrum = (Map) jsonFluorophore.get("spectrum");
+            for (Object x : jsonSpectrum.keySet()) {
+                spectrum.put(Double.valueOf(x.toString()), Double.valueOf(jsonSpectrum.get(x.toString()).toString()));
+            }
+            fluorophore.setSpectrum(spectrum);
             
             //Get sequence object and fields
             JSONObject jsonSequence = (JSONObject) jsonFluorophore.get("sequence");

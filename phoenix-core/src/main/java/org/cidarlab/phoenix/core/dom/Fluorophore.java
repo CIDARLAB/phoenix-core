@@ -4,6 +4,7 @@
  */
 package org.cidarlab.phoenix.core.dom;
 
+import java.util.HashMap;
 import lombok.Getter;
 import lombok.Setter;
 import org.clothocad.model.Feature;
@@ -16,12 +17,13 @@ public class Fluorophore extends Feature {
     
     
     //Default fluorophore constructor
-    public Fluorophore(String name, Integer oligo, Double brightness, Double ex_max, Double em_max) {
+    public Fluorophore(String name, Integer oligo, Double brightness, Double ex_max, Double em_max, HashMap<Double, Double> spectrum) {
         this.oligomerization = oligo;
         this.brightness = brightness;
         this.excitation_max = ex_max;
         this.emission_max = em_max;
         this.name = name;
+        this.spectrum = spectrum;
     }
     
     //Default fluorophore constructor
@@ -31,9 +33,8 @@ public class Fluorophore extends Feature {
         this.excitation_max = 0.0;
         this.emission_max = 0.0;
         this.name = "";
+        this.spectrum = new HashMap<>();
     }
-    
-    
     
     //Oligomerization of fluorophore
     @Setter
@@ -59,4 +60,9 @@ public class Fluorophore extends Feature {
     @Setter
     @Getter
     private String name;
+    
+    //Fluorophore spectrum
+    @Setter
+    @Getter
+    private HashMap<Double, Double> spectrum;
 }

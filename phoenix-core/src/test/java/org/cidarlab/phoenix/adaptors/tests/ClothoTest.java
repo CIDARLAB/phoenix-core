@@ -64,7 +64,7 @@ public class ClothoTest {
         } 
     }
     
-    @Test
+//    @Test
     public void testMultiPartUpload() {
         
         String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/benchling_export_120514_multi.gb";
@@ -129,6 +129,9 @@ public class ClothoTest {
     
     public static void main(String[] args) {
         ClothoTest t = new ClothoTest();
-        t.testFluorSpectraUpload();
+//        t.testFeatureUpload();
+        t.testQuery();
+//        t.testFluorSpectraUpload();
+
     }
 }

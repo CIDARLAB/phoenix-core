@@ -113,7 +113,7 @@ public class BenchlingTest {
     public void testFluorophoreUpload() {
         try {
             
-            String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_fp_set.gb";
+            String filePath = getFilepath() + "/src/main/resources/FluorescentProteins/phoenix_fp_set.gb";
             File input = new File(filePath);
             
             //Get features, FPs from a multi-part genbank file

@@ -5,7 +5,11 @@
 package org.cidarlab.phoenix.core.adaptors;
 
 import java.awt.Color;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -37,7 +41,7 @@ public class ClothoAdaptor {
      * This method is for reading a Benchling-produced Multipart Genbank file with Biojava 1.9.0
      * It creates Clotho Polynucleotides, Parts, Sequences, Annotations and Features
      */
-    public static Clotho clothoUpload(File input, boolean featureLib) throws Exception {
+    public static Clotho uploadSequences(File input, boolean featureLib) throws Exception {
 
         //Establish Clotho connection
         ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
@@ -48,8 +52,8 @@ public class ClothoAdaptor {
             HashSet<Feature> features = BenchlingAdaptor.getFeatures(input);
             HashSet<Fluorophore> fluorophores = BenchlingAdaptor.getFluorophores(features);
             features.removeAll(fluorophores);
-            createClothoFeatures(features, clothoObject);
-            createClothoFluorophores(fluorophores, clothoObject);
+            createFeatures(features, clothoObject);
+            createFluorophores(fluorophores, clothoObject);
             
         } else {
  
@@ -59,17 +63,60 @@ public class ClothoAdaptor {
             HashSet<Part> parts = BenchlingAdaptor.getMoCloParts(input);
 
             //Save all polynucleotides, nucseqs and parts to Clotho
-            createClothoPolynucleotides(polyNucs, clothoObject);
-            createClothoParts(parts, clothoObject);
-            createClothoNucSeqs(nucSeqs, clothoObject);
+            createPolynucleotides(polyNucs, clothoObject);
+            createParts(parts, clothoObject);
+            createNucSeqs(nucSeqs, clothoObject);
         }
         
         conn.closeConnection();
         return clothoObject;
     }
+    
+    /*
+     * This method is for uploading fluorescence spectrum data to be associated with Fluorphore objects
+     */
+    public static Clotho uploadFluorescenceSpectrums (File input) throws FileNotFoundException, IOException {
+        
+        //Establish Clotho connection
+//        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+//        Clotho clothoObject = new Clotho(conn);
+        
+        //Import file, begin reading
+        BufferedReader reader = new BufferedReader(new FileReader(input.getAbsolutePath()));
+        HashMap<String, HashMap<Double, Double>> spectralMaps = new HashMap<>();
+        
+        //The first line describes the spectra
+        String line = reader.readLine();
+        String[] spectra = line.split(",");
+        int numSpectra = spectra.length;
+        for (int i = 1; i < numSpectra; i ++) {
+            spectralMaps.put(spectra[i], new HashMap<Double, Double>());
+        }
+        line = reader.readLine();
+
+        //Read each line of the input file to parse parts
+        while (line != null) {           
+            String[] tokens = line.split(",");
+            for (int j = 1; j < tokens.length; j++) {
+                if (!tokens[j].isEmpty()) {
+                    spectralMaps.get(spectra[j]).put(Double.parseDouble(tokens[0]), Double.parseDouble(tokens[j]));
+                }
+            }            
+            line = reader.readLine();
+        }
+        
+        //Look for each Fluorophore and see if their names match any of these spectrums
+//        HashSet<Fluorophore> queryFluorophores = queryFluorophores();
+        
+        String t = "";
+        
+//        conn.closeConnection();
+//        return clothoObject;
+        return null;
+    }
 
     //Add polynucleotides to Clotho via Clotho Server API
-    public static void createClothoPolynucleotides(HashSet<Polynucleotide> polyNucs, Clotho clothoObject) {
+    public static void createPolynucleotides(HashSet<Polynucleotide> polyNucs, Clotho clothoObject) {
 
         for (Polynucleotide pn : polyNucs) {
 
@@ -89,7 +136,7 @@ public class ClothoAdaptor {
     }
 
     //Add features to Clotho via Clotho Server API
-    public static void createClothoFeatures(HashSet<Feature> features, Clotho clothoObject) {
+    public static void createFeatures(HashSet<Feature> features, Clotho clothoObject) {
 
         for (Feature f : features) {
 
@@ -111,7 +158,7 @@ public class ClothoAdaptor {
     }
     
     //Add features to Clotho via Clotho Server API
-    public static void createClothoFluorophores(HashSet<Fluorophore> flourophores, Clotho clothoObject) {
+    public static void createFluorophores(HashSet<Fluorophore> flourophores, Clotho clothoObject) {
 
         for (Fluorophore f : flourophores) {
 
@@ -137,7 +184,7 @@ public class ClothoAdaptor {
     }
 
     //Add parts to Clotho via Clotho Server API
-    public static void createClothoParts(HashSet<Part> parts, Clotho clothoObject) {
+    public static void createParts(HashSet<Part> parts, Clotho clothoObject) {
         for (Part p : parts) {
 
             //Part schema
@@ -159,7 +206,7 @@ public class ClothoAdaptor {
     }
 
     //Add nucseqs to Clotho via Clotho Server API
-    public static void createClothoNucSeqs(HashSet<NucSeq> nucSeqs, Clotho clothoObject) {
+    public static void createNucSeqs(HashSet<NucSeq> nucSeqs, Clotho clothoObject) {
 
         for (NucSeq ns : nucSeqs) {
 
@@ -221,7 +268,7 @@ public class ClothoAdaptor {
     }
     
     //Get all Clotho Features
-    public static HashSet<Feature> queryClothoFeatures() {
+    public static HashSet<Feature> queryFeatures() {
         
         //Establish Clotho connection
         ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
@@ -267,7 +314,7 @@ public class ClothoAdaptor {
     }
     
     //Get all Clotho Fluorophores
-    public static HashSet<Fluorophore> queryClothoFluorophores() {
+    public static HashSet<Fluorophore> queryFluorophores() {
         
         //Establish Clotho connection
         ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
@@ -321,7 +368,7 @@ public class ClothoAdaptor {
     }
     
     //Get all Clotho NucSeqs
-    public static HashSet<NucSeq> queryClothoNucSeqs() {
+    public static HashSet<NucSeq> queryNucSeqs() {
 
         //Establish Clotho connection
         ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
@@ -405,7 +452,7 @@ public class ClothoAdaptor {
 
     
     //Get all Clotho Parts
-    public static HashSet<Part> queryClothoParts() {
+    public static HashSet<Part> queryParts() {
         
         //Establish Clotho connection
         ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
@@ -442,7 +489,7 @@ public class ClothoAdaptor {
     }
     
     //Get all Clotho Polynucleotides
-    public static HashSet<Polynucleotide> queryClothoPolyNucleotides() {
+    public static HashSet<Polynucleotide> queryPolynucleotides() {
         
         //Establish Clotho connection
         ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");

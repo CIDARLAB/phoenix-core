@@ -24,11 +24,11 @@ public class PhoenixController {
     public void run (File featureLib, File plasmidLib) throws Exception {
         
         //Import data from Benchling multi-part Genbank files to Clotho
-        ClothoAdaptor.clothoUpload(plasmidLib, false);
-        ClothoAdaptor.clothoUpload(featureLib, true);
+        ClothoAdaptor.uploadSequences(plasmidLib, false);
+        ClothoAdaptor.uploadSequences(featureLib, true);
         
         //Recieve data from Clotho
-        HashSet<Fluorophore> FPs = ClothoAdaptor.queryClothoFluorophores();
+        HashSet<Fluorophore> FPs = ClothoAdaptor.queryFluorophores();
         
         //LTL function decomposition
         
@@ -42,10 +42,10 @@ public class PhoenixController {
         
         //REPEAT
         //Pass feature graphs to experiment grammars to get ExperimentDesign
-        HashSet<Feature> features = ClothoAdaptor.queryClothoFeatures();
+        HashSet<Feature> features = ClothoAdaptor.queryFeatures();
         
         //Form part graph from module graph via Raven optimizations
-        HashSet<Part> parts = ClothoAdaptor.queryClothoParts();
+        HashSet<Part> parts = ClothoAdaptor.queryParts();
         
         //Create instruction files
         

@@ -144,7 +144,7 @@ public class FluorescentProteinSelectorTest {
     public void getOneFPTest() {        
         
         //        HashSet<Fluorophore> FPs = getFluorophoreSet();
-        HashSet<Fluorophore> FPs = ClothoAdaptor.queryClothoFluorophores();
+        HashSet<Fluorophore> FPs = ClothoAdaptor.queryFluorophores();
         Cytometer cytometer = getConfiguredCytometer();
         ArrayList<Fluorophore> solve = FluorescentProteinSelector.solve(FPs, cytometer, 2);
         
@@ -154,7 +154,7 @@ public class FluorescentProteinSelectorTest {
     public void getTwoFPTest() {        
         
         //        HashSet<Fluorophore> FPs = getFluorophoreSet();
-        HashSet<Fluorophore> FPs = ClothoAdaptor.queryClothoFluorophores();
+        HashSet<Fluorophore> FPs = ClothoAdaptor.queryFluorophores();
         Cytometer cytometer = getConfiguredCytometer();
         ArrayList<Fluorophore> solve = FluorescentProteinSelector.solve(FPs, cytometer, 2);
         
@@ -164,7 +164,7 @@ public class FluorescentProteinSelectorTest {
     public void getThreeFPTest() {        
         
         //        HashSet<Fluorophore> FPs = getFluorophoreSet();
-        HashSet<Fluorophore> FPs = ClothoAdaptor.queryClothoFluorophores();
+        HashSet<Fluorophore> FPs = ClothoAdaptor.queryFluorophores();
         Cytometer cytometer = getConfiguredCytometer();
         ArrayList<Fluorophore> solve = FluorescentProteinSelector.solve(FPs, cytometer, 3);
         

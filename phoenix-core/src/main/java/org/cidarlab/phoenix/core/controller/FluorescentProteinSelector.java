@@ -4,8 +4,15 @@
  */
 package org.cidarlab.phoenix.core.controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
 import org.cidarlab.phoenix.core.dom.Cytometer;
 import org.cidarlab.phoenix.core.dom.Fluorophore;
 
@@ -23,69 +30,322 @@ public class FluorescentProteinSelector {
     //This alrogithm is on the basis of maximum emission and excitation spectrums, it would be better to do this for the whole range
     public static ArrayList<Fluorophore> solve(HashSet<Fluorophore> FPs, Cytometer cytometer, Integer n){
         
+        //Temporary hook to add fluorescent spectrums
+        String filepath="";
+        filepath = PhoenixController.class.getClassLoader().getResource(".").getPath();
+        filepath = filepath.substring(0,filepath.indexOf("/target/"));
+        String filePath = filepath + "/src/main/resources/FluorescentProteins/fp_spectra.csv";
+        File toLoad = new File(filePath);
+        try {
+            FPs = ClothoAdaptor.uploadFluorescenceSpectrums(toLoad);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(FluorescentProteinSelector.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FluorescentProteinSelector.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         //Initialize return variable
         ArrayList<Fluorophore> solnList = new ArrayList<>();
         ArrayList<Fluorophore> candidateList = new ArrayList<>(FPs);
         
+        //Filter out FPs without spectra
+        for (Fluorophore f : FPs) {
+            if (f.getEm_spectrum().isEmpty() || f.getEx_spectrum().isEmpty()) {
+                candidateList.remove(f);
+            }
+        }
+        
+        //Save the machine settings to a signal map
+        HashSet<String> laserFilterStrings = getLaserFilterStrings(cytometer.getConfiguration());
+        HashMap<Fluorophore, HashMap<String, Double>> fpFilterSignals = getFPFilterSignals(candidateList, laserFilterStrings);
+        
         //First FP chosen should be gfp or some protien in the FITC channel on the 488nm laser in a 530/30 filter get MEFLs
-        //SpheroTech RCP-30-5A beads used to obain MEFLs
-        //First look for all FPs that satisfy these ranges
-        ArrayList<Fluorophore> FITC_channel_FPs = new ArrayList<>();
-        double laser = 488.0;
-        double low = 515.0;
-        double high = 545.0;
-        
-        for (Fluorophore FP : FPs) {
-            
-            //The general way of finding such proteins based on maximums
-            if (FP.getExcitation_max() > laser && FP.getEmission_max() > low && FP.getEmission_max() < high) {
-                FITC_channel_FPs.add(FP);
-            
-            //The hackier way of finding FITC-spectrum proteins by name resembling GFP if the set is empty
-            } else if (FITC_channel_FPs.isEmpty() && FP.getExcitation_max() > laser && FP.getName().contains("GFP")) {
-                FITC_channel_FPs.add(FP);
-            }
+        HashMap<Fluorophore, String> measurementFilters = new HashMap<>();
+        HashMap<String, Double> filterNoises = new HashMap<>();
+        for (String laserFilter : laserFilterStrings) {
+            filterNoises.put(laserFilter, 0.0);
         }
         
-        //Loop through the FITC_channel_FPs if there is more than one prioritize oligomerization, then brightness
-        if (!FITC_channel_FPs.isEmpty()) {
-            Fluorophore fitcFP = FITC_channel_FPs.get(0);
-            FITC_channel_FPs.remove(0);
-            
-            for (int i = 1; i < FITC_channel_FPs.size(); i++) {
-                Fluorophore candidate = FITC_channel_FPs.get(i);
-                
-                //Perhaps something here about proximity to laser wavelength
-                //This is going to be hard to do without full spectrums...
-                
-                //If this FP has a smaller oligomerization, pick this one
-                if (candidate.getOligomerization() < fitcFP.getOligomerization()) {
-                    fitcFP = candidate;
-                    
-                } else if (candidate.getOligomerization() == fitcFP.getOligomerization()) {
-                    
-                    //If the oligomerization is the same, compare brightness
-                    if (candidate.getBrightness() > fitcFP.getBrightness()) {
-                        fitcFP = candidate;
-                    }
-                }
-            }
-            
-            solnList.add(fitcFP);
-            candidateList.remove(fitcFP);
-        }
-        
-        
+        Fluorophore fitcFluorophore = selectFITCFluorophore(candidateList, measurementFilters, filterNoises, fpFilterSignals, false);
+        solnList.add(fitcFluorophore);
+        candidateList.remove(fitcFluorophore);
+
         //Then look for more proteins until the list is the desired size
         while (solnList.size() < n) {
             
+            Fluorophore selectFluorophore = selectFluorophore(candidateList, measurementFilters, filterNoises, fpFilterSignals, false);
+            solnList.add(selectFluorophore);
+            candidateList.remove(selectFluorophore);
         }
-        
+
         return solnList;
+
     }
     
     //From FP set, determine optimized configuration of lasers and filters for a machine
     public static Cytometer getOptimizedCytomterConfiguration (HashSet<Fluorophore> FPs, Cytometer cytometer) {
         return null;
     }    
+    
+    //Pick the Fluorophore on the FITC channel first
+    private static Fluorophore selectFITCFluorophore (ArrayList<Fluorophore> candidateList, HashMap<Fluorophore, String> measurementFilters, HashMap<String, Double> filterNoises,  HashMap<Fluorophore, HashMap<String, Double>> fpFilterSignals, boolean oligomerization) {
+        
+        //SpheroTech RCP-30-5A beads used to obain MEFLs
+        //Look at all FPs that emit in this laser/filter and pick the largest signal
+        String laserFilter = "488.0:545.0:515.0";
+        HashSet<String> ineligibleFilters = new HashSet<>(filterNoises.keySet());
+        ineligibleFilters.remove(laserFilter);
+        
+        double maxDifferential = -100000000.0;
+        Fluorophore fitcFP = null;
+
+        for (int i = 0; i < candidateList.size(); i++) {
+
+            //Initialize total signal            
+            Fluorophore FP = candidateList.get(i);
+            HashMap<String, Double> filterDiff = getSignalDifferential(ineligibleFilters, fpFilterSignals.get(FP));
+            double signalDifferential = -100000000.0;
+            for (Double diff : filterDiff.values()) {
+                signalDifferential = diff;
+            }
+
+            //Compare to the best signal score so far or null case
+            if (fitcFP == null) {
+                fitcFP = FP;
+            } else {
+
+                //If oligomerization considered
+                if (oligomerization) {
+                    if (FP.getOligomerization() <= fitcFP.getOligomerization()) {
+
+                        //Signal comparison        
+                        if (signalDifferential > maxDifferential) {
+                            maxDifferential = signalDifferential;
+                            fitcFP = FP;
+                        }
+                    }
+                } else {
+
+                    //Signal comparison        
+                    if (signalDifferential > maxDifferential) {
+                        maxDifferential = signalDifferential;
+                        fitcFP = FP;
+                    }
+                }
+            }
+        }
+        
+        //Add this FP to measurementFilters        
+        measurementFilters.put(fitcFP, laserFilter);
+        addNoise(fitcFP, fpFilterSignals, filterNoises);
+        
+        return fitcFP;
+    }
+    
+    //Pick the Fluorophore on the FITC channel first
+    private static Fluorophore selectFluorophore (ArrayList<Fluorophore> candidateList, HashMap<Fluorophore, String> measurementFilters, HashMap<String, Double> filterNoises, HashMap<Fluorophore, HashMap<String, Double>> fpFilterSignals, boolean oligomerization) {
+        
+        String laserFilter = "";
+        HashSet<String> ineligibleFilters = new HashSet<>(measurementFilters.values());
+        
+        double maxDifferential = -100000000.0;
+        Fluorophore nextFP = null;
+
+        for (int i = 0; i < candidateList.size(); i++) {
+
+            //Initialize total signal            
+            Fluorophore FP = candidateList.get(i);
+            HashMap<String, Double> filterDiff = getSignalDifferential(ineligibleFilters, fpFilterSignals.get(FP));
+            double signalDifferential = -100000000.0;
+            for (Double diff : filterDiff.values()) {
+                signalDifferential = diff;
+            }
+            String candidateLF = "";
+            for (String lf : filterDiff.keySet()) {
+                candidateLF = lf;
+            }
+
+            //Compare to the best signal score so far or null case
+            if (nextFP == null) {
+                nextFP = FP;
+                maxDifferential = signalDifferential;
+                laserFilter = candidateLF;
+                
+            } else {
+
+                //If oligomerization considered
+                if (oligomerization) {
+                    if (FP.getOligomerization() <= nextFP.getOligomerization()) {
+
+                        //Signal comparison        
+                        if (signalDifferential > maxDifferential) {
+                            maxDifferential = signalDifferential;
+                            nextFP = FP;
+                            laserFilter = candidateLF;
+                        }
+                    }
+                } else {
+
+                    //Signal comparison        
+                    if (signalDifferential > maxDifferential) {
+                        maxDifferential = signalDifferential;
+                        nextFP = FP;
+                        laserFilter = candidateLF;
+                    }
+                }
+            }
+        }
+        
+        //Add this FP to measurementFilters
+        measurementFilters.put(nextFP, laserFilter);
+        addNoise(nextFP, fpFilterSignals, filterNoises);
+        
+        return nextFP;
+    }    
+    
+    //Get the signals
+    private static HashMap<Fluorophore, HashMap<String, Double>> getFPFilterSignals (ArrayList<Fluorophore> FPs, HashSet<String> laserFilters) {
+        
+        //Initialize signals hash
+        HashMap<Fluorophore, HashMap<String, Double>> fluorophoreSignals = new HashMap<>();
+        
+        //Loop through each Fluorophore and determine the signal it has in each laserFilter
+        for (Fluorophore FP : FPs) {
+            HashMap<String, Double> signals = new HashMap<>();
+            
+            for (String laserFilter : laserFilters) {
+                
+                //Get the signal in this laserFilter                
+                Double[] wavelenghts = parseLaserFilterStrings(laserFilter);
+                double laser = wavelenghts[0];
+                double high = wavelenghts[1];
+                double low = wavelenghts[2];
+                double signal = getSignal(FP, laser, high, low);
+                
+                signals.put(laserFilter, signal);
+            }
+            
+            fluorophoreSignals.put(FP, signals);
+        }
+        
+        return fluorophoreSignals;
+    }
+    
+    //Creat laser/filter strings
+    private static HashSet<String> getLaserFilterStrings(HashMap<String, ArrayList<String[]>> cytometerConfig) {
+        
+        //Initialize laser/filter set
+        HashSet<String> laserFilters = new HashSet<>();
+        
+        //Loop through each laser and its filters and convert the string
+        for (String laser : cytometerConfig.keySet()) {
+            ArrayList<String[]> filterSets = cytometerConfig.get(laser);
+            String[] laserSplit = laser.split(":");
+            
+            //Convert filter pairs to low and high and create laserFilter strings
+            //This assumes that each filterPair has a bandpass and an optional long pass
+            for (String[] filterPair : filterSets) {
+                                
+                //Global assumed highs on all cytometers... this is temporary and could be improved
+                double high = 1000;
+                double low = 250;
+                
+                for (String filter : filterPair) {
+                    String[] filterSplit = filter.split(":");
+                    
+                    //Bandpass filter
+                    if (filterSplit.length == 2) {
+                        high = Double.valueOf(filterSplit[0]) + Double.valueOf(filterSplit[1])/2;
+                        low = Double.valueOf(filterSplit[0]) - Double.valueOf(filterSplit[1])/2;
+                    }
+                    
+                    //Long pass filter
+                    if (filterSplit.length == 1) {
+                        double LP = Double.valueOf(filterSplit[0]);
+                        if (LP > low) {
+                            low = LP;
+                        }
+                    }
+                }
+                
+                String laserFilter = Double.valueOf(laserSplit[0]) + ":" + high + ":" + low;
+                laserFilters.add(laserFilter);
+            }
+        }
+        
+        return laserFilters;
+    }
+    
+    //Parse laserFilter strings
+    private static Double[] parseLaserFilterStrings(String laserFilter) {
+        
+        String[] split = laserFilter.split(":");
+        
+        //Assuming the split is size three, the first number is a laser, the next is high, then low, all wavelengths
+        if (split.length == 3) {
+            return new Double[]{Double.valueOf(split[0]), Double.valueOf(split[1]), Double.valueOf(split[2])};
+        } else {
+            return new Double[]{};
+        }
+    }
+    
+    //Get signal for an FP given laser, high and low
+    private static Double getSignal(Fluorophore FP, double laser, double high, double low) {
+        
+        double signal = 0.0;
+
+        //If this protein is excited by the laser, get the excitation multiplier
+        if (FP.getEx_spectrum().containsKey(laser)) {
+            double excitation = FP.getBrightness() * FP.getEx_spectrum().get(laser);
+
+            //Get the filtered signal
+            for (Double wavelength : FP.getEm_spectrum().keySet()) {
+
+                if (wavelength >= low && wavelength <= high) {
+                    signal = signal + (excitation * FP.getEm_spectrum().get(wavelength));
+                }
+            }
+        }
+
+        return signal;
+    }
+    
+    //Get the signal differential -> max signal in one laserFilter for a Fluorophore - sum(signals in all other filters for that Fluorophore)
+    private static HashMap<String, Double> getSignalDifferential(HashSet<String> ineligibleFilters, HashMap<String, Double> laserFilters) {
+        
+        HashSet<String> eligibleFilters = new HashSet<>(laserFilters.keySet());
+        eligibleFilters.removeAll(ineligibleFilters);
+        
+        double differential;
+        double maxSingleFilter = 0.0;
+        double sumOtherFilters = 0.0;
+        String maxLaserFilter = "";
+        
+        //Find the max value, which key corresponds to that
+        for (String laserFilter : eligibleFilters) {
+            if (laserFilters.get(laserFilter) > maxSingleFilter) {
+                maxSingleFilter = laserFilters.get(laserFilter);
+                maxLaserFilter = laserFilter;
+            }
+        }
+        
+        for (String laserFilter : laserFilters.keySet()) {
+            if (!laserFilter.equals(maxLaserFilter)) {
+                sumOtherFilters = sumOtherFilters + laserFilters.get(laserFilter);
+            }
+        }
+        
+        differential = maxSingleFilter - sumOtherFilters;
+        HashMap<String, Double> filterDiff = new HashMap<>();
+        filterDiff.put(maxLaserFilter, differential);
+        return filterDiff;
+    }
+    
+    //Add noise to all other laserFilters
+    private static void addNoise (Fluorophore FP, HashMap<Fluorophore, HashMap<String, Double>> fpFilterSignals, HashMap<String, Double> filterNoises) {
+        
+        for (String laserFilter : filterNoises.keySet()) {            
+            filterNoises.put(laserFilter, filterNoises.get(laserFilter) + fpFilterSignals.get(FP).get(laserFilter));           
+        }        
+    }
 }

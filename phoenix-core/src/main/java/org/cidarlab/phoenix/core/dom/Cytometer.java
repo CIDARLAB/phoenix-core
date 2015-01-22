@@ -4,6 +4,7 @@
  */
 package org.cidarlab.phoenix.core.dom;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import lombok.Getter;
@@ -24,7 +25,7 @@ public class Cytometer {
     }
     
     //Parameterized cytometer constructor
-    public Cytometer(String name, HashSet<String> lasers, HashSet<String> filters, HashMap<String, String[]> configuration) {
+    public Cytometer(String name, HashSet<String> lasers, HashSet<String> filters, HashMap<String, ArrayList<String[]>> configuration) {
         this.name = name;
         this.lasers = lasers;
         this.filters = filters;
@@ -44,7 +45,7 @@ public class Cytometer {
     //Setting -> Key: Midpoint wavelength, Value: Width wavelength
     @Getter
     @Setter
-    private HashMap<String, String[]> configuration;
+    private HashMap<String, ArrayList<String[]>> configuration;
     
     //Name
     @Getter

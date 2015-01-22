@@ -78,28 +78,38 @@ public class FluorescentProteinSelectorTest {
         filters.add("690");
         filters.add("750");
                 
-        HashMap<String, String[]> config = new HashMap<>();
-        config.put("405:100", new String[]{"450:50"});
-        config.put("405:100", new String[]{"525:50", "505"});
-        config.put("405:100", new String[]{"540:30", "535"});        
-        config.put("405:100", new String[]{"610:20", "600"});
+        HashMap<String, ArrayList<String[]>> config = new HashMap<>();
+        ArrayList<String[]> filters405 = new ArrayList<>();
+        filters405.add(new String[]{"450:50"});
+        filters405.add(new String[]{"525:50", "505"});
+        filters405.add(new String[]{"540:30", "535"});
+        filters405.add(new String[]{"610:20", "600"});       
+        config.put("405:100", filters405);
         
-        config.put("488:200", new String[]{"488:10"});
-        config.put("488:200", new String[]{"540:30", "535"});
-        config.put("488:200", new String[]{"582:15", "555"});
-        config.put("488:200", new String[]{"695:40", "685"});
+        ArrayList<String[]> filters488 = new ArrayList<>();
+        filters488.add(new String[]{"488:10"});
+        filters488.add(new String[]{"530:30", "505"});
+        filters488.add(new String[]{"582:15", "555"});
+        filters488.add(new String[]{"695:40", "685"});
+        config.put("488:200", filters488);
         
-        config.put("514:100", new String[]{"508:6"});
-        config.put("514:100", new String[]{"540:15", "525"});
+        ArrayList<String[]> filters514 = new ArrayList<>();
+        filters514.add(new String[]{"508:6"});
+        filters514.add(new String[]{"540:15", "525"});
+        config.put("514:100", filters514);
         
-        config.put("561:100", new String[]{"582:15"});
-        config.put("561:100", new String[]{"610:20", "595"});
-        config.put("561:100", new String[]{"670:30", "635"});
-        config.put("561:100", new String[]{"695:40", "685"});
-        config.put("561:100", new String[]{"780:60", "750"});
+        ArrayList<String[]> filters561 = new ArrayList<>();
+        filters561.add(new String[]{"582:15"});
+        filters561.add(new String[]{"610:20", "595"});
+        filters561.add(new String[]{"670:30", "635"});
+        filters561.add(new String[]{"695:40", "685"});
+        filters561.add(new String[]{"780:60", "750"});
+        config.put("561:100", filters561);
         
-        config.put("637:150", new String[]{"670:30"});
-        config.put("637:150", new String[]{"730:45", "685"});
+        ArrayList<String[]> filters637 = new ArrayList<>();
+        filters637.add(new String[]{"670:30"});
+        filters637.add(new String[]{"730:45", "685"});
+        config.put("637:150", filters637);
         
         Cytometer cytometer = new Cytometer("BU_CosBi_Fortessa", lasers, filters, config);
         
@@ -120,22 +130,34 @@ public class FluorescentProteinSelectorTest {
         //Machine filters
         HashSet<String> filters = new HashSet<>();
         filters.add("450:50");
-        filters.add("508:10");
-        filters.add("525:50");
-        filters.add("540:60");
+        filters.add("472:15");
         filters.add("488:10");
-        filters.add("530:30");
-        filters.add("582:12");
-        filters.add("695:30");
-        filters.add("540:20");
-        filters.add("512:12");
+        filters.add("508:6");
+        filters.add("515:20");
+        filters.add("525:50");
+        filters.add("535:20");
+        filters.add("540:15");
+        filters.add("540:30");      
+        filters.add("582:15");                       
         filters.add("610:20");
         filters.add("670:30");
         filters.add("695:40");
-        filters.add("780:60");
         filters.add("710:50");
+        filters.add("730:45");
+        filters.add("780:60");
+        filters.add("495");
+        filters.add("505");
+        filters.add("535");
+        filters.add("525");
+        filters.add("555");
+        filters.add("595");
+        filters.add("600");
+        filters.add("635");
+        filters.add("685");
+        filters.add("690");
+        filters.add("750");
         
-        Cytometer cytometer = new Cytometer("BU_CosBi_Fortessa_Unconfigured", lasers, filters, new HashMap<String, String[]>());
+        Cytometer cytometer = new Cytometer("BU_CosBi_Fortessa_Unconfigured", lasers, filters, new HashMap<String, ArrayList<String[]>>());
         
         return cytometer;
     }

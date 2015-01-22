@@ -75,7 +75,7 @@ public class ClothoAdaptor {
     /*
      * This method is for uploading fluorescence spectrum data to be associated with Fluorphore objects
      */
-    public static Clotho uploadFluorescenceSpectrums (File input) throws FileNotFoundException, IOException {
+    public static HashSet<Fluorophore> uploadFluorescenceSpectrums (File input) throws FileNotFoundException, IOException {
         
         //Establish Clotho connection
         ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
@@ -124,14 +124,14 @@ public class ClothoAdaptor {
             }
         }
         
-        createFluorophores(queryFluorophores, clothoObject);
-        HashSet<Fluorophore> queryFluorophores2 = queryFluorophores();
-        
-        String t = "";
+//        createFluorophores(queryFluorophores, clothoObject);
+//        HashSet<Fluorophore> queryFluorophores2 = queryFluorophores();
+//        
+//        String t = "";
         
         conn.closeConnection();
-        return clothoObject;
-//        return null;
+//        return clothoObject;
+        return queryFluorophores;
     }
     
     /*

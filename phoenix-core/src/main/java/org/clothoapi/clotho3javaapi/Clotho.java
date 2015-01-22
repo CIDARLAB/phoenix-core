@@ -326,7 +326,7 @@ public class Clotho implements MessageListener
             String queryString = queryStringWriter.toString();
             long startTime = System.currentTimeMillis();
             long elapsedTime = 0;
-            System.out.println(queryString);
+//            System.out.println(queryString);
             connection.sendMessage(queryString);
             while((!received) && (elapsedTime <10))
             {

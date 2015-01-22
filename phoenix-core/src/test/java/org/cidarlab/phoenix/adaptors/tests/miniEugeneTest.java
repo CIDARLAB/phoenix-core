@@ -6,13 +6,9 @@ package org.cidarlab.phoenix.adaptors.tests;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.phoenix.core.adaptors.EugeneAdaptor;
 import org.cidarlab.phoenix.core.controller.PhoenixController;
-import org.cidarlab.phoenix.core.dom.Module;
-import org.clothocad.model.Feature;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

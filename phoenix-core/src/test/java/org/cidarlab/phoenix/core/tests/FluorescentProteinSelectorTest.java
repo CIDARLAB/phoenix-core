@@ -11,16 +11,36 @@ import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
 import org.cidarlab.phoenix.core.controller.FluorescentProteinSelector;
 import org.cidarlab.phoenix.core.dom.Cytometer;
 import org.cidarlab.phoenix.core.dom.Fluorophore;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  *
  * @author evanappleton
  */
-public class FluorescentProteinSelectorTest {
+public class FluorescentProteinSelectorTest {   
     
-    //Constructor
-    public FluorescentProteinSelectorTest() {
-        
+    @BeforeClass
+    public static void setUpBeforeClass()
+            throws Exception {
+    }
+
+    @AfterClass
+    public static void tearDownAfterClass()
+            throws Exception {
+    }
+
+    @Before
+    public void setUp()
+            throws Exception {
+    }
+
+    @After
+    public void tearDown()
+            throws Exception {
     }
     
     //Hard-coded FP set for testing
@@ -38,7 +58,7 @@ public class FluorescentProteinSelectorTest {
     }
     
     //Hard-coded cytometer at BU CosBi
-    public Cytometer getConfiguredCytometer() {
+    public static Cytometer getConfiguredCytometer() {
         
         //Machine lasers
         HashSet<String> lasers = new HashSet<>();
@@ -163,19 +183,19 @@ public class FluorescentProteinSelectorTest {
     }
     
     //Runs test on FP Selector algorithm to get 1 FP with configured cytometer
+//    @Test
     public void getOneFPTest() {        
         
-        //        HashSet<Fluorophore> FPs = getFluorophoreSet();
         HashSet<Fluorophore> FPs = ClothoAdaptor.queryFluorophores();
         Cytometer cytometer = getConfiguredCytometer();
-        ArrayList<Fluorophore> solve = FluorescentProteinSelector.solve(FPs, cytometer, 2);
+        ArrayList<Fluorophore> solve = FluorescentProteinSelector.solve(FPs, cytometer, 1);
         
     }
     
     //Runs test on FP Selector algorithm to get 2 FPs with configured cytometer
+//    @Test
     public void getTwoFPTest() {        
         
-        //        HashSet<Fluorophore> FPs = getFluorophoreSet();
         HashSet<Fluorophore> FPs = ClothoAdaptor.queryFluorophores();
         Cytometer cytometer = getConfiguredCytometer();
         ArrayList<Fluorophore> solve = FluorescentProteinSelector.solve(FPs, cytometer, 2);
@@ -183,9 +203,9 @@ public class FluorescentProteinSelectorTest {
     }
     
     //Runs test on FP Selector algorithm to get 3 FPs with configured cytometer
+    @Test
     public void getThreeFPTest() {        
         
-        //        HashSet<Fluorophore> FPs = getFluorophoreSet();
         HashSet<Fluorophore> FPs = ClothoAdaptor.queryFluorophores();
         Cytometer cytometer = getConfiguredCytometer();
         ArrayList<Fluorophore> solve = FluorescentProteinSelector.solve(FPs, cytometer, 3);
@@ -193,10 +213,14 @@ public class FluorescentProteinSelectorTest {
     }
     
     //Main testing class
-    public static void main(String[] args) {
-        
-        FluorescentProteinSelectorTest fpst = new FluorescentProteinSelectorTest();
-        fpst.getOneFPTest();
-    }
-    
+//    public static void main(String[] args) {
+//        
+//        FluorescentProteinSelectorTest fpst = new FluorescentProteinSelectorTest();
+//        fpst.getOneFPTest();
+//    }
+//    
+//    //Constructor
+//    public FluorescentProteinSelectorTest() {
+//        
+//    }    
 }

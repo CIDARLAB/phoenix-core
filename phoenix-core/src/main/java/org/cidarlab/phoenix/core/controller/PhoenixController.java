@@ -5,9 +5,14 @@
 package org.cidarlab.phoenix.core.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
+import org.cidarlab.phoenix.core.adaptors.EugeneAdaptor;
+import org.cidarlab.phoenix.core.dom.Cytometer;
 import org.cidarlab.phoenix.core.dom.Fluorophore;
+import org.cidarlab.phoenix.core.dom.Module;
 import org.clothocad.model.Feature;
 import org.clothocad.model.Part;
 
@@ -21,7 +26,7 @@ public class PhoenixController {
     //Main Phoenix run method
     //Remember to start Clotho before this run
     //Will begin as pure server-side, so might be called from a main method initially
-    public void run (File featureLib, File plasmidLib) throws Exception {
+    public void run (File featureLib, File plasmidLib, File structureFile) throws Exception {
         
         //Import data from Benchling multi-part Genbank files to Clotho
         ClothoAdaptor.uploadSequences(plasmidLib, false);
@@ -35,10 +40,12 @@ public class PhoenixController {
         //Map LTL decomposition to structure contstraint libraries
         
         //Create target modules with miniEugene
+        List<Module> structures = EugeneAdaptor.getStructures(structureFile, 1);
         
         //Decompose target modules with PhoenixGrammar to get module graphs
         
         //Determine which fluorophores to use and assign to placeholders in module graph
+//        ArrayList<Fluorophore> solve = FluorescentProteinSelector.solve(ClothoAdaptor.queryFluorophores(), FluorescentProteinSelector.getConfiguredCytometer(), 2);
         
         //REPEAT
         //Pass feature graphs to experiment grammars to get ExperimentDesign

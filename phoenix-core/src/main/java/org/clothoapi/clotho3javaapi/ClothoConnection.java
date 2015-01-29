@@ -35,6 +35,7 @@ public class ClothoConnection {
     {
         factory = new WebSocketClientFactory();
         clothoSocket = new ClothoWebSocket();
+        
         try {
             URI uri = new URI(clothoURI);
             factory.start();
@@ -43,7 +44,7 @@ public class ClothoConnection {
             fut = wsClient.open(uri, clothoSocket);
             
             serverConnection = (WebSocket.Connection) fut.get();
-                    //.get(10, TimeUnit.SECONDS);
+//                    .get(10, TimeUnit.SECONDS);
             
         } catch (Exception ex) {
             Logger.getLogger(ClothoConnection.class.getName()).log(Level.SEVERE, null, ex);

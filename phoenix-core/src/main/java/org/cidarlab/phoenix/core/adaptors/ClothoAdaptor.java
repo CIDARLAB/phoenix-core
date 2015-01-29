@@ -195,7 +195,7 @@ public class ClothoAdaptor {
                 createFeature.put("id", f.getName());
                 f.setClothoID(f.getName());
             }
-            Clotho.create(createFeature);
+            Clotho.set(createFeature);
         }
     }
     
@@ -260,7 +260,7 @@ public class ClothoAdaptor {
                 f.setClothoID(f.getName());
             
             } 
-            Clotho.create(createFluorophore);
+            Clotho.set(createFluorophore);
         }
     }
 
@@ -287,7 +287,7 @@ public class ClothoAdaptor {
                 createPart.put("id", p.getClothoID());
             }
 
-            clothoObject.create(createPart);
+            clothoObject.set(createPart);
         }
     }
 

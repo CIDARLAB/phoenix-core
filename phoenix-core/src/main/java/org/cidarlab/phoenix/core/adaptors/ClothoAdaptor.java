@@ -160,8 +160,12 @@ public class ClothoAdaptor {
             if (pn.getClothoID() != null) {
                 createPolynucleotide.put("id", pn.getClothoID());
             }
-
+            else{
+                createPolynucleotide.put("id", pn.getAccession());
+                pn.setClothoID(pn.getAccession());
+            }
             Clotho.create(createPolynucleotide);
+            
         }
     }
 
@@ -187,8 +191,11 @@ public class ClothoAdaptor {
             if (f.getClothoID() != null) {
                 createFeature.put("id", f.getClothoID());
             }
-
-            Clotho.create(createFeature);
+            else{
+                createFeature.put("id", f.getName());
+                f.setClothoID(f.getName());
+            }
+            Clotho.set(createFeature);
         }
     }
     
@@ -248,8 +255,12 @@ public class ClothoAdaptor {
             if (f.getClothoID() != null) {
                 createFluorophore.put("id", f.getClothoID());
             }
-
-            Clotho.create(createFluorophore);
+            else{
+                createFluorophore.put("id", f.getName());
+                f.setClothoID(f.getName());
+            
+            } 
+            Clotho.set(createFluorophore);
         }
     }
 
@@ -276,7 +287,7 @@ public class ClothoAdaptor {
                 createPart.put("id", p.getClothoID());
             }
 
-            clothoObject.create(createPart);
+            clothoObject.set(createPart);
         }
     }
 
@@ -366,7 +377,7 @@ public class ClothoAdaptor {
         map.put("schema", "org.clothocad.model.Feature");
         Object query = clothoObject.query(map);
         JSONArray array = (JSONArray) query;
-        
+        //System.out.println("Result from query Features is :" + array);
         for (int i = 0; i < array.size(); i++) {
             
             Feature feature = new Feature();

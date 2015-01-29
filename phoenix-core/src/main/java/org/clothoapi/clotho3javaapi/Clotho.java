@@ -9,6 +9,7 @@ package org.clothoapi.clotho3javaapi;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -52,6 +53,10 @@ public class Clotho implements MessageListener
         //System.out.println("Generated Req ID :" + reqId);
         return reqId;
     }
+    
+    
+    
+    
     
     public static Object queryOne(Map map) 
     {
@@ -302,7 +307,6 @@ public class Clotho implements MessageListener
     
     
     
-    
     public static Object create(Map map) 
     {
         Object resultObject = null;
@@ -326,7 +330,55 @@ public class Clotho implements MessageListener
             String queryString = queryStringWriter.toString();
             long startTime = System.currentTimeMillis();
             long elapsedTime = 0;
-//            System.out.println(queryString);
+            connection.sendMessage(queryString);
+            while((!received) && (elapsedTime <10))
+            {
+                System.out.print("");
+                elapsedTime = (System.currentTimeMillis() - startTime)/1000;
+            }
+            if(elapsedTime >= 10)
+            {
+                System.out.println("System time out. Please check your Clotho Connection");
+            }
+            received = false;
+            
+            if(successfulResult)
+            {
+                resultObject = receivedObject;
+            }
+            return resultObject;
+            
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Clotho.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    
+    public static Object set(Map map) 
+    {
+        Object resultObject = null;
+        getRequestId();
+        channel = Channel.set;
+        received = false;
+        successfulResult = false;
+        try {
+            StringWriter mapStringWriter = new StringWriter();
+            JSONValue.writeJSONString(map, mapStringWriter);
+            String mapText = mapStringWriter.toString();
+            //System.out.println(jsonText);
+            requestId = getRequestId();
+            Map queryMap = new HashMap();
+            queryMap.put("channel", channel.toString());
+            queryMap.put("data", map);
+            queryMap.put("requestId", requestId);
+
+            StringWriter queryStringWriter = new StringWriter();
+            JSONValue.writeJSONString(queryMap, queryStringWriter);
+            String queryString = queryStringWriter.toString();
+            long startTime = System.currentTimeMillis();
+            long elapsedTime = 0;
             connection.sendMessage(queryString);
             while((!received) && (elapsedTime <10))
             {
@@ -357,6 +409,56 @@ public class Clotho implements MessageListener
         Object resultObject = null;
         getRequestId();
         channel = Channel.createAll;
+        received = false;
+        successfulResult = false;
+        try {
+            StringWriter mapStringWriter = new StringWriter();
+            JSONValue.writeJSONString(map, mapStringWriter);
+            String mapText = mapStringWriter.toString();
+            //System.out.println(jsonText);
+            requestId = getRequestId();
+            Map queryMap = new HashMap();
+            queryMap.put("channel", channel.toString());
+            queryMap.put("data", map);
+            queryMap.put("requestId", requestId);
+
+            StringWriter queryStringWriter = new StringWriter();
+            JSONValue.writeJSONString(queryMap, queryStringWriter);
+            String queryString = queryStringWriter.toString();
+            long startTime = System.currentTimeMillis();
+            long elapsedTime = 0;
+            connection.sendMessage(queryString);
+            while((!received) && (elapsedTime <10))
+            {
+                System.out.print("");
+                elapsedTime = (System.currentTimeMillis() - startTime)/1000;
+            }
+            if(elapsedTime >= 10)
+            {
+                System.out.println("System time out. Please check your Clotho Connection");
+            }
+            received = false;
+            
+            if(successfulResult)
+            {
+                resultObject = receivedObject;
+            }
+            return resultObject;
+            
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Clotho.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    
+    
+    public static Object setAll(List<Map> map) 
+    {
+        Object resultObject = null;
+        getRequestId();
+        channel = Channel.setAll;
         received = false;
         successfulResult = false;
         try {

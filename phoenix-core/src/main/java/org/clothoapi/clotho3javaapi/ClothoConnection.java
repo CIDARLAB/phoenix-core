@@ -35,6 +35,7 @@ public class ClothoConnection {
     {
         factory = new WebSocketClientFactory();
         clothoSocket = new ClothoWebSocket();
+        
         try {
             URI uri = new URI(clothoURI);
             factory.start();
@@ -42,7 +43,8 @@ public class ClothoConnection {
             wsClient.setMaxTextMessageSize(99999999);
             fut = wsClient.open(uri, clothoSocket);
             
-            serverConnection = (WebSocket.Connection) fut.get(10, TimeUnit.SECONDS);
+            serverConnection = (WebSocket.Connection) fut.get();
+//                    .get(10, TimeUnit.SECONDS);
             
         } catch (Exception ex) {
             Logger.getLogger(ClothoConnection.class.getName()).log(Level.SEVERE, null, ex);

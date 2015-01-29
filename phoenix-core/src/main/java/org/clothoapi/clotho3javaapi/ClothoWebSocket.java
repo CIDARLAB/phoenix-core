@@ -7,9 +7,14 @@
 package org.clothoapi.clotho3javaapi;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.EventObject;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.sf.json.JSONObject;
 import org.eclipse.jetty.websocket.WebSocket;
 //import lombok.extern.slf4j.Slf4j;
 /**
@@ -20,13 +25,14 @@ import org.eclipse.jetty.websocket.WebSocket;
 //@Slf4j
 public class ClothoWebSocket  implements WebSocket.OnTextMessage
 {
-    
+   
     private String _messageData;
     private List _listeners = new ArrayList();
 
     
     @Override
     public void onMessage(String message) {
+        
         _messageData = message;
         fireMessageEvent();
     }

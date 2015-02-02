@@ -115,12 +115,21 @@ public class ClothoTest {
     
 //    @Test
     public void testQuery() {
-        
+        System.out.println("Start Test");
         ClothoAdaptor.queryFeatures();
+        System.out.println("End of query Features");
+        
         ClothoAdaptor.queryFluorophores();
+        System.out.println("End of query Flourophores");
+    
         ClothoAdaptor.queryNucSeqs();
+        System.out.println("End of query NucSeqs");
+    
         ClothoAdaptor.queryPolynucleotides();
+        System.out.println("End of query Polynucleotides");
+    
         ClothoAdaptor.queryParts();
+        System.out.println("End of Tests");
     }
       
     public ClothoTest() {
@@ -129,7 +138,7 @@ public class ClothoTest {
     
     public static void main(String[] args) {
         ClothoTest t = new ClothoTest();
-//        t.testFeatureUpload();
+        t.testFeatureUpload();
         t.testQuery();
         t.testFluorSpectraUpload();
 

@@ -7,8 +7,12 @@ package org.cidarlab.phoenix.core.grammars;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.cidarlab.minieugene.dom.Component;
+import org.cidarlab.phoenix.core.dom.ComponentType;
 import org.cidarlab.phoenix.core.dom.Module;
+import org.cidarlab.phoenix.core.dom.Module.ModuleType;
 import org.cidarlab.phoenix.core.dom.Orientation;
+import org.cidarlab.phoenix.core.dom.Primitive;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
 import org.cidarlab.phoenix.core.formalgrammar.Grammar;
 import org.cidarlab.phoenix.core.formalgrammar.Nonterminal;
@@ -16,6 +20,7 @@ import org.cidarlab.phoenix.core.formalgrammar.ProductionRule;
 import org.cidarlab.phoenix.core.formalgrammar.Symbol;
 import org.cidarlab.phoenix.core.formalgrammar.Terminal;
 import org.clothocad.model.Feature;
+import org.clothocad.model.Person;
 
 /**
  * This class defines the grammar with which genetic regulatory networks are
@@ -302,24 +307,141 @@ public class PhoenixGrammar {
 
         return grammars;
     }
+    
+    public void deletemodule(){
+    List<Component[]> eugeneDevices = null;
+    List<Module> phoenixModules = new ArrayList<>();
+    for (Component[] eugeneDevice : eugeneDevices) 
+    {
+            Module phoenixModule = new Module();
+            phoenixModule.setForward(true);
+            ArrayList<Feature> moduleFeatures = new ArrayList<>();
+            ArrayList<PrimitiveModule> primitiveModules = new ArrayList<>();
+            for (Component c : eugeneDevice) 
+            {
+                String type = c.getType().getName();
+                boolean isCDS = false;
+                if (type.equalsIgnoreCase("c") || type.equalsIgnoreCase("fc") || type.equalsIgnoreCase("rc")) {
+                    isCDS = true;
+                }
+                Feature f = Feature.generateFeature(c.getName(), "", new Person(), isCDS);
+                moduleFeatures.add(f); //Done
+                ComponentType ctype = new ComponentType(type);
+                //Create a new primitive module
+                PrimitiveModule pm = new PrimitiveModule();
+                Primitive primitive = new Primitive(ctype, c.getName());
+                primitive.setOrientation(Orientation.REVERSE);
+                if (c.isForward()) {
+                    primitive.setOrientation(Orientation.FORWARD);
+                }
+                pm.setPrimitive(primitive);
+                List<Feature> pmf = new ArrayList<>();
+                pmf.add(f);
+                pm.setModuleFeatures(pmf);
+                pm.setForward(c.isForward());
+                primitiveModules.add(pm);
+        }
+        phoenixModule.setModuleFeatures(moduleFeatures);
+        phoenixModule.setSubmodules(primitiveModules);
+        phoenixModule.setRoot(true);
+        phoenixModules.add(phoenixModule);
+    }
+    }
+    
 
     public static void assignChildren(Module node) {
         int stack = 0;
-        ArrayList<Feature> moduleFeatures;
-        List<PrimitiveModule> submoduleStack;
-        Module child;
-        for (PrimitiveModule subnodes : node.getSubmodules()) {
-            if (subnodes.getPrimitive().getOrientation().equals(Orientation.FORWARD)) {
-                if (subnodes.getPrimitive().getType().getName().startsWith("p")) {
-                    stack = 1;
-                    submoduleStack = new ArrayList<>();
-                    child = new Module();
-                    child.setStage(node.getStage() + 1);
-                    child.setRoot(false);
-                    moduleFeatures = new ArrayList<>();
+        ArrayList<Feature> moduleFeatures = null;
+        List<PrimitiveModule> submoduleStack =null;
+        Module child =null;
+        
+        //<editor-fold desc="If Module is of type TU">
+        if (node.getType().equals(ModuleType.MODULE)) {            
+            //Check all Forward Orientation Parts
+            for (PrimitiveModule subnodes : node.getSubmodules()) {
+                if (stack == 0) {
+                    if (subnodes.getPrimitive().getOrientation().equals(Orientation.FORWARD)) {
+                        if (subnodes.getPrimitive().getType().getName().startsWith("p")) {
+                            System.out.print(subnodes.getPrimitive().getType().getName());
+                            stack = 1;
+                            submoduleStack = new ArrayList<>();
+                            moduleFeatures = new ArrayList<>();
+                            
+                            child = new Module();
+                            child.setStage(node.getStage() + 1);  //Set the Stage of the Child Node
+                            child.setRoot(false);                 //Wont be the root.     
+                            child.setForward(true);               //These are all Forward oriented. 
+                            child.setType(ModuleType.TU);         //Set Child as a TU
+                            
+                            moduleFeatures.add(subnodes.getModuleFeatures().get(0));
+                            submoduleStack.add(subnodes);
+                        }
+                    }
+                }
+                if(stack ==1)
+                {
+                    if(subnodes.getPrimitive().getOrientation().equals(Orientation.REVERSE))
+                    {
+                        //Set to Wild Card?
+                    }
+                    //Set Features for the Module 
+                    System.out.print(subnodes.getPrimitive().getType().getName());
                     moduleFeatures.add(subnodes.getModuleFeatures().get(0));
+                    submoduleStack.add(subnodes);
+                    if (subnodes.getPrimitive().getType().getName().startsWith("t") && subnodes.getPrimitive().getOrientation().equals(Orientation.FORWARD)) {
+                        stack = 0;
+                        child.setModuleFeatures(moduleFeatures);
+                        child.setSubmodules(submoduleStack);
+                        node.getChildren().add(child);
+                        assignChildren(child);
+                        System.out.println("");
+                    }
                 }
             }
+            //Check all Reverse Orientation Parts
+            for (PrimitiveModule subnodes : node.getSubmodules()) {
+                if (stack == 0) {
+                    if (subnodes.getPrimitive().getOrientation().equals(Orientation.REVERSE)) {
+                        if (subnodes.getPrimitive().getType().getName().startsWith("p")) {
+                            stack = 1;
+                            submoduleStack = new ArrayList<>();
+                            moduleFeatures = new ArrayList<>();
+                            
+                            child = new Module();
+                            child.setStage(node.getStage() + 1);  //Set the Stage of the Child Node
+                            child.setRoot(false);                 //Wont be the root.     
+                            child.setForward(false);              //These are all Reverse oriented. 
+                            child.setType(ModuleType.TU);         //Set Child as a TU
+                            
+                            moduleFeatures.add(subnodes.getModuleFeatures().get(0));
+                            submoduleStack.add(subnodes);
+                        }
+                    }
+                }
+                if(stack ==1)
+                {
+                    if(subnodes.getPrimitive().getOrientation().equals(Orientation.FORWARD))
+                    {
+                        //Set to Wild Card?
+                    }
+                    //Set Features for the Module 
+                    moduleFeatures.add(subnodes.getModuleFeatures().get(0));
+                    submoduleStack.add(subnodes);
+                    if (subnodes.getPrimitive().getType().getName().startsWith("t") && subnodes.getPrimitive().getOrientation().equals(Orientation.REVERSE)) {
+                        stack = 0;
+                        child.setModuleFeatures(moduleFeatures);
+                        child.setSubmodules(submoduleStack);
+                        node.getChildren().add(child);
+                        assignChildren(child);
+                    }
+                }
+            }
+        }
+        //</editor-fold>
+        else if(node.getType().equals(ModuleType.TU))
+        {
+           //Needs to be broken down based on grammar.. 
+           
         }
     }
 

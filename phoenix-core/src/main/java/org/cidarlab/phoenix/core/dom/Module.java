@@ -21,7 +21,16 @@ public class Module {
     /*
      * Need to formally define these methods and constructors. But this is the basic essence of this Class. 
      */
- 
+    public enum ModuleType{
+        TU,
+        TERMINATOR,
+        PROMOTERS,
+        CDS,
+        WILDCARD,
+        TESTING, 
+        PRIMITIVE,
+        MODULE
+    }
     //Default module contructor
     public Module() {
         this.stage = -1;
@@ -47,6 +56,13 @@ public class Module {
         neigh.addAll(this.children);
         return neigh;
     }
+    
+    
+     //Module features
+    @Getter
+    @Setter
+    private ModuleType type;
+    
     
     //Module features
     @Getter

@@ -124,10 +124,10 @@ public class ClothoAdaptor {
             }
         }
         
-//        createFluorophores(queryFluorophores, clothoObject);
-//        HashSet<Fluorophore> queryFluorophores2 = queryFluorophores();
+        createFluorophores(queryFluorophores, clothoObject);
+        HashSet<Fluorophore> queryFluorophores2 = queryFluorophores();
 //        
-//        String t = "";
+        String t = "";
         
         conn.closeConnection();
 //        return clothoObject;

@@ -26,7 +26,7 @@ public class PhoenixController {
     //Main Phoenix run method
     //Remember to start Clotho before this run
     //Will begin as pure server-side, so might be called from a main method initially
-    public void run (File featureLib, File plasmidLib, File structureFile) throws Exception {
+    public static void run (File featureLib, File plasmidLib, File structureFile, File fluorophoreSpectra) throws Exception {
         
         //Import data from Benchling multi-part Genbank files to Clotho
         ClothoAdaptor.uploadSequences(plasmidLib, false);
@@ -44,12 +44,22 @@ public class PhoenixController {
         
         //Decompose target modules with PhoenixGrammar to get module graphs
         
+        
+        //Extend the modules for testing
+        
+        
         //Determine which fluorophores to use and assign to placeholders in module graph
-//        ArrayList<Fluorophore> solve = FluorescentProteinSelector.solve(ClothoAdaptor.queryFluorophores(), FluorescentProteinSelector.getConfiguredCytometer(), 2);
+        ClothoAdaptor.uploadFluorescenceSpectrums(fluorophoreSpectra);
+        ArrayList<Fluorophore> solve = FluorescentProteinSelector.solve(FPs, FluorescentProteinSelector.getConfiguredCytometer(), 2);
+        
+        //Perform partial part assignments given the feature library
+        HashSet<Feature> features = ClothoAdaptor.queryFeatures();
+        
+        //Determine testing structures with the partial part assignment to get the Experiment object
+        
         
         //REPEAT
-        //Pass feature graphs to experiment grammars to get ExperimentDesign
-        HashSet<Feature> features = ClothoAdaptor.queryFeatures();
+        //Convert modules to parts to get target parts
         
         //Form part graph from module graph via Raven optimizations
         HashSet<Part> parts = ClothoAdaptor.queryParts();

@@ -97,4 +97,12 @@ public class Module {
     @Getter
     @Setter
     private Interaction interaction;
+    
+    // Feel free to add more of these
+    public static enum ModuleRole {
+    	EXPRESSOR,
+        EXPRESSEE,
+        TRANSCRIPTIONAL_UNIT,
+        HIGHER_FUNCTION;
+    }
 }

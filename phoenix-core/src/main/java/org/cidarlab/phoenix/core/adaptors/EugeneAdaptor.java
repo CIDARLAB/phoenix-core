@@ -18,6 +18,7 @@ import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
 import org.cidarlab.phoenix.core.dom.Orientation;
 import org.cidarlab.phoenix.core.dom.Primitive;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
+import org.cidarlab.phoenix.core.grammars.PhoenixGrammar;
 import org.clothocad.model.Feature;
 import org.clothocad.model.Person;
 
@@ -115,6 +116,7 @@ public class EugeneAdaptor {
                 List<Feature> pmf = new ArrayList<>();
                 pmf.add(f);
                 pm.setModuleFeatures(pmf);
+                pm.setPrimitiveRole(PhoenixGrammar.findRole(ctype));
                 pm.setForward(c.isForward());
                 primitiveModules.add(pm);
             }

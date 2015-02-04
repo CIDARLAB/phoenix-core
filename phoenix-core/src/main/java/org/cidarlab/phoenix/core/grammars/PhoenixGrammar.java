@@ -367,7 +367,6 @@ public class PhoenixGrammar {
                             stack = 0;
                             child.setModuleFeatures(moduleFeatures);
                             child.setSubmodules(submoduleStack);
-//                            node.getChildren().add(child);
                             decompose(child);
                             node.getChildren().add(child);
                             child.getParents().add(node);
@@ -452,6 +451,7 @@ public class PhoenixGrammar {
                 
                 PrimitiveModule wildCard = new PrimitiveModule(PrimitiveModuleRole.WILDCARD, pm.getPrimitive().clone());
                 wildCard.getPrimitive().setOrientation(Orientation.REVERSE);
+                wildCard.setPrimitiveRole(PrimitiveModuleRole.WILDCARD);
                 wildCard.setModuleFeatures(pm.getModuleFeatures());
                 primModules.add(wildCard);
                 moduleFeature.add(pm.getModuleFeatures().get(0));
@@ -461,6 +461,7 @@ public class PhoenixGrammar {
                 
                 PrimitiveModule forModule = new PrimitiveModule();
                 forModule.setPrimitive(pm.getPrimitive().clone());
+                forModule.setPrimitiveRole(pm.getPrimitiveRole());
                 forModule.setModuleFeatures(pm.getModuleFeatures());
                 forModule.setPrimitiveRole(findRole(forModule.getPrimitive().getType()));
                 primModules.add(forModule);
@@ -494,6 +495,7 @@ public class PhoenixGrammar {
                 
                 PrimitiveModule wildCard = new PrimitiveModule(PrimitiveModuleRole.WILDCARD, pm.getPrimitive().clone());
                 wildCard.getPrimitive().setOrientation(Orientation.REVERSE);
+                wildCard.setPrimitiveRole(PrimitiveModuleRole.WILDCARD);
                 wildCard.setModuleFeatures(pm.getModuleFeatures());
                 primModules.add(wildCard);
                 moduleFeature.add(pm.getModuleFeatures().get(0)); // May have to comment this out later on?
@@ -503,6 +505,7 @@ public class PhoenixGrammar {
                 
                 PrimitiveModule revModule = new PrimitiveModule();
                 revModule.setPrimitive(pm.getPrimitive().clone());
+                revModule.setPrimitiveRole(pm.getPrimitiveRole());
                 revModule.getPrimitive().setOrientation(Orientation.FORWARD); // Again needed?
                 revModule.setModuleFeatures(pm.getModuleFeatures());
                 revModule.setPrimitiveRole(findRole(revModule.getPrimitive().getType()));

@@ -223,7 +223,8 @@ public class ClothoAdaptor {
 //            HashMap<Double, Double> em_spectrum = new HashMap<>();
             for (Double wavelength : f.getEm_spectrum().keySet()) {
                 JSONObject em = new JSONObject();
-                em.put(wavelength, f.getEm_spectrum().get(wavelength).toString());
+                em.put("x", wavelength.toString());
+                em.put("y", f.getEm_spectrum().get(wavelength).toString());
                 em_array.add(em);
                 //em_spectrum.put(wavelength, f.getEm_spectrum().get(wavelength));
             }
@@ -237,7 +238,8 @@ public class ClothoAdaptor {
 //            HashMap<Double, Double> em_spectrum = new HashMap<>();
             for (Double wavelength : f.getEx_spectrum().keySet()) {
                 JSONObject ex = new JSONObject();
-                ex.put(wavelength, f.getEx_spectrum().get(wavelength).toString());
+                ex.put("x",wavelength.toString());
+                ex.put("y", f.getEx_spectrum().get(wavelength).toString());
                 //ex_spectrum.put(wavelength, f.getEx_spectrum().get(wavelength));
                 ex_array.add(ex);
             }

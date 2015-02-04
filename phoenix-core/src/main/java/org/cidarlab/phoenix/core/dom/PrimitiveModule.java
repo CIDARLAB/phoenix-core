@@ -65,6 +65,7 @@ public class PrimitiveModule extends Module {
        CDS_FLUORESCENT,
        CDS_FLUORESCENT_FUSION,
        TERMINATOR,
+       VECTOR,
        TESTING,
        VECTOR,
        WILDCARD

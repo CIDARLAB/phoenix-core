@@ -49,7 +49,9 @@ public class PrimitiveModule extends Module {
        CDS_LINKER,
        CDS_TAG,
        CDS_FLUORESCENT,
+       CDS_FLUORESCENT_FUSION,
        TERMINATOR,
+       VECTOR,
        TESTING,
        WILDCARD
    }

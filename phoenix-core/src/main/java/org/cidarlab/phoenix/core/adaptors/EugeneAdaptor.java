@@ -15,7 +15,6 @@ import org.cidarlab.minieugene.util.FileUtil;
 import org.cidarlab.phoenix.core.dom.ComponentType;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
-import org.cidarlab.phoenix.core.dom.Module.ModuleType;
 import org.cidarlab.phoenix.core.dom.Orientation;
 import org.cidarlab.phoenix.core.dom.Primitive;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
@@ -120,7 +119,7 @@ public class EugeneAdaptor {
                 pm.setForward(c.isForward());
                 primitiveModules.add(pm);
             }
-            phoenixModule.setType(ModuleRole.HIGHER_FUNCTION);
+            phoenixModule.setRole(ModuleRole.HIGHER_FUNCTION);
             phoenixModule.setModuleFeatures(moduleFeatures);
             phoenixModule.setSubmodules(primitiveModules); 
             phoenixModule.setRoot(true);

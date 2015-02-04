@@ -80,7 +80,7 @@ public abstract class Component
 		super(name);
 		this.type = type;
 		this.sequence = new String();
-		this.orientation = Orientation.UNDEFINED;
+		this.orientation = Orientation.FORWARD;
 		this.hmPropertiesValues = new HashMap<String, PropertyValue>();
 	}
 	

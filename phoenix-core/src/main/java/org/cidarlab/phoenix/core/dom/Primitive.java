@@ -6,8 +6,7 @@ package org.cidarlab.phoenix.core.dom;
  * @author Ernst Oberortner
  *
  */
-public class Primitive 
-		extends Component {
+public class Primitive extends Component {
 
 	private static final long serialVersionUID = -4837390880130494083L;
 

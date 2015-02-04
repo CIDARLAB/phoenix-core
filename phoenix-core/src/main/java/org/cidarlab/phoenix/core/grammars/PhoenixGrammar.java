@@ -11,7 +11,6 @@ import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.phoenix.core.dom.ComponentType;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
-import org.cidarlab.phoenix.core.dom.Module.ModuleType;
 import org.cidarlab.phoenix.core.dom.Orientation;
 import org.cidarlab.phoenix.core.dom.Primitive;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
@@ -318,7 +317,7 @@ public class PhoenixGrammar {
         
         //<editor-fold desc="If Module is of type Higher Function">
         String seq = "";
-        if (node.getType().equals(ModuleRole.HIGHER_FUNCTION)) {
+        if (node.getRole().equals(ModuleRole.HIGHER_FUNCTION)) {
 
             if (node.isRoot()) {
                 
@@ -337,9 +336,9 @@ public class PhoenixGrammar {
                 //<editor-fold desc="Check for TUs">
                 for (PrimitiveModule subnodes : node.getSubmodules()) {
                     if (stack == 0) {
-                        if (subnodes.getPrimitiveType().equals(PrimitiveModuleRole.PROMOTER)) {
+                        if (subnodes.getPrimitiveRole().equals(PrimitiveModuleRole.PROMOTER)) {
                             seq = "";
-                                seq += subnodes.getPrimitive().getType().getName();
+                            seq += subnodes.getPrimitive().getType().getName();
                             stack = 1;
                             submoduleStack = new ArrayList<>();
                             moduleFeatures = new ArrayList<>();
@@ -348,8 +347,7 @@ public class PhoenixGrammar {
                             child.setStage(node.getStage() + 1);  //Set the Stage of the Child Node
                             child.setRoot(false);                 //Wont be the root.     
                             child.setForward(true);               //These are all Forward oriented. 
-                            child.setType(ModuleRole.TRANSCRIPTIONAL_UNIT);         //Set Child as a TU
-
+                            child.setRole(ModuleRole.TRANSCRIPTIONAL_UNIT);         //Set Child as a TU
                             moduleFeatures.add(subnodes.getModuleFeatures().get(0));
                             submoduleStack.add(subnodes);
                         }
@@ -358,14 +356,14 @@ public class PhoenixGrammar {
                     if (stack == 1) {
 
                     //Set Features for the Module 
-                        if (subnodes.getPrimitiveType().equals(PrimitiveModuleRole.WILDCARD)) 
+                        if (subnodes.getPrimitiveRole().equals(PrimitiveModuleRole.WILDCARD)) 
                             seq += "W";
                         else
                             seq += subnodes.getPrimitive().getType().getName();
 
                         moduleFeatures.add(subnodes.getModuleFeatures().get(0));
                         submoduleStack.add(subnodes);
-                        if (subnodes.getPrimitiveType().equals(PrimitiveModuleRole.TERMINATOR)) {
+                        if (subnodes.getPrimitiveRole().equals(PrimitiveModuleRole.TERMINATOR)) {
                             stack = 0;
                             child.setModuleFeatures(moduleFeatures);
                             child.setSubmodules(submoduleStack);
@@ -385,15 +383,16 @@ public class PhoenixGrammar {
         } //</editor-fold>
         
         //<editor-fold desc="If Module is type : TRANSCRIPTIONAL UNIT">
-        else if (node.getType().equals(ModuleRole.TRANSCRIPTIONAL_UNIT)) {
+        else if (node.getRole().equals(ModuleRole.TRANSCRIPTIONAL_UNIT)) {
             List<Module> expressorList = new ArrayList<Module>();
             Module expressee = new Module();
             expressee.setStage(node.getStage()+1);
-            expressee.setType(ModuleRole.EXPRESSEE);
+            expressee.setRole(ModuleRole.EXPRESSEE);
+            expressee.setRoot(false);
             moduleFeatures = new ArrayList<Feature>();
             submoduleStack = new ArrayList<PrimitiveModule>();
             for (PrimitiveModule subnodes : node.getSubmodules()) {
-                if(subnodes.getPrimitiveType().equals(PrimitiveModuleRole.CDS))
+                if(subnodes.getPrimitiveRole().equals(PrimitiveModuleRole.CDS))
                 {
                     moduleFeatures.add(subnodes.getModuleFeatures().get(0));//Most Likely comment out??
                     Module expressor = getExpressorModule(subnodes);
@@ -403,7 +402,7 @@ public class PhoenixGrammar {
                     PrimitiveModule testing = new PrimitiveModule();
                     testing.setModuleFeatures(subnodes.getModuleFeatures()); //changes?
                     testing.setPrimitive(subnodes.getPrimitive()); //Valid here?
-                    testing.setPrimitiveType(PrimitiveModuleRole.TESTING);
+                    testing.setPrimitiveRole(PrimitiveModuleRole.TESTING);
                     submoduleStack.add(testing);
                 }
                 else
@@ -429,14 +428,14 @@ public class PhoenixGrammar {
     public static Module forwardModulePreProcessing(Module node) {
         Module forwardModule = new Module();
         forwardModule.setRoot(false);
-        forwardModule.setType(ModuleRole.HIGHER_FUNCTION);
+        forwardModule.setRole(ModuleRole.HIGHER_FUNCTION);
         forwardModule.setStage(node.getStage()+1);
         ArrayList<Feature> moduleFeature = new ArrayList<Feature>();
         ArrayList<PrimitiveModule> primModules = new ArrayList<PrimitiveModule>();
         for (int i = (node.getSubmodules().size() - 1); i >= 0; i--) {
             if (node.getSubmodules().get(i).getPrimitive().getOrientation().equals(Orientation.REVERSE)) {
                 PrimitiveModule wildCard = new PrimitiveModule();
-                wildCard.setPrimitiveType(PrimitiveModuleRole.WILDCARD);
+                wildCard.setPrimitiveRole(PrimitiveModuleRole.WILDCARD);
                 wildCard.setModuleFeatures(node.getSubmodules().get(i).getModuleFeatures());
                 primModules.add(wildCard);
 
@@ -445,7 +444,7 @@ public class PhoenixGrammar {
                 PrimitiveModule forModule = new PrimitiveModule();
                 forModule.setPrimitive(node.getSubmodules().get(i).getPrimitive());
                 forModule.setModuleFeatures(node.getSubmodules().get(i).getModuleFeatures());
-                forModule.setPrimitiveType(findRole(forModule.getPrimitive().getType()));
+                forModule.setPrimitiveRole(findRole(forModule.getPrimitive().getType()));
                 primModules.add(forModule);
 
                 moduleFeature.add(node.getSubmodules().get(i).getModuleFeatures().get(0)); //Does anything change here?? (Due to the flip in the orientation?)
@@ -460,7 +459,7 @@ public class PhoenixGrammar {
 
         Module reverseModule = new Module();
         reverseModule.setRoot(false);
-        reverseModule.setType(ModuleRole.HIGHER_FUNCTION);
+        reverseModule.setRole(ModuleRole.HIGHER_FUNCTION);
         reverseModule.setStage(node.getStage()+1);
         reverseModule.setForward(true);    //Needed?
         ArrayList<Feature> moduleFeature = new ArrayList<Feature>();
@@ -468,7 +467,7 @@ public class PhoenixGrammar {
         for (int i = (node.getSubmodules().size() - 1); i >= 0; i--) {
             if (node.getSubmodules().get(i).getPrimitive().getOrientation().equals(Orientation.FORWARD)) {
                 PrimitiveModule wildCard = new PrimitiveModule();
-                wildCard.setPrimitiveType(PrimitiveModuleRole.WILDCARD);
+                wildCard.setPrimitiveRole(PrimitiveModuleRole.WILDCARD);
                 wildCard.setModuleFeatures(node.getSubmodules().get(i).getModuleFeatures());
                 primModules.add(wildCard);
 
@@ -478,11 +477,12 @@ public class PhoenixGrammar {
                 revModule.setPrimitive(node.getSubmodules().get(i).getPrimitive());
                 revModule.getPrimitive().setOrientation(Orientation.FORWARD); // Again needed?
                 revModule.setModuleFeatures(node.getSubmodules().get(i).getModuleFeatures());
-                revModule.setPrimitiveType(findRole(revModule.getPrimitive().getType()));
+                revModule.setPrimitiveRole(findRole(revModule.getPrimitive().getType()));
                 primModules.add(revModule);
 
                 moduleFeature.add(node.getSubmodules().get(i).getModuleFeatures().get(0)); //Does anything change here?? (Due to the flip in the orientation?)
             }
+
         }
         reverseModule.setModuleFeatures(moduleFeature);
         reverseModule.setSubmodules(primModules);
@@ -506,8 +506,9 @@ public class PhoenixGrammar {
     public static Module getExpressorModule(PrimitiveModule node)
     {
         Module expressor = new Module();
-        expressor.setType(ModuleRole.EXPRESSOR);
+        expressor.setRole(ModuleRole.EXPRESSOR);
         expressor.setModuleFeatures(node.getModuleFeatures());
+        expressor.setRoot(false);
         expressor.getSubmodules().add(node);
         return expressor;
     }

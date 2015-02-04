@@ -16,21 +16,27 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PrimitiveModule extends Module {
     
+    //Set primitive
     @Getter
     @Setter        
     private Primitive primitive;
     
-    public PrimitiveModule()
-    {
-    }
-    
-    public PrimitiveModule(Module node)
-    {
-    }
-    
+    //Module role
     @Getter
     @Setter
-    private PrimitiveModuleRole primitiveType;
+    private PrimitiveModuleRole primitiveRole;
+    
+    //Blank constructor
+    public PrimitiveModule() {
+    }
+    
+    public PrimitiveModule(PrimitiveModuleRole role, Primitive primitive) {
+        this.primitiveRole = role;
+        this.primitive = primitive;
+    }
+    
+
+    
      public enum PrimitiveModuleRole {
        PROMOTER,
        PROMOTER_REPRESSIBLE,

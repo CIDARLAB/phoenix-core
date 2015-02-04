@@ -26,23 +26,27 @@ public class Module {
     public Module() {
         this.stage = -1;
         this.isRoot = false;
-        this.children = new ArrayList<Module>();
-        this.parents = new ArrayList<Module>();
+        this.children = new ArrayList<>();
+        this.parents = new ArrayList<>();
         this.submodules = new ArrayList<>();
+        this.moduleFeatures = new ArrayList<>();
+        this.isForward = true;
     }
     
     //Module constructor for root and stage
     public Module(boolean _isRoot,int _stage) {
         this.stage = _stage;
         this.isRoot = _isRoot;
-        this.children = new ArrayList<Module>();
-        this.parents = new ArrayList<Module>();  
+        this.children = new ArrayList<>();
+        this.parents = new ArrayList<>();  
         this.submodules = new ArrayList<>();
+        this.moduleFeatures = new ArrayList<>();
+        this.isForward = true;
     }
     
     //Get all neighbors i.e. parents and children
     public List<Module> getAllNeighbors() {
-        List<Module> neigh = new ArrayList<Module>();
+        List<Module> neigh = new ArrayList<>();
         neigh.addAll(this.parents);
         neigh.addAll(this.children);
         return neigh;

@@ -308,41 +308,46 @@ public class PhoenixGrammar {
 
         return grammars;
     }
-    public static void assignChildren(Module node) {
+    
+    //Method for decomposing 
+    public static void decompose(Module node) {
+
         int stack = 0;
         ArrayList<Feature> moduleFeatures = null;
         List<PrimitiveModule> submoduleStack = null;
         Module child = null;
 
-        
-        //<editor-fold desc="If Module is of type Higher Function">
-        String seq = "";
+        //Parse Module type HIGHER_FUNCTION to get TRANSCRIPTIONAL_UNITs
         if (node.getRole().equals(ModuleRole.HIGHER_FUNCTION)) {
 
+            //If this call is for the root node, pre-process
             if (node.isRoot()) {
-                
+
                 Module forward = forwardModulePreProcessing(node);
                 forward.getParents().add(node);
-                assignChildren(forward);
+                decompose(forward);
                 Module reverse = reverseModulePreProcessing(node);
                 reverse.getParents().add(node);
-                assignChildren(reverse);
+                decompose(reverse);
 
                 node.getChildren().add(forward);
                 node.getChildren().add(reverse);
 
-            } 
-            else {
-                //<editor-fold desc="Check for TUs">
+            } else {
+                
+                //Check for TUs
                 for (PrimitiveModule subnodes : node.getSubmodules()) {
+                    
                     if (stack == 0) {
+                        
+                        //Promoters start the stack
                         if (subnodes.getPrimitiveRole().equals(PrimitiveModuleRole.PROMOTER)) {
-                            seq = "";
-                            seq += subnodes.getPrimitive().getType().getName();
+                            
                             stack = 1;
                             submoduleStack = new ArrayList<>();
                             moduleFeatures = new ArrayList<>();
 
+                            //Create new Module to be made for each TRANSCRIPTIONAL_UNIT
                             child = new Module();
                             child.setStage(node.getStage() + 1);  //Set the Stage of the Child Node
                             child.setRoot(false);                 //Wont be the root.     
@@ -352,109 +357,123 @@ public class PhoenixGrammar {
                             submoduleStack.add(subnodes);
                         }
 
-                    }
-                    if (stack == 1) {
-
-                    //Set Features for the Module 
-                        if (subnodes.getPrimitiveRole().equals(PrimitiveModuleRole.WILDCARD)) 
-                            seq += "W";
-                        else
-                            seq += subnodes.getPrimitive().getType().getName();
+                    } else if (stack == 1) {
 
                         moduleFeatures.add(subnodes.getModuleFeatures().get(0));
                         submoduleStack.add(subnodes);
+                        
+                        //Termintors pop the stack
                         if (subnodes.getPrimitiveRole().equals(PrimitiveModuleRole.TERMINATOR)) {
                             stack = 0;
                             child.setModuleFeatures(moduleFeatures);
                             child.setSubmodules(submoduleStack);
-                            node.getChildren().add(child);
-                            assignChildren(child);
+//                            node.getChildren().add(child);
+                            decompose(child);
                             node.getChildren().add(child);
                             child.getParents().add(node);
-                            System.out.println(seq);
                         }
                     }
                 }
-            //</editor-fold>
             }
-            
-            
-            
-        } //</editor-fold>
         
-        //<editor-fold desc="If Module is type : TRANSCRIPTIONAL UNIT">
-        else if (node.getRole().equals(ModuleRole.TRANSCRIPTIONAL_UNIT)) {
-            List<Module> expressorList = new ArrayList<Module>();
-            Module expressee = new Module();
-            expressee.setStage(node.getStage()+1);
-            expressee.setRole(ModuleRole.EXPRESSEE);
-            expressee.setRoot(false);
+        //Parse Module type TRANSCRIPTIONAL_UNIT to get EXPRESSEEs and EXPRESSORs
+        } else if (node.getRole().equals(ModuleRole.TRANSCRIPTIONAL_UNIT)) {
+            
+            //Initialize EXPRESSEEs and EXPRESSOR
+            List<Module> expresseeList = new ArrayList<Module>();
+            
+            Module expressor = new Module();            
+            expressor.setStage(node.getStage() + 1);
+            expressor.setRole(ModuleRole.EXPRESSOR);
+            expressor.setRoot(false);
+            
             moduleFeatures = new ArrayList<Feature>();
             submoduleStack = new ArrayList<PrimitiveModule>();
-            for (PrimitiveModule subnodes : node.getSubmodules()) {
-                if(subnodes.getPrimitiveRole().equals(PrimitiveModuleRole.CDS))
-                {
-                    moduleFeatures.add(subnodes.getModuleFeatures().get(0));//Most Likely comment out??
-                    Module expressor = getExpressorModule(subnodes);
-                    expressor.setStage(node.getStage()+1);
-                    expressorList.add(expressor);
+            
+            for (PrimitiveModule primitive : node.getSubmodules()) {
+                
+                //If we run into a CDS, we know that this will be an EXPRESSEE and replace this spot with an TESTING SLOT IN EXPRESSOR
+                if (primitive.getPrimitiveRole().equals(PrimitiveModuleRole.CDS)) {
                     
+                    //Create a new EXPRESSEE from this CDS primitive and copy the feature
+                    moduleFeatures.add(primitive.getModuleFeatures().get(0));
+                    Module expressee = getExpresseeModule(primitive);
+                    expressee.setStage(node.getStage() + 1);
+                    expresseeList.add(expressee);
+
+                    //Add a new TESTING primitve to the expressor composition
+                    //This piece will get replaced in the next step (adding testing pieces)
                     PrimitiveModule testing = new PrimitiveModule();
-                    testing.setModuleFeatures(subnodes.getModuleFeatures()); //changes?
-                    testing.setPrimitive(subnodes.getPrimitive()); //Valid here?
+                    testing.setModuleFeatures(primitive.getModuleFeatures());
+                    testing.setPrimitive(primitive.getPrimitive());
                     testing.setPrimitiveRole(PrimitiveModuleRole.TESTING);
                     submoduleStack.add(testing);
-                }
-                else
-                {
-                    moduleFeatures.add(subnodes.getModuleFeatures().get(0));
-                    submoduleStack.add(subnodes);
+                    
+                //Else, continue adding features to EXPRESSOR    
+                } else {
+                    
+                    moduleFeatures.add(primitive.getModuleFeatures().get(0));
+                    submoduleStack.add(primitive);
                 }
             }
-            expressee.setModuleFeatures(moduleFeatures);
-            expressee.setSubmodules(submoduleStack);
             
-            expressee.getParents().add(node);
-            node.getChildren().add(expressee);
-            for(Module exp:expressorList)
-            {
+            //Finalize EXPRESSOR primitives and links
+            expressor.setModuleFeatures(moduleFeatures);
+            expressor.setSubmodules(submoduleStack);
+
+            expressor.getParents().add(node);
+            node.getChildren().add(expressor);
+            
+            //Finalize EXPRESSEE links
+            for (Module exp : expresseeList) {
                 exp.getParents().add(node);
                 node.getChildren().add(exp);
             }
-        }
-        //</editor-fold>
+        }       
     }
 
+    //Pre-processing steps for the globally forward version of the structure
     public static Module forwardModulePreProcessing(Module node) {
+        
         Module forwardModule = new Module();
         forwardModule.setRoot(false);
         forwardModule.setRole(ModuleRole.HIGHER_FUNCTION);
         forwardModule.setStage(node.getStage()+1);
         ArrayList<Feature> moduleFeature = new ArrayList<Feature>();
         ArrayList<PrimitiveModule> primModules = new ArrayList<PrimitiveModule>();
-        for (int i = (node.getSubmodules().size() - 1); i >= 0; i--) {
+        
+        //Go through each of the modules primitives in forward order
+        for (int i = 0; i < node.getSubmodules().size(); i++) {
+            
+            PrimitiveModule pm = node.getSubmodules().get(i).clone();
+            
+            //If the primitive is reverse oriented, make a wildcard primitive and feature
             if (node.getSubmodules().get(i).getPrimitive().getOrientation().equals(Orientation.REVERSE)) {
-                PrimitiveModule wildCard = new PrimitiveModule();
-                wildCard.setPrimitiveRole(PrimitiveModuleRole.WILDCARD);
-                wildCard.setModuleFeatures(node.getSubmodules().get(i).getModuleFeatures());
+                
+                PrimitiveModule wildCard = new PrimitiveModule(PrimitiveModuleRole.WILDCARD, pm.getPrimitive().clone());
+                wildCard.getPrimitive().setOrientation(Orientation.REVERSE);
+                wildCard.setModuleFeatures(pm.getModuleFeatures());
                 primModules.add(wildCard);
-
-                moduleFeature.add(node.getSubmodules().get(i).getModuleFeatures().get(0)); // May have to comment this out later on?
+                moduleFeature.add(pm.getModuleFeatures().get(0));
+                
+            //If not, copy components
             } else {
+                
                 PrimitiveModule forModule = new PrimitiveModule();
-                forModule.setPrimitive(node.getSubmodules().get(i).getPrimitive());
-                forModule.setModuleFeatures(node.getSubmodules().get(i).getModuleFeatures());
+                forModule.setPrimitive(pm.getPrimitive().clone());
+                forModule.setModuleFeatures(pm.getModuleFeatures());
                 forModule.setPrimitiveRole(findRole(forModule.getPrimitive().getType()));
                 primModules.add(forModule);
-
-                moduleFeature.add(node.getSubmodules().get(i).getModuleFeatures().get(0)); //Does anything change here?? (Due to the flip in the orientation?)
+                moduleFeature.add(pm.getModuleFeatures().get(0));
             }
         }
+        
         forwardModule.setModuleFeatures(moduleFeature);
         forwardModule.setSubmodules(primModules);
         return forwardModule;
     }
 
+    //Pre-processing steps for the globally reverse version of the structure
     public static Module reverseModulePreProcessing(Module node) {
 
         Module reverseModule = new Module();
@@ -464,23 +483,31 @@ public class PhoenixGrammar {
         reverseModule.setForward(true);    //Needed?
         ArrayList<Feature> moduleFeature = new ArrayList<Feature>();
         ArrayList<PrimitiveModule> primModules = new ArrayList<PrimitiveModule>();
+        
+        //Go through each of the modules primitives in reverse order
         for (int i = (node.getSubmodules().size() - 1); i >= 0; i--) {
-            if (node.getSubmodules().get(i).getPrimitive().getOrientation().equals(Orientation.FORWARD)) {
-                PrimitiveModule wildCard = new PrimitiveModule();
-                wildCard.setPrimitiveRole(PrimitiveModuleRole.WILDCARD);
-                wildCard.setModuleFeatures(node.getSubmodules().get(i).getModuleFeatures());
+            
+            PrimitiveModule pm = node.getSubmodules().get(i).clone();
+            
+            //If the primitive is reverse oriented, make a wildcard primitive and feature
+            if (pm.getPrimitive().getOrientation().equals(Orientation.FORWARD)) {
+                
+                PrimitiveModule wildCard = new PrimitiveModule(PrimitiveModuleRole.WILDCARD, pm.getPrimitive().clone());
+                wildCard.getPrimitive().setOrientation(Orientation.REVERSE);
+                wildCard.setModuleFeatures(pm.getModuleFeatures());
                 primModules.add(wildCard);
-
-                moduleFeature.add(node.getSubmodules().get(i).getModuleFeatures().get(0)); // May have to comment this out later on?
+                moduleFeature.add(pm.getModuleFeatures().get(0)); // May have to comment this out later on?
+            
+            //If not, copy components
             } else {
+                
                 PrimitiveModule revModule = new PrimitiveModule();
-                revModule.setPrimitive(node.getSubmodules().get(i).getPrimitive());
+                revModule.setPrimitive(pm.getPrimitive().clone());
                 revModule.getPrimitive().setOrientation(Orientation.FORWARD); // Again needed?
-                revModule.setModuleFeatures(node.getSubmodules().get(i).getModuleFeatures());
+                revModule.setModuleFeatures(pm.getModuleFeatures());
                 revModule.setPrimitiveRole(findRole(revModule.getPrimitive().getType()));
                 primModules.add(revModule);
-
-                moduleFeature.add(node.getSubmodules().get(i).getModuleFeatures().get(0)); //Does anything change here?? (Due to the flip in the orientation?)
+                moduleFeature.add(pm.getModuleFeatures().get(0)); //Does anything change here?? (Due to the flip in the orientation?)
             }
 
         }
@@ -489,7 +516,9 @@ public class PhoenixGrammar {
         return reverseModule;
     }
 
+    //Determine primitive role from Eugene component types
     public static PrimitiveModuleRole findRole(ComponentType type) {
+        
         PrimitiveModuleRole role = PrimitiveModuleRole.WILDCARD;
         if (type.getName().startsWith("p")) {
             role = PrimitiveModuleRole.PROMOTER;
@@ -503,10 +532,11 @@ public class PhoenixGrammar {
         return role;
     }
     
-    public static Module getExpressorModule(PrimitiveModule node)
-    {
+    //Create a new EXPRESSEE
+    public static Module getExpresseeModule(PrimitiveModule node) {
+        
         Module expressor = new Module();
-        expressor.setRole(ModuleRole.EXPRESSOR);
+        expressor.setRole(ModuleRole.EXPRESSEE);
         expressor.setModuleFeatures(node.getModuleFeatures());
         expressor.setRoot(false);
         expressor.getSubmodules().add(node);

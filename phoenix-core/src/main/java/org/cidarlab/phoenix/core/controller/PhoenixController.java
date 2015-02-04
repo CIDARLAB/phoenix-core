@@ -32,7 +32,7 @@ public class PhoenixController {
         //Import data from Benchling multi-part Genbank files to Clotho
         ClothoAdaptor.uploadSequences(plasmidLib, false);
         ClothoAdaptor.uploadSequences(featureLib, true);
-        ClothoAdaptor.uploadFluorescenceSpectrums(fluorophoreSpectra);
+//        ClothoAdaptor.uploadFluorescenceSpectrums(fluorophoreSpectra);
         
         //Recieve data from Clotho
         HashSet<Fluorophore> FPs = ClothoAdaptor.queryFluorophores();
@@ -45,7 +45,9 @@ public class PhoenixController {
         List<Module> structures = EugeneAdaptor.getStructures(structureFile, 1);
         
         //Decompose target modules with PhoenixGrammar to get module graphs
-//        PhoenixGrammar.decompose(structures);
+        for (Module structure : structures) {
+            PhoenixGrammar.decompose(structure);
+        }
         
         //Extend the modules for testing
         TestingStructures.addTestingPrimitives(structures);

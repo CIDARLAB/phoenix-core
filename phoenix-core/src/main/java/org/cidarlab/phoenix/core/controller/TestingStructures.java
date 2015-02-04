@@ -112,6 +112,8 @@ public class TestingStructures {
         }
     }
     
+    
+    
     private static PrimitiveModule testPromoter = new PrimitiveModule(PrimitiveModuleRole.PROMOTER_CONSTITUTIVE, new Primitive(new ComponentType("p"), "pTEST"));
     private static PrimitiveModule testRBS = new PrimitiveModule(PrimitiveModuleRole.RBS, new Primitive(new ComponentType("r"), "rTEST"));
     private static PrimitiveModule testTerminator = new PrimitiveModule(PrimitiveModuleRole.TERMINATOR, new Primitive(new ComponentType("t"), "tTEST"));

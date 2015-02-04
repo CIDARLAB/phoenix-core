@@ -52,7 +52,7 @@ public class CoreTest {
         
         File featureLib = new File(getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_feature_lib.gb");
         File plasmidLib = new File(getFilepath() + "/src/main/resources/BenchlingGenbankFiles/benchling_export_120514_multi.gb");
-        File structureFile = new File(getFilepath() + "/src/main/resources/miniEugeneFiles/toggle-switch-full.eug");
+        File structureFile = new File(getFilepath() + "/src/main/resources/miniEugeneFiles/toggle-switch-full-AF.eug");
         File fluorophoreSpectra = new File(getFilepath() + "/src/main/resources/FluorescentProteins/fp_spectra.csv");
         PhoenixController.run(featureLib, plasmidLib, structureFile, fluorophoreSpectra);
     }

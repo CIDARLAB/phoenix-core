@@ -13,6 +13,7 @@ import org.cidarlab.phoenix.core.adaptors.EugeneAdaptor;
 import org.cidarlab.phoenix.core.dom.Cytometer;
 import org.cidarlab.phoenix.core.dom.Fluorophore;
 import org.cidarlab.phoenix.core.dom.Module;
+import org.cidarlab.phoenix.core.grammars.PhoenixGrammar;
 import org.clothocad.model.Feature;
 import org.clothocad.model.Part;
 
@@ -31,6 +32,7 @@ public class PhoenixController {
         //Import data from Benchling multi-part Genbank files to Clotho
         ClothoAdaptor.uploadSequences(plasmidLib, false);
         ClothoAdaptor.uploadSequences(featureLib, true);
+        ClothoAdaptor.uploadFluorescenceSpectrums(fluorophoreSpectra);
         
         //Recieve data from Clotho
         HashSet<Fluorophore> FPs = ClothoAdaptor.queryFluorophores();
@@ -43,13 +45,12 @@ public class PhoenixController {
         List<Module> structures = EugeneAdaptor.getStructures(structureFile, 1);
         
         //Decompose target modules with PhoenixGrammar to get module graphs
-        
+//        PhoenixGrammar.decompose(structures);
         
         //Extend the modules for testing
+        TestingStructures.addTestingPrimitives(structures);
         
-        
-        //Determine which fluorophores to use and assign to placeholders in module graph
-        ClothoAdaptor.uploadFluorescenceSpectrums(fluorophoreSpectra);
+        //Determine which fluorophores to use and assign to placeholders in module graph        
         ArrayList<Fluorophore> solve = FluorescentProteinSelector.solve(FPs, FluorescentProteinSelector.getConfiguredCytometer(), 2);
         
         //Perform partial part assignments given the feature library

@@ -21,16 +21,7 @@ public class Module {
     /*
      * Need to formally define these methods and constructors. But this is the basic essence of this Class. 
      */
-    public enum ModuleType{
-        TU,
-        TERMINATOR,
-        PROMOTERS,
-        CDS,
-        WILDCARD,
-        TESTING, 
-        PRIMITIVE,
-        MODULE
-    }
+
     //Default module contructor
     public Module() {
         this.stage = -1;
@@ -58,11 +49,10 @@ public class Module {
     }
     
     
-     //Module features
+    //Module roles
     @Getter
     @Setter
-    private ModuleType type;
-    
+    private ModuleRole role;    
     
     //Module features
     @Getter
@@ -114,8 +104,8 @@ public class Module {
     @Setter
     private Interaction interaction;
     
-    // Feel free to add more of these
-    public static enum ModuleRole {
+    //Module roles
+    public enum ModuleRole {
     	EXPRESSOR,
         EXPRESSEE,
         TRANSCRIPTIONAL_UNIT,

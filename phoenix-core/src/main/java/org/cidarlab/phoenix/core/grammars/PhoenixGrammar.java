@@ -10,7 +10,7 @@ import java.util.List;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.phoenix.core.dom.ComponentType;
 import org.cidarlab.phoenix.core.dom.Module;
-import org.cidarlab.phoenix.core.dom.Module.ModuleType;
+import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
 import org.cidarlab.phoenix.core.dom.Orientation;
 import org.cidarlab.phoenix.core.dom.Primitive;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
@@ -356,7 +356,7 @@ public class PhoenixGrammar {
         Module child =null;
         
         //<editor-fold desc="If Module is of type TU">
-        if (node.getType().equals(ModuleType.MODULE)) {            
+        if (node.getRole().equals(ModuleRole.TRANSCRIPTIONAL_UNIT)) {            
             //Check all Forward Orientation Parts
             for (PrimitiveModule subnodes : node.getSubmodules()) {
                 if (stack == 0) {
@@ -371,7 +371,7 @@ public class PhoenixGrammar {
                             child.setStage(node.getStage() + 1);  //Set the Stage of the Child Node
                             child.setRoot(false);                 //Wont be the root.     
                             child.setForward(true);               //These are all Forward oriented. 
-                            child.setType(ModuleType.TU);         //Set Child as a TU
+                            child.setRole(ModuleRole.TRANSCRIPTIONAL_UNIT);         //Set Child as a TU
                             
                             moduleFeatures.add(subnodes.getModuleFeatures().get(0));
                             submoduleStack.add(subnodes);
@@ -411,7 +411,7 @@ public class PhoenixGrammar {
                             child.setStage(node.getStage() + 1);  //Set the Stage of the Child Node
                             child.setRoot(false);                 //Wont be the root.     
                             child.setForward(false);              //These are all Reverse oriented. 
-                            child.setType(ModuleType.TU);         //Set Child as a TU
+                            child.setRole(ModuleRole.TRANSCRIPTIONAL_UNIT);         //Set Child as a TU
                             
                             moduleFeatures.add(subnodes.getModuleFeatures().get(0));
                             submoduleStack.add(subnodes);
@@ -438,7 +438,7 @@ public class PhoenixGrammar {
             }
         }
         //</editor-fold>
-        else if(node.getType().equals(ModuleType.TU))
+        else if(node.getRole().equals(ModuleRole.TRANSCRIPTIONAL_UNIT))
         {
            //Needs to be broken down based on grammar.. 
            

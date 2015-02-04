@@ -373,7 +373,7 @@ public class Clotho implements MessageListener
             queryMap.put("channel", channel.toString());
             queryMap.put("data", map);
             queryMap.put("requestId", requestId);
-
+            
             StringWriter queryStringWriter = new StringWriter();
             JSONValue.writeJSONString(queryMap, queryStringWriter);
             String queryString = queryStringWriter.toString();

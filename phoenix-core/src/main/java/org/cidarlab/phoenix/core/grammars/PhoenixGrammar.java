@@ -10,10 +10,12 @@ import java.util.List;
 import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.phoenix.core.dom.ComponentType;
 import org.cidarlab.phoenix.core.dom.Module;
+import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
 import org.cidarlab.phoenix.core.dom.Module.ModuleType;
 import org.cidarlab.phoenix.core.dom.Orientation;
 import org.cidarlab.phoenix.core.dom.Primitive;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
+import org.cidarlab.phoenix.core.dom.PrimitiveModule.PrimitiveModuleRole;
 import org.cidarlab.phoenix.core.formalgrammar.Grammar;
 import org.cidarlab.phoenix.core.formalgrammar.Nonterminal;
 import org.cidarlab.phoenix.core.formalgrammar.ProductionRule;
@@ -307,142 +309,206 @@ public class PhoenixGrammar {
 
         return grammars;
     }
-    
-    public void deletemodule(){
-    List<Component[]> eugeneDevices = null;
-    List<Module> phoenixModules = new ArrayList<>();
-    for (Component[] eugeneDevice : eugeneDevices) 
-    {
-            Module phoenixModule = new Module();
-            phoenixModule.setForward(true);
-            ArrayList<Feature> moduleFeatures = new ArrayList<>();
-            ArrayList<PrimitiveModule> primitiveModules = new ArrayList<>();
-            for (Component c : eugeneDevice) 
-            {
-                String type = c.getType().getName();
-                boolean isCDS = false;
-                if (type.equalsIgnoreCase("c") || type.equalsIgnoreCase("fc") || type.equalsIgnoreCase("rc")) {
-                    isCDS = true;
-                }
-                Feature f = Feature.generateFeature(c.getName(), "", new Person(), isCDS);
-                moduleFeatures.add(f); //Done
-                ComponentType ctype = new ComponentType(type);
-                //Create a new primitive module
-                PrimitiveModule pm = new PrimitiveModule();
-                Primitive primitive = new Primitive(ctype, c.getName());
-                primitive.setOrientation(Orientation.REVERSE);
-                if (c.isForward()) {
-                    primitive.setOrientation(Orientation.FORWARD);
-                }
-                pm.setPrimitive(primitive);
-                List<Feature> pmf = new ArrayList<>();
-                pmf.add(f);
-                pm.setModuleFeatures(pmf);
-                pm.setForward(c.isForward());
-                primitiveModules.add(pm);
-        }
-        phoenixModule.setModuleFeatures(moduleFeatures);
-        phoenixModule.setSubmodules(primitiveModules);
-        phoenixModule.setRoot(true);
-        phoenixModules.add(phoenixModule);
-    }
-    }
-    
-
     public static void assignChildren(Module node) {
         int stack = 0;
         ArrayList<Feature> moduleFeatures = null;
-        List<PrimitiveModule> submoduleStack =null;
-        Module child =null;
+        List<PrimitiveModule> submoduleStack = null;
+        Module child = null;
+
         
-        //<editor-fold desc="If Module is of type TU">
-        if (node.getType().equals(ModuleType.MODULE)) {            
-            //Check all Forward Orientation Parts
-            for (PrimitiveModule subnodes : node.getSubmodules()) {
-                if (stack == 0) {
-                    if (subnodes.getPrimitive().getOrientation().equals(Orientation.FORWARD)) {
-                        if (subnodes.getPrimitive().getType().getName().startsWith("p")) {
-                            System.out.print(subnodes.getPrimitive().getType().getName());
+        //<editor-fold desc="If Module is of type Higher Function">
+        String seq = "";
+        if (node.getType().equals(ModuleRole.HIGHER_FUNCTION)) {
+
+            if (node.isRoot()) {
+                
+                Module forward = forwardModulePreProcessing(node);
+                forward.getParents().add(node);
+                assignChildren(forward);
+                Module reverse = reverseModulePreProcessing(node);
+                reverse.getParents().add(node);
+                assignChildren(reverse);
+
+                node.getChildren().add(forward);
+                node.getChildren().add(reverse);
+
+            } 
+            else {
+                //<editor-fold desc="Check for TUs">
+                for (PrimitiveModule subnodes : node.getSubmodules()) {
+                    if (stack == 0) {
+                        if (subnodes.getPrimitiveType().equals(PrimitiveModuleRole.PROMOTER)) {
+                            seq = "";
+                                seq += subnodes.getPrimitive().getType().getName();
                             stack = 1;
                             submoduleStack = new ArrayList<>();
                             moduleFeatures = new ArrayList<>();
-                            
+
                             child = new Module();
                             child.setStage(node.getStage() + 1);  //Set the Stage of the Child Node
                             child.setRoot(false);                 //Wont be the root.     
                             child.setForward(true);               //These are all Forward oriented. 
-                            child.setType(ModuleType.TU);         //Set Child as a TU
-                            
+                            child.setType(ModuleRole.TRANSCRIPTIONAL_UNIT);         //Set Child as a TU
+
                             moduleFeatures.add(subnodes.getModuleFeatures().get(0));
                             submoduleStack.add(subnodes);
                         }
+
+                    }
+                    if (stack == 1) {
+
+                    //Set Features for the Module 
+                        if (subnodes.getPrimitiveType().equals(PrimitiveModuleRole.WILDCARD)) 
+                            seq += "W";
+                        else
+                            seq += subnodes.getPrimitive().getType().getName();
+
+                        moduleFeatures.add(subnodes.getModuleFeatures().get(0));
+                        submoduleStack.add(subnodes);
+                        if (subnodes.getPrimitiveType().equals(PrimitiveModuleRole.TERMINATOR)) {
+                            stack = 0;
+                            child.setModuleFeatures(moduleFeatures);
+                            child.setSubmodules(submoduleStack);
+                            node.getChildren().add(child);
+                            assignChildren(child);
+                            node.getChildren().add(child);
+                            child.getParents().add(node);
+                            System.out.println(seq);
+                        }
                     }
                 }
-                if(stack ==1)
+            //</editor-fold>
+            }
+            
+            
+            
+        } //</editor-fold>
+        
+        //<editor-fold desc="If Module is type : TRANSCRIPTIONAL UNIT">
+        else if (node.getType().equals(ModuleRole.TRANSCRIPTIONAL_UNIT)) {
+            List<Module> expressorList = new ArrayList<Module>();
+            Module expressee = new Module();
+            expressee.setStage(node.getStage()+1);
+            expressee.setType(ModuleRole.EXPRESSEE);
+            moduleFeatures = new ArrayList<Feature>();
+            submoduleStack = new ArrayList<PrimitiveModule>();
+            for (PrimitiveModule subnodes : node.getSubmodules()) {
+                if(subnodes.getPrimitiveType().equals(PrimitiveModuleRole.CDS))
                 {
-                    if(subnodes.getPrimitive().getOrientation().equals(Orientation.REVERSE))
-                    {
-                        //Set to Wild Card?
-                    }
-                    //Set Features for the Module 
-                    System.out.print(subnodes.getPrimitive().getType().getName());
+                    moduleFeatures.add(subnodes.getModuleFeatures().get(0));//Most Likely comment out??
+                    Module expressor = getExpressorModule(subnodes);
+                    expressor.setStage(node.getStage()+1);
+                    expressorList.add(expressor);
+                    
+                    PrimitiveModule testing = new PrimitiveModule();
+                    testing.setModuleFeatures(subnodes.getModuleFeatures()); //changes?
+                    testing.setPrimitive(subnodes.getPrimitive()); //Valid here?
+                    testing.setPrimitiveType(PrimitiveModuleRole.TESTING);
+                    submoduleStack.add(testing);
+                }
+                else
+                {
                     moduleFeatures.add(subnodes.getModuleFeatures().get(0));
                     submoduleStack.add(subnodes);
-                    if (subnodes.getPrimitive().getType().getName().startsWith("t") && subnodes.getPrimitive().getOrientation().equals(Orientation.FORWARD)) {
-                        stack = 0;
-                        child.setModuleFeatures(moduleFeatures);
-                        child.setSubmodules(submoduleStack);
-                        node.getChildren().add(child);
-                        assignChildren(child);
-                        System.out.println("");
-                    }
                 }
             }
-            //Check all Reverse Orientation Parts
-            for (PrimitiveModule subnodes : node.getSubmodules()) {
-                if (stack == 0) {
-                    if (subnodes.getPrimitive().getOrientation().equals(Orientation.REVERSE)) {
-                        if (subnodes.getPrimitive().getType().getName().startsWith("p")) {
-                            stack = 1;
-                            submoduleStack = new ArrayList<>();
-                            moduleFeatures = new ArrayList<>();
-                            
-                            child = new Module();
-                            child.setStage(node.getStage() + 1);  //Set the Stage of the Child Node
-                            child.setRoot(false);                 //Wont be the root.     
-                            child.setForward(false);              //These are all Reverse oriented. 
-                            child.setType(ModuleType.TU);         //Set Child as a TU
-                            
-                            moduleFeatures.add(subnodes.getModuleFeatures().get(0));
-                            submoduleStack.add(subnodes);
-                        }
-                    }
-                }
-                if(stack ==1)
-                {
-                    if(subnodes.getPrimitive().getOrientation().equals(Orientation.FORWARD))
-                    {
-                        //Set to Wild Card?
-                    }
-                    //Set Features for the Module 
-                    moduleFeatures.add(subnodes.getModuleFeatures().get(0));
-                    submoduleStack.add(subnodes);
-                    if (subnodes.getPrimitive().getType().getName().startsWith("t") && subnodes.getPrimitive().getOrientation().equals(Orientation.REVERSE)) {
-                        stack = 0;
-                        child.setModuleFeatures(moduleFeatures);
-                        child.setSubmodules(submoduleStack);
-                        node.getChildren().add(child);
-                        assignChildren(child);
-                    }
-                }
+            expressee.setModuleFeatures(moduleFeatures);
+            expressee.setSubmodules(submoduleStack);
+            
+            expressee.getParents().add(node);
+            node.getChildren().add(expressee);
+            for(Module exp:expressorList)
+            {
+                exp.getParents().add(node);
+                node.getChildren().add(exp);
             }
         }
         //</editor-fold>
-        else if(node.getType().equals(ModuleType.TU))
-        {
-           //Needs to be broken down based on grammar.. 
-           
-        }
     }
 
+    public static Module forwardModulePreProcessing(Module node) {
+        Module forwardModule = new Module();
+        forwardModule.setRoot(false);
+        forwardModule.setType(ModuleRole.HIGHER_FUNCTION);
+        forwardModule.setStage(node.getStage()+1);
+        ArrayList<Feature> moduleFeature = new ArrayList<Feature>();
+        ArrayList<PrimitiveModule> primModules = new ArrayList<PrimitiveModule>();
+        for (int i = (node.getSubmodules().size() - 1); i >= 0; i--) {
+            if (node.getSubmodules().get(i).getPrimitive().getOrientation().equals(Orientation.REVERSE)) {
+                PrimitiveModule wildCard = new PrimitiveModule();
+                wildCard.setPrimitiveType(PrimitiveModuleRole.WILDCARD);
+                wildCard.setModuleFeatures(node.getSubmodules().get(i).getModuleFeatures());
+                primModules.add(wildCard);
+
+                moduleFeature.add(node.getSubmodules().get(i).getModuleFeatures().get(0)); // May have to comment this out later on?
+            } else {
+                PrimitiveModule forModule = new PrimitiveModule();
+                forModule.setPrimitive(node.getSubmodules().get(i).getPrimitive());
+                forModule.setModuleFeatures(node.getSubmodules().get(i).getModuleFeatures());
+                forModule.setPrimitiveType(findRole(forModule.getPrimitive().getType()));
+                primModules.add(forModule);
+
+                moduleFeature.add(node.getSubmodules().get(i).getModuleFeatures().get(0)); //Does anything change here?? (Due to the flip in the orientation?)
+            }
+        }
+        forwardModule.setModuleFeatures(moduleFeature);
+        forwardModule.setSubmodules(primModules);
+        return forwardModule;
+    }
+
+    public static Module reverseModulePreProcessing(Module node) {
+
+        Module reverseModule = new Module();
+        reverseModule.setRoot(false);
+        reverseModule.setType(ModuleRole.HIGHER_FUNCTION);
+        reverseModule.setStage(node.getStage()+1);
+        reverseModule.setForward(true);    //Needed?
+        ArrayList<Feature> moduleFeature = new ArrayList<Feature>();
+        ArrayList<PrimitiveModule> primModules = new ArrayList<PrimitiveModule>();
+        for (int i = (node.getSubmodules().size() - 1); i >= 0; i--) {
+            if (node.getSubmodules().get(i).getPrimitive().getOrientation().equals(Orientation.FORWARD)) {
+                PrimitiveModule wildCard = new PrimitiveModule();
+                wildCard.setPrimitiveType(PrimitiveModuleRole.WILDCARD);
+                wildCard.setModuleFeatures(node.getSubmodules().get(i).getModuleFeatures());
+                primModules.add(wildCard);
+
+                moduleFeature.add(node.getSubmodules().get(i).getModuleFeatures().get(0)); // May have to comment this out later on?
+            } else {
+                PrimitiveModule revModule = new PrimitiveModule();
+                revModule.setPrimitive(node.getSubmodules().get(i).getPrimitive());
+                revModule.getPrimitive().setOrientation(Orientation.FORWARD); // Again needed?
+                revModule.setModuleFeatures(node.getSubmodules().get(i).getModuleFeatures());
+                revModule.setPrimitiveType(findRole(revModule.getPrimitive().getType()));
+                primModules.add(revModule);
+
+                moduleFeature.add(node.getSubmodules().get(i).getModuleFeatures().get(0)); //Does anything change here?? (Due to the flip in the orientation?)
+            }
+        }
+        reverseModule.setModuleFeatures(moduleFeature);
+        reverseModule.setSubmodules(primModules);
+        return reverseModule;
+    }
+
+    public static PrimitiveModuleRole findRole(ComponentType type) {
+        PrimitiveModuleRole role = PrimitiveModuleRole.WILDCARD;
+        if (type.getName().startsWith("p")) {
+            role = PrimitiveModuleRole.PROMOTER;
+        } else if (type.getName().startsWith("r")) {
+            role = PrimitiveModuleRole.RBS;
+        } else if (type.getName().startsWith("c")) {
+            role = PrimitiveModuleRole.CDS;
+        } else if (type.getName().startsWith("t")) {
+            role = PrimitiveModuleRole.TERMINATOR;
+        }
+        return role;
+    }
+    
+    public static Module getExpressorModule(PrimitiveModule node)
+    {
+        Module expressor = new Module();
+        expressor.setType(ModuleRole.EXPRESSOR);
+        expressor.setModuleFeatures(node.getModuleFeatures());
+        expressor.getSubmodules().add(node);
+        return expressor;
+    }
 }

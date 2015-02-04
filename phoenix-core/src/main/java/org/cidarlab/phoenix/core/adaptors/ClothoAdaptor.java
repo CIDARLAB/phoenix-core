@@ -244,12 +244,15 @@ public class ClothoAdaptor {
             //JSONObject ex = new JSONObject();
             //ex.putAll(ex_spectrum);
             createFluorophore.put("ex_spectrum", ex_array);
-
+            
             //NucSeq sub-schema
             Map createSequence = new HashMap();
             createSequence.put("schema", "org.clothocad.model.Sequence");
             createSequence.put("sequence", f.getSequence().getSequence());
             createFluorophore.put("sequence", createSequence);
+            
+            
+            
             
             //Clotho ID
             if (f.getClothoID() != null) {
@@ -585,7 +588,7 @@ public class ClothoAdaptor {
         HashSet<Part> parts = new HashSet<>();
 
         Map map = new HashMap();
-        map.put("schema", "org.clothocad.model.Part");
+        map.put("schema", "org.clothocad.model.PartREMOVETHIS");
         Object query = clothoObject.query(map);
         JSONArray array = (JSONArray) query;
 
@@ -640,9 +643,14 @@ public class ClothoAdaptor {
             pn.setSequence(jsonPolynuc.get("sequence").toString());
             pn.setLinear(Boolean.parseBoolean(jsonPolynuc.get("isLinear").toString()));
             pn.setSingleStranded(Boolean.parseBoolean(jsonPolynuc.get("isSingleStranded").toString()));
-            pn.setSubmissionDate(new Date(jsonPolynuc.get("submissionDate").toString()));
+            if(jsonPolynuc.containsKey("submissionDate"))
+            {
+                if(jsonPolynuc.get("submissionDate")!=null)
+                {
+                    pn.setSubmissionDate(new Date(jsonPolynuc.get("submissionDate").toString()));
+                }
+            }
             pn.setClothoID(jsonPolynuc.get("id").toString());
-            
             polynucs.add(pn);
         }
         conn.closeConnection();

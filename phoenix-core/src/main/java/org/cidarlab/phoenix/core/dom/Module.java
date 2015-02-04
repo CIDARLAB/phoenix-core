@@ -61,7 +61,7 @@ public class Module {
      //Module features
     @Getter
     @Setter
-    private ModuleType type;
+    private ModuleRole type;
     
     
     //Module features

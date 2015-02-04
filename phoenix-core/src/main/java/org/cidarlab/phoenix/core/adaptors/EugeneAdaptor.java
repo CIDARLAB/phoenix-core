@@ -14,6 +14,7 @@ import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.util.FileUtil;
 import org.cidarlab.phoenix.core.dom.ComponentType;
 import org.cidarlab.phoenix.core.dom.Module;
+import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
 import org.cidarlab.phoenix.core.dom.Module.ModuleType;
 import org.cidarlab.phoenix.core.dom.Orientation;
 import org.cidarlab.phoenix.core.dom.Primitive;
@@ -119,13 +120,13 @@ public class EugeneAdaptor {
                 pm.setForward(c.isForward());
                 primitiveModules.add(pm);
             }
-            phoenixModule.setType(ModuleType.MODULE);
+            phoenixModule.setType(ModuleRole.HIGHER_FUNCTION);
             phoenixModule.setModuleFeatures(moduleFeatures);
             phoenixModule.setSubmodules(primitiveModules); 
             phoenixModule.setRoot(true);
             phoenixModules.add(phoenixModule); 
             PhoenixGrammar.assignChildren(phoenixModule);
-            System.out.println("=====================NEXT!!");
+            
         }
         
         return phoenixModules;

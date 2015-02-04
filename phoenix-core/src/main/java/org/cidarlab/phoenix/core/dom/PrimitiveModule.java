@@ -28,4 +28,24 @@ public class PrimitiveModule extends Module {
     {
     }
     
+    @Getter
+    @Setter
+    private PrimitiveModuleRole primitiveType;
+     public enum PrimitiveModuleRole {
+       PROMOTER,
+       PROMOTER_REPRESSIBLE,
+       PROMOTER_INDUCIBLE,
+       PROMOTER_CONSTITUTIVE,
+       RBS,
+       CDS,
+       CDS_REPRESSOR,
+       CDS_ACTIVATOR,
+       CDS_LINKER,
+       CDS_TAG,
+       CDS_FLUORESCENT,
+       TERMINATOR,
+       TESTING,
+       WILDCARD
+   }
+    
 }

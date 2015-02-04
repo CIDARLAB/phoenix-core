@@ -67,7 +67,6 @@ public class PrimitiveModule extends Module {
        TERMINATOR,
        VECTOR,
        TESTING,
-       VECTOR,
        WILDCARD
    }
     

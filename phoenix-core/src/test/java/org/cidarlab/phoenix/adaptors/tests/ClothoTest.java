@@ -140,7 +140,7 @@ public class ClothoTest {
         ClothoTest t = new ClothoTest();
         //t.testFeatureUpload();
         //t.testQuery();
-        //t.testFluorSpectraUpload();
+        t.testFluorSpectraUpload();
 
     }
 }

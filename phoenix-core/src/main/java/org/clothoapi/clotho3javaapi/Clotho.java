@@ -379,7 +379,18 @@ public class Clotho implements MessageListener
             String queryString = queryStringWriter.toString();
             long startTime = System.currentTimeMillis();
             long elapsedTime = 0;
-            connection.sendMessage(queryString);
+            //if(map.get("name").equals("mOrange.ref"))
+            //    System.out.println(queryString);
+            //try{
+                connection.sendMessage(queryString);
+            //}
+            /*catch(Exception e)
+            {
+                System.out.println("ERROR Message: "+e.getMessage());
+                System.out.println("ERROR Localized message"+e.getLocalizedMessage());
+                System.out.println("ERROR toString()" + e.toString());
+            
+            }*/
             while((!received) && (elapsedTime <10))
             {
                 System.out.print("");
@@ -399,6 +410,10 @@ public class Clotho implements MessageListener
             
             
         } catch (IOException ex) {
+            System.out.println("ERROR Message: "+ex.getMessage());
+            System.out.println("ERROR Localized message"+ex.getLocalizedMessage());
+            System.out.println("ERROR toString()" + ex.toString());
+            
             Logger.getLogger(Clotho.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;

@@ -41,19 +41,18 @@ public class ClothoAdaptor {
      * This method is for reading a Benchling-produced Multipart Genbank file with Biojava 1.9.0
      * It creates Clotho Polynucleotides, Parts, Sequences, Annotations and Features
      */
-    public static Clotho uploadSequences(File input, boolean featureLib) throws Exception {
+    public static void uploadSequences(File input, boolean featureLib) throws Exception {
 
         //Establish Clotho connection
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
-        Clotho clothoObject = new Clotho(conn);
+       
         
         //If this file is a feature library, only get features and save those to Clotho
         if (featureLib) {
             HashSet<Feature> features = BenchlingAdaptor.getFeatures(input);
             HashSet<Fluorophore> fluorophores = BenchlingAdaptor.getFluorophores(features);
             features.removeAll(fluorophores);
-            createFeatures(features, clothoObject);
-            createFluorophores(fluorophores, clothoObject);
+            createFeatures(features);
+            createFluorophores(fluorophores);
             
         } else {
  
@@ -63,13 +62,11 @@ public class ClothoAdaptor {
             HashSet<Part> parts = BenchlingAdaptor.getMoCloParts(input);
 
             //Save all polynucleotides, nucseqs and parts to Clotho
-            createPolynucleotides(polyNucs, clothoObject);
-            createParts(parts, clothoObject);
-            createNucSeqs(nucSeqs, clothoObject);
+            createPolynucleotides(polyNucs);
+            createParts(parts);
+            createNucSeqs(nucSeqs);
         }
-        
-        conn.closeConnection();
-        return clothoObject;
+       
     }
     
     /*
@@ -78,9 +75,6 @@ public class ClothoAdaptor {
     public static HashSet<Fluorophore> uploadFluorescenceSpectrums (File input) throws FileNotFoundException, IOException {
         
         //Establish Clotho connection
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
-        Clotho clothoObject = new Clotho(conn);
-        
         //Import file, begin reading
         BufferedReader reader = new BufferedReader(new FileReader(input.getAbsolutePath()));
         HashMap<String, HashMap<Double, Double>> spectralMaps = new HashMap<>();
@@ -124,12 +118,11 @@ public class ClothoAdaptor {
             }
         }
         
-        createFluorophores(queryFluorophores, clothoObject);
+        createFluorophores(queryFluorophores);
         HashSet<Fluorophore> queryFluorophores2 = queryFluorophores();
 //        
         String t = "";
         
-        conn.closeConnection();
 //        return clothoObject;
         return queryFluorophores;
     }
@@ -141,8 +134,10 @@ public class ClothoAdaptor {
      */
 
     //Add polynucleotides to Clotho via Clotho Server API
-    public static void createPolynucleotides(HashSet<Polynucleotide> polyNucs, Clotho clothoObject) {
-
+    public static void createPolynucleotides(HashSet<Polynucleotide> polyNucs) {
+        
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
         for (Polynucleotide pn : polyNucs) {
 
             //Polynucleotide schema
@@ -164,14 +159,17 @@ public class ClothoAdaptor {
                 createPolynucleotide.put("id", pn.getAccession());
                 pn.setClothoID(pn.getAccession());
             }
-            Clotho.create(createPolynucleotide);
+            clothoObject.create(createPolynucleotide);
             
         }
+        conn.closeConnection();
     }
 
     //Add features to Clotho via Clotho Server API
-    public static void createFeatures(HashSet<Feature> features, Clotho clothoObject) {
+    public static void createFeatures(HashSet<Feature> features) {
 
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
         for (Feature f : features) {
 
             //Feature schema
@@ -195,13 +193,16 @@ public class ClothoAdaptor {
                 createFeature.put("id", f.getName());
                 f.setClothoID(f.getName());
             }
-            Clotho.set(createFeature);
+            clothoObject.set(createFeature);
         }
+        conn.closeConnection();
     }
     
     //Add features to Clotho via Clotho Server API
-    public static void createFluorophores(HashSet<Fluorophore> flourophores, Clotho clothoObject) {
+    public static void createFluorophores(HashSet<Fluorophore> flourophores) {
 
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
         for (Fluorophore f : flourophores) {
 
             //Fluorophore schema
@@ -223,7 +224,8 @@ public class ClothoAdaptor {
 //            HashMap<Double, Double> em_spectrum = new HashMap<>();
             for (Double wavelength : f.getEm_spectrum().keySet()) {
                 JSONObject em = new JSONObject();
-                em.put(wavelength, f.getEm_spectrum().get(wavelength).toString());
+                em.put("x", wavelength.toString());
+                em.put("y", f.getEm_spectrum().get(wavelength).toString());
                 em_array.add(em);
                 //em_spectrum.put(wavelength, f.getEm_spectrum().get(wavelength));
             }
@@ -237,7 +239,8 @@ public class ClothoAdaptor {
 //            HashMap<Double, Double> em_spectrum = new HashMap<>();
             for (Double wavelength : f.getEx_spectrum().keySet()) {
                 JSONObject ex = new JSONObject();
-                ex.put(wavelength, f.getEx_spectrum().get(wavelength).toString());
+                ex.put("x", wavelength.toString());
+                ex.put("y", f.getEx_spectrum().get(wavelength).toString());
                 //ex_spectrum.put(wavelength, f.getEx_spectrum().get(wavelength));
                 ex_array.add(ex);
             }
@@ -262,13 +265,17 @@ public class ClothoAdaptor {
                 createFluorophore.put("id", f.getName());
                 f.setClothoID(f.getName());
             
-            } 
-            Clotho.set(createFluorophore);
+            }
+            
+            clothoObject.set(createFluorophore);
         }
+        conn.closeConnection();
     }
 
     //Add parts to Clotho via Clotho Server API
-    public static void createParts(HashSet<Part> parts, Clotho clothoObject) {
+    public static void createParts(HashSet<Part> parts) {
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
         for (Part p : parts) {
 
             //Part schema
@@ -292,11 +299,14 @@ public class ClothoAdaptor {
 
             clothoObject.set(createPart);
         }
+        conn.closeConnection();
     }
 
     //Add nucseqs to Clotho via Clotho Server API
-    public static void createNucSeqs(HashSet<NucSeq> nucSeqs, Clotho clothoObject) {
-
+    public static void createNucSeqs(HashSet<NucSeq> nucSeqs) {
+        
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
         for (NucSeq ns : nucSeqs) {
 
             //NucSeq schema
@@ -357,8 +367,9 @@ public class ClothoAdaptor {
                 createNucSeqMain.put("id", ns.getClothoID());
             }
 
-            Clotho.create(createNucSeqMain);
+            clothoObject.create(createNucSeqMain);
         }
+        conn.closeConnection();
     }
     
     /*

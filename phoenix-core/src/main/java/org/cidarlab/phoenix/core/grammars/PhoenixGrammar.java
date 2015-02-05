@@ -309,7 +309,20 @@ public class PhoenixGrammar {
         return grammars;
     }
     
-    //Method for decomposing 
+    /*---------------
+     * 
+     * DECOMPOSITION METHODS
+     * 
+     *---------------*/
+    
+    //Helper method to loop through a list of structures that need to be decomposed
+    public static void decomposeAll (List<Module> modules) {
+        for (Module structure : modules) {
+            PhoenixGrammar.decompose(structure);
+        }
+    }
+    
+    //Method for decomposing one module into its structural terminals
     public static void decompose(Module node) {
 
         int stack = 0;
@@ -432,7 +445,7 @@ public class PhoenixGrammar {
     }
 
     //Pre-processing steps for the globally forward version of the structure
-    public static Module forwardModulePreProcessing(Module node) {
+    private static Module forwardModulePreProcessing(Module node) {
         
         Module forwardModule = new Module();
         forwardModule.setRoot(false);
@@ -475,7 +488,7 @@ public class PhoenixGrammar {
     }
 
     //Pre-processing steps for the globally reverse version of the structure
-    public static Module reverseModulePreProcessing(Module node) {
+    private static Module reverseModulePreProcessing(Module node) {
 
         Module reverseModule = new Module();
         reverseModule.setRoot(false);
@@ -536,7 +549,7 @@ public class PhoenixGrammar {
     }
     
     //Create a new EXPRESSEE
-    public static Module getExpresseeModule(PrimitiveModule node) {
+    private static Module getExpresseeModule(PrimitiveModule node) {
         
         Module expressor = new Module();
         expressor.setRole(ModuleRole.EXPRESSEE);
@@ -544,5 +557,5 @@ public class PhoenixGrammar {
         expressor.setRoot(false);
         expressor.getSubmodules().add(node);
         return expressor;
-    }
+    }    
 }

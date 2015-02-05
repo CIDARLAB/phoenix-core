@@ -4,6 +4,9 @@
  */
 package org.cidarlab.phoenix.core.adaptors;
 
+import java.util.List;
+import org.cidarlab.phoenix.core.dom.Experiment;
+
 /**
  * This class has all methods for sending and receiving information to Owl
  * 
@@ -11,4 +14,8 @@ package org.cidarlab.phoenix.core.adaptors;
  */
 public class OwlAdaptor {
     
+    //Make datasheets for all the experiment parts from a set of experiments
+    public static void makeDatasheets (List<Experiment> experiments) {
+        
+    }    
 }

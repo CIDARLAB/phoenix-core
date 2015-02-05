@@ -20,6 +20,7 @@ import java.util.Set;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.cidarlab.phoenix.core.adaptors.BenchlingAdaptor.*;
+import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Fluorophore;
 import org.clothocad.model.Feature;
 import org.clothocad.model.NucSeq;
@@ -36,6 +37,12 @@ import org.clothocad.model.Person;
  * @author evanappleton
  */
 public class ClothoAdaptor {
+    
+    /*
+     * 
+     * DATA UPLOAD METHODS
+     * 
+     */
     
     /*
      * This method is for reading a Benchling-produced Multipart Genbank file with Biojava 1.9.0
@@ -132,6 +139,13 @@ public class ClothoAdaptor {
         conn.closeConnection();
 //        return clothoObject;
         return queryFluorophores;
+    }
+    
+    /*
+     * This method is for uploading fluorescence spectrum data to be associated with Fluorphore objects
+     */
+    public static void uploadCytometryData (List<File> input, List<Experiment> experiment) throws FileNotFoundException, IOException {
+        
     }
     
     /*

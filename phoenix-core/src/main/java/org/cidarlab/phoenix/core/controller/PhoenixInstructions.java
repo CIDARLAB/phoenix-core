@@ -4,6 +4,9 @@
  */
 package org.cidarlab.phoenix.core.controller;
 
+import java.util.List;
+import org.cidarlab.phoenix.core.dom.Experiment;
+
 /**
  * This class is responsible for producing and interpreting experimental instructions in Phoenix
  * This includes part assembly and determination of testing points
@@ -11,5 +14,10 @@ package org.cidarlab.phoenix.core.controller;
  * @author evanappleton
  */
 public class PhoenixInstructions {
+    
+    //Method for producing testing instructions from Experiments
+    public static String generateTestingInstructions(List<Experiment> experiments) {
+        return "";
+    }
     
 }

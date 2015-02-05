@@ -7,6 +7,7 @@ package org.cidarlab.phoenix.core.controller;
 import java.util.ArrayList;
 import java.util.List;
 import org.cidarlab.phoenix.core.dom.ComponentType;
+import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
 import org.cidarlab.phoenix.core.dom.Primitive;
@@ -119,8 +120,22 @@ public class TestingStructures {
         m.setSubmodules(testSubmodules);
     }
     
+    //Method for forming sets of experiments given a paritally assigned module graph
+    public static List<Experiment> createExperiments(List<Module> modules) {
+        return null;
+    }
     
+    //Method for forming an experiment from a module which has partial part assignment
+    private static Experiment createMultiplexExperiment(Module module) {
+        return null;
+    }
     
+    //Method for forming an experiment from a module which has partial part assignment
+    private static Experiment createAssignedExperiment(Module module) {
+        return null;
+    }
+     
+    //FIELDS
     private static PrimitiveModule testPromoter = new PrimitiveModule(PrimitiveModuleRole.PROMOTER_CONSTITUTIVE, new Primitive(new ComponentType("p"), "pTEST"));
     private static PrimitiveModule testRBS = new PrimitiveModule(PrimitiveModuleRole.RBS, new Primitive(new ComponentType("r"), "rTEST"));
     private static PrimitiveModule testTerminator = new PrimitiveModule(PrimitiveModuleRole.TERMINATOR, new Primitive(new ComponentType("t"), "tTEST"));

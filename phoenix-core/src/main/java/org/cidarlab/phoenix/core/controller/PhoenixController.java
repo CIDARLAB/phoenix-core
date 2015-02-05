@@ -8,13 +8,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import org.cidarlab.phoenix.core.adaptors.AnalyticsAdaptor;
 import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
 import org.cidarlab.phoenix.core.adaptors.EugeneAdaptor;
-import org.cidarlab.phoenix.core.dom.Cytometer;
-import org.cidarlab.phoenix.core.dom.Fluorophore;
+import org.cidarlab.phoenix.core.adaptors.OwlAdaptor;
+import org.cidarlab.phoenix.core.adaptors.RavenAdaptor;
+import org.cidarlab.phoenix.core.adaptors.iBioSimAdaptor;
+import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.grammars.PhoenixGrammar;
-import org.clothocad.model.Feature;
 import org.clothocad.model.Part;
 
 /**
@@ -27,59 +29,62 @@ public class PhoenixController {
     //Main Phoenix run method
     //Remember to start Clotho before this run
     //Will begin as pure server-side, so might be called from a main method initially
-    public static void run (File featureLib, File plasmidLib, File structureFile, File fluorophoreSpectra) throws Exception {
+    public static void run (File featureLib, File plasmidLib, File structureFile, File fluorophoreSpectra, List<File> fcsFiles, File plasmidsCreated) throws Exception {
         
         //Import data from Benchling multi-part Genbank files to Clotho
         ClothoAdaptor.uploadSequences(plasmidLib, false);
         ClothoAdaptor.uploadSequences(featureLib, true);
 //        ClothoAdaptor.uploadFluorescenceSpectrums(fluorophoreSpectra);
         
-        //Recieve data from Clotho
-        HashSet<Fluorophore> FPs = ClothoAdaptor.queryFluorophores();
-        
         //LTL function decomposition
         
         //Map LTL decomposition to structure contstraint libraries
         
         //Create target modules with miniEugene
-        List<Module> structures = EugeneAdaptor.getStructures(structureFile, 1);
+        List<Module> modules = EugeneAdaptor.getStructures(structureFile, 1);
         
         //Decompose target modules with PhoenixGrammar to get module graphs
-        for (Module structure : structures) {
-            PhoenixGrammar.decompose(structure);
-        }
+        PhoenixGrammar.decomposeAll(modules);
         
         //Extend the modules for testing
-        TestingStructures.addTestingPrimitives(structures);
-        
-        //Determine which fluorophores to use and assign to placeholders in module graph        
-        ArrayList<Fluorophore> solve = FluorescentProteinSelector.solve(FPs, FluorescentProteinSelector.getConfiguredCytometer(), 2);
-        
+        TestingStructures.addTestingPrimitives(modules);
+          
         //Perform partial part assignments given the feature library
-        HashSet<Feature> features = ClothoAdaptor.queryFeatures();
-        
-        //Determine testing structures with the partial part assignment to get the Experiment object
-        
-        
-        //REPEAT
-        //Convert modules to parts to get target parts
-        
-        //Form part graph from module graph via Raven optimizations
-        HashSet<Part> parts = ClothoAdaptor.queryParts();
-        
-        //Create instruction files
-        
-        //Recieve data back from Clotho, match up to instructions
-        
-        //Run analytics to produce graphs, parameters
-        
-        //Make owl data sheets
-        
-        //Run simulations to produce candidate part/feature matches
-        
-        //Update feature graphs based upon simulations
-        
-        //Repeat from REPEAT point
+        FeatureAssignment.partialAssignment(modules);
+                
+        List<Experiment> currentExperiments = new ArrayList<>();
+                
+        //Repeat until all module graphs are fully assigned
+        while (!FeatureAssignment.isFullyAssigned(modules)) {
+            
+            //Determine experiments from current module assignment state
+            currentExperiments.addAll(TestingStructures.createExperiments(modules));
+            
+            //Convert modules to parts to get target parts
+            HashSet<Part> experimentParts = FeatureAssignment.getExperimentParts(currentExperiments);
+            
+            //Create instruction files            
+            String assemblyInstructions = RavenAdaptor.generateAssemblyPlan(experimentParts);
+            String testingInstructions = PhoenixInstructions.generateTestingInstructions(currentExperiments);            
+            
+            //Import data from experiments
+            ClothoAdaptor.uploadSequences(plasmidsCreated, false);
+            FeatureAssignment.completeAssignmentSeqResults(modules);
+            ClothoAdaptor.uploadCytometryData(fcsFiles, currentExperiments);
+            
+            //Run analytics to produce graphs, parameters
+            AnalyticsAdaptor.runAnalytics(currentExperiments);
+            
+            //Make owl data sheets
+            OwlAdaptor.makeDatasheets(currentExperiments);
+            currentExperiments.clear();
+            
+            //Run simulations to produce candidate part/feature matches
+            List<Module> bestCombinedModules = iBioSimAdaptor.runSimulations(modules);
+            
+            //Update module graphs based upon simulations
+            FeatureAssignment.completeAssignmentSim(bestCombinedModules, modules);
+        }
     }
     
 }

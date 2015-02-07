@@ -139,9 +139,10 @@ public class ClothoTest {
     public static void main(String[] args) {
         ClothoTest t = new ClothoTest();
         t.testFeatureUpload();
-//        t.testQuery();
         t.testMultiPartUpload();
-//        t.testFluorSpectraUpload();
-        String tt = "";
+        t.testQuery();
+        t.testFluorSpectraUpload();
+
+
     }
 }

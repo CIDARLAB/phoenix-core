@@ -34,7 +34,7 @@ public class PhoenixController {
         //Import data from Benchling multi-part Genbank files to Clotho
         ClothoAdaptor.uploadSequences(plasmidLib, false);
         ClothoAdaptor.uploadSequences(featureLib, true);
-//        ClothoAdaptor.uploadFluorescenceSpectrums(fluorophoreSpectra);
+        ClothoAdaptor.uploadFluorescenceSpectrums(fluorophoreSpectra);
         
         //LTL function decomposition
         

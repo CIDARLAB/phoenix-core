@@ -43,6 +43,7 @@ public class Clotho implements MessageListener
     {
         System.out.println("New Connection established");
         connection = clothoConn.getServerConnection();
+        connection.setMaxTextMessageSize(999999999);
         clothoConn.clothoSocket.addMessageListener(this);
     }
     

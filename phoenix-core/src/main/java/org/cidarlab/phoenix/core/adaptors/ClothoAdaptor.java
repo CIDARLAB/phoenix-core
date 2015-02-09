@@ -126,10 +126,7 @@ public class ClothoAdaptor {
         }
         
         createFluorophores(queryFluorophores);
-        HashSet<Fluorophore> queryFluorophores2 = queryFluorophores();
-//        
-        String t = "";
-        
+        System.out.println("===== Spectra saved ======");
 //        return clothoObject;
         return queryFluorophores;
     }
@@ -230,8 +227,7 @@ public class ClothoAdaptor {
             createFluorophore.put("excitation_max", f.getExcitation_max());
             createFluorophore.put("oligomerization", f.getOligomerization());
             
-            //Emission and excitation spectrums HashMaps
-            
+            //Emission and excitation spectrums HashMaps            
             JSONArray em_array = new JSONArray();
             for (Double wavelength : f.getEm_spectrum().keySet()) {
                 JSONObject em = new JSONObject();
@@ -239,16 +235,15 @@ public class ClothoAdaptor {
                 em.put("y", f.getEm_spectrum().get(wavelength).toString());
                 em_array.add(em);
             }
-            JSONArray ex_array = new JSONArray();
             
+            JSONArray ex_array = new JSONArray();            
             for (Double wavelength : f.getEx_spectrum().keySet()) {
                 JSONObject ex = new JSONObject();
                 ex.put("x", wavelength.toString());
                 ex.put("y", f.getEx_spectrum().get(wavelength).toString());
                 ex_array.add(ex);
             }
-            
-            
+                        
             //NucSeq sub-schema
             Map createSequence = new HashMap();
             createSequence.put("schema", "org.clothocad.model.Sequence");
@@ -400,7 +395,7 @@ public class ClothoAdaptor {
         map.put("schema", "org.clothocad.model.Feature");
         Object query = clothoObject.query(map);
         JSONArray array = (JSONArray) query;
-        //System.out.println("Result from query Features is :" + array);
+        
         for (int i = 0; i < array.size(); i++) {
             
             Feature feature = new Feature();
@@ -466,27 +461,20 @@ public class ClothoAdaptor {
             Double ex = Double.valueOf(jsonFluorophore.get("excitation_max").toString());
             Double em = Double.valueOf(jsonFluorophore.get("emission_max").toString());
             
+            //Get excitation and emmission spectrums
             HashMap<Double, Double> em_spectrum = new HashMap<>();
             JSONArray jsonEm_spectrum = (JSONArray) jsonFluorophore.get("em_spectrum");
             for (int j = 0; j < jsonEm_spectrum.size(); j++) {
                 JSONObject jsonObject = jsonEm_spectrum.getJSONObject(j);
-                for (Object key : jsonObject.keySet()) {
-                    em_spectrum.put(Double.valueOf(key.toString()), Double.valueOf(jsonObject.get(key).toString()));
-                }
-//                em_spectrum.put(Double.valueOf(jsonObject.keySet().), Double.valueOf(jsonEm_spectrum.get(x.toString()).toString()));
+                em_spectrum.put(Double.valueOf(jsonObject.get("x").toString()), Double.valueOf(jsonObject.get("y").toString()));
             }
             fluorophore.setEm_spectrum(em_spectrum);
-            
+         
             HashMap<Double, Double> ex_spectrum = new HashMap<>();
-//            Map jsonEx_spectrum = (Map) jsonFluorophore.get("ex_spectrum");
             JSONArray jsonEx_spectrum = (JSONArray) jsonFluorophore.get("ex_spectrum");
-//            for (Object wavelength : jsonEx_spectrum.keySet()) {
-//                ex_spectrum.put(Double.valueOf(wavelength.toString()), Double.valueOf(jsonEx_spectrum.get(wavelength.toString()).toString()));
             for (int k = 0; k < jsonEx_spectrum.size(); k++) {
                 JSONObject jsonObject = jsonEx_spectrum.getJSONObject(k);
-                for (Object key : jsonObject.keySet()) {
-                    em_spectrum.put(Double.valueOf(key.toString()), Double.valueOf(jsonObject.get(key).toString()));
-                }
+                ex_spectrum.put(Double.valueOf(jsonObject.get("x").toString()), Double.valueOf(jsonObject.get("y").toString()));
             }
             fluorophore.setEx_spectrum(ex_spectrum);
             

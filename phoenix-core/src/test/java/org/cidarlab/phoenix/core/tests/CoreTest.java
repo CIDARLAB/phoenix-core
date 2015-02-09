@@ -39,8 +39,7 @@ public class CoreTest {
     
     public String getFilepath()
     {
-        String filepath="";
-        
+        String filepath="";       
         filepath = PhoenixController.class.getClassLoader().getResource(".").getPath();
         filepath = filepath.substring(0,filepath.indexOf("/target/"));
         return filepath;

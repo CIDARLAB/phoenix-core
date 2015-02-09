@@ -35,15 +35,15 @@ public class FluorescentProteinSelector {
         filepath = PhoenixController.class.getClassLoader().getResource(".").getPath();
         filepath = filepath.substring(0,filepath.indexOf("/target/"));
         String filePath = filepath + "/src/main/resources/FluorescentProteins/fp_spectra.csv";
-        File toLoad = new File(filePath);
-        try {
-            FPs = ClothoAdaptor.uploadFluorescenceSpectrums(toLoad);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(FluorescentProteinSelector.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FluorescentProteinSelector.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+//        File toLoad = new File(filePath);
+//        try {
+//            FPs = ClothoAdaptor.uploadFluorescenceSpectrums(toLoad);
+//        } catch (FileNotFoundException ex) {
+//            Logger.getLogger(FluorescentProteinSelector.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (IOException ex) {
+//            Logger.getLogger(FluorescentProteinSelector.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        
         //Initialize return variable
         ArrayList<Fluorophore> solnList = new ArrayList<>();
         ArrayList<Fluorophore> candidateList = new ArrayList<>(FPs);
@@ -353,8 +353,10 @@ public class FluorescentProteinSelector {
     //Add noise to all other laserFilters
     private static void addNoise (Fluorophore FP, HashMap<Fluorophore, HashMap<String, Double>> fpFilterSignals, HashMap<String, Double> filterNoises) {
         
-        for (String laserFilter : filterNoises.keySet()) {            
-            filterNoises.put(laserFilter, filterNoises.get(laserFilter) + fpFilterSignals.get(FP).get(laserFilter));           
+        for (String laserFilter : filterNoises.keySet()) {
+            if (fpFilterSignals.containsKey(FP)) {
+                filterNoises.put(laserFilter, filterNoises.get(laserFilter) + fpFilterSignals.get(FP).get(laserFilter));
+            }
         }        
     }
     

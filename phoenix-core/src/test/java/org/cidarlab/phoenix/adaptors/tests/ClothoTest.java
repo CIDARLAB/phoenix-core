@@ -45,8 +45,7 @@ public class ClothoTest {
     
     public String getFilepath()
     {
-        String filepath="";
-        
+        String filepath="";       
         filepath = PhoenixController.class.getClassLoader().getResource(".").getPath();
         filepath = filepath.substring(0,filepath.indexOf("/target/"));
         return filepath;
@@ -98,14 +97,11 @@ public class ClothoTest {
         } catch (Exception ex) {
             Logger.getLogger(ClothoTest.class.getName()).log(Level.SEVERE, null, ex);
         } 
-    }
-    
-    public void testFluorSpectraUpload() {
-    
-        String filePath = getFilepath() + "/src/main/resources/FluorescentProteins/fp_spectra.csv";
-        File toLoad = new File(filePath);
+        
+        String fluorfilePath = getFilepath() + "/src/main/resources/FluorescentProteins/fp_spectra.csv";
+        File toFluorLoad = new File(fluorfilePath);
         try {
-            ClothoAdaptor.uploadFluorescenceSpectrums(toLoad);
+            ClothoAdaptor.uploadFluorescenceSpectrums(toFluorLoad);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ClothoTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -132,17 +128,17 @@ public class ClothoTest {
         System.out.println("End of Tests");
     }
       
-    public ClothoTest() {
-        
-    }
-    
-    public static void main(String[] args) {
-        ClothoTest t = new ClothoTest();
-        t.testFeatureUpload();
-        t.testMultiPartUpload();
-        t.testQuery();
-        t.testFluorSpectraUpload();
-
-
-    }
+//    public ClothoTest() {
+//        
+//    }
+//    
+//    public static void main(String[] args) {
+//        ClothoTest t = new ClothoTest();
+////        t.testFeatureUpload();
+////        t.testMultiPartUpload();
+////        t.testQuery();
+//        t.testFluorSpectraUpload();
+//
+//
+//    }
 }

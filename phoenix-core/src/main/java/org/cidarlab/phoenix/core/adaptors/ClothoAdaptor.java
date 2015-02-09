@@ -79,7 +79,7 @@ public class ClothoAdaptor {
     /*
      * This method is for uploading fluorescence spectrum data to be associated with Fluorphore objects
      */
-    public static HashSet<Fluorophore> uploadFluorescenceSpectrums (File input) throws FileNotFoundException, IOException {
+    public static void uploadFluorescenceSpectrums (File input) throws FileNotFoundException, IOException {
         
         //Establish Clotho connection
         //Import file, begin reading
@@ -126,9 +126,6 @@ public class ClothoAdaptor {
         }
         
         createFluorophores(queryFluorophores);
-        System.out.println("===== Spectra saved ======");
-//        return clothoObject;
-        return queryFluorophores;
     }
     
     /*

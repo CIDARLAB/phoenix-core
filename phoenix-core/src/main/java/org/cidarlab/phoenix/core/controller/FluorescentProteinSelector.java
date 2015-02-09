@@ -30,20 +30,6 @@ public class FluorescentProteinSelector {
     //This alrogithm is on the basis of maximum emission and excitation spectrums, it would be better to do this for the whole range
     public static ArrayList<Fluorophore> solve(HashSet<Fluorophore> FPs, Cytometer cytometer, Integer n){
         
-        //Temporary hook to add fluorescent spectrums
-        String filepath="";
-        filepath = PhoenixController.class.getClassLoader().getResource(".").getPath();
-        filepath = filepath.substring(0,filepath.indexOf("/target/"));
-        String filePath = filepath + "/src/main/resources/FluorescentProteins/fp_spectra.csv";
-//        File toLoad = new File(filePath);
-//        try {
-//            FPs = ClothoAdaptor.uploadFluorescenceSpectrums(toLoad);
-//        } catch (FileNotFoundException ex) {
-//            Logger.getLogger(FluorescentProteinSelector.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (IOException ex) {
-//            Logger.getLogger(FluorescentProteinSelector.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        
         //Initialize return variable
         ArrayList<Fluorophore> solnList = new ArrayList<>();
         ArrayList<Fluorophore> candidateList = new ArrayList<>(FPs);

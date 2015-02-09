@@ -188,39 +188,16 @@ public class FluorescentProteinSelectorTest {
         
         HashSet<Fluorophore> FPs = ClothoAdaptor.queryFluorophores();
         Cytometer cytometer = getConfiguredCytometer();
-        ArrayList<Fluorophore> solve = FluorescentProteinSelector.solve(FPs, cytometer, 1);
-        System.out.println("ONE FP TEST");
-        for (Fluorophore f : solve) {
-            System.out.println(f.getName());
-        }
-        
+        ArrayList<Fluorophore> solve = FluorescentProteinSelector.solve(FPs, cytometer, 1); 
     }
     
-    //Runs test on FP Selector algorithm to get 2 FPs with configured cytometer
+    //Runs test on FP Selector algorithm to get n FPs with configured cytometer
     @Test
-    public void getTwoFPTest() {        
+    public void getMultiFPTest() {        
         
         HashSet<Fluorophore> FPs = ClothoAdaptor.queryFluorophores();
         Cytometer cytometer = getConfiguredCytometer();
-        ArrayList<Fluorophore> solve = FluorescentProteinSelector.solve(FPs, cytometer, 2);
-        System.out.println("TWO FP TEST");
-        for (Fluorophore f : solve) {
-            System.out.println(f.getName());
-        }
-        
-    }
-    
-    //Runs test on FP Selector algorithm to get 3 FPs with configured cytometer
-    @Test
-    public void getThreeFPTest() {        
-        
-        HashSet<Fluorophore> FPs = ClothoAdaptor.queryFluorophores();
-        Cytometer cytometer = getConfiguredCytometer();
-        ArrayList<Fluorophore> solve = FluorescentProteinSelector.solve(FPs, cytometer, 3);
-        System.out.println("THREE FP TEST");
-        for (Fluorophore f : solve) {
-            System.out.println(f.getName());
-        }        
+        ArrayList<Fluorophore> solve = FluorescentProteinSelector.solve(FPs, cytometer, 5);       
     }
     
     //Main testing class

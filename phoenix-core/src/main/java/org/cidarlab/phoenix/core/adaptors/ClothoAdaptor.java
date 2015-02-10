@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,6 +21,7 @@ import java.util.Set;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.cidarlab.phoenix.core.adaptors.BenchlingAdaptor.*;
+import org.cidarlab.phoenix.core.dom.Cytometer;
 import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Fluorophore;
 import org.clothocad.model.Feature;
@@ -49,9 +51,6 @@ public class ClothoAdaptor {
      * It creates Clotho Polynucleotides, Parts, Sequences, Annotations and Features
      */
     public static void uploadSequences(File input, boolean featureLib) throws Exception {
-
-        //Establish Clotho connection
-       
         
         //If this file is a feature library, only get features and save those to Clotho
         if (featureLib) {
@@ -72,8 +71,7 @@ public class ClothoAdaptor {
             createPolynucleotides(polyNucs);
             createParts(parts);
             createNucSeqs(nucSeqs);
-        }
-       
+        }       
     }
     
     /*
@@ -81,7 +79,6 @@ public class ClothoAdaptor {
      */
     public static void uploadFluorescenceSpectrums (File input) throws FileNotFoundException, IOException {
         
-        //Establish Clotho connection
         //Import file, begin reading
         BufferedReader reader = new BufferedReader(new FileReader(input.getAbsolutePath()));
         HashMap<String, HashMap<Double, Double>> spectralMaps = new HashMap<>();
@@ -126,6 +123,103 @@ public class ClothoAdaptor {
         }
         
         createFluorophores(queryFluorophores);
+    }
+    
+    
+    /*
+     * This method is for uploading fluorescence spectrum data to be associated with Fluorphore objects
+     */
+    public static void uploadCytometer (File input) throws FileNotFoundException, IOException {
+      
+        //Import file, begin reading
+        BufferedReader reader = new BufferedReader(new FileReader(input.getAbsolutePath()));
+        
+        //Initialize parameters
+        String name = "";
+        HashSet<String> lasers = new HashSet<>();
+        HashSet<String> filters = new HashSet<>();
+        HashMap<String, ArrayList<String[]>> config = new HashMap<>();
+        
+        //The first line describes the spectra
+        String line = reader.readLine();
+        while (line != null) {
+
+            String[] vals = line.split(",");
+
+            //Find name
+            if (vals[0].equalsIgnoreCase("Configuration Name")) {
+                name = vals[1];
+            }
+
+            //Once cytometer key rows are hit
+            if (vals[0].equalsIgnoreCase("Laser Name")) {
+
+                line = reader.readLine();
+
+                //Internal loop for each laser
+                while (line != null) {
+
+                    String[] cvals = line.split(",");
+                    String laser = cvals[2] + ":" + cvals[3];
+                    lasers.add(laser);
+                    
+                    String mirror = cvals[7].substring(0, cvals[7].length() - 3);
+                    String filter = cvals[8].substring(0, cvals[8].length() - 3).replaceAll("/", ":");
+                    filters.add(mirror);
+                    filters.add(filter);
+                    ArrayList<String[]> filterList = new ArrayList<>();
+                    filterList.add(new String[]{mirror, filter});
+                    config.put(laser, filterList);
+
+                    line = reader.readLine();
+                    cvals = line.split(",");
+
+                    //Loop kicked into once it reaches the lasers section of the file
+                    while (cvals[0].equals("")) {
+
+                        //Only look at row with filters, not empty slots
+                        if (cvals.length >= 9) {
+                            String newMirror;
+                            String newFilter;
+                            
+                            //If there is a longpass filter
+                            if (!cvals[7].isEmpty()) {
+                                newMirror = cvals[7].substring(0, cvals[7].length() - 3);
+                                filters.add(newMirror);
+
+                                //If there is a bandpass filter
+                                if (!cvals[8].isEmpty()) {
+                                    newFilter = cvals[8].substring(0, cvals[8].length() - 3).replaceAll("/", ":");
+                                    filters.add(newFilter);
+                                    filterList.add(new String[]{newMirror, newFilter});
+                                }
+
+                            } else {
+                                
+                                //If there is a bandpass filter
+                                if (!cvals[8].isEmpty()) {
+                                    newFilter = cvals[8].substring(0, cvals[8].length() - 3).replaceAll("/", ":");
+                                    filters.add(newFilter);
+                                    filterList.add(new String[]{newFilter});
+                                }
+                            }
+                        }
+
+                        line = reader.readLine();
+                        if (line != null) {
+                            cvals = line.split(",");
+                        } else {
+                            cvals = new String[]{"end"};
+                        }
+                    }
+                }
+            } else {
+                line = reader.readLine();
+            }
+        }   
+
+        Cytometer c = new Cytometer(name, lasers, filters, config);
+        createCytometer(c);        
     }
     
     /*
@@ -206,7 +300,7 @@ public class ClothoAdaptor {
         conn.closeConnection();
     }
     
-    //Add features to Clotho via Clotho Server API
+    //Add fluorophores to Clotho via Clotho Server API
     public static void createFluorophores(HashSet<Fluorophore> flourophores) {
 
         ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
@@ -252,8 +346,7 @@ public class ClothoAdaptor {
             if (f.getClothoID() != null) {
                 createFluorophore.put("id", f.getClothoID());
                 id = f.getClothoID();
-            }
-            else{
+            } else {
                 createFluorophore.put("id", f.getName());
                 f.setClothoID(f.getName());
                 id = f.getName();
@@ -370,6 +463,63 @@ public class ClothoAdaptor {
 
             clothoObject.create(createNucSeqMain);
         }
+        conn.closeConnection();
+    }
+    
+    //Add fluorophores to Clotho via Clotho Server API
+    public static void createCytometer(Cytometer c) {
+
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
+
+        //Fluorophore schema
+        Map createCytometer = new HashMap();
+        createCytometer.put("schema", "org.cidarlab.phoenix.core.dom.Cytometer");
+        createCytometer.put("name", c.getName());
+
+        //Filter set        
+        List<String> filters = new JSONArray();
+        for (String filter : c.getFilters()) {
+            filters.add(filter);
+        }
+        createCytometer.put("filters", filters);
+        
+        //Laser set        
+        List<String> lasers = new JSONArray();
+        for (String laser : c.getFilters()) {
+            lasers.add(laser);
+        }
+        createCytometer.put("lasers", lasers);
+        
+        JSONArray config = new JSONArray();
+        for (String laser : c.getConfiguration().keySet()) {
+            JSONObject set = new JSONObject();
+            
+            List<List<String>> filterSets = new ArrayList<>();            
+            for (String[] filterSet : c.getConfiguration().get(laser)) {
+                
+                List<String> filterPair = new ArrayList<>();
+                for (String filter : filterSet) {
+                    filterPair.add(filter);
+                }
+                filterSets.add(filterPair);
+            }
+            
+            set.put(laser, filterSets);
+            config.add(set);
+        }
+        createCytometer.put("configuration", config);
+        
+        //Clotho ID
+        if (c.getClothoID() != null) {
+            createCytometer.put("id", c.getClothoID());
+        } else {
+            createCytometer.put("id", c.getName());
+            c.setClothoID(c.getName());
+        }
+        
+        clothoObject.create(createCytometer);
+
         conn.closeConnection();
     }
     
@@ -661,5 +811,70 @@ public class ClothoAdaptor {
         conn.closeConnection();
         
         return polynucs;
+    }
+    
+    //Get all Clotho Cytometers
+    public static HashSet<Cytometer> queryCytometers() {
+        
+        //Establish Clotho connection
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
+        
+        HashSet<Cytometer> cytometers = new HashSet<>();
+        
+        Map map = new HashMap();
+        map.put("schema", "org.cidarlab.phoenix.core.dom.Cytometer");
+        Object query = clothoObject.query(map);
+        JSONArray arrayCytometer = (JSONArray) query;
+        
+        for (int i = 0; i < arrayCytometer.size(); i++) {
+            
+            Cytometer c = new Cytometer();
+            
+            //Initialize parameters
+            HashSet<String> lasers = new HashSet<>();
+            HashSet<String> filters = new HashSet<>();
+            HashMap<String, ArrayList<String[]>> config = new HashMap<>();
+            
+            //Get fluorophore fields
+            JSONObject jsonCytometer = arrayCytometer.getJSONObject(i);
+            c.setName(jsonCytometer.get("name").toString());
+            
+            List<String> laserList = (List<String>) jsonCytometer.get("lasers");
+            lasers.addAll(laserList);
+            c.setLasers(lasers);
+            
+            List<String> filterList = (List<String>) jsonCytometer.get("filters");
+            filters.addAll(filterList);
+            c.setFilters(filters);
+            
+            JSONArray laserFilterArray = (JSONArray) jsonCytometer.get("configuration");
+            for (int j = 0; j < laserFilterArray.size(); j++) {
+
+                //Get configuration
+                JSONObject jsonConfig = laserFilterArray.getJSONObject(j);
+                for (Object laserObj : jsonConfig.keySet()) {
+                    String laser = laserObj.toString();
+                    List<List<String>> filterSets = (List<List<String>>) jsonConfig.get(laserObj);
+                    
+                    ArrayList<String[]> filterSetList = new ArrayList<>();
+                    for (List<String> filterPair : filterSets) {
+                        
+                        Object[] objectList = filterPair.toArray();
+                        String[] stringArray = Arrays.copyOf(objectList, objectList.length, String[].class);
+                        filterSetList.add(stringArray);
+                    }
+                    config.put(laser, filterSetList);
+                }
+            }
+            
+            c.setConfiguration(config);            
+            c.setClothoID(jsonCytometer.get("id").toString());
+            
+            cytometers.add(c);
+        }         
+        conn.closeConnection();
+        
+        return cytometers;
     }
 }

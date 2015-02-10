@@ -51,4 +51,9 @@ public class Cytometer {
     @Getter
     @Setter
     private String name;
+    
+    //Clotho ID
+    @Setter
+    @Getter
+    private String clothoID;
 }

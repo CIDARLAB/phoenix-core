@@ -482,8 +482,10 @@ public class Feature extends SharableObjBase {
         CDS_ACTIVATOR,
         CDS_LINKER,
         CDS_TAG,
+        CDS_RESISTANCE,
         CDS_FLUORESCENT,
-        TERMINATOR;
+        TERMINATOR,
+        ORIGIN,;
     }
 
 }

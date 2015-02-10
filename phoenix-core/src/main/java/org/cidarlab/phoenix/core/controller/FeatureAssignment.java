@@ -23,8 +23,11 @@ public class FeatureAssignment {
     //Method for traverisng graphs performing a partial assignment
     public static void partialAssignment(List<Module> tesingModules) {
         
-        HashSet<Feature> features = ClothoAdaptor.queryFeatures();
+        //Add fluorescent proteins to each module
         addFPs(tesingModules);
+        
+        //Query promoters and regulator features, assign to abstract spots for EXPRESSORS and EXPRESSEES
+        HashSet<Feature> features = ClothoAdaptor.queryFeatures(); 
     }
     
     //Method for making a complete assignment based on best module simulations

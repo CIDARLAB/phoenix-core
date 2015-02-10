@@ -306,11 +306,15 @@ public class BenchlingAdaptor {
                                     clothoFeature.setRole(Feature.FeatureRole.CDS_REPRESSOR);
                                 } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("linker")) {
                                     clothoFeature.setRole(Feature.FeatureRole.CDS_LINKER);
+                                } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("resistance")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.CDS_RESISTANCE);
                                 } else if (type.equalsIgnoreCase("CDS") && subtype.contains("Tag")) {
                                     clothoFeature.setRole(Feature.FeatureRole.CDS_TAG);
                                 } else if (type.equalsIgnoreCase("terminator")) {
                                     clothoFeature.setRole(Feature.FeatureRole.TERMINATOR);
-                                }
+                                } else if (type.equalsIgnoreCase("origin")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.ORIGIN);
+                                } 
                                 
                                 clothoFeatures.add(clothoFeature);
                             }

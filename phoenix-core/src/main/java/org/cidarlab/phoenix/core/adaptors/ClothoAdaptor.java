@@ -287,6 +287,12 @@ public class ClothoAdaptor {
             createSequence.put("sequence", f.getSequence().getSequence());
             createFeature.put("sequence", createSequence);
             
+            //FeatureRole sub-schema
+            Map createFeatureRole = new HashMap();
+            createFeatureRole.put("schema", "org.clothocad.model.Feature.FeatureRole");
+            createFeatureRole.put("FeatureRole", f.getRole().toString());
+            createFeature.put("role", createFeatureRole);
+            
             //Clotho ID
             if (f.getClothoID() != null) {
                 createFeature.put("id", f.getClothoID());
@@ -340,6 +346,12 @@ public class ClothoAdaptor {
             createSequence.put("schema", "org.clothocad.model.Sequence");
             createSequence.put("sequence", f.getSequence().getSequence());
             createFluorophore.put("sequence", createSequence);
+            
+            //FeatureRole sub-schema
+            Map createFeatureRole = new HashMap();
+            createFeatureRole.put("schema", "org.clothocad.model.Feature.FeatureRole");
+            createFeatureRole.put("FeatureRole", f.getRole().toString());
+            createFluorophore.put("role", createFeatureRole);
             
             //Clotho ID
             String id = "";
@@ -562,6 +574,11 @@ public class ClothoAdaptor {
             String seq = jsonSequence.get("sequence").toString();            
             NucSeq sequence = new NucSeq(seq);
             
+            //Get FeatureRole
+            JSONObject jsonFeatureRole = (JSONObject) jsonFeature.get("role");
+            String roleString = jsonFeatureRole.get("FeatureRole").toString();
+            feature.setRole(Feature.FeatureRole.valueOf(roleString));
+            
             feature.setForwardColor(fwdColor);
             feature.setReverseColor(revColor);
             feature.setName(name);
@@ -629,6 +646,11 @@ public class ClothoAdaptor {
             JSONObject jsonSequence = (JSONObject) jsonFluorophore.get("sequence");
             String seq = jsonSequence.get("sequence").toString();            
             NucSeq sequence = new NucSeq(seq);
+            
+            //Get FeatureRole
+            JSONObject jsonFeatureRole = (JSONObject) jsonFluorophore.get("role");
+            String roleString = jsonFeatureRole.get("FeatureRole").toString();
+            fluorophore.setRole(Feature.FeatureRole.valueOf(roleString));
             
             fluorophore.setForwardColor(fwdColor);
             fluorophore.setReverseColor(revColor);

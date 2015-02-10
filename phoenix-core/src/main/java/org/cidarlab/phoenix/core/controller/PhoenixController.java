@@ -29,7 +29,7 @@ public class PhoenixController {
     //Main Phoenix run method
     //Remember to start Clotho before this run
     //Will begin as pure server-side, so might be called from a main method initially
-    public static void run (File featureLib, File plasmidLib, File structureFile, File fluorophoreSpectra, List<File> fcsFiles, File plasmidsCreated) throws Exception {
+    public static void run (File featureLib, File plasmidLib, File structureFile, File fluorophoreSpectra, File cytometer, List<File> fcsFiles, File plasmidsCreated) throws Exception {
         
         //Import data from Benchling multi-part Genbank files to Clotho
         ClothoAdaptor.uploadSequences(plasmidLib, false);
@@ -65,7 +65,9 @@ public class PhoenixController {
             
             //Create instruction files            
             String assemblyInstructions = RavenAdaptor.generateAssemblyPlan(experimentParts);
+            System.out.println(assemblyInstructions);
             String testingInstructions = PhoenixInstructions.generateTestingInstructions(currentExperiments);            
+            System.out.println(testingInstructions);
             
             //Import data from experiments
             ClothoAdaptor.uploadSequences(plasmidsCreated, false);

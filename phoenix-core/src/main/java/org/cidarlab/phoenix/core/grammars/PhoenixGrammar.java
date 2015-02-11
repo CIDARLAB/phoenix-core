@@ -354,7 +354,8 @@ public class PhoenixGrammar {
                     if (stack == 0) {
                         
                         //Promoters start the stack
-                        if (subnodes.getPrimitiveRole().equals(PrimitiveModuleRole.PROMOTER)) {
+                        PrimitiveModuleRole pR = subnodes.getPrimitiveRole();
+                        if (pR.equals(PrimitiveModuleRole.PROMOTER) || pR.equals(PrimitiveModuleRole.PROMOTER_CONSTITUTIVE) || pR.equals(PrimitiveModuleRole.PROMOTER_INDUCIBLE) || pR.equals(PrimitiveModuleRole.PROMOTER_REPRESSIBLE)) {
                             
                             stack = 1;
                             submoduleStack = new ArrayList<>();
@@ -405,7 +406,8 @@ public class PhoenixGrammar {
             for (PrimitiveModule primitive : node.getSubmodules()) {
                 
                 //If we run into a CDS, we know that this will be an EXPRESSEE and replace this spot with an TESTING SLOT IN EXPRESSOR
-                if (primitive.getPrimitiveRole().equals(PrimitiveModuleRole.CDS)) {
+                PrimitiveModuleRole pR = primitive.getPrimitiveRole();
+                if (pR.equals(PrimitiveModuleRole.CDS) || pR.equals(PrimitiveModuleRole.CDS_ACTIVATOR) || pR.equals(PrimitiveModuleRole.CDS_REPRESSOR)) {
                     
                     //Create a new EXPRESSEE from this CDS primitive and copy the feature
                     moduleFeatures.add(primitive.getModuleFeatures().get(0));

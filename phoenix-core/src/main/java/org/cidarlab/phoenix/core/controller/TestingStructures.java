@@ -57,7 +57,8 @@ public class TestingStructures {
         
         //Add testing promoter, rbs, terminator, vector
         if (m.getSubmodules().size() == 1) {
-            if (m.getSubmodules().get(0).getPrimitiveRole().equals(PrimitiveModuleRole.CDS)) {
+            PrimitiveModuleRole pR = m.getSubmodules().get(0).getPrimitiveRole();
+            if (pR.equals(PrimitiveModuleRole.CDS) || pR.equals(PrimitiveModuleRole.CDS_ACTIVATOR) || pR.equals(PrimitiveModuleRole.CDS_REPRESSOR)) {
                 List<PrimitiveModule> testSubmodules = new ArrayList<>();
                 testSubmodules.add(testPromoter);
                 testSubmodules.add(testRBS);
@@ -91,8 +92,9 @@ public class TestingStructures {
         
         //Look for testing slots, add new CDS_FLUORESCENT_FUSION
         List<PrimitiveModule> testSubmodules = new ArrayList<>();
-        for (PrimitiveModule pm : m.getSubmodules()) {            
-            if (pm.getPrimitiveRole().equals(PrimitiveModuleRole.CDS)) {                
+        for (PrimitiveModule pm : m.getSubmodules()) {    
+            PrimitiveModuleRole pR = pm.getPrimitiveRole();
+            if (pR.equals(PrimitiveModuleRole.CDS) || pR.equals(PrimitiveModuleRole.CDS_ACTIVATOR) || pR.equals(PrimitiveModuleRole.CDS_REPRESSOR)) {                
                 testSubmodules.add(new PrimitiveModule(PrimitiveModuleRole.CDS_FLUORESCENT_FUSION, new Primitive(new ComponentType("fc"), "FP")));
             } else {
                 testSubmodules.add(pm);
@@ -109,7 +111,8 @@ public class TestingStructures {
         //Look for testing slots, add new CDS_FLUORESCENT_FUSION
         List<PrimitiveModule> testSubmodules = new ArrayList<>();
         for (PrimitiveModule pm : m.getSubmodules()) {            
-            if (pm.getPrimitiveRole().equals(PrimitiveModuleRole.CDS)) {                
+            PrimitiveModuleRole pR = pm.getPrimitiveRole();
+            if (pR.equals(PrimitiveModuleRole.CDS) || pR.equals(PrimitiveModuleRole.CDS_ACTIVATOR) || pR.equals(PrimitiveModuleRole.CDS_REPRESSOR)) {               
                 testSubmodules.add(new PrimitiveModule(PrimitiveModuleRole.CDS_FLUORESCENT_FUSION, new Primitive(new ComponentType("fc"), "FP")));
             } else {
                 testSubmodules.add(pm);

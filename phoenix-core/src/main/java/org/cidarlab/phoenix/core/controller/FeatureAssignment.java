@@ -78,11 +78,12 @@ public class FeatureAssignment {
     
     //Helper method for traverisng graphs, adding fluorescent proteins
     private static void addFPsHelper(Module parent, ArrayList<Fluorophore> FPs, List<Module> children) {
+
+        //Check to see if there are CDS_FLUORESCENT_FUSION in the parent
+        List<Feature> countFluorescentFusions = new ArrayList<>();
+        countFluorescentFusions.addAll(countFluorescentFusions(parent));
         
         int count = 0;
-        
-        //Check to see if there are CDS_FLUORESCENT_FUSION in the parent
-        List<Feature> countFluorescentFusions = countFluorescentFusions(parent);
         
         //Assign FPs to children
         for (Module child : children) {
@@ -91,15 +92,16 @@ public class FeatureAssignment {
                 if (p.getPrimitiveRole().equals(PrimitiveModule.PrimitiveModuleRole.CDS_FLUORESCENT_FUSION)) {
                     
                     //If the parent has FPs already assigned, pull those down
-                    if (countFluorescentFusions.size() > 0) {
-                        count++;
+                    if (countFluorescentFusions.size() > 0) {                        
                         List<Feature> pFeatures = new ArrayList<>();
                         pFeatures.add(countFluorescentFusions.get(count));
-                        p.setModuleFeatures(pFeatures);                       
+                        p.setModuleFeatures(pFeatures);         
+                        count++;
                     } else {
                         List<Feature> pFeatures = new ArrayList<>();
                         pFeatures.add(FPs.get(count));
-                        p.setModuleFeatures(pFeatures);    
+                        p.setModuleFeatures(pFeatures);
+                        count++;
                     }
                     
                     addFPsHelper(child, FPs, child.getChildren());

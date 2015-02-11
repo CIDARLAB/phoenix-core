@@ -52,9 +52,11 @@ public class FluorescentProteinSelector {
             filterNoise.put(laserFilter, 0.0);
         }
         
-        Fluorophore fitcFluorophore = selectFITCFluorophore(candidateList, measurementFilters, filterNoise, fpFilterSignals, false);
-        solnList.add(fitcFluorophore);
-        candidateList.remove(fitcFluorophore);
+        if (n > 0) {
+            Fluorophore fitcFluorophore = selectFITCFluorophore(candidateList, measurementFilters, filterNoise, fpFilterSignals, false);
+            solnList.add(fitcFluorophore);
+            candidateList.remove(fitcFluorophore);
+        }
 
         //Then look for more proteins until the list is the desired size
         while (solnList.size() < n) {

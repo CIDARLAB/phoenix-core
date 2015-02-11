@@ -8,9 +8,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
+import org.cidarlab.phoenix.core.dom.Cytometer;
 import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Fluorophore;
 import org.cidarlab.phoenix.core.dom.Module;
+import org.cidarlab.phoenix.core.dom.PrimitiveModule;
 import org.clothocad.model.Feature;
 import org.clothocad.model.Part;
 
@@ -41,11 +43,83 @@ public class FeatureAssignment {
     }
     
     //Method for traverisng graphs, adding fluorescent proteins
-    private static void addFPs(List<Module> tesingModules) {
+    private static void addFPs(List<Module> testingModules) {
         
         //Recieve data from Clotho
-        HashSet<Fluorophore> FPs = ClothoAdaptor.queryFluorophores();        
-        ArrayList<Fluorophore> solve = FluorescentProteinSelector.solve(FPs, FluorescentProteinSelector.getConfiguredCytometer(), 2);
+        HashSet<Fluorophore> FPs = ClothoAdaptor.queryFluorophores();
+        
+        Cytometer cytometer = new Cytometer();
+        HashSet<Cytometer> allCytometers = ClothoAdaptor.queryCytometers();
+        for (Cytometer c : allCytometers) {
+            if (c.getName().startsWith("BU")) {
+                cytometer = c;
+            }
+        }
+        
+        //For each module, determine how many FPs are needed
+        for (Module root : testingModules) {            
+            int count = 0;
+            List<Module> children = root.getChildren();
+            
+            //Count the number of instance of CDS_FLUORESCENT_FUSION
+            for (Module child : children) {
+                List<PrimitiveModule> submodules = child.getSubmodules();                
+                for (PrimitiveModule p : submodules) {
+                    if (p.getPrimitiveRole().equals(PrimitiveModule.PrimitiveModuleRole.CDS_FLUORESCENT_FUSION)) {
+                        count++;
+                    }
+                }
+            }
+            
+            ArrayList<Fluorophore> bestSet = FluorescentProteinSelector.solve(FPs, cytometer, count);
+            addFPsHelper(root, bestSet, children);
+        }
+    }
+    
+    //Helper method for traverisng graphs, adding fluorescent proteins
+    private static void addFPsHelper(Module parent, ArrayList<Fluorophore> FPs, List<Module> children) {
+        
+        int count = 0;
+        
+        //Check to see if there are CDS_FLUORESCENT_FUSION in the parent
+        List<Feature> countFluorescentFusions = countFluorescentFusions(parent);
+        
+        //Assign FPs to children
+        for (Module child : children) {
+            List<PrimitiveModule> submodules = child.getSubmodules();
+            for (PrimitiveModule p : submodules) {
+                if (p.getPrimitiveRole().equals(PrimitiveModule.PrimitiveModuleRole.CDS_FLUORESCENT_FUSION)) {
+                    
+                    //If the parent has FPs already assigned, pull those down
+                    if (countFluorescentFusions.size() > 0) {
+                        count++;
+                        List<Feature> pFeatures = new ArrayList<>();
+                        pFeatures.add(countFluorescentFusions.get(count));
+                        p.setModuleFeatures(pFeatures);                       
+                    } else {
+                        List<Feature> pFeatures = new ArrayList<>();
+                        pFeatures.add(FPs.get(count));
+                        p.setModuleFeatures(pFeatures);    
+                    }
+                    
+                    addFPsHelper(child, FPs, child.getChildren());
+                }
+            }
+        }
+        
+    }
+    
+    //Check to see how many CDS_FLUORESCENT_FUSION a Module has
+    private static List<Feature> countFluorescentFusions(Module m) {
+        
+        List<Feature> FPList = new ArrayList<>();
+        for (PrimitiveModule pm : m.getSubmodules()) {
+            if (pm.getPrimitiveRole().equals(PrimitiveModule.PrimitiveModuleRole.CDS_FLUORESCENT_FUSION)) {
+                FPList.addAll(pm.getModuleFeatures());
+            }
+        }
+        
+        return FPList;
     }
     
     //Gets a list of experiments and for all modules in the each experiment, it converts features to parts

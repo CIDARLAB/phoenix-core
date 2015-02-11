@@ -538,6 +538,16 @@ public class PhoenixGrammar {
         PrimitiveModuleRole role = PrimitiveModuleRole.WILDCARD;
         if (type.getName().startsWith("p")) {
             role = PrimitiveModuleRole.PROMOTER;
+        } else if (type.getName().startsWith("ip")) {
+            role = PrimitiveModuleRole.PROMOTER_INDUCIBLE;
+        } else if (type.getName().startsWith("rp")) {
+            role = PrimitiveModuleRole.PROMOTER_REPRESSIBLE;
+        } else if (type.getName().startsWith("cp")) {
+            role = PrimitiveModuleRole.PROMOTER_CONSTITUTIVE;
+        } else if (type.getName().startsWith("rc")) {
+            role = PrimitiveModuleRole.CDS_REPRESSOR;
+        } else if (type.getName().startsWith("fc")) {
+            role = PrimitiveModuleRole.CDS_ACTIVATOR;
         } else if (type.getName().startsWith("r")) {
             role = PrimitiveModuleRole.RBS;
         } else if (type.getName().startsWith("c")) {

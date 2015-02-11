@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import org.clothocad.model.Feature;
 
 /**
@@ -115,5 +114,14 @@ public class Module {
         EXPRESSEE,
         TRANSCRIPTIONAL_UNIT,
         HIGHER_FUNCTION;
+    }
+    
+    //Update moduleFeatures based on submodule features
+    public void updateModuleFeatures() {
+        List<Feature> updatedFeatures = new ArrayList<>();
+        for (PrimitiveModule pm : this.submodules) {
+            updatedFeatures.addAll(pm.getModuleFeatures());
+        }
+        this.setModuleFeatures(updatedFeatures);
     }
 }

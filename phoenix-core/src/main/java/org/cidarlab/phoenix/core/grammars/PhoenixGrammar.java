@@ -464,7 +464,7 @@ public class PhoenixGrammar {
             //If the primitive is reverse oriented, make a wildcard primitive and feature
             if (node.getSubmodules().get(i).getPrimitive().getOrientation().equals(Orientation.REVERSE)) {
                 
-                PrimitiveModule wildCard = new PrimitiveModule(PrimitiveModuleRole.WILDCARD, pm.getPrimitive().clone());
+                PrimitiveModule wildCard = new PrimitiveModule(PrimitiveModuleRole.WILDCARD, pm.getPrimitive().clone(), null);
                 wildCard.getPrimitive().setOrientation(Orientation.REVERSE);
                 wildCard.setPrimitiveRole(PrimitiveModuleRole.WILDCARD);
                 wildCard.setModuleFeatures(pm.getModuleFeatures());
@@ -508,7 +508,7 @@ public class PhoenixGrammar {
             //If the primitive is reverse oriented, make a wildcard primitive and feature
             if (pm.getPrimitive().getOrientation().equals(Orientation.FORWARD)) {
                 
-                PrimitiveModule wildCard = new PrimitiveModule(PrimitiveModuleRole.WILDCARD, pm.getPrimitive().clone());
+                PrimitiveModule wildCard = new PrimitiveModule(PrimitiveModuleRole.WILDCARD, pm.getPrimitive().clone(), null);
                 wildCard.getPrimitive().setOrientation(Orientation.REVERSE);
                 wildCard.setPrimitiveRole(PrimitiveModuleRole.WILDCARD);
                 wildCard.setModuleFeatures(pm.getModuleFeatures());

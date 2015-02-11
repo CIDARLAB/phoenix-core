@@ -33,9 +33,10 @@ public class PrimitiveModule extends Module {
     public PrimitiveModule() {
     }
     
-    public PrimitiveModule(PrimitiveModuleRole role, Primitive primitive) {
+    public PrimitiveModule(PrimitiveModuleRole role, Primitive primitive, Feature moduleFeature) {
         this.primitiveRole = role;
         this.primitive = primitive;
+        this.getModuleFeatures().add(moduleFeature);
     }
     
     @Override

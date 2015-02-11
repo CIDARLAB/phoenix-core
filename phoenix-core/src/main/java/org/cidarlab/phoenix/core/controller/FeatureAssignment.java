@@ -80,21 +80,21 @@ public class FeatureAssignment {
     private static void addFPsHelper(Module parent, ArrayList<Fluorophore> FPs, List<Module> children) {
 
         //Check to see if there are CDS_FLUORESCENT_FUSION in the parent
-        List<Feature> countFluorescentFusions = new ArrayList<>();
-        countFluorescentFusions.addAll(countFluorescentFusions(parent));
+        List<Feature> parentFluorescentFusions = new ArrayList<>();
+        parentFluorescentFusions.addAll(getFluorescentFusions(parent));       
         
         int count = 0;
         
         //Assign FPs to children
         for (Module child : children) {
-            List<PrimitiveModule> submodules = child.getSubmodules();
-            for (PrimitiveModule p : submodules) {
+//            List<PrimitiveModule> submodules = child.getSubmodules();
+            for (PrimitiveModule p : child.getSubmodules()) {
                 if (p.getPrimitiveRole().equals(PrimitiveModule.PrimitiveModuleRole.CDS_FLUORESCENT_FUSION)) {
                     
                     //If the parent has FPs already assigned, pull those down
-                    if (countFluorescentFusions.size() > 0) {                        
+                    if (parentFluorescentFusions.size() > 0) {                        
                         List<Feature> pFeatures = new ArrayList<>();
-                        pFeatures.add(countFluorescentFusions.get(count));
+                        pFeatures.add(parentFluorescentFusions.get(count));
                         p.setModuleFeatures(pFeatures);         
                         count++;
                     } else {
@@ -104,15 +104,18 @@ public class FeatureAssignment {
                         count++;
                     }
                     
-                    addFPsHelper(child, FPs, child.getChildren());
+                    
                 }
             }
+            
+            addFPsHelper(child, FPs, child.getChildren());
         }
         
+        parent.updateModuleFeatures();
     }
     
     //Check to see how many CDS_FLUORESCENT_FUSION a Module has
-    private static List<Feature> countFluorescentFusions(Module m) {
+    private static List<Feature> getFluorescentFusions(Module m) {
         
         List<Feature> FPList = new ArrayList<>();
         for (PrimitiveModule pm : m.getSubmodules()) {

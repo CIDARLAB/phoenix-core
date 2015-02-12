@@ -6,6 +6,7 @@
 package org.cidarlab.phoenix.core.dom;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,7 +28,7 @@ public class Module {
         this.isRoot = false;
         this.children = new ArrayList<>();
         this.parents = new ArrayList<>();
-        this.assignedModules = new ArrayList<>();
+        this.assignedModules = new HashSet<>();
         this.submodules = new ArrayList<>();
         this.moduleFeatures = new ArrayList<>();
         this.isForward = true;
@@ -111,7 +112,7 @@ public class Module {
     //Child module(s)
     @Getter
     @Setter
-    private List<Module> assignedModules;
+    private HashSet<Module> assignedModules;
     
     // Sub Module (s)
     @Getter

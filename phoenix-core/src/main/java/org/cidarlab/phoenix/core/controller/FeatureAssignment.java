@@ -41,7 +41,7 @@ public class FeatureAssignment {
             if (!isAssigned(m)) {
                 promoterRegulatorAssign(m, features);
             }
-        }                  
+        } 
     }
     
     //Method for traverisng graphs, adding fluorescent proteins
@@ -86,6 +86,7 @@ public class FeatureAssignment {
         parentFluorescentFusions.addAll(getFluorescentFusions(parent));       
         
         int count = 0;
+        int cdsFlCount = 0;
         
         //Assign FPs to children
         for (Module child : children) {
@@ -108,12 +109,13 @@ public class FeatureAssignment {
                         count++;
                     }                    
                 
-                //If an EXPRESSEE is encountered
+                //If an EXPRESSOR is encountered
                 } else if (p.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT) && !FPs.isEmpty()) {
                     
                     List<Feature> pFeatures = new ArrayList<>();
-                    pFeatures.add(FPs.get(0));
+                    pFeatures.add(FPs.get(cdsFlCount));
                     p.setModuleFeatures(pFeatures);
+                    cdsFlCount++;
                 }
             }
             
@@ -151,7 +153,7 @@ public class FeatureAssignment {
     //Clone module, assign promoters and regulators from feature library
     private static void promoterRegulatorAssign(Module m, HashSet<Feature> features) {
 
-        List<Module> assignedModules = m.getAssignedModules();
+        HashSet<Module> assignedModules = m.getAssignedModules();
 
         //Make assigned modules for EXPRESSEES
         if (m.getRole().equals(Module.ModuleRole.EXPRESSEE)) {
@@ -184,7 +186,7 @@ public class FeatureAssignment {
 
             //Keep track of already assigned promoters in the case of multiple promoters... no duplicates
             //This needs a more robust long-term solution
-            ArrayList<Module> clonesThisModule = new ArrayList<>();
+            HashSet<Module> clonesThisModule = new HashSet<>();
             ArrayList<Integer> promoterIndicies = new ArrayList<>();
             
             //Look for promoters that are abstract
@@ -230,7 +232,10 @@ public class FeatureAssignment {
                                 
                                 //If a new promoter needs to be assigned, more clones will be made from the existing one
                                 if (differentPromoter) {
-                                    for (Module clone : clonesThisModule) {
+                                    
+                                    List<Module> incompleteClones = new ArrayList<>();
+                                    incompleteClones.addAll(clonesThisModule);
+                                    for (Module clone : incompleteClones) {
                                         
                                         //Find promoters that should not be assigned again
                                         List<Feature> usedPromoters = new ArrayList<>();
@@ -243,14 +248,15 @@ public class FeatureAssignment {
                                         
                                         //Make new clones for all non-duplicate possibilities
                                         for (Feature fR : featuresOfRole) {
-                                            Module newClone = m.clone();
+                                            Module newClone = clone.clone();
                                             List<Feature> mfClone = new ArrayList<>();
                                             mfClone.add(fR);
                                             newClone.getSubmodules().get(i).setModuleFeatures(mfClone);
                                             newClone.updateModuleFeatures();
                                             clonesThisModule.add(newClone);
                                         }
-                                    }                                    
+                                    }
+                                    clonesThisModule.removeAll(incompleteClones);
                                 }
                             }
 

@@ -1,9 +1,5 @@
 package org.cidarlab.phoenix.core.dom;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.clothocad.model.Feature;
-
 /**
  * A Primitive represents a genetic basic component, such as a part.
  * 

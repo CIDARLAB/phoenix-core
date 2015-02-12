@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.clothocad.model.Feature;
+import org.clothocad.model.Feature.FeatureRole;
 
 /**
  *
@@ -27,13 +28,13 @@ public class PrimitiveModule extends Module {
     //Module role
     @Getter
     @Setter
-    private PrimitiveModuleRole primitiveRole;
+    private FeatureRole primitiveRole;
     
     //Blank constructor
     public PrimitiveModule() {
     }
     
-    public PrimitiveModule(PrimitiveModuleRole role, Primitive primitive, Feature moduleFeature) {
+    public PrimitiveModule(FeatureRole role, Primitive primitive, Feature moduleFeature) {
         this.primitiveRole = role;
         this.primitive = primitive;
         this.getModuleFeatures().add(moduleFeature);
@@ -51,24 +52,4 @@ public class PrimitiveModule extends Module {
         
         return clone;
     }
-    
-     public enum PrimitiveModuleRole {
-       PROMOTER,
-       PROMOTER_REPRESSIBLE,
-       PROMOTER_INDUCIBLE,
-       PROMOTER_CONSTITUTIVE,
-       RBS,
-       CDS,
-       CDS_REPRESSOR,
-       CDS_ACTIVATOR,
-       CDS_LINKER,
-       CDS_TAG,
-       CDS_FLUORESCENT,
-       CDS_FLUORESCENT_FUSION,
-       TERMINATOR,
-       VECTOR,
-       TESTING,
-       WILDCARD
-   }
-    
 }

@@ -12,8 +12,8 @@ import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
 import org.cidarlab.phoenix.core.dom.Primitive;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
-import org.cidarlab.phoenix.core.dom.PrimitiveModule.PrimitiveModuleRole;
 import org.clothocad.model.Feature;
+import org.clothocad.model.Feature.FeatureRole;
 import org.clothocad.model.NucSeq;
 
 /**
@@ -59,12 +59,13 @@ public class TestingStructures {
         
         //Add testing promoter, rbs, terminator, vector
         if (m.getSubmodules().size() == 1) {
-            PrimitiveModuleRole pR = m.getSubmodules().get(0).getPrimitiveRole();
-            if (pR.equals(PrimitiveModuleRole.CDS) || pR.equals(PrimitiveModuleRole.CDS_ACTIVATOR) || pR.equals(PrimitiveModuleRole.CDS_REPRESSOR)) {
+            FeatureRole pR = m.getSubmodules().get(0).getPrimitiveRole();
+            if (pR.equals(FeatureRole.CDS) || pR.equals(FeatureRole.CDS_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSOR)) {
                 List<PrimitiveModule> testSubmodules = new ArrayList<>();
                 testSubmodules.add(testPromoter);
                 testSubmodules.add(testRBS);
-                testSubmodules.add(new PrimitiveModule(PrimitiveModuleRole.CDS_FLUORESCENT_FUSION, new Primitive(new ComponentType("fc"), "FP"), new Feature("EXPRESSEE", new NucSeq(), null, Feature.FeatureRole.CDS_FLUORESCENT_FUSION)));
+                testSubmodules.add(m.getSubmodules().get(0));
+                testSubmodules.add(new PrimitiveModule(FeatureRole.CDS_FLUORESCENT_FUSION, new Primitive(new ComponentType("fc"), "FP"), new Feature("EXPRESSEE", new NucSeq(), null, Feature.FeatureRole.CDS_FLUORESCENT_FUSION)));
                 testSubmodules.add(testTerminator);
                 testSubmodules.add(testVector);
                 m.setSubmodules(testSubmodules);
@@ -79,8 +80,8 @@ public class TestingStructures {
         //Look for testing slots, add new CDS_FLUORESCENT
         List<PrimitiveModule> testSubmodules = new ArrayList<>();
         for (PrimitiveModule pm : m.getSubmodules()) {            
-            if (pm.getPrimitiveRole().equals(PrimitiveModuleRole.TESTING)) {                
-                testSubmodules.add(new PrimitiveModule(PrimitiveModuleRole.CDS_FLUORESCENT, new Primitive(new ComponentType("fc"), "FP"), new Feature("EXPRESSEE", new NucSeq(), null, Feature.FeatureRole.CDS_FLUORESCENT)));
+            if (pm.getPrimitiveRole().equals(FeatureRole.TESTING)) {                
+                testSubmodules.add(new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("fc"), "FP"), new Feature("EXPRESSEE", new NucSeq(), null, FeatureRole.CDS_FLUORESCENT)));
             } else {
                 testSubmodules.add(pm);
             }
@@ -97,9 +98,9 @@ public class TestingStructures {
         //Look for testing slots, add new CDS_FLUORESCENT_FUSION
         List<PrimitiveModule> testSubmodules = new ArrayList<>();
         for (PrimitiveModule pm : m.getSubmodules()) {    
-            PrimitiveModuleRole pR = pm.getPrimitiveRole();
-            if (pR.equals(PrimitiveModuleRole.CDS) || pR.equals(PrimitiveModuleRole.CDS_ACTIVATOR) || pR.equals(PrimitiveModuleRole.CDS_REPRESSOR)) {                
-                testSubmodules.add(new PrimitiveModule(PrimitiveModuleRole.CDS_FLUORESCENT_FUSION, new Primitive(new ComponentType("fc"), "FP"), new Feature("EXPRESSEE", new NucSeq(), null, Feature.FeatureRole.CDS_FLUORESCENT_FUSION)));
+            FeatureRole pR = pm.getPrimitiveRole();
+            if (pR.equals(FeatureRole.CDS) || pR.equals(FeatureRole.CDS_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSOR)) {                
+                testSubmodules.add(new PrimitiveModule(FeatureRole.CDS_FLUORESCENT_FUSION, new Primitive(new ComponentType("fc"), "FP"), new Feature("EXPRESSEE", new NucSeq(), null, FeatureRole.CDS_FLUORESCENT_FUSION)));
             } else {
                 testSubmodules.add(pm);
             }
@@ -116,9 +117,9 @@ public class TestingStructures {
         //Look for testing slots, add new CDS_FLUORESCENT_FUSION
         List<PrimitiveModule> testSubmodules = new ArrayList<>();
         for (PrimitiveModule pm : m.getSubmodules()) {            
-            PrimitiveModuleRole pR = pm.getPrimitiveRole();
-            if (pR.equals(PrimitiveModuleRole.CDS) || pR.equals(PrimitiveModuleRole.CDS_ACTIVATOR) || pR.equals(PrimitiveModuleRole.CDS_REPRESSOR)) {               
-                testSubmodules.add(new PrimitiveModule(PrimitiveModuleRole.CDS_FLUORESCENT_FUSION, new Primitive(new ComponentType("fc"), "FP"), new Feature("EXPRESSEE", new NucSeq(), null, Feature.FeatureRole.CDS_FLUORESCENT_FUSION)));
+            FeatureRole pR = pm.getPrimitiveRole();
+            if (pR.equals(FeatureRole.CDS) || pR.equals(FeatureRole.CDS_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSOR)) {               
+                testSubmodules.add(new PrimitiveModule(FeatureRole.CDS_FLUORESCENT_FUSION, new Primitive(new ComponentType("fc"), "FP"), new Feature("EXPRESSEE", new NucSeq(), null, FeatureRole.CDS_FLUORESCENT_FUSION)));
             } else {
                 testSubmodules.add(pm);
             }
@@ -145,9 +146,9 @@ public class TestingStructures {
     }
      
     //FIELDS
-    private static PrimitiveModule testPromoter = new PrimitiveModule(PrimitiveModuleRole.PROMOTER_CONSTITUTIVE, new Primitive(new ComponentType("p"), "pTEST"), new Feature("pTEST", new NucSeq(), null, Feature.FeatureRole.PROMOTER_CONSTITUTIVE));
-    private static PrimitiveModule testRBS = new PrimitiveModule(PrimitiveModuleRole.RBS, new Primitive(new ComponentType("r"), "rTEST"), new Feature("rTEST", new NucSeq(), null, Feature.FeatureRole.RBS));
-    private static PrimitiveModule testTerminator = new PrimitiveModule(PrimitiveModuleRole.TERMINATOR, new Primitive(new ComponentType("t"), "tTEST"), new Feature("tTEST", new NucSeq(), null, Feature.FeatureRole.TERMINATOR));
-    private static PrimitiveModule testVector = new PrimitiveModule(PrimitiveModuleRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST"), new Feature("vTEST", new NucSeq(), null, Feature.FeatureRole.VECTOR));
-    private static PrimitiveModule finalVector = new PrimitiveModule(PrimitiveModuleRole.VECTOR, new Primitive(new ComponentType("v"), "vFINAL"), new Feature("vFINAL", new NucSeq(), null, Feature.FeatureRole.VECTOR));
+    private static final PrimitiveModule testPromoter = new PrimitiveModule(FeatureRole.PROMOTER_CONSTITUTIVE, new Primitive(new ComponentType("p"), "pTEST"), new Feature("pTEST", new NucSeq("a"), null, FeatureRole.PROMOTER_CONSTITUTIVE));
+    private static final PrimitiveModule testRBS = new PrimitiveModule(FeatureRole.RBS, new Primitive(new ComponentType("r"), "rTEST"), new Feature("rTEST", new NucSeq("a"), null, FeatureRole.RBS));
+    private static final PrimitiveModule testTerminator = new PrimitiveModule(FeatureRole.TERMINATOR, new Primitive(new ComponentType("t"), "tTEST"), new Feature("tTEST", new NucSeq("a"), null, FeatureRole.TERMINATOR));
+    private static final PrimitiveModule testVector = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST"), new Feature("vTEST", new NucSeq("a"), null, FeatureRole.VECTOR));
+    private static final PrimitiveModule finalVector = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vFINAL"), new Feature("vFINAL", new NucSeq("a"), null, FeatureRole.VECTOR));
 }

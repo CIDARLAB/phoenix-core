@@ -27,21 +27,22 @@ public class Module {
         this.isRoot = false;
         this.children = new ArrayList<>();
         this.parents = new ArrayList<>();
+        this.assignedModules = new ArrayList<>();
         this.submodules = new ArrayList<>();
         this.moduleFeatures = new ArrayList<>();
         this.isForward = true;
     }
     
     //Module constructor for root and stage
-    public Module(boolean _isRoot,int _stage) {
-        this.stage = _stage;
-        this.isRoot = _isRoot;
-        this.children = new ArrayList<>();
-        this.parents = new ArrayList<>();  
-        this.submodules = new ArrayList<>();
-        this.moduleFeatures = new ArrayList<>();
-        this.isForward = true;
-    }
+//    public Module(boolean _isRoot,int _stage) {
+//        this.stage = _stage;
+//        this.isRoot = _isRoot;
+//        this.children = new ArrayList<>();
+//        this.parents = new ArrayList<>();  
+//        this.submodules = new ArrayList<>();
+//        this.moduleFeatures = new ArrayList<>();
+//        this.isForward = true;
+//    }
     
     //Get all neighbors i.e. parents and children
     public List<Module> getAllNeighbors() {
@@ -51,6 +52,30 @@ public class Module {
         return neigh;
     }
     
+    //This cloning method ignores neighbors, clones everything else
+    @Override
+    public Module clone() {
+        Module clone = new Module();
+        
+        List<Feature> fList = new ArrayList<>();
+        for (Feature f : this.moduleFeatures) {
+            fList.add(f.clone());
+        }
+        clone.moduleFeatures = fList;
+ 
+        List<PrimitiveModule> pmList = new ArrayList<>();
+        for (PrimitiveModule pm : this.submodules) {
+            pmList.add(pm.clone());
+        }
+        clone.submodules = pmList;
+        
+        clone.function = this.function;
+        clone.isForward = this.isForward;
+        clone.role = this.role;
+        clone.stage = this.stage;
+        
+        return clone;
+    }
     
     //Module roles
     @Getter
@@ -83,6 +108,11 @@ public class Module {
     @Setter
     private List<Module> children;
     
+    //Child module(s)
+    @Getter
+    @Setter
+    private List<Module> assignedModules;
+    
     // Sub Module (s)
     @Getter
     @Setter
@@ -104,9 +134,9 @@ public class Module {
     private Experiment experiment;
     
     //Interaction associated with this module
-    @Getter
-    @Setter
-    private Interaction interaction;
+//    @Getter
+//    @Setter
+//    private Interaction interaction;
     
     //Module roles
     public enum ModuleRole {

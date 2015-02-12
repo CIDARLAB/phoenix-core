@@ -7,21 +7,18 @@ package org.cidarlab.phoenix.core.grammars;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import org.cidarlab.minieugene.dom.Component;
 import org.cidarlab.phoenix.core.dom.ComponentType;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
 import org.cidarlab.phoenix.core.dom.Orientation;
-import org.cidarlab.phoenix.core.dom.Primitive;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
-import org.cidarlab.phoenix.core.dom.PrimitiveModule.PrimitiveModuleRole;
 import org.cidarlab.phoenix.core.formalgrammar.Grammar;
 import org.cidarlab.phoenix.core.formalgrammar.Nonterminal;
 import org.cidarlab.phoenix.core.formalgrammar.ProductionRule;
 import org.cidarlab.phoenix.core.formalgrammar.Symbol;
 import org.cidarlab.phoenix.core.formalgrammar.Terminal;
 import org.clothocad.model.Feature;
-import org.clothocad.model.Person;
+import org.clothocad.model.Feature.FeatureRole;
 
 /**
  * This class defines the grammar with which genetic regulatory networks are
@@ -354,8 +351,8 @@ public class PhoenixGrammar {
                     if (stack == 0) {
                         
                         //Promoters start the stack
-                        PrimitiveModuleRole pR = subnodes.getPrimitiveRole();
-                        if (pR.equals(PrimitiveModuleRole.PROMOTER) || pR.equals(PrimitiveModuleRole.PROMOTER_CONSTITUTIVE) || pR.equals(PrimitiveModuleRole.PROMOTER_INDUCIBLE) || pR.equals(PrimitiveModuleRole.PROMOTER_REPRESSIBLE)) {
+                        FeatureRole pR = subnodes.getPrimitiveRole();
+                        if (pR.equals(FeatureRole.PROMOTER) || pR.equals(FeatureRole.PROMOTER_CONSTITUTIVE) || pR.equals(FeatureRole.PROMOTER_INDUCIBLE) || pR.equals(FeatureRole.PROMOTER_REPRESSIBLE)) {
                             
                             stack = 1;
                             submoduleStack = new ArrayList<>();
@@ -377,7 +374,7 @@ public class PhoenixGrammar {
                         submoduleStack.add(subnodes);
                         
                         //Termintors pop the stack
-                        if (subnodes.getPrimitiveRole().equals(PrimitiveModuleRole.TERMINATOR)) {
+                        if (subnodes.getPrimitiveRole().equals(FeatureRole.TERMINATOR)) {
                             stack = 0;
                             child.setModuleFeatures(moduleFeatures);
                             child.setSubmodules(submoduleStack);
@@ -393,21 +390,21 @@ public class PhoenixGrammar {
         } else if (node.getRole().equals(ModuleRole.TRANSCRIPTIONAL_UNIT)) {
             
             //Initialize EXPRESSEEs and EXPRESSOR
-            List<Module> expresseeList = new ArrayList<Module>();
+            List<Module> expresseeList = new ArrayList<>();
             
             Module expressor = new Module();            
             expressor.setStage(node.getStage() + 1);
             expressor.setRole(ModuleRole.EXPRESSOR);
             expressor.setRoot(false);
             
-            moduleFeatures = new ArrayList<Feature>();
-            submoduleStack = new ArrayList<PrimitiveModule>();
+            moduleFeatures = new ArrayList<>();
+            submoduleStack = new ArrayList<>();
             
             for (PrimitiveModule primitive : node.getSubmodules()) {
                 
                 //If we run into a CDS, we know that this will be an EXPRESSEE and replace this spot with an TESTING SLOT IN EXPRESSOR
-                PrimitiveModuleRole pR = primitive.getPrimitiveRole();
-                if (pR.equals(PrimitiveModuleRole.CDS) || pR.equals(PrimitiveModuleRole.CDS_ACTIVATOR) || pR.equals(PrimitiveModuleRole.CDS_REPRESSOR)) {
+                FeatureRole pR = primitive.getPrimitiveRole();
+                if (pR.equals(FeatureRole.CDS) || pR.equals(FeatureRole.CDS_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSOR)) {
                     
                     //Create a new EXPRESSEE from this CDS primitive and copy the feature
                     moduleFeatures.add(primitive.getModuleFeatures().get(0));
@@ -420,7 +417,7 @@ public class PhoenixGrammar {
                     PrimitiveModule testing = new PrimitiveModule();
                     testing.setModuleFeatures(primitive.getModuleFeatures());
                     testing.setPrimitive(primitive.getPrimitive());
-                    testing.setPrimitiveRole(PrimitiveModuleRole.TESTING);
+                    testing.setPrimitiveRole(FeatureRole.TESTING);
                     submoduleStack.add(testing);
                     
                 //Else, continue adding features to EXPRESSOR    
@@ -453,8 +450,8 @@ public class PhoenixGrammar {
         forwardModule.setRoot(false);
         forwardModule.setRole(ModuleRole.HIGHER_FUNCTION);
         forwardModule.setStage(node.getStage()+1);
-        ArrayList<Feature> moduleFeature = new ArrayList<Feature>();
-        ArrayList<PrimitiveModule> primModules = new ArrayList<PrimitiveModule>();
+        ArrayList<Feature> moduleFeature = new ArrayList<>();
+        ArrayList<PrimitiveModule> primModules = new ArrayList<>();
         
         //Go through each of the modules primitives in forward order
         for (int i = 0; i < node.getSubmodules().size(); i++) {
@@ -464,9 +461,9 @@ public class PhoenixGrammar {
             //If the primitive is reverse oriented, make a wildcard primitive and feature
             if (node.getSubmodules().get(i).getPrimitive().getOrientation().equals(Orientation.REVERSE)) {
                 
-                PrimitiveModule wildCard = new PrimitiveModule(PrimitiveModuleRole.WILDCARD, pm.getPrimitive().clone(), null);
+                PrimitiveModule wildCard = new PrimitiveModule(FeatureRole.WILDCARD, pm.getPrimitive().clone(), null);
                 wildCard.getPrimitive().setOrientation(Orientation.REVERSE);
-                wildCard.setPrimitiveRole(PrimitiveModuleRole.WILDCARD);
+                wildCard.setPrimitiveRole(FeatureRole.WILDCARD);
                 wildCard.setModuleFeatures(pm.getModuleFeatures());
                 primModules.add(wildCard);
                 moduleFeature.add(pm.getModuleFeatures().get(0));
@@ -497,8 +494,8 @@ public class PhoenixGrammar {
         reverseModule.setRole(ModuleRole.HIGHER_FUNCTION);
         reverseModule.setStage(node.getStage()+1);
         reverseModule.setForward(true);    //Needed?
-        ArrayList<Feature> moduleFeature = new ArrayList<Feature>();
-        ArrayList<PrimitiveModule> primModules = new ArrayList<PrimitiveModule>();
+        ArrayList<Feature> moduleFeature = new ArrayList<>();
+        ArrayList<PrimitiveModule> primModules = new ArrayList<>();
         
         //Go through each of the modules primitives in reverse order
         for (int i = (node.getSubmodules().size() - 1); i >= 0; i--) {
@@ -508,9 +505,9 @@ public class PhoenixGrammar {
             //If the primitive is reverse oriented, make a wildcard primitive and feature
             if (pm.getPrimitive().getOrientation().equals(Orientation.FORWARD)) {
                 
-                PrimitiveModule wildCard = new PrimitiveModule(PrimitiveModuleRole.WILDCARD, pm.getPrimitive().clone(), null);
+                PrimitiveModule wildCard = new PrimitiveModule(FeatureRole.WILDCARD, pm.getPrimitive().clone(), null);
                 wildCard.getPrimitive().setOrientation(Orientation.REVERSE);
-                wildCard.setPrimitiveRole(PrimitiveModuleRole.WILDCARD);
+                wildCard.setPrimitiveRole(FeatureRole.WILDCARD);
                 wildCard.setModuleFeatures(pm.getModuleFeatures());
                 primModules.add(wildCard);
                 moduleFeature.add(pm.getModuleFeatures().get(0)); // May have to comment this out later on?
@@ -535,27 +532,27 @@ public class PhoenixGrammar {
     }
 
     //Determine primitive role from Eugene component types
-    public static PrimitiveModuleRole findRole(ComponentType type) {
+    public static FeatureRole findRole(ComponentType type) {
         
-        PrimitiveModuleRole role = PrimitiveModuleRole.WILDCARD;
+        FeatureRole role = FeatureRole.WILDCARD;
         if (type.getName().startsWith("p")) {
-            role = PrimitiveModuleRole.PROMOTER;
+            role = FeatureRole.PROMOTER;
         } else if (type.getName().startsWith("ip")) {
-            role = PrimitiveModuleRole.PROMOTER_INDUCIBLE;
+            role = FeatureRole.PROMOTER_INDUCIBLE;
         } else if (type.getName().startsWith("rp")) {
-            role = PrimitiveModuleRole.PROMOTER_REPRESSIBLE;
+            role = FeatureRole.PROMOTER_REPRESSIBLE;
         } else if (type.getName().startsWith("cp")) {
-            role = PrimitiveModuleRole.PROMOTER_CONSTITUTIVE;
+            role = FeatureRole.PROMOTER_CONSTITUTIVE;
         } else if (type.getName().startsWith("rc")) {
-            role = PrimitiveModuleRole.CDS_REPRESSOR;
+            role = FeatureRole.CDS_REPRESSOR;
         } else if (type.getName().startsWith("fc")) {
-            role = PrimitiveModuleRole.CDS_ACTIVATOR;
+            role = FeatureRole.CDS_ACTIVATOR;
         } else if (type.getName().startsWith("r")) {
-            role = PrimitiveModuleRole.RBS;
+            role = FeatureRole.RBS;
         } else if (type.getName().startsWith("c")) {
-            role = PrimitiveModuleRole.CDS;
+            role = FeatureRole.CDS;
         } else if (type.getName().startsWith("t")) {
-            role = PrimitiveModuleRole.TERMINATOR;
+            role = FeatureRole.TERMINATOR;
         }
         return role;
     }

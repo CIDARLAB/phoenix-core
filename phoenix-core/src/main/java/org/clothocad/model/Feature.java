@@ -470,6 +470,22 @@ public class Feature extends SharableObjBase {
     @Getter
     private String clothoID;
     
+    @Override
+    public Feature clone() {
+        Feature clone = new Feature();
+        clone.PDBId = this.PDBId;
+        clone.clothoID = this.clothoID;
+        clone.forwardColor = this.forwardColor;
+        clone.reverseColor = this.reverseColor;
+        clone.genbankId = this.genbankId;
+        clone.isCDS = this.isCDS;
+        clone.riskGroup = this.riskGroup;
+        clone.role = this.role;
+        clone.sequence = this.sequence;
+        clone.swissProtId = this.swissProtId;
+        return clone;
+    }
+    
     // Feel free to add more of these
     public static enum FeatureRole {
     	PROMOTER,
@@ -487,7 +503,9 @@ public class Feature extends SharableObjBase {
         CDS_FLUORESCENT_FUSION,
         TERMINATOR,
         ORIGIN,
-        VECTOR;
+        VECTOR,
+        TESTING,
+        WILDCARD;
     }
 
 }

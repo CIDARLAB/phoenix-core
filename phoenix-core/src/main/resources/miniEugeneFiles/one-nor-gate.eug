@@ -5,8 +5,8 @@
 ip1 exactly 1
 ip2 exactly 1
 rp2 exactly 1
-c2 exactly 1
-c3 exactly 1
+rc2 exactly 1
+rc3 exactly 1
 r2 exactly 1
 r3 exactly 1
 t2 exactly 1
@@ -15,38 +15,38 @@ t3 exactly 1
 // INTERACTIONS
 B induces ip2
 A induces ip1
-c2 represses rp2
-ip1 drives c2
-not ip1 drives c3 
-ip2 drives c2
-not ip2 drives c3
-rp2 drives c3
-not rp2 drives c2
+rc2 represses rp2
+ip1 drives rc2
+not ip1 drives rc3 
+ip2 drives rc2
+not ip2 drives rc3
+rp2 drives rc3
+not rp2 drives rc2
 
 //POSITIONING
-r2 nextto c2
-r2 SAME_ORIENTATION c2
-r2 before c2 or r2 after c2
-r2 before c2 or reverse r2
-forward r2 or r2 after c2
+r2 nextto rc2
+r2 SAME_ORIENTATION rc2
+r2 before rc2 or r2 after rc2
+r2 before rc2 or reverse r2
+forward r2 or r2 after rc2
 forward r2 or reverse r2
 
-r3 nextto c3
-r3 SAME_ORIENTATION c3
-r3 before c3 or r3 after c3
-r3 before c3 or reverse r3
-forward r3 or r3 after c3
+r3 nextto rc3
+r3 SAME_ORIENTATION rc3
+r3 before rc3 or r3 after rc3
+r3 before rc3 or reverse r3
+forward r3 or r3 after rc3
 forward r3 or reverse r3
 
-t3 after c3 or t3 before c3
-t3 after c3 or reverse c3
-forward c3 or t3 before c3
-forward c3 or reverse c3
+t3 after rc3 or t3 before rc3
+t3 after rc3 or reverse rc3
+forward rc3 or t3 before rc3
+forward rc3 or reverse rc3
 
-t2 after c2 or t2 before c2
-t2 after c2 or reverse c2
-forward c2 or t2 before c2
-forward c2 or reverse c2
+t2 after rc2 or t2 before rc2
+t2 after rc2 or reverse rc2
+forward rc2 or t2 before rc2
+forward rc2 or reverse rc2
 
 //ORIENTATION=
 ip2 SAME_ORIENTATION r2

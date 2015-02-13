@@ -25,7 +25,9 @@ public class FeatureAssignment {
     
     //Method for traverisng graphs performing a partial assignment
     //This method will be hacky until we have a real part assignment algorithm based on simulation
-    public static void partialAssignment(List<Module> testingModules) {
+    public static HashSet<Module> partialAssignment(List<Module> testingModules) {
+        
+        HashSet<Module> modulesToTest = new HashSet<>();
         
         //Add fluorescent proteins to each module
         addFPs(testingModules);
@@ -41,7 +43,10 @@ public class FeatureAssignment {
             if (!isAssigned(m)) {
                 promoterRegulatorAssign(m, features);
             }
-        } 
+            modulesToTest.addAll(m.getAssignedModules());
+        }
+        
+        return modulesToTest;
     }
     
     //Method for traverisng graphs, adding fluorescent proteins

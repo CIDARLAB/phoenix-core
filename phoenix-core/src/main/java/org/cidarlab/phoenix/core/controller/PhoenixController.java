@@ -48,10 +48,11 @@ public class PhoenixController {
         
         //Extend the modules for testing
         TestingStructures.addTestingPrimitives(modules);
-          
+        
         //Perform partial part assignments given the feature library
-        FeatureAssignment.partialAssignment(modules);
+        HashSet<Module> modulesToTest = FeatureAssignment.partialAssignment(modules);
                 
+        //Create expreriment objects based upon the modules being tested
         List<Experiment> currentExperiments = new ArrayList<>();
                 
         //Repeat until all module graphs are fully assigned

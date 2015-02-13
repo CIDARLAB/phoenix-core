@@ -13,9 +13,9 @@ import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Fluorophore;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
-import org.clothocad.model.Feature;
-import org.clothocad.model.Feature.FeatureRole;
-import org.clothocad.model.Part;
+import org.cidarlab.phoenix.core.dom.Feature;
+import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
+import org.cidarlab.phoenix.core.dom.Part;
 
 /**
  *
@@ -319,8 +319,8 @@ public class FeatureAssignment {
     }
     
     //Method for making a complete assignment based on best module simulations
-    public static void completeAssignmentSim(List<Module> bestSim, List<Module> modules) {
-        
+    public static HashSet<Module> completeAssignmentSim(List<Module> bestSim, List<Module> modules) {
+        return null;
     }
     
     //Method for making a complete assignment based on best module simulations

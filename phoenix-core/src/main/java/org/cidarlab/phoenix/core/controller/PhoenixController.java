@@ -17,7 +17,7 @@ import org.cidarlab.phoenix.core.adaptors.iBioSimAdaptor;
 import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.grammars.PhoenixGrammar;
-import org.clothocad.model.Part;
+import org.cidarlab.phoenix.core.dom.Part;
 
 /**
  * This is the primary class for managing the workflow of tools within Phoenix
@@ -58,7 +58,7 @@ public class PhoenixController {
         while (!FeatureAssignment.isFullyAssigned(modules)) {
             
             //Determine experiments from current module assignment state
-            currentExperiments.addAll(TestingStructures.createExperiments(modules));
+            currentExperiments.addAll(TestingStructures.createExperiments(modulesToTest));
             
             //Convert modules to parts to get target parts
             HashSet<Part> experimentParts = FeatureAssignment.getExperimentParts(currentExperiments);
@@ -85,7 +85,7 @@ public class PhoenixController {
             List<Module> bestCombinedModules = iBioSimAdaptor.runSimulations(modules);
             
             //Update module graphs based upon simulations
-            FeatureAssignment.completeAssignmentSim(bestCombinedModules, modules);
+            modulesToTest = FeatureAssignment.completeAssignmentSim(bestCombinedModules, modules);
         }
     }
     

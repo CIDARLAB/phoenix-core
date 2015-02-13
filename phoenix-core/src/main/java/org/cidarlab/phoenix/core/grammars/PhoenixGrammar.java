@@ -7,18 +7,19 @@ package org.cidarlab.phoenix.core.grammars;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.cidarlab.phoenix.core.dom.Component.Orientation;
 import org.cidarlab.phoenix.core.dom.ComponentType;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
-import org.cidarlab.phoenix.core.dom.Orientation;
+//import org.cidarlab.phoenix.core.dom.Orientation;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
 import org.cidarlab.phoenix.core.formalgrammar.Grammar;
 import org.cidarlab.phoenix.core.formalgrammar.Nonterminal;
 import org.cidarlab.phoenix.core.formalgrammar.ProductionRule;
 import org.cidarlab.phoenix.core.formalgrammar.Symbol;
 import org.cidarlab.phoenix.core.formalgrammar.Terminal;
-import org.clothocad.model.Feature;
-import org.clothocad.model.Feature.FeatureRole;
+import org.cidarlab.phoenix.core.dom.Feature;
+import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
 
 /**
  * This class defines the grammar with which genetic regulatory networks are

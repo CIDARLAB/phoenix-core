@@ -1,99 +1,150 @@
+/*
+Copyright (c) 2009 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
+
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS..
+ */
 package org.cidarlab.phoenix.core.dom;
 
-/**
- * In Phoenix, components can be composed into more complex components.
- * The Annotation class enables to specify such composition 
- * either through absolute positions (``indexing'') or relative positions 
- * of the components to each other in a composition (``precedes'').
- * 
- * The Annotation class is implemented in such a way that absolute and relative 
- * positioning can be mixed. If the sub-components of a composed components 
- * are annotated correctly, is validated in the Composite class.
- * 
- * An Annotation MUST have a reference to a sub-component. 
- * 
- * @author Ernst Oberortner
- */
-public class Annotation {
-	
-	// for absolute positioning
-	private Integer idx;
-	
-	// for relative positioning
-	private Annotation precedes;
-	
-	// the reference to the sub-component
-	private Component subComponent;
-	
-	/**
-	 * The constructor for an ``absolute'' annotation. 
-	 * I.e. the subComponent appears at a fixed position 
-	 * in the composition.
-	 * 
-	 * @param idx   ... the index of the subComponent
-	 * @param subComponent  ... the subComponent
-	 */
-	public Annotation(int idx, Component subComponent) {
-		this.idx = idx;
-		this.precedes = null;
-		this.subComponent = subComponent;
-	}
-	
-	/**
-	 * The Annotation constructor for ``relative'' positioning 
-	 * of components in a composition.
-	 * 
-	 * @param precedes  ... a reference to the preceding annotation
-	 * @param subComponent   ... a reference to the sub-component
-	 */
-	public Annotation(Annotation precedes, Component subComponent) {
-		this.idx = null;
-		this.precedes = precedes;
-		this.subComponent = subComponent;
-	}
-	
-	/**
-	 * 
-	 * @return  true ... if the annotation is relative to another annotation
-	 *         false ... otherwise
-	 */
-	public boolean isRelative() {
-		return this.precedes != null;
-	}
+import java.awt.Color;
 
-	/**
-	 * 
-	 * @return  true ... if the annotation refers to an index
-	 *         false ... otherwise
-	 */
-	public boolean isAbsolute() {
-		return this.idx != null;
-	}
+import org.clothocad.core.datums.ObjBase;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+/**
+ * An Annotation is a single line of genbank essentially.  It maps a Feature
+ * or just something a user has labeled as signficant to a NucSeq.
+ */
+
+@NoArgsConstructor
+public class Annotation extends ObjBase {
+
+    @Getter
+    private String symbol;
+    @Getter
+    private boolean isForwardStrand;
+    @Getter
+   
+    private Person author;
+    @Getter
+  
+    private Feature feature;
+    @Getter
+    private int start, end;
+    @Getter
+    private Color forwardColor, reverseColor;
 	
-	/**
-	 * 
-	 * @return  the index of the position the annotation's sub-component appears
-	 *          if the annotation is absolute
-	 */
-	public int getPosition() {
-		return this.idx;
-	}
-	
-	/**
-	 * 
-	 * @return the preceding annotation if the annotation is relative
-	 */
-	public Annotation getPrecedes() {
-		return this.precedes;
-	}
-	
-	/**
-	 * the getComponent/0 method returns the component of the composition 
-	 * that the the Annotation is annotating.
-	 * 
-	 * @return  the Annotation's component
-	 */
-	public Component getComponent() {
-		return this.subComponent;
-	}
+    /**
+     * Constructor for an Annotation that is not a Feature, just a region of colored sequence
+     *
+     * @param name
+     * @param nucseqid  the NucSeq that you're annotating
+     * @param forColor
+     * @param revColor
+     * @param Start
+     * @param End
+     * @param user
+     * @param plusstrandtrue
+     * @param symbol  (can be null)
+     */
+    public Annotation(String name, Sequence seq, Color forColor, Color revColor, int start, int end, Person user, boolean plusstrandtrue, String symbol) {
+        super(name);
+
+        forwardColor = forColor;
+        reverseColor = revColor;
+        this.start = start;
+        this.end = end;
+        author = user;
+        isForwardStrand = plusstrandtrue;
+        this.symbol = symbol;
+        seq.addAnnotation(this);
+    }
+
+    /**
+     * Constructor for an Annotation that corresponds to a Feature object
+     * @param afeature
+     * @param nucseqid
+     * @param forColor
+     * @param revColor
+     * @param Start
+     * @param End
+     * @param user
+     * @param plusstrandtrue
+     * @param symbol
+     */
+    public Annotation(Feature afeature, Sequence seq, Color forColor, Color revColor, int start, int end, Person user, boolean plusstrandtrue, String symbol) {
+        this(afeature.getName(), seq, forColor, revColor, start, end, user, plusstrandtrue, symbol);
+        feature = afeature;
+        if ( forColor == null ) {
+            forwardColor = afeature.getForwardColor();
+        }
+        else {
+            forwardColor = forColor;
+        }
+        if ( revColor == null ) {
+            reverseColor = afeature.getReverseColor();
+        }
+        else{
+            reverseColor = revColor;
+        }
+    }
+
+    /**
+     * Reverse the orientation of the annotation (reverse complement
+     * it and flip flop the start and end sites).  Called from NucSeq
+     * when it's reverse complemented
+     * @param nucseqLength
+     */
+    void invert(int nucseqLength){
+        isForwardStrand = !isForwardStrand;
+        int s = start;
+        start = nucseqLength - end;
+        end = nucseqLength - s;
+    }
+
+    /**
+     * Get the approriate color for the annoation
+     * @return either the forward or reverse color depending
+     * on the orientation of the annotation
+     */
+    public Color getColor() {
+        if ( isForwardStrand ) {
+            return forwardColor;
+        }
+        return reverseColor;
+    }
+
+    /**
+     * Get the forward color as an integer code
+     * @return an integer of the Color
+     */
+    public int getForwardColorAsInt() {
+        return forwardColor.getRGB();
+    }
+    /**
+     * Get the reverse color as an integer code
+     * @return an integer of the Color
+     */
+    public int getReverseColorAsInt() {
+        return reverseColor.getRGB();
+    }
+
 }

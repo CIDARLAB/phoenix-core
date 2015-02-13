@@ -24,14 +24,14 @@ import org.cidarlab.phoenix.core.adaptors.BenchlingAdaptor.*;
 import org.cidarlab.phoenix.core.dom.Cytometer;
 import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Fluorophore;
-import org.clothocad.model.Feature;
-import org.clothocad.model.NucSeq;
-import org.clothocad.model.Part;
-import org.clothocad.model.Polynucleotide;
+import org.cidarlab.phoenix.core.dom.Feature;
+import org.cidarlab.phoenix.core.dom.NucSeq;
+import org.cidarlab.phoenix.core.dom.Part;
+import org.cidarlab.phoenix.core.dom.Polynucleotide;
 import org.clothoapi.clotho3javaapi.Clotho;
 import org.clothoapi.clotho3javaapi.ClothoConnection;
-import org.clothocad.model.Annotation;
-import org.clothocad.model.Person;
+import org.cidarlab.phoenix.core.dom.Annotation;
+import org.cidarlab.phoenix.core.dom.Person;
 
 /**
  * This class has all methods for sending and receiving information to Clotho

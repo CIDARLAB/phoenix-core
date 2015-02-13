@@ -5,6 +5,7 @@
 package org.cidarlab.phoenix.core.controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import org.cidarlab.phoenix.core.dom.ComponentType;
 import org.cidarlab.phoenix.core.dom.Experiment;
@@ -12,9 +13,9 @@ import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
 import org.cidarlab.phoenix.core.dom.Primitive;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
-import org.clothocad.model.Feature;
-import org.clothocad.model.Feature.FeatureRole;
-import org.clothocad.model.NucSeq;
+import org.cidarlab.phoenix.core.dom.Feature;
+import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
+import org.cidarlab.phoenix.core.dom.NucSeq;
 
 /**
  *
@@ -131,7 +132,10 @@ public class TestingStructures {
     }
     
     //Method for forming sets of experiments given a paritally assigned module graph
-    public static List<Experiment> createExperiments(List<Module> modules) {
+    public static List<Experiment> createExperiments(HashSet<Module> modules) {
+        
+        
+        
         return null;
     }
     

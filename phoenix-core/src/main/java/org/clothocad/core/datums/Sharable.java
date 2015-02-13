@@ -4,7 +4,7 @@
  */
 package org.clothocad.core.datums;
 
-import org.clothocad.model.Person;
+import org.cidarlab.phoenix.core.dom.Person;
 
 /**
  *

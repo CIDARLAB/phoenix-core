@@ -7,7 +7,7 @@ package org.clothocad.core.datums;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.clothocad.model.Person;
+import org.cidarlab.phoenix.core.dom.Person;
 
 /**
  *

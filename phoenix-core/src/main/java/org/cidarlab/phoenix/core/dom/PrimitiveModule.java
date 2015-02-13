@@ -10,8 +10,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.clothocad.model.Feature;
-import org.clothocad.model.Feature.FeatureRole;
+import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
 
 /**
  *

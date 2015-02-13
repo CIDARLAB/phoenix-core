@@ -5,7 +5,7 @@
 package org.cidarlab.phoenix.core.adaptors;
 
 import java.util.HashSet;
-import org.clothocad.model.Part;
+import org.cidarlab.phoenix.core.dom.Part;
 
 /**
  * This class has all methods for sending and receiving information to Raven

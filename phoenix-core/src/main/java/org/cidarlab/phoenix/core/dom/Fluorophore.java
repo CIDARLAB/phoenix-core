@@ -7,7 +7,6 @@ package org.cidarlab.phoenix.core.dom;
 import java.util.HashMap;
 import lombok.Getter;
 import lombok.Setter;
-import org.clothocad.model.Feature;
 
 /**
  *

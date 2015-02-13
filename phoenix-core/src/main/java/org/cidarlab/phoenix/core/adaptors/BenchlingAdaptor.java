@@ -20,12 +20,12 @@ import org.biojava.bio.seq.SequenceIterator;
 import org.biojava.bio.seq.io.SeqIOTools;
 import org.biojava.bio.symbol.Location;
 import org.cidarlab.phoenix.core.dom.Fluorophore;
-import org.clothocad.model.Annotation;
-import org.clothocad.model.NucSeq;
-import org.clothocad.model.Part;
-import org.clothocad.model.Feature;
-import org.clothocad.model.Person;
-import org.clothocad.model.Polynucleotide;
+import org.cidarlab.phoenix.core.dom.Annotation;
+import org.cidarlab.phoenix.core.dom.NucSeq;
+import org.cidarlab.phoenix.core.dom.Part;
+import org.cidarlab.phoenix.core.dom.Feature;
+import org.cidarlab.phoenix.core.dom.Person;
+import org.cidarlab.phoenix.core.dom.Polynucleotide;
 
 /**
  *
@@ -172,7 +172,7 @@ public class BenchlingAdaptor {
      * This method is intended to be used only on a reference set of features
      * 
      */
-    public static HashSet<org.clothocad.model.Feature> getFeatures(File input) throws FileNotFoundException, NoSuchElementException, BioException {
+    public static HashSet<org.cidarlab.phoenix.core.dom.Feature> getFeatures(File input) throws FileNotFoundException, NoSuchElementException, BioException {
 
         //Import file, begin reading
         BufferedReader reader = new BufferedReader(new FileReader(input.getAbsolutePath()));
@@ -286,7 +286,7 @@ public class BenchlingAdaptor {
                                 
                             } else {
                                 
-                                org.clothocad.model.Feature clothoFeature = new Feature();
+                                org.cidarlab.phoenix.core.dom.Feature clothoFeature = new Feature();
                                 clothoFeature.setName(seq.getName());
                                 clothoFeature.setSequence(nucSeq);
                                 clothoFeature.setForwardColor(fwd);
@@ -324,7 +324,7 @@ public class BenchlingAdaptor {
                     
                 } else {
                     
-                    org.clothocad.model.Feature clothoFeature = new Feature();
+                    org.cidarlab.phoenix.core.dom.Feature clothoFeature = new Feature();
                     clothoFeature.setName(name);
                     clothoFeature.setSequence(nucSeq);
                     clothoFeature.setForwardColor(fwd);
@@ -418,7 +418,7 @@ public class BenchlingAdaptor {
                 name = feature.getAnnotation().getProperty("label").toString();
             }
                         
-            org.clothocad.model.Feature clothoFeature = new Feature();
+            org.cidarlab.phoenix.core.dom.Feature clothoFeature = new Feature();
             clothoFeature.setName(name);
             clothoFeature.setSequence(nucSeq);
             clothoFeature.setForwardColor(fwd);

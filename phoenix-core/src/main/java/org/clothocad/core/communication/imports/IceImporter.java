@@ -19,10 +19,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
-import org.clothocad.model.BasicPart;
-import org.clothocad.model.FreeForm;
-import org.clothocad.model.Part;
-import org.clothocad.model.Person;
+import org.cidarlab.phoenix.core.dom.BasicPart;
+import org.cidarlab.phoenix.core.dom.FreeForm;
+import org.cidarlab.phoenix.core.dom.Part;
+import org.cidarlab.phoenix.core.dom.Person;
 
 /**
  *

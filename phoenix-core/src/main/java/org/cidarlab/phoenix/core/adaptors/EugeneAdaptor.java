@@ -10,17 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 import org.cidarlab.minieugene.MiniEugene;
 import org.cidarlab.minieugene.dom.Component;
+import org.cidarlab.phoenix.core.dom.Component.Orientation;
 import org.cidarlab.minieugene.exception.MiniEugeneException;
 import org.cidarlab.minieugene.util.FileUtil;
 import org.cidarlab.phoenix.core.dom.ComponentType;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
-import org.cidarlab.phoenix.core.dom.Orientation;
 import org.cidarlab.phoenix.core.dom.Primitive;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
 import org.cidarlab.phoenix.core.grammars.PhoenixGrammar;
-import org.clothocad.model.Feature;
-import org.clothocad.model.Person;
+import org.cidarlab.phoenix.core.dom.Feature;
+import org.cidarlab.phoenix.core.dom.Person;
 
 /**
  * This class has all methods for sending and receiving information to Eugene and miniEugene

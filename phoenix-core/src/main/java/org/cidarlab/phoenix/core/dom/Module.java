@@ -10,7 +10,6 @@ import java.util.HashSet;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-import org.clothocad.model.Feature;
 
 /**
  *

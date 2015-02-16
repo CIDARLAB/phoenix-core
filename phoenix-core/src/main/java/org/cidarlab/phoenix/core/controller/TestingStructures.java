@@ -7,6 +7,7 @@ package org.cidarlab.phoenix.core.controller;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import org.cidarlab.phoenix.core.dom.Component;
 import org.cidarlab.phoenix.core.dom.ComponentType;
 import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Module;
@@ -131,6 +132,38 @@ public class TestingStructures {
         m.updateModuleFeatures();
     }
     
+    //Add testing Features in WILDCARD 
+    public static void wildcardAssign(Module m) {
+        
+        //For each WILDCARD, add the appropriate testing primitive in reverse orientation 
+        for (PrimitiveModule pm : m.getSubmodules()) {
+            if (pm.getPrimitiveRole().equals(Feature.FeatureRole.WILDCARD)) {
+                
+                //Assumes all primitive modules have exactly one module feature
+                String type = pm.getPrimitive().getType().getName();
+                if (type.equals("p") || type.equals("ip") || type.equals("rp") || type.equals("cp")) {
+                    pm.setPrimitive(testPromoter.getPrimitive().clone());
+                    pm.setModuleFeatures(testPromoter.getModuleFeatures());
+                    pm.getPrimitive().setOrientation(Component.Orientation.REVERSE);
+                } else if (type.equals("r")) {
+                    pm.setPrimitive(testRBS.getPrimitive().clone());
+                    pm.setModuleFeatures(testRBS.getModuleFeatures());
+                    pm.getPrimitive().setOrientation(Component.Orientation.REVERSE);
+                } else if (type.equals("c") || type.equals("rc") || type.equals("fc")) {
+                    pm.setPrimitive(testCDS.getPrimitive().clone());
+                    pm.setModuleFeatures(testCDS.getModuleFeatures());
+                    pm.getPrimitive().setOrientation(Component.Orientation.REVERSE);
+                } else if (type.equals("t")) {
+                    pm.setPrimitive(testTerminator.getPrimitive().clone());
+                    pm.setModuleFeatures(testTerminator.getModuleFeatures());
+                    pm.getPrimitive().setOrientation(Component.Orientation.REVERSE);
+                } 
+            }            
+        }
+        
+        m.updateModuleFeatures();
+    }
+    
     //Method for forming sets of experiments given a paritally assigned module graph
     public static List<Experiment> createExperiments(HashSet<Module> modules) {
         
@@ -152,6 +185,7 @@ public class TestingStructures {
     //FIELDS
     private static final PrimitiveModule testPromoter = new PrimitiveModule(FeatureRole.PROMOTER_CONSTITUTIVE, new Primitive(new ComponentType("p"), "pTEST"), new Feature("pTEST", new NucSeq("a"), null, FeatureRole.PROMOTER_CONSTITUTIVE));
     private static final PrimitiveModule testRBS = new PrimitiveModule(FeatureRole.RBS, new Primitive(new ComponentType("r"), "rTEST"), new Feature("rTEST", new NucSeq("a"), null, FeatureRole.RBS));
+    private static final PrimitiveModule testCDS = new PrimitiveModule(FeatureRole.CDS, new Primitive(new ComponentType("c"), "cTEST"), new Feature("cTEST", new NucSeq("a"), null, FeatureRole.CDS));
     private static final PrimitiveModule testTerminator = new PrimitiveModule(FeatureRole.TERMINATOR, new Primitive(new ComponentType("t"), "tTEST"), new Feature("tTEST", new NucSeq("a"), null, FeatureRole.TERMINATOR));
     private static final PrimitiveModule testVector = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST"), new Feature("vTEST", new NucSeq("a"), null, FeatureRole.VECTOR));
     private static final PrimitiveModule finalVector = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vFINAL"), new Feature("vFINAL", new NucSeq("a"), null, FeatureRole.VECTOR));

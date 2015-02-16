@@ -46,6 +46,11 @@ public class FeatureAssignment {
             modulesToTest.addAll(m.getAssignedModules());
         }
         
+        //Assign WILDCARDs for assigned modules
+        for (Module m : modulesToTest) {
+            TestingStructures.wildcardAssign(m);
+        }
+
         return modulesToTest;
     }
     

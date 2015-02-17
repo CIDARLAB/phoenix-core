@@ -4,6 +4,7 @@
  */
 package org.cidarlab.phoenix.core.dom;
 
+import java.io.File;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,15 +30,36 @@ public class Experiment {
     @Getter
     private Part measurementPart;
     
-    //Module to be measured
+    //Modules for controls
     @Setter
     @Getter
     private List<Module> controlModules;
     
-    //Part measured
+    //Parts for controls
     @Setter
     @Getter
     private List<Part> controlPart;
     
+    //Test strain
+    @Setter
+    @Getter
+    private Strain strain;
     
+    //Experiment type
+    @Setter
+    @Getter
+    private ExperimentType type;
+    
+    //fcs files
+    @Setter
+    @Getter
+    private List<File> fcsFiles;
+    
+    //Experiment types
+    public enum ExperimentType {
+        EXPRESSION,
+        DEGRADATION,
+        REGULATION,
+        SMALL_MOLECULE;
+    }
 }

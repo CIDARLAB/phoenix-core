@@ -237,6 +237,11 @@
       <artifactId>miniEugene</artifactId>
       <version>1.0</version>
     </dependency>
+    <dependency>
+      <groupId>Raven</groupId>
+      <artifactId>RavenCAD</artifactId>
+      <version>1.2-SNAPSHOT</version>
+    </dependency>
   </dependencies>
     
   <repositories>

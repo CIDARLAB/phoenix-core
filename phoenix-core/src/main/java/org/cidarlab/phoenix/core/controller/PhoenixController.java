@@ -8,12 +8,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import org.cidarlab.phoenix.core.adaptors.AnalyticsAdaptor;
-import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
-import org.cidarlab.phoenix.core.adaptors.EugeneAdaptor;
-import org.cidarlab.phoenix.core.adaptors.OwlAdaptor;
-import org.cidarlab.phoenix.core.adaptors.RavenAdaptor;
-import org.cidarlab.phoenix.core.adaptors.iBioSimAdaptor;
+import net.sf.json.JSONObject;
+import org.cidarlab.phoenix.core.adaptors.*;
 import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.grammars.PhoenixGrammar;
@@ -56,19 +52,16 @@ public class PhoenixController {
         List<Experiment> currentExperiments = new ArrayList<>();
                 
         //Repeat until all module graphs are fully assigned
-        while (!FeatureAssignment.isFullyAssigned(modules)) {
+//        while (!FeatureAssignment.isFullyAssigned(modules)) {
             
             //Determine experiments from current module assignment state
             currentExperiments.addAll(TestingStructures.createExperiments(modulesToTest));
             
-            //Convert modules to parts to get target parts
-            HashSet<Part> experimentParts = FeatureAssignment.getExperimentParts(currentExperiments);
-            
-            //Create instruction files            
-            String assemblyInstructions = RavenAdaptor.generateAssemblyPlan(experimentParts);
-            System.out.println(assemblyInstructions);
-            String testingInstructions = PhoenixInstructions.generateTestingInstructions(currentExperiments);            
-            System.out.println(testingInstructions);
+            //Create assembly and testing plans
+            HashSet<Part> parts = ClothoAdaptor.queryParts();
+            JSONObject assemblyParameters = ClothoAdaptor.queryAssemblyParameters("default").toJSON();
+            String assemblyInstructions = RavenAdaptor.generateAssemblyPlan(modulesToTest, parts, assemblyParameters);
+            String testingInstructions = PhoenixInstructions.generateTestingInstructions(currentExperiments);
             
             //Import data from experiments
             ClothoAdaptor.uploadSequences(plasmidsCreated, false);
@@ -87,7 +80,7 @@ public class PhoenixController {
             
             //Update module graphs based upon simulations
             modulesToTest = FeatureAssignment.completeAssignmentSim(bestCombinedModules, modules);
-        }
+//        }
     }
     
 }

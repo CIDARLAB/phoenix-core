@@ -25,20 +25,30 @@ public class Experiment {
     @Getter
     private Module measurementModule;
     
-    //Part measured
-    @Setter
-    @Getter
-    private Part measurementPart;
-    
     //Modules for controls
     @Setter
     @Getter
     private List<Module> controlModules;
     
+    //Part measured
+    @Setter
+    @Getter
+    private Part measurementPart;        
+    
     //Parts for controls
     @Setter
     @Getter
     private List<Part> controlPart;
+    
+    //Polynucleotide measured
+    @Setter
+    @Getter
+    private Polynucleotide measurementPolynucleotide;
+    
+    //Polynucleotide measured
+    @Setter
+    @Getter
+    private List<Polynucleotide> contPolynucleotides;
     
     //Test strain
     @Setter

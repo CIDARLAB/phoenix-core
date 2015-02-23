@@ -31,6 +31,7 @@ import org.cidarlab.phoenix.core.dom.Polynucleotide;
 import org.clothoapi.clotho3javaapi.Clotho;
 import org.clothoapi.clotho3javaapi.ClothoConnection;
 import org.cidarlab.phoenix.core.dom.Annotation;
+import org.cidarlab.phoenix.core.dom.AssemblyParameters;
 import org.cidarlab.phoenix.core.dom.Person;
 
 /**
@@ -244,7 +245,7 @@ public class ClothoAdaptor {
 
             //Polynucleotide schema
             Map createPolynucleotide = new HashMap();
-            createPolynucleotide.put("schema", "org.clothocad.model.Polynucleotide");
+            createPolynucleotide.put("schema", "org.cidarlab.phoenix.core.dom.Polynucleotide");
             createPolynucleotide.put("name", pn.getAccession());
             createPolynucleotide.put("accession", pn.getAccession().substring(0, pn.getAccession().length() - 15));
             createPolynucleotide.put("description", pn.getDescription());
@@ -276,20 +277,20 @@ public class ClothoAdaptor {
 
             //Feature schema
             Map createFeature = new HashMap();
-            createFeature.put("schema", "org.clothocad.model.Feature");
+            createFeature.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
             createFeature.put("name", f.getName());
             createFeature.put("forwardColor", f.getForwardColor().toString());
             createFeature.put("reverseColor", f.getReverseColor().toString());
 
             //NucSeq sub-schema
             Map createSequence = new HashMap();
-            createSequence.put("schema", "org.clothocad.model.Sequence");
+            createSequence.put("schema", "org.cidarlab.phoenix.core.dom.Sequence");
             createSequence.put("sequence", f.getSequence().getSequence());
             createFeature.put("sequence", createSequence);
             
             //FeatureRole sub-schema
             Map createFeatureRole = new HashMap();
-            createFeatureRole.put("schema", "org.clothocad.model.Feature.FeatureRole");
+            createFeatureRole.put("schema", "org.cidarlab.phoenix.core.dom.FeatureRole");
             createFeatureRole.put("FeatureRole", f.getRole().toString());
             createFeature.put("role", createFeatureRole);
             
@@ -343,13 +344,13 @@ public class ClothoAdaptor {
                         
             //NucSeq sub-schema
             Map createSequence = new HashMap();
-            createSequence.put("schema", "org.clothocad.model.Sequence");
+            createSequence.put("schema", "org.cidarlab.phoenix.core.dom.Sequence");
             createSequence.put("sequence", f.getSequence().getSequence());
             createFluorophore.put("sequence", createSequence);
             
             //FeatureRole sub-schema
             Map createFeatureRole = new HashMap();
-            createFeatureRole.put("schema", "org.clothocad.model.Feature.FeatureRole");
+            createFeatureRole.put("schema", "org.cidarlab.phoenix.core.dom.FeatureRole");
             createFeatureRole.put("FeatureRole", f.getRole().toString());
             createFluorophore.put("role", createFeatureRole);
             
@@ -386,12 +387,12 @@ public class ClothoAdaptor {
 
             //Part schema
             Map createPart = new HashMap();
-            createPart.put("schema", "org.clothocad.model.Part");
+            createPart.put("schema", "org.cidarlab.phoenix.core.dom.Part");
             createPart.put("name", p.getName());
 
             //NucSeq sub-schema
             Map createNucSeq = new HashMap();
-            createNucSeq.put("schema", "org.clothocad.model.NucSeq");
+            createNucSeq.put("schema", "org.cidarlab.phoenix.core.dom.NucSeq");
             createNucSeq.put("sequence", p.getSequence().getSeq());
             createNucSeq.put("isCircular", p.getSequence().isCircular());
             createNucSeq.put("isSingleStranded", p.getSequence().isSingleStranded());
@@ -417,7 +418,7 @@ public class ClothoAdaptor {
 
             //NucSeq schema
             Map createNucSeqMain = new HashMap();
-            createNucSeqMain.put("schema", "org.clothocad.model.NucSeq");
+            createNucSeqMain.put("schema", "org.cidarlab.phoenix.core.dom.NucSeq");
             createNucSeqMain.put("name", ns.getName());
             createNucSeqMain.put("sequence", ns.getSeq());
             createNucSeqMain.put("isCircular", ns.isCircular());
@@ -430,7 +431,7 @@ public class ClothoAdaptor {
             for (Annotation annotation : annotations) {
 
                 Map createAnnotation = new HashMap();
-                createAnnotation.put("schema", "org.clothocad.model.Annotation");
+                createAnnotation.put("schema", "org.cidarlab.phoenix.core.dom.Annotation");
                 createAnnotation.put("start", annotation.getStart());
                 createAnnotation.put("end", annotation.getEnd());
                 createAnnotation.put("forwardColor", annotation.getForwardColor().toString());
@@ -440,14 +441,14 @@ public class ClothoAdaptor {
                 //Feature schema - assumed one feature per annotation
                 Feature f = annotation.getFeature();
                 Map createFeature = new HashMap();
-                createFeature.put("schema", "org.clothocad.model.Feature");
+                createFeature.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
                 createFeature.put("forwardColor", f.getForwardColor().toString());
                 createFeature.put("reverseColor", f.getReverseColor().toString());
                 createFeature.put("name", f.getName().replaceAll(".ref", ""));
 
                 //NucSeq sub-schema
                 Map createNucSeqSub = new HashMap();
-                createNucSeqSub.put("schema", "org.clothocad.model.Sequence");
+                createNucSeqSub.put("schema", "org.cidarlab.phoenix.core.dom.Sequence");
                 createNucSeqSub.put("sequence", f.getSequence().getSequence());
 
                 createFeature.put("sequence", createNucSeqSub);
@@ -455,7 +456,7 @@ public class ClothoAdaptor {
                 //Get this feature's Person
                 Person author = annotation.getAuthor();
                 Map createPerson = new HashMap();
-                createPerson.put("schema", "org.clothocad.model.Person");
+                createPerson.put("schema", "org.cidarlab.phoenix.core.dom.Person");
                 createPerson.put("givenName", author.getGivenName());
                 createPerson.put("surName", author.getSurName());
                 createPerson.put("emailAddress", author.getEmailAddress());
@@ -535,6 +536,56 @@ public class ClothoAdaptor {
         conn.closeConnection();
     }
     
+    //Add polynucleotides to Clotho via Clotho Server API
+    public static void createAssemblyParameters(AssemblyParameters aP) {
+        
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
+        
+        Map createAssmParam = new HashMap();
+        createAssmParam.put("schema", "org.cidarlab.phoenix.core.dom.AssemblyParameters");
+        createAssmParam.put("method", aP.getMethod());
+        createAssmParam.put("name", aP.getName());
+        createAssmParam.put("oligoNameRoot", aP.getOligoNameRoot());
+        createAssmParam.put("meltingTemperature", aP.getMeltingTemperature());
+        createAssmParam.put("minPCRLength", aP.getMinPCRLength());
+        createAssmParam.put("targetHomologyLength", aP.getTargetHomologyLength());
+        createAssmParam.put("minCloneLength", aP.getMinCloneLength());
+        createAssmParam.put("maxPrimerLength", aP.getMaxPrimerLength());
+        
+        if (aP.getRecommended() != null) {
+            List<String> recommended = new ArrayList<>(aP.getRecommended());
+            createAssmParam.put("recommended", recommended);
+        }
+        if (aP.getRequired() != null) {
+            List<String> required = new ArrayList<>(aP.getRequired());
+            createAssmParam.put("required", required);
+        }
+        if (aP.getDiscouraged() != null) {
+            List<String> discouraged = new ArrayList<>(aP.getDiscouraged());
+            createAssmParam.put("discouraged", discouraged);
+        }
+        if (aP.getForbidden() != null) {
+            List<String> forbidden = new ArrayList<>(aP.getForbidden());
+            createAssmParam.put("forbidden", forbidden);
+        }
+        if (aP.getEfficiency() != null) {
+            List<String> efficiency = new ArrayList<>(aP.getEfficiency());
+            createAssmParam.put("efficiency", efficiency); 
+        }
+
+        //Clotho ID
+        if (aP.getClothoID() != null) {
+            createAssmParam.put("id", aP.getClothoID());
+        } else {
+            createAssmParam.put("id", aP.getName());
+            aP.setClothoID(aP.getName());
+        }
+        clothoObject.create(createAssmParam);
+
+        conn.closeConnection();
+    }
+    
     /*
      * 
      * CLOTHO OBJECT QUERY METHODS
@@ -551,7 +602,7 @@ public class ClothoAdaptor {
         HashSet<Feature> features = new HashSet<>();
         
         Map map = new HashMap();
-        map.put("schema", "org.clothocad.model.Feature");
+        map.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
         Object query = clothoObject.query(map);
         JSONArray array = (JSONArray) query;
         
@@ -680,7 +731,7 @@ public class ClothoAdaptor {
         HashSet<NucSeq> nucSeqs = new HashSet<>();
 
         Map map = new HashMap();
-        map.put("schema", "org.clothocad.model.NucSeq");
+        map.put("schema", "org.cidarlab.phoenix.core.dom.NucSeq");
         Object query = clothoObject.query(map);
         JSONArray array = (JSONArray) query;
 
@@ -765,7 +816,7 @@ public class ClothoAdaptor {
         HashSet<Part> parts = new HashSet<>();
 
         Map map = new HashMap();
-        map.put("schema", "org.clothocad.model.PartREMOVETHIS");
+        map.put("schema", "org.cidarlab.phoenix.core.dom.Part");
         Object query = clothoObject.query(map);
         JSONArray array = (JSONArray) query;
 
@@ -804,7 +855,7 @@ public class ClothoAdaptor {
         HashSet<Polynucleotide> polynucs = new HashSet<>();
 
         Map map = new HashMap();
-        map.put("schema", "org.clothocad.model.Polynucleotide");
+        map.put("schema", "org.cidarlab.phoenix.core.dom.Polynucleotide");
         Object query = clothoObject.query(map);
         JSONArray array = (JSONArray) query;
 
@@ -898,5 +949,36 @@ public class ClothoAdaptor {
         conn.closeConnection();
         
         return cytometers;
+    }
+    
+    public static AssemblyParameters queryAssemblyParameters (String ID) {
+        
+        //Establish Clotho connection
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
+        
+        AssemblyParameters aP = new AssemblyParameters();
+        
+        Map map = new HashMap();
+        map.put("schema", "org.cidarlab.phoenix.core.dom.AssemblyParameters");
+        Object query = clothoObject.query(map);
+        JSONArray arrayAP = (JSONArray) query;
+        
+        for (int i = 0; i < arrayAP.size(); i++) {
+            
+            JSONObject jsonAP = arrayAP.getJSONObject(i);
+            AssemblyParameters candidate = new AssemblyParameters(jsonAP);
+            
+            if (ID != null) {
+                if (candidate.getClothoID().equalsIgnoreCase(ID)) {
+                    aP = candidate;
+                    break;
+                }
+            }
+        }
+        
+        conn.closeConnection();
+        
+        return aP;
     }
 }

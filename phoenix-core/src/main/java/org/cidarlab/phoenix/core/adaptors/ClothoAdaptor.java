@@ -65,9 +65,7 @@ public class ClothoAdaptor {
  
             //Get polynucleotides, nucseqs and parts from a multi-part genbank file     
             HashSet<Polynucleotide> polyNucs = BenchlingAdaptor.getPolynucleotide(input);
-            
-            //For parts set, we must only save parts without existing duplicate sequences
-            
+            removeDuplicateParts(polyNucs);            
 
             //Save all polynucleotides, nucseqs and parts to Clotho
             createPolynucleotides(polyNucs);
@@ -273,7 +271,7 @@ public class ClothoAdaptor {
             createPolynucleotide.put("part", createPart);
             createPolynucleotide.put("vector", createVec);
             
-            clothoObject.create(createPolynucleotide);            
+            clothoObject.set(createPolynucleotide);            
         }
         conn.closeConnection();
     }
@@ -976,39 +974,50 @@ public class ClothoAdaptor {
     }
     
     //Remove parts from a set with duplicate sequence
-    public static HashSet<Part> removeDuplicates (HashSet<Part> parts) {
+    public static void removeDuplicateParts (HashSet<Polynucleotide> polyNucs) {
         
-        HashSet<Part> newParts = new HashSet();
-        HashMap<String, String> sequenceNameHash = new HashMap();
-        HashMap<String, Part> partNameHash = new HashMap();
+        HashMap<String, Part> sequencePartMap = new HashMap();
         
         //Put all existing parts in the Map
-        //Assumes no duplicated names or sequences
         HashSet<Part> queryParts = queryParts();
         for (Part p : queryParts) {
-            sequenceNameHash.put(p.getSequence().getSeq(), p.getName());
-            partNameHash.put(p.getName(), p);
-        }
-        for (Part p : parts) {
-            partNameHash.put(p.getName(), p);
+            sequencePartMap.put(p.getSequence().getSeq(), p);
         }
         
         //Only add parts with new sequence to the output
-        for (Part p : parts) {
+        for (Polynucleotide pn : polyNucs) {
+
+            //Replace parts if necessary
+            Part part = pn.getPart();
+            String partSeq = part.getSequence().getSeq();
+            if (!sequencePartMap.containsKey(partSeq)) {
+                sequencePartMap.put(partSeq, part);             
+            } else {
+                Part existing = sequencePartMap.get(partSeq);
+                if (!existing.isVector()) {
+                    pn.setPart(existing);
+                } else {
+                    sequencePartMap.put(partSeq, part); 
+                }
+            }
             
-            //If it's a new sequence add it to the new set and the sequence hash
-            if (!sequenceNameHash.containsKey(p.getSequence().getSeq())) {
-                newParts.add(p);
-                sequenceNameHash.put(p.getSequence().getSeq(), p.getName());
-                
-            //If not and its a vector, change its pair   
-//            } else {                
-//                if (p.isVector()) {
-//                    partNameHash.get(p.getPairName()).setPairName(sequenceNameHash.get(p.getSequence().getSeq()));
-//                }                
-            }                
-        }
+            //Replace vectors if necessary
+            Part vector = pn.getVector();
+            String vecSeq = vector.getSequence().getSeq();
+            if (!sequencePartMap.containsKey(vecSeq)) {
+                sequencePartMap.put(vecSeq, vector);             
+            } else {
+                Part existing = sequencePartMap.get(vecSeq);
+                if (existing.isVector()) {
+                    pn.setVector(existing);
+                } else {
+                    sequencePartMap.put(vecSeq, vector); 
+                }
+            }
+        }        
+    }
+    
+    public static void annotate(HashSet<Feature> features, HashSet<Part> parts) {
         
-        return newParts;
     }
 }

@@ -277,7 +277,7 @@ public class ClothoAdaptor {
             createPolynucleotide.put("part", createPart);
             createPolynucleotide.put("vector", createVec);
             
-            clothoObject.set(createPolynucleotide);            
+            clothoObject.create(createPolynucleotide);            
         }
         conn.closeConnection();
     }
@@ -993,42 +993,47 @@ public class ClothoAdaptor {
         //Only add parts with new sequence to the output
         for (Polynucleotide pn : polyNucs) {
 
-            //Replace parts if necessary
-            Part part = pn.getPart();
-            String partSeq = part.getSequence().getSeq();
-            if (!sequencePartMap.containsKey(partSeq)) {
-                sequencePartMap.put(partSeq, part);             
-            } else {
-                Part existing = sequencePartMap.get(partSeq);
-                if (!existing.isVector()) {
-                    pn.setPart(existing);
+            if (pn.getPart() != null && pn.getVector() != null) {
+
+                //Replace parts if necessary
+                Part part = pn.getPart();
+                String partSeq = part.getSequence().getSeq();
+                if (!sequencePartMap.containsKey(partSeq)) {
+                    sequencePartMap.put(partSeq, part);
                 } else {
-                    sequencePartMap.put(partSeq, part); 
+                    Part existing = sequencePartMap.get(partSeq);
+                    if (!existing.isVector()) {
+                        pn.setPart(existing);
+                    } else {
+                        sequencePartMap.put(partSeq, part);
+                    }
+                }
+
+                //Replace vectors if necessary
+                Part vector = pn.getVector();
+                String vecSeq = vector.getSequence().getSeq();
+                if (!sequencePartMap.containsKey(vecSeq)) {
+                    sequencePartMap.put(vecSeq, vector);
+                } else {
+                    Part existing = sequencePartMap.get(vecSeq);
+                    if (existing.isVector()) {
+                        pn.setVector(existing);
+                    } else {
+                        sequencePartMap.put(vecSeq, vector);
+                    }
                 }
             }
-            
-            //Replace vectors if necessary
-            Part vector = pn.getVector();
-            String vecSeq = vector.getSequence().getSeq();
-            if (!sequencePartMap.containsKey(vecSeq)) {
-                sequencePartMap.put(vecSeq, vector);             
-            } else {
-                Part existing = sequencePartMap.get(vecSeq);
-                if (existing.isVector()) {
-                    pn.setVector(existing);
-                } else {
-                    sequencePartMap.put(vecSeq, vector); 
-                }
-            }
-        }        
+        }
     }
     
     //Annotate part and vector of a polynucleotide
     public static void annotateParts(HashSet<Feature> features, HashSet<Polynucleotide> polyNucs) {
         
-        for (Polynucleotide pn : polyNucs) {            
-            annotate(features, pn.getPart().getSequence());
-            annotate(features, pn.getVector().getSequence());
+        for (Polynucleotide pn : polyNucs) {      
+            if (pn.getPart() != null && pn.getVector() != null) {
+                annotate(features, pn.getPart().getSequence());
+                annotate(features, pn.getVector().getSequence());
+            }
         }
     }
     
@@ -1050,7 +1055,7 @@ public class ClothoAdaptor {
             while (m.find()) {
                 int start = m.start();
                 int end = m.end();
-                Annotation a = new Annotation(f, ns, forwardColor, reverseColor, start, end, null, true, null);
+                Annotation a = new Annotation(f, ns, forwardColor, reverseColor, start, end, new Person(), true, null);
                 annotations.add(a);
             }
             
@@ -1062,7 +1067,7 @@ public class ClothoAdaptor {
             while (mR.find()) {
                 int start = mR.start();
                 int end = mR.end();
-                Annotation a = new Annotation(f, ns, reverseColor, forwardColor, start, end, null, false, null);
+                Annotation a = new Annotation(f, ns, reverseColor, forwardColor, start, end, new Person(), false, null);
                 annotations.add(a);
             }
             

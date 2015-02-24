@@ -164,7 +164,7 @@ public class ClothoTest {
     public static void main(String[] args) {
         ClothoTest t = new ClothoTest();
 //        t.testQuery();
-        t.testMultiPartUpload();
+//        t.testMultiPartUpload();
         t.testPlasmidLibraryUpload();
     }
 }

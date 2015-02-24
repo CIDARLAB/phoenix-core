@@ -1583,7 +1583,7 @@ ORIGIN
      1381 tcaaaaagga tcttcaccta gatcctttta aattaaaaat gaagttttaa atcaatctaa
      1441 agtatatatg agtaaacttg gtctgacagt taccaatgct taatcagtga ggcacctatc
      1501 tcagcgatct gtctatttcg ttcatccata gttgcctgac tccccgtcgt gtagataact
-     1561 acgatacggg agggcttacc atctggcccc agtgctgcaa tgataccgcg agacccacgc
+     1561 acgatacggg agggcttacc atctggcccc agtgctgcaa tgataccgcg agacGcacgc
      1621 tcaccggctc cagatttatc agcaataaac cagccagccg gaagggccga gcgcagaagt
      1681 ggtcctgcaa ctttatccgc ctccatccag tctattaatt gttgccggga agctagagta
      1741 agtagttcgc cagttaatag tttgcgcaac gttgttgcca ttgctacagg catcgtggtg
@@ -1674,7 +1674,7 @@ ORIGIN
      1381 tcaaaaagga tcttcaccta gatcctttta aattaaaaat gaagttttaa atcaatctaa
      1441 agtatatatg agtaaacttg gtctgacagt taccaatgct taatcagtga ggcacctatc
      1501 tcagcgatct gtctatttcg ttcatccata gttgcctgac tccccgtcgt gtagataact
-     1561 acgatacggg agggcttacc atctggcccc agtgctgcaa tgataccgcg agacccacgc
+     1561 acgatacggg agggcttacc atctggcccc agtgctgcaa tgataccgcg agacGcacgc
      1621 tcaccggctc cagatttatc agcaataaac cagccagccg gaagggccga gcgcagaagt
      1681 ggtcctgcaa ctttatccgc ctccatccag tctattaatt gttgccggga agctagagta
      1741 agtagttcgc cagttaatag tttgcgcaac gttgttgcca ttgctacagg catcgtggtg
@@ -1765,7 +1765,7 @@ ORIGIN
      1381 tcaaaaagga tcttcaccta gatcctttta aattaaaaat gaagttttaa atcaatctaa
      1441 agtatatatg agtaaacttg gtctgacagt taccaatgct taatcagtga ggcacctatc
      1501 tcagcgatct gtctatttcg ttcatccata gttgcctgac tccccgtcgt gtagataact
-     1561 acgatacggg agggcttacc atctggcccc agtgctgcaa tgataccgcg agacccacgc
+     1561 acgatacggg agggcttacc atctggcccc agtgctgcaa tgataccgcg agacGcacgc
      1621 tcaccggctc cagatttatc agcaataaac cagccagccg gaagggccga gcgcagaagt
      1681 ggtcctgcaa ctttatccgc ctccatccag tctattaatt gttgccggga agctagagta
      1741 agtagttcgc cagttaatag tttgcgcaac gttgttgcca ttgctacagg catcgtggtg
@@ -1856,7 +1856,7 @@ ORIGIN
      1381 tcaaaaagga tcttcaccta gatcctttta aattaaaaat gaagttttaa atcaatctaa
      1441 agtatatatg agtaaacttg gtctgacagt taccaatgct taatcagtga ggcacctatc
      1501 tcagcgatct gtctatttcg ttcatccata gttgcctgac tccccgtcgt gtagataact
-     1561 acgatacggg agggcttacc atctggcccc agtgctgcaa tgataccgcg agacccacgc
+     1561 acgatacggg agggcttacc atctggcccc agtgctgcaa tgataccgcg agacGcacgc
      1621 tcaccggctc cagatttatc agcaataaac cagccagccg gaagggccga gcgcagaagt
      1681 ggtcctgcaa ctttatccgc ctccatccag tctattaatt gttgccggga agctagagta
      1741 agtagttcgc cagttaatag tttgcgcaac gttgttgcca ttgctacagg catcgtggtg
@@ -4757,18 +4757,14 @@ ORIGIN
      2101 aatttcagat aaaaaaaatc cttagctttc gctaaggatg atttctggaa ttcgcggccg
      2161 cttctagaga ctagtgggtc tca
 //
-LOCUS       PhlF                    3099 bp ds-DNA     circular     23-FEB-2015
+LOCUS       PhlF_CD                 2702 bp ds-DNA     circular     24-FEB-2015
 DEFINITION  .
-KEYWORDS    "cloned-by:KML" "part-type:level 0" "part-subtype:CDS"             
-            "seq-verified:Yes" "fusion-sites:CD" "glycerol:IG-1-23"
-            "backbone:pSB1C3" "antibiotic:Chloramphenicol"
+KEYWORDS    "antibiotic:Chloramphenicol" "cloned-by:KML" "part-type:level 0"   
+            "backbone:pSB1C3" "fusion-sites:CD" "glycerol:IG-1-23"
+            "part-subtype:CDS" "seq-verified:Yes"
 COMMENT     MoClo Level 0 basic part: CDS                                      
 FEATURES             Location/Qualifiers
-     misc_feature    complement(1160..1819)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
-     misc_feature    2211..2810
+     misc_feature    2089..2688
                      /label="phlF"
                      /ApEinfo_revcolor=#ffef86
                      /ApEinfo_fwdcolor=#ffef86
@@ -4776,6 +4772,10 @@ FEATURES             Location/Qualifiers
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    complement(1160..1819)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
 ORIGIN
         1 tactagtagc ggccgctgca gtccggcaaa aaagggcaag gtgtcaccac cctgcccttt
        61 ttctttaaaa ccgaaaagat tacttcgcgt tatgcaggct tcctcgctca ctgactcgct
@@ -4811,24 +4811,18 @@ ORIGIN
      1861 atacgcccgg tagtgatctt atttcattat ggtgaaagtt ggaacctctt acgtgcccga
      1921 tcaactcgag tgccacctga cgtctaagaa accattatta tcatgacatt aacctataaa
      1981 aataggcgta tcacgaggca gaatttcaga taaaaaaaat ccttagcttt cgctaaggat
-     2041 gatttctgga attcgcggcc gcttctagag ACTAGTGGGT CTCAAATGTA ACGCGTACTA
-     2101 TAGATAGGCG TATCACGAGG CAGAATTTCA GATAAAAAAA ATCCTTAGCT TTCGCTAAGG
-     2161 ATGATTTCTG GAATTCGCGG CCGCTTCTAG AGACTAGTGG GTCTCAAATG ATGGCACGTA
-     2221 CCCCGAGCCG TAGCAGCATT GGTAGCCTGC GTAGTCCGCA TACCCATAAA GCAATTCTGA
-     2281 CCAGCACCAT TGAAATCCTG AAAGAATGTG GTTATAGCGG TCTGAGCATT GAAAGCGTTG
-     2341 CACGTCGTGC CGGTGCAAGC AAACCGACCA TTTATCGTTG GTGGACCAAT AAAGCAGCAC
-     2401 TGATTGCCGA AGTGTATGAA AATGAAAGCG AACAGGTGCG TAAATTTCCG GATCTGGGTA
-     2461 GCTTTAAAGC CGATCTGGAT TTTCTGCTGC GTAATCTGTG GAAAGTTTGG CGTGAAACCA
-     2521 TTTGTGGTGA AGCATTTCGT TGTGTTATTG CAGAAGCACA GCTGGACCCT GCAACCCTGA
-     2581 CCCAGCTGAA AGATCAGTTT ATGGAACGTC GTCGTGAGAT GCCGAAAAAA CTGGTTGAAA
-     2641 ATGCCATTAG CAATGGTGAA CTGCCGAAAG ATACCAATCG TGAACTGCTG CTGGATATGA
-     2701 TTTTTGGTTT TTGTTGGTAT CGCCTGCTGA CCGAACAGCT GACCGTTGAA CAGGATATTG
-     2761 AAGAATTTAC CTTCCTGCTG ATTAATGGTG TTTGTCCGGG TACACAGCGT TAAAGGTAGA
-     2821 GACCTACTAG TAGCGGCCGC TGCAGTCCGG CAAAAAAGGG CAAGGTGTCA CCACCCTGCC
-     2881 CTTTTTCTTT AAAACCGAAA AGATTACTTC GCGTTATGCA GGCTTCCTCG CTCACTGACT
-     2941 CGCTGCGCTC GGTCGTTCGG CTGCGGCGAG CGGTATCAGC TCACTCAAAG GCGGTAATAC
-     3001 GGTTATCCAC AGAATCAGGG ATAACGCAGG AAAGAACATG TGAGCAAAAG GCCAGCAAAA
-     3061 GGCCAGGAAC CCGTAAAAAG GCCGCGTTAG GTAGAGACC
+     2041 gatttctgga attcgcggcc gcttctagag ACTAGTGGGT CTCAAATGAT GGCACGTACC
+     2101 CCGAGCCGTA GCAGCATTGG TAGCCTGCGT AGTCCGCATA CCCATAAAGC AATTCTGACC
+     2161 AGCACCATTG AAATCCTGAA AGAATGTGGT TATAGCGGTC TGAGCATTGA AAGCGTTGCA
+     2221 CGTCGTGCCG GTGCAAGCAA ACCGACCATT TATCGTTGGT GGACCAATAA AGCAGCACTG
+     2281 ATTGCCGAAG TGTATGAAAA TGAAAGCGAA CAGGTGCGTA AATTTCCGGA TCTGGGTAGC
+     2341 TTTAAAGCCG ATCTGGATTT TCTGCTGCGT AATCTGTGGA AAGTTTGGCG TGAAACCATT
+     2401 TGTGGTGAAG CATTTCGTTG TGTTATTGCA GAAGCACAGC TGGACCCTGC AACCCTGACC
+     2461 CAGCTGAAAG ATCAGTTTAT GGAACGTCGT CGTGAGATGC CGAAAAAACT GGTTGAAAAT
+     2521 GCCATTAGCA ATGGTGAACT GCCGAAAGAT ACCAATCGTG AACTGCTGCT GGATATGATT
+     2581 TTTGGTTTTT GTTGGTATCG CCTGCTGACC GAACAGCTGA CCGTTGAACA GGATATTGAA
+     2641 GAATTTACCT TCCTGCTGAT TAATGGTGTT TGTCCGGGTA CACAGCGTTA AAGGTAGAGA
+     2701 CC
 //
 LOCUS       pJ23100_AB              2134 bp ds-DNA     circular     01-DEC-2014
 DEFINITION  .

@@ -22,17 +22,18 @@ public class RavenAdaptor {
     //Create assembly plans for given parts and return instructions file
     public static String generateAssemblyPlan(HashSet<Module> targetModules) throws Exception {
         
-        HashSet<Part> partsLib = ClothoAdaptor.queryParts();
         JSONObject parameters = ClothoAdaptor.queryAssemblyParameters("default").toJSON();
+        org.json.JSONObject rParameters = convertJSONs(parameters);
         
+        HashSet<Part> partsLib = ClothoAdaptor.queryParts();
         HashSet<org.cidarlab.raven.datastructures.Part> targetParts = phoenixModulesToRavenParts(targetModules);
         HashSet<org.cidarlab.raven.datastructures.Part> partsLibR = phoenixPartsToRavenParts(partsLib);
         HashSet<Vector> vectorsLibR = phoenixPartsToRavenVectors(partsLib);
+        HashMap<org.cidarlab.raven.datastructures.Part, org.cidarlab.raven.datastructures.Part> libPairs = new HashMap();
         
-        org.json.JSONObject rParameters = convertJSONs(parameters);
         
         Raven raven = new Raven();
-        String assemblyInstructions = raven.assemblyInstructions(targetParts, partsLibR, vectorsLibR, new HashMap(), rParameters);
+        String assemblyInstructions = raven.assemblyInstructions(targetParts, partsLibR, vectorsLibR, libPairs, new HashMap(), rParameters);
         
         return assemblyInstructions;
     }

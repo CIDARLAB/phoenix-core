@@ -88,7 +88,7 @@ public class Clotho implements MessageListener
                 System.out.print("");
                 elapsedTime = (System.currentTimeMillis() - startTime)/1000;
             }
-            if(elapsedTime >= 10)
+            if(elapsedTime >= 30)
             {
                 System.out.println("System time out. Please check your Clotho Connection");
             }
@@ -137,7 +137,7 @@ public class Clotho implements MessageListener
                 System.out.print("");
                 elapsedTime = (System.currentTimeMillis() - startTime)/1000;
             }
-            if(elapsedTime >= 10)
+            if(elapsedTime >= 30)
             {
                 System.out.println("System time out. Please check your Clotho Connection");
             }
@@ -187,7 +187,7 @@ public class Clotho implements MessageListener
                 System.out.print("");
                 elapsedTime = (System.currentTimeMillis() - startTime)/1000;
             }
-            if(elapsedTime >= 10)
+            if(elapsedTime >= 30)
             {
                 System.out.println("System time out. Please check your Clotho Connection");
             }
@@ -237,7 +237,7 @@ public class Clotho implements MessageListener
                 System.out.print("");
                 elapsedTime = (System.currentTimeMillis() - startTime)/1000;
             }
-            if(elapsedTime >= 10)
+            if(elapsedTime >= 30)
             {
                 System.out.println("System time out. Please check your Clotho Connection");
             }
@@ -287,7 +287,7 @@ public class Clotho implements MessageListener
                 System.out.print("");
                 elapsedTime = (System.currentTimeMillis() - startTime)/1000;
             }
-            if(elapsedTime >= 10)
+            if(elapsedTime >= 30)
             {
                 System.out.println("System time out. Please check your Clotho Connection");
             }
@@ -337,7 +337,7 @@ public class Clotho implements MessageListener
                 System.out.print("");
                 elapsedTime = (System.currentTimeMillis() - startTime)/1000;
             }
-            if(elapsedTime >= 10)
+            if(elapsedTime >= 30)
             {
                 System.out.println("System time out. Please check your Clotho Connection");
             }
@@ -397,7 +397,7 @@ public class Clotho implements MessageListener
                 System.out.print("");
                 elapsedTime = (System.currentTimeMillis() - startTime)/1000;
             }
-            if(elapsedTime >= 10)
+            if(elapsedTime >= 30)
             {
                 System.out.println("System time out. Please check your Clotho Connection");
             }
@@ -449,7 +449,7 @@ public class Clotho implements MessageListener
                 System.out.print("");
                 elapsedTime = (System.currentTimeMillis() - startTime)/1000;
             }
-            if(elapsedTime >= 10)
+            if(elapsedTime >= 30)
             {
                 System.out.println("System time out. Please check your Clotho Connection");
             }
@@ -499,7 +499,7 @@ public class Clotho implements MessageListener
                 System.out.print("");
                 elapsedTime = (System.currentTimeMillis() - startTime)/1000;
             }
-            if(elapsedTime >= 10)
+            if(elapsedTime >= 30)
             {
                 System.out.println("System time out. Please check your Clotho Connection");
             }

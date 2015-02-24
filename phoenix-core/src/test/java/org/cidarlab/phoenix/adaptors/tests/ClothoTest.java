@@ -90,6 +90,18 @@ public class ClothoTest {
         } 
     }
     
+    @Test
+    public void testPlasmidLibraryBPOnlyUpload() {
+        
+        String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_plasmid_lib_bp_only.gb";
+        File toLoad = new File(filePath);
+        try {
+            ClothoAdaptor.uploadSequences(toLoad, false);
+        } catch (Exception ex) {
+            Logger.getLogger(ClothoTest.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }
+    
 //    @Test
     public void testGenericUpload() {
         
@@ -157,14 +169,14 @@ public class ClothoTest {
         } 
     }
       
-    public ClothoTest() {
-        
-    }
-    
-    public static void main(String[] args) {
-        ClothoTest t = new ClothoTest();
-//        t.testQuery();
-//        t.testMultiPartUpload();
-        t.testPlasmidLibraryUpload();
-    }
+//    public ClothoTest() {
+//        
+//    }
+//    
+//    public static void main(String[] args) {
+//        ClothoTest t = new ClothoTest();
+////        t.testQuery();
+////        t.testMultiPartUpload();
+//        t.testPlasmidLibraryBPOnlyUpload();
+//    }
 }

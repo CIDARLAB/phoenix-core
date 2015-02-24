@@ -22,9 +22,6 @@ ENHANCEMENTS, OR MODIFICATIONS..
  */
 package org.cidarlab.phoenix.core.dom;
 
-import org.cidarlab.phoenix.core.dom.BasicPart;
-import org.cidarlab.phoenix.core.dom.CompositePart;
-import org.cidarlab.phoenix.core.dom.NucSeq;
 import java.util.List;
 
 import javax.validation.constraints.AssertTrue;
@@ -44,30 +41,38 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class Part extends SharableObjBase {
 	
-	@Getter
-	@NotNull
-	private Format format;
-
-	@Getter
-	@Setter
-	@Deprecated
-	// Type (actually role) should be derived from Features annotating the Part's Sequence.
-	// Part should only store data on composition of sequences.
-	private PartFunction type;
-
-	@Getter
-	@Setter
-	@Deprecated
-	// Risk should be derived from the Part's Sequence.
-	// Sequences and their Annotations are connection between
-	// genetic structure and function.
-	private short riskGroup;
+    @Getter
+    @NotNull
+    private Format format;
+    @Getter
+    @Setter
+    @Deprecated
+    // Type (actually role) should be derived from Features annotating the Part's Sequence.
+    // Part should only store data on composition of sequences.
+    private PartFunction type;
+    @Getter
+    @Setter
+    @Deprecated
+    // Risk should be derived from the Part's Sequence.
+    // Sequences and their Annotations are connection between
+    // genetic structure and function.
+    private short riskGroup;
     
-    protected Part(String name, String description, Format format, Person author){
-        super(name, author, description); 
+    //In Phoenix for the time being, every part is either a vector or an insert
+    @Getter
+    @Setter
+    private boolean isVector;
+    
+    //In Phoenix for the time being, every part and vector are paired
+    @Getter
+    @Setter
+    private String pairName;
+
+    protected Part(String name, String description, Format format, Person author) {
+        super(name, author, description);
         this.format = format;
     }
-    
+
     /**
      * Call this method to construct a new basic Part. It will check that the Part obeys its Format. 
      * If not, then the method returns null.

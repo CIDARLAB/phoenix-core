@@ -40,7 +40,7 @@ ORIGIN
 //
 LOCUS       araC.ref                 879 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-subtype:Activator" "part-type:CDS" "source:BBa"              
+KEYWORDS    "source:BBa" "part-subtype:Activator" "part-type:CDS"              
 COMMENT     MoClo basic part: Activator                                        
 FEATURES             Location/Qualifiers
      misc_feature    1..876
@@ -80,7 +80,7 @@ ORIGIN
 //
 LOCUS       BCD1.ref                  84 bp ds-DNA     linear       25-NOV-2014
 DEFINITION  .
-KEYWORDS    "source:PMID\:23474465 " "part-subtype:BiCistronic Design"         
+KEYWORDS    "part-subtype:BiCistronic Design" "source:PMID\:23474465 "         
             "part-type:5'UTR "
 COMMENT     MoClo basic part: BiCistronic Design                               
 FEATURES             Location/Qualifiers
@@ -94,8 +94,8 @@ ORIGIN
 //
 LOCUS       BCD2.ref                  84 bp ds-DNA     linear       25-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-subtype:BiCistronic Design" "source:PMID\:23474465 "         
-            "part-type:5'UTR "
+KEYWORDS    "part-type:5'UTR " "part-subtype:BiCistronic Design"               
+            "source:PMID\:23474465 "
 COMMENT     MoClo basic part: BiCistronic Design                               
 FEATURES             Location/Qualifiers
      misc_feature    1..84
@@ -108,7 +108,7 @@ ORIGIN
 //
 LOCUS       BCD8.ref                  84 bp ds-DNA     linear       25-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-subtype:BiCistronic Design" "part-type:5'UTR "               
+KEYWORDS    "part-type:5'UTR " "part-subtype:BiCistronic Design"               
             "source:PMID\:23474465 "
 COMMENT     MoClo basic part: BiCistronic Design                               
 FEATURES             Location/Qualifiers
@@ -122,7 +122,7 @@ ORIGIN
 //
 LOCUS       BCD12.ref                 84 bp ds-DNA     linear       25-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-subtype:BiCistronic Design" "source:PMID\:23474465 "         
+KEYWORDS    "source:PMID\:23474465 " "part-subtype:BiCistronic Design"         
             "part-type:5'UTR "
 COMMENT     MoClo basic part: BiCistronic Design                               
 FEATURES             Location/Qualifiers
@@ -150,8 +150,8 @@ ORIGIN
 //
 LOCUS       BCD16.ref                 84 bp ds-DNA     linear       25-NOV-2014
 DEFINITION  .
-KEYWORDS    "source:PMID\:23474465 " "part-subtype:BiCistronic Design"         
-            "part-type:5'UTR "
+KEYWORDS    "part-type:5'UTR " "part-subtype:BiCistronic Design"               
+            "source:PMID\:23474465 "
 COMMENT     MoClo basic part: BiCistronic Design                               
 FEATURES             Location/Qualifiers
      misc_feature    1..84
@@ -164,7 +164,7 @@ ORIGIN
 //
 LOCUS       betI.ref                 588 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-type:CDS" "part-subtype:Repressor" "source:Addgene 49357"    
+KEYWORDS    "part-subtype:Repressor" "source:Addgene 49357" "part-type:CDS"    
 COMMENT     MoClo basic part: Repressor                                        
 FEATURES             Location/Qualifiers
      misc_feature    1..585
@@ -185,7 +185,7 @@ ORIGIN
 //
 LOCUS       BM3R1.ref                579 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-subtype:Repressor" "source:Addgene 49358" "part-type:CDS"   
+KEYWORDS    "source:Addgene 49358" "part-subtype:Repressor" "part-type:CDS"    
 COMMENT     MoClo basic part: Repressor                                        
 FEATURES             Location/Qualifiers
      misc_feature    1..576
@@ -229,7 +229,7 @@ ORIGIN
 //
 LOCUS       cmR.ref                  660 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "source:BBa" "part-subtype:Resistance" "part-type:CDS"             
+KEYWORDS    "part-type:CDS" "part-subtype:Resistance" "source:BBa"             
 COMMENT     Chloramphenicol Resistance                                         
 FEATURES             Location/Qualifiers
      misc_feature    1..660
@@ -251,8 +251,8 @@ ORIGIN
 //
 LOCUS       ColE1.ref                683 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-type:Origin" "part-subtype:High Copy" "source:PMID\:         
-            23041931"
+KEYWORDS    "source:PMID\: 23041931" "part-subtype:High Copy"                  
+            "part-type:Origin"
 COMMENT     ColE1 Origin of Replication                                        
 FEATURES             Location/Qualifiers
      misc_feature    1..683
@@ -275,9 +275,9 @@ ORIGIN
 //
 LOCUS       CyPet.ref                735 bp ds-DNA     linear       08-JAN-2015
 DEFINITION  .
-KEYWORDS    "emission:477" "part-type:CDS " "oligomerization:2" "source:Addgene
-            14030" "excitation:435" "brightness:53" "part-subtype:Fluorescent
-            Reporter"
+KEYWORDS    "emission:477" "source:Addgene 14030" "part-type:CDS "             
+            "excitation:435" "oligomerization:2" "part-subtype:Fluorescent
+            Reporter" "brightness:53"
 COMMENT     MoClo basic part: Fluorescent Reporter                             
 FEATURES             Location/Qualifiers
      CDS             715..732
@@ -305,7 +305,7 @@ ORIGIN
 //
 LOCUS       DAS.ref                   36 bp ds-DNA     linear       07-JAN-2015
 DEFINITION  .
-KEYWORDS    "part-type:CDS" "part-subtype:Degradation Tag" "speed:Medium"      
+KEYWORDS    "part-type:CDS" "speed:Medium" "part-subtype:Degradation Tag"      
             "source:unknown"
 COMMENT     DAS Degradation Tag                                                
 FEATURES             Location/Qualifiers
@@ -318,9 +318,9 @@ ORIGIN
 //
 LOCUS       DsRed.ref                669 bp ds-DNA     linear       08-JAN-2015
 DEFINITION  .
-KEYWORDS    "source:Addgene 26248" "part-type:CDS " "emission:583"             
-            "excitation:558" "oligomerization:4" "brightness:176"
-            "part-subtype:Fluorescent Reporter"
+KEYWORDS    "source:Addgene 26248" "excitation:558" "emission:583"             
+            "part-type:CDS " "brightness:176" "part-subtype:Fluorescent
+            Reporter" "oligomerization:4"
 COMMENT     MoClo basic part: Fluorescent Reporter                             
 FEATURES             Location/Qualifiers
      misc_feature    1..666
@@ -343,9 +343,9 @@ ORIGIN
 //
 LOCUS       E2-Crimson.ref           678 bp ds-DNA     linear       08-JAN-2015
 DEFINITION  .
-KEYWORDS    "brightness:59" "part-type:CDS" "source:Glick Lab"                 
-            "oligomerization:4" "emission:646" "excitation:611"
-            "part-subtype:Fluorescent Reporter"
+KEYWORDS    "part-subtype:Fluorescent Reporter" "brightness:59" "part-type:CDS"
+            "source:Glick Lab" "excitation:611" "oligomerization:4"
+            "emission:646"
 COMMENT     MoClo Basic Part: Fluorescent Reporter                             
 FEATURES             Location/Qualifiers
      misc_feature    1..675
@@ -368,9 +368,9 @@ ORIGIN
 //
 LOCUS       EBFP2.ref                792 bp ds-DNA     linear       08-JAN-2015
 DEFINITION  .
-KEYWORDS    "brightness:60" "part-type:CDS" "part-subtype:Fluorescent Reporter"
-            "excitation:383" "oligomerization:2" "source:Addgene 14891"
-            "emission:448"
+KEYWORDS    "emission:448" "oligomerization:2" "excitation:383" "source:Addgene
+            14891" "brightness:60" "part-type:CDS" "part-subtype:Fluorescent
+            Reporter"
 COMMENT     MoClo basic part: Fluorescent Reporter                             
 FEATURES             Location/Qualifiers
      misc_feature    1..789
@@ -408,9 +408,9 @@ ORIGIN
 //
 LOCUS       EGFPm.ref                720 bp ds-DNA     linear       16-JAN-2015
 DEFINITION  .
-KEYWORDS    "part-subtype:Fluorescent Reporter" "part-type:CDS "               
-            "brightness:100" "source:BBa" "oligomerization:2" "excitation:501"
-            "emission:511"
+KEYWORDS    "excitation:501" "source:BBa" "emission:511" "part-type:CDS "      
+            "part-subtype:Fluorescent Reporter" "oligomerization:2"
+            "brightness:100"
 COMMENT     MoClo basic part: Fluorescent Reporter. E0040m has a single        
             mutation near the 3' end to remove a MoClo illegal site.
 FEATURES             Location/Qualifiers
@@ -434,8 +434,8 @@ ORIGIN
 //
 LOCUS       EYFP.ref                 723 bp ds-DNA     linear       16-JAN-2015
 DEFINITION  .
-KEYWORDS    "part-type:CDS " "oligomerization:2" "part-subtype:Fluorescent     
-            Reporter" "source:BBa" "excitation:514" "brightness:151"
+KEYWORDS    "brightness:151" "oligomerization:2" "part-subtype:Fluorescent     
+            Reporter" "source:BBa" "excitation:514" "part-type:CDS "
             "emission:527"
 COMMENT     MoClo basic part: Fluorescent Reporter                             
 FEATURES             Location/Qualifiers
@@ -460,7 +460,7 @@ ORIGIN
 //
 LOCUS       IR1-IR2-Term2.ref        150 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "source:PMID\:19478183 " "part-subtype:Natural"                    
+KEYWORDS    "part-subtype:Natural" "source:PMID\:19478183 "                    
             "part-type:Terminator "
 COMMENT     MoClo basic part: Terminator from the DIC counters                 
 FEATURES             Location/Qualifiers
@@ -475,9 +475,9 @@ ORIGIN
 //
 LOCUS       iRFP.ref                 894 bp ds-DNA     linear       08-JAN-2015
 DEFINITION  .
-KEYWORDS    "part-type:CDS" "excitation:690" "brightness:100" "emission:713"   
-            "oligomerization:2" "source:Addgene 31855"
-            "part-subtype:Fluorescent Reporter"
+KEYWORDS    "brightness:100" "part-type:CDS" "part-subtype:Fluorescent         
+            Reporter" "oligomerization:2" "source:Addgene 31855" "emission:713"
+            "excitation:690"
 COMMENT     MoClo basic part: Fluorescent Reporter                             
 FEATURES             Location/Qualifiers
      misc_feature    1..891
@@ -503,7 +503,7 @@ ORIGIN
 //
 LOCUS       J23100.ref                35 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "source:BBa" "part-subtype:Constitutive" "part-type:Promoter "     
+KEYWORDS    "part-subtype:Constitutive" "source:BBa" "part-type:Promoter "     
 COMMENT     MoClo basic part: Promoter                                         
 FEATURES             Location/Qualifiers
      misc_feature    1..35
@@ -515,7 +515,7 @@ ORIGIN
 //
 LOCUS       J23101.ref                35 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "source:BBa" "part-subtype:Constitutive" "part-type:Promoter "     
+KEYWORDS    "part-subtype:Constitutive" "part-type:Promoter " "source:BBa"     
 COMMENT     MoClo basic part: Promoter                                         
 FEATURES             Location/Qualifiers
      misc_feature    1..35
@@ -527,7 +527,7 @@ ORIGIN
 //
 LOCUS       J23102.ref                35 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "source:BBa" "part-subtype:Constitutive" "part-type:Promoter "     
+KEYWORDS    "part-subtype:Constitutive" "source:BBa" "part-type:Promoter "     
 COMMENT     MoClo basic part: Promoter                                         
 FEATURES             Location/Qualifiers
      misc_feature    1..35
@@ -539,7 +539,7 @@ ORIGIN
 //
 LOCUS       J23103.ref                35 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-type:Promoter " "part-subtype:Constitutive" "source:BBa"     
+KEYWORDS    "source:BBa" "part-subtype:Constitutive" "part-type:Promoter "     
 COMMENT     MoClo basic part: Promoter                                         
 FEATURES             Location/Qualifiers
      misc_feature    1..35
@@ -567,7 +567,7 @@ ORIGIN
 //
 LOCUS       J23105.ref                35 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-subtype:Constitutive" "part-type:Promoter " "source:BBa"     
+KEYWORDS    "part-subtype:Constitutive" "source:BBa" "part-type:Promoter "     
 COMMENT     MoClo basic part: Promoter                                         
 FEATURES             Location/Qualifiers
      misc_feature    1..35
@@ -579,7 +579,7 @@ ORIGIN
 //
 LOCUS       J23106.ref                35 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-subtype:Constitutive" "part-type:Promoter " "source:BBa"     
+KEYWORDS    "source:BBa" "part-subtype:Constitutive" "part-type:Promoter "     
 COMMENT     MoClo basic part: Promoter                                         
 FEATURES             Location/Qualifiers
      misc_feature    1..35
@@ -591,7 +591,7 @@ ORIGIN
 //
 LOCUS       J23107.ref                35 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-type:Promoter " "part-subtype:Constitutive" "source:BBa"     
+KEYWORDS    "part-subtype:Constitutive" "source:BBa" "part-type:Promoter "     
 COMMENT     MoClo basic part: Promoter                                         
 FEATURES             Location/Qualifiers
      misc_feature    1..35
@@ -603,7 +603,7 @@ ORIGIN
 //
 LOCUS       J23108.ref                35 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-subtype:Constitutive" "part-type:Promoter " "source:BBa"     
+KEYWORDS    "part-subtype:Constitutive" "source:BBa" "part-type:Promoter "     
 COMMENT     MoClo basic part: Promoter                                         
 FEATURES             Location/Qualifiers
      misc_feature    1..35
@@ -615,7 +615,7 @@ ORIGIN
 //
 LOCUS       J23109.ref                35 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-subtype:Constitutive" "source:BBa" "part-type:Promoter "     
+KEYWORDS    "source:BBa" "part-subtype:Constitutive" "part-type:Promoter "     
 COMMENT     MoClo basic part: Promoter                                         
 FEATURES             Location/Qualifiers
      misc_feature    1..35
@@ -627,7 +627,7 @@ ORIGIN
 //
 LOCUS       J23110.ref                35 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "source:BBa" "part-subtype:Constitutive" "part-type:Promoter "     
+KEYWORDS    "part-subtype:Constitutive" "part-type:Promoter " "source:BBa"     
 COMMENT     MoClo basic part: Promoter                                         
 FEATURES             Location/Qualifiers
      misc_feature    1..35
@@ -639,7 +639,7 @@ ORIGIN
 //
 LOCUS       J23111.ref                35 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "source:BBa" "part-subtype:Constitutive" "part-type:Promoter "     
+KEYWORDS    "part-subtype:Constitutive" "source:BBa" "part-type:Promoter "     
 COMMENT     MoClo basic part: Promoter                                         
 FEATURES             Location/Qualifiers
      misc_feature    1..35
@@ -667,7 +667,7 @@ ORIGIN
 //
 LOCUS       J23113.ref                35 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-type:Promoter " "part-subtype:Constitutive" "source:BBa"     
+KEYWORDS    "part-subtype:Constitutive" "source:BBa" "part-type:Promoter "     
 COMMENT     MoClo basic part: Promoter                                         
 FEATURES             Location/Qualifiers
      misc_feature    1..35
@@ -679,7 +679,7 @@ ORIGIN
 //
 LOCUS       J23114.ref                35 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-subtype:Constitutive" "source:BBa" "part-type:Promoter "     
+KEYWORDS    "source:BBa" "part-subtype:Constitutive" "part-type:Promoter "     
 COMMENT     MoClo basic part: Promoter                                         
 FEATURES             Location/Qualifiers
      misc_feature    1..35
@@ -691,7 +691,7 @@ ORIGIN
 //
 LOCUS       J23115.ref                35 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-subtype:Constitutive" "part-type:Promoter " "source:BBa"     
+KEYWORDS    "part-subtype:Constitutive" "source:BBa" "part-type:Promoter "     
 COMMENT     MoClo basic part: Promoter                                         
 FEATURES             Location/Qualifiers
      misc_feature    1..35
@@ -703,7 +703,7 @@ ORIGIN
 //
 LOCUS       J23116.ref                35 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-subtype:Constitutive" "part-type:Promoter " "source:BBa"     
+KEYWORDS    "source:BBa" "part-subtype:Constitutive" "part-type:Promoter "     
 COMMENT     MoClo basic part: Promoter                                         
 FEATURES             Location/Qualifiers
      misc_feature    1..35
@@ -727,7 +727,7 @@ ORIGIN
 //
 LOCUS       J23118.ref                35 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-type:Promoter " "part-subtype:Constitutive" "source:BBa"     
+KEYWORDS    "part-subtype:Constitutive" "part-type:Promoter " "source:BBa"     
 COMMENT     MoClo basic part: Promoter                                         
 FEATURES             Location/Qualifiers
      misc_feature    1..35
@@ -739,7 +739,7 @@ ORIGIN
 //
 LOCUS       J23119.ref                35 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-type:Promoter " "part-subtype:Constitutive" "source:BBa"     
+KEYWORDS    "part-subtype:Constitutive" "source:BBa" "part-type:Promoter "     
 COMMENT     MoClo basic part: Promoter                                         
 FEATURES             Location/Qualifiers
      misc_feature    1..35
@@ -775,8 +775,8 @@ ORIGIN
 //
 LOCUS       L3S1P00*.ref              91 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-subtype:Synthetic" "source:PMID\: 23727987"                  
-            "part-type:Terminator"
+KEYWORDS    "part-type:Terminator" "part-subtype:Synthetic" "source:PMID\:     
+            23727987"
 COMMENT     MoClo basic part: Terminator                                       
 FEATURES             Location/Qualifiers
      misc_feature    1..91
@@ -817,8 +817,8 @@ ORIGIN
 //
 LOCUS       L3S2P21*.ref              61 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-subtype:Synthetic" "source:Addgene 46004"                    
-            "part-type:Terminator"
+KEYWORDS    "part-subtype:Synthetic" "part-type:Terminator" "source:Addgene    
+            46004"
 COMMENT     MoClo basic part: Terminator                                       
 FEATURES             Location/Qualifiers
      misc_feature    1..61
@@ -831,7 +831,7 @@ ORIGIN
 //
 LOCUS       LAA.ref                   36 bp ds-DNA     linear       07-JAN-2015
 DEFINITION  .
-KEYWORDS    "part-subtype:Degradation Tag" "speed:Fast" "part-type:CDS"        
+KEYWORDS    "part-type:CDS" "speed:Fast" "part-subtype:Degradation Tag"        
             "source:unknown"
 COMMENT     LAA Degradation Tag                                                
 FEATURES             Location/Qualifiers
@@ -890,7 +890,7 @@ ORIGIN
 //
 LOCUS       lasR.ref                 720 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "source:BBa" "part-subtype:Activator" "part-type:CDS"              
+KEYWORDS    "part-subtype:Activator" "source:BBa" "part-type:CDS"              
 COMMENT     MoClo basic part: Activator                                        
 FEATURES             Location/Qualifiers
 ORIGIN
@@ -917,7 +917,7 @@ ORIGIN
 //
 LOCUS       linker2.ref               18 bp ds-DNA     linear       08-JAN-2015
 DEFINITION  .
-KEYWORDS    "part-subtype:Linker" "part-type:CDS" "source:paper"               
+KEYWORDS    "source:paper" "part-subtype:Linker" "part-type:CDS"               
 COMMENT     Linker Sequence 2 for fusion proteins                              
 FEATURES             Location/Qualifiers
 ORIGIN
@@ -933,7 +933,7 @@ ORIGIN
 //
 LOCUS       lmrA.ref                 567 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-subtype:Repressor" "source:Addgene 49364" "part-type:CDS"    
+KEYWORDS    "part-type:CDS" "part-subtype:Repressor" "source:Addgene 49364"    
 COMMENT     MoClo basic part: Repressor                                        
 FEATURES             Location/Qualifiers
      misc_feature    1..564
@@ -954,9 +954,9 @@ ORIGIN
 //
 LOCUS       LSS-mOrange.ref          747 bp ds-DNA     linear       08-JAN-2015
 DEFINITION  .
-KEYWORDS    "brightness:77" "oligomerization:1" "part-type:CDS" "source:Addgene
-            37129" "emission:572" "excitation:437" "part-subtype:Fluorescent
-            Reporter"
+KEYWORDS    "oligomerization:1" "brightness:77" "excitation:437"               
+            "part-type:CDS" "emission:572" "source:Addgene 37129"
+            "part-subtype:Fluorescent Reporter"
 COMMENT     MoClo basic part: Fluorescent Reporter                             
 FEATURES             Location/Qualifiers
      misc_feature    1..744
@@ -980,8 +980,8 @@ ORIGIN
 //
 LOCUS       LVA.ref                   36 bp ds-DNA     linear       08-JAN-2015
 DEFINITION  .
-KEYWORDS    "speed:Fast" "part-subtype:Degradation Tag" "source:BBa"           
-            "part-type:CDS"
+KEYWORDS    "speed:Fast" "part-type:CDS" "part-subtype:Degradation Tag"        
+            "source:BBa"
 COMMENT     LVA Degradation Tag                                                
 FEATURES             Location/Qualifiers
 ORIGIN
@@ -989,9 +989,9 @@ ORIGIN
 //
 LOCUS       mAmetrine.ref            720 bp ds-DNA     linear       08-JAN-2015
 DEFINITION  .
-KEYWORDS    "excitation:406" "source:Addgene 18083" "brightness:77"            
-            "part-subtype:Fluorescent Reporter" "emission:526" "part-type:CDS"
-            "oligomerization:1"
+KEYWORDS    "emission:526" "part-type:CDS" "source:Addgene 18083"              
+            "brightness:77" "oligomerization:1" "part-subtype:Fluorescent
+            Reporter" "excitation:406"
 COMMENT     MoClo basic part: Fluorescent Reporter                             
 FEATURES             Location/Qualifiers
      misc_feature    1..717
@@ -1014,9 +1014,9 @@ ORIGIN
 //
 LOCUS       mCitrine.ref             720 bp ds-DNA     linear       08-JAN-2015
 DEFINITION  .
-KEYWORDS    "part-type:CDS " "source:Tsien Lab (UCSD)"                         
-            "part-subtype:Fluorescent Reporter" "emission:529" "excitation:516"
-            "oligomerization:1" "brightness:174"
+KEYWORDS    "part-type:CDS " "brightness:174" "emission:529"                   
+            "oligomerization:1" "excitation:516" "source:Tsien Lab (UCSD)"
+            "part-subtype:Fluorescent Reporter"
 COMMENT     MoClo basic part: Fluorescent Reporter                             
 FEATURES             Location/Qualifiers
      misc_feature    1..717
@@ -1039,9 +1039,9 @@ ORIGIN
 //
 LOCUS       mNeptune.ref             735 bp ds-DNA     linear       08-JAN-2015
 DEFINITION  .
-KEYWORDS    "part-type:CDS" "source:Tsien Lab (UCSD)" "oligomerization:1"      
-            "brightness:25" "excitation:600" "part-subtype:Fluorescent
-            Reporter" "emission:650"
+KEYWORDS    "part-type:CDS" "excitation:600" "part-subtype:Fluorescent         
+            Reporter" "emission:650" "oligomerization:1" "source:Tsien Lab
+            (UCSD)" "brightness:25"
 COMMENT     MoClo basic part: Fluorescent Reporter                             
 FEATURES             Location/Qualifiers
      misc_feature    1..732
@@ -1065,9 +1065,9 @@ ORIGIN
 //
 LOCUS       mOrange.ref              687 bp ds-DNA     linear       08-JAN-2015
 DEFINITION  .
-KEYWORDS    "excitation:548" "source:Addgene 29770" "emission:562"             
-            "brightness:146" "part-type:CDS " "part-subtype:Fluorescent
-            Reporter" "oligomerization:1"
+KEYWORDS    "brightness:146" "oligomerization:1" "source:Addgene 29770"        
+            "excitation:548" "part-type:CDS " "part-subtype:Fluorescent
+            Reporter" "emission:562"
 COMMENT     MoClo basic part: Fluorescent Reporter                             
 FEATURES             Location/Qualifiers
      misc_feature    1..684
@@ -1090,9 +1090,8 @@ ORIGIN
 //
 LOCUS       mRFP1.4m.ref             681 bp ds-DNA     linear       16-JAN-2015
 DEFINITION  .
-KEYWORDS    "brightness:44" "part-type:CDS " "excitation:584"                  
-            "oligomerization:1" "part-subtype:Fluorescent Reporter"
-            "emission:607" "source:BBa"
+KEYWORDS    "brightness:44" "oligomerization:1" "excitation:584" "emission:607"
+            "part-type:CDS " "part-subtype:Fluorescent Reporter" "source:BBa"
 COMMENT     MoClo basic part: Fluorescent Reporter. E1010m has multple         
             mutations to fix 4 MoClo illegal sites.
 FEATURES             Location/Qualifiers
@@ -1116,7 +1115,7 @@ ORIGIN
 //
 LOCUS       p15A.ref                 841 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-subtype:Medium Copy" "source:PMID\: 23041931"                
+KEYWORDS    "source:PMID\: 23041931" "part-subtype:Medium Copy"                
             "part-type:Origin"
 COMMENT     p15A Origin of Replication                                         
 FEATURES             Location/Qualifiers
@@ -1187,8 +1186,8 @@ ORIGIN
 //
 LOCUS       pBM3R1.ref                46 bp ds-DNA     linear       10-FEB-2015
 DEFINITION  .
-KEYWORDS    "part-subtype:Repressible" "source:Addgene 49358"                  
-            "part-type:Promoter"
+KEYWORDS    "part-subtype:Repressible" "part-type:Promoter" "source:Addgene    
+            49358"
 COMMENT     MoClo basic part: BM3R1 Promoter                                   
 FEATURES             Location/Qualifiers
      misc_feature    1..46
@@ -1222,8 +1221,8 @@ ORIGIN
 //
 LOCUS       pLmrA.ref                 58 bp ds-DNA     linear       10-FEB-2015
 DEFINITION  .
-KEYWORDS    "part-subtype:Repressible" "part-type:Promoter" "source:Addgene    
-            49364"
+KEYWORDS    "part-subtype:Repressible" "source:Addgene 49364"                  
+            "part-type:Promoter"
 COMMENT     MoClo basic part: lmrA Promoter                                    
 FEATURES             Location/Qualifiers
      misc_feature    1..58
@@ -1253,7 +1252,7 @@ ORIGIN
 //
 LOCUS       pMB1.ref                 614 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-subtype:High Copy" "source:BBa" "part-type:Origin"           
+KEYWORDS    "part-subtype:High Copy" "part-type:Origin" "source:BBa"           
 COMMENT     pMB1 Origin of Replication                                         
 FEATURES             Location/Qualifiers
      misc_feature    1..614
@@ -1288,7 +1287,7 @@ ORIGIN
 //
 LOCUS       pSC101.ref               951 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-type:Origin" "part-subtype:Low Copy" "source:PMID\: 23041931"
+KEYWORDS    "part-subtype:Low Copy" "part-type:Origin" "source:PMID\: 23041931"
 COMMENT     pSC101 Origin of Replication                                       
 FEATURES             Location/Qualifiers
      misc_feature    1..951
@@ -1315,8 +1314,8 @@ ORIGIN
 //
 LOCUS       pSrpR.ref                 65 bp ds-DNA     linear       10-FEB-2015
 DEFINITION  .
-KEYWORDS    "part-subtype:Repressible" "part-type:Promoter" "source:Addgene    
-            49372"
+KEYWORDS    "part-subtype:Repressible" "source:Addgene 49372"                  
+            "part-type:Promoter"
 COMMENT     MoClo basic part: Promoter (srpR)                                  
 FEATURES             Location/Qualifiers
      misc_feature    1..65
@@ -1329,9 +1328,13 @@ ORIGIN
 //
 LOCUS       R0010.ref                200 bp ds-DNA     linear       10-FEB-2015
 DEFINITION  .
-KEYWORDS    "source:BBa" "part-subtype:Repressible" "part-type:Promoter "      
+KEYWORDS    "part-subtype:Repressible" "source:BBa" "part-type:Promoter "      
 COMMENT     MoClo basic part: LacI Promotor                                    
 FEATURES             Location/Qualifiers
+     misc_feature    1..200
+                     /label="R0010"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
      misc_binding    171..193
                      /label="LacO"
                      /ApEinfo_revcolor=#84b0dc
@@ -1340,10 +1343,6 @@ FEATURES             Location/Qualifiers
                      /label="lac promoter"
                      /ApEinfo_revcolor=#c7b0e3
                      /ApEinfo_fwdcolor=#c7b0e3
-     misc_feature    1..200
-                     /label="R0010"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 caatacgcaa accgcctctc cccgcgcgtt ggccgattca ttaatgcagc tggcacgaca
        61 ggtttcccga ctggaaagcg ggcagtgagc gcaacgcaat taatgtgagt tagctcactc
@@ -1376,7 +1375,7 @@ ORIGIN
 //
 LOCUS       R0063.ref                151 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-subtype:Inducible" "part-type:Promoter " "source:BBa"        
+KEYWORDS    "part-type:Promoter " "part-subtype:Inducible" "source:BBa"        
 COMMENT     MoClo basic part: pLuxR/HSL Promoter                               
 FEATURES             Location/Qualifiers
      misc_feature    1..151
@@ -1390,7 +1389,7 @@ ORIGIN
 //
 LOCUS       R0079.ref                157 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-subtype:Inducible" "part-type:Promoter " "source:BBa"        
+KEYWORDS    "source:BBa" "part-subtype:Inducible" "part-type:Promoter "        
 COMMENT     MoClo basic part: lasR promotor                                    
 FEATURES             Location/Qualifiers
      misc_feature    1..157
@@ -1404,7 +1403,7 @@ ORIGIN
 //
 LOCUS       srpR.ref                 642 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "source:Addgene 49372" "part-subtype:Repressor" "part-type:CDS"    
+KEYWORDS    "part-subtype:Repressor" "source:Addgene 49372" "part-type:CDS"    
 COMMENT     MoClo basic part: Repressor                                        
 FEATURES             Location/Qualifiers
      misc_feature    1..639
@@ -1426,9 +1425,9 @@ ORIGIN
 //
 LOCUS       T-Sapphire.ref           720 bp ds-DNA     linear       08-JAN-2015
 DEFINITION  .
-KEYWORDS    "oligomerization:2" "emission:511" "part-type:CDS"                 
-            "part-subtype:Fluorescent Reporter" "excitation:399"
-            "brightness:78" "source:Griesbeck"
+KEYWORDS    "source:Griesbeck" "excitation:399" "oligomerization:2"            
+            "emission:511" "part-type:CDS" "part-subtype:Fluorescent Reporter"
+            "brightness:78"
 COMMENT     MoClo basic part: Fluorescent Reporter                             
 FEATURES             Location/Qualifiers
      misc_feature    1..717
@@ -1451,8 +1450,8 @@ ORIGIN
 //
 LOCUS       T1.ref                   105 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-subtype:Natural" "part-type:Terminator "                     
-            "source:PMID\:19478183 "
+KEYWORDS    "source:PMID\:19478183 " "part-subtype:Natural"                    
+            "part-type:Terminator "
 COMMENT     MoClo basic part: Terminator from the DIC counters                 
 FEATURES             Location/Qualifiers
      misc_feature    1..105
@@ -1465,7 +1464,7 @@ ORIGIN
 //
 LOCUS       tetR.ref                 624 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
-KEYWORDS    "part-subtype:Repressor" "part-type:CDS" "source:BBa"              
+KEYWORDS    "part-type:CDS" "part-subtype:Repressor" "source:BBa"              
 COMMENT     MoClo basic part: Repressor                                        
 FEATURES             Location/Qualifiers
      misc_feature    1..621

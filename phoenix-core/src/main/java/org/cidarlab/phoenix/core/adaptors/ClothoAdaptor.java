@@ -67,6 +67,9 @@ public class ClothoAdaptor {
             HashSet<Polynucleotide> polyNucs = BenchlingAdaptor.getPolynucleotide(input);
             HashSet<NucSeq> nucSeqs = BenchlingAdaptor.getNucSeq(input);
             HashSet<Part> parts = BenchlingAdaptor.getMoCloParts(input);
+            
+            //For parts set, we must only save parts without existing duplicate sequences
+            
 
             //Save all polynucleotides, nucseqs and parts to Clotho
             createPolynucleotides(polyNucs);
@@ -951,6 +954,7 @@ public class ClothoAdaptor {
         return cytometers;
     }
     
+    //Get assembly parameters
     public static AssemblyParameters queryAssemblyParameters (String ID) {
         
         //Establish Clotho connection
@@ -980,5 +984,28 @@ public class ClothoAdaptor {
         conn.closeConnection();
         
         return aP;
+    }
+    
+    //Remove parts from a set with duplicate sequence
+    public static HashSet<Part> removeDuplicates (HashSet<Part> parts) {
+        
+        HashSet<Part> removedDuplicates = new HashSet();
+        HashMap<String, String> sequenceNameHash = new HashMap();
+        
+        //Put all existing parts in the Map
+        HashSet<Part> queryParts = queryParts();
+        for (Part p : queryParts) {
+            sequenceNameHash.put(p.getSequence().getSeq(), p.getName());
+        }
+        
+        //Only add parts with new sequence to the output
+        for (Part p : parts) {
+            if (!sequenceNameHash.containsKey(p.getSequence().getSeq())) {
+                removedDuplicates.add(p);
+                sequenceNameHash.put(p.getSequence().getSeq(), p.getName());
+            }
+        }
+        
+        return removedDuplicates;
     }
 }

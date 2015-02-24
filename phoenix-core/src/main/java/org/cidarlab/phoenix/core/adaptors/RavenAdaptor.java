@@ -20,7 +20,10 @@ import org.cidarlab.raven.javaapi.Raven;
 public class RavenAdaptor {
     
     //Create assembly plans for given parts and return instructions file
-    public static String generateAssemblyPlan(HashSet<Module> targetModules, HashSet<Part> partsLib, JSONObject parameters) throws Exception {
+    public static String generateAssemblyPlan(HashSet<Module> targetModules) throws Exception {
+        
+        HashSet<Part> partsLib = ClothoAdaptor.queryParts();
+        JSONObject parameters = ClothoAdaptor.queryAssemblyParameters("default").toJSON();
         
         HashSet<org.cidarlab.raven.datastructures.Part> targetParts = phoenixModulesToRavenParts(targetModules);
         HashSet<org.cidarlab.raven.datastructures.Part> partsLibR = phoenixPartsToRavenParts(partsLib);

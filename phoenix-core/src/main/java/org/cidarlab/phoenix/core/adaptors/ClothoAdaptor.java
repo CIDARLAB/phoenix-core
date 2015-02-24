@@ -18,6 +18,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.cidarlab.phoenix.core.adaptors.BenchlingAdaptor.*;
@@ -63,9 +65,13 @@ public class ClothoAdaptor {
             
         } else {
  
-            //Get polynucleotides, nucseqs and parts from a multi-part genbank file     
+            //Get polynucleotides, nucseqs and parts from a multi-part genbank file
+            //This automatic annotations of part NucSeqs relies on previously uploaded features
             HashSet<Polynucleotide> polyNucs = BenchlingAdaptor.getPolynucleotide(input);
-            removeDuplicateParts(polyNucs);            
+            removeDuplicateParts(polyNucs);
+            HashSet<Feature> annotationFeatures = queryFeatures();
+            annotationFeatures.addAll(queryFluorophores());
+            annotateParts(annotationFeatures, polyNucs);
 
             //Save all polynucleotides, nucseqs and parts to Clotho
             createPolynucleotides(polyNucs);
@@ -1017,7 +1023,50 @@ public class ClothoAdaptor {
         }        
     }
     
-    public static void annotate(HashSet<Feature> features, HashSet<Part> parts) {
+    //Annotate part and vector of a polynucleotide
+    public static void annotateParts(HashSet<Feature> features, HashSet<Polynucleotide> polyNucs) {
         
+        for (Polynucleotide pn : polyNucs) {            
+            annotate(features, pn.getPart().getSequence());
+            annotate(features, pn.getVector().getSequence());
+        }
+    }
+    
+    //Automatically annotate a NucSeq with a feature library
+    public static void annotate(HashSet<Feature> features, NucSeq ns) {
+        
+        Set<Annotation> annotations = new HashSet();
+        String seq = ns.getSeq();
+        for (Feature f : features) {
+            
+            //Form feature regex
+            String fSeq = f.getSequence().getSequence();
+            Color forwardColor = f.getForwardColor();
+            Color reverseColor = f.getReverseColor();
+            
+            //Forward sequence search
+            Pattern p = Pattern.compile(fSeq);
+            Matcher m = p.matcher(seq);
+            while (m.find()) {
+                int start = m.start();
+                int end = m.end();
+                Annotation a = new Annotation(f, ns, forwardColor, reverseColor, start, end, null, true, null);
+                annotations.add(a);
+            }
+            
+            //Reverse sequence search
+            NucSeq fNucSeq = (NucSeq) f.getSequence();
+            String revfSeq = fNucSeq.revComp();
+            Pattern pR = Pattern.compile(revfSeq);
+            Matcher mR = pR.matcher(seq);
+            while (mR.find()) {
+                int start = mR.start();
+                int end = mR.end();
+                Annotation a = new Annotation(f, ns, reverseColor, forwardColor, start, end, null, false, null);
+                annotations.add(a);
+            }
+            
+        }
+        ns.setAnnotations(annotations);
     }
 }

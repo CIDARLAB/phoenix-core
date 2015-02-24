@@ -15,12 +15,15 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 /**
  *
  * @author evanappleton
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ClothoTest {
     
     @BeforeClass
@@ -63,7 +66,7 @@ public class ClothoTest {
         } 
     }
     
-    @Test
+//    @Test
     public void testMultiPartUpload() {
         
         String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/benchling_export_120514_multi.gb";

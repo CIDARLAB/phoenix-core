@@ -259,7 +259,7 @@ public class BenchlingAdaptor {
                 }
 
                 //Get rest of feature information and apply it to the features
-                NucSeq nucSeq = new NucSeq(seqString.substring(startFeat, endFeat + 1), ss, linearity);
+                NucSeq nucSeq = new NucSeq(seqString.substring(startFeat - 1, endFeat), ss, linearity);
                 
                 Color fwd = null;
                 Color rev = null;

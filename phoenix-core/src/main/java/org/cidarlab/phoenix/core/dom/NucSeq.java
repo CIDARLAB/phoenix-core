@@ -4,7 +4,6 @@
  */
 package org.cidarlab.phoenix.core.dom;
 
-import org.cidarlab.phoenix.core.dom.Annotation;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.io.Serializable;

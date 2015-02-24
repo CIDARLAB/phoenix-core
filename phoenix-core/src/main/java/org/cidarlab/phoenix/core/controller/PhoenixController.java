@@ -28,9 +28,9 @@ public class PhoenixController {
     public static void run (File featureLib, File plasmidLib, File structureFile, File fluorophoreSpectra, File cytometer, List<File> fcsFiles, File plasmidsCreated) throws Exception {
         
         //Import data from Benchling multi-part Genbank files to Clotho
-//        ClothoAdaptor.uploadSequences(plasmidLib, false);
 //        ClothoAdaptor.uploadSequences(featureLib, true);
 //        ClothoAdaptor.uploadFluorescenceSpectrums(fluorophoreSpectra);
+//        ClothoAdaptor.uploadSequences(plasmidLib, false);
         
         //LTL function decomposition
         
@@ -58,9 +58,8 @@ public class PhoenixController {
             currentExperiments.addAll(TestingStructures.createExperiments(modulesToTest));
             
             //Create assembly and testing plans
-            HashSet<Part> parts = ClothoAdaptor.queryParts();
-            JSONObject assemblyParameters = ClothoAdaptor.queryAssemblyParameters("default").toJSON();
-            String assemblyInstructions = RavenAdaptor.generateAssemblyPlan(modulesToTest, parts, assemblyParameters);
+            
+            String assemblyInstructions = RavenAdaptor.generateAssemblyPlan(modulesToTest);
             String testingInstructions = PhoenixInstructions.generateTestingInstructions(currentExperiments);
             
             //Import data from experiments

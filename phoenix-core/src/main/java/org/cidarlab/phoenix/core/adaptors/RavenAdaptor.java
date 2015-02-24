@@ -29,7 +29,7 @@ public class RavenAdaptor {
         HashSet<org.cidarlab.raven.datastructures.Part> targetParts = phoenixModulesToRavenParts(targetModules);
         HashSet<org.cidarlab.raven.datastructures.Part> partsLibR = phoenixPartsToRavenParts(partsLib);
         HashSet<Vector> vectorsLibR = phoenixPartsToRavenVectors(partsLib);
-        HashMap<org.cidarlab.raven.datastructures.Part, org.cidarlab.raven.datastructures.Part> libPairs = new HashMap();
+        HashMap<org.cidarlab.raven.datastructures.Part, Vector> libPairs = new HashMap();
         
         
         Raven raven = new Raven();

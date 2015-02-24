@@ -69,8 +69,12 @@ public class BenchlingAdaptor {
                 polyNuc.setSingleStranded(true);
             }
 
-            //Basic information for polynucleotide
-            polyNuc.setSequence(seq.seqString());
+            //Get sequence
+            polyNuc.setSequence(getNucSeq(seq));
+            
+            //Get part and vector
+            getMoCloParts(polyNuc, seq);
+            
             polyNuc.setAccession(seq.getName() + "_Polynucleotide");
             
             if (seq.getAnnotation().containsProperty("COMMENT")) {
@@ -90,17 +94,17 @@ public class BenchlingAdaptor {
      * Creates a Part set from a Biojava sequence object
      * This will create basic parts out of all incoming plasmids
      */
-    public static HashSet<Part> getMoCloParts(File input) throws FileNotFoundException, NoSuchElementException, BioException {        
+    public static HashSet<Part> getMoCloParts(Polynucleotide pn, Sequence seq) throws FileNotFoundException, NoSuchElementException, BioException {        
         
         //Import file, begin reading
-        BufferedReader reader = new BufferedReader(new FileReader(input.getAbsolutePath()));
-        SequenceIterator readGenbank = SeqIOTools.readGenbank(reader);
+//        BufferedReader reader = new BufferedReader(new FileReader(input.getAbsolutePath()));
+//        SequenceIterator readGenbank = SeqIOTools.readGenbank(reader);
         HashSet<Part> partSet = new HashSet<>();
-
-        //This loops for each entry in a multi-part GenBank file
-        while (readGenbank.hasNext()) {
-
-            Sequence seq = readGenbank.nextSequence();
+//
+//        //This loops for each entry in a multi-part GenBank file
+//        while (readGenbank.hasNext()) {
+//
+//            Sequence seq = readGenbank.nextSequence();
             System.out.println("Name: " + seq.getName());
 
             //First we check for MoClo format... This is is a pretty hacky, inflexible way to do it
@@ -128,7 +132,7 @@ public class BenchlingAdaptor {
                     start = searchSeq.indexOf(_BbsIfwd) + 8 - 5;
                     end = searchSeq.indexOf(_BbsIrev) - 2 - 5;
                 } else {
-                    continue;
+                    return partSet;
                 }
 
             } else if (containsBsaI && !containsBBsI) {
@@ -138,7 +142,7 @@ public class BenchlingAdaptor {
                     start = searchSeq.indexOf(_BsaIfwd) + 7 - 5;
                     end = searchSeq.indexOf(_BsaIrev) - 1 - 5;
                 } else {
-                    continue;
+                    return partSet;
                 }
             
             } else if (containsBsaI && containsBBsI) { 
@@ -156,14 +160,14 @@ public class BenchlingAdaptor {
                         start = searchSeq.indexOf(_BbsIfwd) + 8 - 5;
                         end = searchSeq.indexOf(_BbsIrev) - 2 - 5;
                     } else {
-                        continue;
+                        return partSet;
                     }
                     
                 } else {
-                    continue;
+                    return partSet;
                 }
             } else {
-                continue;
+                return partSet;
             }
 
             //Correct for indexing
@@ -204,20 +208,21 @@ public class BenchlingAdaptor {
             Part part;
             Part vector;
                 if (seq.getAnnotation().containsProperty("COMMENT")) {
-                part = Part.generateBasic(seq.getName(), seq.getAnnotation().getProperty("COMMENT").toString(), partSeq, null, null);
-                vector = Part.generateBasic(seq.getName() + "_vector", "", vecSeq, null, null);
+                part = Part.generateBasic(seq.getName() + "_part", seq.getAnnotation().getProperty("COMMENT").toString(), new NucSeq(partSeq), null, null);
+                vector = Part.generateBasic(seq.getName() + "_vector", "", new NucSeq(vecSeq), null, null);
             } else {
-                part = Part.generateBasic(seq.getName(), "", partSeq, null, null);
-                vector = Part.generateBasic(seq.getName() + "_vector", "", vecSeq, null, null);               
+                part = Part.generateBasic(seq.getName() + "_part", "", new NucSeq(partSeq), null, null);
+                vector = Part.generateBasic(seq.getName() + "_vector", "", new NucSeq(vecSeq), null, null);               
             }
             
             vector.setVector(true);
-            part.setPairName(vector.getName());
-            vector.setPairName(part.getName());
             
             partSet.add(part);
             partSet.add(vector);
-        }
+            
+            pn.setPart(part);
+            pn.setVector(vector);
+//        }
         return partSet;
     }
     
@@ -490,17 +495,17 @@ public class BenchlingAdaptor {
     /*
      * Creates an annotation set
      */
-    public static HashSet<NucSeq> getNucSeq(File input) throws FileNotFoundException, NoSuchElementException, BioException {
+    public static NucSeq getNucSeq(Sequence seq) throws FileNotFoundException, NoSuchElementException, BioException {
 
         //Import file, begin reading
-        BufferedReader reader = new BufferedReader(new FileReader(input.getAbsolutePath()));
-        SequenceIterator readGenbank = SeqIOTools.readGenbank(reader);
-        HashSet<NucSeq> nucSeqs = new HashSet<>();
-
-        //This loops for each entry in a multi-part GenBank file
-        while (readGenbank.hasNext()) {
+//        BufferedReader reader = new BufferedReader(new FileReader(input.getAbsolutePath()));
+//        SequenceIterator readGenbank = SeqIOTools.readGenbank(reader);
+//        HashSet<NucSeq> nucSeqs = new HashSet<>();
+//
+//        //This loops for each entry in a multi-part GenBank file
+//        while (readGenbank.hasNext()) {
             
-            Sequence seq = readGenbank.nextSequence();
+//            Sequence seq = readGenbank.nextSequence();
 
             //Check for linearity
             boolean linearity = true;
@@ -531,10 +536,10 @@ public class BenchlingAdaptor {
                 nucSeq.addAnnotation(ann);
             }
             
-            nucSeqs.add(nucSeq);
-        }
+//            nucSeqs.add(nucSeq);
+//        }
         
-        return nucSeqs;
+        return nucSeq;
     }
     
     private static String _BbsIfwd = "gaagac";

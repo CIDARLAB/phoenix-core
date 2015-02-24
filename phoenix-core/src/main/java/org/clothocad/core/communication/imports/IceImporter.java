@@ -21,6 +21,7 @@ import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
 import org.cidarlab.phoenix.core.dom.BasicPart;
 import org.cidarlab.phoenix.core.dom.FreeForm;
+import org.cidarlab.phoenix.core.dom.NucSeq;
 import org.cidarlab.phoenix.core.dom.Part;
 import org.cidarlab.phoenix.core.dom.Person;
 
@@ -116,7 +117,7 @@ public class IceImporter {
 
         shortdescription = parseDescription(entity);
         
-        BasicPart part = new BasicPart(name, shortdescription, seq, new FreeForm(), author);
+        BasicPart part = new BasicPart(name, shortdescription, new NucSeq(seq), new FreeForm(), author);
         
         return part;
     }

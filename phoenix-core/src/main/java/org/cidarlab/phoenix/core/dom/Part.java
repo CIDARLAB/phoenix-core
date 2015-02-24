@@ -23,6 +23,7 @@ ENHANCEMENTS, OR MODIFICATIONS..
 package org.cidarlab.phoenix.core.dom;
 
 import java.util.List;
+import javax.validation.Valid;
 
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
@@ -49,10 +50,10 @@ public abstract class Part extends SharableObjBase {
     @Deprecated
     // Type (actually role) should be derived from Features annotating the Part's Sequence.
     // Part should only store data on composition of sequences.
-    private PartFunction type;
-    @Getter
-    @Setter
-    @Deprecated
+//    private PartFunction type;
+//    @Getter
+//    @Setter
+//    @Deprecated
     // Risk should be derived from the Part's Sequence.
     // Sequences and their Annotations are connection between
     // genetic structure and function.
@@ -62,15 +63,11 @@ public abstract class Part extends SharableObjBase {
     @Getter
     @Setter
     private boolean isVector;
-    
-    //In Phoenix for the time being, every part and vector are paired
-    @Getter
-    @Setter
-    private String pairName;
 
-    protected Part(String name, String description, Format format, Person author) {
+    protected Part(String name, String description, NucSeq ns, Format format, Person author) {
         super(name, author, description);
         this.format = format;
+        this.sequence = ns;
     }
 
     /**
@@ -83,8 +80,9 @@ public abstract class Part extends SharableObjBase {
      * @param format Format of the Part
      * @param author author of the Part, for example Person with name "Bob"
      */
-    public static Part generateBasic(String name, String description, String sequence, Format format, Person author) {
-        return new BasicPart(name, description, sequence, format, author);
+    public static Part generateBasic(String name, String description, NucSeq sequence, Format format, Person author) {
+        return new Part(name, description, sequence, format, author) {
+        };
     }
 
     /**
@@ -97,12 +95,12 @@ public abstract class Part extends SharableObjBase {
      * @param format Format of the Part
      * @param author author of the Part, for example Person with name "Bob"
      */
-    public static Part generateComposite(List<Part> composition, Format format, Person author, String name, String description) {
-        return new CompositePart(composition, format, author, name, description);
-    }
+//    public static Part generateComposite(List<Part> composition, Format format, Person author, String name, String description) {
+//        return new CompositePart(composition, format, author, name, description);
+//    }
    
-    @AssertTrue
-    public abstract boolean checkFormat();
+//    @AssertTrue
+//    public abstract boolean checkFormat();
     
     public String getFormatName(){
         return format.getClass().getSimpleName();
@@ -118,7 +116,12 @@ public abstract class Part extends SharableObjBase {
         }
     }
 
-    public abstract NucSeq getSequence();
+//    public abstract NucSeq getSequence();
+    
+    @Valid
+    @Getter
+    @Setter
+    private NucSeq sequence;
     
     //Clotho ID
     @Setter
@@ -137,11 +140,11 @@ public abstract class Part extends SharableObjBase {
         return true;
     }
     
-    @Deprecated
-    // Type should be derived from Features annotating the Part's Sequence.
- 	// Part should only store data on composition of sequences.
-    public static enum PartFunction {
-        //XXX: composite is not a function
-        CDS, RBS, PROMOTER, TERMINATOR, COMPOSITE;
-    }
+//    @Deprecated
+//    // Type should be derived from Features annotating the Part's Sequence.
+// 	// Part should only store data on composition of sequences.
+//    public static enum PartFunction {
+//        //XXX: composite is not a function
+//        CDS, RBS, PROMOTER, TERMINATOR, COMPOSITE;
+//    }
 }

@@ -4,7 +4,6 @@
  */
 package org.cidarlab.phoenix.core.dom;
 
-import org.cidarlab.phoenix.core.dom.NucSeq;
 import javax.validation.Valid;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,19 +15,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BasicPart extends Part {
 
-    @Valid
-    @Getter
-    private NucSeq sequence;
+//    @Valid
+//    @Getter
+//    private NucSeq sequence;
 
-    public BasicPart(String name, String shortdescription, String seq, Format form, Person author) {
-        super(name, shortdescription, form, author);
-        this.sequence = new NucSeq(seq);
+    public BasicPart(String name, String shortdescription, NucSeq seq, Format form, Person author) {
+        super(name, shortdescription, seq, form, author);
+//        this. = new NucSeq(seq);
     }
 
-    @Override
-    public boolean checkFormat() {
-        return getFormat().checkPart(this);
-    }
+//    @Override
+//    public boolean checkFormat() {
+//        return getFormat().checkPart(this);
+//    }
 
     /**
      * This is a convenience method, the real change to the sequence happens in
@@ -36,22 +35,22 @@ public class BasicPart extends Part {
      *
      * @param newseq
      */
-    public void setSequence(final String newseq) {
-        if (newseq.equals("") || newseq == null) {
-            return;
-        }
-
-        final String oldseq = sequence.toString();
-
-        sequence.APIchangeSeq(newseq);
-
-        boolean isok = getFormat().checkPart(this);
-        if (!isok) {
-            sequence.APIchangeSeq(oldseq);
-            return;
-        }
+//    public void setSequence(final String newseq) {
+//        if (newseq.equals("") || newseq == null) {
+//            return;
+//        }
+//
+//        final String oldseq = sequence.toString();
+//
+//        sequence.APIchangeSeq(newseq);
+//
+//        boolean isok = getFormat().checkPart(this);
+//        if (!isok) {
+//            sequence.APIchangeSeq(oldseq);
+//            return;
+//        }
 
         //Change the risk group
         //riskGroup = sequence.performBiosafetyCheck();
-    }
+//    }
 }

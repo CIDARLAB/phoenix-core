@@ -121,7 +121,7 @@ public class ClothoTest {
         }
     }
     
-    @Test
+//    @Test
     public void testQuery() {
         System.out.println("Start Test");
         
@@ -130,9 +130,6 @@ public class ClothoTest {
         
         ClothoAdaptor.queryFluorophores();
         System.out.println("End of query Flourophores");
-    
-        ClothoAdaptor.queryNucSeqs();
-        System.out.println("End of query NucSeqs");
     
         ClothoAdaptor.queryPolynucleotides();
         System.out.println("End of query Polynucleotides");
@@ -163,6 +160,7 @@ public class ClothoTest {
     
     public static void main(String[] args) {
         ClothoTest t = new ClothoTest();
+        t.testQuery();
         t.testPlasmidLibraryUpload();
     }
 }

@@ -264,12 +264,13 @@ public class RavenAdaptor {
                     aDir.add("-");
                 }
                 
-                if (!pm.getModuleFeatures().isEmpty()) {
+                if (!pm.getModuleFeatures().get(0).getSequence().getSequence().isEmpty()) {
                     for (Feature f : pm.getModuleFeatures()) {
-
+                        String fName = f.getName().replaceAll(".ref", "");
+                        
                         //Find Raven basic part for this composition
                         for (org.cidarlab.raven.datastructures.Part p : libParts) {
-                            if (p.getName().equalsIgnoreCase(f.getName())) {
+                            if (p.getName().equalsIgnoreCase(fName)) {
                                 if (p.getLeftOverhang().isEmpty() && p.getRightOverhang().isEmpty() && p.getDirections().equals(aDir)) {
                                     composition.add(p);
                                 }
@@ -360,4 +361,6 @@ public class RavenAdaptor {
         }
         return finalMap;
     }
+    
+    //Compare duplicates 
 }

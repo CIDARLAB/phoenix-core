@@ -75,7 +75,7 @@ public class Annotation extends ObjBase {
         author = user;
         isForwardStrand = plusstrandtrue;
         this.symbol = symbol;
-        seq.addAnnotation(this);
+//        seq.addAnnotation(this);
     }
 
     /**

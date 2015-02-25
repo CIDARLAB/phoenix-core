@@ -240,6 +240,7 @@ public class BenchlingAdaptor {
 
             //Look at all features within part boundary to get basic parts and order to make a composite part
             Iterator<org.biojava.bio.seq.Feature> features = seq.features();
+            String name = seq.getName();
             
             while (features.hasNext()) {
                 
@@ -282,7 +283,7 @@ public class BenchlingAdaptor {
                 
                 Color fwd = null;
                 Color rev = null;
-                String name = "";
+//                String name = "";
                 if (feature.getAnnotation().containsProperty("ApEinfo_fwdcolor") && feature.getAnnotation().containsProperty("ApEinfo_revcolor")) {
                     fwd = Color.decode(feature.getAnnotation().getProperty("ApEinfo_fwdcolor").toString());
                     rev = Color.decode(feature.getAnnotation().getProperty("ApEinfo_revcolor").toString());
@@ -294,7 +295,6 @@ public class BenchlingAdaptor {
                 
                 //If this sequence is a reference '.ref' part it should only have one feature
                 //If so, we are going to assign feature roles
-//                if (seq.countFeatures() == 1 && seq.getName().endsWith(".ref")) {
                 if (seq.getName().endsWith(".ref")) {    
                 
                     //Get tags from the part to create feature

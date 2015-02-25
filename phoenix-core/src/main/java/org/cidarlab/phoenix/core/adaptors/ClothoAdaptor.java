@@ -451,6 +451,14 @@ public class ClothoAdaptor {
             createFeature.put("forwardColor", f.getForwardColor().toString());
             createFeature.put("reverseColor", f.getReverseColor().toString());
             createFeature.put("name", f.getName().replaceAll(".ref", ""));
+            
+            //FeatureRole sub-schema
+            if (f.getRole() != null) {
+                Map createFeatureRole = new HashMap();
+                createFeatureRole.put("schema", "org.cidarlab.phoenix.core.dom.FeatureRole");
+                createFeatureRole.put("FeatureRole", f.getRole().toString());
+                createFeature.put("role", createFeatureRole);
+            }            
 
             //NucSeq sub-schema
             Map createNucSeqSub = new HashMap();
@@ -769,6 +777,13 @@ public class ClothoAdaptor {
             String fseq = jsonSequence.get("sequence").toString();
             NucSeq fsequence = new NucSeq(fseq);
 
+            //Get FeatureRole
+            if (jsonFeature.has("role")) {
+                JSONObject jsonFeatureRole = (JSONObject) jsonFeature.get("role");
+                String roleString = jsonFeatureRole.get("FeatureRole").toString();
+                feature.setRole(Feature.FeatureRole.valueOf(roleString));
+            }
+            
             feature.setForwardColor(fwdColor);
             feature.setReverseColor(revColor);
             feature.setName(fname);

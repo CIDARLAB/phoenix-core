@@ -52,7 +52,7 @@ public class miniEugeneTest {
     
     
     //Test for oriented TUs example on miniEugene site
-    @Test
+//    @Test
     public void orientedTUTest() throws IOException, MiniEugeneException {
         
         //Upload test file
@@ -64,7 +64,7 @@ public class miniEugeneTest {
     }
     
     //Test for toggle switches example on miniEugene site
-    @Test
+//    @Test
     public void toggleTest() throws IOException, MiniEugeneException {
         
         //Upload test file
@@ -76,7 +76,7 @@ public class miniEugeneTest {
     }
     
     //Test for toggle switch with terminators and RBSs
-    @Test
+//    @Test
     public void fullToggleTest() throws IOException, MiniEugeneException {
         
         //Upload test file

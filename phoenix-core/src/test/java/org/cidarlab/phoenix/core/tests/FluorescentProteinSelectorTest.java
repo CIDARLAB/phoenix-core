@@ -101,7 +101,7 @@ public class FluorescentProteinSelectorTest {
     }
     
     //Runs test on FP Selector algorithm to get n FPs with configured cytometer
-    @Test
+//    @Test
     public void getMultiFPTest() {        
         
         HashSet<Fluorophore> FPs = ClothoAdaptor.queryFluorophores();

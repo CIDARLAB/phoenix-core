@@ -123,19 +123,20 @@ public class BenchlingAdaptor {
         }
         int start;
         int end;
+        int level;
 
         //Looks for flanking BbsI or BsaI sites if there are more than one, this method will break
         //This also assumes there are either exactly two of each site, not both or a mix
         boolean containsBBsI = searchSeq.contains(_BbsIfwd) && searchSeq.contains(_BbsIrev);
         boolean containsBsaI = searchSeq.contains(_BsaIfwd) && searchSeq.contains(_BsaIrev);
 
-        //
         if (containsBBsI && !containsBsaI) {
 
             //If there is only one and exactly one BbsI site in each direction does it conform to MoClo format
             if (searchSeq.indexOf(_BbsIfwd) == searchSeq.lastIndexOf(_BbsIfwd) && searchSeq.indexOf(_BbsIrev) == searchSeq.lastIndexOf(_BbsIrev)) {
                 start = searchSeq.indexOf(_BbsIfwd) + 8 - 5;
                 end = searchSeq.indexOf(_BbsIrev) - 2 - 5;
+                level = 1;
             } else {
                 return partSet;
             }
@@ -146,6 +147,7 @@ public class BenchlingAdaptor {
             if (searchSeq.indexOf(_BsaIfwd) == searchSeq.lastIndexOf(_BsaIfwd) && searchSeq.indexOf(_BsaIrev) == searchSeq.lastIndexOf(_BsaIrev)) {
                 start = searchSeq.indexOf(_BsaIfwd) + 7 - 5;
                 end = searchSeq.indexOf(_BsaIrev) - 1 - 5;
+                level = 0;
             } else {
                 return partSet;
             }
@@ -159,11 +161,13 @@ public class BenchlingAdaptor {
                 if (searchSeq.indexOf(_BsaIfwd) > searchSeq.indexOf(_BbsIfwd)) {
                     start = searchSeq.indexOf(_BsaIfwd) + 7 - 5;
                     end = searchSeq.indexOf(_BsaIrev) - 1 - 5;
+                    level = 1;
 
                     //If the BbsI site is first, Level 2(n + 1) edge case
                 } else if (searchSeq.indexOf(_BsaIfwd) < searchSeq.indexOf(_BbsIfwd)) {
                     start = searchSeq.indexOf(_BbsIfwd) + 8 - 5;
                     end = searchSeq.indexOf(_BbsIrev) - 2 - 5;
+                    level = 0;
                 } else {
                     return partSet;
                 }
@@ -212,6 +216,7 @@ public class BenchlingAdaptor {
 
         pn.setPart(part);
         pn.setVector(vector);
+        pn.setLevel(level);
         
         return partSet;
     }

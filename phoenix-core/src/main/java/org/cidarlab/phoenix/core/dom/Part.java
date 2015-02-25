@@ -127,7 +127,7 @@ public abstract class Part extends SharableObjBase {
     @Setter
     @Getter
     private String clothoID;
-
+        
     public static Part retrieveByName(String name) {
         //query connection for one part whose name contains the provided string    
         throw new UnsupportedOperationException("Not supported yet.");

@@ -49,4 +49,9 @@ public class Polynucleotide extends ObjBase implements Serializable {
     @Setter
     @Getter
     private boolean isDV;
+    
+    //MoClo level
+    @Setter
+    @Getter
+    private int level;
 }

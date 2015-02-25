@@ -63,11 +63,18 @@ public class RavenAdaptor {
         
         //For each module, make a Raven part
         for (Polynucleotide pn : polyNucs) {
-            
+        
+            //Special case for destination vector
             org.cidarlab.raven.datastructures.Part part = phoenixPartToRavenPart(pn.getPart(), libParts);
-            Vector vector = phoenixPartToRavenVector(pn.getVector());
-            plasmidPairs.put(part, vector);
+            Vector vector;
+            if (pn.isDV()) {
+                int level = pn.getLevel();
+                vector = phoenixPartToRavenVector(pn.getVector(), Integer.toString(level));
+            } else {
+                vector = phoenixPartToRavenVector(pn.getVector(), null);
+            }
             
+            plasmidPairs.put(part, vector);
         }
         
         return plasmidPairs;
@@ -77,9 +84,11 @@ public class RavenAdaptor {
     public static org.cidarlab.raven.datastructures.Part phoenixPartToRavenPart(Part pPart, HashSet<org.cidarlab.raven.datastructures.Part> libParts) {
         
         Set<Annotation> annotations = pPart.getSequence().getAnnotations();
+        
         String partSeq = pPart.getSequence().getSeq();
-        String moCloLO = getMoCloOHseqs().get(partSeq.substring(partSeq.length() - 4).toLowerCase());
-        String moCloRO = getMoCloOHseqs().get(partSeq.substring(0, 4).toLowerCase());
+        HashMap<String, String> moCloOHs = reverseKeysVals(PrimerDesign.getMoCloOHseqs());
+        String moCloLO = moCloOHs.get(partSeq.substring(partSeq.length() - 4).toLowerCase());
+        String moCloRO = moCloOHs.get(partSeq.substring(0, 4).toLowerCase());
         String name = pPart.getName();
         
         org.cidarlab.raven.datastructures.Part ravenPart;
@@ -164,13 +173,14 @@ public class RavenAdaptor {
                 }
             }
             
-            org.cidarlab.raven.datastructures.Part newComposite = org.cidarlab.raven.datastructures.Part.generateComposite(composition, new ArrayList(), name);
-            newComposite.addSearchTag("Direction: " + directions);
-            newComposite.addSearchTag("LO: " + moCloLO);
-            newComposite.addSearchTag("RO: " + moCloRO);
-            newComposite.addSearchTag("Type: composite");
-            newComposite.addSearchTag("Scars: []");
-            newComposite.setTransientStatus(false);
+            ravenPart = org.cidarlab.raven.datastructures.Part.generateComposite(composition, new ArrayList(), name);
+            ravenPart.addSearchTag("Direction: " + directions);
+            ravenPart.addSearchTag("LO: " + moCloLO);
+            ravenPart.addSearchTag("RO: " + moCloRO);
+            ravenPart.addSearchTag("Type: composite");
+            ravenPart.addSearchTag("Scars: []");
+            ravenPart.setTransientStatus(false);
+            libParts.add(ravenPart);
             
             newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite(composition, new ArrayList(), name);
             newPlasmid.addSearchTag("Direction: " + directions);
@@ -185,27 +195,49 @@ public class RavenAdaptor {
     }
     
     //Convert Phoenix Parts to Raven Vectors
-    public static Vector phoenixPartToRavenVector(Part pPart) {
+    public static Vector phoenixPartToRavenVector(Part pPart, String level) {
         
         //Get parameters for Raven
         String vecSeq = pPart.getSequence().getSeq();
-        String moCloLO = getMoCloOHseqs().get(vecSeq.substring(vecSeq.length() - 4).toLowerCase());
-        String moCloRO = getMoCloOHseqs().get(vecSeq.substring(0, 4).toLowerCase());
+        HashMap<String, String> moCloOHs = reverseKeysVals(PrimerDesign.getMoCloOHseqs());
+        String moCloLO = "";
+        String moCloRO = "";
         String resistance = "";
+        
+        //If both ends match MoClo overhangs, add them as overhangs
+        if (moCloOHs.containsKey(vecSeq.substring(vecSeq.length() - 4).toLowerCase()) && moCloOHs.containsKey(vecSeq.substring(vecSeq.length() - 4).toLowerCase())) {
+            moCloLO = moCloOHs.get(vecSeq.substring(vecSeq.length() - 4).toLowerCase());
+            moCloRO = moCloOHs.get(vecSeq.substring(0, 4).toLowerCase());
+        }        
+        
+        //Get the resistance
         Set<Annotation> annotations = pPart.getSequence().getAnnotations();
         for (Annotation a : annotations) {
             if (a.getFeature().getRole().equals(Feature.FeatureRole.CDS_RESISTANCE)) {
                 resistance = a.getFeature().getName().replaceAll(".ref", "");
             }
         }
-            
-        Vector newVector = Vector.generateVector(pPart.getName(), pPart.getSequence().getSeq());
-        newVector.addSearchTag("LO: " + moCloLO);
-        newVector.addSearchTag("RO: " + moCloRO);
-        newVector.addSearchTag("Type: vector");
-        newVector.addSearchTag("Resistance: " + resistance);
-        newVector.setTransientStatus(false);
-                
+         
+        Vector newVector;
+        if (level == null) {
+            newVector = Vector.generateVector(pPart.getName(), pPart.getSequence().getSeq());
+            newVector.addSearchTag("LO: ");
+            newVector.addSearchTag("RO: ");
+            newVector.addSearchTag("Type: vector");
+            newVector.addSearchTag("Resistance: " + resistance);
+            newVector.setTransientStatus(false);
+        } else {
+            newVector = Vector.generateVector(pPart.getName(), pPart.getSequence().getSeq());
+            newVector.addSearchTag("LO: " + moCloLO);
+            newVector.addSearchTag("RO: " + moCloRO);
+            newVector.addSearchTag("Level: " + level);
+            newVector.addSearchTag("Type: destination vector");
+            newVector.addSearchTag("Resistance: " + resistance);
+            newVector.addSearchTag("Vector: " + pPart.getName());
+            newVector.addSearchTag("Composition: lacZ|" + moCloLO + "|" + moCloRO + "|+");
+            newVector.setTransientStatus(false);
+        }
+
         return newVector;
     }
     
@@ -319,52 +351,13 @@ public class RavenAdaptor {
         return newObj;
     }
     
-    //MoClo OH map
-    public static HashMap<String, String> getMoCloOHseqs() {
-
-        HashMap<String, String> overhangVariableSequenceHash = new HashMap<String, String>();
-        overhangVariableSequenceHash.put("ggag", "0");
-        overhangVariableSequenceHash.put("tact", "1");
-        overhangVariableSequenceHash.put("aatg", "2");
-        overhangVariableSequenceHash.put("aggt", "3");
-        overhangVariableSequenceHash.put("gctt", "4");
-        overhangVariableSequenceHash.put("cgct", "5");
-        overhangVariableSequenceHash.put("tgcc", "6");
-        overhangVariableSequenceHash.put("acta", "7");
-        overhangVariableSequenceHash.put("tcta", "8");
-        overhangVariableSequenceHash.put("cgac", "9");
-        overhangVariableSequenceHash.put("cgtt", "10");
-        overhangVariableSequenceHash.put("tgtg", "11");
-        overhangVariableSequenceHash.put("atgc", "12");
-        overhangVariableSequenceHash.put("gtca", "13");
-        overhangVariableSequenceHash.put("gaac", "14");
-        overhangVariableSequenceHash.put("ctga", "15");
-        overhangVariableSequenceHash.put("acag", "16");
-        overhangVariableSequenceHash.put("tagc", "17");
-        overhangVariableSequenceHash.put("atcg", "18");
-        overhangVariableSequenceHash.put("cagt", "19");
-        overhangVariableSequenceHash.put("gcaa", "20");
-        overhangVariableSequenceHash.put("ctcc", "0*");
-        overhangVariableSequenceHash.put("agta", "1*");
-        overhangVariableSequenceHash.put("catt", "2*");
-        overhangVariableSequenceHash.put("acct", "3*");
-        overhangVariableSequenceHash.put("aagc", "4*");
-        overhangVariableSequenceHash.put("agcg", "5*");
-        overhangVariableSequenceHash.put("ggca", "6*");
-        overhangVariableSequenceHash.put("tagt", "7*");
-        overhangVariableSequenceHash.put("taga", "8*");
-        overhangVariableSequenceHash.put("gtcg", "9*");
-        overhangVariableSequenceHash.put("aacg", "10*");
-        overhangVariableSequenceHash.put("caca", "11*");
-        overhangVariableSequenceHash.put("gcat", "12*");
-        overhangVariableSequenceHash.put("tgac", "13*");
-        overhangVariableSequenceHash.put("gtcc", "14*");
-        overhangVariableSequenceHash.put("tcag", "15*");
-        overhangVariableSequenceHash.put("ctgt", "16*");
-        overhangVariableSequenceHash.put("gcta", "17*");
-        overhangVariableSequenceHash.put("cgat", "18*");
-        overhangVariableSequenceHash.put("actg", "19*");
-        overhangVariableSequenceHash.put("ttgc", "20*");
-        return overhangVariableSequenceHash;
+    //Switch keys and values for a Map of String to String
+    public static HashMap<String, String> reverseKeysVals(HashMap<String, String> initialMap) {
+        
+        HashMap<String, String> finalMap = new HashMap();
+        for (String key : initialMap.keySet()) {
+            finalMap.put(initialMap.get(key), key);
+        }
+        return finalMap;
     }
 }

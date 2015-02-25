@@ -277,6 +277,7 @@ public class ClothoAdaptor {
             createPolynucleotide.put("part", createPart);
             createPolynucleotide.put("vector", createVec);
             createPolynucleotide.put("isDV", pn.isDV());
+            createPolynucleotide.put("level", pn.getLevel());
             
             clothoObject.create(createPolynucleotide);            
         }
@@ -877,6 +878,7 @@ public class ClothoAdaptor {
             
             pn.setClothoID(jsonPolynuc.get("id").toString());
             pn.setDV(Boolean.parseBoolean(jsonPolynuc.get("isDV").toString()));
+            pn.setLevel(Integer.valueOf(jsonPolynuc.get("level").toString()));
             polynucs.add(pn);
         }
         conn.closeConnection();

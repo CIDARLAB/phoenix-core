@@ -15,12 +15,15 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 /**
  *
  * @author evanappleton
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ClothoTest {
     
     @BeforeClass
@@ -76,6 +79,30 @@ public class ClothoTest {
     }
     
 //    @Test
+    public void testPlasmidLibraryUpload() {
+        
+        String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_plasmid_lib.gb";
+        File toLoad = new File(filePath);
+        try {
+            ClothoAdaptor.uploadSequences(toLoad, false);
+        } catch (Exception ex) {
+            Logger.getLogger(ClothoTest.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }
+    
+    @Test
+    public void testPlasmidLibraryBPOnlyUpload() {
+        
+        String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_plasmid_lib_bp_only.gb";
+        File toLoad = new File(filePath);
+        try {
+            ClothoAdaptor.uploadSequences(toLoad, false);
+        } catch (Exception ex) {
+            Logger.getLogger(ClothoTest.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }
+    
+//    @Test
     public void testGenericUpload() {
         
         String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/generic.gb";
@@ -109,7 +136,7 @@ public class ClothoTest {
         }
     }
     
-    @Test
+//    @Test
     public void testQuery() {
         System.out.println("Start Test");
         
@@ -118,9 +145,6 @@ public class ClothoTest {
         
         ClothoAdaptor.queryFluorophores();
         System.out.println("End of query Flourophores");
-    
-        ClothoAdaptor.queryNucSeqs();
-        System.out.println("End of query NucSeqs");
     
         ClothoAdaptor.queryPolynucleotides();
         System.out.println("End of query Polynucleotides");
@@ -151,9 +175,8 @@ public class ClothoTest {
 //    
 //    public static void main(String[] args) {
 //        ClothoTest t = new ClothoTest();
-////        t.testFeatureUpload();
-////        t.testMultiPartUpload();
 ////        t.testQuery();
-//        t.testCytometerUpload();
+////        t.testMultiPartUpload();
+//        t.testPlasmidLibraryBPOnlyUpload();
 //    }
 }

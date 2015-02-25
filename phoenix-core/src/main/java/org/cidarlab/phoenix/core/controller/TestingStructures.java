@@ -169,7 +169,7 @@ public class TestingStructures {
         
         
         
-        return null;
+        return new ArrayList();
     }
     
     //Method for forming an experiment from a module which has partial part assignment

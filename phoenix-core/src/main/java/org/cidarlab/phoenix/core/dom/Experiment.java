@@ -4,6 +4,11 @@
  */
 package org.cidarlab.phoenix.core.dom;
 
+import java.io.File;
+import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * This file is for the Experiment object
  * 
@@ -11,4 +16,60 @@ package org.cidarlab.phoenix.core.dom;
  */
 public class Experiment {
     
+    public Experiment() {
+        
+    }
+    
+    //Module to be measured
+    @Setter
+    @Getter
+    private Module measurementModule;
+    
+    //Modules for controls
+    @Setter
+    @Getter
+    private List<Module> controlModules;
+    
+    //Part measured
+    @Setter
+    @Getter
+    private Part measurementPart;        
+    
+    //Parts for controls
+    @Setter
+    @Getter
+    private List<Part> controlPart;
+    
+    //Polynucleotide measured
+    @Setter
+    @Getter
+    private Polynucleotide measurementPolynucleotide;
+    
+    //Polynucleotide measured
+    @Setter
+    @Getter
+    private List<Polynucleotide> contPolynucleotides;
+    
+    //Test strain
+    @Setter
+    @Getter
+    private Strain strain;
+    
+    //Experiment type
+    @Setter
+    @Getter
+    private ExperimentType type;
+    
+    //fcs files
+    @Setter
+    @Getter
+    private List<File> fcsFiles;
+    
+    //Experiment types
+    public enum ExperimentType {
+        EXPRESSION,
+        DEGRADATION,
+        REGULATION,
+        SMALL_MOLECULE;
+    }
 }

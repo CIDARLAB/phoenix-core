@@ -18,6 +18,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.cidarlab.phoenix.core.adaptors.BenchlingAdaptor.*;
@@ -31,6 +33,7 @@ import org.cidarlab.phoenix.core.dom.Polynucleotide;
 import org.clothoapi.clotho3javaapi.Clotho;
 import org.clothoapi.clotho3javaapi.ClothoConnection;
 import org.cidarlab.phoenix.core.dom.Annotation;
+import org.cidarlab.phoenix.core.dom.AssemblyParameters;
 import org.cidarlab.phoenix.core.dom.Person;
 
 /**
@@ -62,15 +65,16 @@ public class ClothoAdaptor {
             
         } else {
  
-            //Get polynucleotides, nucseqs and parts from a multi-part genbank file     
+            //Get polynucleotides, nucseqs and parts from a multi-part genbank file
+            //This automatic annotations of part NucSeqs relies on previously uploaded features
             HashSet<Polynucleotide> polyNucs = BenchlingAdaptor.getPolynucleotide(input);
-            HashSet<NucSeq> nucSeqs = BenchlingAdaptor.getNucSeq(input);
-            HashSet<Part> parts = BenchlingAdaptor.getMoCloParts(input);
+            removeDuplicateParts(polyNucs);
+            HashSet<Feature> annotationFeatures = queryFeatures();
+            annotationFeatures.addAll(queryFluorophores());
+            annotateParts(annotationFeatures, polyNucs);
 
             //Save all polynucleotides, nucseqs and parts to Clotho
             createPolynucleotides(polyNucs);
-            createParts(parts);
-            createNucSeqs(nucSeqs);
         }       
     }
     
@@ -244,7 +248,7 @@ public class ClothoAdaptor {
 
             //Polynucleotide schema
             Map createPolynucleotide = new HashMap();
-            createPolynucleotide.put("schema", "org.clothocad.model.Polynucleotide");
+            createPolynucleotide.put("schema", "org.cidarlab.phoenix.core.dom.Polynucleotide");
             createPolynucleotide.put("name", pn.getAccession());
             createPolynucleotide.put("accession", pn.getAccession().substring(0, pn.getAccession().length() - 15));
             createPolynucleotide.put("description", pn.getDescription());
@@ -261,8 +265,19 @@ public class ClothoAdaptor {
                 createPolynucleotide.put("id", pn.getAccession());
                 pn.setClothoID(pn.getAccession());
             }
-            clothoObject.create(createPolynucleotide);
             
+            //NucSeq data
+            Map createNucSeqMain = createNucSeq(pn.getSequence());
+
+            //Part and vector
+            Map createPart = createPart(pn.getPart(), clothoObject);
+            Map createVec = createPart(pn.getVector(), clothoObject);
+
+            createPolynucleotide.put("sequence", createNucSeqMain);
+            createPolynucleotide.put("part", createPart);
+            createPolynucleotide.put("vector", createVec);
+            
+            clothoObject.create(createPolynucleotide);            
         }
         conn.closeConnection();
     }
@@ -276,20 +291,20 @@ public class ClothoAdaptor {
 
             //Feature schema
             Map createFeature = new HashMap();
-            createFeature.put("schema", "org.clothocad.model.Feature");
+            createFeature.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
             createFeature.put("name", f.getName());
             createFeature.put("forwardColor", f.getForwardColor().toString());
             createFeature.put("reverseColor", f.getReverseColor().toString());
 
             //NucSeq sub-schema
             Map createSequence = new HashMap();
-            createSequence.put("schema", "org.clothocad.model.Sequence");
+            createSequence.put("schema", "org.cidarlab.phoenix.core.dom.Sequence");
             createSequence.put("sequence", f.getSequence().getSequence());
             createFeature.put("sequence", createSequence);
             
             //FeatureRole sub-schema
             Map createFeatureRole = new HashMap();
-            createFeatureRole.put("schema", "org.clothocad.model.Feature.FeatureRole");
+            createFeatureRole.put("schema", "org.cidarlab.phoenix.core.dom.FeatureRole");
             createFeatureRole.put("FeatureRole", f.getRole().toString());
             createFeature.put("role", createFeatureRole);
             
@@ -343,13 +358,13 @@ public class ClothoAdaptor {
                         
             //NucSeq sub-schema
             Map createSequence = new HashMap();
-            createSequence.put("schema", "org.clothocad.model.Sequence");
+            createSequence.put("schema", "org.cidarlab.phoenix.core.dom.Sequence");
             createSequence.put("sequence", f.getSequence().getSequence());
             createFluorophore.put("sequence", createSequence);
             
             //FeatureRole sub-schema
             Map createFeatureRole = new HashMap();
-            createFeatureRole.put("schema", "org.clothocad.model.Feature.FeatureRole");
+            createFeatureRole.put("schema", "org.cidarlab.phoenix.core.dom.FeatureRole");
             createFeatureRole.put("FeatureRole", f.getRole().toString());
             createFluorophore.put("role", createFeatureRole);
             
@@ -379,103 +394,91 @@ public class ClothoAdaptor {
     }
 
     //Add parts to Clotho via Clotho Server API
-    public static void createParts(HashSet<Part> parts) {
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
-        Clotho clothoObject = new Clotho(conn);
-        for (Part p : parts) {
+    public static Map createPart(Part p, Clotho clothoObject) {
 
-            //Part schema
-            Map createPart = new HashMap();
-            createPart.put("schema", "org.clothocad.model.Part");
-            createPart.put("name", p.getName());
+        //Part schema
+        Map createPart = new HashMap();
+        createPart.put("schema", "org.cidarlab.phoenix.core.dom.Part");
+        createPart.put("name", p.getName());
+        createPart.put("isVector", p.isVector());
+        createPart.put("sequence", createNucSeq(p.getSequence()));
 
-            //NucSeq sub-schema
-            Map createNucSeq = new HashMap();
-            createNucSeq.put("schema", "org.clothocad.model.NucSeq");
-            createNucSeq.put("sequence", p.getSequence().getSeq());
-            createNucSeq.put("isCircular", p.getSequence().isCircular());
-            createNucSeq.put("isSingleStranded", p.getSequence().isSingleStranded());
+        //Clotho ID
+        if (p.getClothoID() != null) {
+            createPart.put("id", p.getClothoID());
+        } else {
+            createPart.put("id", p.getName());
+        }
 
-            createPart.put("sequence", createNucSeq);
-            
-            //Clotho ID
-            if (p.getClothoID() != null) {
-                createPart.put("id", p.getClothoID());
-            }
-
+        if (clothoObject != null) {
             clothoObject.set(createPart);
         }
-        conn.closeConnection();
+
+        return createPart;
     }
 
     //Add nucseqs to Clotho via Clotho Server API
-    public static void createNucSeqs(HashSet<NucSeq> nucSeqs) {
-        
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
-        Clotho clothoObject = new Clotho(conn);
-        for (NucSeq ns : nucSeqs) {
+    public static Map createNucSeq(NucSeq ns) {
 
-            //NucSeq schema
-            Map createNucSeqMain = new HashMap();
-            createNucSeqMain.put("schema", "org.clothocad.model.NucSeq");
-            createNucSeqMain.put("name", ns.getName());
-            createNucSeqMain.put("sequence", ns.getSeq());
-            createNucSeqMain.put("isCircular", ns.isCircular());
-            createNucSeqMain.put("isSingleStranded", ns.isSingleStranded());
+        //NucSeq schema
+        Map createNucSeqMain = new HashMap();
+        createNucSeqMain.put("schema", "org.cidarlab.phoenix.core.dom.NucSeq");
+        createNucSeqMain.put("name", ns.getName());
+        createNucSeqMain.put("sequence", ns.getSeq());
+        createNucSeqMain.put("isCircular", ns.isCircular());
+        createNucSeqMain.put("isSingleStranded", ns.isSingleStranded());
 
-            Set<Annotation> annotations = ns.getAnnotations();
-            List<Map> annotationList = new ArrayList<>();
+        Set<Annotation> annotations = ns.getAnnotations();
+        List<Map> annotationList = new ArrayList<>();
 
-            //Get all annotations
-            for (Annotation annotation : annotations) {
+        //Get all annotations
+        for (Annotation annotation : annotations) {
 
-                Map createAnnotation = new HashMap();
-                createAnnotation.put("schema", "org.clothocad.model.Annotation");
-                createAnnotation.put("start", annotation.getStart());
-                createAnnotation.put("end", annotation.getEnd());
-                createAnnotation.put("forwardColor", annotation.getForwardColor().toString());
-                createAnnotation.put("reverseColor", annotation.getReverseColor().toString());
-                createAnnotation.put("isForwardStrand", annotation.isForwardStrand());
+            Map createAnnotation = new HashMap();
+            createAnnotation.put("schema", "org.cidarlab.phoenix.core.dom.Annotation");
+            createAnnotation.put("start", annotation.getStart());
+            createAnnotation.put("end", annotation.getEnd());
+            createAnnotation.put("forwardColor", annotation.getForwardColor().toString());
+            createAnnotation.put("reverseColor", annotation.getReverseColor().toString());
+            createAnnotation.put("isForwardStrand", annotation.isForwardStrand());
 
-                //Feature schema - assumed one feature per annotation
-                Feature f = annotation.getFeature();
-                Map createFeature = new HashMap();
-                createFeature.put("schema", "org.clothocad.model.Feature");
-                createFeature.put("forwardColor", f.getForwardColor().toString());
-                createFeature.put("reverseColor", f.getReverseColor().toString());
-                createFeature.put("name", f.getName().replaceAll(".ref", ""));
+            //Feature schema - assumed one feature per annotation
+            Feature f = annotation.getFeature();
+            Map createFeature = new HashMap();
+            createFeature.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
+            createFeature.put("forwardColor", f.getForwardColor().toString());
+            createFeature.put("reverseColor", f.getReverseColor().toString());
+            createFeature.put("name", f.getName().replaceAll(".ref", ""));
 
-                //NucSeq sub-schema
-                Map createNucSeqSub = new HashMap();
-                createNucSeqSub.put("schema", "org.clothocad.model.Sequence");
-                createNucSeqSub.put("sequence", f.getSequence().getSequence());
+            //NucSeq sub-schema
+            Map createNucSeqSub = new HashMap();
+            createNucSeqSub.put("schema", "org.cidarlab.phoenix.core.dom.Sequence");
+            createNucSeqSub.put("sequence", f.getSequence().getSequence());
 
-                createFeature.put("sequence", createNucSeqSub);
+            createFeature.put("sequence", createNucSeqSub);
 
-                //Get this feature's Person
-                Person author = annotation.getAuthor();
-                Map createPerson = new HashMap();
-                createPerson.put("schema", "org.clothocad.model.Person");
-                createPerson.put("givenName", author.getGivenName());
-                createPerson.put("surName", author.getSurName());
-                createPerson.put("emailAddress", author.getEmailAddress());
+            //Get this feature's Person
+            Person author = annotation.getAuthor();
+            Map createPerson = new HashMap();
+            createPerson.put("schema", "org.cidarlab.phoenix.core.dom.Person");
+            createPerson.put("givenName", author.getGivenName());
+            createPerson.put("surName", author.getSurName());
+            createPerson.put("emailAddress", author.getEmailAddress());
 
-                createAnnotation.put("feature", createFeature);
-                createAnnotation.put("author", createPerson);
+            createAnnotation.put("feature", createFeature);
+            createAnnotation.put("author", createPerson);
 
-                annotationList.add(createAnnotation);
-            }
-
-            createNucSeqMain.put("annotations", annotationList);
-            
-            //Clotho ID
-            if (ns.getClothoID() != null) {
-                createNucSeqMain.put("id", ns.getClothoID());
-            }
-
-            clothoObject.create(createNucSeqMain);
+            annotationList.add(createAnnotation);
         }
-        conn.closeConnection();
+
+        createNucSeqMain.put("annotations", annotationList);
+
+        //Clotho ID
+        if (ns.getClothoID() != null) {
+            createNucSeqMain.put("id", ns.getClothoID());
+        }
+
+        return createNucSeqMain;
     }
     
     //Add fluorophores to Clotho via Clotho Server API
@@ -535,6 +538,56 @@ public class ClothoAdaptor {
         conn.closeConnection();
     }
     
+    //Add polynucleotides to Clotho via Clotho Server API
+    public static void createAssemblyParameters(AssemblyParameters aP) {
+        
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
+        
+        Map createAssmParam = new HashMap();
+        createAssmParam.put("schema", "org.cidarlab.phoenix.core.dom.AssemblyParameters");
+        createAssmParam.put("method", aP.getMethod());
+        createAssmParam.put("name", aP.getName());
+        createAssmParam.put("oligoNameRoot", aP.getOligoNameRoot());
+        createAssmParam.put("meltingTemperature", aP.getMeltingTemperature());
+        createAssmParam.put("minPCRLength", aP.getMinPCRLength());
+        createAssmParam.put("targetHomologyLength", aP.getTargetHomologyLength());
+        createAssmParam.put("minCloneLength", aP.getMinCloneLength());
+        createAssmParam.put("maxPrimerLength", aP.getMaxPrimerLength());
+        
+        if (aP.getRecommended() != null) {
+            List<String> recommended = new ArrayList<>(aP.getRecommended());
+            createAssmParam.put("recommended", recommended);
+        }
+        if (aP.getRequired() != null) {
+            List<String> required = new ArrayList<>(aP.getRequired());
+            createAssmParam.put("required", required);
+        }
+        if (aP.getDiscouraged() != null) {
+            List<String> discouraged = new ArrayList<>(aP.getDiscouraged());
+            createAssmParam.put("discouraged", discouraged);
+        }
+        if (aP.getForbidden() != null) {
+            List<String> forbidden = new ArrayList<>(aP.getForbidden());
+            createAssmParam.put("forbidden", forbidden);
+        }
+        if (aP.getEfficiency() != null) {
+            List<String> efficiency = new ArrayList<>(aP.getEfficiency());
+            createAssmParam.put("efficiency", efficiency); 
+        }
+
+        //Clotho ID
+        if (aP.getClothoID() != null) {
+            createAssmParam.put("id", aP.getClothoID());
+        } else {
+            createAssmParam.put("id", aP.getName());
+            aP.setClothoID(aP.getName());
+        }
+        clothoObject.create(createAssmParam);
+
+        conn.closeConnection();
+    }
+    
     /*
      * 
      * CLOTHO OBJECT QUERY METHODS
@@ -551,7 +604,7 @@ public class ClothoAdaptor {
         HashSet<Feature> features = new HashSet<>();
         
         Map map = new HashMap();
-        map.put("schema", "org.clothocad.model.Feature");
+        map.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
         Object query = clothoObject.query(map);
         JSONArray array = (JSONArray) query;
         
@@ -671,89 +724,82 @@ public class ClothoAdaptor {
     }
     
     //Get all Clotho NucSeqs
-    public static HashSet<NucSeq> queryNucSeqs() {
+    public static NucSeq getNucSeqs(JSONObject jsonNucSeq) {
 
-        //Establish Clotho connection
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
-        Clotho clothoObject = new Clotho(conn);
+        String seq = jsonNucSeq.get("sequence").toString();
+        boolean circular = Boolean.parseBoolean(jsonNucSeq.get("isCircular").toString());
+        boolean ss = Boolean.parseBoolean(jsonNucSeq.get("isSingleStranded").toString());
 
-        HashSet<NucSeq> nucSeqs = new HashSet<>();
+        NucSeq ns = new NucSeq(seq, ss, circular);
+        ns.setName(jsonNucSeq.get("name").toString());
 
-        Map map = new HashMap();
-        map.put("schema", "org.clothocad.model.NucSeq");
-        Object query = clothoObject.query(map);
-        JSONArray array = (JSONArray) query;
+        //Get all Annotations
+        JSONArray arrayAnnotations = (JSONArray) jsonNucSeq.get("annotations");
 
-        for (int i = 0; i < array.size(); i++) {
-                        
-            //Get NucSeq fields
-            JSONObject jsonNucSeq = array.getJSONObject(i);
-            String seq = jsonNucSeq.get("sequence").toString();
-            boolean circular = Boolean.parseBoolean(jsonNucSeq.get("isCircular").toString());
-            boolean ss = Boolean.parseBoolean(jsonNucSeq.get("isSingleStranded").toString());
-            
-            NucSeq ns = new NucSeq(seq, ss, circular);
-            ns.setClothoID(jsonNucSeq.get("id").toString());
-            ns.setName(jsonNucSeq.get("name").toString());
-            
-            //Get all Annotations
-            JSONArray arrayAnnotations = (JSONArray) jsonNucSeq.get("annotations");
-            
-            for (int j = 0; j < arrayAnnotations.size(); j++) {
+        for (int j = 0; j < arrayAnnotations.size(); j++) {
 
-                //Get annotation fields
-                JSONObject jsonAnnotation = arrayAnnotations.getJSONObject(j);
-                int startAn = Integer.valueOf(jsonAnnotation.get("start").toString());
-                int endAn = Integer.valueOf(jsonAnnotation.get("end").toString());
-                boolean fwdStAn = Boolean.parseBoolean(jsonAnnotation.get("isForwardStrand").toString());
-                
-                String fwdColorStAn = jsonAnnotation.get("forwardColor").toString();
-                String[] rgbfwdAn = fwdColorStAn.substring(15, fwdColorStAn.length() - 1).split(",");
-                Color fwdColorAn = new Color(Integer.valueOf(rgbfwdAn[0].substring(2)), Integer.valueOf(rgbfwdAn[1].substring(2)), Integer.valueOf(rgbfwdAn[2].substring(2)));
-                String revColorStAn = jsonAnnotation.get("reverseColor").toString();
-                String[] rgbrevAn = revColorStAn.substring(15, revColorStAn.length() - 1).split(",");
-                Color revColorAn = new Color(Integer.valueOf(rgbrevAn[0].substring(2)), Integer.valueOf(rgbrevAn[1].substring(2)), Integer.valueOf(rgbrevAn[2].substring(2)));
+            //Get annotation fields
+            JSONObject jsonAnnotation = arrayAnnotations.getJSONObject(j);
+            int startAn = Integer.valueOf(jsonAnnotation.get("start").toString());
+            int endAn = Integer.valueOf(jsonAnnotation.get("end").toString());
+            boolean fwdStAn = Boolean.parseBoolean(jsonAnnotation.get("isForwardStrand").toString());
 
-                //Get feature fields
-                Feature feature = new Feature();
-                JSONObject jsonFeature = (JSONObject) jsonAnnotation.get("feature");
-                String fwdColorSt = jsonFeature.get("forwardColor").toString();
-                String[] rgbfwd = fwdColorSt.substring(15, fwdColorSt.length() - 1).split(",");
-                Color fwdColor = new Color(Integer.valueOf(rgbfwd[0].substring(2)), Integer.valueOf(rgbfwd[1].substring(2)), Integer.valueOf(rgbfwd[2].substring(2)));
-                String revColorSt = jsonFeature.get("reverseColor").toString();
-                String[] rgbrev = revColorSt.substring(15, revColorSt.length() - 1).split(",");
-                Color revColor = new Color(Integer.valueOf(rgbrev[0].substring(2)), Integer.valueOf(rgbrev[1].substring(2)), Integer.valueOf(rgbrev[2].substring(2)));
-                String fname = jsonFeature.get("name").toString();
+            String fwdColorStAn = jsonAnnotation.get("forwardColor").toString();
+            String[] rgbfwdAn = fwdColorStAn.substring(15, fwdColorStAn.length() - 1).split(",");
+            Color fwdColorAn = new Color(Integer.valueOf(rgbfwdAn[0].substring(2)), Integer.valueOf(rgbfwdAn[1].substring(2)), Integer.valueOf(rgbfwdAn[2].substring(2)));
+            String revColorStAn = jsonAnnotation.get("reverseColor").toString();
+            String[] rgbrevAn = revColorStAn.substring(15, revColorStAn.length() - 1).split(",");
+            Color revColorAn = new Color(Integer.valueOf(rgbrevAn[0].substring(2)), Integer.valueOf(rgbrevAn[1].substring(2)), Integer.valueOf(rgbrevAn[2].substring(2)));
 
-                //Get sequence object and fields
-                JSONObject jsonSequence = (JSONObject) jsonFeature.get("sequence");
-                String fseq = jsonSequence.get("sequence").toString();
-                NucSeq fsequence = new NucSeq(fseq);
+            //Get feature fields
+            Feature feature = new Feature();
+            JSONObject jsonFeature = (JSONObject) jsonAnnotation.get("feature");
+            String fwdColorSt = jsonFeature.get("forwardColor").toString();
+            String[] rgbfwd = fwdColorSt.substring(15, fwdColorSt.length() - 1).split(",");
+            Color fwdColor = new Color(Integer.valueOf(rgbfwd[0].substring(2)), Integer.valueOf(rgbfwd[1].substring(2)), Integer.valueOf(rgbfwd[2].substring(2)));
+            String revColorSt = jsonFeature.get("reverseColor").toString();
+            String[] rgbrev = revColorSt.substring(15, revColorSt.length() - 1).split(",");
+            Color revColor = new Color(Integer.valueOf(rgbrev[0].substring(2)), Integer.valueOf(rgbrev[1].substring(2)), Integer.valueOf(rgbrev[2].substring(2)));
+            String fname = jsonFeature.get("name").toString();
 
-                feature.setForwardColor(fwdColor);
-                feature.setReverseColor(revColor);
-                feature.setName(fname);
-                feature.setSequence(fsequence);
-                
-                //Get person
-                Person author = new Person();
-                JSONObject jsonPerson = (JSONObject) jsonAnnotation.get("author");
-                author.setGivenName(jsonPerson.get("givenName").toString());
-                author.setSurName(jsonPerson.get("surName").toString());
-                author.setEmailAddress(jsonPerson.get("emailAddress").toString());
-                
-                //Assign all the annotation values to the object
-                Annotation annotation = new Annotation(feature, fsequence, fwdColorAn, revColorAn, startAn, endAn, author, fwdStAn, null);
-                ns.addAnnotation(annotation);
-            }
-            nucSeqs.add(ns);
+            //Get sequence object and fields
+            JSONObject jsonSequence = (JSONObject) jsonFeature.get("sequence");
+            String fseq = jsonSequence.get("sequence").toString();
+            NucSeq fsequence = new NucSeq(fseq);
+
+            feature.setForwardColor(fwdColor);
+            feature.setReverseColor(revColor);
+            feature.setName(fname);
+            feature.setSequence(fsequence);
+
+            //Get person
+            Person author = new Person();
+            JSONObject jsonPerson = (JSONObject) jsonAnnotation.get("author");
+            author.setGivenName(jsonPerson.get("givenName").toString());
+            author.setSurName(jsonPerson.get("surName").toString());
+            author.setEmailAddress(jsonPerson.get("emailAddress").toString());
+
+            //Assign all the annotation values to the object
+            Annotation annotation = new Annotation(feature, fsequence, fwdColorAn, revColorAn, startAn, endAn, author, fwdStAn, null);
+            ns.addAnnotation(annotation);
         }
 
-        conn.closeConnection();
-
-        return nucSeqs;
+        return ns;
     }
 
+    
+    //Get all Clotho Parts
+    public static Part getParts(JSONObject jsonPart) {
+
+        //Get Part fields
+        String name = jsonPart.get("name").toString();
+
+        //Get NucSeq fields
+        JSONObject jsonNucSeq = (JSONObject) jsonPart.get("sequence");
+        Part p = Part.generateBasic(name, "", getNucSeqs(jsonNucSeq), null, null);
+
+        return p;
+    }
     
     //Get all Clotho Parts
     public static HashSet<Part> queryParts() {
@@ -765,7 +811,7 @@ public class ClothoAdaptor {
         HashSet<Part> parts = new HashSet<>();
 
         Map map = new HashMap();
-        map.put("schema", "org.clothocad.model.PartREMOVETHIS");
+        map.put("schema", "org.cidarlab.phoenix.core.dom.Part");
         Object query = clothoObject.query(map);
         JSONArray array = (JSONArray) query;
 
@@ -777,14 +823,7 @@ public class ClothoAdaptor {
             
             //Get NucSeq fields
             JSONObject jsonNucSeq = (JSONObject) jsonPart.get("sequence");
-            String seq = jsonNucSeq.get("sequence").toString();
-            boolean circular = Boolean.parseBoolean(jsonNucSeq.get("isCircular").toString());
-            boolean ss = Boolean.parseBoolean(jsonNucSeq.get("isSingleStranded").toString());
-            
-            NucSeq ns = new NucSeq(seq, ss, circular);
-            ns.setName(jsonPart.get("name").toString());
-            
-            Part p = Part.generateBasic(name, "", seq, null, null);
+            Part p = Part.generateBasic(name, "", getNucSeqs(jsonNucSeq), null, null);
             p.setClothoID(jsonPart.get("id").toString());
             
             parts.add(p);
@@ -804,7 +843,7 @@ public class ClothoAdaptor {
         HashSet<Polynucleotide> polynucs = new HashSet<>();
 
         Map map = new HashMap();
-        map.put("schema", "org.clothocad.model.Polynucleotide");
+        map.put("schema", "org.cidarlab.phoenix.core.dom.Polynucleotide");
         Object query = clothoObject.query(map);
         JSONArray array = (JSONArray) query;
 
@@ -816,8 +855,7 @@ public class ClothoAdaptor {
             JSONObject jsonPolynuc = array.getJSONObject(i);
             pn.setName(jsonPolynuc.get("name").toString());
             pn.setAccession(jsonPolynuc.get("accession").toString());
-            pn.setDescription(jsonPolynuc.get("description").toString());
-            pn.setSequence(jsonPolynuc.get("sequence").toString());
+            pn.setDescription(jsonPolynuc.get("description").toString());            
             pn.setLinear(Boolean.parseBoolean(jsonPolynuc.get("isLinear").toString()));
             pn.setSingleStranded(Boolean.parseBoolean(jsonPolynuc.get("isSingleStranded").toString()));
             if(jsonPolynuc.containsKey("submissionDate"))
@@ -827,6 +865,15 @@ public class ClothoAdaptor {
                     pn.setSubmissionDate(new Date(jsonPolynuc.get("submissionDate").toString()));
                 }
             }
+            
+            //Imbedded objects
+            JSONObject jsonNucSeq = (JSONObject) jsonPolynuc.get("sequence");
+            pn.setSequence(getNucSeqs(jsonNucSeq));
+            JSONObject jsonPart = (JSONObject) jsonPolynuc.get("part");
+            pn.setPart(getParts(jsonPart));
+            JSONObject jsonVec = (JSONObject) jsonPolynuc.get("vector");
+            pn.setVector(getParts(jsonVec));
+            
             pn.setClothoID(jsonPolynuc.get("id").toString());
             polynucs.add(pn);
         }
@@ -898,5 +945,133 @@ public class ClothoAdaptor {
         conn.closeConnection();
         
         return cytometers;
+    }
+    
+    //Get assembly parameters
+    public static AssemblyParameters queryAssemblyParameters (String ID) {
+        
+        //Establish Clotho connection
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
+        
+        AssemblyParameters aP = new AssemblyParameters();
+        
+        Map map = new HashMap();
+        map.put("schema", "org.cidarlab.phoenix.core.dom.AssemblyParameters");
+        Object query = clothoObject.query(map);
+        JSONArray arrayAP = (JSONArray) query;
+        
+        for (int i = 0; i < arrayAP.size(); i++) {
+            
+            JSONObject jsonAP = arrayAP.getJSONObject(i);
+            AssemblyParameters candidate = new AssemblyParameters(jsonAP);
+            
+            if (ID != null) {
+                if (candidate.getClothoID().equalsIgnoreCase(ID)) {
+                    aP = candidate;
+                    break;
+                }
+            }
+        }
+        
+        conn.closeConnection();
+        
+        return aP;
+    }
+    
+    //Remove parts from a set with duplicate sequence
+    public static void removeDuplicateParts (HashSet<Polynucleotide> polyNucs) {
+        
+        HashMap<String, Part> sequencePartMap = new HashMap();
+        
+        //Put all existing parts in the Map
+        HashSet<Part> queryParts = queryParts();
+        for (Part p : queryParts) {
+            sequencePartMap.put(p.getSequence().getSeq(), p);
+        }
+        
+        //Only add parts with new sequence to the output
+        for (Polynucleotide pn : polyNucs) {
+
+            if (pn.getPart() != null && pn.getVector() != null) {
+
+                //Replace parts if necessary
+                Part part = pn.getPart();
+                String partSeq = part.getSequence().getSeq();
+                if (!sequencePartMap.containsKey(partSeq)) {
+                    sequencePartMap.put(partSeq, part);
+                } else {
+                    Part existing = sequencePartMap.get(partSeq);
+                    if (!existing.isVector()) {
+                        pn.setPart(existing);
+                    } else {
+                        sequencePartMap.put(partSeq, part);
+                    }
+                }
+
+                //Replace vectors if necessary
+                Part vector = pn.getVector();
+                String vecSeq = vector.getSequence().getSeq();
+                if (!sequencePartMap.containsKey(vecSeq)) {
+                    sequencePartMap.put(vecSeq, vector);
+                } else {
+                    Part existing = sequencePartMap.get(vecSeq);
+                    if (existing.isVector()) {
+                        pn.setVector(existing);
+                    } else {
+                        sequencePartMap.put(vecSeq, vector);
+                    }
+                }
+            }
+        }
+    }
+    
+    //Annotate part and vector of a polynucleotide
+    public static void annotateParts(HashSet<Feature> features, HashSet<Polynucleotide> polyNucs) {
+        
+        for (Polynucleotide pn : polyNucs) {      
+            if (pn.getPart() != null && pn.getVector() != null) {
+                annotate(features, pn.getPart().getSequence());
+                annotate(features, pn.getVector().getSequence());
+            }
+        }
+    }
+    
+    //Automatically annotate a NucSeq with a feature library
+    public static void annotate(HashSet<Feature> features, NucSeq ns) {
+        
+        Set<Annotation> annotations = new HashSet();
+        String seq = ns.getSeq();
+        for (Feature f : features) {
+            
+            //Form feature regex
+            String fSeq = f.getSequence().getSequence();
+            Color forwardColor = f.getForwardColor();
+            Color reverseColor = f.getReverseColor();
+            
+            //Forward sequence search
+            Pattern p = Pattern.compile(fSeq);
+            Matcher m = p.matcher(seq);
+            while (m.find()) {
+                int start = m.start();
+                int end = m.end();
+                Annotation a = new Annotation(f, ns, forwardColor, reverseColor, start, end, new Person(), true, null);
+                annotations.add(a);
+            }
+            
+            //Reverse sequence search
+            NucSeq fNucSeq = (NucSeq) f.getSequence();
+            String revfSeq = fNucSeq.revComp();
+            Pattern pR = Pattern.compile(revfSeq);
+            Matcher mR = pR.matcher(seq);
+            while (mR.find()) {
+                int start = mR.start();
+                int end = mR.end();
+                Annotation a = new Annotation(f, ns, reverseColor, forwardColor, start, end, new Person(), false, null);
+                annotations.add(a);
+            }
+            
+        }
+        ns.setAnnotations(annotations);
     }
 }

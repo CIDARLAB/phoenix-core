@@ -8,16 +8,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import org.cidarlab.phoenix.core.adaptors.AnalyticsAdaptor;
-import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
-import org.cidarlab.phoenix.core.adaptors.EugeneAdaptor;
-import org.cidarlab.phoenix.core.adaptors.OwlAdaptor;
-import org.cidarlab.phoenix.core.adaptors.RavenAdaptor;
-import org.cidarlab.phoenix.core.adaptors.iBioSimAdaptor;
+import org.cidarlab.phoenix.core.adaptors.*;
 import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.grammars.PhoenixGrammar;
-import org.cidarlab.phoenix.core.dom.Part;
 
 /**
  * This is the primary class for managing the workflow of tools within Phoenix
@@ -32,9 +26,9 @@ public class PhoenixController {
     public static void run (File featureLib, File plasmidLib, File structureFile, File fluorophoreSpectra, File cytometer, List<File> fcsFiles, File plasmidsCreated) throws Exception {
         
         //Import data from Benchling multi-part Genbank files to Clotho
-//        ClothoAdaptor.uploadSequences(plasmidLib, false);
 //        ClothoAdaptor.uploadSequences(featureLib, true);
 //        ClothoAdaptor.uploadFluorescenceSpectrums(fluorophoreSpectra);
+//        ClothoAdaptor.uploadSequences(plasmidLib, false);
         
         //LTL function decomposition
         
@@ -56,19 +50,15 @@ public class PhoenixController {
         List<Experiment> currentExperiments = new ArrayList<>();
                 
         //Repeat until all module graphs are fully assigned
-        while (!FeatureAssignment.isFullyAssigned(modules)) {
+//        while (!FeatureAssignment.isFullyAssigned(modules)) {
             
             //Determine experiments from current module assignment state
             currentExperiments.addAll(TestingStructures.createExperiments(modulesToTest));
             
-            //Convert modules to parts to get target parts
-            HashSet<Part> experimentParts = FeatureAssignment.getExperimentParts(currentExperiments);
+            //Create assembly and testing plans
             
-            //Create instruction files            
-            String assemblyInstructions = RavenAdaptor.generateAssemblyPlan(experimentParts);
-            System.out.println(assemblyInstructions);
-            String testingInstructions = PhoenixInstructions.generateTestingInstructions(currentExperiments);            
-            System.out.println(testingInstructions);
+            String assemblyInstructions = RavenAdaptor.generateAssemblyPlan(modulesToTest);
+            String testingInstructions = PhoenixInstructions.generateTestingInstructions(currentExperiments);
             
             //Import data from experiments
             ClothoAdaptor.uploadSequences(plasmidsCreated, false);
@@ -87,7 +77,7 @@ public class PhoenixController {
             
             //Update module graphs based upon simulations
             modulesToTest = FeatureAssignment.completeAssignmentSim(bestCombinedModules, modules);
-        }
+//        }
     }
     
 }

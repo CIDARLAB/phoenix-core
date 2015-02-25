@@ -69,8 +69,12 @@ public class BenchlingAdaptor {
                 polyNuc.setSingleStranded(true);
             }
 
-            //Basic information for polynucleotide
-            polyNuc.setSequence(seq.seqString());
+            //Get sequence
+            polyNuc.setSequence(getNucSeq(seq));
+            
+            //Get part and vector
+            getMoCloParts(polyNuc, seq);
+            
             polyNuc.setAccession(seq.getName() + "_Polynucleotide");
             
             if (seq.getAnnotation().containsProperty("COMMENT")) {
@@ -90,80 +94,111 @@ public class BenchlingAdaptor {
      * Creates a Part set from a Biojava sequence object
      * This will create basic parts out of all incoming plasmids
      */
-    public static HashSet<Part> getMoCloParts(File input) throws FileNotFoundException, NoSuchElementException, BioException {
+    public static HashSet<Part> getMoCloParts(Polynucleotide pn, Sequence seq) throws FileNotFoundException, NoSuchElementException, BioException {        
         
-        //Import file, begin reading
-        BufferedReader reader = new BufferedReader(new FileReader(input.getAbsolutePath()));
-        SequenceIterator readGenbank = SeqIOTools.readGenbank(reader);
-        HashSet<Part> partSet = new HashSet<Part>();
+        HashSet<Part> partSet = new HashSet<>();
 
-        //This loops for each entry in a multi-part GenBank file
-        while (readGenbank.hasNext()) {
+        //First we check for MoClo format... This is is a pretty hacky, inflexible way to do it
+        //If MoClo sites are found, all features in between sites used to determine parts
 
-            Sequence seq = readGenbank.nextSequence();
+        //Correct sequence for circular sequences by adding beginnning and end sequence
+        String seqString = seq.seqString();
+        String searchSeq = seq.seqString();
+        if (seq.getAnnotation().getProperty("DIVISION").equals("circular")) {
+            searchSeq = seqString.substring(seqString.length() - 5) + seqString;
+        }
+        int start;
+        int end;
 
-            //First we check for MoClo format... This is is a pretty hacky, inflexible way to do it
-            //If MoClo sites are found, all features in between sites used to determine parts
+        //Looks for flanking BbsI or BsaI sites if there are more than one, this method will break
+        //This also assumes there are either exactly two of each site, not both or a mix
+        boolean containsBBsI = searchSeq.contains(_BbsIfwd) && searchSeq.contains(_BbsIrev);
+        boolean containsBsaI = searchSeq.contains(_BsaIfwd) && searchSeq.contains(_BsaIrev);
 
-            //Correct sequence for circular sequences by adding beginnning and end sequence
-            String seqString = seq.seqString();
-            String searchSeq = seq.seqString();
-            if (seq.getAnnotation().getProperty("DIVISION").equals("circular")) {
-                searchSeq = seqString.substring(seqString.length() - 5) + seqString;
+        //
+        if (containsBBsI && !containsBsaI) {
+
+            //If there is only one and exactly one BbsI site in each direction does it conform to MoClo format
+            if (searchSeq.indexOf(_BbsIfwd) == searchSeq.lastIndexOf(_BbsIfwd) && searchSeq.indexOf(_BbsIrev) == searchSeq.lastIndexOf(_BbsIrev)) {
+                start = searchSeq.indexOf(_BbsIfwd) + 8 - 5;
+                end = searchSeq.indexOf(_BbsIrev) - 2 - 5;
+            } else {
+                return partSet;
             }
-            int start;
-            int end;
 
-            //Looks for flanking BbsI or BsaI sites if there are more than one, this method will break
-            //This also assumes there are either exactly two of each site, not both or a mix
-            if (searchSeq.contains(_BbsIfwd) && searchSeq.contains(_BbsIrev)) {
-                
-                //If there is only one and exactly one BbsI site in each direction does it conform to MoClo format
-                if (searchSeq.indexOf(_BbsIfwd) == searchSeq.lastIndexOf(_BbsIfwd) && searchSeq.indexOf(_BbsIrev) == searchSeq.lastIndexOf(_BbsIrev)) {
+        } else if (containsBsaI && !containsBBsI) {
+
+            //If there is only one and exactly one BbsI site in each direction does it conform to MoClo format
+            if (searchSeq.indexOf(_BsaIfwd) == searchSeq.lastIndexOf(_BsaIfwd) && searchSeq.indexOf(_BsaIrev) == searchSeq.lastIndexOf(_BsaIrev)) {
+                start = searchSeq.indexOf(_BsaIfwd) + 7 - 5;
+                end = searchSeq.indexOf(_BsaIrev) - 1 - 5;
+            } else {
+                return partSet;
+            }
+
+        } else if (containsBsaI && containsBBsI) {
+
+            //Destination vector edge case
+            if (searchSeq.indexOf(_BsaIfwd) == searchSeq.lastIndexOf(_BsaIfwd) && searchSeq.indexOf(_BsaIrev) == searchSeq.lastIndexOf(_BsaIrev) && searchSeq.indexOf(_BbsIfwd) == searchSeq.lastIndexOf(_BbsIfwd) && searchSeq.indexOf(_BbsIrev) == searchSeq.lastIndexOf(_BbsIrev)) {
+
+                //If the BsaI site is first, Level 2n edge case
+                if (searchSeq.indexOf(_BsaIfwd) > searchSeq.indexOf(_BbsIfwd)) {
+                    start = searchSeq.indexOf(_BsaIfwd) + 7 - 5;
+                    end = searchSeq.indexOf(_BsaIrev) - 1 - 5;
+
+                    //If the BbsI site is first, Level 2(n + 1) edge case
+                } else if (searchSeq.indexOf(_BsaIfwd) < searchSeq.indexOf(_BbsIfwd)) {
                     start = searchSeq.indexOf(_BbsIfwd) + 8 - 5;
                     end = searchSeq.indexOf(_BbsIrev) - 2 - 5;
                 } else {
-                    continue;
+                    return partSet;
                 }
 
-            } else if (searchSeq.contains(_BsaIfwd) && searchSeq.contains(_BsaIrev)) {
-
-                //If there is only one and exactly one BbsI site in each direction does it conform to MoClo format
-                if (searchSeq.indexOf(_BsaIfwd) == searchSeq.lastIndexOf(_BsaIfwd) && searchSeq.indexOf(_BsaIrev) == searchSeq.lastIndexOf(_BsaIrev)) {
-                    start = searchSeq.indexOf(_BsaIfwd) + 7 - 5;
-                    end = searchSeq.indexOf(_BsaIrev) - 1 - 5;
-                } else {
-                    continue;
-                }
-            
             } else {
-                continue;
+                return partSet;
             }
-
-            //Correct for indexing
-            if (end <= 0) {
-                end = end + seqString.length();
-            }
-            if (start >= seqString.length()) {
-                start = seqString.length() - start;
-            }
-
-            //If the part range goes through index 0, the start index will be after the end index, so the sequence needs to be adjusted
-            if (start > end) {
-                seqString = seqString.concat(seqString);
-                end = end + seqString.length();
-            }
-
-            String partSeq = seqString.substring(start, end + 1);
-            Part part;
-            if (seq.getAnnotation().containsProperty("COMMENT")) {
-                part = Part.generateBasic(seq.getName(), seq.getAnnotation().getProperty("COMMENT").toString(), partSeq, null, null);
-            } else {
-                part = Part.generateBasic(seq.getName(), "", partSeq, null, null);
-            }
-            partSet.add(part);
-
+        } else {
+            return partSet;
         }
+
+        //Correct for indexing
+        if (end <= 0) {
+            end = end + seqString.length();
+        }
+        if (start >= seqString.length()) {
+            start = seqString.length() - start;
+        }
+
+        //If the part range goes through index 0, the start index will be after the end index, so the sequence needs to be adjusted
+        String partSeq;
+        String vecSeq;
+        if (start > end) {
+            partSeq = seqString.substring(start, seqString.length()) + seqString.substring(0, end + 1);
+            vecSeq = partSeq.substring(partSeq.length() - 4) + seqString.substring(start, end) + partSeq.substring(0, 4);
+        } else {
+            partSeq = seqString.substring(start, end);
+            vecSeq = partSeq.substring(partSeq.length() - 4) + seqString.substring(end, seqString.length()) + seqString.substring(0, start) + partSeq.substring(0, 4);
+        }
+
+        //Make a new Part and Vector
+        Part part;
+        Part vector;
+        if (seq.getAnnotation().containsProperty("COMMENT")) {
+            part = Part.generateBasic(seq.getName() + "_part", seq.getAnnotation().getProperty("COMMENT").toString(), new NucSeq(partSeq), null, null);
+            vector = Part.generateBasic(seq.getName() + "_vector", "", new NucSeq(vecSeq), null, null);
+        } else {
+            part = Part.generateBasic(seq.getName() + "_part", "", new NucSeq(partSeq), null, null);
+            vector = Part.generateBasic(seq.getName() + "_vector", "", new NucSeq(vecSeq), null, null);
+        }
+
+        vector.setVector(true);
+
+        partSet.add(part);
+        partSet.add(vector);
+
+        pn.setPart(part);
+        pn.setVector(vector);
+        
         return partSet;
     }
     
@@ -224,7 +259,7 @@ public class BenchlingAdaptor {
                 }
 
                 //Get rest of feature information and apply it to the features
-                NucSeq nucSeq = new NucSeq(seqString.substring(startFeat, endFeat + 1), ss, linearity);
+                NucSeq nucSeq = new NucSeq(seqString.substring(startFeat - 1, endFeat), ss, linearity);
                 
                 Color fwd = null;
                 Color rev = null;
@@ -436,17 +471,17 @@ public class BenchlingAdaptor {
     /*
      * Creates an annotation set
      */
-    public static HashSet<NucSeq> getNucSeq(File input) throws FileNotFoundException, NoSuchElementException, BioException {
+    public static NucSeq getNucSeq(Sequence seq) throws FileNotFoundException, NoSuchElementException, BioException {
 
         //Import file, begin reading
-        BufferedReader reader = new BufferedReader(new FileReader(input.getAbsolutePath()));
-        SequenceIterator readGenbank = SeqIOTools.readGenbank(reader);
-        HashSet<NucSeq> nucSeqs = new HashSet<>();
-
-        //This loops for each entry in a multi-part GenBank file
-        while (readGenbank.hasNext()) {
+//        BufferedReader reader = new BufferedReader(new FileReader(input.getAbsolutePath()));
+//        SequenceIterator readGenbank = SeqIOTools.readGenbank(reader);
+//        HashSet<NucSeq> nucSeqs = new HashSet<>();
+//
+//        //This loops for each entry in a multi-part GenBank file
+//        while (readGenbank.hasNext()) {
             
-            Sequence seq = readGenbank.nextSequence();
+//            Sequence seq = readGenbank.nextSequence();
 
             //Check for linearity
             boolean linearity = true;
@@ -477,10 +512,10 @@ public class BenchlingAdaptor {
                 nucSeq.addAnnotation(ann);
             }
             
-            nucSeqs.add(nucSeq);
-        }
+//            nucSeqs.add(nucSeq);
+//        }
         
-        return nucSeqs;
+        return nucSeq;
     }
     
     private static String _BbsIfwd = "gaagac";

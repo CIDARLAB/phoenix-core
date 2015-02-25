@@ -23,8 +23,6 @@
 
 package org.cidarlab.phoenix.core.dom;
 
-import org.cidarlab.phoenix.core.dom.Part;
-import org.cidarlab.phoenix.core.dom.NucSeq;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.util.List;
 

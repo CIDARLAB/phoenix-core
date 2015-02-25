@@ -44,4 +44,9 @@ public class Polynucleotide extends ObjBase implements Serializable {
     @Setter
     @Getter
     private Part vector;
+    
+    //Destination vector notation
+    @Setter
+    @Getter
+    private boolean isDV;
 }

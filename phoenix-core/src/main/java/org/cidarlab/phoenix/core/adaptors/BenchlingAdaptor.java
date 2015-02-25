@@ -68,6 +68,20 @@ public class BenchlingAdaptor {
             } else {
                 polyNuc.setSingleStranded(true);
             }
+            
+            //Determine if this is a regular plasmid with a part or a desination vector
+            if (seq.getAnnotation().containsProperty("KEYWORDS")) {
+                String k = seq.getAnnotation().getProperty("KEYWORDS").toString();
+                String[] tokens = k.split("\"");
+                for (String token : tokens) {
+                    String[] keywords = token.split(":");
+                    for (String key : keywords) {
+                        if (key.equalsIgnoreCase("vector") || key.equalsIgnoreCase("destination vector")) {
+                            polyNuc.setDV(true);
+                        }
+                    }
+                }
+            }
 
             //Get sequence
             polyNuc.setSequence(getNucSeq(seq));
@@ -473,48 +487,36 @@ public class BenchlingAdaptor {
      */
     public static NucSeq getNucSeq(Sequence seq) throws FileNotFoundException, NoSuchElementException, BioException {
 
-        //Import file, begin reading
-//        BufferedReader reader = new BufferedReader(new FileReader(input.getAbsolutePath()));
-//        SequenceIterator readGenbank = SeqIOTools.readGenbank(reader);
-//        HashSet<NucSeq> nucSeqs = new HashSet<>();
-//
-//        //This loops for each entry in a multi-part GenBank file
-//        while (readGenbank.hasNext()) {
-            
-//            Sequence seq = readGenbank.nextSequence();
-
-            //Check for linearity
-            boolean linearity = true;
-            if (seq.getAnnotation().containsProperty("DIVISION")) {
-                if (seq.getAnnotation().getProperty("DIVISION").equals("circular")) {
-                    linearity = false;
-                } else {
-                    linearity = true;
-                }
+        //Check for linearity
+        boolean linearity = true;
+        if (seq.getAnnotation().containsProperty("DIVISION")) {
+            if (seq.getAnnotation().getProperty("DIVISION").equals("circular")) {
+                linearity = false;
+            } else {
+                linearity = true;
             }
+        }
 
-            //Check for strandedness
-            boolean ss = true;
-            if (seq.getAnnotation().containsProperty("CIRCULAR")) {
-                if (seq.getAnnotation().getProperty("CIRCULAR").equals("ds-DNA")) {
-                    ss = false;
-                } else {
-                    ss = true;
-                }
+        //Check for strandedness
+        boolean ss = true;
+        if (seq.getAnnotation().containsProperty("CIRCULAR")) {
+            if (seq.getAnnotation().getProperty("CIRCULAR").equals("ds-DNA")) {
+                ss = false;
+            } else {
+                ss = true;
             }
+        }
 
-            //Get rest of feature information and apply it to the features
-            String seqString = seq.seqString();
-            NucSeq nucSeq = new NucSeq(seqString, ss, linearity);
-            nucSeq.setName(seq.getName() + "_NucSeq");
-            HashSet<Annotation> annotations = getAnnotations(seq);
-            for (Annotation ann : annotations) {
-                nucSeq.addAnnotation(ann);
-            }
-            
-//            nucSeqs.add(nucSeq);
-//        }
-        
+        //Get rest of feature information and apply it to the features
+        String seqString = seq.seqString();
+        NucSeq nucSeq = new NucSeq(seqString, ss, linearity);
+        nucSeq.setName(seq.getName() + "_NucSeq");
+        HashSet<Annotation> annotations = getAnnotations(seq);
+        for (Annotation ann : annotations) {
+            nucSeq.addAnnotation(ann);
+        }
+
+
         return nucSeq;
     }
     

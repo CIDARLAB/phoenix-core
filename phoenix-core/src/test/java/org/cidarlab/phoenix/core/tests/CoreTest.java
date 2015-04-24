@@ -49,8 +49,8 @@ public class CoreTest {
     public void coreTest() throws Exception {
         
         File featureLib = new File(getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_feature_lib.gb");
-        File plasmidLib = new File(getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_part_lib.gb");
-        File structureFile = new File(getFilepath() + "/src/main/resources/miniEugeneFiles/one-nor-gate.eug");
+        File plasmidLib = new File(getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_plasmid_lib.gb");
+        File structureFile = new File(getFilepath() + "/src/main/resources/miniEugeneFiles/inverter.eug");
         File fluorophoreSpectra = new File(getFilepath() + "/src/main/resources/FluorescentProteins/fp_spectra.csv");
         PhoenixController.run(featureLib, plasmidLib, structureFile, fluorophoreSpectra, null, null, null);
     }

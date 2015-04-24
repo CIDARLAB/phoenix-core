@@ -93,7 +93,7 @@ public class ClothoTest {
     @Test
     public void testPlasmidLibraryBPOnlyUpload() {
         
-        String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_plasmid_lib_bp_only.gb";
+        String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_plasmid_lib.gb";
         File toLoad = new File(filePath);
         try {
             ClothoAdaptor.uploadSequences(toLoad, false);

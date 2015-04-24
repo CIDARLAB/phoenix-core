@@ -91,16 +91,21 @@ public class RavenAdaptor {
         String moCloRO = moCloOHs.get(partSeq.substring(0, 4).toLowerCase());
         String name = pPart.getName();
         
+        ArrayList<String> typeP = new ArrayList();
+        typeP.add("plasmid");
+        ArrayList<String> typeC = new ArrayList();
+        typeC.add("composite");
+        
         org.cidarlab.raven.datastructures.Part ravenPart;
         org.cidarlab.raven.datastructures.Part newPlasmid;
         ArrayList<org.cidarlab.raven.datastructures.Part> composition = new ArrayList();
         ArrayList<String> directions = new ArrayList();
         
+        //Make Raven basic parts if only one annotation
         if (annotations.size() == 1) {
-            
-            
+                        
             String basicPartName = "";
-            String bpDirection = "+";
+            String bpDirection = "+";            
             String sequence = "";
             String type = "";
             
@@ -121,24 +126,20 @@ public class RavenAdaptor {
                 }
             }            
             
-            ravenPart = org.cidarlab.raven.datastructures.Part.generateBasic(basicPartName, sequence, null);
-            ravenPart.addSearchTag("Type: " + type);
-            ravenPart.addSearchTag("Direction: [" + bpDirection + "]");
-            ravenPart.addSearchTag("LO: " + moCloLO);
-            ravenPart.addSearchTag("RO: " + moCloRO);
-            ravenPart.addSearchTag("Scars: []");
+            ArrayList<String> bpDirectionL = new ArrayList();
+            bpDirectionL.add(bpDirection);
+            ArrayList<String> typeL = new ArrayList();
+            typeL.add(type);
+            
+            ravenPart = org.cidarlab.raven.datastructures.Part.generateBasic(basicPartName, sequence, null, new ArrayList(), bpDirectionL, moCloLO, moCloRO, typeL);
             ravenPart.setTransientStatus(false);
             libParts.add(ravenPart);
             
             composition.add(ravenPart);
-            newPlasmid = org.cidarlab.raven.datastructures.Part.generateBasic(basicPartName, sequence, composition);
-            newPlasmid.addSearchTag("Direction: [" + bpDirection + "]");
-            newPlasmid.addSearchTag("LO: " + moCloLO);
-            newPlasmid.addSearchTag("RO: " + moCloRO);
-            newPlasmid.addSearchTag("Type: plasmid");
-            newPlasmid.addSearchTag("Scars: []");
+            newPlasmid = org.cidarlab.raven.datastructures.Part.generateBasic(basicPartName, sequence, composition, new ArrayList(), bpDirectionL, moCloLO, moCloRO, typeP);
             newPlasmid.setTransientStatus(false);
             
+        //Make Raven composite parts based on annotations
         } else {
             
             //Organize annotations by start order
@@ -173,21 +174,13 @@ public class RavenAdaptor {
                 }
             }
             
-            ravenPart = org.cidarlab.raven.datastructures.Part.generateComposite(composition, new ArrayList(), name);
-            ravenPart.addSearchTag("Direction: " + directions);
-            ravenPart.addSearchTag("LO: " + moCloLO);
-            ravenPart.addSearchTag("RO: " + moCloRO);
-            ravenPart.addSearchTag("Type: composite");
-            ravenPart.addSearchTag("Scars: []");
+            //Composite version
+            ravenPart = org.cidarlab.raven.datastructures.Part.generateComposite(name, composition, new ArrayList(), new ArrayList(), directions, moCloLO, moCloRO, typeC);
             ravenPart.setTransientStatus(false);
             libParts.add(ravenPart);
             
-            newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite(composition, new ArrayList(), name);
-            newPlasmid.addSearchTag("Direction: " + directions);
-            newPlasmid.addSearchTag("LO: " + moCloLO);
-            newPlasmid.addSearchTag("RO: " + moCloRO);
-            newPlasmid.addSearchTag("Type: plasmid");
-            newPlasmid.addSearchTag("Scars: []");
+            //Plasmid version
+            newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite(name, composition, new ArrayList(),  new ArrayList(), directions, moCloLO, moCloRO, typeP);
             newPlasmid.setTransientStatus(false);
         }       
         
@@ -220,21 +213,10 @@ public class RavenAdaptor {
          
         Vector newVector;
         if (level == null) {
-            newVector = Vector.generateVector(pPart.getName(), pPart.getSequence().getSeq());
-            newVector.addSearchTag("LO: ");
-            newVector.addSearchTag("RO: ");
-            newVector.addSearchTag("Type: vector");
-            newVector.addSearchTag("Resistance: " + resistance);
+            newVector = Vector.generateVector(pPart.getName(), pPart.getSequence().getSeq(), "", "", "vector", "", "", resistance, -1);
             newVector.setTransientStatus(false);
         } else {
-            newVector = Vector.generateVector(pPart.getName(), pPart.getSequence().getSeq());
-            newVector.addSearchTag("LO: " + moCloLO);
-            newVector.addSearchTag("RO: " + moCloRO);
-            newVector.addSearchTag("Level: " + level);
-            newVector.addSearchTag("Type: destination vector");
-            newVector.addSearchTag("Resistance: " + resistance);
-            newVector.addSearchTag("Vector: " + pPart.getName());
-            newVector.addSearchTag("Composition: lacZ|" + moCloLO + "|" + moCloRO + "|+");
+            newVector = Vector.generateVector(pPart.getName(), pPart.getSequence().getSeq(), moCloLO, moCloRO, "destination vector", pPart.getName(), "lacZ|" + moCloLO + "|" + moCloRO + "|+", resistance, -1);
             newVector.setTransientStatus(false);
         }
 
@@ -253,6 +235,7 @@ public class RavenAdaptor {
             ArrayList<String> directions = new ArrayList();
             ArrayList<String> aDir = new ArrayList();
             
+            //Make target plasmids by either finding existing parts or creating new ones
             for (PrimitiveModule pm : m.getSubmodules()) {
                 
                 //Determine direction
@@ -264,6 +247,7 @@ public class RavenAdaptor {
                     aDir.add("-");
                 }
                 
+                //Regular parts with sequences
                 if (!pm.getModuleFeatures().get(0).getSequence().getSequence().isEmpty()) {
                     for (Feature f : pm.getModuleFeatures()) {
                         String fName = f.getName().replaceAll(".ref", "");
@@ -277,26 +261,23 @@ public class RavenAdaptor {
                             }
                         }
                     }
+                    
+                //Multiplex parts
                 } else {
                     
                     String type = pm.getPrimitive().getName() + "_multiplex";
+                    ArrayList<String> typeM = new ArrayList();
+                    typeM.add(type);                    
+                    
                     String sequence = "";
-                    org.cidarlab.raven.datastructures.Part newBasicPart = org.cidarlab.raven.datastructures.Part.generateBasic(pm.getPrimitive().getName(), sequence, null);
-                    newBasicPart.addSearchTag("Type: " + type);
-                    newBasicPart.addSearchTag("Direction: " + aDir);
-                    newBasicPart.addSearchTag("LO: ");
-                    newBasicPart.addSearchTag("RO: ");
-                    newBasicPart.addSearchTag("Scars: []");
+                    org.cidarlab.raven.datastructures.Part newBasicPart = org.cidarlab.raven.datastructures.Part.generateBasic(pm.getPrimitive().getName(), sequence, null, new ArrayList(), aDir, "", "", typeM);
                     newBasicPart.setTransientStatus(false);
                 }
             }  
             
-            newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite(composition, new ArrayList(), "");
-            newPlasmid.addSearchTag("Direction: " + directions);
-            newPlasmid.addSearchTag("LO: ");
-            newPlasmid.addSearchTag("RO: ");
-            newPlasmid.addSearchTag("Type: plasmid");
-            newPlasmid.addSearchTag("Scars: []");
+            ArrayList<String> typeP = new ArrayList();
+            typeP.add("plasmid");
+            newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite("", composition, new ArrayList(), new ArrayList(), directions, "", "", typeP);
             newPlasmid.setTransientStatus(false);   
             
             ravenParts.add(newPlasmid);
@@ -309,7 +290,7 @@ public class RavenAdaptor {
         
         HashSet<org.cidarlab.raven.datastructures.Part> ravenParts = new HashSet();
         
-        //For each module, make a Raven part
+        //For each module, make a Raven blank basic part
         for (Feature f : features) {            
             if (!f.getRole().equals(Feature.FeatureRole.VECTOR)) {
                 
@@ -317,20 +298,19 @@ public class RavenAdaptor {
                 String type = f.getRole().toString().toLowerCase();
                 String sequence = f.getSequence().getSequence();
                 
-                org.cidarlab.raven.datastructures.Part newBasicPart = org.cidarlab.raven.datastructures.Part.generateBasic(name, sequence, null);
-                newBasicPart.addSearchTag("LO: ");
-                newBasicPart.addSearchTag("RO: ");
-                newBasicPart.addSearchTag("Type: " + type);
-                newBasicPart.addSearchTag("Direction: [+]");
-                newBasicPart.addSearchTag("Scars: []");
+                ArrayList<String> dirF = new ArrayList();
+                dirF.add("+");
+                ArrayList<String> dirR = new ArrayList();
+                dirR.add("-");
+                ArrayList<String> typeL = new ArrayList();
+                typeL.add(type);
+                
+                //Forward version
+                org.cidarlab.raven.datastructures.Part newBasicPart = org.cidarlab.raven.datastructures.Part.generateBasic(name, sequence, null, new ArrayList(), dirF, "", "", typeL);
                 newBasicPart.setTransientStatus(false);
 
-                org.cidarlab.raven.datastructures.Part newReverseBasicPart = org.cidarlab.raven.datastructures.Part.generateBasic(name, PrimerDesign.reverseComplement(sequence), null);
-                newReverseBasicPart.addSearchTag("LO: ");
-                newReverseBasicPart.addSearchTag("RO: ");
-                newReverseBasicPart.addSearchTag("Type: " + type);
-                newReverseBasicPart.addSearchTag("Direction: [-]");
-                newReverseBasicPart.addSearchTag("Scars: []");
+                //Reverse version
+                org.cidarlab.raven.datastructures.Part newReverseBasicPart = org.cidarlab.raven.datastructures.Part.generateBasic(name, PrimerDesign.reverseComplement(sequence), null, new ArrayList(), dirR, "", "", typeL);
                 newReverseBasicPart.setTransientStatus(false);
                 
                 ravenParts.add(newBasicPart);

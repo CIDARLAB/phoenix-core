@@ -54,4 +54,9 @@ public class Polynucleotide extends ObjBase implements Serializable {
     @Setter
     @Getter
     private int level;
+    
+    //Parts of which this polynucleotide is made
+    @Setter
+    @Getter
+    private List<Part> parts;
 }

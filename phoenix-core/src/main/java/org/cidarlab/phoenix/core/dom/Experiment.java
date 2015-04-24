@@ -5,6 +5,7 @@
 package org.cidarlab.phoenix.core.dom;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,54 +17,69 @@ import lombok.Setter;
  */
 public class Experiment {
     
-    public Experiment() {
+    //No args constructor
+    public Experiment() {  
+    }
+    
+    //Convert an experiment list to an output csv
+    public void createExperimentFile(List<Experiment> experiments) {
         
     }
     
-    //Module to be measured
-    @Setter
-    @Getter
-    private Module measurementModule;
+    //Read an experiment csv file and create experiment objects
+    public List<Experiment> parseExperimentFile() {
+        return null;
+    }
     
-    //Modules for controls
+    //Module measured
     @Setter
     @Getter
-    private List<Module> controlModules;
+    private Module module;
     
     //Part measured
     @Setter
     @Getter
-    private Part measurementPart;        
+    private Part part;
     
-    //Parts for controls
+    //Environmental Conditions
     @Setter
     @Getter
-    private List<Part> controlPart;
+    private Medium environment;
+    
+    //If this file is a special type of control
+    @Setter
+    @Getter
+    private boolean isControl;
     
     //Polynucleotide measured
     @Setter
     @Getter
-    private Polynucleotide measurementPolynucleotide;
-    
-    //Polynucleotide measured
-    @Setter
-    @Getter
-    private List<Polynucleotide> contPolynucleotides;
+    private Polynucleotide polynucleotide;
     
     //Test strain
     @Setter
     @Getter
     private Strain strain;
     
+    //Time of experiment (for dynamic measurements)
+    @Setter
+    @Getter
+    private Date time;
+    
     //Experiment type
     @Setter
     @Getter
     private ExperimentType type;
     
+    //Control type
+    @Setter
+    @Getter
+    private ControlType controlType;
+    
     //fcs files
     @Setter
     @Getter
-    private List<File> fcsFiles;
+    private File fcsFile;
     
     //Experiment types
     public enum ExperimentType {
@@ -71,5 +87,12 @@ public class Experiment {
         DEGRADATION,
         REGULATION,
         SMALL_MOLECULE;
+    }
+    
+    //Experiment types
+    public enum ControlType {
+        BEADS,
+        NEGATIVE,
+        FLUORESCENT;
     }
 }

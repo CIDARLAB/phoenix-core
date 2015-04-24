@@ -1,0 +1,41 @@
+Cytometer Configuration
+Software Version,BD FACSDiva 7.0
+Export Time,03/20/15 02:10:50 PM
+User,
+Cytometer,LSRFortessa
+Serial Number,1
+Configuration Name,"BASE BU SORP 3B 4V 2BG 2R 5YG 11_2014"
+Folder Name,Customer Configs
+Comments,
+Window Extension,10
+Laser Name,Type,Wavelength,Power,Detector Array,Detector,Channel,Mirror,Filter,Parameter,Fsc Channel,Reference,Position
+Blue,Blue,488,200,Octagon,A,4,685 LP,695/40 BP,"PerCP-Cy5-5",0,Y,1
+,,,,,B,3,555 LP,582/15 BP,"PE",,,
+,,,,,C,2,505 LP,530/30 BP,"FITC",,,
+,,,,,D,1,,488/10 BP,"SSC",,,
+,,,,,E,18,,,,,,
+,,,,,F,,,,,,,
+,,,,,G,,,,,,,
+,,,,,H,,,,,,,
+Red,Red,637,150,Trigon,A,17,685 LP,730/45 BP,"Alexa_Fluor_700",,,4
+,,,,,B,16,,670/30 BP,"APC",,,
+,,,,,C,,,,,,,
+Violet,Custom,405,100,Octagon,A,8,600 LP,610/20 BP,"LSS_mOrange",,,2
+,,,,,B,7,535 LP,540/30 BP,"Pacific_Orange",,,
+,,,,,C,6,505 LP,525/50 BP,"AmCyan",,,
+,,,,,D,5,,450/50 BP,"Pacific_Blue",,,
+,,,,,E,,,,,,,
+,,,,,F,,,,,,,
+,,,,,G,,,,,,,
+,,,,,H,,,,,,,
+Blue Green,Custom,514,100,Trigon,A,15,525 LP,540/15 BP,"mOrange",,,3
+,,,,,B,14,,508/6 BP,"YFP",,,
+,,,,,C,,,,,,,
+YelGreen,Custom,561,100,Octagon,A,13,750 LP,780/60 BP,"PE-Cy7",,,5
+,,,,,B,12,685 LP,695/40 BP,"PE-Cy5.5",,,
+,,,,,C,11,635 LP,670/30 BP,"PE-Cy5",,,
+,,,,,D,10,595 LP,610/20 BP,"PE-Texas_Red",,,
+,,,,,E,9,,582/15 BP,"PE-YG",,,
+,,,,,F,,,,,,,
+,,,,,G,,,,,,,
+,,,,,H,,,,,,,

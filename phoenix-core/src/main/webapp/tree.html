@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style type="text/css">
+  
+	.node {
+    cursor: pointer;
+  }
+
+  .overlay{
+      background-color:#EEE;
+      width: 1170px;
+      height: 630px;
+  }
+   
+  .node circle {
+    fill: #fff;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+  }
+   
+  .node text {
+    font-size:10px; 
+    font-family:sans-serif;
+  }
+   
+  .link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 1.5px;
+  }
+
+  .templink {
+    fill: none;
+    stroke: red;
+    stroke-width: 3px;
+  }
+
+  .ghostCircle.show{
+      display:block;
+  }
+
+  .ghostCircle, .activeDrag .ghostCircle{
+       display: none;
+  }
+
+</style>
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="dndTree.js"></script>
+
+<head>
+  <title>Phoenix</title>
+  <link rel="shortcut icon" href="images/logo-Owl-Color_cropped.ico">
+  <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+  <link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+</head>
+
+<body class="container">
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner"> 
+                <div class="container">
+                    <a class="brand" href="index.html">Phoenix</a>
+                    <ul class="nav">
+                        <li><a href="dynamicForm.html">Analyze</a></li>
+                        <li><a href="dynamicForm2.html">Datasheets</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="tree.html">Tree</a></li>
+                    </ul> 
+                    <div id="loginArea" class="navbar-form pull-right">
+                        <input id="login_username" type="text" class="span2" placeholder="Login">
+                        <input id="login_password" type="password" class="span2" placeholder="Password">
+                        <input id="btnLogin" type="submit" value="Login" class="btn"/>
+                        <div id="loginError"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div id="tree-container" style="width:1100px;height:630px;margin-top:80px"></div>
+</body>
+</html>

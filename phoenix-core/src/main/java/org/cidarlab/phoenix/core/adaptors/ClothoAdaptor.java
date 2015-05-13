@@ -291,6 +291,8 @@ public class ClothoAdaptor {
         Clotho clothoObject = new Clotho(conn);
         for (Feature f : features) {
 
+            System.out.println("Name: " + f.getName());
+            
             //Feature schema
             Map createFeature = new HashMap();
             createFeature.put("schema", "org.cidarlab.phoenix.core.dom.Feature");

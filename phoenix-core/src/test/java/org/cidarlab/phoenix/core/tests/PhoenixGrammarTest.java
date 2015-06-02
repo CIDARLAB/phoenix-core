@@ -28,11 +28,11 @@ public class PhoenixGrammarTest {
         List<Grammar> grammars = PhoenixGrammar.instantiateGrammar(phoenixGrammarDef);
     }
     
-//    //Main testing class
-//    public static void main(String[] args) {
-//        
-//        PhoenixGrammarTest ph = new PhoenixGrammarTest();
-//        ph.phoenixGrammar();
-//    }
+    //Main testing class
+    public static void main(String[] args) {
+        
+        PhoenixGrammarTest ph = new PhoenixGrammarTest();
+        ph.phoenixGrammar();
+    }
     
 }

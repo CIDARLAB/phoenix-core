@@ -117,13 +117,13 @@ public class BenchlingTest {
             Logger.getLogger(BenchlingTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-//    
-//    public BenchlingTest() {
-//        
-//    }
-//    
-//    public static void main(String[] args) {
-//        BenchlingTest t = new BenchlingTest();
-//        t.testFluorophoreUpload();
-//    }
+    
+    public BenchlingTest() {
+        
+    }
+    
+    public static void main(String[] args) {
+        BenchlingTest t = new BenchlingTest();
+        t.testFluorophoreUpload();
+    }
 }

@@ -129,6 +129,7 @@ public class BenchlingAdaptor {
         //This also assumes there are either exactly two of each site, not both or a mix
         boolean containsBBsI = searchSeq.contains(_BbsIfwd) && searchSeq.contains(_BbsIrev);
         boolean containsBsaI = searchSeq.contains(_BsaIfwd) && searchSeq.contains(_BsaIrev);
+        boolean fwd = true;
 
         if (containsBBsI && !containsBsaI) {
 
@@ -187,6 +188,7 @@ public class BenchlingAdaptor {
             start = seqString.length() - start;
         }
 
+        //Get part sequences
         //If the part range goes through index 0, the start index will be after the end index, so the sequence needs to be adjusted
         String partSeq;
         String vecSeq;

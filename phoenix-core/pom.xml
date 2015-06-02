@@ -3,6 +3,7 @@
   <groupId>phoenix-core</groupId>
   <artifactId>phoenix-core</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
   <build>
     <plugins>
       <plugin>
@@ -13,6 +14,20 @@
           <target>1.7</target>
         </configuration>
       </plugin>
+      
+<!--      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>1.6</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>-->
     </plugins>
   </build>
   
@@ -268,5 +283,7 @@
           <url>http://www.biojava.org/download/maven/</url>			
       </repository>
   </repositories>
-    
+    <properties>
+        <netbeans.hint.deploy.server>gfv3ee6</netbeans.hint.deploy.server>
+    </properties>
 </project>

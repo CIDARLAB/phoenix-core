@@ -1,7 +1,7 @@
 LOCUS       araC_CD                 2978 bp ds-DNA     circular     07-APR-2015
 DEFINITION  .
-KEYWORDS    "backbone:pSB1C3" "part-subtype:Activator" "cloned-by:EA"          
-            "antibiotic:Chloramphenicol" "seq-verified:Yes" "part-type:CDS"
+KEYWORDS    "backbone:pSB1C3" "part-type:CDS" "part-subtype:Activator"         
+            "cloned-by:EA" "seq-verified:Yes" "antibiotic:Chloramphenicol"
 COMMENT     MoClo Level 0 basic part: CDS                                      
 FEATURES             Location/Qualifiers
      misc_feature    1154..1767
@@ -70,9 +70,9 @@ ORIGIN
 //
 LOCUS       araC_CI                 2978 bp ds-DNA     circular     16-MAR-2015
 DEFINITION  .
-KEYWORDS    "glycerol:IG-1-25" "backbone:pSB1C3" "part-subtype:Activator"      
-            "antibiotic:Chloramphenicol" "seq-verified:Yes" "part-type:CDS"
-            "cloned-by:YA"
+KEYWORDS    "part-subtype:Activator" "part-type:CDS" "seq-verified:Yes"        
+            "backbone:pSB1C3" "cloned-by:YA" "glycerol:IG-1-25"
+            "antibiotic:Chloramphenicol"
 COMMENT     MoClo Level 0 basic part: CDS                                      
 FEATURES             Location/Qualifiers
      misc_feature    complement(2054..2713)
@@ -141,19 +141,19 @@ ORIGIN
 //
 LOCUS       araC_CM                 2991 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "part-subtype:Activator" "glycerol:EA-1-9"                         
-            "antibiotic:Chloramphenicol" "part-type:CDS" "backbone:pSB1C3"
-            "seq-verified:Yes" "cloned-by:EA"
+KEYWORDS    "part-subtype:Activator" "seq-verified:Yes" "backbone:pSB1C3"      
+            "cloned-by:EA" "antibiotic:Chloramphenicol" "glycerol:EA-1-9"
+            "part-type:CDS"
 COMMENT     MoClo Level 0 basic part: CDS                                      
 FEATURES             Location/Qualifiers
-     misc_feature    5..880
-                     /label="araC"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
      misc_feature    1167..1780
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    5..880
+                     /label="araC"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
      misc_feature    complement(2067..2726)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
@@ -212,15 +212,11 @@ ORIGIN
 //
 LOCUS       betI_CD                 2687 bp ds-DNA     circular     16-MAR-2015
 DEFINITION  .
-KEYWORDS    "backbone:pSB1C3" "seq-verified:Yes" "cloned-by:KML"               
-            "glycerol:IG-1-18" "fusion-sites:CD" "antibiotic:Chloramphenicol"
+KEYWORDS    "cloned-by:KML" "seq-verified:Yes" "antibiotic:Chloramphenicol"    
+            "backbone:pSB1C3" "fusion-sites:CD" "glycerol:IG-1-18"
             "part-subtype:Repressor" "part-type:CDS"
 COMMENT     MoClo Level 0 basic part: CDS                                      
 FEATURES             Location/Qualifiers
-     misc_feature    complement(1160..1819)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    2089..2673
                      /label="betI"
                      /ApEinfo_revcolor=#ffef86
@@ -229,6 +225,10 @@ FEATURES             Location/Qualifiers
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    complement(1160..1819)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
 ORIGIN
         1 tactagtagc ggccgctgca gtccggcaaa aaagggcaag gtgtcaccac cctgcccttt
        61 ttctttaaaa ccgaaaagat tacttcgcgt tatgcaggct tcctcgctca ctgactcgct
@@ -278,23 +278,23 @@ ORIGIN
 //
 LOCUS       betI_CM                 2700 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "antibiotic:Chloramphenicol" "part-subtype:Repressor"              
-            "glycerol:EA-1-12" "backbone:pSB1C3" "seq-verified:Yes"
-            "fusion-sites:CM" "cloned-by:EA" "part-type:CDS"
+KEYWORDS    "backbone:pSB1C3" "part-type:CDS" "cloned-by:EA" "seq-verified:Yes"
+            "antibiotic:Chloramphenicol" "fusion-sites:CM" "glycerol:EA-1-12"
+            "part-subtype:Repressor"
 COMMENT     MoClo Level 0 basic part: CDS                                      
 FEATURES             Location/Qualifiers
-     misc_feature    260..873
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    complement(1160..1819)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    2089..2673
                      /label="betI"
                      /ApEinfo_revcolor=#ffef86
                      /ApEinfo_fwdcolor=#ffef86
+     misc_feature    complement(1160..1819)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    260..873
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 tactagtagc ggccgctgca gtccggcaaa aaagggcaag gtgtcaccac cctgcccttt
        61 ttctttaaaa ccgaaaagat tacttcgcgt tatgcaggct tcctcgctca ctgactcgct
@@ -344,23 +344,23 @@ ORIGIN
 //
 LOCUS       BM3R1_CD                2675 bp ds-DNA     circular     07-APR-2015
 DEFINITION  .
-KEYWORDS    "glycerol:IG-1-17" "part-subtype:Repressor" "cloned-by:KML"        
-            "backbone:pSB1C3" "part-type:CDS" "seq-verified:Yes"
-            "fusion-sites:CD" "antibiotic:Chloramphenicol"
+KEYWORDS    "cloned-by:KML" "fusion-sites:CD" "backbone:pSB1C3"                
+            "glycerol:IG-1-17" "seq-verified:Yes" "antibiotic:Chloramphenicol"
+            "part-type:CDS" "part-subtype:Repressor"
 COMMENT     MoClo Level 0 basic part: CDS                                      
 FEATURES             Location/Qualifiers
-     misc_feature    260..873
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    2089..2664
-                     /label="BM3R1"
-                     /ApEinfo_revcolor=#ffef86
-                     /ApEinfo_fwdcolor=#ffef86
      misc_feature    complement(1160..1819)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    2089..2664
+                     /label="BM3R1"
+                     /ApEinfo_revcolor=#ffef86
+                     /ApEinfo_fwdcolor=#ffef86
+     misc_feature    260..873
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 tactagtagc ggccgctgca gtccggcaaa aaagggcaag gtgtcaccac cctgcccttt
        61 ttctttaaaa ccgaaaagat tacttcgcgt tatgcaggct tcctcgctca ctgactcgct
@@ -410,19 +410,19 @@ ORIGIN
 //
 LOCUS       BM3R1_CM                2691 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "part-subtype:Repressor" "seq-verified:Yes" "cloned-by:EA"         
-            "fusion-sites:CM" "backbone:pSB1C3" "part-type:CDS"
+KEYWORDS    "backbone:pSB1C3" "seq-verified:Yes" "fusion-sites:CM"             
+            "part-type:CDS" "part-subtype:Repressor" "cloned-by:EA"
             "antibiotic:Chloramphenicol"
 COMMENT     MoClo Level 0 basic part: CDS                                      
 FEATURES             Location/Qualifiers
-     misc_feature    2089..2664
-                     /label="BM3R1"
-                     /ApEinfo_revcolor=#ffef86
-                     /ApEinfo_fwdcolor=#ffef86
      misc_feature    260..873
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    2089..2664
+                     /label="BM3R1"
+                     /ApEinfo_revcolor=#ffef86
+                     /ApEinfo_fwdcolor=#ffef86
      misc_feature    complement(1160..1819)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
@@ -476,25 +476,25 @@ ORIGIN
 //
 LOCUS       DVL0_AB                 2597 bp ds-DNA     circular     19-MAR-2015
 DEFINITION  .
-KEYWORDS    "seq-verify:SM45" "plasmid:MCP-1-I1 (SC 5/14/13)" "backbone:pSB1C3"
-            "part-type:Destination Vector" "fusion-site:AB" "glycerol:MC-1-28
-            (Author)" "part-subtype:Level 0" "antibiotic:Chloramphenicol (CAM)"
-            "source:CIDAR" "cloned-by:Author"
+KEYWORDS    "fusion-site:AB" "source:CIDAR" "part-subtype:Level 0"             
+            "backbone:pSB1C3" "seq-verify:SM45" "glycerol:MC-1-28 (Author)"
+            "cloned-by:Author" "part-type:Destination Vector" "plasmid:MCP-1-I1
+            (SC 5/14/13)" "antibiotic:Chloramphenicol (CAM)"
 COMMENT     MoClo Destination Vector: Level 0, pSB1C3 backbone with AB fusion  
             sites flanking a LacZalpha selectable marker.
 FEATURES             Location/Qualifiers
-     misc_feature    773..1386
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    13..494
-                     /label="lacZalpha"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(1673..2332)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    13..494
+                     /label="lacZalpha"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    773..1386
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 GGAGatgtct tctgcaccat atgcggtgtg aaataccgca cagatgcgta aggagaaaat
        61 accgcatcag gcgccattcg ccattcaggc tgcgcaactg ttgggaaggg cgatcggtgc
@@ -541,78 +541,78 @@ ORIGIN
      2521 agataaaaaa aatccttagc tttcgctaag gatgatttct ggaattcgcg gccgcttcta
      2581 gagactagtg ggtctca
 //
-LOCUS       DVL0_AK                 2597 bp ds-DNA     circular     23-APR-2015
+LOCUS       DVL0_AK                 2597 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "seq-verify:EA" "fusion-site:AK" "part-type:Destination Vector"    
-            "cloned-by:EA" "glycerol:EA-1-5" "part-subtype:Level 0"
-            "source:CIDAR" "antibiotic:Chloramphenicol (CAM)" "backbone:pSB1C3"
+KEYWORDS    "source:CIDAR" "glycerol:EA-1-5" "antibiotic:Chloramphenicol (CAM)"
+            "seq-verify:EA" "part-subtype:Level 0" "part-type:Destination
+            Vector" "cloned-by:EA" "fusion-site:AK" "backbone:pSB1C3"
 COMMENT     MoClo Destination Vector: Level 0, pSB1C3 backbone with AB fusion  
             sites flanking a LacZalpha selectable marker.
 FEATURES             Location/Qualifiers
-     misc_feature    complement(27..508)
+     misc_feature    13..494
                      /label="lacZalpha"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    complement(1687..2346)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
-     misc_feature    787..1400
+     misc_feature    773..1386
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    complement(1673..2332)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
 ORIGIN
-        1 actagtaggt ctctGCATac gtcttccccg cgcgttggcc gattcattaa tgcagctggc
-       61 acgacaggtt tcccgactgg aaagcgggca gtgagcgcaa cgcaattaat gtgagttagc
-      121 tcactcatta ggcaccccag gctttacact ttatgcttcc ggctcgtatg ttgtgtggaa
-      181 ttgtgagcgg ataacaattt cacacaggaa acagctatga ccatgattac gccaagcttg
-      241 catgcctgca ggtcgactct agaggatccc cgggtaccga gctcgaattc actggccgtc
-      301 gttttacaac gtcgtgactg ggaaaaccct ggcgttaccc aacttaatcg ccttgcagca
-      361 catccccctt tcgccagctg gcgtaatagc gaagaggccc gcaccgatcg cccttcccaa
-      421 cagttgcgca gcctgaatgg cgaatggcgc ctgatgcggt attttctcct tacgcatctg
-      481 tgcggtattt cacaccgcat atggtgcaga agacatCTCC tgagacccac tagtagcggc
-      541 cgctgcagtc cggcaaaaaa gggcaaggtg tcaccaccct gccctttttc tttaaaaccg
-      601 aaaagattac ttcgcgttat gcaggcttcc tcgctcactg actcgctgcg ctcggtcgtt
-      661 cggctgcggc gagcggtatc agctcactca aaggcggtaa tacggttatc cacagaatca
-      721 ggggataacg caggaaagaa catgtgagca aaaggccagc aaaaggccag gaaccgtaaa
-      781 aaggccgcgt tgctggcgtt tttccacagg ctccgccccc ctgacgagca tcacaaaaat
-      841 cgacgctcaa gtcagaggtg gcgaaacccg acaggactat aaagatacca ggcgtttccc
-      901 cctggaagct ccctcgtgcg ctctcctgtt ccgaccctgc cgcttaccgg atacctgtcc
-      961 gcctttctcc cttcgggaag cgtggcgctt tctcatagct cacgctgtag gtatctcagt
-     1021 tcggtgtagg tcgttcgctc caagctgggc tgtgtgcacg aaccccccgt tcagcccgac
-     1081 cgctgcgcct tatccggtaa ctatcgtctt gagtccaacc cggtaagaca cgacttatcg
-     1141 ccactggcag cagccactgg taacaggatt agcagagcga ggtatgtagg cggtgctaca
-     1201 gagttcttga agtggtggcc taactacggc tacactagaa gaacagtatt tggtatctgc
-     1261 gctctgctga agccagttac cttcggaaaa agagttggta gctcttgatc cggcaaacaa
-     1321 accaccgctg gtagcggtgg tttttttgtt tgcaagcagc agattacgcg cagaaaaaaa
-     1381 ggatctcaag aagatccttt gatcttttct acggggtctg acgctcagtg gaacgaaaac
-     1441 tcacgttaag ggattttggt catgagatta tcaaaaagga tcttcaccta gatcctttta
-     1501 aattaaaaat gaagttttaa atcaatctaa agtatatatg agtaaacttg gtctgacagc
-     1561 tcgaggcttg gattctcacc aataaaaaac gcccggcggc aaccgagcgt tctgaacaaa
-     1621 tccagatgga gttctgaggt cattactgga tctatcaaca ggagtccaag cgagctcgat
-     1681 atcaaattac gccccgccct gccactcatc gcagtactgt tgtaattcat taagcattct
-     1741 gccgacatgg aagccatcac aaacggcatg atgaacctga atcgccagcg gcatcagcac
-     1801 cttgtcgcct tgcgtataat atttgcccat ggtgaaaacg ggggcgaaga agttgtccat
-     1861 attggccacg tttaaatcaa aactggtgaa actcacccag ggattggctg agacgaaaaa
-     1921 catattctca ataaaccctt tagggaaata ggccaggttt tcaccgtaac acgccacatc
-     1981 ttgcgaatat atgtgtagaa actgccggaa atcgtcgtgg tattcactcc agagcgatga
-     2041 aaacgtttca gtttgctcat ggaaaacggt gtaacaaggg tgaacactat cccatatcac
-     2101 cagctcaccg tctttcattg ccatacgaaa ttccggatga gcattcatca ggcgggcaag
-     2161 aatgtgaata aaggccggat aaaacttgtg cttatttttc tttacggtct ttaaaaaggc
-     2221 cgtaatatcc agctgaacgg tctggttata ggtacattga gcaactgact gaaatgcctc
-     2281 aaaatgttct ttacgatgcc attgggatat atcaacggtg gtatatccag tgattttttt
-     2341 ctccatttta gcttccttag ctcctgaaaa tctcgataac tcaaaaaata cgcccggtag
-     2401 tgatcttatt tcattatggt gaaagttgga acctcttacg tgcccgatca actcgagtgc
-     2461 cacctgacgt ctaagaaacc attattatca tgacattaac ctataaaaat aggcgtatca
-     2521 cgaggcagaa tttcagataa aaaaaatcct tagctttcgc taaggatgat ttctggaatt
-     2581 cgcggccgct tctagag
+        1 GGAGatgtct tctgcaccat atgcggtgtg aaataccgca cagatgcgta aggagaaaat
+       61 accgcatcag gcgccattcg ccattcaggc tgcgcaactg ttgggaaggg cgatcggtgc
+      121 gggcctcttc gctattacgc cagctggcga aagggggatg tgctgcaagg cgattaagtt
+      181 gggtaacgcc agggttttcc cagtcacgac gttgtaaaac gacggccagt gaattcgagc
+      241 tcggtacccg gggatcctct agagtcgacc tgcaggcatg caagcttggc gtaatcatgg
+      301 tcatagctgt ttcctgtgtg aaattgttat ccgctcacaa ttccacacaa catacgagcc
+      361 ggaagcataa agtgtaaagc ctggggtgcc taatgagtga gctaactcac attaattgcg
+      421 ttgcgctcac tgcccgcttt ccagtcggga aacctgtcgt gccagctgca ttaatgaatc
+      481 ggccaacgcg cggggaagac gtATGCagag acctactagt agcggccgct gcagtccggc
+      541 aaaaaagggc aaggtgtcac caccctgccc tttttcttta aaaccgaaaa gattacttcg
+      601 cgttatgcag gcttcctcgc tcactgactc gctgcgctcg gtcgttcggc tgcggcgagc
+      661 ggtatcagct cactcaaagg cggtaatacg gttatccaca gaatcagggg ataacgcagg
+      721 aaagaacatg tgagcaaaag gccagcaaaa ggccaggaac cgtaaaaagg ccgcgttgct
+      781 ggcgtttttc cacaggctcc gcccccctga cgagcatcac aaaaatcgac gctcaagtca
+      841 gaggtggcga aacccgacag gactataaag ataccaggcg tttccccctg gaagctccct
+      901 cgtgcgctct cctgttccga ccctgccgct taccggatac ctgtccgcct ttctcccttc
+      961 gggaagcgtg gcgctttctc atagctcacg ctgtaggtat ctcagttcgg tgtaggtcgt
+     1021 tcgctccaag ctgggctgtg tgcacgaacc ccccgttcag cccgaccgct gcgccttatc
+     1081 cggtaactat cgtcttgagt ccaacccggt aagacacgac ttatcgccac tggcagcagc
+     1141 cactggtaac aggattagca gagcgaggta tgtaggcggt gctacagagt tcttgaagtg
+     1201 gtggcctaac tacggctaca ctagaagaac agtatttggt atctgcgctc tgctgaagcc
+     1261 agttaccttc ggaaaaagag ttggtagctc ttgatccggc aaacaaacca ccgctggtag
+     1321 cggtggtttt tttgtttgca agcagcagat tacgcgcaga aaaaaaggat ctcaagaaga
+     1381 tcctttgatc ttttctacgg ggtctgacgc tcagtggaac gaaaactcac gttaagggat
+     1441 tttggtcatg agattatcaa aaaggatctt cacctagatc cttttaaatt aaaaatgaag
+     1501 ttttaaatca atctaaagta tatatgagta aacttggtct gacagctcga ggcttggatt
+     1561 ctcaccaata aaaaacgccc ggcggcaacc gagcgttctg aacaaatcca gatggagttc
+     1621 tgaggtcatt actggatcta tcaacaggag tccaagcgag ctcgatatca aattacgccc
+     1681 cgccctgcca ctcatcgcag tactgttgta attcattaag cattctgccg acatggaagc
+     1741 catcacaaac ggcatgatga acctgaatcg ccagcggcat cagcaccttg tcgccttgcg
+     1801 tataatattt gcccatggtg aaaacggggg cgaagaagtt gtccatattg gccacgttta
+     1861 aatcaaaact ggtgaaactc acccagggat tggctgagac gaaaaacata ttctcaataa
+     1921 accctttagg gaaataggcc aggttttcac cgtaacacgc cacatcttgc gaatatatgt
+     1981 gtagaaactg ccggaaatcg tcgtggtatt cactccagag cgatgaaaac gtttcagttt
+     2041 gctcatggaa aacggtgtaa caagggtgaa cactatccca tatcaccagc tcaccgtctt
+     2101 tcattgccat acgaaattcc ggatgagcat tcatcaggcg ggcaagaatg tgaataaagg
+     2161 ccggataaaa cttgtgctta tttttcttta cggtctttaa aaaggccgta atatccagct
+     2221 gaacggtctg gttataggta cattgagcaa ctgactgaaa tgcctcaaaa tgttctttac
+     2281 gatgccattg ggatatatca acggtggtat atccagtgat ttttttctcc attttagctt
+     2341 ccttagctcc tgaaaatctc gataactcaa aaaatacgcc cggtagtgat cttatttcat
+     2401 tatggtgaaa gttggaacct cttacgtgcc cgatcaactc gagtgccacc tgacgtctaa
+     2461 gaaaccatta ttatcatgac attaacctat aaaaataggc gtatcacgag gcagaatttc
+     2521 agataaaaaa aatccttagc tttcgctaag gatgatttct ggaattcgcg gccgcttcta
+     2581 gagactagtg ggtctca
 //
 LOCUS       DVL0_BC                 2597 bp ds-DNA     circular     16-MAR-2015
 DEFINITION  .
-KEYWORDS    "backbone:pSB1C3" "cloned-by:Author" "glycerol:MC-1-31 (Author)"   
-            "antibiotic:Chloramphenicol (CAM)" "part-type:Destination Vector"
-            "source:CIDAR" "part-subtype:Level 0" "seq-verify:SM31"
-            "fusion-site:BC" "plasmid:MCP-1-I3 (SI 2/14/13)"
+KEYWORDS    "fusion-site:BC" "seq-verify:SM31" "source:CIDAR" "plasmid:MCP-1-I3
+            (SI 2/14/13)" "cloned-by:Author" "part-subtype:Level 0"
+            "part-type:Destination Vector" "antibiotic:Chloramphenicol (CAM)"
+            "glycerol:MC-1-31 (Author)" "backbone:pSB1C3"
 COMMENT     MoClo Destination Vector: Level 0, pSB1C3 backbone with BC fusion  
             sites flanking a LacZalpha selectable marker.
 FEATURES             Location/Qualifiers
@@ -676,17 +676,13 @@ ORIGIN
 //
 LOCUS       DVL0_CD                 2597 bp ds-DNA     circular     16-MAR-2015
 DEFINITION  .
-KEYWORDS    "fusion-site:CD" "cloned-by:Author" "glycerol:MC-1-32 (SJ 8/17/13)"
-            "seq-verify:SM20" "antibiotic:Chloramphenicol (CAM)"
-            "backbone:pSB1C3" "source:CIDAR" "part-subtype:Level 0"
-            "plasmid:MCP-1-D9 (SJ 8/17/13)" "part-type:Destination Vector"
+KEYWORDS    "backbone:pSB1C3" "antibiotic:Chloramphenicol (CAM)"               
+            "seq-verify:SM20" "part-subtype:Level 0" "part-type:Destination
+            Vector" "fusion-site:CD" "source:CIDAR" "cloned-by:Author"
+            "glycerol:MC-1-32 (SJ 8/17/13)" "plasmid:MCP-1-D9 (SJ 8/17/13)"
 COMMENT     MoClo Destination Vector: Level 0, pSB1C3 backbone with CD fusion  
             sites flanking a LacZalpha selectable marker.
 FEATURES             Location/Qualifiers
-     misc_feature    773..1386
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    13..494
                      /label="lacZalpha"
                      /ApEinfo_revcolor=#f58a5e
@@ -695,6 +691,10 @@ FEATURES             Location/Qualifiers
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    773..1386
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 AATGatgtct tctgcaccat atgcggtgtg aaataccgca cagatgcgta aggagaaaat
        61 accgcatcag gcgccattcg ccattcaggc tgcgcaactg ttgggaaggg cgatcggtgc
@@ -743,25 +743,25 @@ ORIGIN
 //
 LOCUS       DVL0_CI                 2597 bp ds-DNA     circular     16-MAR-2015
 DEFINITION  .
-KEYWORDS    "plasmid:MCP-2-H1 (TLH 3/13/13)" "source:CIDAR" "fusion-site:CI"   
-            "cloned-by:Author" "glycerol:MC-2-104 (Author)"
-            "antibiotic:Chloramphenicol (CAM)" "backbone:pSB1C3"
-            "part-type:Destination Vector" "part-subtype:Level 0"
+KEYWORDS    "glycerol:MC-2-104 (Author)" "fusion-site:CI"                      
+            "part-type:Destination Vector" "backbone:pSB1C3"
+            "part-subtype:Level 0" "antibiotic:Chloramphenicol (CAM)"
+            "source:CIDAR" "plasmid:MCP-2-H1 (TLH 3/13/13)" "cloned-by:Author"
 COMMENT     MoClo Destination Vector: Level 0, pSB1C3 backbone with CI fusion  
             sites flanking a LacZalpha selectable marker.
 FEATURES             Location/Qualifiers
-     misc_feature    complement(1673..2332)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
-     misc_feature    13..494
-                     /label="lacZalpha"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    773..1386
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    13..494
+                     /label="lacZalpha"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    complement(1673..2332)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
 ORIGIN
         1 AATGatgtct tctgcaccat atgcggtgtg aaataccgca cagatgcgta aggagaaaat
        61 accgcatcag gcgccattcg ccattcaggc tgcgcaactg ttgggaaggg cgatcggtgc
@@ -810,21 +810,21 @@ ORIGIN
 //
 LOCUS       DVL0_CL                 2597 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "backbone:pSB1C3" "antibiotic:Chloramphenicol (CAM)" "cloned-by:EA"
-            "fusion-site:CL" "source:Phoenix" "seq-verify:EA"
-            "part-subtype:Level 0" "part-type:Destination Vector"
-            "glycerol:EA-1-29"
+KEYWORDS    "backbone:pSB1C3" "part-type:Destination Vector" "source:Phoenix"  
+            "seq-verify:EA" "glycerol:EA-1-29" "fusion-site:CL"
+            "part-subtype:Level 0" "antibiotic:Chloramphenicol (CAM)"
+            "cloned-by:EA"
 COMMENT     MoClo Destination Vector: Level 0, pSB1C3 backbone with CD fusion  
             sites flanking a LacZalpha selectable marker.
 FEATURES             Location/Qualifiers
-     misc_feature    complement(1673..2332)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    13..494
                      /label="lacZalpha"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    complement(1673..2332)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    773..1386
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
@@ -877,9 +877,10 @@ ORIGIN
 //
 LOCUS       DVL0_CM                 2597 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "antibiotic:Chloramphenicol (CAM)" "part-type:Destination Vector"  
-            "seq-verify:EA" "part-subtype:Level 0" "source:Phoenix"
-            "glycerol:EA-1-7" "backbone:pSB1C3" "fusion-site:CM" "cloned-by:EA"
+KEYWORDS    "source:Phoenix" "antibiotic:Chloramphenicol (CAM)"                
+            "part-type:Destination Vector" "seq-verify:EA" "fusion-site:CM"
+            "backbone:pSB1C3" "cloned-by:EA" "glycerol:EA-1-7"
+            "part-subtype:Level 0"
 COMMENT     MoClo Destination Vector: Level 0, pSB1C3 backbone with CD fusion  
             sites flanking a LacZalpha selectable marker.
 FEATURES             Location/Qualifiers
@@ -943,17 +944,13 @@ ORIGIN
 //
 LOCUS       DVL0_DE                 2597 bp ds-DNA     circular     16-MAR-2015
 DEFINITION  .
-KEYWORDS    "part-type:Destination Vector" "source:CIDAR" "backbone:pSB1C3"    
-            "part-subtype:Level 0" "fusion-site:DE" "glycerol:MC-2-83 (Author)"
-            "seq-verify:SI-95" "cloned-by:Author" "antibiotic:Chloramphenicol
-            (CAM)" "plasmid:MCP-1-H7 (SI 1/23/13)"
+KEYWORDS    "glycerol:MC-2-83 (Author)" "part-subtype:Level 0"                 
+            "antibiotic:Chloramphenicol (CAM)" "backbone:pSB1C3"
+            "fusion-site:DE" "plasmid:MCP-1-H7 (SI 1/23/13)" "cloned-by:Author"
+            "part-type:Destination Vector" "seq-verify:SI-95" "source:CIDAR"
 COMMENT     MoClo Destination Vector: Level 0, pSB1C3 backbone with DE fusion  
             sites flanking a LacZalpha selectable marker.
 FEATURES             Location/Qualifiers
-     misc_feature    complement(1673..2332)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    13..494
                      /label="lacZalpha"
                      /ApEinfo_revcolor=#f58a5e
@@ -962,6 +959,10 @@ FEATURES             Location/Qualifiers
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    complement(1673..2332)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
 ORIGIN
         1 AGGTatgtct tctgcaccat atgcggtgtg aaataccgca cagatgcgta aggagaaaat
        61 accgcatcag gcgccattcg ccattcaggc tgcgcaactg ttgggaaggg cgatcggtgc
@@ -1010,17 +1011,13 @@ ORIGIN
 //
 LOCUS       DVL0_DF                 2597 bp ds-DNA     circular     16-MAR-2015
 DEFINITION  .
-KEYWORDS    "seq-verify:SM4" "cloned-by:Author" "glycerol:MC-1-33 (Author)"    
-            "source:CIDAR" "backbone:pSB1C3" "antibiotic:Chloramphenicol (CAM)"
-            "part-type:Destination Vector" "fusion-site:DF" "part-subtype:Level
-            0" "plasmid:MCP-1-I5 (DHD 6/7/13)"
+KEYWORDS    "part-type:Destination Vector" "cloned-by:Author" "seq-verify:SM4" 
+            "backbone:pSB1C3" "antibiotic:Chloramphenicol (CAM)"
+            "fusion-site:DF" "source:CIDAR" "part-subtype:Level 0"
+            "glycerol:MC-1-33 (Author)" "plasmid:MCP-1-I5 (DHD 6/7/13)"
 COMMENT     MoClo Destination Vector: Level 0, pSB1C3 backbone with DF fusion  
             sites flanking a LacZalpha selectable marker.
 FEATURES             Location/Qualifiers
-     misc_feature    complement(1673..2332)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    13..494
                      /label="lacZalpha"
                      /ApEinfo_revcolor=#f58a5e
@@ -1029,6 +1026,10 @@ FEATURES             Location/Qualifiers
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    complement(1673..2332)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
 ORIGIN
         1 AGGTatgtct tctgcaccat atgcggtgtg aaataccgca cagatgcgta aggagaaaat
        61 accgcatcag gcgccattcg ccattcaggc tgcgcaactg ttgggaaggg cgatcggtgc
@@ -1077,25 +1078,25 @@ ORIGIN
 //
 LOCUS       DVL0_DG                 2597 bp ds-DNA     circular     16-MAR-2015
 DEFINITION  .
-KEYWORDS    "plasmid:MCP-1-I6 (DHD 7/10/13)" "cloned-by:Author"                
-            "antibiotic:Chloramphenicol (CAM)" "source:CIDAR"
-            "part-type:Destination Vector" "fusion-site:DG" "part-subtype:Level
-            0" "glycerol:MC-1-34 (Author)" "backbone:pSB1C3" "seq-verify:SM3"
+KEYWORDS    "part-subtype:Level 0" "fusion-site:DG" "cloned-by:Author"         
+            "backbone:pSB1C3" "seq-verify:SM3" "plasmid:MCP-1-I6 (DHD 7/10/13)"
+            "source:CIDAR" "glycerol:MC-1-34 (Author)"
+            "antibiotic:Chloramphenicol (CAM)" "part-type:Destination Vector"
 COMMENT     MoClo Destination Vector: Level 0, pSB1C3 backbone with DG fusion  
             sites flanking a LacZalpha selectable marker.
 FEATURES             Location/Qualifiers
-     misc_feature    773..1386
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    13..494
-                     /label="lacZalpha"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(1673..2332)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    13..494
+                     /label="lacZalpha"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    773..1386
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 AGGTatgtct tctgcaccat atgcggtgtg aaataccgca cagatgcgta aggagaaaat
        61 accgcatcag gcgccattcg ccattcaggc tgcgcaactg ttgggaaggg cgatcggtgc
@@ -1144,17 +1145,13 @@ ORIGIN
 //
 LOCUS       DVL0_DH                 2597 bp ds-DNA     circular     16-MAR-2015
 DEFINITION  .
-KEYWORDS    "fusion-site:DH" "antibiotic:Chloramphenicol (CAM)"                
-            "part-type:Destination Vector" "plasmid:MCP-2-B9 (JA 7/11/13)"
-            "seq-verify:JA-20" "source:CIDAR" "glycerol:MC-2-103 (Author)"
-            "part-subtype:Level 0" "cloned-by:Author" "backbone:pSB1C3"
+KEYWORDS    "cloned-by:Author" "seq-verify:JA-20" "part-type:Destination       
+            Vector" "part-subtype:Level 0" "plasmid:MCP-2-B9 (JA 7/11/13)"
+            "source:CIDAR" "fusion-site:DH" "glycerol:MC-2-103 (Author)"
+            "antibiotic:Chloramphenicol (CAM)" "backbone:pSB1C3"
 COMMENT     MoClo Destination Vector: Level 0, pSB1C3 backbone with DH fusion  
             sites flanking a LacZalpha selectable marker.
 FEATURES             Location/Qualifiers
-     misc_feature    complement(1673..2332)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    13..494
                      /label="lacZalpha"
                      /ApEinfo_revcolor=#f58a5e
@@ -1163,6 +1160,10 @@ FEATURES             Location/Qualifiers
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    complement(1673..2332)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
 ORIGIN
         1 AGGTatgtct tctgcaccat atgcggtgtg aaataccgca cagatgcgta aggagaaaat
        61 accgcatcag gcgccattcg ccattcaggc tgcgcaactg ttgggaaggg cgatcggtgc
@@ -1211,21 +1212,21 @@ ORIGIN
 //
 LOCUS       DVL0_EB                 2597 bp ds-DNA     circular     16-MAR-2015
 DEFINITION  .
-KEYWORDS    "cloned-by:Author" "backbone:pSB1C3" "part-subtype:Level 0"        
-            "part-type:Destination Vector" "fusion-site:EB"
-            "antibiotic:Chloramphenicol (CAM)" "glycerol:MC-1-29 (Author)"
-            "source:CIDAR" "plasmid:MCP-1-I2 (SI 2/14/13)" "seq-verify:SM1"
+KEYWORDS    "cloned-by:Author" "antibiotic:Chloramphenicol (CAM)"              
+            "fusion-site:EB" "backbone:pSB1C3" "source:CIDAR" "seq-verify:SM1"
+            "part-subtype:Level 0" "plasmid:MCP-1-I2 (SI 2/14/13)"
+            "glycerol:MC-1-29 (Author)" "part-type:Destination Vector"
 COMMENT     MoClo Destination Vector: Level 0, pSB1C3 backbone with EB fusion  
             sites flanking a LacZalpha selectable marker.
 FEATURES             Location/Qualifiers
-     misc_feature    complement(1673..2332)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    13..494
                      /label="lacZalpha"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    complement(1673..2332)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    773..1386
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
@@ -1278,21 +1279,21 @@ ORIGIN
 //
 LOCUS       DVL0_FB                 2597 bp ds-DNA     circular     16-MAR-2015
 DEFINITION  .
-KEYWORDS    "backbone:pSB1C3" "plasmid:MCP-2-E9 (DHD 7/3/13+H1)"               
-            "cloned-by:Author" "glycerol:MC-2-102 (Author)"
-            "antibiotic:Chloramphenicol (CAM)" "part-subtype:Level 0"
-            "part-type:Destination Vector" "fusion-site:FB" "source:CIDAR"
+KEYWORDS    "antibiotic:Chloramphenicol (CAM)" "fusion-site:FB"                
+            "part-type:Destination Vector" "source:CIDAR" "plasmid:MCP-2-E9
+            (DHD 7/3/13+H1)" "part-subtype:Level 0" "glycerol:MC-2-102
+            (Author)" "backbone:pSB1C3" "cloned-by:Author"
 COMMENT     MoClo Destination Vector: Level 0, pSB1C3 backbone with FB fusion  
             sites flanking a LacZalpha selectable marker.
 FEATURES             Location/Qualifiers
-     misc_feature    complement(1673..2332)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    13..494
                      /label="lacZalpha"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    complement(1673..2332)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    773..1386
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
@@ -1345,21 +1346,21 @@ ORIGIN
 //
 LOCUS       DVL0_GB                 2597 bp ds-DNA     circular     16-MAR-2015
 DEFINITION  .
-KEYWORDS    "fusion-site:GB" "plasmid:MCP-1-I4 (DHD 6/25/13)"                  
-            "part-subtype:Level 0" "cloned-by:Author" "seq-verify:SM16"
-            "part-type:Destination Vector" "source:CIDAR" "backbone:pSB1C3"
-            "antibiotic:Chloramphenicol (CAM)" "glycerol:MC-1-30 (Author)"
+KEYWORDS    "glycerol:MC-1-30 (Author)" "source:CIDAR" "backbone:pSB1C3"       
+            "plasmid:MCP-1-I4 (DHD 6/25/13)" "antibiotic:Chloramphenicol (CAM)"
+            "part-subtype:Level 0" "part-type:Destination Vector"
+            "cloned-by:Author" "seq-verify:SM16" "fusion-site:GB"
 COMMENT     MoClo Destination Vector: Level 0, pSB1C3 backbone with GB fusion  
             sites flanking a LacZalpha selectable marker.
 FEATURES             Location/Qualifiers
-     misc_feature    complement(1673..2332)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    13..494
                      /label="lacZalpha"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    complement(1673..2332)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    773..1386
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
@@ -1412,10 +1413,10 @@ ORIGIN
 //
 LOCUS       DVL0_KB                 2597 bp ds-DNA     circular     30-MAR-2015
 DEFINITION  .
-KEYWORDS    "cloned-by:EA" "part-subtype:Level 0" "fusion-site:KB"             
-            "glycerol:EA-1-6" "seq-verify:EA" "source:Phoenix"
-            "part-type:Destination Vector" "antibiotic:Chloramphenicol (CAM)"
-            "plasmid:MCP-1-I1 (SC 5/14/13)" "backbone:pSB1C3"
+KEYWORDS    "glycerol:EA-1-6" "backbone:pSB1C3" "part-subtype:Level 0"         
+            "part-type:Destination Vector" "source:Phoenix" "fusion-site:KB"
+            "plasmid:MCP-1-I1 (SC 5/14/13)" "seq-verify:EA"
+            "antibiotic:Chloramphenicol (CAM)" "cloned-by:EA"
 COMMENT     MoClo Destination Vector: Level 0, pSB1C3 backbone with AB fusion  
             sites flanking a LacZalpha selectable marker.
 FEATURES             Location/Qualifiers
@@ -1479,16 +1480,13 @@ ORIGIN
 //
 LOCUS       DVL0_LD                 2597 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "fusion-site:LD" "backbone:pSB1C3" "part-type:Destination Vector"  
-            "cloned-by:EA" "seq-verify:EA" "antibiotic:Chloramphenicol (CAM)"
-            "glycerol:EA-1-30" "source:Phoenix" "part-subtype:Level 0"
+KEYWORDS    "seq-verify:EA" "part-subtype:Level 0" "source:Phoenix"            
+            "cloned-by:EA" "backbone:pSB1C3" "part-type:Destination Vector"
+            "fusion-site:LD" "antibiotic:Chloramphenicol (CAM)"
+            "glycerol:EA-1-30"
 COMMENT     MoClo Destination Vector: Level 0, pSB1C3 backbone with CD fusion  
             sites flanking a LacZalpha selectable marker.
 FEATURES             Location/Qualifiers
-     misc_feature    773..1386
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    13..494
                      /label="lacZalpha"
                      /ApEinfo_revcolor=#f58a5e
@@ -1497,6 +1495,10 @@ FEATURES             Location/Qualifiers
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    773..1386
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 CGGCatgtct tctgcaccat atgcggtgtg aaataccgca cagatgcgta aggagaaaat
        61 accgcatcag gcgccattcg ccattcaggc tgcgcaactg ttgggaaggg cgatcggtgc
@@ -1545,21 +1547,21 @@ ORIGIN
 //
 LOCUS       DVL0_MD                 2597 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "cloned-by:EA" "seq-verify:EA" "fusion-site:MD" "glycerol:EA-1-8"  
-            "backbone:pSB1C3" "part-type:Destination Vector"
-            "antibiotic:Chloramphenicol (CAM)" "source:Phoenix"
+KEYWORDS    "seq-verify:EA" "glycerol:EA-1-8" "backbone:pSB1C3" "cloned-by:EA" 
+            "part-type:Destination Vector" "source:Phoenix"
+            "antibiotic:Chloramphenicol (CAM)" "fusion-site:MD"
             "part-subtype:Level 0"
 COMMENT     MoClo Destination Vector: Level 0, pSB1C3 backbone with CD fusion  
             sites flanking a LacZalpha selectable marker.
 FEATURES             Location/Qualifiers
-     misc_feature    complement(1673..2332)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    773..1386
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    complement(1673..2332)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    13..494
                      /label="lacZalpha"
                      /ApEinfo_revcolor=#f58a5e
@@ -1610,573 +1612,12 @@ ORIGIN
      2521 agataaaaaa aatccttagc tttcgctaag gatgatttct ggaattcgcg gccgcttcta
      2581 gagactagtg ggtctca
 //
-LOCUS       DVL1_AE                 2731 bp ds-DNA     circular     13-APR-2015
-DEFINITION  .
-KEYWORDS    "seq-verify:MS18" "antibiotic:Kanamycin (KAN)" "fusion-site:AE"    
-            "glycerol:MC-1-35 (Author)" "part-type:Destination Vector"
-            "source:CIDAR" "cloned-by:Author" "backbone:pSB1K3"
-            "plasmid:MCP-1-B3 (JA 6/28/13)" "part-subtype:Level 1"
-COMMENT     MoClo Destination Vector: Level 0, pSB1K3 backbone with AE fusion  
-            sites flanking a LacZalpha selectable marker.
-FEATURES             Location/Qualifiers
-     misc_feature    complement(1610..2368)
-                     /label="kanR"
-                     /ApEinfo_revcolor=#85dae9
-                     /ApEinfo_fwdcolor=#85dae9
-     misc_feature    2577..2596
-                     /label="VF Primer"
-                     /ApEinfo_revcolor=#b4abac
-                     /ApEinfo_fwdcolor=#b4abac
-     misc_feature    505..2731
-                     /label="DVL1"
-                     /ApEinfo_revcolor=#ffef86
-                     /ApEinfo_fwdcolor=#ffef86
-     misc_feature    12..493
-                     /label="lacZalpha"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    772..1385
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    complement(667..686)
-                     /label="VR Primer"
-                     /ApEinfo_revcolor=#b4abac
-                     /ApEinfo_fwdcolor=#b4abac
-ORIGIN
-        1 GGAGagagac ctgcaccata tgcggtgtga aataccgcac agatgcgtaa ggagaaaata
-       61 ccgcatcagg cgccattcgc cattcaggct gcgcaactgt tgggaagggc gatcggtgcg
-      121 ggcctcttcg ctattacgcc agctggcgaa agggggatgt gctgcaaggc gattaagttg
-      181 ggtaacgcca gggttttccc agtcacgacg ttgtaaaacg acggccagtg aattcgagct
-      241 cggtacccgg ggatcctcta gagtcgacct gcaggcatgc aagcttggcg taatcatggt
-      301 catagctgtt tcctgtgtga aattgttatc cgctcacaat tccacacaac atacgagccg
-      361 gaagcataaa gtgtaaagcc tggggtgcct aatgagtgag ctaactcaca ttaattgcgt
-      421 tgcgctcact gcccgctttc cagtcgggaa acctgtcgtg ccagctgcat taatgaatcg
-      481 gccaacgcgc gggggtctct GCTTatgtct tctactagta gcggccgctg cagtccggca
-      541 aaaaagggca aggtgtcacc accctgccct ttttctttaa aaccgaaaag attacttcgc
-      601 gttatgcagg cttcctcgct cactgactcg ctgcgctcgg tcgttcggct gcggcgagcg
-      661 gtatcagctc actcaaaggc ggtaatacgg ttatccacag aatcagggga taacgcagga
-      721 aagaacatgt gagcaaaagg ccagcaaaag gccaggaacc gtaaaaaggc cgcgttgctg
-      781 gcgtttttcc acaggctccg cccccctgac gagcatcaca aaaatcgacg ctcaagtcag
-      841 aggtggcgaa acccgacagg actataaaga taccaggcgt ttccccctgg aagctccctc
-      901 gtgcgctctc ctgttccgac cctgccgctt accggatacc tgtccgcctt tctcccttcg
-      961 ggaagcgtgg cgctttctca tagctcacgc tgtaggtatc tcagttcggt gtaggtcgtt
-     1021 cgctccaagc tgggctgtgt gcacgaaccc cccgttcagc ccgaccgctg cgccttatcc
-     1081 ggtaactatc gtcttgagtc caacccggta agacacgact tatcgccact ggcagcagcc
-     1141 actggtaaca ggattagcag agcgaggtat gtaggcggtg ctacagagtt cttgaagtgg
-     1201 tggcctaact acggctacac tagaagaaca gtatttggta tctgcgctct gctgaagcca
-     1261 gttaccttcg gaaaaagagt tggtagctct tgatccggca aacaaaccac cgctggtagc
-     1321 ggtggttttt ttgtttgcaa gcagcagatt acgcgcagaa aaaaaggatc tcaagaagat
-     1381 cctttgatct tttctacggg gtctgacgct cagtggaacg aaaactcacg ttaagggatt
-     1441 ttggtcatga gattatcaaa aaggatcttc acctagatcc ttttaaatta aaaatgaagt
-     1501 tttaaatcaa tctaaagtat atatgagtaa acttggtctg acagctcgag tcccgtcaag
-     1561 tcagcgtaat gctctgccag tgttacaacc aattaaccaa ttctgattag aaaaactcat
-     1621 cgagcatcaa atgaaactgc aatttattca tatcaggatt atcaatacca tatttttgaa
-     1681 aaagccgttt ctgtaatgaa ggagaaaact caccgaggca gttccatagg atggcaagat
-     1741 cctggtatcg gtctgcgatt ccgactcgtc caacatcaat acaacctatt aatttcccct
-     1801 cgtcaaaaat aaggttatca agtgagaaat caccatgagt gacgactgaa tccggtgaga
-     1861 atggcaaaag cttatgcatt tctttccaga cttgttcaac aggccagcca ttacgctcgt
-     1921 catcaaaatc actcgcatca accaaaccgt tattcattcg tgattgcgcc tgagcgagac
-     1981 gaaatacgcg atcgctgtta aaaggacaat tacaaacagg aatcgaatgc aaccggcgca
-     2041 ggaacactgc cagcgcatca acaatatttt cacctgaatc aggatattct tctaatacct
-     2101 ggaatgctgt tttcccgggg atcgcagtgg tgagtaacca tgcatcatca ggagtacgga
-     2161 taaaatgctt gatggtcgga agaggcataa attccgtcag ccagtttagt ctgaccatct
-     2221 catctgtaac atcattggca acgctacctt tgccatgttt cagaaacaac tctggcgcat
-     2281 cgggcttccc atacaatcga tagattgtcg cacctgattg cccgacatta tcgcgagccc
-     2341 atttataccc atataaatca gcatccatgt tggaatttaa tcgcggcctg gagcaagacg
-     2401 tttcccgttg aatatggctc ataacacccc ttgtattact gtttatgtaa gcagacagtt
-     2461 ttattgttca tgatgatata tttttatctt gtgcaatgta acatcagaga ttttgagaca
-     2521 caacgtggct ttgttgaata aatcgaactt ttgctgagtt gaaggatcag ctcgagtgcc
-     2581 acctgacgtc taagaaacca ttattatcat gacattaacc tataaaaata ggcgtatcac
-     2641 gaggcagaat ttcagataaa aaaaatcctt agctttcgct aaggatgatt tctggaattc
-     2701 gcggccgctt ctagagacta gtggaagaca t
-//
-LOCUS       DVL1_EF                 2731 bp ds-DNA     circular     16-MAR-2015
-DEFINITION  .
-KEYWORDS    "part-subtype:Level 1" "seq-verify:MS21" "cloned-by:Author"        
-            "fusion-site:EF" "part-type:Destination Vector"
-            "antibiotic:Kanamycin (KAN)" "plasmid:MCP-1-B4 (SC 8/24/2013)"
-            "source:CIDAR" "backbone:pSB1K3" "glycerol:MC-1-36 (Author)"
-COMMENT     MoClo Destination Vector: Level 0, pSB1K3 backbone with EF fusion  
-            sites flanking a LacZalpha selectable marker.
-FEATURES             Location/Qualifiers
-     misc_feature    772..1385
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    12..493
-                     /label="lacZalpha"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    complement(1610..2368)
-                     /label="kanR"
-                     /ApEinfo_revcolor=#85dae9
-                     /ApEinfo_fwdcolor=#85dae9
-ORIGIN
-        1 GCTTagagac ctgcaccata tgcggtgtga aataccgcac agatgcgtaa ggagaaaata
-       61 ccgcatcagg cgccattcgc cattcaggct gcgcaactgt tgggaagggc gatcggtgcg
-      121 ggcctcttcg ctattacgcc agctggcgaa agggggatgt gctgcaaggc gattaagttg
-      181 ggtaacgcca gggttttccc agtcacgacg ttgtaaaacg acggccagtg aattcgagct
-      241 cggtacccgg ggatcctcta gagtcgacct gcaggcatgc aagcttggcg taatcatggt
-      301 catagctgtt tcctgtgtga aattgttatc cgctcacaat tccacacaac atacgagccg
-      361 gaagcataaa gtgtaaagcc tggggtgcct aatgagtgag ctaactcaca ttaattgcgt
-      421 tgcgctcact gcccgctttc cagtcgggaa acctgtcgtg ccagctgcat taatgaatcg
-      481 gccaacgcgc gggggtctct CGCTatgtct tctactagta gcggccgctg cagtccggca
-      541 aaaaagggca aggtgtcacc accctgccct ttttctttaa aaccgaaaag attacttcgc
-      601 gttatgcagg cttcctcgct cactgactcg ctgcgctcgg tcgttcggct gcggcgagcg
-      661 gtatcagctc actcaaaggc ggtaatacgg ttatccacag aatcagggga taacgcagga
-      721 aagaacatgt gagcaaaagg ccagcaaaag gccaggaacc gtaaaaaggc cgcgttgctg
-      781 gcgtttttcc acaggctccg cccccctgac gagcatcaca aaaatcgacg ctcaagtcag
-      841 aggtggcgaa acccgacagg actataaaga taccaggcgt ttccccctgg aagctccctc
-      901 gtgcgctctc ctgttccgac cctgccgctt accggatacc tgtccgcctt tctcccttcg
-      961 ggaagcgtgg cgctttctca tagctcacgc tgtaggtatc tcagttcggt gtaggtcgtt
-     1021 cgctccaagc tgggctgtgt gcacgaaccc cccgttcagc ccgaccgctg cgccttatcc
-     1081 ggtaactatc gtcttgagtc caacccggta agacacgact tatcgccact ggcagcagcc
-     1141 actggtaaca ggattagcag agcgaggtat gtaggcggtg ctacagagtt cttgaagtgg
-     1201 tggcctaact acggctacac tagaagaaca gtatttggta tctgcgctct gctgaagcca
-     1261 gttaccttcg gaaaaagagt tggtagctct tgatccggca aacaaaccac cgctggtagc
-     1321 ggtggttttt ttgtttgcaa gcagcagatt acgcgcagaa aaaaaggatc tcaagaagat
-     1381 cctttgatct tttctacggg gtctgacgct cagtggaacg aaaactcacg ttaagggatt
-     1441 ttggtcatga gattatcaaa aaggatcttc acctagatcc ttttaaatta aaaatgaagt
-     1501 tttaaatcaa tctaaagtat atatgagtaa acttggtctg acagctcgag tcccgtcaag
-     1561 tcagcgtaat gctctgccag tgttacaacc aattaaccaa ttctgattag aaaaactcat
-     1621 cgagcatcaa atgaaactgc aatttattca tatcaggatt atcaatacca tatttttgaa
-     1681 aaagccgttt ctgtaatgaa ggagaaaact caccgaggca gttccatagg atggcaagat
-     1741 cctggtatcg gtctgcgatt ccgactcgtc caacatcaat acaacctatt aatttcccct
-     1801 cgtcaaaaat aaggttatca agtgagaaat caccatgagt gacgactgaa tccggtgaga
-     1861 atggcaaaag cttatgcatt tctttccaga cttgttcaac aggccagcca ttacgctcgt
-     1921 catcaaaatc actcgcatca accaaaccgt tattcattcg tgattgcgcc tgagcgagac
-     1981 gaaatacgcg atcgctgtta aaaggacaat tacaaacagg aatcgaatgc aaccggcgca
-     2041 ggaacactgc cagcgcatca acaatatttt cacctgaatc aggatattct tctaatacct
-     2101 ggaatgctgt tttcccgggg atcgcagtgg tgagtaacca tgcatcatca ggagtacgga
-     2161 taaaatgctt gatggtcgga agaggcataa attccgtcag ccagtttagt ctgaccatct
-     2221 catctgtaac atcattggca acgctacctt tgccatgttt cagaaacaac tctggcgcat
-     2281 cgggcttccc atacaatcga tagattgtcg cacctgattg cccgacatta tcgcgagccc
-     2341 atttataccc atataaatca gcatccatgt tggaatttaa tcgcggcctg gagcaagacg
-     2401 tttcccgttg aatatggctc ataacacccc ttgtattact gtttatgtaa gcagacagtt
-     2461 ttattgttca tgatgatata tttttatctt gtgcaatgta acatcagaga ttttgagaca
-     2521 caacgtggct ttgttgaata aatcgaactt ttgctgagtt gaaggatcag ctcgagtgcc
-     2581 acctgacgtc taagaaacca ttattatcat gacattaacc tataaaaata ggcgtatcac
-     2641 gaggcagaat ttcagataaa aaaaatcctt agctttcgct aaggatgatt tctggaattc
-     2701 gcggccgctt ctagagacta gtggaagaca t
-//
-LOCUS       DVL1_FG                 2731 bp ds-DNA     circular     16-MAR-2015
-DEFINITION  .
-KEYWORDS    "fusion-site:FG" "seq-verify:MS23" "part-subtype:Level 1"          
-            "part-type:Destination Vector" "antibiotic:Kanamycin (KAN)"
-            "glycerol:MC-1-37 (Author)" "plasmid:MCP-1-B5 (SC 8/24/2013)"
-            "backbone:pSB1K3" "cloned-by:Author" "source:CIDAR"
-COMMENT     MoClo Destination Vector: Level 0, pSB1K3 backbone with FG fusion  
-            sites flanking a LacZalpha selectable marker.
-FEATURES             Location/Qualifiers
-     misc_feature    complement(1610..2368)
-                     /label="kanR"
-                     /ApEinfo_revcolor=#85dae9
-                     /ApEinfo_fwdcolor=#85dae9
-     misc_feature    12..493
-                     /label="lacZalpha"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    772..1385
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-ORIGIN
-        1 CGCTagagac ctgcaccata tgcggtgtga aataccgcac agatgcgtaa ggagaaaata
-       61 ccgcatcagg cgccattcgc cattcaggct gcgcaactgt tgggaagggc gatcggtgcg
-      121 ggcctcttcg ctattacgcc agctggcgaa agggggatgt gctgcaaggc gattaagttg
-      181 ggtaacgcca gggttttccc agtcacgacg ttgtaaaacg acggccagtg aattcgagct
-      241 cggtacccgg ggatcctcta gagtcgacct gcaggcatgc aagcttggcg taatcatggt
-      301 catagctgtt tcctgtgtga aattgttatc cgctcacaat tccacacaac atacgagccg
-      361 gaagcataaa gtgtaaagcc tggggtgcct aatgagtgag ctaactcaca ttaattgcgt
-      421 tgcgctcact gcccgctttc cagtcgggaa acctgtcgtg ccagctgcat taatgaatcg
-      481 gccaacgcgc gggggtctct TGCCatgtct tctactagta gcggccgctg cagtccggca
-      541 aaaaagggca aggtgtcacc accctgccct ttttctttaa aaccgaaaag attacttcgc
-      601 gttatgcagg cttcctcgct cactgactcg ctgcgctcgg tcgttcggct gcggcgagcg
-      661 gtatcagctc actcaaaggc ggtaatacgg ttatccacag aatcagggga taacgcagga
-      721 aagaacatgt gagcaaaagg ccagcaaaag gccaggaacc gtaaaaaggc cgcgttgctg
-      781 gcgtttttcc acaggctccg cccccctgac gagcatcaca aaaatcgacg ctcaagtcag
-      841 aggtggcgaa acccgacagg actataaaga taccaggcgt ttccccctgg aagctccctc
-      901 gtgcgctctc ctgttccgac cctgccgctt accggatacc tgtccgcctt tctcccttcg
-      961 ggaagcgtgg cgctttctca tagctcacgc tgtaggtatc tcagttcggt gtaggtcgtt
-     1021 cgctccaagc tgggctgtgt gcacgaaccc cccgttcagc ccgaccgctg cgccttatcc
-     1081 ggtaactatc gtcttgagtc caacccggta agacacgact tatcgccact ggcagcagcc
-     1141 actggtaaca ggattagcag agcgaggtat gtaggcggtg ctacagagtt cttgaagtgg
-     1201 tggcctaact acggctacac tagaagaaca gtatttggta tctgcgctct gctgaagcca
-     1261 gttaccttcg gaaaaagagt tggtagctct tgatccggca aacaaaccac cgctggtagc
-     1321 ggtggttttt ttgtttgcaa gcagcagatt acgcgcagaa aaaaaggatc tcaagaagat
-     1381 cctttgatct tttctacggg gtctgacgct cagtggaacg aaaactcacg ttaagggatt
-     1441 ttggtcatga gattatcaaa aaggatcttc acctagatcc ttttaaatta aaaatgaagt
-     1501 tttaaatcaa tctaaagtat atatgagtaa acttggtctg acagctcgag tcccgtcaag
-     1561 tcagcgtaat gctctgccag tgttacaacc aattaaccaa ttctgattag aaaaactcat
-     1621 cgagcatcaa atgaaactgc aatttattca tatcaggatt atcaatacca tatttttgaa
-     1681 aaagccgttt ctgtaatgaa ggagaaaact caccgaggca gttccatagg atggcaagat
-     1741 cctggtatcg gtctgcgatt ccgactcgtc caacatcaat acaacctatt aatttcccct
-     1801 cgtcaaaaat aaggttatca agtgagaaat caccatgagt gacgactgaa tccggtgaga
-     1861 atggcaaaag cttatgcatt tctttccaga cttgttcaac aggccagcca ttacgctcgt
-     1921 catcaaaatc actcgcatca accaaaccgt tattcattcg tgattgcgcc tgagcgagac
-     1981 gaaatacgcg atcgctgtta aaaggacaat tacaaacagg aatcgaatgc aaccggcgca
-     2041 ggaacactgc cagcgcatca acaatatttt cacctgaatc aggatattct tctaatacct
-     2101 ggaatgctgt tttcccgggg atcgcagtgg tgagtaacca tgcatcatca ggagtacgga
-     2161 taaaatgctt gatggtcgga agaggcataa attccgtcag ccagtttagt ctgaccatct
-     2221 catctgtaac atcattggca acgctacctt tgccatgttt cagaaacaac tctggcgcat
-     2281 cgggcttccc atacaatcga tagattgtcg cacctgattg cccgacatta tcgcgagccc
-     2341 atttataccc atataaatca gcatccatgt tggaatttaa tcgcggcctg gagcaagacg
-     2401 tttcccgttg aatatggctc ataacacccc ttgtattact gtttatgtaa gcagacagtt
-     2461 ttattgttca tgatgatata tttttatctt gtgcaatgta acatcagaga ttttgagaca
-     2521 caacgtggct ttgttgaata aatcgaactt ttgctgagtt gaaggatcag ctcgagtgcc
-     2581 acctgacgtc taagaaacca ttattatcat gacattaacc tataaaaata ggcgtatcac
-     2641 gaggcagaat ttcagataaa aaaaatcctt agctttcgct aaggatgatt tctggaattc
-     2701 gcggccgctt ctagagacta gtggaagaca t
-//
-LOCUS       DVL1_GH                 2731 bp ds-DNA     circular     16-MAR-2015
-DEFINITION  .
-KEYWORDS    "backbone:pSB1K3" "fusion-site:GH" "glycerol:MC-1-38 (Author)"     
-            "plasmid:MCP-1-B6 (SC 8/24/2013)" "source:CIDAR"
-            "part-type:Destination Vector" "cloned-by:Author"
-            "antibiotic:Kanamycin (KAN)" "seq-verify:MS25" "part-subtype:Level
-            1"
-COMMENT     MoClo Destination Vector: Level 0, pSB1K3 backbone with GH fusion  
-            sites flanking a LacZalpha selectable marker.
-FEATURES             Location/Qualifiers
-     misc_feature    complement(1610..2368)
-                     /label="kanR"
-                     /ApEinfo_revcolor=#85dae9
-                     /ApEinfo_fwdcolor=#85dae9
-     misc_feature    12..493
-                     /label="lacZalpha"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    772..1385
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-ORIGIN
-        1 TGCCagagac ctgcaccata tgcggtgtga aataccgcac agatgcgtaa ggagaaaata
-       61 ccgcatcagg cgccattcgc cattcaggct gcgcaactgt tgggaagggc gatcggtgcg
-      121 ggcctcttcg ctattacgcc agctggcgaa agggggatgt gctgcaaggc gattaagttg
-      181 ggtaacgcca gggttttccc agtcacgacg ttgtaaaacg acggccagtg aattcgagct
-      241 cggtacccgg ggatcctcta gagtcgacct gcaggcatgc aagcttggcg taatcatggt
-      301 catagctgtt tcctgtgtga aattgttatc cgctcacaat tccacacaac atacgagccg
-      361 gaagcataaa gtgtaaagcc tggggtgcct aatgagtgag ctaactcaca ttaattgcgt
-      421 tgcgctcact gcccgctttc cagtcgggaa acctgtcgtg ccagctgcat taatgaatcg
-      481 gccaacgcgc gggggtctct ACTAatgtct tctactagta gcggccgctg cagtccggca
-      541 aaaaagggca aggtgtcacc accctgccct ttttctttaa aaccgaaaag attacttcgc
-      601 gttatgcagg cttcctcgct cactgactcg ctgcgctcgg tcgttcggct gcggcgagcg
-      661 gtatcagctc actcaaaggc ggtaatacgg ttatccacag aatcagggga taacgcagga
-      721 aagaacatgt gagcaaaagg ccagcaaaag gccaggaacc gtaaaaaggc cgcgttgctg
-      781 gcgtttttcc acaggctccg cccccctgac gagcatcaca aaaatcgacg ctcaagtcag
-      841 aggtggcgaa acccgacagg actataaaga taccaggcgt ttccccctgg aagctccctc
-      901 gtgcgctctc ctgttccgac cctgccgctt accggatacc tgtccgcctt tctcccttcg
-      961 ggaagcgtgg cgctttctca tagctcacgc tgtaggtatc tcagttcggt gtaggtcgtt
-     1021 cgctccaagc tgggctgtgt gcacgaaccc cccgttcagc ccgaccgctg cgccttatcc
-     1081 ggtaactatc gtcttgagtc caacccggta agacacgact tatcgccact ggcagcagcc
-     1141 actggtaaca ggattagcag agcgaggtat gtaggcggtg ctacagagtt cttgaagtgg
-     1201 tggcctaact acggctacac tagaagaaca gtatttggta tctgcgctct gctgaagcca
-     1261 gttaccttcg gaaaaagagt tggtagctct tgatccggca aacaaaccac cgctggtagc
-     1321 ggtggttttt ttgtttgcaa gcagcagatt acgcgcagaa aaaaaggatc tcaagaagat
-     1381 cctttgatct tttctacggg gtctgacgct cagtggaacg aaaactcacg ttaagggatt
-     1441 ttggtcatga gattatcaaa aaggatcttc acctagatcc ttttaaatta aaaatgaagt
-     1501 tttaaatcaa tctaaagtat atatgagtaa acttggtctg acagctcgag tcccgtcaag
-     1561 tcagcgtaat gctctgccag tgttacaacc aattaaccaa ttctgattag aaaaactcat
-     1621 cgagcatcaa atgaaactgc aatttattca tatcaggatt atcaatacca tatttttgaa
-     1681 aaagccgttt ctgtaatgaa ggagaaaact caccgaggca gttccatagg atggcaagat
-     1741 cctggtatcg gtctgcgatt ccgactcgtc caacatcaat acaacctatt aatttcccct
-     1801 cgtcaaaaat aaggttatca agtgagaaat caccatgagt gacgactgaa tccggtgaga
-     1861 atggcaaaag cttatgcatt tctttccaga cttgttcaac aggccagcca ttacgctcgt
-     1921 catcaaaatc actcgcatca accaaaccgt tattcattcg tgattgcgcc tgagcgagac
-     1981 gaaatacgcg atcgctgtta aaaggacaat tacaaacagg aatcgaatgc aaccggcgca
-     2041 ggaacactgc cagcgcatca acaatatttt cacctgaatc aggatattct tctaatacct
-     2101 ggaatgctgt tttcccgggg atcgcagtgg tgagtaacca tgcatcatca ggagtacgga
-     2161 taaaatgctt gatggtcgga agaggcataa attccgtcag ccagtttagt ctgaccatct
-     2221 catctgtaac atcattggca acgctacctt tgccatgttt cagaaacaac tctggcgcat
-     2281 cgggcttccc atacaatcga tagattgtcg cacctgattg cccgacatta tcgcgagccc
-     2341 atttataccc atataaatca gcatccatgt tggaatttaa tcgcggcctg gagcaagacg
-     2401 tttcccgttg aatatggctc ataacacccc ttgtattact gtttatgtaa gcagacagtt
-     2461 ttattgttca tgatgatata tttttatctt gtgcaatgta acatcagaga ttttgagaca
-     2521 caacgtggct ttgttgaata aatcgaactt ttgctgagtt gaaggatcag ctcgagtgcc
-     2581 acctgacgtc taagaaacca ttattatcat gacattaacc tataaaaata ggcgtatcac
-     2641 gaggcagaat ttcagataaa aaaaatcctt agctttcgct aaggatgatt tctggaattc
-     2701 gcggccgctt ctagagacta gtggaagaca t
-//
-LOCUS       DVL2_AF                 2606 bp ds-DNA     circular     16-MAR-2015
-DEFINITION  .
-KEYWORDS    "backbone:pSB1A2" "seq-verify:SI-362" "antibiotic:Ampicillin (AMP)"
-            "part-subtype:Level 2" "fusion-site:AF" "part-type:Destination
-            Vector" "plasmid:MCP-1-B7 (SI 10/25/13)" "cloned-by:Author"
-            "source:CIDAR" "glycerol:MC-1-39 (Author)"
-COMMENT     MoClo Destination Vector: Level 0, pSB1A2 backbone with AF fusion  
-            sites flanking a LacZalpha selectable marker.
-FEATURES             Location/Qualifiers
-     misc_feature    complement(693..1375)
-                     /label="ColE1"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
-     misc_feature    13..494
-                     /label="lacZalpha"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    complement(1473..2132)
-                     /label="ampR"
-                     /ApEinfo_revcolor=#75c6a9
-                     /ApEinfo_fwdcolor=#75c6a9
-ORIGIN
-        1 GGAGatgtct tctgcaccat atgcggtgtg aaataccgca cagatgcgta aggagaaaat
-       61 accgcatcag gcgccattcg ccattcaggc tgcgcaactg ttgggaaggg cgatcggtgc
-      121 gggcctcttc gctattacgc cagctggcga aagggggatg tgctgcaagg cgattaagtt
-      181 gggtaacgcc agggttttcc cagtcacgac gttgtaaaac gacggccagt gaattcgagc
-      241 tcggtacccg gggatcctct agagtcgacc tgcaggcatg caagcttggc gtaatcatgg
-      301 tcatagctgt ttcctgtgtg aaattgttat ccgctcacaa ttccacacaa catacgagcc
-      361 ggaagcataa agtgtaaagc ctggggtgcc taatgagtga gctaactcac attaattgcg
-      421 ttgcgctcac tgcccgcttt ccagtcggga aacctgtcgt gccagctgca ttaatgaatc
-      481 ggccaacgcg cggggaagac gtCGCTagag acctactagt agcggccgct gcaggcttcc
-      541 tcgctcactg actcgctgcg ctcggtcgtt cggctgcggc gagcggtatc agctcactca
-      601 aaggcggtaa tacggttatc cacagaatca ggggataacg caggaaagaa catgtgagca
-      661 aaaggccagc aaaaggccag gaaccgtaaa aaggccgcgt tgctggcgtt tttccatagg
-      721 ctccgccccc ctgacgagca tcacaaaaat cgacgctcaa gtcagaggtg gcgaaacccg
-      781 acaggactat aaagatacca ggcgtttccc cctggaagct ccctcgtgcg ctctcctgtt
-      841 ccgaccctgc cgcttaccgg atacctgtcc gcctttctcc cttcgggaag cgtggcgctt
-      901 tctcatagct cacgctgtag gtatctcagt tcggtgtagg tcgttcgctc caagctgggc
-      961 tgtgtgcacg aaccccccgt tcagcccgac cgctgcgcct tatccggtaa ctatcgtctt
-     1021 gagtccaacc cggtaagaca cgacttatcg ccactggcag cagccactgg taacaggatt
-     1081 agcagagcga ggtatgtagg cggtgctaca gagttcttga agtggtggcc taactacggc
-     1141 tacactagaa ggacagtatt tggtatctgc gctctgctga agccagttac cttcggaaaa
-     1201 agagttggta gctcttgatc cggcaaacaa accaccgctg gtagcggtgg tttttttgtt
-     1261 tgcaagcagc agattacgcg cagaaaaaaa ggatctcaag aagatccttt gatcttttct
-     1321 acggggtctg acgctcagtg gaacgaaaac tcacgttaag ggattttggt catgagatta
-     1381 tcaaaaagga tcttcaccta gatcctttta aattaaaaat gaagttttaa atcaatctaa
-     1441 agtatatatg agtaaacttg gtctgacagt taccaatgct taatcagtga ggcacctatc
-     1501 tcagcgatct gtctatttcg ttcatccata gttgcctgac tccccgtcgt gtagataact
-     1561 acgatacggg agggcttacc atctggcccc agtgctgcaa tgataccgcg agacccacgc
-     1621 tcaccggctc cagatttatc agcaataaac cagccagccg gaagggccga gcgcagaagt
-     1681 ggtcctgcaa ctttatccgc ctccatccag tctattaatt gttgccggga agctagagta
-     1741 agtagttcgc cagttaatag tttgcgcaac gttgttgcca ttgctacagg catcgtggtg
-     1801 tcacgctcgt cgtttggtat ggcttcattc agctccggtt cccaacgatc aaggcgagtt
-     1861 acatgatccc ccatgttgtg caaaaaagcg gttagctcct tcggtcctcc gatcgttgtc
-     1921 agaagtaagt tggccgcagt gttatcactc atggttatgg cagcactgca taattctctt
-     1981 actgtcatgc catccgtaag atgcttttct gtgactggtg agtactcaac caagtcattc
-     2041 tgagaatagt gtatgcggcg accgagttgc tcttgcccgg cgtcaatacg ggataatacc
-     2101 gcgccacata gcagaacttt aaaagtgctc atcattggaa aacgttcttc ggggcgaaaa
-     2161 ctctcaagga tcttaccgct gttgagatcc agttcgatgt aacccactcg tgcacccaac
-     2221 tgatcttcag catcttttac tttcaccagc gtttctgggt gagcaaaaac aggaaggcaa
-     2281 aatgccgcaa aaaagggaat aagggcgaca cggaaatgtt gaatactcat actcttcctt
-     2341 tttcaatatt attgaagcat ttatcagggt tattgtctca tgagcggata catatttgaa
-     2401 tgtatttaga aaaataaaca aataggggtt ccgcgcacat ttccccgaaa agtgccacct
-     2461 gacgtctaag aaaccattat tatcatgaca ttaacctata aaaataggcg tatcacgagg
-     2521 cagaatttca gataaaaaaa atccttagct ttcgctaagg atgatttctg gaattcgcgg
-     2581 ccgcttctag agactagtgg gtctca
-//
-LOCUS       DVL2_AG                 2606 bp ds-DNA     circular     16-MAR-2015
-DEFINITION  .
-KEYWORDS    "glycerol:MC-1-40 (Author)" "antibiotic:Ampicillin (AMP)"          
-            "part-subtype:Level 2" "source:CIDAR" "part-type:Destination
-            Vector" "cloned-by:Author" "plasmid:MCP-1-B8 (DHD 7/9/13)"
-            "backbone:pSB1A2" "fusion-site:AG"
-COMMENT     MoClo Destination Vector: Level 0, pSB1A2 backbone with AG fusion  
-            sites flanking a LacZalpha selectable marker.
-FEATURES             Location/Qualifiers
-     misc_feature    complement(693..1375)
-                     /label="ColE1"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
-     misc_feature    13..494
-                     /label="lacZalpha"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    complement(1473..2132)
-                     /label="ampR"
-                     /ApEinfo_revcolor=#75c6a9
-                     /ApEinfo_fwdcolor=#75c6a9
-ORIGIN
-        1 GGAGatgtct tctgcaccat atgcggtgtg aaataccgca cagatgcgta aggagaaaat
-       61 accgcatcag gcgccattcg ccattcaggc tgcgcaactg ttgggaaggg cgatcggtgc
-      121 gggcctcttc gctattacgc cagctggcga aagggggatg tgctgcaagg cgattaagtt
-      181 gggtaacgcc agggttttcc cagtcacgac gttgtaaaac gacggccagt gaattcgagc
-      241 tcggtacccg gggatcctct agagtcgacc tgcaggcatg caagcttggc gtaatcatgg
-      301 tcatagctgt ttcctgtgtg aaattgttat ccgctcacaa ttccacacaa catacgagcc
-      361 ggaagcataa agtgtaaagc ctggggtgcc taatgagtga gctaactcac attaattgcg
-      421 ttgcgctcac tgcccgcttt ccagtcggga aacctgtcgt gccagctgca ttaatgaatc
-      481 ggccaacgcg cggggaagac gtTGCCagag acctactagt agcggccgct gcaggcttcc
-      541 tcgctcactg actcgctgcg ctcggtcgtt cggctgcggc gagcggtatc agctcactca
-      601 aaggcggtaa tacggttatc cacagaatca ggggataacg caggaaagaa catgtgagca
-      661 aaaggccagc aaaaggccag gaaccgtaaa aaggccgcgt tgctggcgtt tttccatagg
-      721 ctccgccccc ctgacgagca tcacaaaaat cgacgctcaa gtcagaggtg gcgaaacccg
-      781 acaggactat aaagatacca ggcgtttccc cctggaagct ccctcgtgcg ctctcctgtt
-      841 ccgaccctgc cgcttaccgg atacctgtcc gcctttctcc cttcgggaag cgtggcgctt
-      901 tctcatagct cacgctgtag gtatctcagt tcggtgtagg tcgttcgctc caagctgggc
-      961 tgtgtgcacg aaccccccgt tcagcccgac cgctgcgcct tatccggtaa ctatcgtctt
-     1021 gagtccaacc cggtaagaca cgacttatcg ccactggcag cagccactgg taacaggatt
-     1081 agcagagcga ggtatgtagg cggtgctaca gagttcttga agtggtggcc taactacggc
-     1141 tacactagaa ggacagtatt tggtatctgc gctctgctga agccagttac cttcggaaaa
-     1201 agagttggta gctcttgatc cggcaaacaa accaccgctg gtagcggtgg tttttttgtt
-     1261 tgcaagcagc agattacgcg cagaaaaaaa ggatctcaag aagatccttt gatcttttct
-     1321 acggggtctg acgctcagtg gaacgaaaac tcacgttaag ggattttggt catgagatta
-     1381 tcaaaaagga tcttcaccta gatcctttta aattaaaaat gaagttttaa atcaatctaa
-     1441 agtatatatg agtaaacttg gtctgacagt taccaatgct taatcagtga ggcacctatc
-     1501 tcagcgatct gtctatttcg ttcatccata gttgcctgac tccccgtcgt gtagataact
-     1561 acgatacggg agggcttacc atctggcccc agtgctgcaa tgataccgcg agacccacgc
-     1621 tcaccggctc cagatttatc agcaataaac cagccagccg gaagggccga gcgcagaagt
-     1681 ggtcctgcaa ctttatccgc ctccatccag tctattaatt gttgccggga agctagagta
-     1741 agtagttcgc cagttaatag tttgcgcaac gttgttgcca ttgctacagg catcgtggtg
-     1801 tcacgctcgt cgtttggtat ggcttcattc agctccggtt cccaacgatc aaggcgagtt
-     1861 acatgatccc ccatgttgtg caaaaaagcg gttagctcct tcggtcctcc gatcgttgtc
-     1921 agaagtaagt tggccgcagt gttatcactc atggttatgg cagcactgca taattctctt
-     1981 actgtcatgc catccgtaag atgcttttct gtgactggtg agtactcaac caagtcattc
-     2041 tgagaatagt gtatgcggcg accgagttgc tcttgcccgg cgtcaatacg ggataatacc
-     2101 gcgccacata gcagaacttt aaaagtgctc atcattggaa aacgttcttc ggggcgaaaa
-     2161 ctctcaagga tcttaccgct gttgagatcc agttcgatgt aacccactcg tgcacccaac
-     2221 tgatcttcag catcttttac tttcaccagc gtttctgggt gagcaaaaac aggaaggcaa
-     2281 aatgccgcaa aaaagggaat aagggcgaca cggaaatgtt gaatactcat actcttcctt
-     2341 tttcaatatt attgaagcat ttatcagggt tattgtctca tgagcggata catatttgaa
-     2401 tgtatttaga aaaataaaca aataggggtt ccgcgcacat ttccccgaaa agtgccacct
-     2461 gacgtctaag aaaccattat tatcatgaca ttaacctata aaaataggcg tatcacgagg
-     2521 cagaatttca gataaaaaaa atccttagct ttcgctaagg atgatttctg gaattcgcgg
-     2581 ccgcttctag agactagtgg gtctca
-//
-LOCUS       DVL2_AH                 2606 bp ds-DNA     circular     16-MAR-2015
-DEFINITION  .
-KEYWORDS    "cloned-by:Author" "part-type:Destination Vector"                  
-            "part-subtype:Level 2" "antibiotic:Ampicillin (AMP)"
-            "backbone:pSB1A2" "glycerol:MC-1-41 (Author)" "source:CIDAR"
-            "fusion-site:AH" "plasmid:MCP-1-B9  (SC 8/24/13)"
-COMMENT     MoClo Destination Vector: Level 0, pSB1A2 backbone with AH fusion  
-            sites flanking a LacZalpha selectable marker.
-FEATURES             Location/Qualifiers
-     misc_feature    13..494
-                     /label="lacZalpha"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    complement(693..1375)
-                     /label="ColE1"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
-     misc_feature    complement(1473..2132)
-                     /label="ampR"
-                     /ApEinfo_revcolor=#75c6a9
-                     /ApEinfo_fwdcolor=#75c6a9
-ORIGIN
-        1 GGAGatgtct tctgcaccat atgcggtgtg aaataccgca cagatgcgta aggagaaaat
-       61 accgcatcag gcgccattcg ccattcaggc tgcgcaactg ttgggaaggg cgatcggtgc
-      121 gggcctcttc gctattacgc cagctggcga aagggggatg tgctgcaagg cgattaagtt
-      181 gggtaacgcc agggttttcc cagtcacgac gttgtaaaac gacggccagt gaattcgagc
-      241 tcggtacccg gggatcctct agagtcgacc tgcaggcatg caagcttggc gtaatcatgg
-      301 tcatagctgt ttcctgtgtg aaattgttat ccgctcacaa ttccacacaa catacgagcc
-      361 ggaagcataa agtgtaaagc ctggggtgcc taatgagtga gctaactcac attaattgcg
-      421 ttgcgctcac tgcccgcttt ccagtcggga aacctgtcgt gccagctgca ttaatgaatc
-      481 ggccaacgcg cggggaagac gtACTAagag acctactagt agcggccgct gcaggcttcc
-      541 tcgctcactg actcgctgcg ctcggtcgtt cggctgcggc gagcggtatc agctcactca
-      601 aaggcggtaa tacggttatc cacagaatca ggggataacg caggaaagaa catgtgagca
-      661 aaaggccagc aaaaggccag gaaccgtaaa aaggccgcgt tgctggcgtt tttccatagg
-      721 ctccgccccc ctgacgagca tcacaaaaat cgacgctcaa gtcagaggtg gcgaaacccg
-      781 acaggactat aaagatacca ggcgtttccc cctggaagct ccctcgtgcg ctctcctgtt
-      841 ccgaccctgc cgcttaccgg atacctgtcc gcctttctcc cttcgggaag cgtggcgctt
-      901 tctcatagct cacgctgtag gtatctcagt tcggtgtagg tcgttcgctc caagctgggc
-      961 tgtgtgcacg aaccccccgt tcagcccgac cgctgcgcct tatccggtaa ctatcgtctt
-     1021 gagtccaacc cggtaagaca cgacttatcg ccactggcag cagccactgg taacaggatt
-     1081 agcagagcga ggtatgtagg cggtgctaca gagttcttga agtggtggcc taactacggc
-     1141 tacactagaa ggacagtatt tggtatctgc gctctgctga agccagttac cttcggaaaa
-     1201 agagttggta gctcttgatc cggcaaacaa accaccgctg gtagcggtgg tttttttgtt
-     1261 tgcaagcagc agattacgcg cagaaaaaaa ggatctcaag aagatccttt gatcttttct
-     1321 acggggtctg acgctcagtg gaacgaaaac tcacgttaag ggattttggt catgagatta
-     1381 tcaaaaagga tcttcaccta gatcctttta aattaaaaat gaagttttaa atcaatctaa
-     1441 agtatatatg agtaaacttg gtctgacagt taccaatgct taatcagtga ggcacctatc
-     1501 tcagcgatct gtctatttcg ttcatccata gttgcctgac tccccgtcgt gtagataact
-     1561 acgatacggg agggcttacc atctggcccc agtgctgcaa tgataccgcg agacccacgc
-     1621 tcaccggctc cagatttatc agcaataaac cagccagccg gaagggccga gcgcagaagt
-     1681 ggtcctgcaa ctttatccgc ctccatccag tctattaatt gttgccggga agctagagta
-     1741 agtagttcgc cagttaatag tttgcgcaac gttgttgcca ttgctacagg catcgtggtg
-     1801 tcacgctcgt cgtttggtat ggcttcattc agctccggtt cccaacgatc aaggcgagtt
-     1861 acatgatccc ccatgttgtg caaaaaagcg gttagctcct tcggtcctcc gatcgttgtc
-     1921 agaagtaagt tggccgcagt gttatcactc atggttatgg cagcactgca taattctctt
-     1981 actgtcatgc catccgtaag atgcttttct gtgactggtg agtactcaac caagtcattc
-     2041 tgagaatagt gtatgcggcg accgagttgc tcttgcccgg cgtcaatacg ggataatacc
-     2101 gcgccacata gcagaacttt aaaagtgctc atcattggaa aacgttcttc ggggcgaaaa
-     2161 ctctcaagga tcttaccgct gttgagatcc agttcgatgt aacccactcg tgcacccaac
-     2221 tgatcttcag catcttttac tttcaccagc gtttctgggt gagcaaaaac aggaaggcaa
-     2281 aatgccgcaa aaaagggaat aagggcgaca cggaaatgtt gaatactcat actcttcctt
-     2341 tttcaatatt attgaagcat ttatcagggt tattgtctca tgagcggata catatttgaa
-     2401 tgtatttaga aaaataaaca aataggggtt ccgcgcacat ttccccgaaa agtgccacct
-     2461 gacgtctaag aaaccattat tatcatgaca ttaacctata aaaataggcg tatcacgagg
-     2521 cagaatttca gataaaaaaa atccttagct ttcgctaagg atgatttctg gaattcgcgg
-     2581 ccgcttctag agactagtgg gtctca
-//
-LOCUS       DVL2_EH                 2606 bp ds-DNA     circular     16-MAR-2015
-DEFINITION  .
-KEYWORDS    "cloned-by:Author" "backbone:pSB1A2" "source:CIDAR"                
-            "glycerol:MC-1-42 (Author)" "fusion-site:EH" "antibiotic:Ampicillin
-            (AMP)" "seq-verify:SI-227" "plasmid:MCP-1-I7 (SI 4/11/13)"
-            "part-type:Destination Vector" "part-subtype:Level 2"
-COMMENT     MoClo Destination Vector: Level 0, pSB1A2 backbone with EH fusion  
-            sites flanking a LacZalpha selectable marker.
-FEATURES             Location/Qualifiers
-     misc_feature    complement(693..1375)
-                     /label="ColE1"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
-     misc_feature    13..494
-                     /label="lacZalpha"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    complement(1473..2132)
-                     /label="ampR"
-                     /ApEinfo_revcolor=#75c6a9
-                     /ApEinfo_fwdcolor=#75c6a9
-ORIGIN
-        1 GCTTatgtct tctgcaccat atgcggtgtg aaataccgca cagatgcgta aggagaaaat
-       61 accgcatcag gcgccattcg ccattcaggc tgcgcaactg ttgggaaggg cgatcggtgc
-      121 gggcctcttc gctattacgc cagctggcga aagggggatg tgctgcaagg cgattaagtt
-      181 gggtaacgcc agggttttcc cagtcacgac gttgtaaaac gacggccagt gaattcgagc
-      241 tcggtacccg gggatcctct agagtcgacc tgcaggcatg caagcttggc gtaatcatgg
-      301 tcatagctgt ttcctgtgtg aaattgttat ccgctcacaa ttccacacaa catacgagcc
-      361 ggaagcataa agtgtaaagc ctggggtgcc taatgagtga gctaactcac attaattgcg
-      421 ttgcgctcac tgcccgcttt ccagtcggga aacctgtcgt gccagctgca ttaatgaatc
-      481 ggccaacgcg cggggaagac gtACTAagag acctactagt agcggccgct gcaggcttcc
-      541 tcgctcactg actcgctgcg ctcggtcgtt cggctgcggc gagcggtatc agctcactca
-      601 aaggcggtaa tacggttatc cacagaatca ggggataacg caggaaagaa catgtgagca
-      661 aaaggccagc aaaaggccag gaaccgtaaa aaggccgcgt tgctggcgtt tttccatagg
-      721 ctccgccccc ctgacgagca tcacaaaaat cgacgctcaa gtcagaggtg gcgaaacccg
-      781 acaggactat aaagatacca ggcgtttccc cctggaagct ccctcgtgcg ctctcctgtt
-      841 ccgaccctgc cgcttaccgg atacctgtcc gcctttctcc cttcgggaag cgtggcgctt
-      901 tctcatagct cacgctgtag gtatctcagt tcggtgtagg tcgttcgctc caagctgggc
-      961 tgtgtgcacg aaccccccgt tcagcccgac cgctgcgcct tatccggtaa ctatcgtctt
-     1021 gagtccaacc cggtaagaca cgacttatcg ccactggcag cagccactgg taacaggatt
-     1081 agcagagcga ggtatgtagg cggtgctaca gagttcttga agtggtggcc taactacggc
-     1141 tacactagaa ggacagtatt tggtatctgc gctctgctga agccagttac cttcggaaaa
-     1201 agagttggta gctcttgatc cggcaaacaa accaccgctg gtagcggtgg tttttttgtt
-     1261 tgcaagcagc agattacgcg cagaaaaaaa ggatctcaag aagatccttt gatcttttct
-     1321 acggggtctg acgctcagtg gaacgaaaac tcacgttaag ggattttggt catgagatta
-     1381 tcaaaaagga tcttcaccta gatcctttta aattaaaaat gaagttttaa atcaatctaa
-     1441 agtatatatg agtaaacttg gtctgacagt taccaatgct taatcagtga ggcacctatc
-     1501 tcagcgatct gtctatttcg ttcatccata gttgcctgac tccccgtcgt gtagataact
-     1561 acgatacggg agggcttacc atctggcccc agtgctgcaa tgataccgcg agacccacgc
-     1621 tcaccggctc cagatttatc agcaataaac cagccagccg gaagggccga gcgcagaagt
-     1681 ggtcctgcaa ctttatccgc ctccatccag tctattaatt gttgccggga agctagagta
-     1741 agtagttcgc cagttaatag tttgcgcaac gttgttgcca ttgctacagg catcgtggtg
-     1801 tcacgctcgt cgtttggtat ggcttcattc agctccggtt cccaacgatc aaggcgagtt
-     1861 acatgatccc ccatgttgtg caaaaaagcg gttagctcct tcggtcctcc gatcgttgtc
-     1921 agaagtaagt tggccgcagt gttatcactc atggttatgg cagcactgca taattctctt
-     1981 actgtcatgc catccgtaag atgcttttct gtgactggtg agtactcaac caagtcattc
-     2041 tgagaatagt gtatgcggcg accgagttgc tcttgcccgg cgtcaatacg ggataatacc
-     2101 gcgccacata gcagaacttt aaaagtgctc atcattggaa aacgttcttc ggggcgaaaa
-     2161 ctctcaagga tcttaccgct gttgagatcc agttcgatgt aacccactcg tgcacccaac
-     2221 tgatcttcag catcttttac tttcaccagc gtttctgggt gagcaaaaac aggaaggcaa
-     2281 aatgccgcaa aaaagggaat aagggcgaca cggaaatgtt gaatactcat actcttcctt
-     2341 tttcaatatt attgaagcat ttatcagggt tattgtctca tgagcggata catatttgaa
-     2401 tgtatttaga aaaataaaca aataggggtt ccgcgcacat ttccccgaaa agtgccacct
-     2461 gacgtctaag aaaccattat tatcatgaca ttaacctata aaaataggcg tatcacgagg
-     2521 cagaatttca gataaaaaaa atccttagct ttcgctaagg atgatttctg gaattcgcgg
-     2581 ccgcttctag agactagtgg gtctca
-//
 LOCUS       EBFP2_AAV_MD            2940 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "antibiotic:Chloramphenicol" "part-subtype:Reporter"               
-            "backbone:pSB1C3" "glycerol:EA-1-35" "seq-verified:Yes"
-            "cloned-by:EA" "part-type:CDS"
+KEYWORDS    "cloned-by:EA" "glycerol:EA-1-35" "antibiotic:Chloramphenicol"     
+            "part-subtype:Reporter" "seq-verified:Yes" "part-type:CDS"
+            "backbone:pSB1C3"
 FEATURES             Location/Qualifiers
-     misc_feature    1116..1729
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(2016..2675)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
@@ -2189,6 +1630,10 @@ FEATURES             Location/Qualifiers
                      /label="EBFP2"
                      /ApEinfo_revcolor=#84b0dc
                      /ApEinfo_fwdcolor=#84b0dc
+     misc_feature    1116..1729
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 AAGAAGCTGC TGCTAAAGCT atgcggggtt ctcatcatca tcatcatcat ggtatggcta
        61 gcatgactgg tggacagcaa atgggtcggg atctgtacga gaacctgtac ttccagggct
@@ -2242,26 +1687,26 @@ ORIGIN
 //
 LOCUS       EBFP2_DAS_MD            2940 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "part-type:CDS" "glycerol:EA-1-36" "antibiotic:Chloramphenicol"    
-            "backbone:pSB1C3" "part-subtype:Reporter" "seq-verified:Yes"
-            "cloned-by:EA"
+KEYWORDS    "glycerol:EA-1-36" "backbone:pSB1C3" "antibiotic:Chloramphenicol"  
+            "seq-verified:Yes" "cloned-by:EA" "part-type:CDS"
+            "part-subtype:Reporter"
 FEATURES             Location/Qualifiers
-     misc_feature    1116..1729
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    810..845
                      /label="DAS"
                      /ApEinfo_revcolor=#ffef86
                      /ApEinfo_fwdcolor=#ffef86
-     misc_feature    21..809
-                     /label="EBFP2"
-                     /ApEinfo_revcolor=#84b0dc
-                     /ApEinfo_fwdcolor=#84b0dc
      misc_feature    complement(2016..2675)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    1116..1729
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    21..809
+                     /label="EBFP2"
+                     /ApEinfo_revcolor=#84b0dc
+                     /ApEinfo_fwdcolor=#84b0dc
 ORIGIN
         1 AAGAAGCTGC TGCTAAAGCT atgcggggtt ctcatcatca tcatcatcat ggtatggcta
        61 gcatgactgg tggacagcaa atgggtcggg atctgtacga gaacctgtac ttccagggct
@@ -2315,18 +1760,14 @@ ORIGIN
 //
 LOCUS       EBFP2_LAA_MD            2940 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "antibiotic:Chloramphenicol" "backbone:pSB1C3" "part-type:CDS"     
-            "part-subtype:Reporter" "glycerol:EA-1-23" "cloned-by:EA"
-            "seq-verified:Yes"
+KEYWORDS    "antibiotic:Chloramphenicol" "seq-verified:Yes" "glycerol:EA-1-23" 
+            "part-subtype:Reporter" "cloned-by:EA" "part-type:CDS"
+            "backbone:pSB1C3"
 FEATURES             Location/Qualifiers
      misc_feature    21..809
                      /label="EBFP2"
                      /ApEinfo_revcolor=#84b0dc
                      /ApEinfo_fwdcolor=#84b0dc
-     misc_feature    1116..1729
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    810..845
                      /label="LAA"
                      /ApEinfo_revcolor=#b1ff67
@@ -2335,6 +1776,10 @@ FEATURES             Location/Qualifiers
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    1116..1729
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 AAGAAGCTGC TGCTAAAGCT atgcggggtt ctcatcatca tcatcatcat ggtatggcta
        61 gcatgactgg tggacagcaa atgggtcggg atctgtacga gaacctgtac ttccagggct
@@ -2388,18 +1833,18 @@ ORIGIN
 //
 LOCUS       EBFP2_MD                2907 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "seq-verified:Yes" "backbone:pSB1C3" "part-type:CDS"               
-            "part-subtype:Reporter" "antibiotic:Chloramphenicol"
-            "glycerol:EA-1-22" "cloned-by:EA"
+KEYWORDS    "antibiotic:Chloramphenicol" "seq-verified:Yes" "glycerol:EA-1-22" 
+            "part-type:CDS" "part-subtype:Reporter" "cloned-by:EA"
+            "backbone:pSB1C3"
 FEATURES             Location/Qualifiers
-     misc_feature    1083..1696
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(1983..2642)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    1083..1696
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    21..809
                      /label="EBFP2"
                      /ApEinfo_revcolor=#84b0dc
@@ -2457,15 +1902,11 @@ ORIGIN
 //
 LOCUS       ECK120015170_DE         2146 bp ds-DNA     circular     23-APR-2015
 DEFINITION  .
-KEYWORDS    "antibiotic:Chloramphenicol" "cloned-by:EA" "fusion-sites:DE"      
-            "part-subtype:Natural" "backbone:pSB1C3" "seq-verified:Yes"
-            "part-type:Terminator" "glycerol:EA-1-31"
+KEYWORDS    "backbone:pSB1C3" "antibiotic:Chloramphenicol" "fusion-sites:DE"   
+            "part-subtype:Natural" "seq-verified:Yes" "glycerol:EA-1-31"
+            "cloned-by:EA" "part-type:Terminator"
 COMMENT     MoClo Level 0 basic part: Terminator                               
 FEATURES             Location/Qualifiers
-     misc_feature    complement(1160..1819)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    2089..2135
                      /label="ECK120015170"
                      /ApEinfo_revcolor=#d59687
@@ -2474,6 +1915,10 @@ FEATURES             Location/Qualifiers
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    complement(1160..1819)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
 ORIGIN
         1 tactagtagc ggccgctgca gtccggcaaa aaagggcaag gtgtcaccac cctgcccttt
        61 ttctttaaaa ccgaaaagat tacttcgcgt tatgcaggct tcctcgctca ctgactcgct
@@ -2514,15 +1959,11 @@ ORIGIN
 //
 LOCUS       ECK120015170_DF         2146 bp ds-DNA     circular     16-MAR-2015
 DEFINITION  .
-KEYWORDS    "seq-verified:Yes" "fusion-sites:DF" "glycerol:IG-1-16"            
-            "antibiotic:Chloramphenicol" "backbone:pSB1C3"
-            "part-type:Terminator" "cloned-by:KML" "part-subtype:Natural"
+KEYWORDS    "antibiotic:Chloramphenicol" "part-type:Terminator"                
+            "glycerol:IG-1-16" "backbone:pSB1C3" "seq-verified:Yes"
+            "part-subtype:Natural" "cloned-by:KML" "fusion-sites:DF"
 COMMENT     MoClo Level 0 basic part: Terminator                               
 FEATURES             Location/Qualifiers
-     misc_feature    2089..2135
-                     /label="ECK120015170"
-                     /ApEinfo_revcolor=#d59687
-                     /ApEinfo_fwdcolor=#d59687
      misc_feature    complement(1160..1819)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
@@ -2531,6 +1972,10 @@ FEATURES             Location/Qualifiers
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    2089..2135
+                     /label="ECK120015170"
+                     /ApEinfo_revcolor=#d59687
+                     /ApEinfo_fwdcolor=#d59687
 ORIGIN
         1 tactagtagc ggccgctgca gtccggcaaa aaagggcaag gtgtcaccac cctgcccttt
        61 ttctttaaaa ccgaaaagat tacttcgcgt tatgcaggct tcctcgctca ctgactcgct
@@ -2571,15 +2016,11 @@ ORIGIN
 //
 LOCUS       EYFP_ID                 2818 bp ds-DNA     circular     07-APR-2015
 DEFINITION  .
-KEYWORDS    "part-subtype:Reporter" "glycerol:IG-1-37" "backbone:pSB1C3"       
-            "antibiotic:Chloramphenicol" "part-type:CDS" "seq-verified:Yes"
-            "cloned-by:YA"
+KEYWORDS    "glycerol:IG-1-37" "part-type:CDS" "antibiotic:Chloramphenicol"    
+            "seq-verified:Yes" "part-subtype:Reporter" "cloned-by:YA"
+            "backbone:pSB1C3"
 COMMENT     EYFP_ID                                                            
 FEATURES             Location/Qualifiers
-     misc_feature    7..723
-                     /label="EYFP"
-                     /ApEinfo_revcolor=#84b0dc
-                     /ApEinfo_fwdcolor=#84b0dc
      misc_feature    1..6
                      /label="SRLinker"
                      /ApEinfo_revcolor=#f58a5e
@@ -2592,6 +2033,10 @@ FEATURES             Location/Qualifiers
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    7..723
+                     /label="EYFP"
+                     /ApEinfo_revcolor=#84b0dc
+                     /ApEinfo_fwdcolor=#84b0dc
 ORIGIN
         1 TCTAGAatgg tgagcaaggg cgaggagctg ttcaccgggg tggtgcccat cctggtcgag
        61 ctggacggcg acgtaaacgg ccacaagttc agcgtgtccg gcgagggcga gggcgatgcc
@@ -2643,9 +2088,10 @@ ORIGIN
 //
 LOCUS       GFPm_AAV_CD             2857 bp ds-DNA     circular     16-MAR-2015
 DEFINITION  .
-KEYWORDS    "fusion-sites:CD" "seq-verify:Yes" "backbone:pSB1A2" "plasmid:Diego
-            C Box #1" "part-subtype:Reporter" "glycerol:DC-1-24" "source:CIDAR"
-            "part-type:CDS" "cloned-by:DC" "antibiotic:Ampicillin"
+KEYWORDS    "part-type:CDS" "source:CIDAR" "seq-verify:Yes"                    
+            "part-subtype:Reporter" "glycerol:DC-1-24" "plasmid:Diego C Box #1"
+            "fusion-sites:CD" "cloned-by:DC" "antibiotic:Ampicillin"
+            "backbone:pSB1A2"
 COMMENT     MoClo Level 0 basic part: CDS [E0040m_AAV]                         
 COMMENT     
 FEATURES             Location/Qualifiers
@@ -2717,26 +2163,26 @@ ORIGIN
 //
 LOCUS       GFPm_AAV_MD             2865 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "part-type:CDS" "glycerol:EA-1-38" "antibiotic:Chloramphenicol"    
-            "part-subtype:Reporter" "backbone:pSB1C3" "cloned-by:EA"
-            "seq-verified:Yes"
+KEYWORDS    "seq-verified:Yes" "backbone:pSB1C3" "cloned-by:EA" "part-type:CDS"
+            "glycerol:EA-1-38" "part-subtype:Reporter"
+            "antibiotic:Chloramphenicol"
 FEATURES             Location/Qualifiers
-     misc_feature    1041..1654
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    735..770
-                     /label="AAV"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    21..734
                      /label="EGFPm"
                      /ApEinfo_revcolor=#c7b0e3
                      /ApEinfo_fwdcolor=#c7b0e3
+     misc_feature    735..770
+                     /label="AAV"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(1941..2600)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    1041..1654
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 AAGAAGCTGC TGCTAAAGCT atgcgtaaag gagaagaact tttcactgga gttgtcccaa
        61 ttcttgttga attagatggt gatgttaatg ggcacaaatt ttctgtcagt ggagagggtg
@@ -2789,24 +2235,25 @@ ORIGIN
 //
 LOCUS       GFPm_DAS_CD             2857 bp ds-DNA     circular     16-MAR-2015
 DEFINITION  .
-KEYWORDS    "cloned-by:DC" "fusion-sites:CD" "plasmid:Diego C Box #1"          
-            "seq-verify:Yes" "part-subtype:Reporter" "antibiotic:Ampicillin"
-            "glycerol:DC-1-25" "backbone:pSB1A2" "source:CIDAR" "part-type:CDS"
+KEYWORDS    "cloned-by:DC" "backbone:pSB1A2" "seq-verify:Yes"                  
+            "antibiotic:Ampicillin" "plasmid:Diego C Box #1"
+            "part-subtype:Reporter" "fusion-sites:CD" "glycerol:DC-1-25"
+            "part-type:CDS" "source:CIDAR"
 COMMENT     MoClo Level 0 basic part: CDS [E0040m_DAS]                         
 COMMENT     
 FEATURES             Location/Qualifiers
-     misc_feature    complement(1725..2384)
-                     /label="ampR"
-                     /ApEinfo_revcolor=#75c6a9
-                     /ApEinfo_fwdcolor=#75c6a9
-     misc_feature    719..754
-                     /label="DAS"
-                     /ApEinfo_revcolor=#ffef86
-                     /ApEinfo_fwdcolor=#ffef86
      misc_feature    complement(945..1627)
                      /label="ColE1"
                      /ApEinfo_revcolor=#faac61
                      /ApEinfo_fwdcolor=#faac61
+     misc_feature    719..754
+                     /label="DAS"
+                     /ApEinfo_revcolor=#ffef86
+                     /ApEinfo_fwdcolor=#ffef86
+     misc_feature    complement(1725..2384)
+                     /label="ampR"
+                     /ApEinfo_revcolor=#75c6a9
+                     /ApEinfo_fwdcolor=#75c6a9
      misc_feature    5..718
                      /label="EGFPm"
                      /ApEinfo_revcolor=#c7b0e3
@@ -2863,18 +2310,18 @@ ORIGIN
 //
 LOCUS       GFPm_DAS_MD             2865 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "part-type:CDS" "glycerol:EA-1-40" "cloned-by:EA" "backbone:pSB1C3"
-            "seq-verified:Yes" "part-subtype:Reporter"
-            "antibiotic:Chloramphenicol"
+KEYWORDS    "glycerol:EA-1-40" "cloned-by:EA" "part-type:CDS"                  
+            "antibiotic:Chloramphenicol" "part-subtype:Reporter"
+            "seq-verified:Yes" "backbone:pSB1C3"
 FEATURES             Location/Qualifiers
-     misc_feature    735..770
-                     /label="DAS"
-                     /ApEinfo_revcolor=#ffef86
-                     /ApEinfo_fwdcolor=#ffef86
      misc_feature    21..734
                      /label="EGFPm"
                      /ApEinfo_revcolor=#c7b0e3
                      /ApEinfo_fwdcolor=#c7b0e3
+     misc_feature    735..770
+                     /label="DAS"
+                     /ApEinfo_revcolor=#ffef86
+                     /ApEinfo_fwdcolor=#ffef86
      misc_feature    complement(1941..2600)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
@@ -2935,23 +2382,23 @@ ORIGIN
 //
 LOCUS       GFPm_ID                 2821 bp ds-DNA     circular     07-APR-2015
 DEFINITION  .
-KEYWORDS    "glycerol:IG-1-37" "seq-verified:Yes" "part-type:CDS"              
-            "backbone:pSB1C3" "cloned-by:YA" "part-subtype:Reporter"
-            "antibiotic:Chloramphenicol"
+KEYWORDS    "antibiotic:Chloramphenicol" "seq-verified:Yes"                    
+            "part-subtype:Reporter" "cloned-by:YA" "part-type:CDS"
+            "glycerol:IG-1-37" "backbone:pSB1C3"
 COMMENT     GFPm_ID                                                            
 FEATURES             Location/Qualifiers
-     misc_feature    complement(1897..2556)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
-     misc_feature    1..6
-                     /label="SRLinker"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    997..1610
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    1..6
+                     /label="SRLinker"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    complement(1897..2556)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
      CDS             7..726
                      /label="E0040m"
                      /ApEinfo_revcolor=#faac61
@@ -3008,17 +2455,16 @@ ORIGIN
 //
 LOCUS       GFPm_LAA_CD             2857 bp ds-DNA     circular     16-MAR-2015
 DEFINITION  .
-KEYWORDS    "part-subtype:Reporter" "glycerol:DC-1-26" "part-type:CDS"         
-            "fusion-sites:CD" "cloned-by:DC" "antibiotic:Ampicillin"
-            "seq-verify:Yes" "plasmid:Diego C Box #1" "backbone:pSB1A2"
-            "source:CIDAR"
+KEYWORDS    "part-subtype:Reporter" "antibiotic:Ampicillin" "cloned-by:DC"     
+            "fusion-sites:CD" "backbone:pSB1A2" "source:CIDAR" "part-type:CDS"
+            "glycerol:DC-1-26" "seq-verify:Yes" "plasmid:Diego C Box #1"
 COMMENT     MoClo Level 0 basic part: CDS [E0040m_LAA]                         
 COMMENT     
 FEATURES             Location/Qualifiers
-     misc_feature    complement(945..1627)
-                     /label="ColE1"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
+     misc_feature    719..754
+                     /label="LAA"
+                     /ApEinfo_revcolor=#b1ff67
+                     /ApEinfo_fwdcolor=#b1ff67
      misc_feature    5..718
                      /label="EGFPm"
                      /ApEinfo_revcolor=#c7b0e3
@@ -3027,10 +2473,10 @@ FEATURES             Location/Qualifiers
                      /label="ampR"
                      /ApEinfo_revcolor=#75c6a9
                      /ApEinfo_fwdcolor=#75c6a9
-     misc_feature    719..754
-                     /label="LAA"
-                     /ApEinfo_revcolor=#b1ff67
-                     /ApEinfo_fwdcolor=#b1ff67
+     misc_feature    complement(945..1627)
+                     /label="ColE1"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
 ORIGIN
         1 AATGatgcgt aaaggagaag aacttttcac tggagttgtc ccaattcttg ttgaattaga
        61 tggtgatgtt aatgggcaca aattttctgt cagtggagag ggtgaaggtg atgcaacata
@@ -3083,14 +2529,18 @@ ORIGIN
 //
 LOCUS       GFPm_LAA_MD             2865 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "cloned-by:EA" "seq-verified:Yes" "backbone:pSB1C3" "part-type:CDS"
-            "antibiotic:Chloramphenicol" "glycerol:EA-1-41"
-            "part-subtype:Reporter"
+KEYWORDS    "backbone:pSB1C3" "part-subtype:Reporter" "cloned-by:EA"           
+            "antibiotic:Chloramphenicol" "seq-verified:Yes" "part-type:CDS"
+            "glycerol:EA-1-41"
 FEATURES             Location/Qualifiers
      misc_feature    735..770
                      /label="LAA"
                      /ApEinfo_revcolor=#b1ff67
                      /ApEinfo_fwdcolor=#b1ff67
+     misc_feature    1041..1654
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(1941..2600)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
@@ -3099,10 +2549,6 @@ FEATURES             Location/Qualifiers
                      /label="EGFPm"
                      /ApEinfo_revcolor=#c7b0e3
                      /ApEinfo_fwdcolor=#c7b0e3
-     misc_feature    1041..1654
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 AAGAAGCTGC TGCTAAAGCT atgcgtaaag gagaagaact tttcactgga gttgtcccaa
        61 ttcttgttga attagatggt gatgttaatg ggcacaaatt ttctgtcagt ggagagggtg
@@ -3155,9 +2601,9 @@ ORIGIN
 //
 LOCUS       GFPm_MD                 2835 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "part-subtype:Reporter" "backbone:pSB1C3" "part-type:CDS"          
-            "seq-verified:Yes" "cloned-by:EA" "antibiotic:Chloramphenicol"
-            "glycerol:EA-1-24"
+KEYWORDS    "backbone:pSB1C3" "cloned-by:EA" "seq-verified:Yes"                
+            "antibiotic:Chloramphenicol" "part-subtype:Reporter"
+            "glycerol:EA-1-24" "part-type:CDS"
 FEATURES             Location/Qualifiers
      misc_feature    complement(1911..2570)
                      /label="camR"
@@ -3223,18 +2669,18 @@ ORIGIN
 //
 LOCUS       IR1-IR2_Term2_DE        2249 bp ds-DNA     circular     23-APR-2015
 DEFINITION  .
-KEYWORDS    "cloned-by:EA" "glycerol:EA-1-32" "backbone:pSB1C3"                
-            "antibiotic:Chloramphenicol" "fusion-sites:DE"
-            "part-subtype:Natural" "part-type:Terminator" "seq-verified:Yes"
+KEYWORDS    "fusion-sites:DE" "cloned-by:EA" "part-subtype:Natural"            
+            "part-type:Terminator" "antibiotic:Chloramphenicol"
+            "seq-verified:Yes" "glycerol:EA-1-32" "backbone:pSB1C3"
 FEATURES             Location/Qualifiers
-     misc_feature    complement(1160..1819)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    2089..2238
                      /label="IR1-IR2-Term2"
                      /ApEinfo_revcolor=#b4abac
                      /ApEinfo_fwdcolor=#b4abac
+     misc_feature    complement(1160..1819)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    260..873
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
@@ -3281,19 +2727,22 @@ ORIGIN
 //
 LOCUS       J00B2C12m_AE            3648 bp ds-DNA     circular     16-MAR-2015
 DEFINITION  .
-KEYWORDS    "glycerol:IG-1-38" "antibiotic:Kanamycin"                          
-            "part-subtype:Constitutively Expressed LacI Gene"
-            "seq-verified:Yes" "cloned-by:YA" "backbone:pSB1K3"
-            "fusion-sites:AE" "part-type:Level 1"
+KEYWORDS    "antibiotic:Kanamycin" "backbone:pSB1K3" "seq-verified:Yes"        
+            "part-subtype:Constitutively Expressed LacI Gene" "part-type:Level
+            1" "glycerol:IG-1-38" "fusion-sites:AE" "cloned-by:YA"
 COMMENT     MoClo Level 1 Unit: Fluorescent Expression                         
             [A:J23100:B:BCD2:C:C0012m:D:B0015:E]
 COMMENT     
 COMMENT     
 FEATURES             Location/Qualifiers
-     misc_feature    5..39
-                     /label="J23100"
-                     /ApEinfo_revcolor=#c6c9d1
-                     /ApEinfo_fwdcolor=#c6c9d1
+     misc_feature    1689..2303
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#b1ff67
+                     /ApEinfo_fwdcolor=#b1ff67
+     misc_feature    complement(2527..3285)
+                     /label="kanR"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
      misc_feature    1221..1256
                      /label="LVA"
                      /ApEinfo_revcolor=#f58a5e
@@ -3302,22 +2751,18 @@ FEATURES             Location/Qualifiers
                      /label="B0015"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    5..39
+                     /label="J23100"
+                     /ApEinfo_revcolor=#c6c9d1
+                     /ApEinfo_fwdcolor=#c6c9d1
      RBS             44..128
                      /label="BCD2"
                      /ApEinfo_revcolor=#9eafd2
                      /ApEinfo_fwdcolor=#9eafd2
-     misc_feature    complement(2527..3285)
-                     /label="kanR"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
      misc_feature    132..1220
                      /label="lacIm"
                      /ApEinfo_revcolor=#ffef86
                      /ApEinfo_fwdcolor=#ffef86
-     misc_feature    1689..2303
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#b1ff67
-                     /ApEinfo_fwdcolor=#b1ff67
 ORIGIN
         1 GGAGttgacg gctagctcag tcctaggtac agtgctagcT ACTgggccca agttcactta
        61 aaaaggagat caacaatgaa agcaattttc gtactgaaac atcttaatca tgctaaggag
@@ -3383,20 +2828,20 @@ ORIGIN
 //
 LOCUS       L3S1P00_DE              2190 bp ds-DNA     circular     30-MAR-2015
 DEFINITION  .
-KEYWORDS    "plasmid:Diego C Box #1" "source:Phoenix" "cloned-by:DC"           
-            "antibiotic:Chloramphenicol" "glycerol:-" "part-subtype:Synthetic"
-            "fusion-sites:DE" "seq-verify:Yes" "backbone:pSB1C3"
+KEYWORDS    "antibiotic:Chloramphenicol" "cloned-by:DC" "seq-verify:Yes"       
+            "plasmid:Diego C Box #1" "fusion-sites:DE" "glycerol:-"
+            "backbone:pSB1C3" "source:Phoenix" "part-subtype:Synthetic"
             "part-type:Terminator"
 COMMENT     MoClo Level 0 basic part: Terminator [L3S1P00]                     
 FEATURES             Location/Qualifiers
-     misc_feature    1266..1925
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    58..95
                      /label="Spacer"
                      /ApEinfo_revcolor=#b4abac
                      /ApEinfo_fwdcolor=#b4abac
+     misc_feature    1266..1925
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    366..979
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
@@ -3446,22 +2891,22 @@ ORIGIN
 //
 LOCUS       L3S1P13_DE              2188 bp ds-DNA     circular     30-MAR-2015
 DEFINITION  .
-KEYWORDS    "part-type:Terminator" "part-subtype:Synthetic" "backbone:pSB1C3"  
-            "seq-verify:Yes" "plasmid:Diego C Box #1" "fusion-sites:DE"
-            "cloned-by:DC" "glycerol:-" "antibiotic:Chloramphenicol"
-            "source:Phoenix"
+KEYWORDS    "glycerol:-" "plasmid:Diego C Box #1" "fusion-sites:DE"            
+            "backbone:pSB1C3" "seq-verify:Yes" "part-subtype:Synthetic"
+            "source:Phoenix" "cloned-by:DC" "part-type:Terminator"
+            "antibiotic:Chloramphenicol"
 COMMENT     MoClo Level 0 basic part: Terminator [L3S1P13]                     
 FEATURES             Location/Qualifiers
      misc_feature    1264..1923
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
-     misc_feature    364..977
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    5..55
                      /label="L3S1P13"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    364..977
+                     /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
      misc_feature    56..93
@@ -3509,9 +2954,10 @@ ORIGIN
 //
 LOCUS       L3S1P22_DE              2185 bp ds-DNA     circular     30-MAR-2015
 DEFINITION  .
-KEYWORDS    "seq-verify:Yes" "cloned-by:DC" "fusion-sites:DE" "plasmid:Diego C 
-            Box #1" "source:Phoenix" "antibiotic:Chloramphenicol" "glycerol:-"
-            "part-subtype:Synthetic" "backbone:pSB1C3" "part-type:Terminator"
+KEYWORDS    "plasmid:Diego C Box #1" "fusion-sites:DE" "glycerol:-"            
+            "part-subtype:Synthetic" "antibiotic:Chloramphenicol"
+            "seq-verify:Yes" "cloned-by:DC" "part-type:Terminator"
+            "source:Phoenix" "backbone:pSB1C3"
 COMMENT     MoClo Level 0 basic part: Terminator [L3S1P22]                     
 FEATURES             Location/Qualifiers
      misc_feature    53..90
@@ -3571,10 +3017,10 @@ ORIGIN
 //
 LOCUS       L3S2P21_DE              2159 bp ds-DNA     circular     23-APR-2015
 DEFINITION  .
-KEYWORDS    "fusion-sites:DE" "cloned-by:EA" "part-subtype:Synthetic"          
-            "part-type:Terminator" "seq-verify:Yes" "glycerol:EA-1-33"
-            "source:Phoenix" "plasmid:Diego C Box #1"
-            "antibiotic:Chloramphenicol" "backbone:pSB1C3"
+KEYWORDS    "source:Phoenix" "glycerol:EA-1-33" "antibiotic:Chloramphenicol"   
+            "backbone:pSB1C3" "fusion-sites:DE" "seq-verify:Yes" "cloned-by:EA"
+            "part-subtype:Synthetic" "plasmid:Diego C Box #1"
+            "part-type:Terminator"
 COMMENT     MoClo Level 0 basic part: Terminator [L3S1P13]                     
 FEATURES             Location/Qualifiers
      misc_feature    5..64
@@ -3629,19 +3075,19 @@ ORIGIN
 //
 LOCUS       lacIm_CD                3191 bp ds-DNA     circular     07-APR-2015
 DEFINITION  .
-KEYWORDS    "fusion-sites:CD" "cloned-by:EA" "antibiotic:Chloramphenicol"      
-            "backbone:pSB1C3" "part-subtype:Repressor" "part-type:CDS"
-            "glycerol" "seq-verified:Yes"
+KEYWORDS    "fusion-sites:CD" "part-subtype:Repressor" "part-type:CDS"         
+            "antibiotic:Chloramphenicol" "cloned-by:EA" "seq-verified:Yes"
+            "glycerol" "backbone:pSB1C3"
 COMMENT     MoClo Level 0 basic part: CDS                                      
 FEATURES             Location/Qualifiers
-     misc_feature    2089..3177
-                     /label="lacIm"
-                     /ApEinfo_revcolor=#ffef86
-                     /ApEinfo_fwdcolor=#ffef86
      misc_feature    260..873
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    2089..3177
+                     /label="lacIm"
+                     /ApEinfo_revcolor=#ffef86
+                     /ApEinfo_fwdcolor=#ffef86
      misc_feature    complement(1160..1819)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
@@ -3704,11 +3150,15 @@ ORIGIN
 //
 LOCUS       lacIm_CM                3204 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "antibiotic:Chloramphenicol" "glycerol:EA-1-11" "part-type:CDS"    
-            "part-subtype:Repressor" "backbone:pSB1C3" "cloned-by:EA"
-            "fusion-sites:CM" "seq-verified:Yes"
+KEYWORDS    "fusion-sites:CM" "part-type:CDS" "glycerol:EA-1-11"               
+            "backbone:pSB1C3" "antibiotic:Chloramphenicol" "cloned-by:EA"
+            "seq-verified:Yes" "part-subtype:Repressor"
 COMMENT     MoClo Level 0 basic part: CDS                                      
 FEATURES             Location/Qualifiers
+     misc_feature    complement(1160..1819)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    2089..3177
                      /label="lacIm"
                      /ApEinfo_revcolor=#ffef86
@@ -3717,10 +3167,6 @@ FEATURES             Location/Qualifiers
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    complement(1160..1819)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
 ORIGIN
         1 tactagtagc ggccgctgca gtccggcaaa aaagggcaag gtgtcaccac cctgcccttt
        61 ttctttaaaa ccgaaaagat tacttcgcgt tatgcaggct tcctcgctca ctgactcgct
@@ -3779,9 +3225,9 @@ ORIGIN
 //
 LOCUS       lmrA_CD                 2666 bp ds-DNA     circular     23-FEB-2015
 DEFINITION  .
-KEYWORDS    "fusion-sites:CD" "glycerol:IG-1-6" "seq-verified:Yes"             
-            "backbone:pSB1C3" "antibiotic:Chloramphenicol" "part-subtype:CDS"
-            "part-type:level 0" "cloned-by:KML"
+KEYWORDS    "fusion-sites:CD" "part-subtype:CDS" "seq-verified:Yes"            
+            "glycerol:IG-1-6" "cloned-by:KML" "part-type:level 0"
+            "backbone:pSB1C3" "antibiotic:Chloramphenicol"
 COMMENT     MoClo Level 0 basic part: CDS                                      
 FEATURES             Location/Qualifiers
      misc_feature    260..873
@@ -3845,9 +3291,9 @@ ORIGIN
 //
 LOCUS       lmrA_CM                 2679 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "antibiotic:Chloramphenicol" "cloned-by:EA"                        
-            "part-subtype:Repressor" "backbone:pSB1C3" "fusion-sites:CM"
-            "part-type:CDS" "glycerol:EA-1-14" "seq-verified:Yes"
+KEYWORDS    "seq-verified:Yes" "fusion-sites:CM" "cloned-by:EA"                
+            "backbone:pSB1C3" "part-subtype:Repressor" "part-type:CDS"
+            "glycerol:EA-1-14" "antibiotic:Chloramphenicol"
 COMMENT     MoClo Level 0 basic part: CDS                                      
 FEATURES             Location/Qualifiers
      misc_feature    2089..2652
@@ -3911,27 +3357,27 @@ ORIGIN
 //
 LOCUS       mAmetrine_AAV_CD        2860 bp ds-DNA     circular     16-MAR-2015
 DEFINITION  .
-KEYWORDS    "cloned-by:DC" "part-subtype:Reporter" "glycerol:DC-1-4"           
-            "antibiotic:Ampicillin" "plasmid:Diego C Box #1" "seq-verify:Yes"
-            "backbone:pSB1A2" "fusion-sites:CD" "part-type:CDS" "source:CIDAR"
+KEYWORDS    "source:CIDAR" "antibiotic:Ampicillin" "fusion-sites:CD"           
+            "part-type:CDS" "glycerol:DC-1-4" "cloned-by:DC" "plasmid:Diego C
+            Box #1" "part-subtype:Reporter" "seq-verify:Yes" "backbone:pSB1A2"
 COMMENT     MoClo Level 0 basic part: CDS [mAmetrine _AAV]                     
 FEATURES             Location/Qualifiers
-     misc_feature    complement(1728..2387)
-                     /label="ampR"
-                     /ApEinfo_revcolor=#75c6a9
-                     /ApEinfo_fwdcolor=#75c6a9
-     misc_feature    722..757
-                     /label="AAV"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    complement(948..1630)
-                     /label="ColE1"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
      misc_feature    5..721
                      /label="mAmetrine"
                      /ApEinfo_revcolor=#84b0dc
                      /ApEinfo_fwdcolor=#84b0dc
+     misc_feature    722..757
+                     /label="AAV"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    complement(1728..2387)
+                     /label="ampR"
+                     /ApEinfo_revcolor=#75c6a9
+                     /ApEinfo_fwdcolor=#75c6a9
+     misc_feature    complement(948..1630)
+                     /label="ColE1"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
 ORIGIN
         1 AATGatggtg agcaagggcg aggagctgtt caccggggtg gtgcccatcc tggtcgagct
        61 ggacggcgac gtaaacggcc acaagttcag cgtgcgcggc gagggcgagg gcgatgccac
@@ -3984,25 +3430,26 @@ ORIGIN
 //
 LOCUS       mAmetrine_DAS_CD        2852 bp ds-DNA     circular     23-FEB-2015
 DEFINITION  .
-KEYWORDS    "part-subtype:Reporter" "cloned-by:DC" "plasmid:Diego C Box #1"    
-            "fusion-sites:CD" "part-type:CDS" "glycerol:DC-1-5" "source:CIDAR"
-            "antibiotic:Ampicillin" "backbone:pSB1A2" "seq-verify:Yes"
+KEYWORDS    "part-type:CDS" "fusion-sites:CD" "cloned-by:DC"                   
+            "part-subtype:Reporter" "source:CIDAR" "backbone:pSB1A2"
+            "antibiotic:Ampicillin" "plasmid:Diego C Box #1" "glycerol:DC-1-5"
+            "seq-verify:Yes"
 COMMENT     MoClo Level 0 basic part: CDS [mAmetrine_DAS]                      
 FEATURES             Location/Qualifiers
-     misc_feature    5..735
-                     /label="mAmetrine"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    1928..2587
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    1028..1641
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    722..757
                      /label="DAS"
                      /ApEinfo_revcolor=#ffef86
                      /ApEinfo_fwdcolor=#ffef86
-     misc_feature    1028..1641
-                     /label="pMB1"
+     misc_feature    5..735
+                     /label="mAmetrine"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
@@ -4057,28 +3504,28 @@ ORIGIN
 //
 LOCUS       mAmetrine_LAA_CD        2860 bp ds-DNA     circular     16-MAR-2015
 DEFINITION  .
-KEYWORDS    "fusion-sites:CD" "part-subtype:Reporter" "part-type:CDS"          
-            "plasmid:Diego C Box #1" "glycerol:DC-1-6" "cloned-by:DC"
-            "backbone:pSB1A2" "seq-verify:Yes" "source:CIDAR"
-            "antibiotic:Ampicillin"
+KEYWORDS    "part-subtype:Reporter" "part-type:CDS" "glycerol:DC-1-6"          
+            "backbone:pSB1A2" "fusion-sites:CD" "plasmid:Diego C Box #1"
+            "antibiotic:Ampicillin" "cloned-by:DC" "source:CIDAR"
+            "seq-verify:Yes"
 COMMENT     MoClo Level 0 basic part: CDS [mAmetrine_LAA]                      
 FEATURES             Location/Qualifiers
-     misc_feature    complement(1728..2387)
-                     /label="ampR"
-                     /ApEinfo_revcolor=#75c6a9
-                     /ApEinfo_fwdcolor=#75c6a9
      misc_feature    722..757
                      /label="LAA"
                      /ApEinfo_revcolor=#b1ff67
                      /ApEinfo_fwdcolor=#b1ff67
-     misc_feature    5..721
-                     /label="mAmetrine"
-                     /ApEinfo_revcolor=#84b0dc
-                     /ApEinfo_fwdcolor=#84b0dc
+     misc_feature    complement(1728..2387)
+                     /label="ampR"
+                     /ApEinfo_revcolor=#75c6a9
+                     /ApEinfo_fwdcolor=#75c6a9
      misc_feature    complement(948..1630)
                      /label="ColE1"
                      /ApEinfo_revcolor=#faac61
                      /ApEinfo_fwdcolor=#faac61
+     misc_feature    5..721
+                     /label="mAmetrine"
+                     /ApEinfo_revcolor=#84b0dc
+                     /ApEinfo_fwdcolor=#84b0dc
 ORIGIN
         1 AATGatggtg agcaagggcg aggagctgtt caccggggtg gtgcccatcc tggtcgagct
        61 ggacggcgac gtaaacggcc acaagttcag cgtgcgcggc gagggcgagg gcgatgccac
@@ -4131,22 +3578,22 @@ ORIGIN
 //
 LOCUS       mCitrine_AAV_CD         2860 bp ds-DNA     circular     16-MAR-2015
 DEFINITION  .
-KEYWORDS    "backbone:pSB1A2" "fusion-sites:CD" "cloned-by:DC"                 
-            "glycerol:DC-1-1" "plasmid:Diego C Box #1" "part-subtype:Reporter"
-            "part-type:CDS" "antibiotic:Ampicillin" "source:CIDAR"
-            "seq-verify:Yes"
+KEYWORDS    "fusion-sites:CD" "antibiotic:Ampicillin" "backbone:pSB1A2"        
+            "source:CIDAR" "part-subtype:Reporter" "seq-verify:Yes"
+            "part-type:CDS" "cloned-by:DC" "glycerol:DC-1-1" "plasmid:Diego C
+            Box #1"
 COMMENT     MoClo Level 0 basic part: CDS [mCitrine_AAV]                       
 FEATURES             Location/Qualifiers
      misc_feature    complement(1728..2387)
                      /label="ampR"
                      /ApEinfo_revcolor=#75c6a9
                      /ApEinfo_fwdcolor=#75c6a9
-     misc_feature    722..757
-                     /label="AAV"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    5..721
                      /label="mCitrine"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    722..757
+                     /label="AAV"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(948..1630)
@@ -4205,27 +3652,28 @@ ORIGIN
 //
 LOCUS       mCitrine_DAS_CD         2860 bp ds-DNA     circular     16-MAR-2015
 DEFINITION  .
-KEYWORDS    "glycerol:DC-1-2" "source:CIDAR" "antibiotic:Ampicillin"           
-            "fusion-sites:CD" "cloned-by:DC" "backbone:pSB1A2" "part-type:CDS"
-            "plasmid:Diego C Box #1" "part-subtype:Reporter" "seq-verify:Yes"
+KEYWORDS    "part-type:CDS" "source:CIDAR" "part-subtype:Reporter"             
+            "fusion-sites:CD" "glycerol:DC-1-2" "cloned-by:DC"
+            "backbone:pSB1A2" "antibiotic:Ampicillin" "seq-verify:Yes"
+            "plasmid:Diego C Box #1"
 COMMENT     MoClo Level 0 basic part: CDS [mCitrine_DAS]                       
 FEATURES             Location/Qualifiers
-     misc_feature    complement(948..1630)
-                     /label="ColE1"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
-     misc_feature    5..721
-                     /label="mCitrine"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(1728..2387)
                      /label="ampR"
                      /ApEinfo_revcolor=#75c6a9
                      /ApEinfo_fwdcolor=#75c6a9
+     misc_feature    5..721
+                     /label="mCitrine"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    722..757
                      /label="DAS"
                      /ApEinfo_revcolor=#ffef86
                      /ApEinfo_fwdcolor=#ffef86
+     misc_feature    complement(948..1630)
+                     /label="ColE1"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
 ORIGIN
         1 AATGatggtg agcaagggcg aggagctgtt caccggggtg gtgcccatcc tggtcgagct
        61 ggacggcgac gtaaacggcc acaagttcag cgtgtccggc gagggcgagg gcgatgccac
@@ -4278,20 +3726,20 @@ ORIGIN
 //
 LOCUS       mCitrine_LAA_CD         2860 bp ds-DNA     circular     16-MAR-2015
 DEFINITION  .
-KEYWORDS    "antibiotic:Ampicillin" "cloned-by:DC" "part-type:CDS"             
-            "plasmid:Diego C Box #1" "backbone:pSB1A2" "fusion-sites:CD"
-            "part-subtype:Reporter" "glycerol:DC-1-3" "seq-verify:Yes"
-            "source:CIDAR"
+KEYWORDS    "part-subtype:Reporter" "backbone:pSB1A2" "glycerol:DC-1-3"        
+            "seq-verify:Yes" "source:CIDAR" "fusion-sites:CD"
+            "antibiotic:Ampicillin" "cloned-by:DC" "plasmid:Diego C Box #1"
+            "part-type:CDS"
 COMMENT     MoClo Level 0 basic part: CDS [mCitrine_LAA]                       
 FEATURES             Location/Qualifiers
-     misc_feature    5..721
-                     /label="mCitrine"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    722..757
                      /label="LAA"
                      /ApEinfo_revcolor=#b1ff67
                      /ApEinfo_fwdcolor=#b1ff67
+     misc_feature    5..721
+                     /label="mCitrine"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(1728..2387)
                      /label="ampR"
                      /ApEinfo_revcolor=#75c6a9
@@ -4352,24 +3800,24 @@ ORIGIN
 //
 LOCUS       pB0015_DE               2228 bp ds-DNA     circular     01-DEC-2014
 DEFINITION  .
-KEYWORDS    "antibiotic:Chloramphenicol (CAM)" "seq-verify:SI-96"              
-            "part-type:Terminator " "cloned-by:Antiquity" "backbone:DVL0_DE
-            (pSB1C3)" "glycerol:MC-2-85 (Author)" "plasmid:MCP-1-H8 (DHD
-            10/28/13)" "fusion-site:DE" "source:BBa" "part-subtype:Natural"
+KEYWORDS    "glycerol:MC-2-85 (Author)" "antibiotic:Chloramphenicol (CAM)"     
+            "source:BBa" "part-type:Terminator " "fusion-site:DE"
+            "cloned-by:Antiquity" "part-subtype:Natural" "plasmid:MCP-1-H8 (DHD
+            10/28/13)" "seq-verify:SI-96" "backbone:DVL0_DE (pSB1C3)"
 COMMENT     MoClo Level 0 basic part: Terminator [B0015]                       
 FEATURES             Location/Qualifiers
-     misc_feature    complement(1304..1963)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
-     misc_feature    5..133
-                     /label="B0015"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    404..1017
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    5..133
+                     /label="B0015"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    complement(1304..1963)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
 ORIGIN
         1 AGGTccaggc atcaaataaa acgaaaggct cagtcgaaag actgggcctt tcgttttatc
        61 tgttgtttgt cggtgaacgc tctctactag agtcacactg gctcaccttc gggtgggcct
@@ -4412,11 +3860,11 @@ ORIGIN
 //
 LOCUS       pB0015_DF               2228 bp ds-DNA     circular     01-DEC-2014
 DEFINITION  .
-KEYWORDS    "backbone:DVL0_DF (pSB1C3)" "part-subtype:Natural"                 
-            "cloned-by:Antiquity" "glycerol:MC-1-1 (PS 7/12/2013)"
-            "antibiotic:Chloramphenicol (CAM)" "part-type:Terminator "
-            "source:BBa" "seq-verify:SM21" "fusion-site:DF" "plasmid:MCP-1-A1
-            (PS 7/12/13)"
+KEYWORDS    "plasmid:MCP-1-A1 (PS 7/12/13)" "fusion-site:DF"                   
+            "part-type:Terminator " "backbone:DVL0_DF (pSB1C3)"
+            "seq-verify:SM21" "cloned-by:Antiquity" "source:BBa"
+            "glycerol:MC-1-1 (PS 7/12/2013)" "part-subtype:Natural"
+            "antibiotic:Chloramphenicol (CAM)"
 COMMENT     MoClo Level 0 basic part: Terminator [B0015]                       
 FEATURES             Location/Qualifiers
      misc_feature    404..1017
@@ -4473,24 +3921,24 @@ ORIGIN
 //
 LOCUS       pB0015_DG               2228 bp ds-DNA     circular     01-DEC-2014
 DEFINITION  .
-KEYWORDS    "fusion-site:DG" "plasmid:MCP-1-I9 (SC 8/24/13)" "glycerol:MC-2-87 
-            (Author)" "antibiotic:Chloramphenicol (CAM)" "part-subtype:Natural"
-            "source:BBa" "cloned-by:Antiquity" "part-type:Terminator "
-            "backbone:DVL0_DG (pSB1C3)" "seq-verify:SI-140"
+KEYWORDS    "cloned-by:Antiquity" "fusion-site:DG" "part-subtype:Natural"      
+            "part-type:Terminator " "source:BBa" "backbone:DVL0_DG (pSB1C3)"
+            "glycerol:MC-2-87 (Author)" "antibiotic:Chloramphenicol (CAM)"
+            "seq-verify:SI-140" "plasmid:MCP-1-I9 (SC 8/24/13)"
 COMMENT     MoClo Level 0 basic part: Terminator [B0015]                       
 FEATURES             Location/Qualifiers
      misc_feature    5..133
                      /label="B0015"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    404..1017
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(1304..1963)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    404..1017
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 AGGTccaggc atcaaataaa acgaaaggct cagtcgaaag actgggcctt tcgttttatc
        61 tgttgtttgt cggtgaacgc tctctactag agtcacactg gctcaccttc gggtgggcct
@@ -4533,21 +3981,20 @@ ORIGIN
 //
 LOCUS       pB0015_DH               2228 bp ds-DNA     circular     01-DEC-2014
 DEFINITION  .
-KEYWORDS    "source:BBa" "seq-verify:TL 44" "fusion-site:DH"                   
-            "part-type:Terminator " "glycerol:MC-2-110 (TL 7/7/13)"
-            "part-subtype:Natural" "cloned-by:TLH 3/15/13" "backbone:DVL0_DH
-            (pSB1C3)" "plasmid:MCP-2-D7 (SC8/24/13)"
-            "antibiotic:Chloramphenicol (CAM)"
+KEYWORDS    "source:BBa" "part-type:Terminator " "fusion-site:DH"              
+            "glycerol:MC-2-110 (TL 7/7/13)" "backbone:DVL0_DH (pSB1C3)"
+            "plasmid:MCP-2-D7 (SC8/24/13)" "antibiotic:Chloramphenicol (CAM)"
+            "part-subtype:Natural" "cloned-by:TLH 3/15/13" "seq-verify:TL 44"
 COMMENT     MoClo Level 0 basic part: Terminator [B0015]                       
 FEATURES             Location/Qualifiers
-     misc_feature    5..133
-                     /label="B0015"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(1304..1963)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    5..133
+                     /label="B0015"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    404..1017
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
@@ -4594,9 +4041,10 @@ ORIGIN
 //
 LOCUS       pBAD_AB                 2385 bp ds-DNA     circular     23-APR-2015
 DEFINITION  .
-KEYWORDS    "part-subtype:Inducible" "part-type:Promoter" "seq-verify:EA"      
-            "cloned-by:EA" "antibiotic:Chloramphenicol (CAM)" "fusion-site:AB"
-            "source:Phoenix" "glycerol:EA-1-26" "backbone:pSB1C3"
+KEYWORDS    "seq-verify:EA" "part-type:Promoter" "fusion-site:AB"              
+            "source:Phoenix" "antibiotic:Chloramphenicol (CAM)"
+            "backbone:pSB1C3" "glycerol:EA-1-26" "cloned-by:EA"
+            "part-subtype:Inducible"
 FEATURES             Location/Qualifiers
      misc_feature    5..290
                      /label="para-1"
@@ -4652,13 +4100,17 @@ ORIGIN
      2281 aaataggcgt atcacgaggc agaatttcag ataaaaaaaa tccttagctt tcgctaagga
      2341 tgatttctgg aattcgcggc cgcttctaga gactagtggg tctca
 //
-LOCUS       pBAD_AK                 2385 bp ds-DNA     circular     23-APR-2015
+LOCUS       pBAD_AK                 2385 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "glycerol:EA-1-27" "backbone:pSB1C3" "seq-verify:EA" "cloned-by:EA"
-            "source:Phoenix" "fusion-site:AK" "antibiotic:Chloramphenicol
-            (CAM)" "part-subtype:Inducible" "part-type:Promoter"
+KEYWORDS    "cloned-by:EA" "seq-verify:EA" "fusion-site:AK" "source:Phoenix"   
+            "antibiotic:Chloramphenicol (CAM)" "backbone:pSB1C3"
+            "part-type:Promoter" "glycerol:EA-1-27" "part-subtype:Inducible"
 FEATURES             Location/Qualifiers
-     misc_feature    complement(19..304)
+     misc_feature    complement(1475..2134)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    19..304
                      /label="para-1"
                      /ApEinfo_revcolor=#d6b295
                      /ApEinfo_fwdcolor=#d6b295
@@ -4666,17 +4118,13 @@ FEATURES             Location/Qualifiers
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    complement(1475..2134)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
 ORIGIN
-        1 actagtaggt ctctGCATta tggagaaaca gtagagagtt gcgataaaaa gcgtcaggta
-       61 ggatccgcta atcttatgga taaaaatgct atggcatagc aaagtgtgac gccgtgcaaa
-      121 taatcaatgt ggacttttct gccgtgatta tagacacttt tgttacgcgt ttttgtcatg
-      181 gctttggtcc cgctttgtta cagaatgctt ttaataagcg gggttaccgg tttggttagc
-      241 gagaagagcc agtaaaagac gcagtgacgg caatgtctga tgcaatatgg acaattggtt
-      301 tcttCTCCtg agacccacta gtagcggccg ctgcagtccg gcaaaaaagg gcaaggtgtc
+        1 actagtgggt ctcaGGAGaa gaaaccaatt gtccatattg catcagacat tgccgtcact
+       61 gcgtctttta ctggctcttc tcgctaacca aaccggtaac cccgcttatt aaaagcattc
+      121 tgtaacaaag cgggaccaaa gccatgacaa aaacgcgtaa caaaagtgtc tataatcacg
+      181 gcagaaaagt ccacattgat tatttgcacg gcgtcacact ttgctatgcc atagcatttt
+      241 tatccataag attagcggat cctacctgac gctttttatc gcaactctct actgtttctc
+      301 cataATGCag agacctacta gtagcggccg ctgcagtccg gcaaaaaagg gcaaggtgtc
       361 accaccctgc cctttttctt taaaaccgaa aagattactt cgcgttatgc aggcttcctc
       421 gctcactgac tcgctgcgct cggtcgttcg gctgcggcga gcggtatcag ctcactcaaa
       481 ggcggtaata cggttatcca cagaatcagg ggataacgca ggaaagaaca tgtgagcaaa
@@ -4714,10 +4162,15 @@ ORIGIN
 //
 LOCUS       pBAD_KB                 2385 bp ds-DNA     circular     23-APR-2015
 DEFINITION  .
-KEYWORDS    "glycerol:EA-1-28" "fusion-site:KB" "part-type:Promoter"           
-            "backbone:pSB1C3" "cloned-by:EA" "seq-verify:EA" "source:Phoenix"
-            "part-subtype:Inducible" "antibiotic:Chloramphenicol (CAM)"
+KEYWORDS    "seq-verify:EA" "part-type:Promoter" "fusion-site:KB"              
+            "antibiotic:Chloramphenicol (CAM)" "glycerol:EA-1-28"
+            "source:Phoenix" "backbone:pSB1C3" "part-subtype:Inducible"
+            "cloned-by:EA"
 FEATURES             Location/Qualifiers
+     misc_feature    complement(1461..2120)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    561..1174
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
@@ -4726,10 +4179,6 @@ FEATURES             Location/Qualifiers
                      /label="para-1"
                      /ApEinfo_revcolor=#d6b295
                      /ApEinfo_fwdcolor=#d6b295
-     misc_feature    complement(1461..2120)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
 ORIGIN
         1 ATGCaagaaa ccaattgtcc atattgcatc agacattgcc gtcactgcgt cttttactgg
        61 ctcttctcgc taaccaaacc ggtaaccccg cttattaaaa gcattctgta acaaagcggg
@@ -4774,21 +4223,21 @@ ORIGIN
 //
 LOCUS       pBCD12_BC               2183 bp ds-DNA     circular     01-DEC-2014
 DEFINITION  .
-KEYWORDS    "cloned-by:TL 6/20/13" "fusion-site:BC" "part-type:5'UTR "         
-            "antibiotic:Chloramphenicol (CAM)" "glycerol:MC-3-208 (TL 6/28/13)"
-            "backbone:DVL0_BC (pSB1C3)" "seq-verify:TL-41" "plasmid:MCP-2-E6
-            (TL 6/27/13)" "part-subtype:BiCistronic Design"
-            "source:PMID\:23474465 "
+KEYWORDS    "cloned-by:TL 6/20/13" "seq-verify:TL-41" "part-type:5'UTR "       
+            "backbone:DVL0_BC (pSB1C3)" "fusion-site:BC"
+            "part-subtype:BiCistronic Design" "antibiotic:Chloramphenicol
+            (CAM)" "source:PMID\:23474465 " "plasmid:MCP-2-E6 (TL 6/27/13)"
+            "glycerol:MC-3-208 (TL 6/28/13)"
 COMMENT     MoClo Level 0 basic part: BiCistronic Design [BCD12]               
 FEATURES             Location/Qualifiers
-     misc_feature    complement(1259..1918)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    5..88
                      /label="BCD12"
                      /ApEinfo_revcolor=#faac61
                      /ApEinfo_fwdcolor=#faac61
+     misc_feature    complement(1259..1918)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    359..972
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
@@ -4834,11 +4283,11 @@ ORIGIN
 //
 LOCUS       pBCD13_BC               2183 bp ds-DNA     circular     01-DEC-2014
 DEFINITION  .
-KEYWORDS    "cloned-by:TL 6/20/13" "plasmid:MCP-2-E7 (TL 6/27/13)"             
-            "part-subtype:BiCistronic Design" "source:PMID\:23474465 "
-            "backbone:DVL0_BC (pSB1C3)" "seq-verify:TL-43"
-            "antibiotic:Chloramphenicol (CAM)" "glycerol:MC-3-209 (TL 6/28/13)"
-            "fusion-site:BC" "part-type:5'UTR "
+KEYWORDS    "part-subtype:BiCistronic Design" "cloned-by:TL 6/20/13"           
+            "antibiotic:Chloramphenicol (CAM)" "backbone:DVL0_BC (pSB1C3)"
+            "seq-verify:TL-43" "glycerol:MC-3-209 (TL 6/28/13)"
+            "part-type:5'UTR " "source:PMID\:23474465 " "plasmid:MCP-2-E7 (TL
+            6/27/13)" "fusion-site:BC"
 COMMENT     MoClo Level 0 basic part: BiCistronic Design [BCD13]               
 FEATURES             Location/Qualifiers
      misc_feature    5..88
@@ -4894,11 +4343,11 @@ ORIGIN
 //
 LOCUS       pBCD16_BC               2183 bp ds-DNA     circular     01-DEC-2014
 DEFINITION  .
-KEYWORDS    "glycerol:MC-3-182 (TL 6/15/13)" "part-type:5'UTR "                
-            "plasmid:MCP-2-D4 (TL 6/15/13)" "seq-verify:TL-34"
-            "backbone:DVL0_BC (pSB1C3)" "fusion-site:BC" "source:PMID\:23474465
-            " "part-subtype:BiCistronic Design" "antibiotic:Chloramphenicol
-            (CAM)" "cloned-by:TL 6/11/13"
+KEYWORDS    "cloned-by:TL 6/11/13" "glycerol:MC-3-182 (TL 6/15/13)"            
+            "part-subtype:BiCistronic Design" "seq-verify:TL-34"
+            "source:PMID\:23474465 " "backbone:DVL0_BC (pSB1C3)"
+            "fusion-site:BC" "plasmid:MCP-2-D4 (TL 6/15/13)" "part-type:5'UTR "
+            "antibiotic:Chloramphenicol (CAM)"
 COMMENT     MoClo Level 0 basic part: BiCistronic Design [BCD16]               
 FEATURES             Location/Qualifiers
      misc_feature    5..88
@@ -4954,24 +4403,25 @@ ORIGIN
 //
 LOCUS       pBCD1_BC                2183 bp ds-DNA     circular     01-DEC-2014
 DEFINITION  .
-KEYWORDS    "plasmid:MCP-2-D2 (PS 6/18/13)" "antibiotic:Chloramphenicol (CAM)" 
-            "glycerol:MC-3-171 (PS 6/12/13)" "fusion-site:BC" "seq-verify:TL-1"
-            "source:PMID\:23474465 " "cloned-by:TL" "part-subtype:BiCistronic
-            Design" "part-type:5'UTR " "backbone:DVL0_BC (pSB1C3)"
+KEYWORDS    "cloned-by:TL" "fusion-site:BC" "part-type:5'UTR "                 
+            "plasmid:MCP-2-D2 (PS 6/18/13)" "seq-verify:TL-1" "backbone:DVL0_BC
+            (pSB1C3)" "source:PMID\:23474465 " "antibiotic:Chloramphenicol
+            (CAM)" "glycerol:MC-3-171 (PS 6/12/13)" "part-subtype:BiCistronic
+            Design"
 COMMENT     MoClo Level 0 basic part: BiCistronic Design [BCD1]                
 FEATURES             Location/Qualifiers
-     misc_feature    359..972
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    5..88
-                     /label="BCD1"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
      misc_feature    complement(1259..1918)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    5..88
+                     /label="BCD1"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
+     misc_feature    359..972
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 TACTgggccc aagttcactt aaaaaggaga tcaacaatga aagcaatttt cgtactgaaa
        61 catcttaatc atgcacagga gactttctAA TGagagacct actagtagcg gccgctgcag
@@ -5013,26 +4463,25 @@ ORIGIN
 //
 LOCUS       pBCD2_BC                2183 bp ds-DNA     circular     01-DEC-2014
 DEFINITION  .
-KEYWORDS    "cloned-by:SI 3/13/13" "part-subtype:BiCistronic Design"           
-            "plasmid:MCP-2-D1 (DHD 10/28/13)" "source:PMID\:23474465 "
-            "backbone:DVL0_BC (pSB1C3)"
-            "seq-verify:BCD2_BC-1_VF_2013-05-22_C05" "fusion-site:BC"
-            "glycerol:MC-2-150 (TL 5/24/13)" "antibiotic:Chloramphenicol (CAM)"
-            "part-type:5'UTR "
+KEYWORDS    "seq-verify:BCD2_BC-1_VF_2013-05-22_C05" "part-subtype:BiCistronic 
+            Design" "part-type:5'UTR " "source:PMID\:23474465 "
+            "fusion-site:BC" "glycerol:MC-2-150 (TL 5/24/13)" "cloned-by:SI
+            3/13/13" "plasmid:MCP-2-D1 (DHD 10/28/13)"
+            "antibiotic:Chloramphenicol (CAM)" "backbone:DVL0_BC (pSB1C3)"
 COMMENT     MoClo Level 0 basic part: BiCistronic Design [BCD2]                
 FEATURES             Location/Qualifiers
      misc_feature    5..88
                      /label="BCD2"
                      /ApEinfo_revcolor=#faac61
                      /ApEinfo_fwdcolor=#faac61
-     misc_feature    359..972
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(1259..1918)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    359..972
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 TACTgggccc aagttcactt aaaaaggaga tcaacaatga aagcaatttt cgtactgaaa
        61 catcttaatc atgctaagga ggttttctAA TGagagacct actagtagcg gccgctgcag
@@ -5074,17 +4523,13 @@ ORIGIN
 //
 LOCUS       pBCD8_BC                2183 bp ds-DNA     circular     01-DEC-2014
 DEFINITION  .
-KEYWORDS    "plasmid:MCP-2-E2 (TL 6/25/13)" "part-subtype:BiCistronic Design"  
-            "source:PMID\:23474465 " "antibiotic:Chloramphenicol (CAM)"
-            "cloned-by:TL 6/18/13" "part-type:5'UTR " "fusion-site:BC"
-            "glycerol:MC-3-189 (TL 6/26/13)" "seq-verify:TL 37"
-            "backbone:DVL0_BC (pSB1C3)"
+KEYWORDS    "part-type:5'UTR " "seq-verify:TL 37" "part-subtype:BiCistronic    
+            Design" "plasmid:MCP-2-E2 (TL 6/25/13)" "antibiotic:Chloramphenicol
+            (CAM)" "source:PMID\:23474465 " "backbone:DVL0_BC (pSB1C3)"
+            "fusion-site:BC" "glycerol:MC-3-189 (TL 6/26/13)" "cloned-by:TL
+            6/18/13"
 COMMENT     MoClo Level 0 basic part: BiCistronic Design [BCD8]                
 FEATURES             Location/Qualifiers
-     misc_feature    359..972
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    5..88
                      /label="BCD8"
                      /ApEinfo_revcolor=#faac61
@@ -5093,6 +4538,10 @@ FEATURES             Location/Qualifiers
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    359..972
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 TACTgggccc aagttcactt aaaaaggaga tcaacaatga aagcaatttt cgtactgaaa
        61 catcttaatc atgcatcgga ccgtttctAA TGagagacct actagtagcg gccgctgcag
@@ -5134,9 +4583,10 @@ ORIGIN
 //
 LOCUS       pBetI_AB                2153 bp ds-DNA     circular     23-APR-2015
 DEFINITION  .
-KEYWORDS    "antibiotic:Chloramphenicol (CAM)" "fusion-site:AB" "cloned-by:EA" 
-            "part-type:Promoter" "seq-verify:EA" "glycerol:EA-1-43"
-            "source:Phoenix" "part-subtype:Repressible" "backbone:pSB1C3"
+KEYWORDS    "fusion-site:AB" "part-subtype:Repressible"                        
+            "antibiotic:Chloramphenicol (CAM)" "source:Phoenix" "cloned-by:EA"
+            "glycerol:EA-1-43" "part-type:Promoter" "seq-verify:EA"
+            "backbone:pSB1C3"
 FEATURES             Location/Qualifiers
      misc_feature    5..58
                      /label="pBetI"
@@ -5188,14 +4638,17 @@ ORIGIN
      2041 acctataaaa ataggcgtat cacgaggcag aatttcagat aaaaaaaatc cttagctttc
      2101 gctaaggatg atttctggaa ttcgcggccg cttctagaga ctagtgggtc tca
 //
-LOCUS       pBetI_AK                2153 bp ds-DNA     circular     23-APR-2015
+LOCUS       pBetI_AK                2153 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "backbone:pSB1C3" "seq-verify:EA" "source:Phoenix"                 
-            "antibiotic:Chloramphenicol (CAM)" "cloned-by:EA"
-            "part-subtype:Repressible" "part-type:Promoter" "fusion-site:AK"
-            "glycerol:EA-1-44"
+KEYWORDS    "part-subtype:Repressible" "glycerol:EA-1-44" "cloned-by:EA"       
+            "seq-verify:EA" "part-type:Promoter" "antibiotic:Chloramphenicol
+            (CAM)" "source:Phoenix" "fusion-site:AK" "backbone:pSB1C3"
 FEATURES             Location/Qualifiers
-     misc_feature    complement(19..72)
+     misc_feature    complement(1243..1902)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    19..72
                      /label="pBetI"
                      /ApEinfo_revcolor=#85dae9
                      /ApEinfo_fwdcolor=#85dae9
@@ -5203,13 +4656,9 @@ FEATURES             Location/Qualifiers
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    complement(1243..1902)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
 ORIGIN
-        1 actagtaggt ctctGCATgc tagcaTTATA TTGAACGTCC AATcAATtgt caattggtaa
-       61 cgaatccatg aaCTCCtgag acccactagt agcggccgct gcagtccggc aaaaaagggc
+        1 actagtgggt ctcaGGAGtt catggattcg ttaccaattg acaATTgATT GGACGTTCAA
+       61 TATAAtgcta gcATGCagag acctactagt agcggccgct gcagtccggc aaaaaagggc
       121 aaggtgtcac caccctgccc tttttcttta aaaccgaaaa gattacttcg cgttatgcag
       181 gcttcctcgc tcactgactc gctgcgctcg gtcgttcggc tgcggcgagc ggtatcagct
       241 cactcaaagg cggtaatacg gttatccaca gaatcagggg ataacgcagg aaagaacatg
@@ -5247,10 +4696,14 @@ ORIGIN
 //
 LOCUS       pBetI_KB                2153 bp ds-DNA     circular     23-APR-2015
 DEFINITION  .
-KEYWORDS    "part-subtype:Repressible" "cloned-by:EA" "seq-verify:EA"          
-            "backbone:pSB1C3" "source:Phoenix" "antibiotic:Chloramphenicol
-            (CAM)" "part-type:Promoter" "fusion-site:KB"
+KEYWORDS    "fusion-site:KB" "backbone:pSB1C3" "antibiotic:Chloramphenicol     
+            (CAM)" "part-subtype:Repressible" "cloned-by:EA"
+            "part-type:Promoter" "seq-verify:EA" "source:Phoenix"
 FEATURES             Location/Qualifiers
+     misc_feature    5..58
+                     /label="pBetI"
+                     /ApEinfo_revcolor=#85dae9
+                     /ApEinfo_fwdcolor=#85dae9
      misc_feature    329..942
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
@@ -5259,10 +4712,6 @@ FEATURES             Location/Qualifiers
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
-     misc_feature    5..58
-                     /label="pBetI"
-                     /ApEinfo_revcolor=#85dae9
-                     /ApEinfo_fwdcolor=#85dae9
 ORIGIN
         1 ATGCttcatg gattcgttac caattgacaA TTgATTGGAC GTTCAATATA AtgctagcTA
        61 CTagagacct actagtagcg gccgctgcag tccggcaaaa aagggcaagg tgtcaccacc
@@ -5303,10 +4752,9 @@ ORIGIN
 //
 LOCUS       pBM3R1_AB               2145 bp ds-DNA     circular     23-APR-2015
 DEFINITION  .
-KEYWORDS    "source:Phoenix" "part-type:Promoter" "cloned-by:EA"               
-            "backbone:pSB1C3" "antibiotic:Chloramphenicol (CAM)"
-            "part-subtype:Repressible" "seq-verify:EA" "fusion-site:AB"
-            "glycerol:EA-1-45"
+KEYWORDS    "backbone:pSB1C3" "part-type:Promoter" "glycerol:EA-1-45"          
+            "part-subtype:Repressible" "antibiotic:Chloramphenicol (CAM)"
+            "cloned-by:EA" "fusion-site:AB" "source:Phoenix" "seq-verify:EA"
 FEATURES             Location/Qualifiers
      misc_feature    321..934
                      /label="pMB1"
@@ -5358,14 +4806,18 @@ ORIGIN
      2041 aaataggcgt atcacgaggc agaatttcag ataaaaaaaa tccttagctt tcgctaagga
      2101 tgatttctgg aattcgcggc cgcttctaga gactagtggg tctca
 //
-LOCUS       pBM3R1_AK               2145 bp ds-DNA     circular     23-APR-2015
+LOCUS       pBM3R1_AK               2145 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "part-subtype:Repressible" "seq-verify:EA"                         
-            "antibiotic:Chloramphenicol (CAM)" "glycerol:EA-1-46"
-            "source:Phoenix" "fusion-site:AK" "part-type:Promoter"
-            "backbone:pSB1C3" "cloned-by:EA"
+KEYWORDS    "part-type:Promoter" "seq-verify:EA" "glycerol:EA-1-46"            
+            "cloned-by:EA" "fusion-site:AK" "source:Phoenix"
+            "part-subtype:Repressible" "antibiotic:Chloramphenicol (CAM)"
+            "backbone:pSB1C3"
 FEATURES             Location/Qualifiers
-     misc_feature    complement(19..64)
+     misc_feature    complement(1235..1894)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    19..64
                      /label="pBM3R1"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
@@ -5373,13 +4825,9 @@ FEATURES             Location/Qualifiers
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    complement(1235..1894)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
 ORIGIN
-        1 actagtaggt ctctGCATgc tagcattatC GGAATGAACG TTCATTCCGt caattggtaa
-       61 cgaaCTCCtg agacccacta gtagcggccg ctgcagtccg gcaaaaaagg gcaaggtgtc
+        1 actagtgggt ctcaGGAGtt cgttaccaat tgaCGGAATG AACGTTCATT CCGataatgc
+       61 tagcATGCag agacctacta gtagcggccg ctgcagtccg gcaaaaaagg gcaaggtgtc
       121 accaccctgc cctttttctt taaaaccgaa aagattactt cgcgttatgc aggcttcctc
       181 gctcactgac tcgctgcgct cggtcgttcg gctgcggcga gcggtatcag ctcactcaaa
       241 ggcggtaata cggttatcca cagaatcagg ggataacgca ggaaagaaca tgtgagcaaa
@@ -5417,16 +4865,16 @@ ORIGIN
 //
 LOCUS       pBM3R1_KB               2145 bp ds-DNA     circular     23-APR-2015
 DEFINITION  .
-KEYWORDS    "part-type:Promoter" "part-subtype:Repressible" "cloned-by:EA"     
-            "antibiotic:Chloramphenicol (CAM)" "glycerol:EA-1-47"
-            "fusion-site:KB" "source:Phoenix" "seq-verify:EA" "backbone:pSB1C3"
+KEYWORDS    "part-type:Promoter" "fusion-site:KB" "glycerol:EA-1-47"           
+            "backbone:pSB1C3" "source:Phoenix" "cloned-by:EA" "seq-verify:EA"
+            "antibiotic:Chloramphenicol (CAM)" "part-subtype:Repressible"
 FEATURES             Location/Qualifiers
-     misc_feature    5..50
-                     /label="pBM3R1"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    complement(1221..1880)
                      /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    5..50
+                     /label="pBM3R1"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    321..934
@@ -5473,11 +4921,15 @@ ORIGIN
 //
 LOCUS       phlF_CD                 2702 bp ds-DNA     circular     07-APR-2015
 DEFINITION  .
-KEYWORDS    "seq-verified:Yes" "antibiotic:Chloramphenicol" "glycerol:IG-1-23" 
-            "part-type:CDS" "part-subtype:Repressor" "cloned-by:EA"
-            "backbone:pSB1C3" "fusion-sites:CD"
+KEYWORDS    "cloned-by:EA" "backbone:pSB1C3" "antibiotic:Chloramphenicol"      
+            "fusion-sites:CD" "seq-verified:Yes" "part-type:CDS"
+            "glycerol:IG-1-23" "part-subtype:Repressor"
 COMMENT     MoClo Level 0 basic part: CDS                                      
 FEATURES             Location/Qualifiers
+     misc_feature    260..873
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    2089..2688
                      /label="phlF"
                      /ApEinfo_revcolor=#ffef86
@@ -5486,10 +4938,6 @@ FEATURES             Location/Qualifiers
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
-     misc_feature    260..873
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 tactagtagc ggccgctgca gtccggcaaa aaagggcaag gtgtcaccac cctgcccttt
        61 ttctttaaaa ccgaaaagat tacttcgcgt tatgcaggct tcctcgctca ctgactcgct
@@ -5540,23 +4988,23 @@ ORIGIN
 //
 LOCUS       phlF_CM                 2715 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "glycerol:EA-1-16" "part-subtype:Repressor" "backbone:pSB1C3"      
-            "cloned-by:EA" "seq-verified:Yes" "fusion-sites:CM" "part-type:CDS"
-            "antibiotic:Chloramphenicol"
+KEYWORDS    "cloned-by:EA" "part-subtype:Repressor" "backbone:pSB1C3"          
+            "antibiotic:Chloramphenicol" "seq-verified:Yes" "fusion-sites:CM"
+            "glycerol:EA-1-16" "part-type:CDS"
 COMMENT     MoClo Level 0 basic part: CDS                                      
 FEATURES             Location/Qualifiers
      misc_feature    260..873
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    complement(1160..1819)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
      misc_feature    2089..2688
                      /label="phlF"
                      /ApEinfo_revcolor=#ffef86
                      /ApEinfo_fwdcolor=#ffef86
+     misc_feature    complement(1160..1819)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
 ORIGIN
         1 tactagtagc ggccgctgca gtccggcaaa aaagggcaag gtgtcaccac cctgcccttt
        61 ttctttaaaa ccgaaaagat tacttcgcgt tatgcaggct tcctcgctca ctgactcgct
@@ -5607,21 +5055,21 @@ ORIGIN
 //
 LOCUS       pJ23100_AB              2134 bp ds-DNA     circular     01-DEC-2014
 DEFINITION  .
-KEYWORDS    "plasmid:MCP-1-E1 (PS 6/11/13)" "part-type:Promoter "              
-            "cloned-by:Antiquity" "source:BBa" "seq-verify:SI-60"
-            "glycerol:MC-1-59 (Author)" "fusion-site:AB"
-            "part-subtype:Constitutive" "antibiotic:Chloramphenicol (CAM)"
-            "backbone:DVL0_AB (pSB1C3)"
+KEYWORDS    "seq-verify:SI-60" "part-type:Promoter "                           
+            "part-subtype:Constitutive" "glycerol:MC-1-59 (Author)"
+            "plasmid:MCP-1-E1 (PS 6/11/13)" "backbone:DVL0_AB (pSB1C3)"
+            "antibiotic:Chloramphenicol (CAM)" "fusion-site:AB"
+            "cloned-by:Antiquity" "source:BBa"
 COMMENT     MoClo Level 0 basic part: Promoter [J23100]                        
 FEATURES             Location/Qualifiers
-     misc_feature    5..39
-                     /label="J23100"
-                     /ApEinfo_revcolor=#c6c9d1
-                     /ApEinfo_fwdcolor=#c6c9d1
      misc_feature    310..923
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    5..39
+                     /label="J23100"
+                     /ApEinfo_revcolor=#c6c9d1
+                     /ApEinfo_fwdcolor=#c6c9d1
      misc_feature    complement(1210..1869)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
@@ -5666,20 +5114,20 @@ ORIGIN
 //
 LOCUS       pJ23100_EB              2134 bp ds-DNA     circular     01-DEC-2014
 DEFINITION  .
-KEYWORDS    "cloned-by:Antiquity" "part-subtype:Constitutive" "seq-verify:SM27"
-            "glycerol:MC-1-12 (Author)" "fusion-site:EB" "part-type:Promoter "
-            "backbone:DVL0_EB (pSB1C3)" "source:BBa" "plasmid:MCP-1-C3 ( JA
-            7/5/13)" "antibiotic:Chloramphenicol (CAM)"
+KEYWORDS    "fusion-site:EB" "seq-verify:SM27" "source:BBa" "part-type:Promoter
+            " "backbone:DVL0_EB (pSB1C3)" "plasmid:MCP-1-C3 ( JA 7/5/13)"
+            "part-subtype:Constitutive" "glycerol:MC-1-12 (Author)"
+            "cloned-by:Antiquity" "antibiotic:Chloramphenicol (CAM)"
 COMMENT     MoClo Level 0 basic part: Promoter [J23100]                        
 FEATURES             Location/Qualifiers
-     misc_feature    5..39
-                     /label="J23100"
-                     /ApEinfo_revcolor=#c6c9d1
-                     /ApEinfo_fwdcolor=#c6c9d1
      misc_feature    complement(1210..1869)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    5..39
+                     /label="J23100"
+                     /ApEinfo_revcolor=#c6c9d1
+                     /ApEinfo_fwdcolor=#c6c9d1
      misc_feature    310..923
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
@@ -5724,10 +5172,10 @@ ORIGIN
 //
 LOCUS       pJ23104_AB              2134 bp ds-DNA     circular     23-APR-2015
 DEFINITION  .
-KEYWORDS    "part-subtype:Constitutive" "antibiotic:Chloramphenicol (CAM)"     
-            "fusion-site:AB" "cloned-by:Antiquity" "glycerol:MC-1-69 (Author)"
-            "part-type:Promoter " "source:BBa" "seq-verify:SI-373"
-            "plasmid:MCP-1-E8 (SI 10/31/13)" "backbone:DVL0_AB (pSB1C3)"
+KEYWORDS    "part-subtype:Constitutive" "cloned-by:Antiquity" "glycerol:MC-1-69
+            (Author)" "backbone:DVL0_AB (pSB1C3)" "antibiotic:Chloramphenicol
+            (CAM)" "part-type:Promoter " "plasmid:MCP-1-E8 (SI 10/31/13)"
+            "source:BBa" "seq-verify:SI-373" "fusion-site:AB"
 FEATURES             Location/Qualifiers
 ORIGIN
         1 GGAGttgaca gctagctcag tcctaggtat tgtgctagcT ACTagagacc tactagtagc
@@ -5769,18 +5217,19 @@ ORIGIN
 //
 LOCUS       pLacI_AB                2183 bp ds-DNA     circular     23-APR-2015
 DEFINITION  .
-KEYWORDS    "source:Phoenix" "antibiotic:Chloramphenicol (CAM)" "seq-verify:EA"
-            "part-type:Promoter" "cloned-by:EA" "backbone:pSB1C3"
-            "part-subtype:Repressible" "fusion-site:AB"
+KEYWORDS    "part-subtype:Repressible" "backbone:pSB1C3"                       
+            "antibiotic:Chloramphenicol (CAM)" "seq-verify:EA"
+            "part-type:Promoter" "source:Phoenix" "fusion-site:AB"
+            "cloned-by:EA"
 FEATURES             Location/Qualifiers
-     misc_feature    359..972
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    5..88
                      /label="pA1LacO"
                      /ApEinfo_revcolor=#75c6a9
                      /ApEinfo_fwdcolor=#75c6a9
+     misc_feature    359..972
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(1259..1918)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
@@ -5824,27 +5273,27 @@ ORIGIN
      2101 aatttcagat aaaaaaaatc cttagctttc gctaaggatg atttctggaa ttcgcggccg
      2161 cttctagaga ctagtgggtc tca
 //
-LOCUS       pLacI_AK                2183 bp ds-DNA     circular     23-APR-2015
+LOCUS       pLacI_AK                2183 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "fusion-site:AK" "seq-verify:EA" "cloned-by:EA" "glycerol:EA-1-34" 
-            "backbone:pSB1C3" "antibiotic:Chloramphenicol (CAM)"
-            "source:Phoenix" "part-subtype:Repressible" "part-type:Promoter"
+KEYWORDS    "part-subtype:Repressible" "cloned-by:EA" "backbone:pSB1C3"        
+            "part-type:Promoter" "glycerol:EA-1-34" "source:Phoenix"
+            "antibiotic:Chloramphenicol (CAM)" "seq-verify:EA" "fusion-site:AK"
 FEATURES             Location/Qualifiers
-     misc_feature    complement(19..102)
-                     /label="pA1LacO"
-                     /ApEinfo_revcolor=#75c6a9
-                     /ApEinfo_fwdcolor=#75c6a9
      misc_feature    373..986
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    19..102
+                     /label="pA1LacO"
+                     /ApEinfo_revcolor=#75c6a9
+                     /ApEinfo_fwdcolor=#75c6a9
      misc_feature    complement(1273..1932)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
 ORIGIN
-        1 actagtaggt ctctGCATtg tgtgaaattg ttatccgctc acaattgaat ctaagtatca
-       61 ttgttatccg ctcacaagtc aacactcttt ttgataaatt ttCTCCtgag acccactagt
+        1 actagtgggt ctcaGGAGaa aatttatcaa aaagagtgtt gacttgtgag cggataacaa
+       61 tgatacttag attcaattgt gagcggataa caatttcaca caATGCagag acctactagt
       121 agcggccgct gcagtccggc aaaaaagggc aaggtgtcac caccctgccc tttttcttta
       181 aaaccgaaaa gattacttcg cgttatgcag gcttcctcgc tcactgactc gctgcgctcg
       241 gtcgttcggc tgcggcgagc ggtatcagct cactcaaagg cggtaatacg gttatccaca
@@ -5883,18 +5332,18 @@ ORIGIN
 //
 LOCUS       pLacI_KB                2183 bp ds-DNA     circular     23-APR-2015
 DEFINITION  .
-KEYWORDS    "seq-verify:EA" "antibiotic:Chloramphenicol (CAM)" "source:Phoenix"
-            "cloned-by:EA" "part-type:Promoter" "part-subtype:Repressible"
-            "backbone:pSB1C3" "fusion-site:KB"
+KEYWORDS    "part-subtype:Repressible" "fusion-site:KB" "cloned-by:EA"         
+            "antibiotic:Chloramphenicol (CAM)" "part-type:Promoter"
+            "backbone:pSB1C3" "source:Phoenix" "seq-verify:EA"
 FEATURES             Location/Qualifiers
-     misc_feature    359..972
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(1259..1918)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    359..972
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    5..88
                      /label="pA1LacO"
                      /ApEinfo_revcolor=#75c6a9
@@ -5940,23 +5389,22 @@ ORIGIN
 //
 LOCUS       pLmrA_AB                2157 bp ds-DNA     circular     23-APR-2015
 DEFINITION  .
-KEYWORDS    "part-subtype:Repressible" "fusion-site:AB"                        
-            "antibiotic:Chloramphenicol (CAM)" "source:Phoenix"
-            "part-type:Promoter" "backbone:pSB1C3" "cloned-by:EA"
-            "seq-verify:EA"
+KEYWORDS    "source:Phoenix" "fusion-site:AB" "part-subtype:Repressible"       
+            "backbone:pSB1C3" "seq-verify:EA" "cloned-by:EA"
+            "part-type:Promoter" "antibiotic:Chloramphenicol (CAM)"
 FEATURES             Location/Qualifiers
      misc_feature    5..62
                      /label="pLmrA"
                      /ApEinfo_revcolor=#84b0dc
                      /ApEinfo_fwdcolor=#84b0dc
-     misc_feature    333..946
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(1233..1892)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    333..946
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 GGAGttcgtt accaattgac aactggtggt cgaatcaaGA TAATAGACCA GTCACTATAT
        61 TTTACTagag acctactagt agcggccgct gcagtccggc aaaaaagggc aaggtgtcac
@@ -5995,17 +5443,13 @@ ORIGIN
      2041 attaacctat aaaaataggc gtatcacgag gcagaatttc agataaaaaa aatccttagc
      2101 tttcgctaag gatgatttct ggaattcgcg gccgcttcta gagactagtg ggtctca
 //
-LOCUS       pLmrA_AK                2157 bp ds-DNA     circular     23-APR-2015
+LOCUS       pLmrA_AK                2157 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "seq-verify:EA" "source:Phoenix" "backbone:pSB1C3" "fusion-site:AK"
-            "part-type:Promoter" "cloned-by:EA" "antibiotic:Chloramphenicol
-            (CAM)" "part-subtype:Repressible"
+KEYWORDS    "part-subtype:Repressible" "seq-verify:EA" "part-type:Promoter"    
+            "antibiotic:Chloramphenicol (CAM)" "backbone:pSB1C3"
+            "source:Phoenix" "cloned-by:EA" "fusion-site:AK"
 FEATURES             Location/Qualifiers
-     misc_feature    complement(1247..1906)
-                     /label="camR"
-                     /ApEinfo_revcolor=#b7e6d7
-                     /ApEinfo_fwdcolor=#b7e6d7
-     misc_feature    complement(19..76)
+     misc_feature    19..76
                      /label="pLmrA"
                      /ApEinfo_revcolor=#84b0dc
                      /ApEinfo_fwdcolor=#84b0dc
@@ -6013,9 +5457,13 @@ FEATURES             Location/Qualifiers
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    complement(1247..1906)
+                     /label="camR"
+                     /ApEinfo_revcolor=#b7e6d7
+                     /ApEinfo_fwdcolor=#b7e6d7
 ORIGIN
-        1 actagtaggt ctctGCATAA ATATAGTGAC TGGTCTATTA TCttgattcg accaccagtt
-       61 gtcaattggt aacgaaCTCC tgagacccac tagtagcggc cgctgcagtc cggcaaaaaa
+        1 actagtgggt ctcaGGAGtt cgttaccaat tgacaactgg tggtcgaatc aaGATAATAG
+       61 ACCAGTCACT ATATTTATGC agagacctac tagtagcggc cgctgcagtc cggcaaaaaa
       121 gggcaaggtg tcaccaccct gccctttttc tttaaaaccg aaaagattac ttcgcgttat
       181 gcaggcttcc tcgctcactg actcgctgcg ctcggtcgtt cggctgcggc gagcggtatc
       241 agctcactca aaggcggtaa tacggttatc cacagaatca ggggataacg caggaaagaa
@@ -6053,9 +5501,9 @@ ORIGIN
 //
 LOCUS       pLmrA_KB                2157 bp ds-DNA     circular     23-APR-2015
 DEFINITION  .
-KEYWORDS    "cloned-by:EA" "backbone:pSB1C3" "fusion-site:KB"                  
-            "antibiotic:Chloramphenicol (CAM)" "seq-verify:EA"
-            "part-type:Promoter" "part-subtype:Repressible" "source:Phoenix"
+KEYWORDS    "seq-verify:EA" "fusion-site:KB" "part-subtype:Repressible"        
+            "source:Phoenix" "antibiotic:Chloramphenicol (CAM)" "cloned-by:EA"
+            "backbone:pSB1C3" "part-type:Promoter"
 FEATURES             Location/Qualifiers
      misc_feature    333..946
                      /label="pMB1"
@@ -6109,9 +5557,9 @@ ORIGIN
 //
 LOCUS       pPhlF_AB                2145 bp ds-DNA     circular     23-APR-2015
 DEFINITION  .
-KEYWORDS    "antibiotic:Chloramphenicol (CAM)" "part-type:Promoter"            
-            "source:Phoenix" "cloned-by:EA" "fusion-site:AB" "seq-verify:EA"
-            "backbone:pSB1C3" "part-subtype:Repressible"
+KEYWORDS    "fusion-site:AB" "seq-verify:EA" "cloned-by:EA" "backbone:pSB1C3"  
+            "source:Phoenix" "part-type:Promoter" "part-subtype:Repressible"
+            "antibiotic:Chloramphenicol (CAM)"
 FEATURES             Location/Qualifiers
      misc_feature    5..50
                      /label="pPhlF"
@@ -6163,17 +5611,17 @@ ORIGIN
      2041 aaataggcgt atcacgaggc agaatttcag ataaaaaaaa tccttagctt tcgctaagga
      2101 tgatttctgg aattcgcggc cgcttctaga gactagtggg tctca
 //
-LOCUS       pPhlF_AK                2145 bp ds-DNA     circular     23-APR-2015
+LOCUS       pPhlF_AK                2145 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "antibiotic:Chloramphenicol (CAM)" "part-subtype:Repressible"      
-            "backbone:pSB1C3" "fusion-site:AK" "source:Phoenix"
-            "part-type:Promoter" "seq-verify:EA" "cloned-by:EA"
+KEYWORDS    "source:Phoenix" "antibiotic:Chloramphenicol (CAM)"                
+            "part-subtype:Repressible" "cloned-by:EA" "part-type:Promoter"
+            "backbone:pSB1C3" "fusion-site:AK" "seq-verify:EA"
 FEATURES             Location/Qualifiers
      misc_feature    335..948
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    complement(19..64)
+     misc_feature    19..64
                      /label="pPhlF"
                      /ApEinfo_revcolor=#c7b0e3
                      /ApEinfo_fwdcolor=#c7b0e3
@@ -6182,8 +5630,8 @@ FEATURES             Location/Qualifiers
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
 ORIGIN
-        1 actagtaggt ctctGCATAC CTTAACGATA CGGTACGTTT CGTATCATgt caattggtaa
-       61 cgaaCTCCtg agacccacta gtagcggccg ctgcagtccg gcaaaaaagg gcaaggtgtc
+        1 actagtgggt ctcaGGAGtt cgttaccaat tgacATGATA CGAAACGTAC CGTATCGTTA
+       61 AGGTATGCag agacctacta gtagcggccg ctgcagtccg gcaaaaaagg gcaaggtgtc
       121 accaccctgc cctttttctt taaaaccgaa aagattactt cgcgttatgc aggcttcctc
       181 gctcactgac tcgctgcgct cggtcgttcg gctgcggcga gcggtatcag ctcactcaaa
       241 ggcggtaata cggttatcca cagaatcagg ggataacgca ggaaagaaca tgtgagcaaa
@@ -6221,10 +5669,14 @@ ORIGIN
 //
 LOCUS       pPhlF_KB                2145 bp ds-DNA     circular     23-APR-2015
 DEFINITION  .
-KEYWORDS    "backbone:pSB1C3" "fusion-site:KB" "seq-verify:EA" "cloned-by:EA"  
-            "antibiotic:Chloramphenicol (CAM)" "part-type:Promoter"
-            "part-subtype:Repressible" "source:Phoenix"
+KEYWORDS    "fusion-site:KB" "cloned-by:EA" "antibiotic:Chloramphenicol (CAM)" 
+            "seq-verify:EA" "part-subtype:Repressible" "part-type:Promoter"
+            "backbone:pSB1C3" "source:Phoenix"
 FEATURES             Location/Qualifiers
+     misc_feature    5..50
+                     /label="pPhlF"
+                     /ApEinfo_revcolor=#c7b0e3
+                     /ApEinfo_fwdcolor=#c7b0e3
      misc_feature    complement(1221..1880)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
@@ -6233,10 +5685,6 @@ FEATURES             Location/Qualifiers
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    5..50
-                     /label="pPhlF"
-                     /ApEinfo_revcolor=#c7b0e3
-                     /ApEinfo_fwdcolor=#c7b0e3
 ORIGIN
         1 ATGCttcgtt accaattgac ATGATACGAA ACGTACCGTA TCGTTAAGGT TACTagagac
        61 ctactagtag cggccgctgc agtccggcaa aaaagggcaa ggtgtcacca ccctgccctt
@@ -6277,18 +5725,18 @@ ORIGIN
 //
 LOCUS       pSrpR_AB                2164 bp ds-DNA     circular     23-APR-2015
 DEFINITION  .
-KEYWORDS    "seq-verify:EA" "part-subtype:Repressible" "backbone:pSB1C3"       
-            "cloned-by:EA" "source:Phoenix" "antibiotic:Chloramphenicol (CAM)"
-            "part-type:Promoter" "fusion-site:AB"
+KEYWORDS    "fusion-site:AB" "source:Phoenix" "part-subtype:Repressible"       
+            "part-type:Promoter" "seq-verify:EA" "antibiotic:Chloramphenicol
+            (CAM)" "backbone:pSB1C3" "cloned-by:EA"
 FEATURES             Location/Qualifiers
-     misc_feature    5..69
-                     /label="pSrpR"
-                     /ApEinfo_revcolor=#ff9ccd
-                     /ApEinfo_fwdcolor=#ff9ccd
      misc_feature    340..953
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    5..69
+                     /label="pSrpR"
+                     /ApEinfo_revcolor=#ff9ccd
+                     /ApEinfo_fwdcolor=#ff9ccd
      misc_feature    complement(1240..1899)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
@@ -6332,27 +5780,28 @@ ORIGIN
      2101 ccttagcttt cgctaaggat gatttctgga attcgcggcc gcttctagag actagtgggt
      2161 ctca
 //
-LOCUS       pSrpR_AK                2164 bp ds-DNA     circular     23-APR-2015
+LOCUS       pSrpR_AK                2164 bp ds-DNA     circular     13-MAY-2015
 DEFINITION  .
-KEYWORDS    "fusion-site:AK" "antibiotic:Chloramphenicol (CAM)"                
-            "part-type:Promoter" "source:Phoenix" "seq-verify:EA"
-            "part-subtype:Repressible" "backbone:pSB1C3" "cloned-by:EA"
+KEYWORDS    "part-subtype:Repressible" "seq-verify:EA"                         
+            "antibiotic:Chloramphenicol (CAM)" "fusion-site:AK"
+            "backbone:pSB1C3" "part-type:Promoter" "source:Phoenix"
+            "cloned-by:EA"
 FEATURES             Location/Qualifiers
-     misc_feature    complement(19..83)
+     misc_feature    19..83
                      /label="pSrpR"
                      /ApEinfo_revcolor=#ff9ccd
                      /ApEinfo_fwdcolor=#ff9ccd
-     misc_feature    354..967
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(1254..1913)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    354..967
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
-        1 actagtaggt ctctGCATGT TTACAAACAA ACAAGCATGT ATGTATATac ctaggactga
-       61 gctagctgtc aattggtaac gaaCTCCtga gacccactag tagcggccgc tgcagtccgg
+        1 actagtgggt ctcaGGAGtt cgttaccaat tgacagctag ctcagtccta ggtATATACA
+       61 TACATGCTTG TTTGTTTGTA AACATGCaga gacctactag tagcggccgc tgcagtccgg
       121 caaaaaaggg caaggtgtca ccaccctgcc ctttttcttt aaaaccgaaa agattacttc
       181 gcgttatgca ggcttcctcg ctcactgact cgctgcgctc ggtcgttcgg ctgcggcgag
       241 cggtatcagc tcactcaaag gcggtaatac ggttatccac agaatcaggg gataacgcag
@@ -6391,22 +5840,22 @@ ORIGIN
 //
 LOCUS       pSrpR_KB                2164 bp ds-DNA     circular     23-APR-2015
 DEFINITION  .
-KEYWORDS    "backbone:pSB1C3" "source:Phoenix" "part-subtype:Repressible"      
-            "fusion-site:KB" "cloned-by:EA" "seq-verify:EA"
-            "antibiotic:Chloramphenicol (CAM)" "part-type:Promoter"
+KEYWORDS    "part-subtype:Repressible" "source:Phoenix" "cloned-by:EA"         
+            "seq-verify:EA" "fusion-site:KB" "part-type:Promoter"
+            "backbone:pSB1C3" "antibiotic:Chloramphenicol (CAM)"
 FEATURES             Location/Qualifiers
      misc_feature    complement(1240..1899)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
-     misc_feature    340..953
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    5..69
                      /label="pSrpR"
                      /ApEinfo_revcolor=#ff9ccd
                      /ApEinfo_fwdcolor=#ff9ccd
+     misc_feature    340..953
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 ATGCttcgtt accaattgac agctagctca gtcctaggtA TATACATACA TGCTTGTTTG
        61 TTTGTAAACT ACTagagacc tactagtagc ggccgctgca gtccggcaaa aaagggcaag
@@ -6448,22 +5897,22 @@ ORIGIN
 //
 LOCUS       pTet_AB                 2176 bp ds-DNA     circular     23-APR-2015
 DEFINITION  .
-KEYWORDS    "cloned-by:EA" "part-type:Promoter" "antibiotic:Chloramphenicol    
-            (CAM)" "backbone:pSB1C3" "fusion-site:AB" "source:Phoenix"
-            "seq-verify:EA" "part-subtype:Repressible"
+KEYWORDS    "backbone:pSB1C3" "cloned-by:EA" "antibiotic:Chloramphenicol (CAM)"
+            "part-type:Promoter" "part-subtype:Repressible" "seq-verify:EA"
+            "source:Phoenix" "fusion-site:AB"
 FEATURES             Location/Qualifiers
-     misc_feature    352..965
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    5..81
-                     /label="pLtetO-1"
-                     /ApEinfo_revcolor=#9eafd2
-                     /ApEinfo_fwdcolor=#9eafd2
      misc_feature    complement(1252..1911)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    5..81
+                     /label="pLtetO-1"
+                     /ApEinfo_revcolor=#9eafd2
+                     /ApEinfo_fwdcolor=#9eafd2
+     misc_feature    352..965
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 GGAGtcccta tcagtgatag agattgacat ccctatcagt gatagagata ctgagcacat
        61 cagcaggacg cactgaccga aTACTagaga cctactagta gcggccgctg cagtccggca

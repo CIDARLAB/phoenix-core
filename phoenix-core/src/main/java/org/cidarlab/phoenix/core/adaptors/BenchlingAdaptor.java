@@ -184,22 +184,6 @@ public class BenchlingAdaptor {
                 } else {
                     return partSet;
                 }
-                                
-                //OLD SEARCH MECHANISM
-//                //If the BsaI site is first, Level 2n edge case
-//                if (searchSeq.indexOf(_BsaIfwd) > searchSeq.indexOf(_BbsIfwd)) {
-//                    start = searchSeq.indexOf(_BsaIfwd) + 7 - 5;
-//                    end = searchSeq.indexOf(_BsaIrev) - 1 - 5;
-//                    level = 1;
-//
-//                    //If the BbsI site is first, Level 2(n + 1) edge case
-//                } else if (searchSeq.indexOf(_BsaIfwd) < searchSeq.indexOf(_BbsIfwd)) {
-//                    start = searchSeq.indexOf(_BbsIfwd) + 8 - 5;
-//                    end = searchSeq.indexOf(_BbsIrev) - 2 - 5;
-//                    level = 0;
-//                } else {
-//                    return partSet;
-//                }
 
             } else {
                 return partSet;

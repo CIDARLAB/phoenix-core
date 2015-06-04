@@ -247,20 +247,7 @@
       <version>1.1</version>
       <type>jar</type>
     </dependency>
-    <dependency>
-      <groupId>org.cidarlab</groupId>
-      <artifactId>miniEugene</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/src/main/resources/ExternalDependencies/miniEugene-core-1.0.0.jar</systemPath>
-    </dependency>
-<!--    <dependency>
-      <groupId>Raven</groupId>
-      <artifactId>RavenCAD</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/src/main/resources/ExternalDependencies/RavenCAD-1.0-SNAPSHOT.jar</systemPath>
-    </dependency>-->
+    
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
@@ -271,6 +258,11 @@
       <groupId>Raven</groupId>
       <artifactId>RavenCAD</artifactId>
       <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.cidarlab</groupId>
+      <artifactId>miniEugene</artifactId>
+      <version>1.0</version>
     </dependency>
   </dependencies>
     

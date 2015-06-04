@@ -254,15 +254,20 @@
       <version>20140107</version>
       <type>jar</type>
     </dependency>
-    <dependency>
+<!--    <dependency>
       <groupId>Raven</groupId>
       <artifactId>RavenCAD</artifactId>
       <version>1.0-SNAPSHOT</version>
-    </dependency>
+    </dependency>-->
     <dependency>
       <groupId>org.cidarlab</groupId>
       <artifactId>miniEugene</artifactId>
       <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>Raven</groupId>
+      <artifactId>RavenCAD</artifactId>
+      <version>1.0-SNAPSHOT</version>
     </dependency>
   </dependencies>
     

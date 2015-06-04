@@ -123,14 +123,14 @@ public class miniEugeneTest {
         EugeneAdaptor.getStructures(input, 1);        
     }
  
-    public miniEugeneTest() {
-    }
-
-    public static void main(String[] args) throws IOException, MiniEugeneException {
-
-        miniEugeneTest me = new miniEugeneTest();
-        me.fullToggleTest();
-        System.out.println("finished");
-
-    }
+//    public miniEugeneTest() {
+//    }
+//
+//    public static void main(String[] args) throws IOException, MiniEugeneException {
+//
+//        miniEugeneTest me = new miniEugeneTest();
+//        me.fullToggleTest();
+//        System.out.println("finished");
+//
+//    }
 }

@@ -61,9 +61,9 @@ public class RavenTest {
         assmP.setName("default");
         ClothoAdaptor.createAssemblyParameters(assmP);
     }
-    
-    public static void main (String[] args) {
-        RavenTest rt = new RavenTest();
-        rt.testParameterUpload();
-    }
+//    
+//    public static void main (String[] args) {
+//        RavenTest rt = new RavenTest();
+//        rt.testParameterUpload();
+//    }
 }

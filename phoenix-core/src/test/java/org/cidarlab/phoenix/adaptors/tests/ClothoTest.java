@@ -81,7 +81,7 @@ public class ClothoTest {
 //    @Test
     public void testPlasmidLibraryUpload() {
         
-        String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_plasmid_lib_6315_partial.gb";
+        String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_plasmid_lib_6315.gb";
         File toLoad = new File(filePath);
         try {
             ClothoAdaptor.uploadSequences(toLoad, false);

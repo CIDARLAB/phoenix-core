@@ -35,6 +35,15 @@ public class RavenAdaptor {
         JSONObject parameters = ClothoAdaptor.queryAssemblyParameters("default").toJSON();
         org.json.JSONObject rParameters = convertJSONs(parameters);
         HashSet<Polynucleotide> polyNucs = ClothoAdaptor.queryPolynucleotides();
+        
+        //Temporary hack to remove things that are not DVs
+        HashSet<Polynucleotide> DVs = new HashSet();
+        for (Polynucleotide p : polyNucs) {
+            if (p.isDV()) {
+                DVs.add(p);
+            }
+        }
+        
         HashSet<Feature> allFeatures = ClothoAdaptor.queryFeatures();
         allFeatures.addAll(ClothoAdaptor.queryFluorophores());
         
@@ -44,7 +53,8 @@ public class RavenAdaptor {
         
         partsLibR.addAll(phoenixFeaturesToRavenParts(allFeatures));
                         
-        HashMap<org.cidarlab.raven.datastructures.Part, Vector> libPairs = ravenPartVectorPairs(polyNucs, partsLibR);
+//        HashMap<org.cidarlab.raven.datastructures.Part, Vector> libPairs = ravenPartVectorPairs(polyNucs, partsLibR);
+        HashMap<org.cidarlab.raven.datastructures.Part, Vector> libPairs = ravenPartVectorPairs(DVs, partsLibR);
         vectorsLibR.addAll(libPairs.values());
         partsLibR.addAll(libPairs.keySet());
         

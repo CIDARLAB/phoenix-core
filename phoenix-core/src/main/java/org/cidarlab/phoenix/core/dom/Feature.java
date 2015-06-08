@@ -506,6 +506,7 @@ public class Feature extends SharableObjBase {
         ORIGIN,
         VECTOR,
         TESTING,
+        MARKER,
         WILDCARD;
     }
 

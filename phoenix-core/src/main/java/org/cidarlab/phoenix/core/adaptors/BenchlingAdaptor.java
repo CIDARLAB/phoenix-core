@@ -404,6 +404,8 @@ public class BenchlingAdaptor {
                                     clothoFeature.setRole(Feature.FeatureRole.CDS_RESISTANCE);
                                 } else if (type.equalsIgnoreCase("CDS") && subtype.contains("Tag")) {
                                     clothoFeature.setRole(Feature.FeatureRole.CDS_TAG);
+                                } else if (type.equalsIgnoreCase("CDS") && subtype.contains("Marker")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.MARKER);
                                 } else if (type.equalsIgnoreCase("terminator")) {
                                     clothoFeature.setRole(Feature.FeatureRole.TERMINATOR);
                                 } else if (type.equalsIgnoreCase("origin")) {

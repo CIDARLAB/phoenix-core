@@ -111,7 +111,7 @@ public class FluorescentProteinSelectorTest {
         }     
     }
     
-    //Main testing class
+//    //Main testing class
 //    public static void main(String[] args) {
 //        
 //        FluorescentProteinSelectorTest fpst = new FluorescentProteinSelectorTest();

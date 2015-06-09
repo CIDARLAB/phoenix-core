@@ -18,9 +18,9 @@ import org.cidarlab.phoenix.core.grammars.PhoenixGrammar;
 public class PhoenixGrammarTest {
     
     //Test constructor
-    public PhoenixGrammarTest() {
-        
-    }
+//    public PhoenixGrammarTest() {
+//        
+//    }
     
     public void phoenixGrammar() {
         
@@ -28,11 +28,11 @@ public class PhoenixGrammarTest {
         List<Grammar> grammars = PhoenixGrammar.instantiateGrammar(phoenixGrammarDef);
     }
     
-//    //Main testing class
+    //Main testing class
 //    public static void main(String[] args) {
 //        
 //        PhoenixGrammarTest ph = new PhoenixGrammarTest();
 //        ph.phoenixGrammar();
 //    }
-    
+//    
 }

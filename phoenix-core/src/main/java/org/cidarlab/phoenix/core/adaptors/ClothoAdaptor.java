@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.cidarlab.phoenix.core.adaptors.BenchlingAdaptor.*;
+import org.cidarlab.phoenix.core.controller.Utilities;
 import org.cidarlab.phoenix.core.dom.Cytometer;
 import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Fluorophore;
@@ -291,6 +292,8 @@ public class ClothoAdaptor {
         Clotho clothoObject = new Clotho(conn);
         for (Feature f : features) {
 
+            System.out.println("Name: " + f.getName());
+            
             //Feature schema
             Map createFeature = new HashMap();
             createFeature.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
@@ -1017,29 +1020,47 @@ public class ClothoAdaptor {
                 //Replace parts if necessary
                 Part part = pn.getPart();
                 String partSeq = part.getSequence().getSeq();
-                if (!sequencePartMap.containsKey(partSeq)) {
-                    sequencePartMap.put(partSeq, part);
-                } else {
+                String revPartSeq = Utilities.reverseComplement(partSeq);
+                
+                if (sequencePartMap.containsKey(partSeq)) {
                     Part existing = sequencePartMap.get(partSeq);
                     if (!existing.isVector()) {
                         pn.setPart(existing);
-                    } else {
-                        sequencePartMap.put(partSeq, part);
+//                    } else {
+//                        sequencePartMap.put(partSeq, part);
                     }
-                }
+                } else if (sequencePartMap.containsKey(revPartSeq)) {
+                    Part existing = sequencePartMap.get(revPartSeq);
+                    if (!existing.isVector()) {
+                        pn.setPart(existing);
+//                    } else {
+//                        sequencePartMap.put(revPartSeq, part);
+                    }
+                } else {
+                    sequencePartMap.put(partSeq, part);
+                } 
 
                 //Replace vectors if necessary
                 Part vector = pn.getVector();
                 String vecSeq = vector.getSequence().getSeq();
-                if (!sequencePartMap.containsKey(vecSeq)) {
-                    sequencePartMap.put(vecSeq, vector);
-                } else {
+                String revVecSeq = vector.getSequence().getSeq();
+                
+                if (sequencePartMap.containsKey(vecSeq)) {                    
                     Part existing = sequencePartMap.get(vecSeq);
                     if (existing.isVector()) {
                         pn.setVector(existing);
-                    } else {
-                        sequencePartMap.put(vecSeq, vector);
+//                    } else {
+//                        sequencePartMap.put(vecSeq, vector);
                     }
+                } else if (sequencePartMap.containsKey(vecSeq)) {
+                    Part existing = sequencePartMap.get(revVecSeq);
+                    if (existing.isVector()) {
+                        pn.setVector(existing);
+//                    } else {
+//                        sequencePartMap.put(revVecSeq, vector);
+                    }
+                } else {
+                    sequencePartMap.put(vecSeq, vector);
                 }
             }
         }

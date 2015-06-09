@@ -72,11 +72,11 @@ public class BenchlingTest {
 
     }
     
-    @Test
+//    @Test
     public void testMultiPartUpload() {
         try {
             
-            String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/benchling_export_120514_multi.gb";
+            String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_plasmid_lib_6315.gb";
             File input = new File(filePath);
             
             //Get features, polynucleotides, nucseqs and parts from a multi-part genbank file
@@ -117,13 +117,14 @@ public class BenchlingTest {
             Logger.getLogger(BenchlingTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-//    
+    
 //    public BenchlingTest() {
 //        
 //    }
 //    
 //    public static void main(String[] args) {
 //        BenchlingTest t = new BenchlingTest();
-//        t.testFluorophoreUpload();
+//        t.testMultiPartUpload();
+//        String t2 = "";
 //    }
 }

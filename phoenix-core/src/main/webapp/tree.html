@@ -1,61 +1,65 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<style type="text/css">
+<html>
+
+    <head>
+        <title>Phoenix</title>
+        <link rel="shortcut icon" href="images/logo-Owl-Color_cropped.ico">
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+        <meta charset="utf-8">
+
+        <style type="text/css">
   
-	.node {
-    cursor: pointer;
-  }
+          .node {
+      cursor: pointer;
+    }
 
-  .overlay{
-      background-color:#EEE;
-      width: 1170px;
-      height: 630px;
-  }
+    .overlay{
+        background-color:#EEE;
+        width: 1170px;
+        height: 630px;
+    }
    
-  .node circle {
-    fill: #fff;
-    stroke: steelblue;
-    stroke-width: 1.5px;
-  }
+    .node circle {
+      fill: #fff;
+      stroke: steelblue;
+      stroke-width: 1.5px;
+    }
    
-  .node text {
-    font-size:10px; 
-    font-family:sans-serif;
-  }
+    .node text {
+      font-size:10px; 
+      font-family:sans-serif;
+    }
    
-  .link {
-    fill: none;
-    stroke: #ccc;
-    stroke-width: 1.5px;
-  }
+    .link {
+      fill: none;
+      stroke: #ccc;
+      stroke-width: 1.5px;
+    }
 
-  .templink {
-    fill: none;
-    stroke: red;
-    stroke-width: 3px;
-  }
+    .templink {
+      fill: none;
+      stroke: red;
+      stroke-width: 3px;
+    }
 
-  .ghostCircle.show{
-      display:block;
-  }
+    .ghostCircle.show{
+        display:block;
+    }
 
-  .ghostCircle, .activeDrag .ghostCircle{
-       display: none;
-  }
+    .ghostCircle, .activeDrag .ghostCircle{
+         display: none;
+    }
 
-</style>
-<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="dndTree.js"></script>
+        </style>
 
-<head>
-  <title>Phoenix</title>
-  <link rel="shortcut icon" href="images/logo-Owl-Color_cropped.ico">
-  <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-  <link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
-</head>
+    </head>
 
-<body class="container">
+    <body class="container">
+        <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="dndTree.js"></script>
+
         <div class="navbar navbar-fixed-top">
             <div class="navbar-inner"> 
                 <div class="container">
@@ -75,6 +79,6 @@
                 </div>
             </div>
         </div>
-    <div id="tree-container" style="width:1100px;height:630px;margin-top:80px"></div>
-</body>
+        <div id="tree-container" style="width:1100px;height:630px;margin-top:80px"></div>
+    </body>
 </html>

@@ -9,8 +9,11 @@
                 <goal>clean</goal>
                 <goal>install</goal>
             </goals>
+<<<<<<< HEAD
             <properties>
                 <skipTests>true</skipTests>
             </properties>
+=======
+>>>>>>> b9046af19437c3267433d924f22504126c7fbd66
         </action>
     </actions>

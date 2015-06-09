@@ -78,7 +78,7 @@ public class ClothoTest {
         } 
     }
     
-    @Test
+//    @Test
     public void testPlasmidLibraryUpload() {
         
         String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_plasmid_lib_6315.gb";
@@ -114,7 +114,7 @@ public class ClothoTest {
         } 
     }
     
-    @Test
+//    @Test
     public void testFeatureUpload() {
         
         String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_feature_lib.gb";
@@ -159,7 +159,7 @@ public class ClothoTest {
         System.out.println("End of Tests");
     }
     
-    @Test
+//    @Test
     public void testCytometerUpload() {
         
         String filePath = getFilepath() + "/src/main/resources/FluorescentProteins/cosbi_fortessa_bd.csv";

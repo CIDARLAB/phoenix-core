@@ -13,6 +13,7 @@ import net.sf.json.JSONObject;
 import org.cidarlab.phoenix.core.dom.Annotation;
 import org.cidarlab.phoenix.core.dom.Component;
 import org.cidarlab.phoenix.core.dom.Feature;
+import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Part;
 import org.cidarlab.phoenix.core.dom.Polynucleotide;
@@ -54,20 +55,26 @@ public class RavenAdaptor {
         partsLibR.addAll(phoenixFeaturesToRavenParts(allFeatures));
                         
 //        HashMap<org.cidarlab.raven.datastructures.Part, Vector> libPairs = ravenPartVectorPairs(polyNucs, partsLibR);
-        HashMap<org.cidarlab.raven.datastructures.Part, Vector> libPairs = ravenPartVectorPairs(DVs, partsLibR);
+        HashMap<org.cidarlab.raven.datastructures.Part, Vector> libPairs = ravenPartVectorPairs(DVs, partsLibR, vectorsLibR);
         vectorsLibR.addAll(libPairs.values());
         partsLibR.addAll(libPairs.keySet());
         
         HashSet<org.cidarlab.raven.datastructures.Part> targetParts = phoenixModulesToRavenParts(targetModules, partsLibR);
         
         Raven raven = new Raven();
+        
+//        //Check part parameters
+//        for (org.cidarlab.raven.datastructures.Part p : partsLibR) {
+//            System.out.println(p.getSeq() + p.getStringComposition() + p.getLeftOverhang() + p.getRightOverhang() + p.getType() + p.getScars() + p.getDirections());
+//        }
+                
         String assemblyInstructions = raven.assemblyInstructions(targetParts, partsLibR, vectorsLibR, libPairs, new HashMap(), rParameters);
         
         return assemblyInstructions;
     }
     
     //Convert Phoenix polynuclotides into their pairs
-    public static HashMap<org.cidarlab.raven.datastructures.Part, Vector> ravenPartVectorPairs(HashSet<Polynucleotide> polyNucs, HashSet<org.cidarlab.raven.datastructures.Part> libParts) {
+    public static HashMap<org.cidarlab.raven.datastructures.Part, Vector> ravenPartVectorPairs(HashSet<Polynucleotide> polyNucs, HashSet<org.cidarlab.raven.datastructures.Part> libParts, HashSet<Vector> vectorsLib) {
         
         HashMap<org.cidarlab.raven.datastructures.Part, Vector> plasmidPairs = new HashMap();
         
@@ -75,16 +82,16 @@ public class RavenAdaptor {
         for (Polynucleotide pn : polyNucs) {
         
             //Special case for destination vector
-            org.cidarlab.raven.datastructures.Part part = phoenixPartToRavenPart(pn.getPart(), libParts);
             Vector vector;
             if (pn.isDV()) {
                 int level = pn.getLevel();
                 vector = phoenixPartToRavenVector(pn.getVector(), Integer.toString(level));
+                vectorsLib.add(vector);
             } else {
+                org.cidarlab.raven.datastructures.Part part = phoenixPartToRavenPart(pn.getPart(), libParts);
                 vector = phoenixPartToRavenVector(pn.getVector(), null);
-            }
-            
-            plasmidPairs.put(part, vector);
+                plasmidPairs.put(part, vector);
+            }            
         }
         
         return plasmidPairs;
@@ -242,18 +249,16 @@ public class RavenAdaptor {
         for (Module m : modules) {
             org.cidarlab.raven.datastructures.Part newPlasmid;
             ArrayList<org.cidarlab.raven.datastructures.Part> composition = new ArrayList();
-            ArrayList<String> directions = new ArrayList();
-            ArrayList<String> aDir = new ArrayList();
+            ArrayList<String> directions = new ArrayList();            
             
             //Make target plasmids by either finding existing parts or creating new ones
             for (PrimitiveModule pm : m.getSubmodules()) {
                 
                 //Determine direction
+                ArrayList<String> aDir = new ArrayList();
                 if (pm.getPrimitive().getOrientation().equals(Component.Orientation.FORWARD)) {
-                    directions.add("+");
                     aDir.add("+");
                 } else {
-                    directions.add("-");
                     aDir.add("-");
                 }
                 
@@ -267,27 +272,40 @@ public class RavenAdaptor {
                             if (p.getName().equalsIgnoreCase(fName)) {
                                 if (p.getLeftOverhang().isEmpty() && p.getRightOverhang().isEmpty() && p.getDirections().equals(aDir)) {
                                     composition.add(p);
+                                    directions.addAll(aDir);
                                 }
                             }
                         }
                     }
                     
+                //Vector edge case
+                } else if (pm.getPrimitiveRole() == FeatureRole.VECTOR) {
+                    
                 //Multiplex parts
                 } else {
                     
-                    String type = pm.getPrimitive().getName() + "_multiplex";
+                    String type = pm.getPrimitiveRole() + "_multiplex";
                     ArrayList<String> typeM = new ArrayList();
                     typeM.add(type);                    
                     
                     String sequence = "";
                     org.cidarlab.raven.datastructures.Part newBasicPart = org.cidarlab.raven.datastructures.Part.generateBasic(pm.getPrimitive().getName(), sequence, null, new ArrayList(), aDir, "", "", typeM);
                     newBasicPart.setTransientStatus(false);
+                    
+                    composition.add(newBasicPart);
+                    directions.addAll(aDir);
                 }
             }  
             
             ArrayList<String> typeP = new ArrayList();
             typeP.add("plasmid");
-            newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite("", composition, new ArrayList(), new ArrayList(), directions, "", "", typeP);
+            
+            //Target Plasmid naming
+            int i = 1;
+            String name = m.getRole().toString() + i;
+            i++;
+            
+            newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite(name, composition, new ArrayList(), new ArrayList(), directions, "", "", typeP);
             newPlasmid.setTransientStatus(false);   
             
             ravenParts.add(newPlasmid);

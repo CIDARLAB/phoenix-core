@@ -14,6 +14,13 @@
           <target>1.7</target>
         </configuration>
       </plugin>
+      <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-war-plugin</artifactId>
+          <configuration>
+            <webXml>src\main\webapp\WEB-INF\web.xml</webXml>        
+          </configuration>
+      </plugin>
       
 <!--      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -247,13 +254,6 @@
       <version>1.1</version>
       <type>jar</type>
     </dependency>
-    <dependency>
-      <groupId>org.cidarlab</groupId>
-      <artifactId>miniEugene</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/src/main/resources/ExternalDependencies/miniEugene-core-1.0.0.jar</systemPath>
-    </dependency>
 <!--    <dependency>
       <groupId>Raven</groupId>
       <artifactId>RavenCAD</artifactId>
@@ -267,10 +267,31 @@
       <version>20140107</version>
       <type>jar</type>
     </dependency>
+<!--    <dependency>
+      <groupId>org.cidarlab</groupId>
+      <artifactId>miniEugene</artifactId>
+      <version>1.0</version>
+    </dependency>
     <dependency>
       <groupId>Raven</groupId>
       <artifactId>RavenCAD</artifactId>
       <version>1.0-SNAPSHOT</version>
+    </dependency>-->
+<!--    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>phoenix-core</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+    </dependency>-->
+    <dependency>
+      <groupId>Raven</groupId>
+      <artifactId>RavenCAD</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.cidarlab</groupId>
+      <artifactId>miniEugene</artifactId>
+      <version>1.0</version>
     </dependency>
   </dependencies>
     

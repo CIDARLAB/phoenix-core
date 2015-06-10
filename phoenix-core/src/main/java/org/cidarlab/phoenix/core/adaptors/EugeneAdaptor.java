@@ -34,7 +34,7 @@ public class EugeneAdaptor {
         
         //Split text into rules list
         String eugFileString = FileUtil.readFile(input);
-        String[] split = eugFileString.split(System.getProperty("line.separator"));
+        String[] split = eugFileString.split("\\r?\\n");
         
         //Somewhat hacky way to get the size of the design out of the file
         //Requires a specific convention in the first line of the input file -> "// Size=N"

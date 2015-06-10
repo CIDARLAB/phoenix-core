@@ -35,7 +35,25 @@ public class Detector {
     @Getter
     private int channel;
     
-    public double getLowerRange(){
+    @Getter
+    private double lower;
+    
+    @Getter
+    private double upper;
+    
+    public Detector(String _detectorValue, double _mirror, double _filterMid, double _filterWidth){
+        
+        this.DetectorValue = _detectorValue;
+        this.mirror = _mirror;
+        this.filterMidPoint = _filterMid;
+        this.filterWidth = _filterWidth;
+        this.lower = getLowerRange();
+        this.upper = getUpperRange();
+        
+    }
+    
+    
+    private double getLowerRange(){
         double filterLowerLimit = (filterMidPoint - (filterWidth/2));
         if(mirror!=-1){
             return filterLowerLimit;
@@ -48,7 +66,7 @@ public class Detector {
         }
     }
     
-    public double getUpperRange(){
+    private double getUpperRange(){
         return (filterMidPoint + (filterWidth/2));
     }
     

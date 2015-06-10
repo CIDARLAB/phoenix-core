@@ -45,8 +45,10 @@ public class FeatureAssignment {
                 promoterRegulatorAssign(m, features);
             }
             
+            //Add each of the assigned modules to the `modules to test' collection
             for (Module assignedM : m.getAssignedModules()) {
                 
+                //Check the features to remove an duplicate assignments
                 List<Feature> assignedFeatureList = new ArrayList<>();
                 for (PrimitiveModule pm : assignedM.getSubmodules()) {
                     for (Feature f : pm.getModuleFeatures()) {
@@ -60,7 +62,6 @@ public class FeatureAssignment {
                     modulesToTest.addAll(m.getAssignedModules());
                 }
             }
-//            modulesToTest.addAll(m.getAssignedModules());
         }
         
         //Assign WILDCARDs for assigned modules

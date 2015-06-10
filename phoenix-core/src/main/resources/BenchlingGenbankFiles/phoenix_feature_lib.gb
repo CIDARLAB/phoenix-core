@@ -200,29 +200,6 @@ ORIGIN
       481 GTGTATGAAA TGATCGAGAA CGATTATCTG AGCCTGACCG ATGAACTGCT GACCGGTGTT
       541 GAAGAAAGCC TGTGGGCAGC ACTGAGCCGT CAGAGCTAA
 //
-LOCUS       cI.ref                   714 bp ds-DNA     linear       26-NOV-2014
-DEFINITION  .
-KEYWORDS    "part-subtype:Repressor" "source:BBa" "part-type:CDS"              
-COMMENT     MoClo basic part: Repressor                                        
-FEATURES             Location/Qualifiers
-     misc_feature    1..711
-                     /label="cI"
-                     /ApEinfo_revcolor=#ffef86
-                     /ApEinfo_fwdcolor=#ffef86
-ORIGIN
-        1 atgagcacaa aaaagaaacc attaacacaa gagcagcttg aggacgcacg tcgccttaaa
-       61 gcaatttatg aaaaaaagaa aaatgaactt ggcttatccc aggaatctgt cgcagacaag
-      121 atggggatgg ggcagtcagg cgttggtgct ttatttaatg gcatcaatgc attaaatgct
-      181 tataacgccg cattgcttgc aaaaattctc aaagttagcg ttgaagaatt tagcccttca
-      241 atcgccagag aaatctacga gatgtatgaa gcggttagta tgcagccgtc acttagaagt
-      301 gagtatgagt accctgtttt ttctcatgtt caggcaggga tgttctcacc tgagcttaga
-      361 acctttacca aaggtgatgc ggagagatgg gtaagcacaa ccaaaaaagc cagtgattct
-      421 gcattctggc ttgaggttga aggtaattcc atgaccgcac caacaggctc caagccaagc
-      481 tttcctgacg gaatgttaat tctcgttgac cctgagcagg ctgttgagcc aggtgatttc
-      541 tgcatagcca gacttggggg tgatgagttt accttcaaga aactgatcag ggatagcggt
-      601 caggtgtttt tacaaccact aaacccacag tacccaatga tcccatgcaa tgagagttgt
-      661 tccgttgtgg ggaaagttat cgctagtcag tggcctgaag agacgtttgg ctaa
-//
 LOCUS       cmR.ref                  660 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
 KEYWORDS    "part-subtype:Resistance" "part-type:CDS" "source:BBa"             
@@ -532,18 +509,6 @@ ORIGIN
       781 tatcggccgg tgccggtcac cccagacctc aatccggtca ccgggcggcc gattgatctt
       841 agcttcgcca tcctgcgcag cgtctcgccc gtccatctgg aattgaggaa ttaa
 //
-LOCUS       J23100.ref                35 bp ds-DNA     linear       26-NOV-2014
-DEFINITION  .
-KEYWORDS    "part-subtype:Constitutive" "part-type:Promoter " "source:BBa"     
-COMMENT     MoClo basic part: Promoter                                         
-FEATURES             Location/Qualifiers
-     misc_feature    1..35
-                     /label="J23100"
-                     /ApEinfo_revcolor=#c6c9d1
-                     /ApEinfo_fwdcolor=#c6c9d1
-ORIGIN
-        1 ttgacggcta gctcagtcct aggtacagtg ctagc
-//
 LOCUS       J23104.ref                35 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
 KEYWORDS    "source:BBa" "part-subtype:Constitutive" "part-type:Promoter "     
@@ -698,29 +663,6 @@ ORIGIN
       361 TGTAAAGCCT GGGGTGCCTA ATGAGTGAGC TAACTCACAT TAATTGCGTT GCGCTCACTG
       421 CCCGCTTTCC AGTCGGGAAA CCTGTCGTGC CAGCTGCATT AATGAATCGG CCAACGCGCG
       481 GG
-//
-LOCUS       lasR.ref                 720 bp ds-DNA     linear       10-JUN-2015
-DEFINITION  .
-KEYWORDS    "part-type:CDS" "part-subtype:Activatible-Activator" "source:BBa"  
-COMMENT     MoClo basic part: Activator                                        
-FEATURES             Location/Qualifiers
-     misc_feature    1..717
-                     /label="lasR"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
-ORIGIN
-        1 atggccttgg ttgacggttt tcttgagctg gaacgctcaa gtggaaaatt ggagtggagc
-       61 gccatcctcc agaagatggc gagcgacctt ggattctcga agatcctgtt cggcctgttg
-      121 cctaaggaca gccaggacta cgagaacgcc ttcatcgtcg gcaactaccc ggccgcctgg
-      181 cgcgagcatt acgaccgggc tggctacgcg cgggtcgacc cgacggtcag tcactgtacc
-      241 cagagcgtac tgccgatttt ctgggaaccg tccatctacc agacgcgaaa gcagcacgag
-      301 ttcttcgagg aagcctcggc cgccggcctg gtgtatgggc tgaccatgcc gctgcatggt
-      361 gctcgcggcg aactcggcgc gctgagcctc agcgtggaag cggaaaaccg ggccgaggcc
-      421 aaccgtttca tagagtcggt cctgccgacc ctgtggatgc tcaaggacta cgcactgcaa
-      481 agcggtgccg gactggcctt cgaacatccg gtcagcaaac cggtggttct gaccagccgg
-      541 gagaaggaag tgttgcagtg gtgcgccatc ggcaagacca gttgggagat atcggttatc
-      601 tgcaactgct cggaagccaa tgtgaacttc catatgggaa atattcggcg gaagttcggt
-      661 gtgacctccc gccgcgtagc ggccattatg gccgttaatt tgggtcttat tactctctaa
 //
 LOCUS       lmrA.ref                 567 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
@@ -992,18 +934,6 @@ FEATURES             Location/Qualifiers
 ORIGIN
         1 ttcgttacca attgaCGGAA TGAACGTTCA TTCCGataat gctagc
 //
-LOCUS       pCI.ref                   49 bp ds-DNA     linear       16-MAR-2015
-DEFINITION  .
-KEYWORDS    "source:BBa" "part-subtype:Repressible" "part-type:Promoter "      
-COMMENT     MoClo basic part: pCI repressible promoter                         
-FEATURES             Location/Qualifiers
-     misc_feature    1..49
-                     /label="R0051"
-                     /ApEinfo_revcolor=#ffef86
-                     /ApEinfo_fwdcolor=#ffef86
-ORIGIN
-        1 taacaccgtg cgtgttgact attttacctc tggcggtgat aatggttgc
-//
 LOCUS       phlF.ref                 603 bp ds-DNA     linear       10-JUN-2015
 DEFINITION  .
 KEYWORDS    "part-type:CDS" "part-subtype:Repressible-Repressor"               
@@ -1026,20 +956,6 @@ ORIGIN
       481 CTGGATATGA TTTTTGGTTT TTGTTGGTAT CGCCTGCTGA CCGAACAGCT GACCGTTGAA
       541 CAGGATATTG AAGAATTTAC CTTCCTGCTG ATTAATGGTG TTTGTCCGGG TACACAGCGT
       601 TAA
-//
-LOCUS       pLasR.ref                157 bp ds-DNA     linear       16-MAR-2015
-DEFINITION  .
-KEYWORDS    "part-subtype:Inducible" "source:BBa" "part-type:Promoter "        
-COMMENT     MoClo basic part: lasR promotor                                    
-FEATURES             Location/Qualifiers
-     misc_feature    1..157
-                     /label="R0079"
-                     /ApEinfo_revcolor=#b1ff67
-                     /ApEinfo_fwdcolor=#b1ff67
-ORIGIN
-        1 gcccctcgct gagcgcgtcc cggagctggg ggcaacctag ctgccacctg cttttctgct
-       61 agctattcca gcgaaaacat acagatttcc ggcgaaatca aggctacctg ccagttctgg
-      121 caggtttggc cgcgggttct ttttggtaca cgaaagc
 //
 LOCUS       pLmrA.ref                 58 bp ds-DNA     linear       16-MAR-2015
 DEFINITION  .
@@ -1067,20 +983,6 @@ FEATURES             Location/Qualifiers
 ORIGIN
         1 tccctatcag tgatagagat tgacatccct atcagtgata gagatactga gcacatcagc
        61 aggacgcact gaccgaa
-//
-LOCUS       pLuxR.ref                151 bp ds-DNA     linear       16-MAR-2015
-DEFINITION  .
-KEYWORDS    "source:BBa" "part-subtype:Inducible" "part-type:Promoter "        
-COMMENT     MoClo basic part: pLuxR/HSL Promoter                               
-FEATURES             Location/Qualifiers
-     misc_feature    1..151
-                     /label="R0063"
-                     /ApEinfo_revcolor=#f8d3a9
-                     /ApEinfo_fwdcolor=#f8d3a9
-ORIGIN
-        1 acctgtacga tcctacaggt gcttatgtta agtaattgta ttcccagcga tacaatagtg
-       61 tgacaaaaat ccaatttatt agaatcaaat gtcaatccat taccgtttta atgatatata
-      121 acacgcaaaa cttgcgacaa acaataggta a
 //
 LOCUS       pMB1.ref                 614 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .

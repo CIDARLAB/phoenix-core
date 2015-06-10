@@ -63,7 +63,7 @@ public class TestingStructures {
         //Add testing promoter, rbs, terminator, vector
         if (m.getSubmodules().size() == 1) {
             FeatureRole pR = m.getSubmodules().get(0).getPrimitiveRole();
-            if (pR.equals(FeatureRole.CDS) || pR.equals(FeatureRole.CDS_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSOR)) {
+            if (pR.equals(FeatureRole.CDS) || pR.equals(FeatureRole.CDS_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSOR) || pR.equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR)) {
                 List<PrimitiveModule> testSubmodules = new ArrayList<>();
                 testSubmodules.add(testPromoter);
                 testSubmodules.add(testRBS);
@@ -102,7 +102,7 @@ public class TestingStructures {
         List<PrimitiveModule> testSubmodules = new ArrayList<>();
         for (PrimitiveModule pm : m.getSubmodules()) {    
             FeatureRole pR = pm.getPrimitiveRole();
-            if (pR.equals(FeatureRole.CDS) || pR.equals(FeatureRole.CDS_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSOR)) {                
+            if (pR.equals(FeatureRole.CDS) || pR.equals(FeatureRole.CDS_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSOR) || pR.equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR)) {                
                 testSubmodules.add(new PrimitiveModule(FeatureRole.CDS_FLUORESCENT_FUSION, new Primitive(new ComponentType("fc"), "FP"), new Feature("EXPRESSEE", new NucSeq(), null, FeatureRole.CDS_FLUORESCENT_FUSION)));
             } else {
                 testSubmodules.add(pm);
@@ -121,7 +121,7 @@ public class TestingStructures {
         List<PrimitiveModule> testSubmodules = new ArrayList<>();
         for (PrimitiveModule pm : m.getSubmodules()) {            
             FeatureRole pR = pm.getPrimitiveRole();
-            if (pR.equals(FeatureRole.CDS) || pR.equals(FeatureRole.CDS_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSOR)) {               
+            if (pR.equals(FeatureRole.CDS) || pR.equals(FeatureRole.CDS_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSOR) || pR.equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR)) {               
                 testSubmodules.add(new PrimitiveModule(FeatureRole.CDS_FLUORESCENT_FUSION, new Primitive(new ComponentType("fc"), "FP"), new Feature("EXPRESSEE", new NucSeq(), null, FeatureRole.CDS_FLUORESCENT_FUSION)));
             } else {
                 testSubmodules.add(pm);

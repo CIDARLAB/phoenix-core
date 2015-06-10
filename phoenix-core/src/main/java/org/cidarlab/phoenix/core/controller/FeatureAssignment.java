@@ -28,6 +28,7 @@ public class FeatureAssignment {
     public static HashSet<Module> partialAssignment(List<Module> testingModules) {
         
         HashSet<Module> modulesToTest = new HashSet<>();
+        HashSet<List<Feature>> assignedFeatureLists = new HashSet<>();
         
         //Add fluorescent proteins to each module
         addFPs(testingModules);
@@ -43,7 +44,23 @@ public class FeatureAssignment {
             if (!isAssigned(m)) {
                 promoterRegulatorAssign(m, features);
             }
-            modulesToTest.addAll(m.getAssignedModules());
+            
+            for (Module assignedM : m.getAssignedModules()) {
+                
+                List<Feature> assignedFeatureList = new ArrayList<>();
+                for (PrimitiveModule pm : assignedM.getSubmodules()) {
+                    for (Feature f : pm.getModuleFeatures()) {
+                        if (!f.getSequence().getSequence().isEmpty()) {
+                            assignedFeatureList.add(f);
+                        }
+                    }
+                }
+                
+                if (assignedFeatureLists.add(assignedFeatureList)) {
+                    modulesToTest.addAll(m.getAssignedModules());
+                }
+            }
+//            modulesToTest.addAll(m.getAssignedModules());
         }
         
         //Assign WILDCARDs for assigned modules
@@ -172,7 +189,7 @@ public class FeatureAssignment {
             for (int i = 0; i < m.getSubmodules().size(); i++) {
                 PrimitiveModule pm = m.getSubmodules().get(i);
                 for (Feature f : pm.getModuleFeatures()) {
-                    if (pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS) || pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_ACTIVATOR) || pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_REPRESSOR)) {
+                    if (pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS) || pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_ACTIVATOR) || pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_REPRESSOR) || pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_REPRESSIBLE_REPRESSOR)) {
                         if (f.getSequence().getSequence().isEmpty()) {
 
                             //Assign a regulator from the feature library

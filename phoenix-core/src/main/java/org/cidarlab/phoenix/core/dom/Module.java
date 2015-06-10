@@ -108,7 +108,7 @@ public class Module {
     @Setter
     private List<Module> children;
     
-    //Child module(s)
+    //Assigned module(s)
     @Getter
     @Setter
     private HashSet<Module> assignedModules;

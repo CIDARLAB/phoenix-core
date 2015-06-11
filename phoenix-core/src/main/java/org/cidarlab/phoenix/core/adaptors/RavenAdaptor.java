@@ -55,11 +55,12 @@ public class RavenAdaptor {
         partsLibR.addAll(phoenixFeaturesToRavenParts(allFeatures));
                         
 //        HashMap<org.cidarlab.raven.datastructures.Part, Vector> libPairs = ravenPartVectorPairs(polyNucs, partsLibR);
-        HashMap<org.cidarlab.raven.datastructures.Part, Vector> libPairs = ravenPartVectorPairs(DVs, partsLibR, vectorsLibR);
+        HashMap<org.cidarlab.raven.datastructures.Part, Vector> libPairs = ravenPartVectorPairs(polyNucs, partsLibR, vectorsLibR);
         vectorsLibR.addAll(libPairs.values());
         partsLibR.addAll(libPairs.keySet());
         
         HashSet<org.cidarlab.raven.datastructures.Part> targetParts = phoenixModulesToRavenParts(targetModules, partsLibR);
+//        partsLibR.addAll(targetParts);
         
         Raven raven = new Raven();
         
@@ -104,8 +105,9 @@ public class RavenAdaptor {
         
         String partSeq = pPart.getSequence().getSeq();
         HashMap<String, String> moCloOHs = reverseKeysVals(PrimerDesign.getMoCloOHseqs());
-        String moCloLO = moCloOHs.get(partSeq.substring(partSeq.length() - 4).toLowerCase());
-        String moCloRO = moCloOHs.get(partSeq.substring(0, 4).toLowerCase());
+        String moCloLO = moCloOHs.get(partSeq.substring(0, 4).toLowerCase());
+        String moCloRO = moCloOHs.get(partSeq.substring(partSeq.length() - 4).toLowerCase());
+        
         String name = pPart.getName();
         
         ArrayList<String> typeP = new ArrayList();
@@ -244,6 +246,7 @@ public class RavenAdaptor {
     public static HashSet<org.cidarlab.raven.datastructures.Part> phoenixModulesToRavenParts(HashSet<Module> modules, HashSet<org.cidarlab.raven.datastructures.Part> libParts) {
         
         HashSet<org.cidarlab.raven.datastructures.Part> ravenParts = new HashSet();
+        int i = 1;
         
         //For each module, make a Raven part
         for (Module m : modules) {
@@ -285,12 +288,13 @@ public class RavenAdaptor {
                 } else {
                     
                     String type = pm.getPrimitiveRole() + "_multiplex";
+                    String name = pm.getPrimitiveRole() + "?";
                     ArrayList<String> typeM = new ArrayList();
                     typeM.add(type);                    
                     
-                    String sequence = "";
-                    org.cidarlab.raven.datastructures.Part newBasicPart = org.cidarlab.raven.datastructures.Part.generateBasic(pm.getPrimitive().getName(), sequence, null, new ArrayList(), aDir, "", "", typeM);
+                    org.cidarlab.raven.datastructures.Part newBasicPart = org.cidarlab.raven.datastructures.Part.generateBasic(name, "", null, new ArrayList(), aDir, "", "", typeM);
                     newBasicPart.setTransientStatus(false);
+                    libParts.add(newBasicPart);
                     
                     composition.add(newBasicPart);
                     directions.addAll(aDir);
@@ -301,7 +305,7 @@ public class RavenAdaptor {
             typeP.add("plasmid");
             
             //Target Plasmid naming
-            int i = 1;
+            
             String name = m.getRole().toString() + i;
             i++;
             

@@ -2880,10 +2880,6 @@ FEATURES             Location/Qualifiers
                      /label="pMB1"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    1..6
-                     /label="SRLinker"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      CDS             7..726
                      /label="E0040m"
                      /ApEinfo_revcolor=#faac61

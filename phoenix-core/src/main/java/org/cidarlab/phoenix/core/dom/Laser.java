@@ -24,6 +24,9 @@ public class Laser {
     @Setter
     private double power;
     
+    @Getter
+    @Setter
+    private double wavelength;
      
     
     @Getter

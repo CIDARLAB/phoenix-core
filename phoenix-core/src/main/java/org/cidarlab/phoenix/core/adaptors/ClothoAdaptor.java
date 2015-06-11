@@ -35,6 +35,7 @@ import org.clothoapi.clotho3javaapi.Clotho;
 import org.clothoapi.clotho3javaapi.ClothoConnection;
 import org.cidarlab.phoenix.core.dom.Annotation;
 import org.cidarlab.phoenix.core.dom.AssemblyParameters;
+import org.cidarlab.phoenix.core.dom.Laser;
 import org.cidarlab.phoenix.core.dom.Person;
 
 /**
@@ -73,7 +74,7 @@ public class ClothoAdaptor {
             HashSet<Feature> annotationFeatures = queryFeatures();
             annotationFeatures.addAll(queryFluorophores());
             annotateParts(annotationFeatures, polyNucs);
-
+            
             //Save all polynucleotides, nucseqs and parts to Clotho
             createPolynucleotides(polyNucs);
         }       
@@ -141,12 +142,55 @@ public class ClothoAdaptor {
         
         //Initialize parameters
         String name = "";
-        HashSet<String> lasers = new HashSet<>();
+        HashSet<String> _lasers = new HashSet<>();
         HashSet<String> filters = new HashSet<>();
         HashMap<String, ArrayList<String[]>> config = new HashMap<>();
+        String line;
+        
+        List<Laser> lasers = new ArrayList<Laser>();
+        
+        boolean laserFlag = false;
+        boolean detectorFlag = false;
+        
+        while((line=reader.readLine()) != null){
+            
+            System.out.println("Line ::"+line);
+            String pieces[] = line.split(",");
+            if(pieces[0].equalsIgnoreCase("Configuration Name")){
+                name = pieces[1];
+            }
+            if(pieces[0].equalsIgnoreCase("Laser Name")){
+                laserFlag = true;
+            }
+            Laser laser = new Laser();
+            if(laserFlag){
+                if(!pieces[0].trim().equals("")){
+                    
+                    if(lasers.isEmpty()){
+                        laser = new Laser();
+                    }
+                    else{
+                        
+                        lasers.add(laser);
+                        laser = new Laser();
+                    }
+                    laser.setName(pieces[0]);
+                    laser.setType(Laser.LaserType.CUSTOM);
+                    
+                    laser.setWavelength(Double.parseDouble(pieces[2].trim()));
+                    laser.setPower(Double.parseDouble(pieces[3].trim()));
+                    
+                }
+                else{
+                    
+                }
+            }
+            
+        }
+        
         
         //The first line describes the spectra
-        String line = reader.readLine();
+        line = reader.readLine();
         while (line != null) {
 
             String[] vals = line.split(",");
@@ -155,7 +199,10 @@ public class ClothoAdaptor {
             if (vals[0].equalsIgnoreCase("Configuration Name")) {
                 name = vals[1];
             }
-
+            
+            
+            
+            
             //Once cytometer key rows are hit
             if (vals[0].equalsIgnoreCase("Laser Name")) {
 
@@ -163,10 +210,9 @@ public class ClothoAdaptor {
 
                 //Internal loop for each laser
                 while (line != null) {
-
                     String[] cvals = line.split(",");
                     String laser = cvals[2] + ":" + cvals[3];
-                    lasers.add(laser);
+                    _lasers.add(laser);
                     
                     String mirror = cvals[7].substring(0, cvals[7].length() - 3);
                     String filter = cvals[8].substring(0, cvals[8].length() - 3).replaceAll("/", ":");
@@ -178,10 +224,9 @@ public class ClothoAdaptor {
 
                     line = reader.readLine();
                     cvals = line.split(",");
-
                     //Loop kicked into once it reaches the lasers section of the file
                     while (cvals[0].equals("")) {
-
+                        
                         //Only look at row with filters, not empty slots
                         if (cvals.length >= 9) {
                             String newMirror;
@@ -223,7 +268,7 @@ public class ClothoAdaptor {
             }
         }   
 
-        Cytometer c = new Cytometer(name, lasers, filters, config);
+        Cytometer c = new Cytometer(name, _lasers, filters, config);
         createCytometer(c);        
     }
     
@@ -933,7 +978,7 @@ public class ClothoAdaptor {
             
             List<String> laserList = (List<String>) jsonCytometer.get("lasers");
             lasers.addAll(laserList);
-            c.setLasers(lasers);
+            c.set_lasers(lasers);
             
             List<String> filterList = (List<String>) jsonCytometer.get("filters");
             filters.addAll(filterList);

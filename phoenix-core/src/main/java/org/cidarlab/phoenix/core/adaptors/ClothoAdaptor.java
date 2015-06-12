@@ -35,6 +35,7 @@ import org.clothoapi.clotho3javaapi.Clotho;
 import org.clothoapi.clotho3javaapi.ClothoConnection;
 import org.cidarlab.phoenix.core.dom.Annotation;
 import org.cidarlab.phoenix.core.dom.AssemblyParameters;
+import org.cidarlab.phoenix.core.dom.Detector;
 import org.cidarlab.phoenix.core.dom.Laser;
 import org.cidarlab.phoenix.core.dom.Person;
 
@@ -159,9 +160,6 @@ public class ClothoAdaptor {
             if(pieces[0].equalsIgnoreCase("Configuration Name")){
                 name = pieces[1];
             }
-            if(pieces[0].equalsIgnoreCase("Laser Name")){
-                laserFlag = true;
-            }
             Laser laser = new Laser();
             if(laserFlag){
                 if(!pieces[0].trim().equals("")){
@@ -179,15 +177,39 @@ public class ClothoAdaptor {
                     
                     laser.setWavelength(Double.parseDouble(pieces[2].trim()));
                     laser.setPower(Double.parseDouble(pieces[3].trim()));
+                    laser.setArray(Laser.DetectorArray.valueOf(pieces[4].toUpperCase()));
                     
-                }
+                    double mirrorVal = -1;
+                        if(!pieces[7].trim().equals("")){
+                            mirrorVal = Double.parseDouble(pieces[7].substring(0, pieces[7].indexOf("LP")).trim());
+                        }
+                    String filterString = pieces[8].substring(0,pieces[8].indexOf("BP")).trim();
+                    String filterPieces[] = filterString.split("/");
+                    Detector detector = new Detector(pieces[5].trim(),mirrorVal,Double.parseDouble(filterPieces[0].trim()),Double.parseDouble(filterPieces[1].trim()));
+                    laser.getDetectors().add(detector);
+                    
+               }
                 else{
-                    
+                    if(pieces.length > 6)
+                    {
+                        if (!pieces[8].trim().equals("")) {
+                            double mirrorVal = -1;
+                            if (!pieces[7].trim().equals("")) {
+                                mirrorVal = Double.parseDouble(pieces[7].substring(0, pieces[7].indexOf("LP")).trim());
+                            }
+                            String filterString = pieces[8].substring(0, pieces[8].indexOf("BP")).trim();
+                            String filterPieces[] = filterString.split("/");
+                            Detector detector = new Detector(pieces[5].trim(), mirrorVal, Double.parseDouble(filterPieces[0].trim()), Double.parseDouble(filterPieces[1].trim()));
+                            laser.getDetectors().add(detector);
+                        }
+                    }
                 }
+            }
+            if(pieces[0].equalsIgnoreCase("Laser Name")){
+                laserFlag = true;
             }
             
         }
-        
         
         //The first line describes the spectra
         line = reader.readLine();

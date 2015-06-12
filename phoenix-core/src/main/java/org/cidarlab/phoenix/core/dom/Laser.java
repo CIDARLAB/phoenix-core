@@ -5,6 +5,7 @@
  */
 package org.cidarlab.phoenix.core.dom;
 
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,8 +47,12 @@ public class Laser {
     }
     
     public static enum DetectorArray{
-        OCTOGON,
+        OCTAGON,
         TRIGON
+    }
+    
+    public Laser(){
+        detectors = new ArrayList<Detector>();
     }
     
 }

@@ -563,11 +563,23 @@ public class PhoenixGrammar {
     //Create a new EXPRESSEE
     private static Module getExpresseeModule(PrimitiveModule node) {
         
-        Module expressor = new Module();
-        expressor.setRole(ModuleRole.EXPRESSEE);
-        expressor.setModuleFeatures(node.getModuleFeatures());
-        expressor.setRoot(false);
-        expressor.getSubmodules().add(node);
-        return expressor;
+        Module expressee = new Module();
+        
+        if (node.getPrimitiveRole().equals(FeatureRole.CDS)) {
+            expressee.setRole(ModuleRole.EXPRESSEE);
+        } else if (node.getPrimitiveRole().equals(FeatureRole.CDS_REPRESSOR)) {
+            expressee.setRole(ModuleRole.EXPRESSEE_REPRESSOR);
+        } else if (node.getPrimitiveRole().equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR)) {
+            expressee.setRole(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR);
+        } else if (node.getPrimitiveRole().equals(FeatureRole.CDS_ACTIVATOR)) {
+            expressee.setRole(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR);
+        } else if (node.getPrimitiveRole().equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR)) {
+            expressee.setRole(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR);
+        }
+        
+        expressee.setModuleFeatures(node.getModuleFeatures());
+        expressee.setRoot(false);
+        expressee.getSubmodules().add(node);
+        return expressee;
     }    
 }

@@ -142,6 +142,10 @@ public class Module {
     public enum ModuleRole {
     	EXPRESSOR,
         EXPRESSEE,
+        EXPRESSEE_REPRESSOR,
+        EXPRESSEE_REPRESSIBLE_REPRESSOR,
+        EXPRESSEE_ACTIVATOR,
+        EXPRESSEE_ACTIVATIBLE_ACTIVATOR,
         TRANSCRIPTIONAL_UNIT,
         HIGHER_FUNCTION;
     }

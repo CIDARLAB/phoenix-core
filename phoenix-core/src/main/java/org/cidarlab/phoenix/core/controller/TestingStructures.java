@@ -30,19 +30,19 @@ public class TestingStructures {
         
         //For each module, traverse graph
         for (Module m : modules) {
-            addTestingPrimitivesHelper(m, m.getChildren());            
+            addTestingPrimitivesHelper(m.getChildren());            
         } 
     }
     
     //Adding testing primitive module helper
-    private static void addTestingPrimitivesHelper (Module parent, List<Module> children) {
+    private static void addTestingPrimitivesHelper (List<Module> children) {
         
         //For each of the children, add testing peices if they are stage 0+
         for (Module child : children) {
             if (child.getStage() >= 0) {
 
                 //Add testing peices to the root
-                if (child.getRole().equals(ModuleRole.EXPRESSEE)) {
+                if (child.getRole().equals(ModuleRole.EXPRESSEE) || child.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || child.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR) || child.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || child.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)) {
                     addTestExpressee(child);
                 } else if (child.getRole().equals(ModuleRole.EXPRESSOR)) {
                     addTestExpressor(child);
@@ -52,7 +52,7 @@ public class TestingStructures {
                     addTestHighFunction(child);
                 }
 
-                addTestingPrimitivesHelper(child, child.getChildren());
+                addTestingPrimitivesHelper(child.getChildren());
             }
         }
     }
@@ -170,7 +170,7 @@ public class TestingStructures {
         
         
         
-        return new ArrayList();
+        return null;
     }
     
     //Method for forming an experiment from a module which has partial part assignment

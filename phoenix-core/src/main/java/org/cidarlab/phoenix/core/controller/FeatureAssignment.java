@@ -184,7 +184,7 @@ public class FeatureAssignment {
         HashSet<Module> assignedModules = m.getAssignedModules();
 
         //Make assigned modules for EXPRESSEES
-        if (m.getRole().equals(Module.ModuleRole.EXPRESSEE)) {
+        if (m.getRole().equals(Module.ModuleRole.EXPRESSEE) || m.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || m.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATOR) || m.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || m.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSOR)) {
 
             //Look for regulators that are abstract
             for (int i = 0; i < m.getSubmodules().size(); i++) {
@@ -329,7 +329,7 @@ public class FeatureAssignment {
                 seenModules.add(currentModule);
                 queue.remove(0);
 
-                if (currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE) || currentModule.getRole().equals(Module.ModuleRole.EXPRESSOR)) {
+                if (currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE) || currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATOR) || currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSOR) || currentModule.getRole().equals(Module.ModuleRole.EXPRESSOR)) {
                     stageModules.add(currentModule);
                 } 
 

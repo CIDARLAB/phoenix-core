@@ -297,14 +297,6 @@ public class RavenAdaptor {
             String name = m.getRole().toString() + i;
             i++;
             
-            //Create blank polynucleotide as a placeholders
-            //Here is where the colony picking math should be applied
-            HashSet<Polynucleotide> pnSet = new HashSet<>();
-            Polynucleotide pnPlaceholder = new Polynucleotide();
-            pnPlaceholder.setAccession(name + "_Polynucleotide");
-            pnSet.add(pnPlaceholder);
-            m.setPolynucleotides(pnSet);
-            
             newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite(name, composition, new ArrayList(), new ArrayList(), directions, "", "", typeP);
             newPlasmid.setTransientStatus(false);   
             

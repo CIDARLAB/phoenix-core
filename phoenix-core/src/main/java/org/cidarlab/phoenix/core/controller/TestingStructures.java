@@ -19,6 +19,7 @@ import org.cidarlab.phoenix.core.dom.Feature;
 import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
 import org.cidarlab.phoenix.core.dom.NucSeq;
 import org.cidarlab.phoenix.core.dom.Person;
+import org.cidarlab.phoenix.core.dom.Polynucleotide;
 import org.cidarlab.phoenix.core.dom.Sample;
 
 /**
@@ -414,7 +415,15 @@ public class TestingStructures {
     
     //Method for forming an experiment from a module which has partial part assignment
     private static void createExperimentSamples(Experiment e, Module m) {
-
+        
+        //Create blank polynucleotide as a placeholders
+        //Here is where the colony picking math should be applied
+        HashSet<Polynucleotide> pnSet = new HashSet<>();
+        Polynucleotide pnPlaceholder = new Polynucleotide();
+//        pnPlaceholder.setAccession(name + "_Polynucleotide");
+        pnSet.add(pnPlaceholder);
+        m.setPolynucleotides(pnSet);
+        
     }
     
     //Method for forming an experiment from a module which has partial part assignment

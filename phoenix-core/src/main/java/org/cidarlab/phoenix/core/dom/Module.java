@@ -77,6 +77,16 @@ public class Module {
         return clone;
     }
     
+    //Module name
+    @Getter
+    @Setter
+    private String name;
+    
+    //Module clothoID
+    @Getter
+    @Setter
+    private String clothoID;
+    
     //Module roles
     @Getter
     @Setter

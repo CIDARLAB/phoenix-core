@@ -153,11 +153,6 @@ public class Module {
     @Setter
     private Experiment experiment;
     
-    //Polynucleotides associated with this module for testing
-    @Getter
-    @Setter
-    private HashSet<Polynucleotide> polynucleotides;
-    
     //Module roles
     public enum ModuleRole {
     	EXPRESSOR,

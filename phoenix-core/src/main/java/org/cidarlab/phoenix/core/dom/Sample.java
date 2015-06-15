@@ -36,14 +36,9 @@ public class Sample {
     private boolean isControl;
     
     //Polynucleotide measured
-//    @Setter
-//    @Getter
-//    private Polynucleotide polynucleotide;
-    
-    //Module measured
     @Setter
     @Getter
-    private Module module;
+    private Polynucleotide polynucleotide;
     
     //Test strain
     @Setter

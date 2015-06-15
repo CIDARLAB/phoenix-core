@@ -422,7 +422,7 @@ public class TestingStructures {
         Polynucleotide pnPlaceholder = new Polynucleotide();
 //        pnPlaceholder.setAccession(name + "_Polynucleotide");
         pnSet.add(pnPlaceholder);
-        m.setPolynucleotides(pnSet);
+//        m.setPolynucleotides(pnSet);
         
     }
     

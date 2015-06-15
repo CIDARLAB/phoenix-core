@@ -1,3 +1,284 @@
+nbasis=3;#
+mbmydata=create.monomial.basis(c(-3, 1.7),nbasis=nbasis)#
+myfd2=smooth.basis(conc,max,mbmydata)#
+plotfit.fd(max,conc,myfd2$fd)
+nbasis=3;#
+mbmydata=create.monomial.basis(c(-.302, 1.7),nbasis=nbasis)#
+myfd2=smooth.basis(conc,max,mbmydata)#
+plotfit.fd(max,conc,myfd2$fd)
+nbasis=5;#
+mbmydata=create.monomial.basis(c(-.302, 1.7),nbasis=nbasis)#
+myfd2=smooth.basis(conc,max,mbmydata)#
+plotfit.fd(max,conc,myfd2$fd)
+nbasis=7;#
+mbmydata=create.monomial.basis(c(-.302, 1.7),nbasis=nbasis)#
+myfd2=smooth.basis(conc,max,mbmydata)#
+plotfit.fd(max,conc,myfd2$fd)
+nbasis=5;#
+mbmydata=create.monomial.basis(c(-.302, 1.7),nbasis=nbasis)#
+myfd2=smooth.basis(conc,max,mbmydata)#
+plotfit.fd(max,conc,myfd2$fd)
+data(CanadianWeather)#
+day = c(1:365)#
+temp = CanadianWeather$dailyAv[,'Montreal','Temperature.C']#
+prec = CanadianWeather$dailyAv[,'Montreal','Precipitation.mm']#
+#
+fbasist=create.fourier.basis(c(1,365),nbasis=51)#
+fdt=Data2fd(day,temp,fbasist)#
+haccLfd2=vec2Lfd(c(0,(2*pi/diff(c(0,365)))^2), c(1,365))#
+fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e-9)#
+fdts=smooth.fd(fdt, fdtPar)#
+plotfit.fd(temp,day,fdts)
+fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e-5)#
+fdts=smooth.fd(fdt, fdtPar)#
+plotfit.fd(temp,day,fdts)
+fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e-4)#
+fdts=smooth.fd(fdt, fdtPar)#
+plotfit.fd(temp,day,fdts)
+fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e-3)#
+fdts=smooth.fd(fdt, fdtPar)#
+plotfit.fd(temp,day,fdts)
+fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e-2)#
+fdts=smooth.fd(fdt, fdtPar)#
+plotfit.fd(temp,day,fdts)
+fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e-1)#
+fdts=smooth.fd(fdt, fdtPar)#
+plotfit.fd(temp,day,fdts)
+fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e0)#
+fdts=smooth.fd(fdt, fdtPar)#
+plotfit.fd(temp,day,fdts)
+fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e1)#
+fdts=smooth.fd(fdt, fdtPar)#
+plotfit.fd(temp,day,fdts)
+fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e2)#
+fdts=smooth.fd(fdt, fdtPar)#
+plotfit.fd(temp,day,fdts)
+fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e3)#
+fdts=smooth.fd(fdt, fdtPar)#
+plotfit.fd(temp,day,fdts)
+fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e4)#
+fdts=smooth.fd(fdt, fdtPar)#
+plotfit.fd(temp,day,fdts)
+fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e5)#
+fdts=smooth.fd(fdt, fdtPar)#
+plotfit.fd(temp,day,fdts)
+fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e6)#
+fdts=smooth.fd(fdt, fdtPar)#
+plotfit.fd(temp,day,fdts)
+fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e7)#
+fdts=smooth.fd(fdt, fdtPar)#
+plotfit.fd(temp,day,fdts)
+fdps
+fdps$gcv\
+fdps$gcv
+smooth.basisPar(day,prec,fdps)
+fdpss=smooth.basisPar(day,prec,fdps)
+fdpss$gcv
+fbasist=create.fourier.basis(c(1,365),nbasis=51)#
+fdt=Data2fd(day,temp,fbasist)#
+haccLfd2=vec2Lfd(c(0,(2*pi/diff(c(0,365)))^2), c(1,365))#
+fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e-5)#
+fdts=smooth.fd(fdt, fdtPar)#
+plotfit.fd(temp,day,fdts)
+fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e5)#
+fdts=smooth.fd(fdt, fdtPar)#
+plotfit.fd(temp,day,fdts)
+fbasisp=create.fourier.basis(c(1,365),nbasis=5)#
+fdp=Data2fd(day,prec,fbasisp)#
+haccLfd2=vec2Lfd(c(0,(2*pi/diff(c(0,365)))^2), c(1,365))#
+fdpPar <- fdPar(fdp, Lfdobj=haccLfd2, lambda=1e-5)#
+fdps=smooth.fd(fdp, fdpPar)#
+plotfit.fd(prec,day,fdps)
+fdpPar <- fdPar(fdp, Lfdobj=haccLfd2, lambda=1e9)#
+fdps=smooth.fd(fdp, fdpPar)#
+plotfit.fd(prec,day,fdps)
+fdpPar <- fdPar(fdp, Lfdobj=haccLfd2, lambda=1e5)#
+fdps=smooth.fd(fdp, fdpPar)#
+plotfit.fd(prec,day,fdps)
+-5:5
+1e0
+1e1
+1e2
+?append
+f=NULL
+f
+f[5]=1
+f
+a=c(-5:5)
+a
+gcvvect=NULL#
+lambda=c(-5:5)#
+for (i in -5:5){#
+	fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=10^i)#
+	fdts=smooth.fd(fdt, fdtPar)#
+	fdtss=smooth.basisPar(day,prec,fdpt)#
+	gcvvect=append(gcvvec,fdtss$gcv)}#
+plot(lambda,gcvvect)
+gcvvect=NULL#
+lambda=c(-5:5)#
+for (i in -5:5){#
+	fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=10^i)#
+	fdts=smooth.fd(fdt, fdtPar)#
+	fdtss=smooth.basisPar(day,prec,fdpt)#
+	gcvvect=append(gcvvec,fdtss$gcv)}#
+plot(gcvvect,lambda)
+gcvvect=NULL#
+lambda=c(-5:5)#
+for (i in -5:5){#
+	fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=10^i)#
+	fdts=smooth.fd(fdt, fdtPar)#
+	fdtss=smooth.basisPar(day,prec,fdts)#
+	gcvvect=append(gcvvec,fdtss$gcv)}#
+plot(lambda,gcvvect)
+gcvvect=NULL#
+lambda=c(-5:5)#
+for (i in -5:5){#
+	fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=10^i)#
+	fdts=smooth.fd(fdt, fdtPar)#
+	fdtss=smooth.basisPar(day,prec,fdts)#
+	gcvvect=append(gcvvect,fdtss$gcv)}#
+plot(lambda,gcvvect)
+gcvvect=NULL#
+lambda=c(-5:5)#
+for (i in -5:5){#
+	fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=10^i)#
+	fdts=smooth.fd(fdt, fdtPar)#
+	fdtss=smooth.basisPar(day,prec,fdts)#
+	gcvvect=append(gcvvect,fdtss$gcv)}#
+	fdtss$gcv#
+plot(lambda,gcvvect)
+gcvvect=NULL#
+lambda=c(-5:5)#
+for (i in -5:5){#
+	fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=10^i)#
+	fdts=smooth.fd(fdt, fdtPar)#
+	fdtss=smooth.basisPar(day,prec,fdts)#
+	gcvvect=append(gcvvect,fdtss$gcv)#
+	fdtss$gcv}#
+plot(lambda,gcvvect)
+gcvvect=NULL#
+lambda=c(-9:9)#
+for (i in lambda){#
+	fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=10^i)#
+	fdts=smooth.fd(fdt, fdtPar)#
+	fdtss=smooth.basisPar(day,prec,fdts)#
+	gcvvect=append(gcvvect,fdtss$gcv)#
+	fdtss$gcv}#
+plot(lambda,gcvvect)
+gcvvect=NULL#
+lambda=c(-9:9)#
+for (i in lambda){#
+	fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=10^i)#
+	fdts=smooth.fd(fdt, fdtPar)#
+	fdtss=smooth.basisPar(day,temp,fdts)#
+	gcvvect=append(gcvvect,fdtss$gcv)#
+	fdtss$gcv}#
+plot(lambda,gcvvect)
+?fdtPar
+?fdPar
+gcvvect=NULL#
+lambda=c(-9:9)#
+for (i in lambda){#
+	fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=10^i)#
+	fdts=smooth.basisPar(day, temp, fdtPar, Lfdobj=haccLfd2, lambda=10^i)#
+	gcvvect=append(gcvvect,fdtss$gcv)#
+	fdtss$gcv}#
+plot(lambda,gcvvect)
+fdt
+gcvvect=NULL#
+lambda=c(-9:9)#
+for (i in lambda){#
+	fdtPar <- fdPar(fdt=fdobj, Lfdobj=haccLfd2, lambda=10^i)#
+	fdts=smooth.basisPar(day, temp, fdtPar, Lfdobj=haccLfd2, lambda=10^i)#
+	gcvvect=append(gcvvect,fdtss$gcv)#
+	fdtss$gcv}#
+plot(lambda,gcvvect)
+gcvvect=NULL#
+lambda=c(-9:9)#
+for (i in lambda){#
+	fdts=smooth.basisPar(day, temp, fdt, Lfdobj=haccLfd2, lambda=10^i)#
+	gcvvect=append(gcvvect,fdtss$gcv)#
+	fdtss$gcv}#
+plot(lambda,gcvvect)
+gcvvect=NULL#
+lambda=c(-9:9)#
+for (i in lambda){#
+	fdts=smooth.basisPar(day, temp, fdt, Lfdobj=haccLfd2, lambda=10^i)#
+	gcvvect=append(gcvvect,fdtss$gcv)#
+	fdts$gcv}#
+plot(lambda,gcvvect)
+gcvvect=NULL#
+lambda=c(-9:9)#
+for (i in lambda){#
+	fdts=smooth.basisPar(day, temp, fdt, Lfdobj=haccLfd2, lambda=10^i)#
+	gcvvect=append(gcvvect,fdts$gcv)#
+	fdts$gcv}#
+plot(lambda,gcvvect)
+gcvvecp=NULL#
+for (i in lambda){#
+	fdps=smooth.basisPar(day, temp, fdp, Lfdobj=haccLfd2, lambda=10^i)#
+	gcvvect=append(gcvvecp,fdps$gcv)}#
+plot(lambda,gcvvecp)
+gcvvecp=NULL#
+for (i in lambda){#
+	fdps=smooth.basisPar(day, temp, fdp, Lfdobj=haccLfd2, lambda=10^i)#
+	gcvvecp=append(gcvvecp,fdps$gcv)}#
+plot(lambda,gcvvecp)
+fdps
+gcvvect=NULL#
+lambda=c(-21:9)#
+for (i in lambda){#
+	fdts=smooth.basisPar(day, temp, fdt, Lfdobj=haccLfd2, lambda=10^i)#
+	gcvvect=append(gcvvect,fdts$gcv)}#
+plot(lambda,gcvvect)
+gcvvect=NULL#
+lambda=c(-21:21)#
+for (i in lambda){#
+	fdts=smooth.basisPar(day, temp, fdt, Lfdobj=haccLfd2, lambda=10^i)#
+	gcvvect=append(gcvvect,fdts$gcv)}#
+plot(lambda,gcvvect)
+gcvvecp=NULL#
+for (i in lambda){#
+	fdps=smooth.basisPar(day, temp, fdp, Lfdobj=haccLfd2, lambda=10^i)#
+	gcvvecp=append(gcvvecp,fdps$gcv)}#
+plot(lambda,gcvvecp)
+gcvvecp=NULL#
+for (i in lambda){#
+	fdps=smooth.basisPar(day, prec, fdp, Lfdobj=haccLfd2, lambda=10^i)#
+	gcvvecp=append(gcvvecp,fdps$gcv)}#
+plot(lambda,gcvvecp)
+?smooth.basis
+fbasist=create.fourier.basis(c(1,365),nbasis=51)#
+fdt=Data2fd(day,temp,fbasist)#
+haccLfd2=vec2Lfd(c(0,(2*pi/diff(c(0,365)))^2), c(1,365))#
+fdtPar=fdPar(fdt, Lfdobj=haccLfd2, lambda=1e-5)#
+fdts=smooth.basis(day,temp,fdtPar)#
+plotfit.fd(temp,day,fdts)
+fbasist=create.fourier.basis(c(1,365),nbasis=51)#
+fdt=Data2fd(day,temp,fbasist)#
+haccLfd2=vec2Lfd(c(0,(2*pi/diff(c(0,365)))^2), c(1,365))#
+fdtPar=fdPar(fdt, Lfdobj=haccLfd2, lambda=1e-5)#
+fdts=smooth.basis(day,temp,fdtPar)#
+plotfit.fd(temp,day,fdts$fd)
+fdtPar=fdPar(fdt, Lfdobj=haccLfd2, lambda=1e0)#
+fdts=smooth.basis(day,temp,fdtPar)#
+plotfit.fd(temp,day,fdts$fd)
+fdtPar=fdPar(fdt, Lfdobj=haccLfd2, lambda=1e5)#
+fdts=smooth.basis(day,temp,fdtPar)#
+plotfit.fd(temp,day,fdts$fd)
+gcvvect=NULL#
+lambda=c(-21:21)#
+for (i in lambda){#
+	fdtPar=fdPar(fdt, Lfdobj=haccLfd2, lambda=10^i)#
+	fdts=smooth.basis(day,temp,fdtPar)#
+	gcvvect=append(gcvvect,fdts$gcv)}#
+plot(lambda,gcvvect)
+gcvvecp=NULL#
+for (i in lambda){#
+	fdpPar=fdPar(fdp, Lfdobj=haccLfd2, lambda=10^i)#
+	fdps=smooth.basis(day,prec,fdpPar)#
+	gcvvecp=append(gcvvecp,fdps$gcv)}#
+plot(lambda,gcvvecp)
 gcvvect=NULL#
 lambda=c(-13:13)#
 for (i in lambda){#
@@ -498,84 +779,6 @@ biocLite("flowCore")
 biocLite("flowBeads")
 browseVignettes("flowBeads")
 biocLite("flowBeads")
-source("analyze.R")
-source("http://bioconductor.org/biocLite.R")#
-biocLite("flowDensity")
-source("analyze.R")
-compensatedData
-nmRemove(compensatedData, colnames(compensatedData), neg=true)
-nmRemove(flow.frame=compensatedData, colnames(compensatedData), neg=true)
-nmRemove(flow.frame=compensatedData, c("FSC-A", "SSC-A"), neg=true)
-compensatedData
-compensatedData[1]
-length(compensatedData)
-for (q in 1:length(compensatedData)) {#
-					nmRemove(compensatedData[q], colnames(compensatedData), neg=true)#
-				}
-for (q in 1:length(compensatedData)) {#
-					nmRemove(compensatedData[[q]], colnames(compensatedData), neg=true)#
-				}
-for (q in 1:length(compensatedData)) {#
-					nmRemove(compensatedData[[q]], colnames(compensatedData), neg=TRUE)#
-				}
-source("analyze.R")
-source("analyze_4612.R")
-analyzedExptsEval
-standardDevs[k,] <- colSds(analyzedExptsEval)
-source("analyze_4612.R")
-file
-analyzedExptsEval
-source("analyze_4612.R")
-red <- read.FCS("data/Specimen_002_D1_D01_001.fcs")
-plot(red, "PE-Texas_Red-A")
-red <- read.FCS("data/Specimen_002_D3_D03_003.fcs")
-red <- read.FCS("data/Specimen_002_D3_D03_002.fcs")
-plot(red, "PE-Texas_Red-A")
-red
-red <- read.FCS("data/Specimen_002_D12_D12_011.fcs")
-plot(red, "PE-Texas_Red-A")
-red <- read.FCS("data/Specimen_002_D11_D11_010.fcs")
-plot(red, "PE-Texas_Red-A")
-red <- read.FCS("data/Specimen_002_D4_D04_003.fcs")
-plot(red, "PE-Texas_Red-A")
-red <- read.FCS("data/Specimen_002_D5_D05_004.fcs")
-plot(red, "PE-Texas_Red-A")
-red <- read.FCS("data/Specimen_002_D6_D06_005.fcs")
-plot(red, "PE-Texas_Red-A")
-red <- read.FCS("data/Specimen_002_D7_D07_006.fcs")
-plot(red, "PE-Texas_Red-A")
-red <- read.FCS("data/Specimen_002_D8_D08_007.fcs")
-plot(red, "PE-Texas_Red-A")
-red <- read.FCS("data/Specimen_002_E1_E01_012.fcs")
-plot(red, "PE-Texas_Red-A")
-red <- read.FCS("data/Specimen_002_F1_F01_024.fcs")
-t <- read.FCS("data/Specimen_002_F1_F01_024.fcs")
-t
-plot(t, "PE-Texas_Red-A")
-t <- read.FCS("data/Specimen_002_E12_E12_023.fcs")
-plot(t, "PE-Texas_Red-A")
-t <- read.FCS("data/Specimen_002_E2_E02_013.fcs")
-plot(t, "PE-Texas_Red-A")
-t <- read.FCS("data/Specimen_002_E3_E03_014.fcs")
-plot(t, "PE-Texas_Red-A")
-t <- read.FCS("data/Specimen_002_E4_E04_015.fcs")
-plot(t, "PE-Texas_Red-A")
-t <- read.FCS("data/Specimen_002_E7_E07_018.fcs")
-plot(t, "PE-Texas_Red-A")
-t <- read.FCS("data/Specimen_002_E10_E10_02.fcs")
-t <- read.FCS("data/Specimen_002_E10_E10_021.fcs")
-plot(t, "PE-Texas_Red-A")
-?
-plot
-plot(t, "PE-Texas_Red-A", xlim = 10000)
-n <- read.FCS("data/Specimen_001_A1_A01_001_NegC.fcs")
-n
-n <- read.FCS("data/Specimen_001_A1_A01_001_NegC.fcs")
-n
-t <- read.FCS("data/Specimen_002_D1_D01_001.fcs")
-plot(t)
-plot(t, "PE-Texas_Red-A")
-t <- read.FCS("data/Specimen_002_D4_D04_003.fcs")
-plot(t, "PE-Texas_Red-A")
-source("analyze_4612.R")
+citation("flowCore")
+citation("flowBeads")
 source("analyze_4612.R")

@@ -405,7 +405,7 @@ public class PhoenixGrammar {
                 
                 //If we run into a CDS, we know that this will be an EXPRESSEE and replace this spot with an TESTING SLOT IN EXPRESSOR
                 FeatureRole pR = primitive.getPrimitiveRole();
-                if (pR.equals(FeatureRole.CDS) || pR.equals(FeatureRole.CDS_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSOR)) {
+                if (pR.equals(FeatureRole.CDS) || pR.equals(FeatureRole.CDS_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSOR) || pR.equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR)) {
                     
                     //Create a new EXPRESSEE from this CDS primitive and copy the feature
                     moduleFeatures.add(primitive.getModuleFeatures().get(0));
@@ -545,13 +545,15 @@ public class PhoenixGrammar {
         } else if (type.getName().startsWith("cp")) {
             role = FeatureRole.PROMOTER_CONSTITUTIVE;
         } else if (type.getName().startsWith("rc")) {
-            role = FeatureRole.CDS_REPRESSOR;
+            role = FeatureRole.CDS_REPRESSIBLE_REPRESSOR;
         } else if (type.getName().startsWith("fc")) {
-            role = FeatureRole.CDS_ACTIVATOR;
+            role = FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR;
         } else if (type.getName().startsWith("r")) {
             role = FeatureRole.RBS;
         } else if (type.getName().startsWith("c")) {
-            role = FeatureRole.CDS;
+            role = FeatureRole.CDS_ACTIVATOR;
+        } else if (type.getName().startsWith("g")) {
+            role = FeatureRole.CDS_REPRESSOR;
         } else if (type.getName().startsWith("t")) {
             role = FeatureRole.TERMINATOR;
         }
@@ -561,11 +563,23 @@ public class PhoenixGrammar {
     //Create a new EXPRESSEE
     private static Module getExpresseeModule(PrimitiveModule node) {
         
-        Module expressor = new Module();
-        expressor.setRole(ModuleRole.EXPRESSEE);
-        expressor.setModuleFeatures(node.getModuleFeatures());
-        expressor.setRoot(false);
-        expressor.getSubmodules().add(node);
-        return expressor;
+        Module expressee = new Module();
+        
+        if (node.getPrimitiveRole().equals(FeatureRole.CDS)) {
+            expressee.setRole(ModuleRole.EXPRESSEE);
+        } else if (node.getPrimitiveRole().equals(FeatureRole.CDS_REPRESSOR)) {
+            expressee.setRole(ModuleRole.EXPRESSEE_REPRESSOR);
+        } else if (node.getPrimitiveRole().equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR)) {
+            expressee.setRole(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR);
+        } else if (node.getPrimitiveRole().equals(FeatureRole.CDS_ACTIVATOR)) {
+            expressee.setRole(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR);
+        } else if (node.getPrimitiveRole().equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR)) {
+            expressee.setRole(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR);
+        }
+        
+        expressee.setModuleFeatures(node.getModuleFeatures());
+        expressee.setRoot(false);
+        expressee.getSubmodules().add(node);
+        return expressee;
     }    
 }

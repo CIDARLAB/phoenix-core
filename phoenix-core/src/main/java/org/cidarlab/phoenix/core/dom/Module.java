@@ -82,6 +82,8 @@ public class Module {
     @Setter
     private ModuleRole role;    
 
+    //Repression or Activation Arcs. This will be used to indentify structures that can realize an Inverter, Oscillator or Switches
+    //Arcs created by this module
     @Getter
     @Setter
     private List<Arc> arcs;
@@ -114,16 +116,17 @@ public class Module {
     //Child module(s)
     @Getter
     @Setter
+    private HashSet<Module> controlModules;
+    
+    //Assigned module(s)
+    @Getter
+    @Setter
     private HashSet<Module> assignedModules;
     
-    // Sub Module (s)
+    // Sub-Module(s)
     @Getter
     @Setter
     private List<PrimitiveModule> submodules;
-    
-    //Repression or Activation Arcs. This will be used to indentify structures that can realize an Inverter, Oscillator or Switches
-    
-    
     
     //Module stage
     @Getter
@@ -140,16 +143,21 @@ public class Module {
     @Setter
     private Experiment experiment;
     
-    //Interaction associated with this module
-//    @Getter
-//    @Setter
-//    private Interaction interaction;
+    //Polynucleotides associated with this module for testing
+    @Getter
+    @Setter
+    private HashSet<Polynucleotide> polynucleotides;
     
     //Module roles
     public enum ModuleRole {
     	EXPRESSOR,
         EXPRESSEE,
+        EXPRESSEE_REPRESSOR,
+        EXPRESSEE_REPRESSIBLE_REPRESSOR,
+        EXPRESSEE_ACTIVATOR,
+        EXPRESSEE_ACTIVATIBLE_ACTIVATOR,
         TRANSCRIPTIONAL_UNIT,
+        TESTING_CONTROL,
         HIGHER_FUNCTION;
     }
     

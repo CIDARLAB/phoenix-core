@@ -1160,7 +1160,18 @@ public class ClothoAdaptor {
                 int start = m.start();
                 int end = m.end();
                 Annotation a = new Annotation(f, ns, forwardColor, reverseColor, start, end, new Person(), true, null);
-                annotations.add(a);
+                
+                //Only add if there is no duplicate annotation
+                boolean preexisting = false;
+                for (Annotation existingA : annotations) {
+                    if (existingA.getStart() == a.getStart() && existingA.getEnd() == a.getEnd()) {
+                        preexisting = true;
+                    }
+                }
+                
+                if (!preexisting && !f.getName().contains("TEST")) {
+                    annotations.add(a);
+                }
             }
             
             //Reverse sequence search
@@ -1172,7 +1183,18 @@ public class ClothoAdaptor {
                 int start = mR.start();
                 int end = mR.end();
                 Annotation a = new Annotation(f, ns, reverseColor, forwardColor, start, end, new Person(), false, null);
-                annotations.add(a);
+                
+                //Only add if there is no duplicate annotation
+                boolean preexisting = false;
+                for (Annotation existingA : annotations) {
+                    if (existingA.getStart() == a.getStart() && existingA.getEnd() == a.getEnd() ) {
+                        preexisting = true;
+                    }
+                }
+                
+                if (!preexisting && !f.getName().contains("TEST")) {
+                    annotations.add(a);
+                }
             }
             
         }

@@ -398,6 +398,10 @@ public class BenchlingAdaptor {
                                     clothoFeature.setRole(Feature.FeatureRole.CDS_REPRESSOR);
                                 } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("activator")) {
                                     clothoFeature.setRole(Feature.FeatureRole.CDS_REPRESSOR);
+                                } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("repressible-repressor")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.CDS_REPRESSIBLE_REPRESSOR);
+                                } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("activatible-activator")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR);
                                 } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("linker")) {
                                     clothoFeature.setRole(Feature.FeatureRole.CDS_LINKER);
                                 } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("resistance")) {

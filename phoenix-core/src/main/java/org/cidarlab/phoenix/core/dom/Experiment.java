@@ -4,8 +4,7 @@
  */
 package org.cidarlab.phoenix.core.dom;
 
-import java.io.File;
-import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,78 +20,58 @@ public class Experiment {
     public Experiment() {  
     }
     
+    //No args constructor
+    public Experiment(ExperimentType exType) {
+        exType = exType;
+    }
+    
     //Convert an experiment list to an output csv
-    public void createExperimentFile(List<Experiment> experiments) {
+    public void createExperimentFile(Experiment experiments) {
         
     }
     
     //Read an experiment csv file and create experiment objects
     public List<Experiment> parseExperimentFile() {
         return null;
-    }
-    
-    //Module measured
-    @Setter
-    @Getter
-    private Module module;
-    
-    //Part measured
-    @Setter
-    @Getter
-    private Part part;
-    
-    //Environmental Conditions
-    @Setter
-    @Getter
-    private Medium environment;
-    
-    //If this file is a special type of control
-    @Setter
-    @Getter
-    private boolean isControl;
-    
-    //Polynucleotide measured
-    @Setter
-    @Getter
-    private Polynucleotide polynucleotide;
-    
-    //Test strain
-    @Setter
-    @Getter
-    private Strain strain;
-    
-    //Time of experiment (for dynamic measurements)
-    @Setter
-    @Getter
-    private Date time;
+    }    
     
     //Experiment type
     @Setter
     @Getter
-    private ExperimentType type;
-    
-    //Control type
+    private ExperimentType exType;
+        
+    //Experiment type
     @Setter
     @Getter
-    private ControlType controlType;
+    private HashSet<Sample> experimentSamples;
     
-    //fcs files
+    //Experiment type
     @Setter
     @Getter
-    private File fcsFile;
+    private Sample beadControl;
+    
+    //Experiment type
+    @Setter
+    @Getter
+    private Sample negativeControl;
+    
+    //Experiment type
+    @Setter
+    @Getter
+    private HashSet<Sample> colorControls;
     
     //Experiment types
     public enum ExperimentType {
         EXPRESSION,
         DEGRADATION,
         REGULATION,
-        SMALL_MOLECULE;
-    }
-    
-    //Experiment types
-    public enum ControlType {
-        BEADS,
-        NEGATIVE,
-        FLUORESCENT;
+        SMALL_MOLECULE,
+        SIGNAL_MISMATCH,
+        PROMOTER_CONTEXT,
+        RBS_CONTEXT,
+        READ_THROUGH,
+        ORTHOGONALITY,
+        RECOMBINATION,
+        TRANSCRIPTIONAL_INTERFERENCE;
     }
 }

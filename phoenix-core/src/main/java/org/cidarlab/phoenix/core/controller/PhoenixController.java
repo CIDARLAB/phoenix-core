@@ -53,14 +53,15 @@ public class PhoenixController {
 //        while (!FeatureAssignment.isFullyAssigned(modules)) {
             
             //Determine experiments from current module assignment state
-            currentExperiments.addAll(TestingStructures.createExperiments(modulesToTest));
+            //currentExperiments.addAll(TestingStructures.createExperiments(modulesToTest));
             
             //Create assembly and testing plans
             
-            String assemblyInstructions = RavenAdaptor.generateAssemblyPlan(modulesToTest);
-            String testingInstructions = PhoenixInstructions.generateTestingInstructions(currentExperiments);
+            //String assemblyInstructions = RavenAdaptor.generateAssemblyPlan(modulesToTest);
+            //String testingInstructions = PhoenixInstructions.generateTestingInstructions(currentExperiments);
             
             //Import data from experiments
+            /*
             ClothoAdaptor.uploadSequences(plasmidsCreated, false);
             FeatureAssignment.completeAssignmentSeqResults(modules);
             ClothoAdaptor.uploadCytometryData(fcsFiles, currentExperiments);
@@ -77,6 +78,7 @@ public class PhoenixController {
             
             //Update module graphs based upon simulations
             modulesToTest = FeatureAssignment.completeAssignmentSim(bestCombinedModules, modules);
+            */        
 //        }
     }
     

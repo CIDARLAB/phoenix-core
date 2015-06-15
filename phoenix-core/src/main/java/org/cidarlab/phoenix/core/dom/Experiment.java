@@ -5,7 +5,6 @@
 package org.cidarlab.phoenix.core.dom;
 
 import java.util.HashSet;
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,19 +20,19 @@ public class Experiment {
     }
     
     //No args constructor
-    public Experiment(ExperimentType exType) {
-        exType = exType;
-    }
-    
-    //Convert an experiment list to an output csv
-    public void createExperimentFile(Experiment experiments) {
-        
-    }
-    
-    //Read an experiment csv file and create experiment objects
-    public List<Experiment> parseExperimentFile() {
-        return null;
+    public Experiment(ExperimentType exptType) {
+        exType = exptType;
     }    
+    
+    //Experiment name
+    @Setter
+    @Getter
+    private String name;
+    
+    //Experiment clothoID
+    @Setter
+    @Getter
+    private String clothoID;
     
     //Experiment type
     @Setter

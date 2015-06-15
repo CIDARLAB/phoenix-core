@@ -184,27 +184,13 @@ public class TestingStructures {
                 //Add control constructs                    
                 controlsThisModule.add(createExpDegControl());
                 controlsThisModule.add(createRegControl(m));
-                
-                for (Module cM : controlsThisModule) {
-                    for (Module cMA : controlModulesAll) {
-                        if (cM.getSubmodules().equals(cMA.getSubmodules())) {
-                            cM = cMA;
-                        }
-                    }
-                    
-                    controlModulesAll.add(cM);
-                    if (m.getControlModules() == null) {
-                        HashSet<Module> cMs = new HashSet<>();
-                        cMs.add(cM);
-                        m.setControlModules(cMs);
-                    } else {
-                        m.getControlModules().add(cM);
-                    }
-                }
+                controlsThisModule = createColorControls(controlsThisModule);                
+                removeDuplicateModules(controlsThisModule, controlModulesAll, m);
                 
                 //Initialize experiment object(s)
                 Experiment degradation = new Experiment(ExperimentType.DEGRADATION);
                 createExperimentSamples(degradation, m);
+                createControlSamples(degradation, m);
                 experimentSet.add(degradation);
 
             //Experiments for EXPRESSEE_ACTIVATIBLE_ACTIVATOR
@@ -213,35 +199,23 @@ public class TestingStructures {
                 //Add control constructs                   
                 controlsThisModule.add(createExpDegControl());
                 controlsThisModule.add(createRegControl(m));
-                
-                for (Module cM : controlsThisModule) {
-                    for (Module cMA : controlModulesAll) {
-                        if (cM.getSubmodules().equals(cMA.getSubmodules())) {
-                            cM = cMA;
-                        }
-                    }
-                    
-                    controlModulesAll.add(cM);
-                    if (m.getControlModules() == null) {
-                        HashSet<Module> cMs = new HashSet<>();
-                        cMs.add(cM);
-                        m.setControlModules(cMs);
-                    } else {
-                        m.getControlModules().add(cM);
-                    }
-                }
+                controlsThisModule = createColorControls(controlsThisModule);                
+                removeDuplicateModules(controlsThisModule, controlModulesAll, m);
                 
                 //Initialize experiment object(s)
                 Experiment degradation = new Experiment(ExperimentType.DEGRADATION);
                 createExperimentSamples(degradation, m);
+                createControlSamples(degradation, m);
                 experimentSet.add(degradation);
                 
                 Experiment regulation = new Experiment(ExperimentType.REGULATION);
                 createExperimentSamples(regulation, m);
+                createControlSamples(regulation, m);
                 experimentSet.add(regulation);
                 
                 Experiment smallMolecule = new Experiment(ExperimentType.SMALL_MOLECULE);
                 createExperimentSamples(smallMolecule, m);
+                createControlSamples(smallMolecule, m);
                 experimentSet.add(smallMolecule);
 
             //Experiments for EXPRESSEE_ACTIVATOR
@@ -250,31 +224,18 @@ public class TestingStructures {
                 //Add control constructs                    
                 controlsThisModule.add(createExpDegControl());
                 controlsThisModule.add(createRegControl(m));
-                
-                for (Module cM : controlsThisModule) {
-                    for (Module cMA : controlModulesAll) {
-                        if (cM.getSubmodules().equals(cMA.getSubmodules())) {
-                            cM = cMA;
-                        }
-                    }
-                    
-                    controlModulesAll.add(cM);
-                    if (m.getControlModules() == null) {
-                        HashSet<Module> cMs = new HashSet<>();
-                        cMs.add(cM);
-                        m.setControlModules(cMs);
-                    } else {
-                        m.getControlModules().add(cM);
-                    }
-                }
+                controlsThisModule = createColorControls(controlsThisModule);                
+                removeDuplicateModules(controlsThisModule, controlModulesAll, m);
                 
                 //Initialize experiment object(s)
                 Experiment degradation = new Experiment(ExperimentType.DEGRADATION);
                 createExperimentSamples(degradation, m);
+                createControlSamples(degradation, m);
                 experimentSet.add(degradation);
                 
                 Experiment regulation = new Experiment(ExperimentType.REGULATION);
                 createExperimentSamples(regulation, m);
+                createControlSamples(regulation, m);
                 experimentSet.add(regulation);
 
             //Experiments for EXPRESSEE_REPRESSIBLE_REPRESSOR
@@ -283,35 +244,23 @@ public class TestingStructures {
                 //Add control constructs                   
                 controlsThisModule.add(createExpDegControl());
                 controlsThisModule.add(createRegControl(m));
-                
-                for (Module cM : controlsThisModule) {
-                    for (Module cMA : controlModulesAll) {
-                        if (cM.getSubmodules().equals(cMA.getSubmodules())) {
-                            cM = cMA;
-                        }
-                    }
-                    
-                    controlModulesAll.add(cM);
-                    if (m.getControlModules() == null) {
-                        HashSet<Module> cMs = new HashSet<>();
-                        cMs.add(cM);
-                        m.setControlModules(cMs);
-                    } else {
-                        m.getControlModules().add(cM);
-                    }
-                }
+                controlsThisModule = createColorControls(controlsThisModule);                
+                removeDuplicateModules(controlsThisModule, controlModulesAll, m);
                 
                 //Initialize experiment object(s)
                 Experiment degradation = new Experiment(ExperimentType.DEGRADATION);
                 createExperimentSamples(degradation, m);
+                createControlSamples(degradation, m);
                 experimentSet.add(degradation);
                 
                 Experiment regulation = new Experiment(ExperimentType.REGULATION);
                 createExperimentSamples(regulation, m);
+                createControlSamples(regulation, m);
                 experimentSet.add(regulation);
                 
                 Experiment smallMolecule = new Experiment(ExperimentType.SMALL_MOLECULE);
                 createExperimentSamples(smallMolecule, m);
+                createControlSamples(smallMolecule, m);
                 experimentSet.add(smallMolecule);
 
             //Experiments for EXPRESSEE_REPRESSOR    
@@ -320,31 +269,18 @@ public class TestingStructures {
                 //Add control constructs                  
                 controlsThisModule.add(createExpDegControl());
                 controlsThisModule.add(createRegControl(m));
-                
-                for (Module cM : controlsThisModule) {
-                    for (Module cMA : controlModulesAll) {
-                        if (cM.getSubmodules().equals(cMA.getSubmodules())) {
-                            cM = cMA;
-                        }
-                    }
-                    
-                    controlModulesAll.add(cM);
-                    if (m.getControlModules() == null) {
-                        HashSet<Module> cMs = new HashSet<>();
-                        cMs.add(cM);
-                        m.setControlModules(cMs);
-                    } else {
-                        m.getControlModules().add(cM);
-                    }
-                }
+                controlsThisModule = createColorControls(controlsThisModule);                
+                removeDuplicateModules(controlsThisModule, controlModulesAll, m);
                 
                 //Initialize experiment object(s)
                 Experiment degradation = new Experiment(ExperimentType.DEGRADATION);
                 createExperimentSamples(degradation, m);
+                createControlSamples(degradation, m);
                 experimentSet.add(degradation);
                 
                 Experiment regulation = new Experiment(ExperimentType.REGULATION);
                 createExperimentSamples(regulation, m);
+                createControlSamples(regulation, m);
                 experimentSet.add(regulation);
 
             //Experiments for EXPRESSOR
@@ -352,27 +288,13 @@ public class TestingStructures {
 
                 //Add control constructs                  
                 controlsThisModule.add(createExpDegControl());
-                
-                for (Module cM : controlsThisModule) {
-                    for (Module cMA : controlModulesAll) {
-                        if (cM.getSubmodules().equals(cMA.getSubmodules())) {
-                            cM = cMA;
-                        }
-                    }
-                    
-                    controlModulesAll.add(cM);
-                    if (m.getControlModules() == null) {
-                        HashSet<Module> cMs = new HashSet<>();
-                        cMs.add(cM);
-                        m.setControlModules(cMs);
-                    } else {
-                        m.getControlModules().add(cM);
-                    }
-                }
+                controlsThisModule = createColorControls(controlsThisModule);                
+                removeDuplicateModules(controlsThisModule, controlModulesAll, m);
                 
                 //Initialize experiment object
                 Experiment expression = new Experiment(ExperimentType.EXPRESSION);
                 createExperimentSamples(expression, m);
+                createControlSamples(expression, m);
                 experimentSet.add(expression);
 
             //Experiments for TRANSCRIPTIONAL_UNIT
@@ -380,28 +302,13 @@ public class TestingStructures {
 
                 //Add control constructs                  
                 controlsThisModule.add(createExpDegControl());
-                controlsThisModule.add(createRegControl(m));
-                
-                for (Module cM : controlsThisModule) {
-                    for (Module cMA : controlModulesAll) {
-                        if (cM.getSubmodules().equals(cMA.getSubmodules())) {
-                            cM = cMA;
-                        }
-                    }
-                    
-                    controlModulesAll.add(cM);
-                    if (m.getControlModules() == null) {
-                        HashSet<Module> cMs = new HashSet<>();
-                        cMs.add(cM);
-                        m.setControlModules(cMs);
-                    } else {
-                        m.getControlModules().add(cM);
-                    }
-                }
+                controlsThisModule = createColorControls(controlsThisModule);                
+                removeDuplicateModules(controlsThisModule, controlModulesAll, m);
                 
                 //Initialize experiment object(s)
                 Experiment rbs_context = new Experiment(ExperimentType.RBS_CONTEXT);
                 createExperimentSamples(rbs_context, m);
+                createControlSamples(rbs_context, m);
                 experimentSet.add(rbs_context);
 
             //Experiments for HIGHER_FUNCTION
@@ -456,33 +363,70 @@ public class TestingStructures {
     }
     
     //Make a standard expression/degradation control for EXPRESSORs and all types of EXPRESSEEs
-    private static Module createColorControl(PrimitiveModule fluorophore) {
+    private static HashSet<Module> createColorControls(HashSet<Module> modules) {
         
-        //Expression control
-        Module colorControl = new Module();
-        List<PrimitiveModule> testSubmodules = new ArrayList<>();
-        testSubmodules.add(testPromoter);
-        testSubmodules.add(testRBS);
-        testSubmodules.add(fluorophore);
-        testSubmodules.add(testTerminator);
-        testSubmodules.add(testVector2);
-        colorControl.setSubmodules(testSubmodules);
-        colorControl.updateModuleFeatures();
-        colorControl.setRole(ModuleRole.TESTING_CONTROL);
+        HashSet<Module> colorControls = new HashSet<>();
         
-        return colorControl;
+        for (Module m : modules) {
+            for (PrimitiveModule pm : m.getSubmodules()) {
+                if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
+
+                    //Expression control
+                    Module colorControl = new Module();
+                    List<PrimitiveModule> testSubmodules = new ArrayList<>();
+                    testSubmodules.add(testPromoter);
+                    testSubmodules.add(testRBS);
+                    testSubmodules.add(pm);
+                    testSubmodules.add(testTerminator);
+                    testSubmodules.add(testVector2);
+                    colorControl.setSubmodules(testSubmodules);
+                    colorControl.updateModuleFeatures();
+                    colorControl.setRole(ModuleRole.TESTING_CONTROL);
+                    colorControls.add(colorControl);
+                }
+            }
+        }
+
+        modules.addAll(colorControls);
+        return modules;
+    }
+    
+    //Remove duplicate modules based on PrimitiveModules
+    private static void removeDuplicateModules(HashSet<Module> controlsThisModule, HashSet<Module> controlModulesAll, Module m) {
+        
+        for (Module cM : controlsThisModule) {
+            for (Module cMA : controlModulesAll) {
+                if (cM.getSubmodules().equals(cMA.getSubmodules())) {
+                    cM = cMA;
+                }
+            }
+
+            controlModulesAll.add(cM);
+            if (m.getControlModules() == null) {
+                HashSet<Module> cMs = new HashSet<>();
+                cMs.add(cM);
+                m.setControlModules(cMs);
+            } else {
+                m.getControlModules().add(cM);
+            }
+        }
     }
     
     //Method for forming an experiment from a module which has partial part assignment
     private static void createExperimentSamples(Experiment e, Module m) {
 
     }
+    
+    //Method for forming an experiment from a module which has partial part assignment
+    private static void createControlSamples(Experiment e, Module m) {
+
+    }
      
     //FIELDS
     private static final PrimitiveModule testPromoter = new PrimitiveModule(FeatureRole.PROMOTER_CONSTITUTIVE, new Primitive(new ComponentType("p"), "pTEST"), new Feature("pTEST", new NucSeq("ttgacggctagctcagtcctaggtacagtgctagc"), new Person(), FeatureRole.PROMOTER_CONSTITUTIVE));
     private static final PrimitiveModule testRBS = new PrimitiveModule(FeatureRole.RBS, new Primitive(new ComponentType("r"), "rTEST"), new Feature("rTEST", new NucSeq("gggcccaagttcacttaaaaaggagatcaacaatgaaagcaattttcgtactgaaacatcttaatcatgctaaggaggttttct"), new Person(), FeatureRole.RBS));
-    private static final PrimitiveModule testCDS1 = new PrimitiveModule(FeatureRole.CDS, new Primitive(new ComponentType("c"), "cTEST1"), new Feature("cTEST1", new NucSeq("atgcgtaaaggagaagaacttttcactggagttgtcccaattcttgttgaattagatggtgatgttaatgggcacaaattttctgtcagtggagagggtgaaggtgatgcaacatacggaaaacttacccttaaatttatttgcactactggaaaactacctgttccatggccaacacttgtcactactttcggttatggtgttcaatgctttgcgagatacccagatcatatgaaacagcatgactttttcaagagtgccatgcccgaaggttatgtacaggaaagaactatatttttcaaagatgacgggaactacaagacacgtgctgaagtcaagtttgaaggtgatacccttgttaatagaatcgagttaaaaggtattgattttaaagaagatggaaacattcttggacacaaattggaatacaactataactcacacaatgtatacatcatggcagacaaacaaaagaatggaatcaaagttaacttcaaaattagacacaacattgaagatggaagcgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtccacacaatctgccctttcgaaagatcccaacgaaaagagagatcacatggtccttcttgagtttgtaacagctgctgggattacacatggcatggatgaactatacaaataataa"), new Person(), FeatureRole.CDS));
-    private static final PrimitiveModule testCDS2 = new PrimitiveModule(FeatureRole.CDS, new Primitive(new ComponentType("c"), "cTEST2"), new Feature("cTEST2", new NucSeq("atgcggggttctcatcatcatcatcatcatggtatggctagcatgactggtggacagcaaatgggtcgggatctgtacgagaacctgtacttccagggctcgagcatggtgagcaagggcgaggagctgttcaccggggtggtgcccatcctggtcgagctggacggcgacgtaaacggccacaagttcagcgtgaggggcgagggcgagggcgatgccaccaacggcaagctgaccctgaagttcatctgcaccaccggcaagctgcccgtgccctggcccaccctcgtgaccaccctgagccacggcgtgcagtgcttcgcccgctaccccgaccacatgaagcagcacgacttcttcaagtccgccatgcccgaaggctacgtccaggagcgcaccatcttcttcaaggacgacggcacctacaagacccgcgccgaggtgaagttcgagggcgacaccctggtgaaccgcatcgagctgaagggcgtcgacttcaaggaggacggcaacatcctggggcacaagctggagtacaacttcaacagccacaacatctatatcatggccgtcaagcagaagaacggcatcaaggtgaacttcaagatccgccacaacgtggaggacggcagcgtgcagctcgccgaccactaccagcagaacacccccatcggcgacggccccgtgctgctgcccgacagccactacctgagcacccagtccgtgctgagcaaagaccccaacgagaagcgcgatcacatggtcctgctggagttccgcaccgccgcctaa"), new Person(), FeatureRole.CDS));
+    private static final PrimitiveModule testCDS1 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("c"), "cTEST1"), new Feature("cTEST1", new NucSeq("atgcgtaaaggagaagaacttttcactggagttgtcccaattcttgttgaattagatggtgatgttaatgggcacaaattttctgtcagtggagagggtgaaggtgatgcaacatacggaaaacttacccttaaatttatttgcactactggaaaactacctgttccatggccaacacttgtcactactttcggttatggtgttcaatgctttgcgagatacccagatcatatgaaacagcatgactttttcaagagtgccatgcccgaaggttatgtacaggaaagaactatatttttcaaagatgacgggaactacaagacacgtgctgaagtcaagtttgaaggtgatacccttgttaatagaatcgagttaaaaggtattgattttaaagaagatggaaacattcttggacacaaattggaatacaactataactcacacaatgtatacatcatggcagacaaacaaaagaatggaatcaaagttaacttcaaaattagacacaacattgaagatggaagcgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtccacacaatctgccctttcgaaagatcccaacgaaaagagagatcacatggtccttcttgagtttgtaacagctgctgggattacacatggcatggatgaactatacaaataataa"), new Person(), FeatureRole.CDS_FLUORESCENT));
+    private static final PrimitiveModule testCDS2 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("c"), "cTEST2"), new Feature("cTEST2", new NucSeq("atgcggggttctcatcatcatcatcatcatggtatggctagcatgactggtggacagcaaatgggtcgggatctgtacgagaacctgtacttccagggctcgagcatggtgagcaagggcgaggagctgttcaccggggtggtgcccatcctggtcgagctggacggcgacgtaaacggccacaagttcagcgtgaggggcgagggcgagggcgatgccaccaacggcaagctgaccctgaagttcatctgcaccaccggcaagctgcccgtgccctggcccaccctcgtgaccaccctgagccacggcgtgcagtgcttcgcccgctaccccgaccacatgaagcagcacgacttcttcaagtccgccatgcccgaaggctacgtccaggagcgcaccatcttcttcaaggacgacggcacctacaagacccgcgccgaggtgaagttcgagggcgacaccctggtgaaccgcatcgagctgaagggcgtcgacttcaaggaggacggcaacatcctggggcacaagctggagtacaacttcaacagccacaacatctatatcatggccgtcaagcagaagaacggcatcaaggtgaacttcaagatccgccacaacgtggaggacggcagcgtgcagctcgccgaccactaccagcagaacacccccatcggcgacggccccgtgctgctgcccgacagccactacctgagcacccagtccgtgctgagcaaagaccccaacgagaagcgcgatcacatggtcctgctggagttccgcaccgccgcctaa"), new Person(), FeatureRole.CDS_FLUORESCENT));
     private static final PrimitiveModule testTerminator = new PrimitiveModule(FeatureRole.TERMINATOR, new Primitive(new ComponentType("t"), "tTEST"), new Feature("tTEST", new NucSeq("ccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttata"), new Person(), FeatureRole.TERMINATOR));
     private static final PrimitiveModule testVector1 = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST1"), new Feature("vTEST1", new NucSeq(""), new Person(), FeatureRole.VECTOR));
     private static final PrimitiveModule testVector2 = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST2"), new Feature("vTEST2", new NucSeq(""), new Person(), FeatureRole.VECTOR));

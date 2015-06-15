@@ -148,14 +148,12 @@ public class ClothoAdaptor {
         HashMap<String, ArrayList<String[]>> config = new HashMap<>();
         String line;
         
+        //<editor-fold desc="New data structure for Cytometer (Laser and Detectors) ">
         List<Laser> lasers = new ArrayList<Laser>();
-        
         boolean laserFlag = false;
-        boolean detectorFlag = false;
-        
         while((line=reader.readLine()) != null){
             
-            System.out.println("Line ::"+line);
+            //System.out.println("Line ::"+line);
             String pieces[] = line.split(",");
             if(pieces[0].equalsIgnoreCase("Configuration Name")){
                 name = pieces[1];
@@ -190,7 +188,7 @@ public class ClothoAdaptor {
                     
                }
                 else{
-                    if(pieces.length > 6)
+                    if(pieces.length > 6) //There's got to be a better way to do this. 
                     {
                         if (!pieces[8].trim().equals("")) {
                             double mirrorVal = -1;
@@ -208,9 +206,10 @@ public class ClothoAdaptor {
             if(pieces[0].equalsIgnoreCase("Laser Name")){
                 laserFlag = true;
             }
-            
         }
+        //</editor-fold>
         
+        //<editor-fold desc="Parse the file to create HashSets for Lasers and Detectors">
         //The first line describes the spectra
         line = reader.readLine();
         while (line != null) {
@@ -221,9 +220,6 @@ public class ClothoAdaptor {
             if (vals[0].equalsIgnoreCase("Configuration Name")) {
                 name = vals[1];
             }
-            
-            
-            
             
             //Once cytometer key rows are hit
             if (vals[0].equalsIgnoreCase("Laser Name")) {
@@ -289,7 +285,8 @@ public class ClothoAdaptor {
                 line = reader.readLine();
             }
         }   
-
+        //</editor-fold>
+        
         Cytometer c = new Cytometer(name, _lasers, filters, config);
         createCytometer(c);        
     }

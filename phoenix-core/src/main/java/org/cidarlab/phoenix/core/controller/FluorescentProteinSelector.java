@@ -43,6 +43,9 @@ public class FluorescentProteinSelector {
         
         //Save the machine settings to a signal map
         HashSet<String> laserFilterStrings = getLaserFilterStrings(cytometer.getConfiguration());
+        
+        System.out.println("Laser Filter Settings : "+ laserFilterStrings);
+        
         HashMap<Fluorophore, HashMap<String, Double>> fpFilterSignals = getFPFilterSignals(candidateList, laserFilterStrings);
         
         //First FP chosen should be gfp or some protien in the FITC channel on the 488nm laser in a 530/30 filter get MEFLs

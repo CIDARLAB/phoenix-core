@@ -211,10 +211,10 @@ public class FluorescentProteinSelector {
             for (String laserFilter : laserFilters) {
                 
                 //Get the signal in this laserFilter                
-                Double[] wavelenghts = parseLaserFilterStrings(laserFilter);
-                double laser = wavelenghts[0];
-                double high = wavelenghts[1];
-                double low = wavelenghts[2];
+                Double[] wavelengths = parseLaserFilterStrings(laserFilter);
+                double laser = wavelengths[0];
+                double high = wavelengths[1];
+                double low = wavelengths[2];
                 double signal = getSignal(FP, laser, high, low);
                 
                 signals.put(laserFilter, signal);

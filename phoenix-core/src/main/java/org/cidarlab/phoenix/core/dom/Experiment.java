@@ -60,6 +60,13 @@ public class Experiment {
         EXPRESSION,
         DEGRADATION,
         REGULATION,
-        SMALL_MOLECULE;
+        SMALL_MOLECULE,
+        SIGNAL_MISMATCH,
+        PROMOTER_CONTEXT,
+        RBS_CONTEXT,
+        READ_THROUGH,
+        ORTHOGONALITY,
+        RECOMBINATION,
+        TRANSCRIPTIONAL_INTERFERENCE;
     }
 }

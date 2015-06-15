@@ -70,7 +70,7 @@ public class TestingStructures {
                 testSubmodules.add(m.getSubmodules().get(0));
                 testSubmodules.add(new PrimitiveModule(FeatureRole.CDS_FLUORESCENT_FUSION, new Primitive(new ComponentType("fc"), "FP"), new Feature("EXPRESSEE", new NucSeq(), null, Feature.FeatureRole.CDS_FLUORESCENT_FUSION)));
                 testSubmodules.add(testTerminator);
-                testSubmodules.add(testVector);
+                testSubmodules.add(testVector1);
                 m.setSubmodules(testSubmodules);
                 m.updateModuleFeatures();
             }
@@ -151,8 +151,8 @@ public class TestingStructures {
                     pm.setModuleFeatures(testRBS.getModuleFeatures());
                     pm.getPrimitive().setOrientation(Component.Orientation.REVERSE);
                 } else if (type.equals("c") || type.equals("rc") || type.equals("fc")) {
-                    pm.setPrimitive(testCDS.getPrimitive().clone());
-                    pm.setModuleFeatures(testCDS.getModuleFeatures());
+                    pm.setPrimitive(testCDS1.getPrimitive().clone());
+                    pm.setModuleFeatures(testCDS1.getModuleFeatures());
                     pm.getPrimitive().setOrientation(Component.Orientation.REVERSE);
                 } else if (type.equals("t")) {
                     pm.setPrimitive(testTerminator.getPrimitive().clone());
@@ -166,16 +166,264 @@ public class TestingStructures {
     }
     
     //Method for forming sets of experiments given a paritally assigned module graph
-    public static List<Experiment> createExperiments(HashSet<Module> modules) {
+    public static HashSet<Experiment> createExperiments(HashSet<Module> modules) {
         
+        //Initialize experiment set - some types of modules require multiple experiments
+        HashSet<Experiment> experimentSet = new HashSet<>();
+        HashSet<Module> controlModulesAll = new HashSet<>(); 
         
+        for (Module m : modules) {
+
+            HashSet<Module> controlsThisModule = new HashSet<>();
+            
+            //Experiments for EXPRESSEE
+            if (m.getRole().equals(ModuleRole.EXPRESSEE)) {
+
+                //Add control constructs                    
+                controlsThisModule.add(createExpDegControl());
+                controlsThisModule.add(createRegControl(m));
+                
+                for (Module cM : controlsThisModule) {
+                    for (Module cMA : controlModulesAll) {
+                        if (cM.getSubmodules().equals(cMA.getSubmodules())) {
+                            cM = cMA;
+                        }
+                    }
+                    
+                    controlModulesAll.add(cM);
+                    if (m.getControlModules() == null) {
+                        HashSet<Module> cMs = new HashSet<>();
+                        cMs.add(cM);
+                        m.setControlModules(cMs);
+                    } else {
+                        m.getControlModules().add(cM);
+                    }
+                }
+                
+                //Initialize experiment object
+                Experiment ex = new Experiment();
+                experimentSet.add(ex);
+
+            //Experiments for EXPRESSEE_ACTIVATIBLE_ACTIVATOR
+            } else if (m.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR)) {
+
+                //Add control constructs                   
+                controlsThisModule.add(createExpDegControl());
+                controlsThisModule.add(createRegControl(m));
+                
+                for (Module cM : controlsThisModule) {
+                    for (Module cMA : controlModulesAll) {
+                        if (cM.getSubmodules().equals(cMA.getSubmodules())) {
+                            cM = cMA;
+                        }
+                    }
+                    
+                    controlModulesAll.add(cM);
+                    if (m.getControlModules() == null) {
+                        HashSet<Module> cMs = new HashSet<>();
+                        cMs.add(cM);
+                        m.setControlModules(cMs);
+                    } else {
+                        m.getControlModules().add(cM);
+                    }
+                }
+                
+                //Initialize experiment object
+                Experiment ex = new Experiment();
+                experimentSet.add(ex);
+
+            //Experiments for EXPRESSEE_ACTIVATOR
+            } else if (m.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR)) {
+
+                //Add control constructs                    
+                controlsThisModule.add(createExpDegControl());
+                controlsThisModule.add(createRegControl(m));
+                
+                for (Module cM : controlsThisModule) {
+                    for (Module cMA : controlModulesAll) {
+                        if (cM.getSubmodules().equals(cMA.getSubmodules())) {
+                            cM = cMA;
+                        }
+                    }
+                    
+                    controlModulesAll.add(cM);
+                    if (m.getControlModules() == null) {
+                        HashSet<Module> cMs = new HashSet<>();
+                        cMs.add(cM);
+                        m.setControlModules(cMs);
+                    } else {
+                        m.getControlModules().add(cM);
+                    }
+                }
+                
+                //Initialize experiment object
+                Experiment ex = new Experiment();
+                experimentSet.add(ex);
+
+            //Experiments for EXPRESSEE_REPRESSIBLE_REPRESSOR
+            } else if (m.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR)) {
+
+                //Add control constructs                   
+                controlsThisModule.add(createExpDegControl());
+                controlsThisModule.add(createRegControl(m));
+                
+                for (Module cM : controlsThisModule) {
+                    for (Module cMA : controlModulesAll) {
+                        if (cM.getSubmodules().equals(cMA.getSubmodules())) {
+                            cM = cMA;
+                        }
+                    }
+                    
+                    controlModulesAll.add(cM);
+                    if (m.getControlModules() == null) {
+                        HashSet<Module> cMs = new HashSet<>();
+                        cMs.add(cM);
+                        m.setControlModules(cMs);
+                    } else {
+                        m.getControlModules().add(cM);
+                    }
+                }
+                
+                //Initialize experiment object
+                Experiment ex = new Experiment();
+                experimentSet.add(ex);
+
+            //Experiments for EXPRESSEE_REPRESSOR    
+            } else if (m.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)) {
+
+                //Add control constructs                  
+                controlsThisModule.add(createExpDegControl());
+                controlsThisModule.add(createRegControl(m));
+                
+                for (Module cM : controlsThisModule) {
+                    for (Module cMA : controlModulesAll) {
+                        if (cM.getSubmodules().equals(cMA.getSubmodules())) {
+                            cM = cMA;
+                        }
+                    }
+                    
+                    controlModulesAll.add(cM);
+                    if (m.getControlModules() == null) {
+                        HashSet<Module> cMs = new HashSet<>();
+                        cMs.add(cM);
+                        m.setControlModules(cMs);
+                    } else {
+                        m.getControlModules().add(cM);
+                    }
+                }
+                
+                //Initialize experiment object
+                Experiment ex = new Experiment();
+                experimentSet.add(ex);
+
+            //Experiments for EXPRESSOR
+            } else if (m.getRole().equals(ModuleRole.EXPRESSOR)) {
+
+                //Add control constructs                  
+                controlsThisModule.add(createExpDegControl());
+                
+                for (Module cM : controlsThisModule) {
+                    for (Module cMA : controlModulesAll) {
+                        if (cM.getSubmodules().equals(cMA.getSubmodules())) {
+                            cM = cMA;
+                        }
+                    }
+                    
+                    controlModulesAll.add(cM);
+                    if (m.getControlModules() == null) {
+                        HashSet<Module> cMs = new HashSet<>();
+                        cMs.add(cM);
+                        m.setControlModules(cMs);
+                    } else {
+                        m.getControlModules().add(cM);
+                    }
+                }
+                
+                //Initialize experiment object
+                Experiment ex = new Experiment();
+                experimentSet.add(ex);
+
+            //Experiments for TRANSCRIPTIONAL_UNIT
+            } else if (m.getRole().equals(ModuleRole.TRANSCRIPTIONAL_UNIT)) {
+
+                //Add control constructs                  
+                controlsThisModule.add(createExpDegControl());
+                controlsThisModule.add(createRegControl(m));
+                
+                for (Module cM : controlsThisModule) {
+                    for (Module cMA : controlModulesAll) {
+                        if (cM.getSubmodules().equals(cMA.getSubmodules())) {
+                            cM = cMA;
+                        }
+                    }
+                    
+                    controlModulesAll.add(cM);
+                    if (m.getControlModules() == null) {
+                        HashSet<Module> cMs = new HashSet<>();
+                        cMs.add(cM);
+                        m.setControlModules(cMs);
+                    } else {
+                        m.getControlModules().add(cM);
+                    }
+                }
+                
+                //Initialize experiment object
+                Experiment ex = new Experiment();
+                experimentSet.add(ex);
+
+            //Experiments for HIGHER_FUNCTION
+            } else if (m.getRole().equals(ModuleRole.HIGHER_FUNCTION)) {
+
+                //Add control constructs
+//                Module controlModule = new Module();
+//                controlModulesAll.add(controlModule);
+                
+                //Initialize experiment object
+                Experiment ex = new Experiment();
+                experimentSet.add(ex);
+            }
+        }
         
-        return null;
+        //Add control modules
+        modules.addAll(controlModulesAll);
+        
+        return experimentSet;
     }
     
-    //Method for forming an experiment from a module which has partial part assignment
-    private static Experiment createMultiplexExperiment(Module module) {
-        return null;
+    //Make a standard expression/degradation control for EXPRESSORs and all types of EXPRESSEEs
+    private static Module createExpDegControl() {
+        
+        //Expression control
+        Module expDegControl = new Module();
+        List<PrimitiveModule> testSubmodules = new ArrayList<>();
+        testSubmodules.add(testPromoter);
+        testSubmodules.add(testRBS);
+        testSubmodules.add(testCDS1);
+        testSubmodules.add(testTerminator);
+        testSubmodules.add(testVector1);
+        expDegControl.setSubmodules(testSubmodules);
+        expDegControl.updateModuleFeatures();
+        expDegControl.setRole(ModuleRole.TESTING_CONTROL);
+        
+        return expDegControl;
+    }
+    
+    //Make a standard expression/degradation control for EXPRESSORs and all types of EXPRESSEEs
+    private static Module createRegControl(Module expressee) {
+        
+        //Expression control
+        Module regControl = new Module();
+        List<PrimitiveModule> testSubmodules = new ArrayList<>();
+        testSubmodules.add(testPromoter);
+        testSubmodules.add(testRBS);
+        testSubmodules.add(testCDS2);
+        testSubmodules.add(testTerminator);
+        testSubmodules.add(testVector2);
+        regControl.setSubmodules(testSubmodules);
+        regControl.updateModuleFeatures();
+        regControl.setRole(ModuleRole.TESTING_CONTROL);
+        
+        return regControl;
     }
     
     //Method for forming an experiment from a module which has partial part assignment
@@ -186,8 +434,10 @@ public class TestingStructures {
     //FIELDS
     private static final PrimitiveModule testPromoter = new PrimitiveModule(FeatureRole.PROMOTER_CONSTITUTIVE, new Primitive(new ComponentType("p"), "pTEST"), new Feature("pTEST", new NucSeq("ttgacggctagctcagtcctaggtacagtgctagc"), new Person(), FeatureRole.PROMOTER_CONSTITUTIVE));
     private static final PrimitiveModule testRBS = new PrimitiveModule(FeatureRole.RBS, new Primitive(new ComponentType("r"), "rTEST"), new Feature("rTEST", new NucSeq("gggcccaagttcacttaaaaaggagatcaacaatgaaagcaattttcgtactgaaacatcttaatcatgctaaggaggttttct"), new Person(), FeatureRole.RBS));
-    private static final PrimitiveModule testCDS = new PrimitiveModule(FeatureRole.CDS, new Primitive(new ComponentType("c"), "cTEST"), new Feature("cTEST", new NucSeq("atgcgtaaaggagaagaacttttcactggagttgtcccaattcttgttgaattagatggtgatgttaatgggcacaaattttctgtcagtggagagggtgaaggtgatgcaacatacggaaaacttacccttaaatttatttgcactactggaaaactacctgttccatggccaacacttgtcactactttcggttatggtgttcaatgctttgcgagatacccagatcatatgaaacagcatgactttttcaagagtgccatgcccgaaggttatgtacaggaaagaactatatttttcaaagatgacgggaactacaagacacgtgctgaagtcaagtttgaaggtgatacccttgttaatagaatcgagttaaaaggtattgattttaaagaagatggaaacattcttggacacaaattggaatacaactataactcacacaatgtatacatcatggcagacaaacaaaagaatggaatcaaagttaacttcaaaattagacacaacattgaagatggaagcgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtccacacaatctgccctttcgaaagatcccaacgaaaagagagatcacatggtccttcttgagtttgtaacagctgctgggattacacatggcatggatgaactatacaaataataa"), new Person(), FeatureRole.CDS));
+    private static final PrimitiveModule testCDS1 = new PrimitiveModule(FeatureRole.CDS, new Primitive(new ComponentType("c"), "cTEST1"), new Feature("cTEST1", new NucSeq("atgcgtaaaggagaagaacttttcactggagttgtcccaattcttgttgaattagatggtgatgttaatgggcacaaattttctgtcagtggagagggtgaaggtgatgcaacatacggaaaacttacccttaaatttatttgcactactggaaaactacctgttccatggccaacacttgtcactactttcggttatggtgttcaatgctttgcgagatacccagatcatatgaaacagcatgactttttcaagagtgccatgcccgaaggttatgtacaggaaagaactatatttttcaaagatgacgggaactacaagacacgtgctgaagtcaagtttgaaggtgatacccttgttaatagaatcgagttaaaaggtattgattttaaagaagatggaaacattcttggacacaaattggaatacaactataactcacacaatgtatacatcatggcagacaaacaaaagaatggaatcaaagttaacttcaaaattagacacaacattgaagatggaagcgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtccacacaatctgccctttcgaaagatcccaacgaaaagagagatcacatggtccttcttgagtttgtaacagctgctgggattacacatggcatggatgaactatacaaataataa"), new Person(), FeatureRole.CDS));
+    private static final PrimitiveModule testCDS2 = new PrimitiveModule(FeatureRole.CDS, new Primitive(new ComponentType("c"), "cTEST2"), new Feature("cTEST2", new NucSeq("atgcggggttctcatcatcatcatcatcatggtatggctagcatgactggtggacagcaaatgggtcgggatctgtacgagaacctgtacttccagggctcgagcatggtgagcaagggcgaggagctgttcaccggggtggtgcccatcctggtcgagctggacggcgacgtaaacggccacaagttcagcgtgaggggcgagggcgagggcgatgccaccaacggcaagctgaccctgaagttcatctgcaccaccggcaagctgcccgtgccctggcccaccctcgtgaccaccctgagccacggcgtgcagtgcttcgcccgctaccccgaccacatgaagcagcacgacttcttcaagtccgccatgcccgaaggctacgtccaggagcgcaccatcttcttcaaggacgacggcacctacaagacccgcgccgaggtgaagttcgagggcgacaccctggtgaaccgcatcgagctgaagggcgtcgacttcaaggaggacggcaacatcctggggcacaagctggagtacaacttcaacagccacaacatctatatcatggccgtcaagcagaagaacggcatcaaggtgaacttcaagatccgccacaacgtggaggacggcagcgtgcagctcgccgaccactaccagcagaacacccccatcggcgacggccccgtgctgctgcccgacagccactacctgagcacccagtccgtgctgagcaaagaccccaacgagaagcgcgatcacatggtcctgctggagttccgcaccgccgcctaa"), new Person(), FeatureRole.CDS));
     private static final PrimitiveModule testTerminator = new PrimitiveModule(FeatureRole.TERMINATOR, new Primitive(new ComponentType("t"), "tTEST"), new Feature("tTEST", new NucSeq("ccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttata"), new Person(), FeatureRole.TERMINATOR));
-    private static final PrimitiveModule testVector = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST"), new Feature("vTEST", new NucSeq(""), new Person(), FeatureRole.VECTOR));
+    private static final PrimitiveModule testVector1 = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST1"), new Feature("vTEST1", new NucSeq(""), new Person(), FeatureRole.VECTOR));
+    private static final PrimitiveModule testVector2 = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST2"), new Feature("vTEST2", new NucSeq(""), new Person(), FeatureRole.VECTOR));
     private static final PrimitiveModule finalVector = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vFINAL"), new Feature("vFINAL", new NucSeq(""), new Person(), FeatureRole.VECTOR));
 }

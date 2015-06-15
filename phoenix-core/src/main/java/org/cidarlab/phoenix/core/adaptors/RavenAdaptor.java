@@ -37,14 +37,6 @@ public class RavenAdaptor {
         org.json.JSONObject rParameters = convertJSONs(parameters);
         HashSet<Polynucleotide> polyNucs = ClothoAdaptor.queryPolynucleotides();
         
-        //Temporary hack to remove things that are not DVs
-        HashSet<Polynucleotide> DVs = new HashSet();
-        for (Polynucleotide p : polyNucs) {
-            if (p.isDV()) {
-                DVs.add(p);
-            }
-        }
-        
         HashSet<Feature> allFeatures = ClothoAdaptor.queryFeatures();
         allFeatures.addAll(ClothoAdaptor.queryFluorophores());
         
@@ -52,23 +44,19 @@ public class RavenAdaptor {
         HashSet<org.cidarlab.raven.datastructures.Part> partsLibR = new HashSet();
         HashSet<Vector> vectorsLibR = new HashSet();
         
+        //Convert Phoenix Features to Raven Parts
         partsLibR.addAll(phoenixFeaturesToRavenParts(allFeatures));
                         
-//        HashMap<org.cidarlab.raven.datastructures.Part, Vector> libPairs = ravenPartVectorPairs(polyNucs, partsLibR);
+        //Convert Phoenix Polynucleotides to Raven Parts, Vectors and Plasmids
         HashMap<org.cidarlab.raven.datastructures.Part, Vector> libPairs = ravenPartVectorPairs(polyNucs, partsLibR, vectorsLibR);
         vectorsLibR.addAll(libPairs.values());
         partsLibR.addAll(libPairs.keySet());
         
+        //Convert Phoenix Modules to Raven Plasmids
         HashSet<org.cidarlab.raven.datastructures.Part> targetParts = phoenixModulesToRavenParts(targetModules, partsLibR);
-//        partsLibR.addAll(targetParts);
         
-        Raven raven = new Raven();
-        
-//        //Check part parameters
-//        for (org.cidarlab.raven.datastructures.Part p : partsLibR) {
-//            System.out.println(p.getSeq() + p.getStringComposition() + p.getLeftOverhang() + p.getRightOverhang() + p.getType() + p.getScars() + p.getDirections());
-//        }
-                
+        //Run Raven to get assembly instructions
+        Raven raven = new Raven();                
         String assemblyInstructions = raven.assemblyInstructions(targetParts, partsLibR, vectorsLibR, libPairs, new HashMap(), rParameters);
         
         return assemblyInstructions;
@@ -308,6 +296,14 @@ public class RavenAdaptor {
             
             String name = m.getRole().toString() + i;
             i++;
+            
+            //Create blank polynucleotide as a placeholders
+            //Here is where the colony picking math should be applied
+            HashSet<Polynucleotide> pnSet = new HashSet<>();
+            Polynucleotide pnPlaceholder = new Polynucleotide();
+            pnPlaceholder.setAccession(name + "_Polynucleotide");
+            pnSet.add(pnPlaceholder);
+            m.setPolynucleotides(pnSet);
             
             newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite(name, composition, new ArrayList(), new ArrayList(), directions, "", "", typeP);
             newPlasmid.setTransientStatus(false);   

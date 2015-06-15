@@ -108,12 +108,17 @@ public class Module {
     @Setter
     private List<Module> children;
     
+    //Child module(s)
+    @Getter
+    @Setter
+    private HashSet<Module> controlModules;
+    
     //Assigned module(s)
     @Getter
     @Setter
     private HashSet<Module> assignedModules;
     
-    // Sub Module (s)
+    // Sub-Module(s)
     @Getter
     @Setter
     private List<PrimitiveModule> submodules;
@@ -133,10 +138,10 @@ public class Module {
     @Setter
     private Experiment experiment;
     
-    //Interaction associated with this module
-//    @Getter
-//    @Setter
-//    private Interaction interaction;
+    //Polynucleotides associated with this module for testing
+    @Getter
+    @Setter
+    private HashSet<Polynucleotide> polynucleotides;
     
     //Module roles
     public enum ModuleRole {
@@ -147,6 +152,7 @@ public class Module {
         EXPRESSEE_ACTIVATOR,
         EXPRESSEE_ACTIVATIBLE_ACTIVATOR,
         TRANSCRIPTIONAL_UNIT,
+        TESTING_CONTROL,
         HIGHER_FUNCTION;
     }
     

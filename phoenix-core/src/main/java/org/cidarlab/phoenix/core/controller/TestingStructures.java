@@ -10,6 +10,7 @@ import java.util.List;
 import org.cidarlab.phoenix.core.dom.Component;
 import org.cidarlab.phoenix.core.dom.ComponentType;
 import org.cidarlab.phoenix.core.dom.Experiment;
+import org.cidarlab.phoenix.core.dom.Experiment.ExperimentType;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
 import org.cidarlab.phoenix.core.dom.Primitive;
@@ -18,6 +19,7 @@ import org.cidarlab.phoenix.core.dom.Feature;
 import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
 import org.cidarlab.phoenix.core.dom.NucSeq;
 import org.cidarlab.phoenix.core.dom.Person;
+import org.cidarlab.phoenix.core.dom.Sample;
 
 /**
  *
@@ -200,9 +202,10 @@ public class TestingStructures {
                     }
                 }
                 
-                //Initialize experiment object
-                Experiment ex = new Experiment();
-                experimentSet.add(ex);
+                //Initialize experiment object(s)
+                Experiment degradation = new Experiment(ExperimentType.DEGRADATION);
+                createExperimentSamples(degradation, m);
+                experimentSet.add(degradation);
 
             //Experiments for EXPRESSEE_ACTIVATIBLE_ACTIVATOR
             } else if (m.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR)) {
@@ -228,9 +231,18 @@ public class TestingStructures {
                     }
                 }
                 
-                //Initialize experiment object
-                Experiment ex = new Experiment();
-                experimentSet.add(ex);
+                //Initialize experiment object(s)
+                Experiment degradation = new Experiment(ExperimentType.DEGRADATION);
+                createExperimentSamples(degradation, m);
+                experimentSet.add(degradation);
+                
+                Experiment regulation = new Experiment(ExperimentType.REGULATION);
+                createExperimentSamples(regulation, m);
+                experimentSet.add(regulation);
+                
+                Experiment smallMolecule = new Experiment(ExperimentType.SMALL_MOLECULE);
+                createExperimentSamples(smallMolecule, m);
+                experimentSet.add(smallMolecule);
 
             //Experiments for EXPRESSEE_ACTIVATOR
             } else if (m.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR)) {
@@ -256,9 +268,14 @@ public class TestingStructures {
                     }
                 }
                 
-                //Initialize experiment object
-                Experiment ex = new Experiment();
-                experimentSet.add(ex);
+                //Initialize experiment object(s)
+                Experiment degradation = new Experiment(ExperimentType.DEGRADATION);
+                createExperimentSamples(degradation, m);
+                experimentSet.add(degradation);
+                
+                Experiment regulation = new Experiment(ExperimentType.REGULATION);
+                createExperimentSamples(regulation, m);
+                experimentSet.add(regulation);
 
             //Experiments for EXPRESSEE_REPRESSIBLE_REPRESSOR
             } else if (m.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR)) {
@@ -284,9 +301,18 @@ public class TestingStructures {
                     }
                 }
                 
-                //Initialize experiment object
-                Experiment ex = new Experiment();
-                experimentSet.add(ex);
+                //Initialize experiment object(s)
+                Experiment degradation = new Experiment(ExperimentType.DEGRADATION);
+                createExperimentSamples(degradation, m);
+                experimentSet.add(degradation);
+                
+                Experiment regulation = new Experiment(ExperimentType.REGULATION);
+                createExperimentSamples(regulation, m);
+                experimentSet.add(regulation);
+                
+                Experiment smallMolecule = new Experiment(ExperimentType.SMALL_MOLECULE);
+                createExperimentSamples(smallMolecule, m);
+                experimentSet.add(smallMolecule);
 
             //Experiments for EXPRESSEE_REPRESSOR    
             } else if (m.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)) {
@@ -312,9 +338,14 @@ public class TestingStructures {
                     }
                 }
                 
-                //Initialize experiment object
-                Experiment ex = new Experiment();
-                experimentSet.add(ex);
+                //Initialize experiment object(s)
+                Experiment degradation = new Experiment(ExperimentType.DEGRADATION);
+                createExperimentSamples(degradation, m);
+                experimentSet.add(degradation);
+                
+                Experiment regulation = new Experiment(ExperimentType.REGULATION);
+                createExperimentSamples(regulation, m);
+                experimentSet.add(regulation);
 
             //Experiments for EXPRESSOR
             } else if (m.getRole().equals(ModuleRole.EXPRESSOR)) {
@@ -340,8 +371,9 @@ public class TestingStructures {
                 }
                 
                 //Initialize experiment object
-                Experiment ex = new Experiment();
-                experimentSet.add(ex);
+                Experiment expression = new Experiment(ExperimentType.EXPRESSION);
+                createExperimentSamples(expression, m);
+                experimentSet.add(expression);
 
             //Experiments for TRANSCRIPTIONAL_UNIT
             } else if (m.getRole().equals(ModuleRole.TRANSCRIPTIONAL_UNIT)) {
@@ -367,17 +399,14 @@ public class TestingStructures {
                     }
                 }
                 
-                //Initialize experiment object
-                Experiment ex = new Experiment();
-                experimentSet.add(ex);
+                //Initialize experiment object(s)
+                Experiment rbs_context = new Experiment(ExperimentType.RBS_CONTEXT);
+                createExperimentSamples(rbs_context, m);
+                experimentSet.add(rbs_context);
 
             //Experiments for HIGHER_FUNCTION
             } else if (m.getRole().equals(ModuleRole.HIGHER_FUNCTION)) {
 
-                //Add control constructs
-//                Module controlModule = new Module();
-//                controlModulesAll.add(controlModule);
-                
                 //Initialize experiment object
                 Experiment ex = new Experiment();
                 experimentSet.add(ex);
@@ -426,9 +455,27 @@ public class TestingStructures {
         return regControl;
     }
     
+    //Make a standard expression/degradation control for EXPRESSORs and all types of EXPRESSEEs
+    private static Module createColorControl(PrimitiveModule fluorophore) {
+        
+        //Expression control
+        Module colorControl = new Module();
+        List<PrimitiveModule> testSubmodules = new ArrayList<>();
+        testSubmodules.add(testPromoter);
+        testSubmodules.add(testRBS);
+        testSubmodules.add(fluorophore);
+        testSubmodules.add(testTerminator);
+        testSubmodules.add(testVector2);
+        colorControl.setSubmodules(testSubmodules);
+        colorControl.updateModuleFeatures();
+        colorControl.setRole(ModuleRole.TESTING_CONTROL);
+        
+        return colorControl;
+    }
+    
     //Method for forming an experiment from a module which has partial part assignment
-    private static Experiment createAssignedExperiment(Module module) {
-        return null;
+    private static void createExperimentSamples(Experiment e, Module m) {
+
     }
      
     //FIELDS

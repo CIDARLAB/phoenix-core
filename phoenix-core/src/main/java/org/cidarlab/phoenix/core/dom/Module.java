@@ -82,6 +82,8 @@ public class Module {
     @Setter
     private ModuleRole role;    
 
+    //Repression or Activation Arcs. This will be used to indentify structures that can realize an Inverter, Oscillator or Switches
+    //Arcs created by this module
     @Getter
     @Setter
     private List<Arc> arcs;
@@ -125,10 +127,6 @@ public class Module {
     @Getter
     @Setter
     private List<PrimitiveModule> submodules;
-    
-    //Repression or Activation Arcs. This will be used to indentify structures that can realize an Inverter, Oscillator or Switches
-    
-    
     
     //Module stage
     @Getter

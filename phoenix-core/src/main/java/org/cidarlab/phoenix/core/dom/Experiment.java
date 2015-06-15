@@ -20,6 +20,11 @@ public class Experiment {
     public Experiment() {  
     }
     
+    //No args constructor
+    public Experiment(ExperimentType exType) {
+        exType = exType;
+    }
+    
     //Convert an experiment list to an output csv
     public void createExperimentFile(Experiment experiments) {
         
@@ -33,7 +38,7 @@ public class Experiment {
     //Experiment type
     @Setter
     @Getter
-    private ExperimentType type;
+    private ExperimentType exType;
         
     //Experiment type
     @Setter

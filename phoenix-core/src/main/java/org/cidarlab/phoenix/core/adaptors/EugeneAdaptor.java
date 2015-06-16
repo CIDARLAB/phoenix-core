@@ -94,6 +94,7 @@ public class EugeneAdaptor {
             
             for (Component c : eugeneDevice) {
                 
+                //Determine if this component is a coding sequence
                 String type = c.getType().getName();
                 boolean isCDS = false;
                 if (type.equalsIgnoreCase("c") || type.equalsIgnoreCase("fc") || type.equalsIgnoreCase("rc")) {
@@ -104,13 +105,17 @@ public class EugeneAdaptor {
                 Feature f = Feature.generateFeature(c.getName(), "", new Person(), isCDS);
                 moduleFeatures.add(f);
                 ComponentType ctype = new ComponentType(type);
+                
                 //Create a new primitive module
                 PrimitiveModule pm = new PrimitiveModule();
                 Primitive primitive = new Primitive(ctype,c.getName());
                 
-                primitive.setOrientation(Orientation.REVERSE);
-                if(c.isForward())
+                //Primitive orientation                
+                if (c.isForward()) {
                     primitive.setOrientation(Orientation.FORWARD);
+                } else {
+                    primitive.setOrientation(Orientation.REVERSE);
+                }
                 
                 pm.setPrimitive(primitive);
                 List<Feature> pmf = new ArrayList<>();

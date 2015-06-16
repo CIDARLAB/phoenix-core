@@ -15,13 +15,13 @@
         </configuration>
       </plugin>
       <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-war-plugin</artifactId>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>nbm-maven-plugin</artifactId>
           <configuration>
-            <webXml>src\main\webapp\WEB-INF\web.xml</webXml>        
+              <etcConfFile>src/main/resources/app.conf</etcConfFile>
           </configuration>
+          <version>3.8.1</version>
       </plugin>
-      
 <!--      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
@@ -254,20 +254,14 @@
       <version>1.1</version>
       <type>jar</type>
     </dependency>
-<!--    <dependency>
-      <groupId>Raven</groupId>
-      <artifactId>RavenCAD</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/src/main/resources/ExternalDependencies/RavenCAD-1.0-SNAPSHOT.jar</systemPath>
-    </dependency>-->
+    
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
       <version>20140107</version>
       <type>jar</type>
     </dependency>
-<!--    <dependency>
+    <dependency>
       <groupId>org.cidarlab</groupId>
       <artifactId>miniEugene</artifactId>
       <version>1.0</version>
@@ -275,23 +269,7 @@
     <dependency>
       <groupId>Raven</groupId>
       <artifactId>RavenCAD</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>-->
-<!--    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>phoenix-core</artifactId>
-      <version>${project.version}</version>
-      <type>war</type>
-    </dependency>-->
-    <dependency>
-      <groupId>Raven</groupId>
-      <artifactId>RavenCAD</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>org.cidarlab</groupId>
-      <artifactId>miniEugene</artifactId>
-      <version>1.0</version>
+      <version>1.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
     

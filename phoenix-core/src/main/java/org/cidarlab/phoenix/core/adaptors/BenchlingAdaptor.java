@@ -4,6 +4,7 @@
  */
 package org.cidarlab.phoenix.core.adaptors;
 
+import com.google.common.collect.BiMap;
 import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.File;
@@ -26,6 +27,7 @@ import org.cidarlab.phoenix.core.dom.Part;
 import org.cidarlab.phoenix.core.dom.Feature;
 import org.cidarlab.phoenix.core.dom.Person;
 import org.cidarlab.phoenix.core.dom.Polynucleotide;
+import org.cidarlab.phoenix.core.controller.Utilities;
 
 /**
  *
@@ -70,11 +72,21 @@ public class BenchlingAdaptor {
             }
             
             //Determine if this is a regular plasmid with a part or a desination vector
+            String vectorName = null;
             if (seq.getAnnotation().containsProperty("KEYWORDS")) {
                 String k = seq.getAnnotation().getProperty("KEYWORDS").toString();
                 String[] tokens = k.split("\"");
                 for (String token : tokens) {
+                    
+                    //Get backbone vector name
                     String[] keywords = token.split(":");
+                    if (token.contains("backbone")) {
+                        if (keywords.length == 2) {
+                            vectorName = keywords[1];
+                        }
+                    }
+                    
+                    //Flag this polynudleotide as a destination vector
                     for (String key : keywords) {
                         if (key.equalsIgnoreCase("vector") || key.equalsIgnoreCase("destination vector")) {
                             polyNuc.setDV(true);
@@ -87,7 +99,7 @@ public class BenchlingAdaptor {
             polyNuc.setSequence(getNucSeq(seq));
             
             //Get part and vector
-            getMoCloParts(polyNuc, seq);
+            getMoCloParts(polyNuc, seq, vectorName);
             
             polyNuc.setAccession(seq.getName() + "_Polynucleotide");
             
@@ -108,7 +120,7 @@ public class BenchlingAdaptor {
      * Creates a Part set from a Biojava sequence object
      * This will create basic parts out of all incoming plasmids
      */
-    public static HashSet<Part> getMoCloParts(Polynucleotide pn, Sequence seq) throws FileNotFoundException, NoSuchElementException, BioException {        
+    public static HashSet<Part> getMoCloParts(Polynucleotide pn, Sequence seq, String vectorName) throws FileNotFoundException, NoSuchElementException, BioException {        
         
         HashSet<Part> partSet = new HashSet<>();
 
@@ -121,6 +133,7 @@ public class BenchlingAdaptor {
         if (seq.getAnnotation().getProperty("DIVISION").equals("circular")) {
             searchSeq = seqString.substring(seqString.length() - 5) + seqString;
         }
+        
         int start;
         int end;
         int level;
@@ -158,17 +171,16 @@ public class BenchlingAdaptor {
             //Destination vector edge case
             if (searchSeq.indexOf(_BsaIfwd) == searchSeq.lastIndexOf(_BsaIfwd) && searchSeq.indexOf(_BsaIrev) == searchSeq.lastIndexOf(_BsaIrev) && searchSeq.indexOf(_BbsIfwd) == searchSeq.lastIndexOf(_BbsIfwd) && searchSeq.indexOf(_BbsIrev) == searchSeq.lastIndexOf(_BbsIrev)) {
 
-                //If the BsaI site is first, Level 2n edge case
-                if (searchSeq.indexOf(_BsaIfwd) > searchSeq.indexOf(_BbsIfwd)) {
+                //Find if the plasmid has the level0 or level1 lacZalpha fragment to determine the level
+                String lacZsearch = seqString + seqString;
+                if (lacZsearch.contains(_lacZalphaL0) || lacZsearch.contains(Utilities.reverseComplement(_lacZalphaL0))) {
                     start = searchSeq.indexOf(_BsaIfwd) + 7 - 5;
                     end = searchSeq.indexOf(_BsaIrev) - 1 - 5;
-                    level = 1;
-
-                    //If the BbsI site is first, Level 2(n + 1) edge case
-                } else if (searchSeq.indexOf(_BsaIfwd) < searchSeq.indexOf(_BbsIfwd)) {
+                    level = 0;
+                } else if (lacZsearch.contains(_lacZalphaL1) || lacZsearch.contains(Utilities.reverseComplement(_lacZalphaL1))) {
                     start = searchSeq.indexOf(_BbsIfwd) + 8 - 5;
                     end = searchSeq.indexOf(_BbsIrev) - 2 - 5;
-                    level = 0;
+                    level = 1;
                 } else {
                     return partSet;
                 }
@@ -192,23 +204,49 @@ public class BenchlingAdaptor {
         //If the part range goes through index 0, the start index will be after the end index, so the sequence needs to be adjusted
         String partSeq;
         String vecSeq;
+        
         if (start > end) {
             partSeq = seqString.substring(start, seqString.length()) + seqString.substring(0, end + 1);
-            vecSeq = partSeq.substring(partSeq.length() - 4) + seqString.substring(start, end) + partSeq.substring(0, 4);
+            vecSeq = partSeq.substring(partSeq.length() - 4) + seqString.substring(start, end) + partSeq.substring(0, 4);            
         } else {
             partSeq = seqString.substring(start, end);
             vecSeq = partSeq.substring(partSeq.length() - 4) + seqString.substring(end, seqString.length()) + seqString.substring(0, start) + partSeq.substring(0, 4);
         }
-
+        
+        //Find MoClo OHs
+        String LO;
+        String RO;
+        RO = partSeq.substring(partSeq.length() - 4);
+        LO = partSeq.substring(0, 4);
+        BiMap<String, String> moCloOHseqs = Utilities.getMoCloOHseqs();
+        BiMap<String, String> inverse = moCloOHseqs.inverse();
+        
+        if (inverse.containsKey(LO)) {
+            LO = inverse.get(LO);
+        }
+        if (inverse.containsKey(RO)) {
+            RO = inverse.get(RO);
+        }
+        
         //Make a new Part and Vector
         Part part;
         Part vector;
-        if (seq.getAnnotation().containsProperty("COMMENT")) {
-            part = Part.generateBasic(seq.getName() + "_part", seq.getAnnotation().getProperty("COMMENT").toString(), new NucSeq(partSeq), null, null);
-            vector = Part.generateBasic(seq.getName() + "_vector", "", new NucSeq(vecSeq), null, null);
+        
+        //If there is a supplied vector name, that becomes the vector name
+        String vecName;
+        if (vectorName != null) {
+            vecName = vectorName + "|" + LO + "|" + RO;
         } else {
-            part = Part.generateBasic(seq.getName() + "_part", "", new NucSeq(partSeq), null, null);
-            vector = Part.generateBasic(seq.getName() + "_vector", "", new NucSeq(vecSeq), null, null);
+            vecName = seq.getName() + "_vector|" + LO + "|" + RO;
+        }
+        
+        //Generate parts and vector parts
+        if (seq.getAnnotation().containsProperty("COMMENT")) {
+            part = Part.generateBasic(seq.getName() + "_part|" + LO + "|" + RO, seq.getAnnotation().getProperty("COMMENT").toString(), new NucSeq(partSeq), null, null);
+            vector = Part.generateBasic(vecName, "", new NucSeq(vecSeq), null, null);
+        } else {
+            part = Part.generateBasic(seq.getName() + "_part|" + LO + "|" + RO, "", new NucSeq(partSeq), null, null);
+            vector = Part.generateBasic(vecName, "", new NucSeq(vecSeq), null, null);
         }
 
         vector.setVector(true);
@@ -360,12 +398,18 @@ public class BenchlingAdaptor {
                                     clothoFeature.setRole(Feature.FeatureRole.CDS_REPRESSOR);
                                 } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("activator")) {
                                     clothoFeature.setRole(Feature.FeatureRole.CDS_REPRESSOR);
+                                } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("repressible-repressor")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.CDS_REPRESSIBLE_REPRESSOR);
+                                } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("activatible-activator")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR);
                                 } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("linker")) {
                                     clothoFeature.setRole(Feature.FeatureRole.CDS_LINKER);
                                 } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("resistance")) {
                                     clothoFeature.setRole(Feature.FeatureRole.CDS_RESISTANCE);
                                 } else if (type.equalsIgnoreCase("CDS") && subtype.contains("Tag")) {
                                     clothoFeature.setRole(Feature.FeatureRole.CDS_TAG);
+                                } else if (type.equalsIgnoreCase("CDS") && subtype.contains("Marker")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.MARKER);
                                 } else if (type.equalsIgnoreCase("terminator")) {
                                     clothoFeature.setRole(Feature.FeatureRole.TERMINATOR);
                                 } else if (type.equalsIgnoreCase("origin")) {
@@ -531,4 +575,6 @@ public class BenchlingAdaptor {
     private static String _BbsIrev = "gtcttc";
     private static String _BsaIfwd = "ggtctc";
     private static String _BsaIrev = "gagacc";
+    private static String _lacZalphaL0 = "atgtcttctgcaccatatgcggtgtgaaataccgcacagatgcgtaaggagaaaataccgcatcaggcgccattcgccattcaggctgcgcaactgttgggaagggcgatcggtgcgggcctcttcgctattacgccagctggcgaaagggggatgtgctgcaaggcgattaagttgggtaacgccagggttttcccagtcacgacgttgtaaaacgacggccagtgaattcgagctcggtacccggggatcctctagagtcgacctgcaggcatgcaagcttggcgtaatcatggtcatagctgtttcctgtgtgaaattgttatccgctcacaattccacacaacatacgagccggaagcataaagtgtaaagcctggggtgcctaatgagtgagctaactcacattaattgcgttgcgctcactgcccgctttccagtcgggaaacctgtcgtgccagctgcattaatgaatcggccaacgcgcggggaagacgt";
+    private static String _lacZalphaL1 = "agagacctgcaccatatgcggtgtgaaataccgcacagatgcgtaaggagaaaataccgcatcaggcgccattcgccattcaggctgcgcaactgttgggaagggcgatcggtgcgggcctcttcgctattacgccagctggcgaaagggggatgtgctgcaaggcgattaagttgggtaacgccagggttttcccagtcacgacgttgtaaaacgacggccagtgaattcgagctcggtacccggggatcctctagagtcgacctgcaggcatgcaagcttggcgtaatcatggtcatagctgtttcctgtgtgaaattgttatccgctcacaattccacacaacatacgagccggaagcataaagtgtaaagcctggggtgcctaatgagtgagctaactcacattaattgcgttgcgctcactgcccgctttccagtcgggaaacctgtcgtgccagctgcattaatgaatcggccaacgcgcgggggtctct";
 }

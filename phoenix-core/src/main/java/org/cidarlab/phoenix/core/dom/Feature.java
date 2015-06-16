@@ -497,6 +497,8 @@ public class Feature extends SharableObjBase {
         CDS,
         CDS_REPRESSOR,
         CDS_ACTIVATOR,
+        CDS_REPRESSIBLE_REPRESSOR,
+        CDS_ACTIVATIBLE_ACTIVATOR,
         CDS_LINKER,
         CDS_TAG,
         CDS_RESISTANCE,
@@ -506,6 +508,7 @@ public class Feature extends SharableObjBase {
         ORIGIN,
         VECTOR,
         TESTING,
+        MARKER,
         WILDCARD;
     }
 

@@ -28,6 +28,7 @@ public class FeatureAssignment {
     public static HashSet<Module> partialAssignment(List<Module> testingModules) {
         
         HashSet<Module> modulesToTest = new HashSet<>();
+        HashSet<List<Feature>> assignedFeatureLists = new HashSet<>();
         
         //Add fluorescent proteins to each module
         addFPs(testingModules);
@@ -43,7 +44,24 @@ public class FeatureAssignment {
             if (!isAssigned(m)) {
                 promoterRegulatorAssign(m, features);
             }
-            modulesToTest.addAll(m.getAssignedModules());
+            
+            //Add each of the assigned modules to the `modules to test' collection
+            for (Module assignedM : m.getAssignedModules()) {
+                
+                //Check the features to remove an duplicate assignments
+                List<Feature> assignedFeatureList = new ArrayList<>();
+                for (PrimitiveModule pm : assignedM.getSubmodules()) {
+                    for (Feature f : pm.getModuleFeatures()) {
+                        if (!f.getSequence().getSequence().isEmpty()) {
+                            assignedFeatureList.add(f);
+                        }
+                    }
+                }
+                
+                if (assignedFeatureLists.add(assignedFeatureList)) {
+                    modulesToTest.addAll(m.getAssignedModules());
+                }
+            }
         }
         
         //Assign WILDCARDs for assigned modules
@@ -166,13 +184,13 @@ public class FeatureAssignment {
         HashSet<Module> assignedModules = m.getAssignedModules();
 
         //Make assigned modules for EXPRESSEES
-        if (m.getRole().equals(Module.ModuleRole.EXPRESSEE)) {
+        if (m.getRole().equals(Module.ModuleRole.EXPRESSEE) || m.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || m.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATOR) || m.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || m.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSOR)) {
 
             //Look for regulators that are abstract
             for (int i = 0; i < m.getSubmodules().size(); i++) {
                 PrimitiveModule pm = m.getSubmodules().get(i);
                 for (Feature f : pm.getModuleFeatures()) {
-                    if (pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS) || pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_ACTIVATOR) || pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_REPRESSOR)) {
+                    if (pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS) || pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_ACTIVATOR) || pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_REPRESSOR) || pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_REPRESSIBLE_REPRESSOR)) {
                         if (f.getSequence().getSequence().isEmpty()) {
 
                             //Assign a regulator from the feature library
@@ -311,7 +329,7 @@ public class FeatureAssignment {
                 seenModules.add(currentModule);
                 queue.remove(0);
 
-                if (currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE) || currentModule.getRole().equals(Module.ModuleRole.EXPRESSOR)) {
+                if (currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE) || currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATOR) || currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSOR) || currentModule.getRole().equals(Module.ModuleRole.EXPRESSOR)) {
                     stageModules.add(currentModule);
                 } 
 

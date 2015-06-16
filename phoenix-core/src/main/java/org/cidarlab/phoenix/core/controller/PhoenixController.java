@@ -60,23 +60,23 @@ public class PhoenixController {
             String assemblyInstructions = RavenAdaptor.generateAssemblyPlan(modulesToTest);
             String testingInstructions = PhoenixInstructions.generateTestingInstructions(currentExperiments);
             
-            //Import data from experiments
-            ClothoAdaptor.uploadSequences(plasmidsCreated, false);
-            FeatureAssignment.completeAssignmentSeqResults(modules);
-            ClothoAdaptor.uploadCytometryData(fcsFiles, currentExperiments);
-            
-            //Run analytics to produce graphs, parameters
-            AnalyticsAdaptor.runAnalytics(currentExperiments);
-            
-            //Make owl data sheets
-            OwlAdaptor.makeDatasheets(currentExperiments);
-            currentExperiments.clear();
-            
-            //Run simulations to produce candidate part/feature matches
-            List<Module> bestCombinedModules = iBioSimAdaptor.runSimulations(modules);
-            
-            //Update module graphs based upon simulations
-            modulesToTest = FeatureAssignment.completeAssignmentSim(bestCombinedModules, modules);
+//            //Import data from experiments
+//            ClothoAdaptor.uploadSequences(plasmidsCreated, false);
+//            FeatureAssignment.completeAssignmentSeqResults(modules);
+//            ClothoAdaptor.uploadCytometryData(fcsFiles, currentExperiments);
+//            
+//            //Run analytics to produce graphs, parameters
+//            AnalyticsAdaptor.runAnalytics(currentExperiments);
+//            
+//            //Make owl data sheets
+//            OwlAdaptor.makeDatasheets(currentExperiments);
+//            currentExperiments.clear();
+//            
+//            //Run simulations to produce candidate part/feature matches
+//            List<Module> bestCombinedModules = iBioSimAdaptor.runSimulations(modules);
+//            
+//            //Update module graphs based upon simulations
+//            modulesToTest = FeatureAssignment.completeAssignmentSim(bestCombinedModules, modules);
 //        }
     }
     

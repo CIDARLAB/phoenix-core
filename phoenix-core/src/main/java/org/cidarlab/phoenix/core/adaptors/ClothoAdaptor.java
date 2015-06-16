@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.cidarlab.phoenix.core.adaptors.BenchlingAdaptor.*;
+import org.cidarlab.phoenix.core.controller.Utilities;
 import org.cidarlab.phoenix.core.dom.Cytometer;
 import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Fluorophore;
@@ -1019,29 +1020,47 @@ public class ClothoAdaptor {
                 //Replace parts if necessary
                 Part part = pn.getPart();
                 String partSeq = part.getSequence().getSeq();
-                if (!sequencePartMap.containsKey(partSeq)) {
-                    sequencePartMap.put(partSeq, part);
-                } else {
+                String revPartSeq = Utilities.reverseComplement(partSeq);
+                
+                if (sequencePartMap.containsKey(partSeq)) {
                     Part existing = sequencePartMap.get(partSeq);
                     if (!existing.isVector()) {
                         pn.setPart(existing);
-                    } else {
-                        sequencePartMap.put(partSeq, part);
+//                    } else {
+//                        sequencePartMap.put(partSeq, part);
                     }
-                }
+                } else if (sequencePartMap.containsKey(revPartSeq)) {
+                    Part existing = sequencePartMap.get(revPartSeq);
+                    if (!existing.isVector()) {
+                        pn.setPart(existing);
+//                    } else {
+//                        sequencePartMap.put(revPartSeq, part);
+                    }
+                } else {
+                    sequencePartMap.put(partSeq, part);
+                } 
 
                 //Replace vectors if necessary
                 Part vector = pn.getVector();
                 String vecSeq = vector.getSequence().getSeq();
-                if (!sequencePartMap.containsKey(vecSeq)) {
-                    sequencePartMap.put(vecSeq, vector);
-                } else {
+                String revVecSeq = vector.getSequence().getSeq();
+                
+                if (sequencePartMap.containsKey(vecSeq)) {                    
                     Part existing = sequencePartMap.get(vecSeq);
                     if (existing.isVector()) {
                         pn.setVector(existing);
-                    } else {
-                        sequencePartMap.put(vecSeq, vector);
+//                    } else {
+//                        sequencePartMap.put(vecSeq, vector);
                     }
+                } else if (sequencePartMap.containsKey(vecSeq)) {
+                    Part existing = sequencePartMap.get(revVecSeq);
+                    if (existing.isVector()) {
+                        pn.setVector(existing);
+//                    } else {
+//                        sequencePartMap.put(revVecSeq, vector);
+                    }
+                } else {
+                    sequencePartMap.put(vecSeq, vector);
                 }
             }
         }
@@ -1077,7 +1096,18 @@ public class ClothoAdaptor {
                 int start = m.start();
                 int end = m.end();
                 Annotation a = new Annotation(f, ns, forwardColor, reverseColor, start, end, new Person(), true, null);
-                annotations.add(a);
+                
+                //Only add if there is no duplicate annotation
+                boolean preexisting = false;
+                for (Annotation existingA : annotations) {
+                    if (existingA.getStart() == a.getStart() && existingA.getEnd() == a.getEnd()) {
+                        preexisting = true;
+                    }
+                }
+                
+                if (!preexisting && !f.getName().contains("TEST")) {
+                    annotations.add(a);
+                }
             }
             
             //Reverse sequence search
@@ -1089,7 +1119,18 @@ public class ClothoAdaptor {
                 int start = mR.start();
                 int end = mR.end();
                 Annotation a = new Annotation(f, ns, reverseColor, forwardColor, start, end, new Person(), false, null);
-                annotations.add(a);
+                
+                //Only add if there is no duplicate annotation
+                boolean preexisting = false;
+                for (Annotation existingA : annotations) {
+                    if (existingA.getStart() == a.getStart() && existingA.getEnd() == a.getEnd() ) {
+                        preexisting = true;
+                    }
+                }
+                
+                if (!preexisting && !f.getName().contains("TEST")) {
+                    annotations.add(a);
+                }
             }
             
         }

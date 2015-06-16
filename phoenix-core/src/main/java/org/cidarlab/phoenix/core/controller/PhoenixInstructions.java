@@ -4,6 +4,7 @@
  */
 package org.cidarlab.phoenix.core.controller;
 
+import java.io.File;
 import java.util.List;
 import org.cidarlab.phoenix.core.dom.Experiment;
 
@@ -20,4 +21,9 @@ public class PhoenixInstructions {
         return "";
     }
     
+    
+    //Method for producing testing instructions from Experiments
+    public static void parseTestingInstructions(File instructionsFile) {
+        
+    }
 }

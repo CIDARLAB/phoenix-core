@@ -10,10 +10,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
 import org.cidarlab.phoenix.core.dom.Cytometer;
+import org.cidarlab.phoenix.core.dom.Detector;
 import org.cidarlab.phoenix.core.dom.Fluorophore;
 
 /**
@@ -24,7 +27,30 @@ import org.cidarlab.phoenix.core.dom.Fluorophore;
  */
 public class FluorescentProteinSelector {
     
-    //Choose n FPs given a machine with lasers and filters, but no configuration
+    public static List<Fluorophore> solve_greedy(HashSet<Fluorophore> FPs, Cytometer cytometer, List<PhoenixSwitches> switches, int n){
+        List<Fluorophore> solution = new ArrayList<Fluorophore>(); 
+
+        List<Fluorophore> candidates = new ArrayList<Fluorophore>();
+        for(Fluorophore fp:FPs){
+            if((!fp.getEm_spectrum().isEmpty()) && (!fp.getEx_spectrum().isEmpty())){
+                candidates.add(fp);
+            }
+        }
+        Map<Fluorophore,Detector> signalStrength = new HashMap<Fluorophore,Detector>();
+        
+        
+        
+        return solution;
+    }
+    
+    public static Map<Fluorophore,Detector> getSignalStrength(){
+        Map<Fluorophore,Detector> signalStrengths = new HashMap<Fluorophore,Detector>();
+        
+        
+        return signalStrengths;
+    }
+    
+//Choose n FPs given a machine with lasers and filters, but no configuration
     //This algorithm is heuristic, mapping to a constraint solver would get the optimal solution
     //The hueristic soltion will probably give near-optimal solutions since the protein sets considered here are small
     //This alrogithm is on the basis of maximum emission and excitation spectrums, it would be better to do this for the whole range
@@ -44,16 +70,17 @@ public class FluorescentProteinSelector {
         //Save the machine settings to a signal map
         HashSet<String> laserFilterStrings = getLaserFilterStrings(cytometer.getConfiguration());
         
-        System.out.println("Laser Filter Settings : "+ laserFilterStrings);
-        
+        //This is a hashmap mapping FP to a map of filters that can excite the FP. Occurs if the FP's excitation spectrum contains the laser's wavelength. 
         HashMap<Fluorophore, HashMap<String, Double>> fpFilterSignals = getFPFilterSignals(candidateList, laserFilterStrings);
         
-        //First FP chosen should be gfp or some protien in the FITC channel on the 488nm laser in a 530/30 filter get MEFLs
-        HashMap<Fluorophore, String> measurementFilters = new HashMap<>();
+        //Initialize Filter Noise to 0 here
         HashMap<String, Double> filterNoise = new HashMap<>();
         for (String laserFilter : laserFilterStrings) {
             filterNoise.put(laserFilter, 0.0);
         }
+        
+        //First FP chosen should be gfp or some protien in the FITC channel on the 488nm laser in a 530/30 filter get MEFLs
+        HashMap<Fluorophore, String> measurementFilters = new HashMap<>();
         
         if (n > 0) {
             Fluorophore fitcFluorophore = selectFITCFluorophore(candidateList, measurementFilters, filterNoise, fpFilterSignals, false);
@@ -63,12 +90,15 @@ public class FluorescentProteinSelector {
 
         //Then look for more proteins until the list is the desired size
         while (solnList.size() < n) {
-            
             Fluorophore selectFluorophore = selectFluorophore(candidateList, measurementFilters, filterNoise, fpFilterSignals, false);
             solnList.add(selectFluorophore);
             candidateList.remove(selectFluorophore);
         }
-
+        
+        for(Fluorophore fp:solnList){
+            System.out.println("FP :: "+fp.getName());
+        }
+        
         return solnList;
 
     }
@@ -95,6 +125,7 @@ public class FluorescentProteinSelector {
             //Initialize total signal            
             Fluorophore FP = candidateList.get(i);
             HashMap<String, Double> filterDiff = getSignalDifferential(ineligibleFilters, fpFilterSignals.get(FP), filterNoise);
+            
             double signalDifferential = -100000000.0;
             for (Double diff : filterDiff.values()) {
                 signalDifferential = diff;
@@ -109,7 +140,7 @@ public class FluorescentProteinSelector {
 
                 //If oligomerization considered
                 if (oligomerization) {
-                    if (FP.getOligomerization() <= fitcFP.getOligomerization()) {
+                    if (FP.getOligomerization() <= fitcFP.getOligomerization()) { //Gives a direct priority for Oligomerization
 
                         //Signal comparison        
                         if (signalDifferential > maxDifferential) {
@@ -298,7 +329,6 @@ public class FluorescentProteinSelector {
 
             //Get the filtered signal
             for (Double wavelength : FP.getEm_spectrum().keySet()) {
-
                 if (wavelength >= low && wavelength <= high) {
                     signal = signal + (excitation * FP.getEm_spectrum().get(wavelength));
                 }
@@ -321,8 +351,11 @@ public class FluorescentProteinSelector {
         
         //Find the max value, which key corresponds to that
         for (String laserFilter : eligibleFilters) {
-            if (laserFilterSignals.get(laserFilter) > maxSingleFilter) {
-                maxSingleFilter = laserFilterSignals.get(laserFilter) - laserFilterNoise.get(laserFilter);
+            
+            //Find the filter with the brightest excitation
+            double signalValue = laserFilterSignals.get(laserFilter) - laserFilterNoise.get(laserFilter);
+            if (signalValue > maxSingleFilter) {
+                maxSingleFilter = signalValue;
 //                maxSingleFilter = laserFilterSignals.get(laserFilter);
                 maxLaserFilter = laserFilter;
             }

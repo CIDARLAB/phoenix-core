@@ -59,8 +59,8 @@ public class miniEugeneTest {
         String filePath = getFilepath() + "/src/main/resources/miniEugeneFiles/oriented-tus.eug";
         File input = new File(filePath);
         
-        EugeneAdaptor.getStructures(input, null);
-        EugeneAdaptor.getStructures(input, 1);
+        EugeneAdaptor.getStructures(input, null, "");
+        EugeneAdaptor.getStructures(input, 1, "");
     }
     
     //Test for toggle switches example on miniEugene site
@@ -71,8 +71,8 @@ public class miniEugeneTest {
         String filePath = getFilepath() + "/src/main/resources/miniEugeneFiles/toggle-switch.eug";
         File input = new File(filePath);
         
-        EugeneAdaptor.getStructures(input, null);
-        EugeneAdaptor.getStructures(input, 1);        
+        EugeneAdaptor.getStructures(input, null, "");
+        EugeneAdaptor.getStructures(input, 1, "");        
     }
     
     //Test for toggle switch with terminators and RBSs
@@ -83,7 +83,7 @@ public class miniEugeneTest {
         String filePath = getFilepath() + "/src/main/resources/miniEugeneFiles/toggle-switch-full.eug";
         File input = new File(filePath);
         
-        EugeneAdaptor.getStructures(input, null);
+        EugeneAdaptor.getStructures(input, null, "");
     }
     
     
@@ -96,7 +96,7 @@ public class miniEugeneTest {
         File input = new File(filePath);
         
 //        EugeneAdaptor.getStructures(input, null);
-        EugeneAdaptor.getStructures(input, 1);
+        EugeneAdaptor.getStructures(input, 1, "");
     }
     
     //Test for two NOR gate example
@@ -108,7 +108,7 @@ public class miniEugeneTest {
         File input = new File(filePath);
         
 //        EugeneAdaptor.getStructures(input, null);
-        EugeneAdaptor.getStructures(input, 1);
+        EugeneAdaptor.getStructures(input, 1, "");
     }
     
     //Test for priority encoder example on miniEugene site
@@ -120,7 +120,7 @@ public class miniEugeneTest {
         String filePath = getFilepath() + "/src/main/resources/miniEugeneFiles/priority-encoder.eug";
         File input = new File(filePath);
         
-        EugeneAdaptor.getStructures(input, 1);        
+        EugeneAdaptor.getStructures(input, 1, "");        
     }
  
 //    public miniEugeneTest() {

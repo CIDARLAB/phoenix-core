@@ -186,6 +186,8 @@ public class FeatureAssignment {
         //Make assigned modules for EXPRESSEES
         if (m.getRole().equals(Module.ModuleRole.EXPRESSEE) || m.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || m.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATOR) || m.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || m.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSOR)) {
 
+            int count = 0;
+            
             //Look for regulators that are abstract
             for (int i = 0; i < m.getSubmodules().size(); i++) {
                 PrimitiveModule pm = m.getSubmodules().get(i);
@@ -196,7 +198,8 @@ public class FeatureAssignment {
                             //Assign a regulator from the feature library
                             HashSet<Feature> featuresOfRole = getAllFeaturesOfRole(features, pm.getPrimitiveRole());
                             for (Feature fR : featuresOfRole) {
-                                Module clone = m.clone();
+                                Module clone = m.clone(m.getName() + "_" + count);
+                                count++;
                                 List<Feature> mfClone = new ArrayList<>();
                                 mfClone.add(fR);
                                 clone.getSubmodules().get(i).setModuleFeatures(mfClone);
@@ -216,6 +219,7 @@ public class FeatureAssignment {
             //This needs a more robust long-term solution
             HashSet<Module> clonesThisModule = new HashSet<>();
             ArrayList<Integer> promoterIndicies = new ArrayList<>();
+            int count = 0;
             
             //Look for promoters that are abstract
             for (int i = 0; i < m.getSubmodules().size(); i++) {
@@ -232,7 +236,8 @@ public class FeatureAssignment {
                                 HashSet<Feature> featuresOfRole = new HashSet<>();
                                 featuresOfRole.addAll(getAllFeaturesOfRole(features, pm.getPrimitiveRole()));
                                 for (Feature fR : featuresOfRole) {
-                                    Module clone = m.clone();
+                                    Module clone = m.clone(m.getName() + "_" + count);
+                                    count++;
                                     List<Feature> mfClone = new ArrayList<>();
                                     mfClone.add(fR);
                                     clone.getSubmodules().get(i).setModuleFeatures(mfClone);
@@ -276,7 +281,8 @@ public class FeatureAssignment {
                                         
                                         //Make new clones for all non-duplicate possibilities
                                         for (Feature fR : featuresOfRole) {
-                                            Module newClone = clone.clone();
+                                            Module newClone = clone.clone(m.getName() + "_" + count);
+                                            count++;
                                             List<Feature> mfClone = new ArrayList<>();
                                             mfClone.add(fR);
                                             newClone.getSubmodules().get(i).setModuleFeatures(mfClone);

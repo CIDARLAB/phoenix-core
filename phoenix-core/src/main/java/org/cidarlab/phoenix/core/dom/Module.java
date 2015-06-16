@@ -22,7 +22,7 @@ public class Module {
      */
 
     //Default module contructor
-    public Module() {
+    public Module(String name) {
         this.stage = -1;
         this.isRoot = false;
         this.children = new ArrayList<>();
@@ -31,6 +31,8 @@ public class Module {
         this.submodules = new ArrayList<>();
         this.moduleFeatures = new ArrayList<>();
         this.isForward = true;
+        this.name = name;
+        this.clothoID = name;
     }
     
     //Module constructor for root and stage
@@ -53,9 +55,9 @@ public class Module {
     }
     
     //This cloning method ignores neighbors, clones everything else
-    @Override
-    public Module clone() {
-        Module clone = new Module();
+//    @Override
+    public Module clone(String name) {
+        Module clone = new Module(name);
         
         List<Feature> fList = new ArrayList<>();
         for (Feature f : this.moduleFeatures) {

@@ -35,7 +35,7 @@ public class PhoenixController {
         //Map LTL decomposition to structure contstraint libraries
         
         //Create target modules with miniEugene
-        List<Module> modules = EugeneAdaptor.getStructures(structureFile, 1);
+        List<Module> modules = EugeneAdaptor.getStructures(structureFile, 1, "toggle");
         
         //Decompose target modules with PhoenixGrammar to get module graphs
         PhoenixGrammar.decomposeAll(modules);

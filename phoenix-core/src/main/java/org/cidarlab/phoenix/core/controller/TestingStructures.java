@@ -5,6 +5,7 @@
 package org.cidarlab.phoenix.core.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import org.cidarlab.phoenix.core.dom.Component;
@@ -190,6 +191,7 @@ public class TestingStructures {
                 
                 //Initialize experiment object(s)
                 Experiment degradation = new Experiment(ExperimentType.DEGRADATION);
+                degradation.setName(degradation.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
                 createExperimentSamples(degradation, m);
                 createControlSamples(degradation, m);
                 experimentSet.add(degradation);
@@ -205,16 +207,19 @@ public class TestingStructures {
                 
                 //Initialize experiment object(s)
                 Experiment degradation = new Experiment(ExperimentType.DEGRADATION);
+                degradation.setName(degradation.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
                 createExperimentSamples(degradation, m);
                 createControlSamples(degradation, m);
                 experimentSet.add(degradation);
                 
                 Experiment regulation = new Experiment(ExperimentType.REGULATION);
+                regulation.setName(regulation.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
                 createExperimentSamples(regulation, m);
                 createControlSamples(regulation, m);
                 experimentSet.add(regulation);
                 
                 Experiment smallMolecule = new Experiment(ExperimentType.SMALL_MOLECULE);
+                smallMolecule.setName(smallMolecule.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
                 createExperimentSamples(smallMolecule, m);
                 createControlSamples(smallMolecule, m);
                 experimentSet.add(smallMolecule);
@@ -230,11 +235,13 @@ public class TestingStructures {
                 
                 //Initialize experiment object(s)
                 Experiment degradation = new Experiment(ExperimentType.DEGRADATION);
+                degradation.setName(degradation.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
                 createExperimentSamples(degradation, m);
                 createControlSamples(degradation, m);
                 experimentSet.add(degradation);
                 
                 Experiment regulation = new Experiment(ExperimentType.REGULATION);
+                regulation.setName(regulation.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
                 createExperimentSamples(regulation, m);
                 createControlSamples(regulation, m);
                 experimentSet.add(regulation);
@@ -250,16 +257,19 @@ public class TestingStructures {
                 
                 //Initialize experiment object(s)
                 Experiment degradation = new Experiment(ExperimentType.DEGRADATION);
+                degradation.setName(degradation.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
                 createExperimentSamples(degradation, m);
                 createControlSamples(degradation, m);
                 experimentSet.add(degradation);
                 
                 Experiment regulation = new Experiment(ExperimentType.REGULATION);
+                regulation.setName(regulation.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
                 createExperimentSamples(regulation, m);
                 createControlSamples(regulation, m);
                 experimentSet.add(regulation);
                 
                 Experiment smallMolecule = new Experiment(ExperimentType.SMALL_MOLECULE);
+                smallMolecule.setName(smallMolecule.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
                 createExperimentSamples(smallMolecule, m);
                 createControlSamples(smallMolecule, m);
                 experimentSet.add(smallMolecule);
@@ -275,11 +285,13 @@ public class TestingStructures {
                 
                 //Initialize experiment object(s)
                 Experiment degradation = new Experiment(ExperimentType.DEGRADATION);
+                degradation.setName(degradation.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
                 createExperimentSamples(degradation, m);
                 createControlSamples(degradation, m);
                 experimentSet.add(degradation);
                 
                 Experiment regulation = new Experiment(ExperimentType.REGULATION);
+                regulation.setName(regulation.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
                 createExperimentSamples(regulation, m);
                 createControlSamples(regulation, m);
                 experimentSet.add(regulation);
@@ -294,6 +306,7 @@ public class TestingStructures {
                 
                 //Initialize experiment object
                 Experiment expression = new Experiment(ExperimentType.EXPRESSION);
+                expression.setName(expression.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
                 createExperimentSamples(expression, m);
                 createControlSamples(expression, m);
                 experimentSet.add(expression);
@@ -308,6 +321,7 @@ public class TestingStructures {
                 
                 //Initialize experiment object(s)
                 Experiment rbs_context = new Experiment(ExperimentType.RBS_CONTEXT);
+                rbs_context.setName(rbs_context.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
                 createExperimentSamples(rbs_context, m);
                 createControlSamples(rbs_context, m);
                 experimentSet.add(rbs_context);
@@ -331,7 +345,7 @@ public class TestingStructures {
     private static Module createExpDegControl() {
         
         //Expression control
-        Module expDegControl = new Module();
+        Module expDegControl = new Module("EXPRESSION_DEGRADATION_CONTROL");
         List<PrimitiveModule> testSubmodules = new ArrayList<>();
         testSubmodules.add(testPromoter);
         testSubmodules.add(testRBS);
@@ -349,7 +363,7 @@ public class TestingStructures {
     private static Module createRegControl(Module expressee) {
         
         //Expression control
-        Module regControl = new Module();
+        Module regControl = new Module(expressee.getName() + "_REGULATION_CONTROL");
         List<PrimitiveModule> testSubmodules = new ArrayList<>();
         testSubmodules.add(testPromoter);
         testSubmodules.add(testRBS);
@@ -373,7 +387,7 @@ public class TestingStructures {
                 if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
 
                     //Expression control
-                    Module colorControl = new Module();
+                    Module colorControl = new Module(pm.getModuleFeatures().get(0).getName() + "_COLOR_CONTROL");
                     List<PrimitiveModule> testSubmodules = new ArrayList<>();
                     testSubmodules.add(testPromoter);
                     testSubmodules.add(testRBS);
@@ -415,14 +429,9 @@ public class TestingStructures {
     
     //Method for forming an experiment from a module which has partial part assignment
     private static void createExperimentSamples(Experiment e, Module m) {
-        
-        //Create blank polynucleotide as a placeholders
-        //Here is where the colony picking math should be applied
-        HashSet<Polynucleotide> pnSet = new HashSet<>();
-        Polynucleotide pnPlaceholder = new Polynucleotide();
-//        pnPlaceholder.setAccession(name + "_Polynucleotide");
-        pnSet.add(pnPlaceholder);
-//        m.setPolynucleotides(pnSet);
+//        
+//        m.setName(m.getRole().toString() + "_" + nameCount);
+//        nameCount++;
         
     }
     
@@ -432,6 +441,7 @@ public class TestingStructures {
     }
      
     //FIELDS
+    public static int nameCount = 1;
     private static final PrimitiveModule testPromoter = new PrimitiveModule(FeatureRole.PROMOTER_CONSTITUTIVE, new Primitive(new ComponentType("p"), "pTEST"), new Feature("pTEST", new NucSeq("ttgacggctagctcagtcctaggtacagtgctagc"), new Person(), FeatureRole.PROMOTER_CONSTITUTIVE));
     private static final PrimitiveModule testRBS = new PrimitiveModule(FeatureRole.RBS, new Primitive(new ComponentType("r"), "rTEST"), new Feature("rTEST", new NucSeq("gggcccaagttcacttaaaaaggagatcaacaatgaaagcaattttcgtactgaaacatcttaatcatgctaaggaggttttct"), new Person(), FeatureRole.RBS));
     private static final PrimitiveModule testCDS1 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("c"), "cTEST1"), new Feature("cTEST1", new NucSeq("atgcgtaaaggagaagaacttttcactggagttgtcccaattcttgttgaattagatggtgatgttaatgggcacaaattttctgtcagtggagagggtgaaggtgatgcaacatacggaaaacttacccttaaatttatttgcactactggaaaactacctgttccatggccaacacttgtcactactttcggttatggtgttcaatgctttgcgagatacccagatcatatgaaacagcatgactttttcaagagtgccatgcccgaaggttatgtacaggaaagaactatatttttcaaagatgacgggaactacaagacacgtgctgaagtcaagtttgaaggtgatacccttgttaatagaatcgagttaaaaggtattgattttaaagaagatggaaacattcttggacacaaattggaatacaactataactcacacaatgtatacatcatggcagacaaacaaaagaatggaatcaaagttaacttcaaaattagacacaacattgaagatggaagcgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtccacacaatctgccctttcgaaagatcccaacgaaaagagagatcacatggtccttcttgagtttgtaacagctgctgggattacacatggcatggatgaactatacaaataataa"), new Person(), FeatureRole.CDS_FLUORESCENT));

@@ -30,7 +30,7 @@ import org.cidarlab.phoenix.core.dom.Person;
 public class EugeneAdaptor {
     
     //This method returns all structures for a given miniEugene file    
-    public static List<Module> getStructures(File input, Integer numSolutions) throws IOException, MiniEugeneException {
+    public static List<Module> getStructures(File input, Integer numSolutions, String nameRoot) throws IOException, MiniEugeneException {
         
         //Split text into rules list
         String eugFileString = FileUtil.readFile(input);
@@ -66,27 +66,28 @@ public class EugeneAdaptor {
             
             mE.solve(rules, size, numSolutions);
             List<Component[]> solutions = mE.getSolutions();
-            phoenixModules = componentToModule(solutions);
+            phoenixModules = componentToModule(solutions, nameRoot);
         } else {
             
             mE.solve(rules, size);
             List<Component[]> solutions = mE.getSolutions();
-            phoenixModules = componentToModule(solutions);
+            phoenixModules = componentToModule(solutions, nameRoot);
         }
         
         return phoenixModules;
     }
     
     //This method converts Eugene components to Clotho modules
-    public static List<Module> componentToModule(List<Component[]> eugeneDevices) {
+    public static List<Module> componentToModule(List<Component[]> eugeneDevices, String nameRoot) {
         
         List<Module> phoenixModules = new ArrayList<>();
+        int count = 0;
         
         //For each device, translate all components to features
         //These will be features without a sequence, only a type and direction
         for (Component[] eugeneDevice : eugeneDevices) {
             
-            Module phoenixModule = new Module();
+            Module phoenixModule = new Module(nameRoot + "_" + count++);
             phoenixModule.setForward(true);
             
             ArrayList<Feature> moduleFeatures = new ArrayList<>();

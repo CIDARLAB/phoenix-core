@@ -18,6 +18,7 @@ import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
 import org.cidarlab.phoenix.core.dom.Cytometer;
 import org.cidarlab.phoenix.core.dom.Detector;
 import org.cidarlab.phoenix.core.dom.Fluorophore;
+import org.cidarlab.phoenix.core.dom.Laser;
 
 /**
  * This class contains the methods for determining where to place fluorescent proteins in a phoenix
@@ -36,20 +37,46 @@ public class FluorescentProteinSelector {
                 candidates.add(fp);
             }
         }
-        Map<Fluorophore,Detector> signalStrength = new HashMap<Fluorophore,Detector>();
+        Map<Fluorophore,Map<Laser,Map<Detector,Double>>> signalStrength = new HashMap<Fluorophore,Map<Laser,Map<Detector,Double>>>();
         
+        for(Fluorophore fp:candidates){
+            
+            Map<Laser,Map<Detector,Double>> laserMap = new HashMap<Laser,Map<Detector,Double>>();
+            for(Laser laser:cytometer.getLasers()){
+                Map<Detector,Double> detectorStrengths = new HashMap<Detector,Double>();
+                detectorStrengths = getSignalStrength(fp,laser);
+                laserMap.put(laser, detectorStrengths);
+            }
+            signalStrength.put(fp, laserMap);
+        }
         
         
         return solution;
     }
     
-    public static Map<Fluorophore,Detector> getSignalStrength(){
-        Map<Fluorophore,Detector> signalStrengths = new HashMap<Fluorophore,Detector>();
-        
-        
+    public static Map<Detector,Double> getSignalStrength(Fluorophore fp,Laser laser){
+        Map<Detector,Double> signalStrengths = new HashMap<Detector,Double>();
+        if (fp.getEx_spectrum().containsKey(laser.getWavelength())) {
+            double excitation = fp.getBrightness() * fp.getEx_spectrum().get(laser.getWavelength());
+            for (Detector detector : laser.getDetectors()) {
+                double signalStrength = getSignalStrength(fp, detector, excitation);
+                signalStrengths.put(detector, signalStrength);
+            }
+        }
+
         return signalStrengths;
     }
     
+        
+    public static double getSignalStrength(Fluorophore fp, Detector detector, double excitation){
+        double signal = 0.0;
+        for(Double wavelength : fp.getEm_spectrum().keySet()){
+            if(wavelength >= detector.getLow() && wavelength <= detector.getHigh()){
+                signal += (excitation * fp.getEm_spectrum().get(wavelength));
+            }
+        }
+        return signal;
+    }
 //Choose n FPs given a machine with lasers and filters, but no configuration
     //This algorithm is heuristic, mapping to a constraint solver would get the optimal solution
     //The hueristic soltion will probably give near-optimal solutions since the protein sets considered here are small

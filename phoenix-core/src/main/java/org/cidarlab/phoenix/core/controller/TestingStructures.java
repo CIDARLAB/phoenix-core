@@ -429,9 +429,7 @@ public class TestingStructures {
     
     //Method for forming an experiment from a module which has partial part assignment
     private static void createExperimentSamples(Experiment e, Module m) {
-//        
-//        m.setName(m.getRole().toString() + "_" + nameCount);
-//        nameCount++;
+
         
     }
     

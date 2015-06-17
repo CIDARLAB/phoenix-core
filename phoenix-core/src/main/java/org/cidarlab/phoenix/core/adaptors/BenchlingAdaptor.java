@@ -28,6 +28,11 @@ import org.cidarlab.phoenix.core.dom.Feature;
 import org.cidarlab.phoenix.core.dom.Person;
 import org.cidarlab.phoenix.core.dom.Polynucleotide;
 import org.cidarlab.phoenix.core.controller.Utilities;
+import org.cidarlab.phoenix.core.dom.Arc;
+import org.cidarlab.phoenix.core.dom.Arc.ArcRole;
+import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
+import org.cidarlab.phoenix.core.dom.SmallMolecule;
+import org.cidarlab.phoenix.core.dom.SmallMolecule.SmallMoleculeRole;
 
 /**
  *
@@ -273,6 +278,11 @@ public class BenchlingAdaptor {
         SequenceIterator readGenbank = SeqIOTools.readGenbank(reader);
         HashSet<Feature> clothoFeatures = new HashSet<>();
         
+        //Arc hashes
+        HashMap<String, HashSet<String>> promoterRegulator = new HashMap<>();
+        HashMap<String, HashSet<String>> regulatorPromoter = new HashMap<>();
+        HashMap<String, HashSet<String>> regulatorMolecule = new HashMap<>();
+        
         //This loops for each entry in a multi-part GenBank file
         while (readGenbank.hasNext()) {
             
@@ -390,18 +400,98 @@ public class BenchlingAdaptor {
                                     clothoFeature.setRole(Feature.FeatureRole.PROMOTER_CONSTITUTIVE);
                                 } else if (type.equalsIgnoreCase("promoter") && subtype.equalsIgnoreCase("repressible")) {
                                     clothoFeature.setRole(Feature.FeatureRole.PROMOTER_REPRESSIBLE);
+                                    
+                                    if (tags.containsKey("regulation-regulator")) {
+                                        if (promoterRegulator.containsKey(clothoFeature.getName())) {
+                                            promoterRegulator.get(clothoFeature.getName()).add(tags.get("regulation-regulator").replaceAll("\"", ""));
+                                        } else {
+                                            HashSet<String> newMatches = new HashSet<>();
+                                            newMatches.add(tags.get("regulation-regulator").replaceAll("\"", ""));
+                                            promoterRegulator.put(clothoFeature.getName(), newMatches);
+                                        }                                      
+                                    }
                                 } else if (type.equalsIgnoreCase("promoter") && subtype.equalsIgnoreCase("inducible")) {
                                     clothoFeature.setRole(Feature.FeatureRole.PROMOTER_INDUCIBLE);
+                                    
+                                    if (tags.containsKey("regulation-regulator")) {
+                                        if (promoterRegulator.containsKey(clothoFeature.getName())) {
+                                            promoterRegulator.get(clothoFeature.getName()).add(tags.get("regulation-regulator").replaceAll("\"", ""));
+                                        } else {
+                                            HashSet<String> newMatches = new HashSet<>();
+                                            newMatches.add(tags.get("regulation-regulator").replaceAll("\"", ""));
+                                            promoterRegulator.put(clothoFeature.getName(), newMatches);
+                                        }                                      
+                                    }
                                 } else if (type.equalsIgnoreCase("5'UTR")) {
                                     clothoFeature.setRole(Feature.FeatureRole.RBS);
                                 } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("repressor")) {
                                     clothoFeature.setRole(Feature.FeatureRole.CDS_REPRESSOR);
+                                    
+                                    if (tags.containsKey("regulation-promoter")) {
+                                        if (regulatorPromoter.containsKey(clothoFeature.getName())) {
+                                            regulatorPromoter.get(clothoFeature.getName()).add(tags.get("regulation-promoter").replaceAll("\"", ""));
+                                        } else {
+                                            HashSet<String> newMatches = new HashSet<>();
+                                            newMatches.add(tags.get("regulation-promoter").replaceAll("\"", ""));
+                                            regulatorPromoter.put(clothoFeature.getName(), newMatches);
+                                        }                                      
+                                    }                                    
                                 } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("activator")) {
                                     clothoFeature.setRole(Feature.FeatureRole.CDS_REPRESSOR);
+                                    
+                                    if (tags.containsKey("regulation-promoter")) {
+                                        if (regulatorPromoter.containsKey(clothoFeature.getName())) {
+                                            regulatorPromoter.get(clothoFeature.getName()).add(tags.get("regulation-promoter").replaceAll("\"", ""));
+                                        } else {
+                                            HashSet<String> newMatches = new HashSet<>();
+                                            newMatches.add(tags.get("regulation-promoter").replaceAll("\"", ""));
+                                            regulatorPromoter.put(clothoFeature.getName(), newMatches);
+                                        }                                      
+                                    }
                                 } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("repressible-repressor")) {
                                     clothoFeature.setRole(Feature.FeatureRole.CDS_REPRESSIBLE_REPRESSOR);
+                                    
+                                    if (tags.containsKey("regulation-promoter")) {
+                                        if (regulatorPromoter.containsKey(clothoFeature.getName())) {
+                                            regulatorPromoter.get(clothoFeature.getName()).add(tags.get("regulation-promoter").replaceAll("\"", ""));
+                                        } else {
+                                            HashSet<String> newMatches = new HashSet<>();
+                                            newMatches.add(tags.get("regulation-promoter").replaceAll("\"", ""));
+                                            regulatorPromoter.put(clothoFeature.getName(), newMatches);
+                                        }                                      
+                                    }
+                                    
+                                    if (tags.containsKey("regulation-molecule")) {
+                                        if (regulatorMolecule.containsKey(clothoFeature.getName())) {
+                                            regulatorMolecule.get(clothoFeature.getName()).add(tags.get("regulation-molecule").replaceAll("\"", ""));
+                                        } else {
+                                            HashSet<String> newMatches = new HashSet<>();
+                                            newMatches.add(tags.get("regulation-molecule").replaceAll("\"", ""));
+                                            regulatorMolecule.put(clothoFeature.getName(), newMatches);
+                                        }
+                                    }
                                 } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("activatible-activator")) {
                                     clothoFeature.setRole(Feature.FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR);
+                                    
+                                    if (tags.containsKey("regulation-promoter")) {
+                                        if (regulatorPromoter.containsKey(clothoFeature.getName())) {
+                                            regulatorPromoter.get(clothoFeature.getName()).add(tags.get("regulation-promoter").replaceAll("\"", ""));
+                                        } else {
+                                            HashSet<String> newMatches = new HashSet<>();
+                                            newMatches.add(tags.get("regulation-promoter").replaceAll("\"", ""));
+                                            regulatorPromoter.put(clothoFeature.getName(), newMatches);
+                                        }                                      
+                                    }
+                                    
+                                    if (tags.containsKey("regulation-molecule")) {
+                                        if (regulatorMolecule.containsKey(clothoFeature.getName())) {
+                                            regulatorMolecule.get(clothoFeature.getName()).add(tags.get("regulation-molecule").replaceAll("\"", ""));
+                                        } else {
+                                            HashSet<String> newMatches = new HashSet<>();
+                                            newMatches.add(tags.get("regulation-molecule").replaceAll("\"", ""));
+                                            regulatorMolecule.put(clothoFeature.getName(), newMatches);
+                                        }
+                                    }
                                 } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("linker")) {
                                     clothoFeature.setRole(Feature.FeatureRole.CDS_LINKER);
                                 } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("resistance")) {
@@ -435,6 +525,170 @@ public class BenchlingAdaptor {
                 
             }
         }
+        
+        //Add regulation arcs from arc maps
+        HashSet<Arc> allArcs = new HashSet<>();
+        HashMap<HashSet<Feature>, Arc> arcHash = new HashMap<>();
+        HashSet<SmallMolecule> allMolecules = new HashSet<>();
+        
+        for (Feature f : clothoFeatures) {
+
+            //Promoters
+            if (promoterRegulator.containsKey(f.getName())) {
+
+                HashSet<String> regulators = promoterRegulator.get(f.getName());
+                for (String regulator : regulators) {
+                    HashSet<Arc> arcsThisP = new HashSet<>();
+                    
+                    for (Feature match : clothoFeatures) {
+
+                        if (match.getName().equalsIgnoreCase(regulator)) {
+                            
+                            if (f.getRole().equals(FeatureRole.PROMOTER_INDUCIBLE)) {
+
+                                HashSet<Feature> pair = new HashSet<>();
+                                pair.add(f);
+                                pair.add(match);
+                                Arc arc;
+                                if (arcHash.containsKey(pair)) {
+                                    arc = arcHash.get(pair);
+                                } else {
+                                    arc = new Arc(match, f, ArcRole.ACTIVATION);
+                                    arcHash.put(pair, arc);
+                                }
+                                arcsThisP.add(arc);
+                                
+                            } else if (f.getRole().equals(FeatureRole.PROMOTER_REPRESSIBLE)) {
+                                
+                                HashSet<Feature> pair = new HashSet<>();
+                                pair.add(f);
+                                pair.add(match);
+                                Arc arc;
+                                if (arcHash.containsKey(pair)) {
+                                    arc = arcHash.get(pair);
+                                } else {
+                                    arc = new Arc(match, f, ArcRole.REPRESSION);
+                                    arcHash.put(pair, arc);
+                                }
+                                arcsThisP.add(arc);
+                            }
+                        }
+                    }
+                    
+                    f.setArcs(arcsThisP);
+                    allArcs.addAll(arcsThisP);
+                }
+            }
+            
+            //Regulators
+            if (regulatorPromoter.containsKey(f.getName())) {
+                
+                HashSet<String> promoters = regulatorPromoter.get(f.getName());
+                for (String promoter : promoters) {
+                    HashSet<Arc> arcsThisR = new HashSet<>();
+                    
+                    for (Feature match : clothoFeatures) {
+                        
+                        if (match.getName().equalsIgnoreCase(promoter)) {
+                            
+                            if (f.getRole().equals(FeatureRole.CDS_ACTIVATOR)) {
+                                
+                                HashSet<Feature> pair = new HashSet<>();
+                                pair.add(f);
+                                pair.add(match);
+                                Arc arc;
+                                if (arcHash.containsKey(pair)) {
+                                    arc = arcHash.get(pair);
+                                } else {
+                                    arc = new Arc(f, match, ArcRole.ACTIVATION);
+                                    arcHash.put(pair, arc);
+                                }
+                                arcsThisR.add(arc);
+                            
+                            } else if (f.getRole().equals(FeatureRole.CDS_REPRESSOR)) {
+                                
+                                HashSet<Feature> pair = new HashSet<>();
+                                pair.add(f);
+                                pair.add(match);
+                                Arc arc;
+                                if (arcHash.containsKey(pair)) {
+                                    arc = arcHash.get(pair);
+                                } else {
+                                    arc = new Arc(f, match, ArcRole.REPRESSION);
+                                    arcHash.put(pair, arc);
+                                }
+                                arcsThisR.add(arc);
+                            
+                            } else if (f.getRole().equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR)) {
+                                
+                                HashSet<Feature> pair = new HashSet<>();
+                                pair.add(f);
+                                pair.add(match);
+                                Arc arc;
+                                if (arcHash.containsKey(pair)) {
+                                    arc = arcHash.get(pair);
+                                } else {
+                                    arc = new Arc(f, match, ArcRole.ACTIVATION);
+                                    arcHash.put(pair, arc);
+                                }
+                                arcsThisR.add(arc);
+                                
+                                HashSet<SmallMolecule> smThisArc = new HashSet<>();
+                                
+                                //If this arc has a small molecule regulator indicated
+                                if (regulatorMolecule.containsKey(f.getName())) {
+                                    HashSet<String> molecules = regulatorMolecule.get(f.getName());
+                                
+                                    for (String molecule : molecules) {
+                                        
+                                        SmallMolecule sm = new SmallMolecule(molecule, SmallMoleculeRole.ACTIVATION);
+                                        smThisArc.add(sm);
+                                    }
+                                    
+                                    arc.setMolecules(smThisArc);
+                                    allMolecules.addAll(smThisArc);
+                                }                                
+                                arcsThisR.add(arc);
+                                
+                            } else if (f.getRole().equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR)) {
+                                
+                                HashSet<Feature> pair = new HashSet<>();
+                                pair.add(f);
+                                pair.add(match);
+                                Arc arc;
+                                if (arcHash.containsKey(pair)) {
+                                    arc = arcHash.get(pair);
+                                } else {
+                                    arc = new Arc(f, match, ArcRole.REPRESSION);
+                                    arcHash.put(pair, arc);
+                                }
+                                arcsThisR.add(arc);
+                                
+                                HashSet<SmallMolecule> smThisArc = new HashSet<>();
+                                
+                                //If this arc has a small molecule regulator indicated
+                                if (regulatorMolecule.containsKey(f.getName())) {
+                                    HashSet<String> molecules = regulatorMolecule.get(f.getName());
+                                
+                                    for (String molecule : molecules) {
+                                        
+                                        SmallMolecule sm = new SmallMolecule(molecule, SmallMoleculeRole.REPRESSION);
+                                        smThisArc.add(sm);
+                                    }
+                                    
+                                    arc.setMolecules(smThisArc);
+                                    allMolecules.addAll(smThisArc);
+                                }
+                                arcsThisR.add(arc);
+                            }
+                        }
+                    }
+                    f.setArcs(arcsThisR);
+                    allArcs.addAll(arcsThisR);
+                }
+            }
+        }
+        
         return clothoFeatures;
     }
     

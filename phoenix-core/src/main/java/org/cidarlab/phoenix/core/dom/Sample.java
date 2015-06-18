@@ -48,7 +48,7 @@ public class Sample {
     //Time of experiment (for dynamic measurements)
     @Setter
     @Getter
-    private Date time;
+    private Integer time;
     
     //Control type
     @Setter

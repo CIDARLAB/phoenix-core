@@ -59,6 +59,16 @@ public class Experiment {
     @Getter
     private List<Sample> colorControls;
     
+    //Time series for measurements
+    @Setter
+    @Getter
+    private List<Integer> times;
+    
+    //Time series for measurements
+    @Setter
+    @Getter
+    private List<Medium> mediaConditions;
+    
     //Experiment types
     public enum ExperimentType {
         EXPRESSION,

@@ -36,27 +36,18 @@
             <h1><img style="height: 40px; margin-bottom:5px" src="images/phoenix_cropped.jpg"> <small>Upload Initial Files</small></h1>
         </div>
         <div id="config">
+            <form enctype="multipart/form-data" id="fileUploads">
                 <div style="margin-bottom:10px"><h4>GenBank Plasmid Library</h4></div>
-                <input style="margin-bottom:20px" type="file" id="files" name ="file" accept="text/plain" />
+                <input style="margin-bottom:20px" type="file" id="plasmidLib" name ="plasmidLib" />
+            </form>
                 <div style="margin-bottom:10px"><h4>GenBank Feature Library</h4></div>
-                <input style="margin-bottom:20px" type="file" id="files" name ="file" accept="text/plain" />
-                <div style="margin-bottom:10px"><h4>miniEugene Structural Design Specification</h4></div>
-                <input style="margin-bottom:20px" type="file" id="files" name ="file" accept="text/plain" />
+                <input style="margin-bottom:20px" type="file" id="featureLib" name ="featureLib" />
                 <div style="margin-bottom:10px"><h4>Flow Cytometer Configuration</h4></div>
-                <input style="margin-bottom:20px" type="file" id="files" name ="file" accept=".csv" />
+                <input style="margin-bottom:20px" type="file" id="fcConfig" name ="fcConfig" />
                 <div style="margin-bottom:10px"><h4>Flouresence Spectra</h4></div>
-                <input style="margin-bottom:20px" type="file" id="files" name ="file" accept=".csv" />
-                <div><button class="btn btn-primary" id="uploadButton" style="margin-top:7px" onclick="readConfig()">Upload</button>
-                <img id = "loading" style = "position:relative; padding-top:2px; padding-left:10px;" src ="images/ajax-loader.gif" hidden></div>
-        </div>
-        <div id="output" hidden>
-            <div class="tabbable tabs-left">
-                <ul id ="wellTabs" class="nav nav-tabs nav-pills well">
-                </ul>
-                <div class="tab-content" id="tabs">
-                </div>
-            </div>
-        </div>        
+                <input style="margin-bottom:20px" type="file" id="fSpectra" name ="fSpectra" />
+                <div><button class="btn btn-primary" id="uploadButton" style="margin-top:7px" onclick="upload()">Upload</button>
+                <img id = "loading" style = "position:relative; padding-top:2px; padding-left:10px;" src ="images/ajax-loader.gif" hidden></div>     
         
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script> 
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>      
@@ -65,43 +56,6 @@
         <script src="libraries/bootstrap.min.js"></script>   
         <script src="javascript/dynamicFormController.js"></script>
         <script src="javascript/SessionController.js"></script>
-        
-        <script>
-            $.get("ParserServlet", function(data) {
-                //console.log(data);
-                if (data.name)
-                {
-                    $("#name").val(data.name);
-                    $("#deviceName").val(data.name);
-                }
-                if (data.summary)
-                {
-                    $("#summary").val(data.summary);
-                }
-                if (data.contactInformation)
-                    {
-                if (data.contactInformation.authors)
-                {
-                    $("#authors").val(data.contactInformation.authors);
-                }
-                    }
-                if (data.sequence)
-                {
-                    $("#sequence").val(data.sequence);
-                }
-                if (data.designInformation) 
-                {
-                if (data.designInformation.date)
-                {
-                    $("#date").val(data.designInformation.date);
-                }
-                if (data.designInformation.deviceType)
-                {
-                    $("#deviceType").val(data.designInformation.deviceType);
-                }
-                }
-            });
-        </script>
         
         <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

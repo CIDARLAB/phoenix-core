@@ -7,17 +7,23 @@ package org.cidarlab.phoenix.core.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collection;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
  * @author zchapasko
  */
 @WebServlet(name = "ClientServlet", urlPatterns = {"/ClientServlet"})
+@MultipartConfig
 public class ClientServlet extends HttpServlet {
 
     /**
@@ -29,31 +35,61 @@ public class ClientServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+    protected void processPostRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, JSONException {
+//        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        int count;
-        if(request.getSession().getAttribute("count") == null){
-            count = 0;
-        } else {
-            count = (Integer) request.getSession().getAttribute("count");
+//        int count;
+//        if(request.getSession().getAttribute("count") == null){
+//            count = 0;
+//        } else {
+//            count = (Integer) request.getSession().getAttribute("count");
+//        }
+//        request.getSession().setAttribute("count", ++count);
+//        try {
+//            /* TODO output your page here. You may use following sample code. */
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>PhoenixServlet</title>");            
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<h1>Welcome to the servlet!</h1>");
+//            out.println("</body>");
+//            out.println("</html>");
+//        } finally {
+//            out.close();
+//        }
+        
+        /* SERVLET METHODS BELOW */
+        Collection<Part> test = request.getParts();
+        
+        if(test != null){
+            JSONObject dataToSend = new JSONObject();
+            dataToSend.put("message","yay");      
+
+            data = dataToSend;
+            holdingData = true;
+            out.write(data.toString());
         }
-        request.getSession().setAttribute("count", ++count);
-        try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet HelloServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet HelloServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-            out.println("New accessed: " + request.getSession().getAttribute("count"));
-        } finally {
-            out.close();
+        else{
+            JSONObject dataToSend = new JSONObject();
+            dataToSend.put("message","failure!");      
+
+            data = dataToSend;
+            holdingData = true;
+            out.write(data.toString());
+        }
+    }
+    
+    protected void processGetRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, JSONException {
+        if (holdingData) {
+            holdingData = false;
+            //return the held data and vacate the stored data
+            response.setContentType("application/json");
+            PrintWriter out = response.getWriter();
+            out.write(data.toString());
         }
     }
 
@@ -69,7 +105,7 @@ public class ClientServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        processGetRequest(request, response);
     }
 
     /**
@@ -83,7 +119,7 @@ public class ClientServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        processPostRequest(request, response);
     }
 
     /**
@@ -95,5 +131,6 @@ public class ClientServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+    private JSONObject data;
+    private boolean holdingData = false;
 }

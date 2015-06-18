@@ -59,6 +59,16 @@ public class Experiment {
     @Getter
     private List<Sample> colorControls;
     
+    //Regulation control samples
+    @Setter
+    @Getter
+    private List<Sample> regulationControls;
+    
+    //Regulation control samples
+    @Setter
+    @Getter
+    private List<Sample> expDegControls;
+    
     //Time series for measurements
     @Setter
     @Getter

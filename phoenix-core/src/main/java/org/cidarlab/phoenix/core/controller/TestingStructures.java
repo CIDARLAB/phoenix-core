@@ -21,8 +21,9 @@ import org.cidarlab.phoenix.core.dom.Feature;
 import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
 import org.cidarlab.phoenix.core.dom.NucSeq;
 import org.cidarlab.phoenix.core.dom.Person;
-import org.cidarlab.phoenix.core.dom.Polynucleotide;
 import org.cidarlab.phoenix.core.dom.Sample;
+import org.cidarlab.phoenix.core.dom.Sample.SampleType;
+import org.cidarlab.phoenix.core.dom.Strain;
 
 /**
  *
@@ -442,7 +443,7 @@ public class TestingStructures {
         testSubmodules.add(testVector1);
         expDegControl.setSubmodules(testSubmodules);
         expDegControl.updateModuleFeatures();
-        expDegControl.setRole(ModuleRole.TESTING_CONTROL);
+        expDegControl.setRole(ModuleRole.EXPRESSION_DEGRATATION_CONTROL);
         
         return expDegControl;
     }
@@ -477,7 +478,7 @@ public class TestingStructures {
                         testSubmodules.add(testVector2);
                         regControl.setSubmodules(testSubmodules);
                         regControl.updateModuleFeatures();
-                        regControl.setRole(ModuleRole.TESTING_CONTROL);
+                        regControl.setRole(ModuleRole.REGULATION_CONTROL);
 
                         regControls.add(regControl);
                     }
@@ -509,7 +510,7 @@ public class TestingStructures {
                     testSubmodules.add(testVector2);
                     colorControl.setSubmodules(testSubmodules);
                     colorControl.updateModuleFeatures();
-                    colorControl.setRole(ModuleRole.TESTING_CONTROL);
+                    colorControl.setRole(ModuleRole.COLOR_CONTROL);
                     colorControls.add(colorControl);
                 }
             }
@@ -548,11 +549,26 @@ public class TestingStructures {
     
     //Method for forming an experiment from a module which has partial part assignment
     private static void createControlSamples(Experiment e, HashSet<Module> modules) {
-
+        
+        Strain strain = new Strain("E. coli DH5a");
+        
+        //Initialize control samples
+        Sample beadControl = new Sample("RaibowBeads", SampleType.BEADS);
+        Sample negativeControl = new Sample("Negative", SampleType.NEGATIVE);
+        negativeControl.setStrain(strain);
+        
+        //
+        List<Sample> colorControls = new ArrayList<>();
+        List<Sample> regulationsControls = new ArrayList<>();
+        List<Sample> expDegControls = new ArrayList<>();
+        
+        //Loop through modules to create samples
+        for (Module m : modules) {
+            
+        }
     }
      
     //FIELDS
-    public static int nameCount = 1;
     private static final PrimitiveModule testPromoter = new PrimitiveModule(FeatureRole.PROMOTER_CONSTITUTIVE, new Primitive(new ComponentType("p"), "pTEST"), new Feature("pTEST", new NucSeq("ttgacggctagctcagtcctaggtacagtgctagc"), new Person(), FeatureRole.PROMOTER_CONSTITUTIVE));
     private static final PrimitiveModule testRBS = new PrimitiveModule(FeatureRole.RBS, new Primitive(new ComponentType("r"), "rTEST"), new Feature("rTEST", new NucSeq("gggcccaagttcacttaaaaaggagatcaacaatgaaagcaattttcgtactgaaacatcttaatcatgctaaggaggttttct"), new Person(), FeatureRole.RBS));
     private static final PrimitiveModule testCDS1 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("c"), "cTEST1"), new Feature("cTEST1", new NucSeq("atgcgtaaaggagaagaacttttcactggagttgtcccaattcttgttgaattagatggtgatgttaatgggcacaaattttctgtcagtggagagggtgaaggtgatgcaacatacggaaaacttacccttaaatttatttgcactactggaaaactacctgttccatggccaacacttgtcactactttcggttatggtgttcaatgctttgcgagatacccagatcatatgaaacagcatgactttttcaagagtgccatgcccgaaggttatgtacaggaaagaactatatttttcaaagatgacgggaactacaagacacgtgctgaagtcaagtttgaaggtgatacccttgttaatagaatcgagttaaaaggtattgattttaaagaagatggaaacattcttggacacaaattggaatacaactataactcacacaatgtatacatcatggcagacaaacaaaagaatggaatcaaagttaacttcaaaattagacacaacattgaagatggaagcgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtccacacaatctgccctttcgaaagatcccaacgaaaagagagatcacatggtccttcttgagtttgtaacagctgctgggattacacatggcatggatgaactatacaaataataa"), new Person(), FeatureRole.CDS_FLUORESCENT));

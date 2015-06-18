@@ -5,6 +5,11 @@ import lombok.Setter;
 
 public class Medium {
 
+    //Constructor
+    public Medium() {
+        
+    }
+    
     //Module measured
     @Setter
     @Getter

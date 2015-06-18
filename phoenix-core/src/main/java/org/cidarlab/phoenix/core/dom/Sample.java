@@ -5,7 +5,6 @@
 package org.cidarlab.phoenix.core.dom;
 
 import java.io.File;
-import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +14,13 @@ import lombok.Setter;
  */
 public class Sample {
    
+    //Constructor
+    public Sample(String _name, SampleType _type) {
+        name = _name;
+        clothoID = _name;
+        type = _type;
+    }
+    
     //Module measured
     @Setter
     @Getter
@@ -29,11 +35,6 @@ public class Sample {
     @Setter
     @Getter
     public Medium media;
-    
-     //If this file is a special type of control
-    @Setter
-    @Getter
-    private boolean isControl;
     
     //Polynucleotide measured
     @Setter
@@ -53,7 +54,7 @@ public class Sample {
     //Control type
     @Setter
     @Getter
-    private ControlType controlType;
+    private SampleType type;
     
     //fcs files
     @Setter
@@ -61,9 +62,12 @@ public class Sample {
     private File fcsFile;
     
     //Experiment types
-    public enum ControlType {
+    public enum SampleType {
+        EXPERIMENT,
         BEADS,
         NEGATIVE,
-        FLUORESCENT;
+        FLUORESCENT,
+        EXPRESSION_DEGRATATION,
+        REGULATION;
     }
 }

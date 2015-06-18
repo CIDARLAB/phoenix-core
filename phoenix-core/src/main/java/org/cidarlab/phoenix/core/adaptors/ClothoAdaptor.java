@@ -288,10 +288,11 @@ public class ClothoAdaptor {
         }
         conn.closeConnection();
     }
-
+    
     //Add features to Clotho via Clotho Server API
-    public static void createFeatures(HashSet<Feature> features) {
-
+    public static List<String> createFeatures(HashSet<Feature> features) {
+        
+        List<String> featureIds = new ArrayList<String>();
         ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
         Clotho clothoObject = new Clotho(conn);
         for (Feature f : features) {
@@ -308,6 +309,8 @@ public class ClothoAdaptor {
             createSequence.put("schema", "org.cidarlab.phoenix.core.dom.Sequence");
             createSequence.put("sequence", f.getSequence().getSequence());
             createFeature.put("sequence", createSequence);
+            
+            
             
             //FeatureRole sub-schema
             Map createFeatureRole = new HashMap();
@@ -370,9 +373,11 @@ public class ClothoAdaptor {
                 createFeature.put("id", f.getName());
                 f.setClothoID(f.getName());
             }
-            clothoObject.set(createFeature);
+            String id = (String)clothoObject.set(createFeature);
+            featureIds.add(id);
         }
-        conn.closeConnection();
+        //conn.closeConnection();
+        return featureIds;
     }
     
     //Add fluorophores to Clotho via Clotho Server API
@@ -451,7 +456,7 @@ public class ClothoAdaptor {
     public static void createModule(Module module, Clotho clothoObject){
         createModuleTree(module,clothoObject);
         setNeighbors(module,clothoObject);
-        
+    
     }
     
     public static void setNeighbors(Module module, Clotho clothoObject){
@@ -488,31 +493,36 @@ public class ClothoAdaptor {
         createModule.put("role", module.getRole().toString());
         createModule.put("isForward", module.isForward());
         createModule.put("isRoot", module.isRoot());
+        
         if (module.getClothoID() != null) {
             createModule.put("id", module.getClothoID());
         } else {
             createModule.put("id", module.getName());
         }
+        
         JSONArray featureIds = new JSONArray();
-        for (Feature f : module.getModuleFeatures()) {
-            featureIds.add(createFloopyFeatures(f, clothoObject));
+        HashSet<Feature> features = new HashSet<Feature>(module.getModuleFeatures());
+        
+        for(String fId:createFeatures(features)){
+            featureIds.add(fId);
         }
-        createModule.put("features", featureIds);
-        createModule.put("ltlFunction", createLTLFunction(module.getFunction()));
+        
+        //createModule.put("features", featureIds);
+        
+        //createModule.put("ltlFunction", createLTLFunction(module.getFunction()));
         //Should be someway to create Primitive Modules
-        String id = (String)clothoObject.create(createModule);
-        module.setClothoID(id);
+        
+        System.out.println("Module Name :: " + createModule.get("name"));
+        
+        clothoObject.create(createModule);
+        module.setClothoID(module.getName());
         
         for (Module child : module.getChildren()) {
             createModuleTree(child, clothoObject);
         }
     }
     
-    public static String createFloopyFeatures(Feature feature, Clotho clothoObject){
-        String id = "";
-        
-        return id;
-    }
+    
     
     public static Map createLTLFunction(LTLFunction ltl){
         Map createltl = new HashMap();
@@ -1026,7 +1036,7 @@ public class ClothoAdaptor {
         Map map = new HashMap();
         ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
         Clotho clothoObject = new Clotho(conn);
-
+        
         map = (Map) clothoObject.get(rootModule);
         
         module.setName(map.get("name").toString());

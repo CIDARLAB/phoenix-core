@@ -103,9 +103,12 @@ public class EugeneAdaptor {
                 }
                 
                 //Create a new feature and add it to module features
-                Feature f = Feature.generateFeature(c.getName(), "", new Person(), isCDS);
-                moduleFeatures.add(f);
                 ComponentType ctype = new ComponentType(type);
+                
+                Feature f = Feature.generateFeature(c.getName(), "", new Person(), isCDS);
+                f.setRole(PhoenixGrammar.findRole(ctype));
+                moduleFeatures.add(f);
+                
                 
                 //Create a new primitive module
                 PrimitiveModule pm = new PrimitiveModule();

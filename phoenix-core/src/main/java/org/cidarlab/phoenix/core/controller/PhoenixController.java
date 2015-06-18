@@ -12,6 +12,8 @@ import org.cidarlab.phoenix.core.adaptors.*;
 import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.grammars.PhoenixGrammar;
+import org.clothoapi.clotho3javaapi.Clotho;
+import org.clothoapi.clotho3javaapi.ClothoConnection;
 
 /**
  * This is the primary class for managing the workflow of tools within Phoenix
@@ -52,6 +54,14 @@ public class PhoenixController {
         //Repeat until all module graphs are fully assigned
 //        while (!FeatureAssignment.isFullyAssigned(modules)) {
             
+        //Remove this once you've got it working.
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
+        for(Module module:modulesToTest){
+            ClothoAdaptor.createModule(module, clothoObject);
+        }
+        
+        
             //Determine experiments from current module assignment state
             currentExperiments.addAll(TestingStructures.createExperiments(modulesToTest));
             

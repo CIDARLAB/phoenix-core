@@ -880,7 +880,32 @@ public class ClothoAdaptor {
 
         return ns;
     }
+    
+    public static Module getModule(String rootModule){
+        Module module = new Module(rootModule);
+        Map map = new HashMap();
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
 
+        map = (Map) clothoObject.get(rootModule);
+        
+        module.setName(map.get("name").toString());
+        module.setClothoID(map.get("id").toString());
+        module.setRole(Module.ModuleRole.valueOf(map.get("role").toString()));
+        module.setStage((int)map.get("stage"));
+        module.setForward((boolean)map.get("isForward"));
+        module.setRoot((boolean)map.get("isRoot"));
+        
+        JSONArray children = new JSONArray();
+        children = (JSONArray) map.get("children");
+        for(Object childObj:children){
+            Module childModule = getModule(childObj.toString());
+            childModule.getParents().add(module);
+            module.getChildren().add(childModule);
+        }
+        
+        return module;
+    }
     
     //Get all Clotho Parts
     public static Part getParts(JSONObject jsonPart) {

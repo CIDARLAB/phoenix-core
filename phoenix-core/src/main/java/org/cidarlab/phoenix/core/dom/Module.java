@@ -33,6 +33,7 @@ public class Module {
         this.isForward = true;
         this.name = name;
         this.clothoID = name;
+        this.color = Color.white;
     }
     
     //Module constructor for root and stage
@@ -150,10 +151,22 @@ public class Module {
     @Setter
     private boolean isRoot;
     
+    @Getter
+    @Setter
+    private Color color;
+    
     //Experiment associated with this module
     @Getter
     @Setter
     private Experiment experiment;
+    
+    //Graph Traversal
+    public enum Color{
+        white,
+        gray, 
+        black
+    }
+    
     
     //Module roles
     public enum ModuleRole {
@@ -175,5 +188,10 @@ public class Module {
             updatedFeatures.addAll(pm.getModuleFeatures());
         }
         this.setModuleFeatures(updatedFeatures);
+    }
+    
+    //Make sure that every node's color is white. Initialize the entire tree. Work on this. 
+    public void initializeColor(){
+    
     }
 }

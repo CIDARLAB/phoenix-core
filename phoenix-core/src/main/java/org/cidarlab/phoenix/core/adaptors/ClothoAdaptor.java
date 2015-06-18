@@ -36,6 +36,8 @@ import org.clothoapi.clotho3javaapi.ClothoConnection;
 import org.cidarlab.phoenix.core.dom.Annotation;
 import org.cidarlab.phoenix.core.dom.Arc;
 import org.cidarlab.phoenix.core.dom.AssemblyParameters;
+import org.cidarlab.phoenix.core.dom.LTLFunction;
+import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Person;
 import org.cidarlab.phoenix.core.dom.SmallMolecule;
 
@@ -444,7 +446,79 @@ public class ClothoAdaptor {
         }
         conn.closeConnection();
     }
-
+    
+    
+    public static void createModule(Module module, Clotho clothoObject){
+        createModuleTree(module,clothoObject);
+        setNeighbors(module,clothoObject);
+        
+    }
+    
+    public static void setNeighbors(Module module, Clotho clothoObject){
+        
+        Map setNeighbor  = new HashMap();
+        setNeighbor.put("id", module.getClothoID());
+        
+        JSONArray childrenIds = new JSONArray();
+        JSONArray parentIds = new JSONArray();
+        
+        for(Module child:module.getChildren()){
+            childrenIds.add(child.getClothoID());
+        }
+        
+        for(Module parent:module.getParents()){
+            parentIds.add(parent.getClothoID());
+        }
+        
+        setNeighbor.put("children", childrenIds);
+        setNeighbor.put("parents", parentIds);
+        
+        clothoObject.set(setNeighbor);
+        for(Module child:module.getChildren()){
+            setNeighbors(child,clothoObject);
+        }
+    }
+    
+    public static void createModuleTree(Module module, Clotho clothoObject){
+        
+        Map createModule = new HashMap();
+        createModule.put("name", module.getName());
+        createModule.put("schema", "org.cidarlab.phoenix.core.dom.Module");
+        createModule.put("stage", module.getStage());
+        createModule.put("role", module.getRole().toString());
+        createModule.put("isForward", module.isForward());
+        createModule.put("isRoot", module.isRoot());
+        if (module.getClothoID() != null) {
+            createModule.put("id", module.getClothoID());
+        } else {
+            createModule.put("id", module.getName());
+        }
+        JSONArray featureIds = new JSONArray();
+        for (Feature f : module.getModuleFeatures()) {
+            featureIds.add(createFloopyFeatures(f, clothoObject));
+        }
+        createModule.put("features", featureIds);
+        createModule.put("ltlFunction", createLTLFunction(module.getFunction()));
+        //Should be someway to create Primitive Modules
+        String id = (String)clothoObject.create(createModule);
+        module.setClothoID(id);
+        
+        for (Module child : module.getChildren()) {
+            createModuleTree(child, clothoObject);
+        }
+    }
+    
+    public static String createFloopyFeatures(Feature feature, Clotho clothoObject){
+        String id = "";
+        
+        return id;
+    }
+    
+    public static Map createLTLFunction(LTLFunction ltl){
+        Map createltl = new HashMap();
+        return createltl;
+    }
+    
     //Add parts to Clotho via Clotho Server API
     public static Map createPart(Part p, Clotho clothoObject) {
 
@@ -946,7 +1020,32 @@ public class ClothoAdaptor {
 
         return ns;
     }
+    
+    public static Module getModule(String rootModule){
+        Module module = new Module(rootModule);
+        Map map = new HashMap();
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
 
+        map = (Map) clothoObject.get(rootModule);
+        
+        module.setName(map.get("name").toString());
+        module.setClothoID(map.get("id").toString());
+        module.setRole(Module.ModuleRole.valueOf(map.get("role").toString()));
+        module.setStage((int)map.get("stage"));
+        module.setForward((boolean)map.get("isForward"));
+        module.setRoot((boolean)map.get("isRoot"));
+        
+        JSONArray children = new JSONArray();
+        children = (JSONArray) map.get("children");
+        for(Object childObj:children){
+            Module childModule = getModule(childObj.toString());
+            childModule.getParents().add(module);
+            module.getChildren().add(childModule);
+        }
+        
+        return module;
+    }
     
     //Get all Clotho Parts
     public static Part getParts(JSONObject jsonPart) {

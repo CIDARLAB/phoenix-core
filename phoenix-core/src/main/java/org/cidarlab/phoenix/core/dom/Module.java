@@ -158,8 +158,8 @@ public class Module {
     //Experiment associated with this module
     @Getter
     @Setter
-    private Experiment experiment;
-    
+    private List<Experiment> experiments;
+
     //Graph Traversal
     public enum Color{
         white,

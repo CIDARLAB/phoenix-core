@@ -4,7 +4,7 @@
  */
 package org.cidarlab.phoenix.core.dom;
 
-import java.util.HashSet;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -39,25 +39,25 @@ public class Experiment {
     @Getter
     private ExperimentType exType;
         
-    //Experiment type
+    //Experiment testing samples
     @Setter
     @Getter
-    private HashSet<Sample> experimentSamples;
+    private List<Sample> experimentSamples;
     
-    //Experiment type
+    //Bead control sample
     @Setter
     @Getter
     private Sample beadControl;
     
-    //Experiment type
+    //Negative control sample
     @Setter
     @Getter
     private Sample negativeControl;
     
-    //Experiment type
+    //Color control samples
     @Setter
     @Getter
-    private HashSet<Sample> colorControls;
+    private List<Sample> colorControls;
     
     //Experiment types
     public enum ExperimentType {

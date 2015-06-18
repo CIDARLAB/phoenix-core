@@ -17,8 +17,8 @@
                 <div class="container">
                     <a class="brand" href="index.html">Phoenix</a>
                     <ul class="nav">
-                        <li class="active"><a href="dynamicForm.html">Analyze</a></li>
-                        <li><a href="dynamicForm2.html">Datasheets</a></li>
+                        <li class="active"><a href="dynamicForm.html">Initialize</a></li>
+                        <li><a href="dynamicForm2.html">Return</a></li>
                         <li><a href="contact.html">Contact</a></li>
                         <li><a href="tree.html">Tree</a></li>
                     </ul> 
@@ -33,19 +33,19 @@
         </div>
         
         <div class="page-header" style="margin-top:60px">
-            <h1><img style="width: 48px; height: 40px; margin-bottom:5px" src="images/logo-Owl-Color_cropped.png"> <small>Build Your Datasheet</small></h1>
+            <h1><img style="height: 40px; margin-bottom:5px" src="images/phoenix_cropped.jpg"> <small>Upload Initial Files</small></h1>
         </div>
         <div id="config">
-                <div style="margin-bottom:10px"><h4>Choose File 1</h4></div>
+                <div style="margin-bottom:10px"><h4>GenBank Plasmid Library</h4></div>
                 <input style="margin-bottom:20px" type="file" id="files" name ="file" accept="text/plain" />
-                <div style="margin-bottom:10px"><h4>Choose File 2</h4></div>
+                <div style="margin-bottom:10px"><h4>GenBank Feature Library</h4></div>
                 <input style="margin-bottom:20px" type="file" id="files" name ="file" accept="text/plain" />
-                <div style="margin-bottom:10px"><h4>Choose File 3</h4></div>
+                <div style="margin-bottom:10px"><h4>miniEugene Structural Design Specification</h4></div>
                 <input style="margin-bottom:20px" type="file" id="files" name ="file" accept="text/plain" />
-                <div style="margin-bottom:10px"><h4>Choose File 4</h4></div>
-                <input style="margin-bottom:20px" type="file" id="files" name ="file" accept="text/plain" />
-                <div style="margin-bottom:10px"><h4>Choose File 5</h4></div>
-                <input style="margin-bottom:20px" type="file" id="files" name ="file" accept="text/plain" />
+                <div style="margin-bottom:10px"><h4>Flow Cytometer Configuration</h4></div>
+                <input style="margin-bottom:20px" type="file" id="files" name ="file" accept=".csv" />
+                <div style="margin-bottom:10px"><h4>Flouresence Spectra</h4></div>
+                <input style="margin-bottom:20px" type="file" id="files" name ="file" accept=".csv" />
                 <div><button class="btn btn-primary" id="uploadButton" style="margin-top:7px" onclick="readConfig()">Upload</button>
                 <img id = "loading" style = "position:relative; padding-top:2px; padding-left:10px;" src ="images/ajax-loader.gif" hidden></div>
         </div>
@@ -141,7 +141,6 @@
 
         <footer>
             <div class="container" align="center">
-                <p>Designed and built by <a href="http://2013.igem.org/Team:BostonU">BU iGEM Team</a> at <a href="http://cidarlab.org">CIDAR</a></p>
                 <p>Code licensed under <a href="license.html">LICENSE</a></p>
                 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0;margin-bottom:14px" src="https://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png" /></a>
             </div>

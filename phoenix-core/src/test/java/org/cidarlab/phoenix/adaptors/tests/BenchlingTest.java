@@ -118,13 +118,13 @@ public class BenchlingTest {
         }
     }
     
-    public BenchlingTest() {
-        
-    }
-    
-    public static void main(String[] args) {
-        BenchlingTest t = new BenchlingTest();
-        t.testFeatureLibraryUpload();
-        String t2 = "";
-    }
+//    public BenchlingTest() {
+//        
+//    }
+//    
+//    public static void main(String[] args) {
+//        BenchlingTest t = new BenchlingTest();
+//        t.testFeatureLibraryUpload();
+//        String t2 = "";
+//    }
 }

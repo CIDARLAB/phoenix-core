@@ -76,7 +76,7 @@ public class miniEugeneTest {
     }
     
     //Test for toggle switch with terminators and RBSs
-    @Test
+//    @Test
     public void fullToggleTest() throws IOException, MiniEugeneException {
         
         //Upload test file

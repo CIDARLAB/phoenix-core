@@ -26,6 +26,7 @@ package org.cidarlab.phoenix.core.dom;
 import org.cidarlab.phoenix.core.dom.NucSeq;
 import java.awt.Color;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -83,7 +84,7 @@ public class Feature extends SharableObjBase {
     
     @Setter
     @Getter
-    private HashSet<Arc> arcs;
+    private List<Arc> arcs;
     
     /**
      * Constructor of a new Feature

@@ -6,6 +6,7 @@
 package org.cidarlab.phoenix.core.dom;
 
 import java.util.HashSet;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -43,7 +44,7 @@ public class Arc {
     //Small molecules
     @Getter
     @Setter
-    private HashSet<SmallMolecule> molecules;
+    private List<SmallMolecule> molecules;
     
     //Might have more Roles. Something to look into.
     public enum ArcRole{

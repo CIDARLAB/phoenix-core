@@ -10,10 +10,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import org.biojava.bio.BioException;
 import org.biojava.bio.seq.Sequence;
@@ -575,8 +577,8 @@ public class BenchlingAdaptor {
                         }
                     }
                     
-                    f.setArcs(arcsThisP);
-                    allArcs.addAll(arcsThisP);
+                    List<Arc> arcList = new ArrayList<>(arcsThisP);
+                    f.setArcs(arcList);
                 }
             }
             
@@ -633,7 +635,7 @@ public class BenchlingAdaptor {
                                 }
                                 arcsThisR.add(arc);
                                 
-                                HashSet<SmallMolecule> smThisArc = new HashSet<>();
+                                List<SmallMolecule> smThisArc = new ArrayList<>();
                                 
                                 //If this arc has a small molecule regulator indicated
                                 if (regulatorMolecule.containsKey(f.getName())) {
@@ -664,7 +666,7 @@ public class BenchlingAdaptor {
                                 }
                                 arcsThisR.add(arc);
                                 
-                                HashSet<SmallMolecule> smThisArc = new HashSet<>();
+                                List<SmallMolecule> smThisArc = new ArrayList<>();
                                 
                                 //If this arc has a small molecule regulator indicated
                                 if (regulatorMolecule.containsKey(f.getName())) {
@@ -683,7 +685,8 @@ public class BenchlingAdaptor {
                             }
                         }
                     }
-                    f.setArcs(arcsThisR);
+                    List<Arc> arcList = new ArrayList<>(arcsThisR);
+                    f.setArcs(arcList);
                     allArcs.addAll(arcsThisR);
                 }
             }

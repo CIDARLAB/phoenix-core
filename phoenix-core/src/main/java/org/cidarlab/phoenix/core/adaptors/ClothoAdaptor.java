@@ -628,8 +628,19 @@ public class ClothoAdaptor {
             featureIds.add(fId);
         }
         
-        //createModule.put("features", featureIds);
+        JSONArray exptIds = new JSONArray();
+
         
+        //This needs to be fixed
+        if(module.getExperiments() != null){
+            for (Experiment experiment : module.getExperiments()) {
+                String exptId = createExperiment(experiment, clothoObject);
+                exptIds.add(exptId);
+            }
+            createModule.put("experiments", exptIds);
+    
+        }
+        //createModule.put("features", featureIds);
         //createModule.put("ltlFunction", createLTLFunction(module.getFunction()));
         //Should be someway to create Primitive Modules
         

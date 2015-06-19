@@ -68,8 +68,13 @@ public class ClothoAdaptor {
             HashSet<Feature> features = BenchlingAdaptor.getFeatures(input);
             HashSet<Fluorophore> fluorophores = BenchlingAdaptor.getFluorophores(features);
             features.removeAll(fluorophores);
-            createFeatures(features);
-            createFluorophores(fluorophores);
+            
+            ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+            Clotho clothoObject = new Clotho(conn);
+            createFeatures(features,clothoObject);
+            createFluorophores(fluorophores,clothoObject);
+            
+            conn.closeConnection();
             
         } else {
  
@@ -82,7 +87,12 @@ public class ClothoAdaptor {
             annotateParts(annotationFeatures, polyNucs);
 
             //Save all polynucleotides, nucseqs and parts to Clotho
-            createPolynucleotides(polyNucs);
+            
+            ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+            Clotho clothoObject = new Clotho(conn);       
+            createPolynucleotides(polyNucs,clothoObject);
+            conn.closeConnection();
+            
         }       
     }
     
@@ -133,8 +143,10 @@ public class ClothoAdaptor {
                 }
             }
         }
-        
-        createFluorophores(queryFluorophores);
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
+        createFluorophores(queryFluorophores,clothoObject);
+        conn.closeConnection();
     }
     
     
@@ -334,15 +346,10 @@ public class ClothoAdaptor {
     
     //Change this such that you pass the clotho object in the argument. 
     
-    //Add polynucleotides to Clotho via Clotho Server API
-    public static void createPolynucleotides(HashSet<Polynucleotide> polyNucs) {
+    public static String createPolynucleotide(Polynucleotide pn,Clotho clothoObject){
+        String id = "";
         
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
-        Clotho clothoObject = new Clotho(conn);
-        for (Polynucleotide pn : polyNucs) {
-
-            //Polynucleotide schema
-            Map createPolynucleotide = new HashMap();
+        Map createPolynucleotide = new HashMap();
             createPolynucleotide.put("schema", "org.cidarlab.phoenix.core.dom.Polynucleotide");
             createPolynucleotide.put("name", pn.getAccession());
             createPolynucleotide.put("accession", pn.getAccession().substring(0, pn.getAccession().length() - 15));
@@ -374,21 +381,27 @@ public class ClothoAdaptor {
             createPolynucleotide.put("isDV", pn.isDV());
             createPolynucleotide.put("level", pn.getLevel());
             
-            clothoObject.create(createPolynucleotide);            
-        }
-        conn.closeConnection();
+            id = (String)clothoObject.create(createPolynucleotide);
+            pn.setClothoID(id);
+        return id;
     }
     
-    //Add features to Clotho via Clotho Server API
-    public static List<String> createFeatures(HashSet<Feature> features) {
+    //Add polynucleotides to Clotho via Clotho Server API
+    public static List<String> createPolynucleotides(HashSet<Polynucleotide> polyNucs,Clotho clothoObject) {
         
-        List<String> featureIds = new ArrayList<String>();
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
-        Clotho clothoObject = new Clotho(conn);
-        for (Feature f : features) {
-            
-            //Feature schema
-            Map createFeature = new HashMap();
+        List<String> ids = new ArrayList<String>();
+        for (Polynucleotide pn : polyNucs) {
+
+            //Polynucleotide schema
+            String id = createPolynucleotide(pn,clothoObject);
+            ids.add(id);
+        }
+        return ids;
+    }
+    
+    public static String createFeature(Feature f,Clotho clothoObject){
+        String id = "";
+        Map createFeature = new HashMap();
             createFeature.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
             createFeature.put("name", f.getName());
             createFeature.put("forwardColor", f.getForwardColor().toString());
@@ -463,21 +476,28 @@ public class ClothoAdaptor {
                 createFeature.put("id", f.getName());
                 f.setClothoID(f.getName());
             }
-            String id = (String)clothoObject.set(createFeature);
+            id = (String)clothoObject.set(createFeature);
+            f.setClothoID(id);
+        return id;
+    }
+    
+    //Add features to Clotho via Clotho Server API
+    public static List<String> createFeatures(HashSet<Feature> features,Clotho clothoObject) {
+        
+        List<String> featureIds = new ArrayList<String>();
+        //ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        //Clotho clothoObject = new Clotho(conn);
+        for (Feature f : features) {
+            String id = createFeature(f,clothoObject);
             featureIds.add(id);
         }
         //conn.closeConnection();
         return featureIds;
     }
     
-    //Add fluorophores to Clotho via Clotho Server API
-    public static void createFluorophores(HashSet<Fluorophore> flourophores) {
-
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
-        Clotho clothoObject = new Clotho(conn);
-        for (Fluorophore f : flourophores) {
-
-            //Fluorophore schema
+    public static String createFluorophore(Fluorophore f,Clotho clothoObject){
+        String id = "";
+        //Fluorophore schema
             Map createFluorophore = new HashMap();
             createFluorophore.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
             createFluorophore.put("name", f.getName());
@@ -518,7 +538,6 @@ public class ClothoAdaptor {
             createFluorophore.put("role", createFeatureRole);
             
             //Clotho ID
-            String id = "";
             if (f.getClothoID() != null) {
                 createFluorophore.put("id", f.getClothoID());
                 id = f.getClothoID();
@@ -538,8 +557,20 @@ public class ClothoAdaptor {
             createFluorophore.put("id", id);
             createFluorophore.put("ex_spectrum", ex_array);
             clothoObject.set(createFluorophore);
+        
+        return id;
+    }
+    
+    
+    //Add fluorophores to Clotho via Clotho Server API
+    public static List<String> createFluorophores(HashSet<Fluorophore> flourophores,Clotho clothoObject) {
+        
+        List<String> ids = new ArrayList<String>();
+        for (Fluorophore f : flourophores) {
+            String id = createFluorophore(f,clothoObject);
+            ids.add(id);
         }
-        conn.closeConnection();
+        return ids;
     }
     
     
@@ -593,7 +624,7 @@ public class ClothoAdaptor {
         JSONArray featureIds = new JSONArray();
         HashSet<Feature> features = new HashSet<Feature>(module.getModuleFeatures());
         
-        for(String fId:createFeatures(features)){
+        for(String fId:createFeatures(features,clothoObject)){
             featureIds.add(fId);
         }
         

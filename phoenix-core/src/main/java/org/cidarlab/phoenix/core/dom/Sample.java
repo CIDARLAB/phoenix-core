@@ -5,6 +5,7 @@
 package org.cidarlab.phoenix.core.dom;
 
 import java.io.File;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,10 +16,13 @@ import lombok.Setter;
 public class Sample {
    
     //Constructor
-    public Sample(String _name, SampleType _type) {
+    public Sample(String _name, SampleType _type, Strain _strain, List<Polynucleotide> _polynucleotides, Medium _media, Integer _time) {
         name = _name;
         clothoID = _name;
         type = _type;
+        strain = _strain;
+        polynucleotides = _polynucleotides;
+        media = _media;
     }
     
     //Module measured
@@ -39,7 +43,7 @@ public class Sample {
     //Polynucleotide measured
     @Setter
     @Getter
-    private Polynucleotide polynucleotide;
+    private List<Polynucleotide> polynucleotides;
     
     //Test strain
     @Setter

@@ -34,6 +34,7 @@ public class Module {
         this.name = name;
         this.clothoID = name;
         this.color = Color.white;
+        this.experiments = new ArrayList<>();
     }
     
     //Module constructor for root and stage
@@ -71,6 +72,10 @@ public class Module {
             pmList.add(pm.clone());
         }
         clone.submodules = pmList;
+        
+        List<Experiment> exList = new ArrayList<>();
+        exList.addAll(this.experiments);        
+        clone.experiments = exList;
         
         clone.function = this.function;
         clone.isForward = this.isForward;

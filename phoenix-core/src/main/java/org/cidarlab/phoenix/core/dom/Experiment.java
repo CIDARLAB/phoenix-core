@@ -4,6 +4,7 @@
  */
 package org.cidarlab.phoenix.core.dom;
 
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,8 +21,16 @@ public class Experiment {
     }
     
     //No args constructor
-    public Experiment(ExperimentType exptType) {
+    public Experiment(ExperimentType exptType, String _name, List<Medium> _media, List<Integer> _times) {
         exType = exptType;
+        name = _name;
+        clothoID = _name;
+        mediaConditions = _media;
+        times = _times;
+        experimentSamples = new ArrayList<>();
+        colorControls = new ArrayList<>();
+        regulationControls = new ArrayList<>();
+        expDegControls = new ArrayList<>();
     }    
     
     //Experiment name
@@ -91,6 +100,7 @@ public class Experiment {
         READ_THROUGH,
         ORTHOGONALITY,
         RECOMBINATION,
-        TRANSCRIPTIONAL_INTERFERENCE;
+        TRANSCRIPTIONAL_INTERFERENCE,
+        SPECIFICATION;
     }
 }

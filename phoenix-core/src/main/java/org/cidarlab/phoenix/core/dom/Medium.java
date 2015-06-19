@@ -6,8 +6,9 @@ import lombok.Setter;
 public class Medium {
 
     //Constructor
-    public Medium() {
-        
+    public Medium(String _name, MediaType _type) {
+        name = _name;
+        type = _type;
     }
     
     //Module measured

@@ -77,7 +77,7 @@ public class Feature extends SharableObjBase {
     @Deprecated
     private boolean isCDS;
     
-    @NotNull
+    //@NotNull
     @Setter
     @Getter
     private FeatureRole role;
@@ -91,6 +91,7 @@ public class Feature extends SharableObjBase {
      * @param name
      * @param seq
      * @param author
+     * @param role
      */
     public Feature(String name, Sequence seq, Person author, FeatureRole role) {
         super(name, author);

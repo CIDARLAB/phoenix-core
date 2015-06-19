@@ -76,7 +76,8 @@ public class FeatureAssignment {
     private static void addFPs(List<Module> testingModules) {
         
         //Recieve data from Clotho
-        HashSet<Fluorophore> FPs = ClothoAdaptor.queryFluorophores();
+        HashSet<Fluorophore> FPs = new HashSet<Fluorophore>();
+        FPs = ClothoAdaptor.queryFluorophores();
         
         Cytometer cytometer = new Cytometer();
         HashSet<Cytometer> allCytometers = ClothoAdaptor.queryCytometers();

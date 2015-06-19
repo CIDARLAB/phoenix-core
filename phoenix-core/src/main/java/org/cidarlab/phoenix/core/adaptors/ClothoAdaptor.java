@@ -37,9 +37,12 @@ import org.cidarlab.phoenix.core.dom.Annotation;
 import org.cidarlab.phoenix.core.dom.Arc;
 import org.cidarlab.phoenix.core.dom.AssemblyParameters;
 import org.cidarlab.phoenix.core.dom.LTLFunction;
+import org.cidarlab.phoenix.core.dom.Medium;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Person;
+import org.cidarlab.phoenix.core.dom.Sample;
 import org.cidarlab.phoenix.core.dom.SmallMolecule;
+import org.cidarlab.phoenix.core.dom.Strain;
 
 /**
  * This class has all methods for sending and receiving information to Clotho
@@ -243,7 +246,94 @@ public class ClothoAdaptor {
      * CLOTHO OBJECT CREATION METHODS
      * 
      */
-
+    
+    public static String createStrain(Strain strain, Clotho clothoObject){
+        String id = "";
+        Map map = new HashMap();
+        map.put("schema", "org.cidarlab.phoenix.core.dom.Strain");
+        
+        return id;
+    }
+    
+    public static String createMedium(Medium medium,Clotho clothoObject){
+        String id = "";
+        Map map = new HashMap();
+        map.put("schema", "org.cidarlab.phoenix.core.dom.Medium");
+        
+        id = (String)clothoObject.set(map);
+        
+        return id;
+    }
+    
+    public static String createSample(Sample sample,Clotho clothoObject){
+        String id = "";
+        Map map = new HashMap();
+        map.put("schema", "org.cidarlab.phoenix.core.dom.Sample");
+        if(sample.getClothoID() != null){
+            map.put("id",sample.getClothoID());
+        }
+        if(sample.getName() != null){
+            map.put("name", sample.getName());
+        }
+        
+        //Check this..
+        String mediaId = createMedium(sample.getMedia(),clothoObject);
+        map.put("media", mediaId);
+        
+        //sample.getPolynucleotide();
+        //sample.getStrain();
+        map.put("time", sample.getTime());
+        return id;
+    }
+    
+    
+    public static String createExperiment(Experiment experiment,Clotho clothoObject){
+        String id = "";
+        
+        Map map = new HashMap();
+        map.put("schema", "org.cidarlab.phoenix.core.dom.Experiment");
+        if(experiment.getName()!=null){
+            map.put("name", experiment.getName());
+        }
+        map.put("exType", experiment.getExType());
+        
+        if(experiment.getClothoID()!=null){
+            map.put("id", experiment.getClothoID());
+        }
+        
+        
+        JSONArray experimentTimes = new JSONArray();
+        for(Integer time:experiment.getTimes()){
+            experimentTimes.add(time);
+        }
+        map.put("times", experimentTimes);
+        
+        String beadControlId = createSample(experiment.getBeadControl(),clothoObject);
+        map.put("beadControl", beadControlId);
+        
+        JSONArray colorControlIds = new JSONArray();
+        for(Sample sample:experiment.getColorControls()){
+            String colorControlId = createSample(sample,clothoObject);
+            colorControlIds.add(colorControlId);
+        }
+        map.put("colorControls", colorControlIds);
+        
+        JSONArray experimentSampleIds = new JSONArray();
+        for(Sample sample:experiment.getExperimentSamples()){
+            String expSampleId = createSample(sample,clothoObject);
+            experimentSampleIds.add(expSampleId);
+        }
+        
+        map.put("experimentSamples", experimentSampleIds);
+        
+        id = (String)clothoObject.set(map);
+        experiment.setClothoID(id);
+        
+        return id;
+    }
+    
+    //Change this such that you pass the clotho object in the argument. 
+    
     //Add polynucleotides to Clotho via Clotho Server API
     public static void createPolynucleotides(HashSet<Polynucleotide> polyNucs) {
         

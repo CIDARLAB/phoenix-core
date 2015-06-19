@@ -24,6 +24,7 @@ import org.clothoapi.clotho3javaapi.ClothoConnection;
 public class PhoenixController {
     
     //Data upload method
+    //FILE IN, NOTHING OUT
     public static void preliminaryDataUpload (File featureLib, File plasmidLib, File fluorophoreSpectra, File cytometer) throws FileNotFoundException, Exception {
      
         //Import data from Benchling multi-part Genbank files to Clotho
@@ -35,6 +36,7 @@ public class PhoenixController {
     
     //Main Phoenix design decomposition method
     //Remember to start Clotho before this initializeDesign
+    //FILES IN, NOTHING OUT
     public static HashSet<Module> initializeDesign (File structuralSpecification, File functionalSpecification) throws Exception {
 
         //STL function decomposition
@@ -68,6 +70,7 @@ public class PhoenixController {
     }
 
     //Create assembly and testing instructions from a set of Modules that need to be built and tested
+    //MODULES IN, FILES OUT
     public static void createExperimentInstructions (HashSet<Module> modulesToTest) throws Exception {
         
         //Determine experiments from current module assignment state
@@ -83,6 +86,7 @@ public class PhoenixController {
     }
     
     //Take a plasmid library back in, interpret data, run simulations for parents, verify, make part assignments
+    //FILES IN, NOTHING OUT
     public static void interpretData (List<File> fcsFiles, File plasmidsCreated, List<Module> modules) throws Exception {
         
         List<Experiment> currentExperiments = new ArrayList<>();
@@ -104,6 +108,6 @@ public class PhoenixController {
 
         //Update module graphs based upon simulations
         HashSet<Module> modulesToTest = FeatureAssignment.completeAssignmentSim(bestCombinedModules, modules);
-        createExperimentInstructions (modulesToTest);
+//        createExperimentInstructions (modulesToTest);
     }    
 }

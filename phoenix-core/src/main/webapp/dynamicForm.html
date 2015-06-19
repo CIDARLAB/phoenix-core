@@ -36,19 +36,19 @@
             <h1><img style="height: 40px; margin-bottom:5px" src="images/phoenix_cropped.jpg"> <small>Upload Initial Files</small></h1>
         </div>
         <div id="config">
-            <form enctype="multipart/form-data" id="fileUploads">
-                <div style="margin-bottom:10px"><h4>GenBank Plasmid Library</h4></div>
-                <input style="margin-bottom:20px" type="file" id="plasmidLib" name ="plasmidLib" />
+            <form id="fileUploads" enctype="multipart/form-data">
+                <div style="margin-bottom:10px" id="gpl"><h4>GenBank Plasmid Library</h4></div>
+                <input style="margin-bottom:20px" type="file" id="plasmidLib" name ="plasmidLibrary" />
+                <div style="margin-bottom:10px" id="gfl"><h4>GenBank Feature Library</h4></div>
+                <input style="margin-bottom:20px" type="file" id="featureLib" name ="featureLibrary" />
+                <div style="margin-bottom:10px" id="fcc"><h4>Flow Cytometer Configuration</h4></div>
+                <input style="margin-bottom:20px" type="file" id="fcConfig" name ="fcConfiguration" />
+                <div style="margin-bottom:10px" id="fs"><h4>Flouresence Spectra</h4></div>
+                <input style="margin-bottom:20px" type="file" id="fSpectra" name ="flouresenceSpectra" />
+                <div><button style="margin-top:7px" class="btn btn-primary" type="submit" id="uploadButton">Upload</button>
+                <img id = "loading" style = "position:relative; padding-top:2px; padding-left:10px;" src ="images/ajax-loader.gif" hidden></div>
             </form>
-                <div style="margin-bottom:10px"><h4>GenBank Feature Library</h4></div>
-                <input style="margin-bottom:20px" type="file" id="featureLib" name ="featureLib" />
-                <div style="margin-bottom:10px"><h4>Flow Cytometer Configuration</h4></div>
-                <input style="margin-bottom:20px" type="file" id="fcConfig" name ="fcConfig" />
-                <div style="margin-bottom:10px"><h4>Flouresence Spectra</h4></div>
-                <input style="margin-bottom:20px" type="file" id="fSpectra" name ="fSpectra" />
-                <div><button class="btn btn-primary" id="uploadButton" style="margin-top:7px" onclick="upload()">Upload</button>
-                <img id = "loading" style = "position:relative; padding-top:2px; padding-left:10px;" src ="images/ajax-loader.gif" hidden></div>     
-        
+
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script> 
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>      
         <script type="text/javascript" src="libraries/jquery-1.9.1.min.js"></script>

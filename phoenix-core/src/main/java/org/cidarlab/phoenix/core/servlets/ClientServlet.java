@@ -7,7 +7,6 @@ package org.cidarlab.phoenix.core.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Collection;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -37,48 +36,21 @@ public class ClientServlet extends HttpServlet {
      */
     protected void processPostRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, JSONException {
-//        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-//        int count;
-//        if(request.getSession().getAttribute("count") == null){
-//            count = 0;
-//        } else {
-//            count = (Integer) request.getSession().getAttribute("count");
-//        }
-//        request.getSession().setAttribute("count", ++count);
-//        try {
-//            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>PhoenixServlet</title>");            
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Welcome to the servlet!</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
-//        } finally {
-//            out.close();
-//        }
         
-        /* SERVLET METHODS BELOW */
-        Collection<Part> test = request.getParts();
+        Part test = null;
+        test = request.getPart("plasmidLib3");
         
         if(test != null){
-            JSONObject dataToSend = new JSONObject();
-            dataToSend.put("message","yay");      
-
-            data = dataToSend;
+            System.out.println("\n\n\nSUCCESS!");
             holdingData = true;
-            out.write(data.toString());
+            PrintWriter out = response.getWriter();
+            out.write("Done!");
         }
         else{
-            JSONObject dataToSend = new JSONObject();
-            dataToSend.put("message","failure!");      
-
-            data = dataToSend;
+            System.out.println("\n\n\nfailure :(");
             holdingData = true;
-            out.write(data.toString());
+            PrintWriter out = response.getWriter();
+            out.write("Error");
         }
     }
     

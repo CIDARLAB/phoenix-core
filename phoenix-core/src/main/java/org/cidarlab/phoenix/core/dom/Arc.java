@@ -5,6 +5,8 @@
  */
 package org.cidarlab.phoenix.core.dom;
 
+import java.util.HashSet;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,26 +16,40 @@ import lombok.Setter;
  */
 public class Arc {
     
-    @Getter
-    @Setter
-    private PrimitiveModule from;
-    
-    @Getter
-    @Setter
-    private PrimitiveModule to;
-    
-    @Getter
-    @Setter
-    private ArcRole role;
-    
     public Arc(){
         
     }
     
+    public Arc(Feature _regulator, Feature _regulatee, ArcRole _role){
+        regulator = _regulator;
+        regulatee = _regulatee;
+        role = _role;
+    }
+    
+    //Regulator
+    @Getter
+    @Setter
+    private Feature regulator;
+    
+    //Regulatee
+    @Getter
+    @Setter
+    private Feature regulatee;
+    
+    //Arc role
+    @Getter
+    @Setter
+    private ArcRole role;
+    
+    //Small molecules
+    @Getter
+    @Setter
+    private List<SmallMolecule> molecules;
+    
     //Might have more Roles. Something to look into.
     public enum ArcRole{
         REPRESSION,
-        ACTIVATION
+        ACTIVATION;
     }
     
     

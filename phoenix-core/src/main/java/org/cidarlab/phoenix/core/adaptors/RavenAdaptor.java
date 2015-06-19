@@ -290,14 +290,17 @@ public class RavenAdaptor {
             }  
             
             ArrayList<String> typeP = new ArrayList();
-            typeP.add("plasmid");
+            typeP.add("plasmid");            
             
-            //Target Plasmid naming
+            //Create blank polynucleotide as a placeholders
+            //Here is where the colony picking math should be applied
+//            HashSet<Polynucleotide> pnSet = new HashSet<>();
+//            Polynucleotide pnPlaceholder = new Polynucleotide();
+//            pnPlaceholder.setAccession(name + "_Polynucleotide");
+//            pnSet.add(pnPlaceholder);
+//            m.setPolynucleotides(pnSet);
             
-            String name = m.getRole().toString() + i;
-            i++;
-            
-            newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite(name, composition, new ArrayList(), new ArrayList(), directions, "", "", typeP);
+            newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite(m.getName(), composition, new ArrayList(), new ArrayList(), directions, "", "", typeP);
             newPlasmid.setTransientStatus(false);   
             
             ravenParts.add(newPlasmid);

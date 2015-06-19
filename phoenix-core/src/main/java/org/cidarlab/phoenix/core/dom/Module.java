@@ -22,7 +22,7 @@ public class Module {
      */
 
     //Default module contructor
-    public Module() {
+    public Module(String name) {
         this.stage = -1;
         this.isRoot = false;
         this.children = new ArrayList<>();
@@ -31,6 +31,10 @@ public class Module {
         this.submodules = new ArrayList<>();
         this.moduleFeatures = new ArrayList<>();
         this.isForward = true;
+        this.name = name;
+        this.clothoID = name;
+        this.color = Color.white;
+        this.experiments = new ArrayList<>();
     }
     
     //Module constructor for root and stage
@@ -53,9 +57,9 @@ public class Module {
     }
     
     //This cloning method ignores neighbors, clones everything else
-    @Override
-    public Module clone() {
-        Module clone = new Module();
+//    @Override
+    public Module clone(String name) {
+        Module clone = new Module(name);
         
         List<Feature> fList = new ArrayList<>();
         for (Feature f : this.moduleFeatures) {
@@ -68,6 +72,10 @@ public class Module {
             pmList.add(pm.clone());
         }
         clone.submodules = pmList;
+        
+        List<Experiment> exList = new ArrayList<>();
+        exList.addAll(this.experiments);        
+        clone.experiments = exList;
         
         clone.function = this.function;
         clone.isForward = this.isForward;
@@ -106,7 +114,7 @@ public class Module {
     //LTL function associated with this module
     @Getter
     @Setter
-    private LTLFunction function;
+    private STLFunction function;
     
     //Directionality
     @Getter
@@ -148,10 +156,22 @@ public class Module {
     @Setter
     private boolean isRoot;
     
+    @Getter
+    @Setter
+    private Color color;
+    
     //Experiment associated with this module
     @Getter
     @Setter
-    private Experiment experiment;
+    private List<Experiment> experiments;
+
+    //Graph Traversal
+    public enum Color{
+        white,
+        gray, 
+        black
+    }
+    
     
     //Module roles
     public enum ModuleRole {
@@ -162,7 +182,10 @@ public class Module {
         EXPRESSEE_ACTIVATOR,
         EXPRESSEE_ACTIVATIBLE_ACTIVATOR,
         TRANSCRIPTIONAL_UNIT,
-        TESTING_CONTROL,
+//        TESTING_CONTROL,
+        EXPRESSION_DEGRATATION_CONTROL,
+        REGULATION_CONTROL,
+        COLOR_CONTROL,
         HIGHER_FUNCTION;
     }
     
@@ -173,5 +196,10 @@ public class Module {
             updatedFeatures.addAll(pm.getModuleFeatures());
         }
         this.setModuleFeatures(updatedFeatures);
+    }
+    
+    //Make sure that every node's color is white. Initialize the entire tree. Work on this. 
+    public void initializeColor(){
+    
     }
 }

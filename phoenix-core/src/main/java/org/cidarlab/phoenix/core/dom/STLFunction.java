@@ -9,6 +9,6 @@ package org.cidarlab.phoenix.core.dom;
  *
  * @author prash
  */
-public class LTLFunction {
+public class STLFunction {
     
 }

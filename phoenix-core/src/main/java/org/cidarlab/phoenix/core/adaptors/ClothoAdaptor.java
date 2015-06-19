@@ -34,8 +34,12 @@ import org.cidarlab.phoenix.core.dom.Polynucleotide;
 import org.clothoapi.clotho3javaapi.Clotho;
 import org.clothoapi.clotho3javaapi.ClothoConnection;
 import org.cidarlab.phoenix.core.dom.Annotation;
+import org.cidarlab.phoenix.core.dom.Arc;
 import org.cidarlab.phoenix.core.dom.AssemblyParameters;
+import org.cidarlab.phoenix.core.dom.STLFunction;
+import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Person;
+import org.cidarlab.phoenix.core.dom.SmallMolecule;
 
 /**
  * This class has all methods for sending and receiving information to Clotho
@@ -284,15 +288,14 @@ public class ClothoAdaptor {
         }
         conn.closeConnection();
     }
-
+    
     //Add features to Clotho via Clotho Server API
-    public static void createFeatures(HashSet<Feature> features) {
-
+    public static List<String> createFeatures(HashSet<Feature> features) {
+        
+        List<String> featureIds = new ArrayList<String>();
         ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
         Clotho clothoObject = new Clotho(conn);
         for (Feature f : features) {
-
-            System.out.println("Name: " + f.getName());
             
             //Feature schema
             Map createFeature = new HashMap();
@@ -307,11 +310,60 @@ public class ClothoAdaptor {
             createSequence.put("sequence", f.getSequence().getSequence());
             createFeature.put("sequence", createSequence);
             
+            
+            
             //FeatureRole sub-schema
             Map createFeatureRole = new HashMap();
-            createFeatureRole.put("schema", "org.cidarlab.phoenix.core.dom.FeatureRole");
+            createFeatureRole.put("schema", "org.cidarlab.phoenix.core.dom.Feature.FeatureRole");
             createFeatureRole.put("FeatureRole", f.getRole().toString());
             createFeature.put("role", createFeatureRole);
+            
+            List<Arc> arcs = f.getArcs();
+            List<Map> arcList = new ArrayList<>();
+            
+            if (arcs != null) {
+                for (Arc a : arcs) {
+
+                    //Arc sub-schema
+                    //This assignment in particular assumes feature name and clothoID are the same
+                    Map createArc = new HashMap();
+                    createArc.put("schema", "org.cidarlab.phoenix.core.dom.Arc");
+                    createArc.put("regulator", a.getRegulator().getName());
+                    createArc.put("regulatee", a.getRegulatee().getName());
+
+                    //ArcRole sub-sub-schema
+                    Map createArcRole = new HashMap();
+                    createArcRole.put("schema", "org.cidarlab.phoenix.core.dom.Arc.ArcRole");
+                    createArcRole.put("ArcRole", a.getRole().toString());
+                    createArc.put("role", createArcRole);
+
+                    List<SmallMolecule> molecules = a.getMolecules();
+                    List<Map> smList = new ArrayList<>();
+                    
+                    if (molecules != null) {
+                        for (SmallMolecule sm : molecules) {
+
+                            //SmallMolecule sub-sub-schema
+                            Map createSmallMolecule = new HashMap();
+                            createSmallMolecule.put("schema", "org.cidarlab.phoenix.core.dom.SmallMolecule");
+                            createSmallMolecule.put("name", sm.getName());
+
+                            //SmallMoleculeRol sub-sub-sub-schema
+                            Map createSmallMoleculeRole = new HashMap();
+                            createSmallMoleculeRole.put("schema", "org.cidarlab.phoenix.core.dom.SmallMolecule.SmallMoleculeRole");
+                            createSmallMoleculeRole.put("SmallMoleculeRole", sm.getRole().toString());
+                            createSmallMolecule.put("role", createSmallMoleculeRole);
+
+                            smList.add(createSmallMolecule);
+                        }
+
+                        createArc.put("molecules", smList);
+                    }
+                    arcList.add(createArc);
+                }
+
+                createFeature.put("arcs", arcList);
+            }
             
             //Clotho ID
             if (f.getClothoID() != null) {
@@ -321,9 +373,11 @@ public class ClothoAdaptor {
                 createFeature.put("id", f.getName());
                 f.setClothoID(f.getName());
             }
-            clothoObject.set(createFeature);
+            String id = (String)clothoObject.set(createFeature);
+            featureIds.add(id);
         }
-        conn.closeConnection();
+        //conn.closeConnection();
+        return featureIds;
     }
     
     //Add fluorophores to Clotho via Clotho Server API
@@ -397,7 +451,84 @@ public class ClothoAdaptor {
         }
         conn.closeConnection();
     }
-
+    
+    
+    public static void createModule(Module module, Clotho clothoObject){
+        createModuleTree(module,clothoObject);
+        setNeighbors(module,clothoObject);
+    
+    }
+    
+    public static void setNeighbors(Module module, Clotho clothoObject){
+        
+        Map setNeighbor  = new HashMap();
+        setNeighbor.put("id", module.getClothoID());
+        
+        JSONArray childrenIds = new JSONArray();
+        JSONArray parentIds = new JSONArray();
+        
+        for(Module child:module.getChildren()){
+            childrenIds.add(child.getClothoID());
+        }
+        
+        for(Module parent:module.getParents()){
+            parentIds.add(parent.getClothoID());
+        }
+        
+        setNeighbor.put("children", childrenIds);
+        setNeighbor.put("parents", parentIds);
+        
+        clothoObject.set(setNeighbor);
+        for(Module child:module.getChildren()){
+            setNeighbors(child,clothoObject);
+        }
+    }
+    
+    public static void createModuleTree(Module module, Clotho clothoObject){
+        
+        Map createModule = new HashMap();
+        createModule.put("name", module.getName());
+        createModule.put("schema", "org.cidarlab.phoenix.core.dom.Module");
+        createModule.put("stage", module.getStage());
+        createModule.put("role", module.getRole().toString());
+        createModule.put("isForward", module.isForward());
+        createModule.put("isRoot", module.isRoot());
+        
+        if (module.getClothoID() != null) {
+            createModule.put("id", module.getClothoID());
+        } else {
+            createModule.put("id", module.getName());
+        }
+        
+        JSONArray featureIds = new JSONArray();
+        HashSet<Feature> features = new HashSet<Feature>(module.getModuleFeatures());
+        
+        for(String fId:createFeatures(features)){
+            featureIds.add(fId);
+        }
+        
+        //createModule.put("features", featureIds);
+        
+        //createModule.put("ltlFunction", createLTLFunction(module.getFunction()));
+        //Should be someway to create Primitive Modules
+        
+        System.out.println("Module Name :: " + createModule.get("name"));
+        
+        clothoObject.create(createModule);
+        module.setClothoID(module.getName());
+        
+        for (Module child : module.getChildren()) {
+            createModuleTree(child, clothoObject);
+        }
+    }
+    
+    
+    
+    public static Map createLTLFunction(STLFunction ltl){
+        Map createltl = new HashMap();
+        return createltl;
+    }
+    
     //Add parts to Clotho via Clotho Server API
     public static Map createPart(Part p, Clotho clothoObject) {
 
@@ -608,11 +739,17 @@ public class ClothoAdaptor {
      */    
     
     //Get all Clotho Features
+    //The way features and arcs are handled here seems kinda fucked, but works
     public static HashSet<Feature> queryFeatures() {
         
         //Establish Clotho connection
         ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
         Clotho clothoObject = new Clotho(conn);
+        
+        //Arc searching hashes to avoid query recursion
+        HashMap<String, List<HashMap<String, String>>> arcHash = new HashMap<>(); //key: feature name, value: list of regulator, regluatee name pairs
+        HashMap<String, Feature> featureNameHash = new HashMap<>(); //key: feature name, value: Feature
+        HashMap<HashMap<String, String>, Arc> regNamesArcsHash = new HashMap<>(); //key: regulator, regluatee name pair, value: arc
         
         HashSet<Feature> features = new HashSet<>();
         
@@ -651,9 +788,96 @@ public class ClothoAdaptor {
             feature.setSequence(sequence);
             feature.setClothoID(jsonFeature.get("id").toString());
             
+            //Get arcs
+            JSONArray arrayArcs = (JSONArray) jsonFeature.get("arcs");
+            
+            if (arrayArcs != null) {
+                for (int j = 0; j < arrayArcs.size(); j++) {
+
+                    Arc arc = new Arc();
+
+                    //Get arc fields
+                    JSONObject jsonArc = arrayArcs.getJSONObject(j);
+                    String regulator = jsonArc.get("regulator").toString();
+                    String regulatee = jsonArc.get("regulatee").toString();
+
+                    //Get ArcRole
+                    JSONObject jsonArcRole = (JSONObject) jsonArc.get("role");
+                    String arcRoleString = jsonArcRole.get("ArcRole").toString();
+                    arc.setRole(Arc.ArcRole.valueOf(arcRoleString));
+
+                    //Get small molecules
+                    JSONArray arraySMs = (JSONArray) jsonArc.get("molecules");
+                    
+                    if (arraySMs != null) {
+                        for (int k = 0; k < arraySMs.size(); k++) {
+
+                            SmallMolecule sm = new SmallMolecule();
+
+                            //Get small molecule fields
+                            JSONObject jsonSM = arraySMs.getJSONObject(k);
+                            String smName = jsonSM.get("name").toString();
+                            sm.setName(smName);
+
+                            //Get ArcRole
+                            JSONObject jsonSMRole = (JSONObject) jsonSM.get("role");
+                            String smRoleString = jsonSMRole.get("SmallMoleculeRole").toString();
+                            sm.setRole(SmallMolecule.SmallMoleculeRole.valueOf(smRoleString));
+
+                            if (arc.getMolecules() != null) {
+                                arc.getMolecules().add(sm);
+                            } else {
+                                List<SmallMolecule> SMs = new ArrayList<>();
+                                SMs.add(sm);
+                                arc.setMolecules(SMs);
+                            }
+                        }
+                    }
+
+                    //Save feature names to arcHash for second pass
+                    HashMap<String, String> reg = new HashMap<>();
+                    reg.put("regulator", regulator);
+                    reg.put("regulatee", regulatee);
+
+                    regNamesArcsHash.put(reg, arc);
+
+                    if (arcHash.get(name) != null) {
+                        arcHash.get(name).add(reg);
+                    } else {
+                        List<HashMap<String, String>> regPairs = new ArrayList<>();
+                        regPairs.add(reg);
+                        arcHash.put(name, regPairs);
+                    }
+                }
+            }
+
+            featureNameHash.put(feature.getName(), feature);
+
             features.add(feature);
-        } 
-        
+        }        
+
+        //Loop to match features in arcHash
+        for (String featureName : arcHash.keySet()) {
+
+            Feature f = featureNameHash.get(featureName);
+            List<HashMap<String, String>> regs = arcHash.get(featureName);
+
+            for (HashMap<String, String> reg : regs) {
+
+                Arc a = regNamesArcsHash.get(reg);
+                a.setRegulator(featureNameHash.get(reg.get("regulator")));
+                a.setRegulatee(featureNameHash.get(reg.get("regulatee")));
+
+                if (f.getArcs() != null) {
+                    f.getArcs().add(a);
+                } else {
+                    List<Arc> arcs = new ArrayList<>();
+                    arcs.add(a);
+                    f.setArcs(arcs);
+                }
+            }
+        }
+
         conn.closeConnection();
         
         return features;
@@ -806,7 +1030,32 @@ public class ClothoAdaptor {
 
         return ns;
     }
-
+    
+    public static Module getModule(String rootModule){
+        Module module = new Module(rootModule);
+        Map map = new HashMap();
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
+        
+        map = (Map) clothoObject.get(rootModule);
+        
+        module.setName(map.get("name").toString());
+        module.setClothoID(map.get("id").toString());
+        module.setRole(Module.ModuleRole.valueOf(map.get("role").toString()));
+        module.setStage((int)map.get("stage"));
+        module.setForward((boolean)map.get("isForward"));
+        module.setRoot((boolean)map.get("isRoot"));
+        
+        JSONArray children = new JSONArray();
+        children = (JSONArray) map.get("children");
+        for(Object childObj:children){
+            Module childModule = getModule(childObj.toString());
+            childModule.getParents().add(module);
+            module.getChildren().add(childModule);
+        }
+        
+        return module;
+    }
     
     //Get all Clotho Parts
     public static Part getParts(JSONObject jsonPart) {

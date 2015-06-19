@@ -120,7 +120,7 @@ public class ClothoTest {
         String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_feature_lib.gb";
         File toLoad = new File(filePath);
         try {
-            ClothoAdaptor.queryFeatures();
+//            ClothoAdaptor.queryFeatures();
             ClothoAdaptor.uploadSequences(toLoad, true);
             ClothoAdaptor.queryFeatures();
         } catch (Exception ex) {
@@ -136,6 +136,18 @@ public class ClothoTest {
         } catch (IOException ex) {
             Logger.getLogger(ClothoTest.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    @Test
+    public void testCytometerUpload() {
+        
+        String filePath = getFilepath() + "/src/main/resources/FluorescentProteins/cosbi_fortessa_bd.csv";
+        File toLoad = new File(filePath);
+        try {
+            ClothoAdaptor.uploadCytometer(toLoad);
+        } catch (Exception ex) {
+            Logger.getLogger(ClothoTest.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
     
 //    @Test
@@ -159,18 +171,6 @@ public class ClothoTest {
         System.out.println("End of Tests");
     }
     
-    @Test
-    public void testCytometerUpload() {
-        
-        String filePath = getFilepath() + "/src/main/resources/FluorescentProteins/cosbi_fortessa_bd.csv";
-        File toLoad = new File(filePath);
-        try {
-            ClothoAdaptor.uploadCytometer(toLoad);
-        } catch (Exception ex) {
-            Logger.getLogger(ClothoTest.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-    }
-      
 //    public ClothoTest() {
 //        
 //    }
@@ -179,7 +179,8 @@ public class ClothoTest {
 //        ClothoTest t = new ClothoTest();
 ////        t.testQuery();
 ////        t.testMultiPartUpload();
-//        t.testPlasmidLibraryUpload();
+//        t.testFeatureUpload();
+//        t.testQuery();
 //        String t2 = "";
 //    }
 }

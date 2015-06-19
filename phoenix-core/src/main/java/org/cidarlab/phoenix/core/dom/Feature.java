@@ -25,6 +25,8 @@ package org.cidarlab.phoenix.core.dom;
 
 import org.cidarlab.phoenix.core.dom.NucSeq;
 import java.awt.Color;
+import java.util.HashSet;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -55,32 +57,41 @@ public class Feature extends SharableObjBase {
     @Setter
     @Getter
     private Sequence sequence;
+    
     @Setter
     private Color forwardColor, reverseColor;
+    
     @Setter
     @Getter
     private String genbankId, swissProtId, PDBId;
+    
     @Setter
     @Getter
     private Person author;
+    
     @Getter
     private short riskGroup;
+    
     // Field currently isn't used and should be replaced with role
     @Getter
     @Deprecated
     private boolean isCDS;
-    @NotNull
+    
+    //@NotNull
     @Setter
     @Getter
     private FeatureRole role;
-    //private String featureData; was in datum
-  //private String sourceOrganism; was in datum
+    
+    @Setter
+    @Getter
+    private List<Arc> arcs;
     
     /**
      * Constructor of a new Feature
      * @param name
      * @param seq
      * @param author
+     * @param role
      */
     public Feature(String name, Sequence seq, Person author, FeatureRole role) {
         super(name, author);

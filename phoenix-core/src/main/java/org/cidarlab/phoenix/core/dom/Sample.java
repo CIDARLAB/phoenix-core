@@ -28,17 +28,17 @@ public class Sample {
     //Module measured
     @Setter
     @Getter
-    public String name;
+    private String name;
     
     //Module measured
     @Setter
     @Getter
-    public String clothoID;
+    private String clothoID;
     
     //Module measured
     @Setter
     @Getter
-    public Medium media;
+    private Medium media;
     
     //Polynucleotide measured
     @Setter

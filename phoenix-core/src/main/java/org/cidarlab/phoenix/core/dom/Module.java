@@ -114,7 +114,7 @@ public class Module {
     //LTL function associated with this module
     @Getter
     @Setter
-    private LTLFunction function;
+    private STLFunction function;
     
     //Directionality
     @Getter

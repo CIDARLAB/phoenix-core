@@ -36,7 +36,7 @@ import org.clothoapi.clotho3javaapi.ClothoConnection;
 import org.cidarlab.phoenix.core.dom.Annotation;
 import org.cidarlab.phoenix.core.dom.Arc;
 import org.cidarlab.phoenix.core.dom.AssemblyParameters;
-import org.cidarlab.phoenix.core.dom.LTLFunction;
+import org.cidarlab.phoenix.core.dom.STLFunction;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Person;
 import org.cidarlab.phoenix.core.dom.SmallMolecule;
@@ -524,7 +524,7 @@ public class ClothoAdaptor {
     
     
     
-    public static Map createLTLFunction(LTLFunction ltl){
+    public static Map createLTLFunction(STLFunction ltl){
         Map createltl = new HashMap();
         return createltl;
     }

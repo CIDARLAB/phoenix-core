@@ -51,9 +51,9 @@ public class PhoenixInstructions {
                 instructionsBufferedWriter.write("\n," + s.getClothoID() + "," + s.getType() + "," + "," + ",");
             } else {
                 Medium media = s.getMedia();
-                String mediaString = media.getName() + media.getType().toString();                
+                String mediaString = media.getName();                
                 if (media.getSmallmolecule()!= null) {
-                    mediaString = mediaString + "_" + media.getSmallmolecule();
+                    mediaString = media.getConcentration() + "_" + media.getSmallmolecule() + "_" + mediaString;
                 }
                 instructionsBufferedWriter.write("\n," + s.getClothoID() + "," + s.getType() + "," + mediaString + "," + s.getTime() + ",");
             }   

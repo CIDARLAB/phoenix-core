@@ -61,7 +61,8 @@ public class ClothoAdaptor {
      * This method is for reading a Benchling-produced Multipart Genbank file with Biojava 1.9.0
      * It creates Clotho Polynucleotides, Parts, Sequences, Annotations and Features
      */
-    public static void uploadSequences(File input, boolean featureLib) throws Exception {
+    public static void uploadSequences(File input, boolean featureLib, Clotho clothoObject) throws Exception {
+        
         
         //If this file is a feature library, only get features and save those to Clotho
         if (featureLib) {
@@ -69,37 +70,37 @@ public class ClothoAdaptor {
             HashSet<Fluorophore> fluorophores = BenchlingAdaptor.getFluorophores(features);
             features.removeAll(fluorophores);
             
-            ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
-            Clotho clothoObject = new Clotho(conn);
             createFeatures(features,clothoObject);
             createFluorophores(fluorophores,clothoObject);
             
-            conn.closeConnection();
             
         } else {
- 
+            
+            
             //Get polynucleotides, nucseqs and parts from a multi-part genbank file
             //This automatic annotations of part NucSeqs relies on previously uploaded features
             HashSet<Polynucleotide> polyNucs = BenchlingAdaptor.getPolynucleotide(input);
-            removeDuplicateParts(polyNucs);
-            HashSet<Feature> annotationFeatures = queryFeatures();
-            annotationFeatures.addAll(queryFluorophores());
+            removeDuplicateParts(polyNucs,clothoObject);
+            Map featureQuery = new HashMap();
+            featureQuery.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
+            HashSet<Feature> annotationFeatures = queryFeatures(featureQuery,clothoObject);
+            
+            Map fluorophoreQuery = new HashMap();
+            fluorophoreQuery.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
+            annotationFeatures.addAll(queryFluorophores(fluorophoreQuery,clothoObject));
             annotateParts(annotationFeatures, polyNucs);
 
             //Save all polynucleotides, nucseqs and parts to Clotho
             
-            ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
-            Clotho clothoObject = new Clotho(conn);       
             createPolynucleotides(polyNucs,clothoObject);
-            conn.closeConnection();
-            
-        }       
+        } 
     }
     
     /*
      * This method is for uploading fluorescence spectrum data to be associated with Fluorphore objects
      */
-    public static void uploadFluorescenceSpectrums (File input) throws FileNotFoundException, IOException {
+    public static void uploadFluorescenceSpectrums (File input,Clotho clothoObject) throws FileNotFoundException, IOException {
+        
         
         //Import file, begin reading
         BufferedReader reader = new BufferedReader(new FileReader(input.getAbsolutePath()));
@@ -126,7 +127,9 @@ public class ClothoAdaptor {
         }
         
         //Look for each Fluorophore and see if their names match any of these spectrums
-        HashSet<Fluorophore> queryFluorophores = queryFluorophores();
+        Map fluorophoreQuery = new HashMap();
+        fluorophoreQuery.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
+        HashSet<Fluorophore> queryFluorophores = queryFluorophores(fluorophoreQuery,clothoObject);
         for (String spectrum_name : spectralMaps.keySet()) {
             for (Fluorophore fl : queryFluorophores) {
                 
@@ -143,17 +146,14 @@ public class ClothoAdaptor {
                 }
             }
         }
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
-        Clotho clothoObject = new Clotho(conn);
         createFluorophores(queryFluorophores,clothoObject);
-        conn.closeConnection();
     }
     
     
     /*
      * This method is for uploading fluorescence spectrum data to be associated with Fluorphore objects
      */
-    public static void uploadCytometer (File input) throws FileNotFoundException, IOException {
+    public static void uploadCytometer (File input, Clotho clothoObject) throws FileNotFoundException, IOException {
       
         //Import file, begin reading
         BufferedReader reader = new BufferedReader(new FileReader(input.getAbsolutePath()));
@@ -243,7 +243,7 @@ public class ClothoAdaptor {
         }   
 
         Cytometer c = new Cytometer(name, lasers, filters, config);
-        createCytometer(c);        
+        createCytometer(c,clothoObject);
     }
     
     /*
@@ -259,14 +259,16 @@ public class ClothoAdaptor {
      * 
      */
     
-    public static Map createSmallMolecule(SmallMolecule smolecule){
+    public static Map createSmallMoleculeMap(SmallMolecule smolecule){
         Map map = new HashMap();
         map.put("name", smolecule.getName());
+        map.put("schema", "org.cidarlab.phoenix.core.dom.SmallMolecule");
+        
         map.put("role", smolecule.getRole());
         return map;
     }
     
-    public static Map createStrain(Strain strain){
+    public static Map createStrainMap(Strain strain){
         String id = "";
         Map map = new HashMap();
         map.put("schema", "org.cidarlab.phoenix.core.dom.Strain");
@@ -274,7 +276,7 @@ public class ClothoAdaptor {
         return map;
     }
     
-    public static Map createMedium(Medium medium){
+    public static Map createMediumMap(Medium medium){
         String id = "";
         Map map = new HashMap();
         map.put("schema", "org.cidarlab.phoenix.core.dom.Medium");
@@ -282,7 +284,7 @@ public class ClothoAdaptor {
         map.put("name", medium.getName());
         map.put("type", medium.getType());
         Map smallMoleculeMap = new HashMap();
-        smallMoleculeMap = createSmallMolecule(medium.getSmallmolecule());
+        smallMoleculeMap = createSmallMoleculeMap(medium.getSmallmolecule());
         map.put("smallMolecule", smallMoleculeMap);
         return map;
     }
@@ -298,10 +300,10 @@ public class ClothoAdaptor {
             map.put("name", sample.getName());
         }
         
-        Map mediaMap = createMedium(sample.getMedia());
+        Map mediaMap = createMediumMap(sample.getMedia());
         map.put("media", mediaMap);
         
-        Map strainMap = createStrain(sample.getStrain());
+        Map strainMap = createStrainMap(sample.getStrain());
         map.put("strain", strainMap);
         
         JSONArray polyIds = new JSONArray();
@@ -310,7 +312,6 @@ public class ClothoAdaptor {
             polyIds.add(polyId);
         }
         map.put("polynucleotides", polyIds);
-        
         map.put("time", sample.getTime());
         return id;
     }
@@ -386,7 +387,7 @@ public class ClothoAdaptor {
             }
             
             //NucSeq data
-            Map createNucSeqMain = createNucSeq(pn.getSequence());
+            Map createNucSeqMain = createNucSeqMap(pn.getSequence());
 
             
             //Change this. Make it point to a Clotho Id instead.
@@ -657,7 +658,7 @@ public class ClothoAdaptor {
             createModule.put("experiments", exptIds);
     
         }
-        //createModule.put("features", featureIds);
+        createModule.put("features", featureIds);
         //createModule.put("ltlFunction", createLTLFunction(module.getFunction()));
         //Should be someway to create Primitive Modules
         
@@ -675,10 +676,10 @@ public class ClothoAdaptor {
     
     
 
-    public static String createLTLFunction(STLFunction ltl,Clotho clothoObject){
+    public static String createSTLFunction(STLFunction ltl,Clotho clothoObject){
         String id = "";
         Map map = new HashMap();
-        map.put("schema", "org.cidarlab.phoenix.core.dom.Part");
+        map.put("schema", "org.cidarlab.phoenix.core.dom.STLFunction");
         return id;
     }
     
@@ -693,7 +694,7 @@ public class ClothoAdaptor {
         createPart.put("schema", "org.cidarlab.phoenix.core.dom.Part");
         createPart.put("name", p.getName());
         createPart.put("isVector", p.isVector());
-        createPart.put("sequence", createNucSeq(p.getSequence()));
+        createPart.put("sequence", createNucSeqMap(p.getSequence()));
 
         //Clotho ID
         if (p.getClothoID() != null) {
@@ -707,8 +708,9 @@ public class ClothoAdaptor {
         return id;
     }
 
-    //Add nucseqs to Clotho via Clotho Server API
-    public static Map createNucSeq(NucSeq ns) {
+    
+
+    public static Map createNucSeqMap(NucSeq ns) {
 
         //NucSeq schema
         Map createNucSeqMain = new HashMap();
@@ -780,11 +782,9 @@ public class ClothoAdaptor {
     }
     
     //Add fluorophores to Clotho via Clotho Server API
-    public static void createCytometer(Cytometer c) {
-
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
-        Clotho clothoObject = new Clotho(conn);
-
+    public static String createCytometer(Cytometer c, Clotho clothoObject) {
+        String id = "";
+        
         //Fluorophore schema
         Map createCytometer = new HashMap();
         createCytometer.put("schema", "org.cidarlab.phoenix.core.dom.Cytometer");
@@ -831,17 +831,16 @@ public class ClothoAdaptor {
             c.setClothoID(c.getName());
         }
         
-        clothoObject.create(createCytometer);
-
-        conn.closeConnection();
+        id = (String) clothoObject.set(createCytometer);
+        c.setClothoID(id);
+        
+        return id;
     }
     
     //Add polynucleotides to Clotho via Clotho Server API
-    public static void createAssemblyParameters(AssemblyParameters aP) {
+    public static String createAssemblyParameters(AssemblyParameters aP, Clotho clothoObject) {
         
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
-        Clotho clothoObject = new Clotho(conn);
-        
+        String id = "";
         Map createAssmParam = new HashMap();
         createAssmParam.put("schema", "org.cidarlab.phoenix.core.dom.AssemblyParameters");
         createAssmParam.put("method", aP.getMethod());
@@ -881,9 +880,11 @@ public class ClothoAdaptor {
             createAssmParam.put("id", aP.getName());
             aP.setClothoID(aP.getName());
         }
-        clothoObject.create(createAssmParam);
+        id = (String) clothoObject.set(createAssmParam);
+        aP.setClothoID(id);
+        
+        return id;
 
-        conn.closeConnection();
     }
     
     /*
@@ -894,11 +895,9 @@ public class ClothoAdaptor {
     
     //Get all Clotho Features
     //The way features and arcs are handled here seems kinda fucked, but works
-    public static HashSet<Feature> queryFeatures() {
+    public static HashSet<Feature> queryFeatures(Map map, Clotho clothoObject) {
         
         //Establish Clotho connection
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
-        Clotho clothoObject = new Clotho(conn);
         
         //Arc searching hashes to avoid query recursion
         HashMap<String, List<HashMap<String, String>>> arcHash = new HashMap<>(); //key: feature name, value: list of regulator, regluatee name pairs
@@ -907,8 +906,7 @@ public class ClothoAdaptor {
         
         HashSet<Feature> features = new HashSet<>();
         
-        Map map = new HashMap();
-        map.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
+        
         Object query = clothoObject.query(map);
         JSONArray array = (JSONArray) query;
         
@@ -1032,22 +1030,17 @@ public class ClothoAdaptor {
             }
         }
 
-        conn.closeConnection();
         
         return features;
     }
     
     //Get all Clotho Fluorophores
-    public static HashSet<Fluorophore> queryFluorophores() {
+    public static HashSet<Fluorophore> queryFluorophores(Map map, Clotho clothoObject) {
         
         //Establish Clotho connection
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
-        Clotho clothoObject = new Clotho(conn);
         
         HashSet<Fluorophore> fluorophores = new HashSet<>();
         
-        Map map = new HashMap();
-        map.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
         Object query = clothoObject.query(map);
         JSONArray arrayFluorophore = (JSONArray) query;
         
@@ -1109,13 +1102,11 @@ public class ClothoAdaptor {
             fluorophores.add(fluorophore);
         } 
         
-        conn.closeConnection();
-        
         return fluorophores;
     }
     
     //Get all Clotho NucSeqs
-    public static NucSeq getNucSeqs(JSONObject jsonNucSeq) {
+    public static NucSeq convertJSONtoNucSeq(JSONObject jsonNucSeq) {
 
         String seq = jsonNucSeq.get("sequence").toString();
         boolean circular = Boolean.parseBoolean(jsonNucSeq.get("isCircular").toString());
@@ -1185,11 +1176,9 @@ public class ClothoAdaptor {
         return ns;
     }
     
-    public static Module getModule(String rootModule){
+    public static Module getModule(String rootModule,Clotho clothoObject){
         Module module = new Module(rootModule);
         Map map = new HashMap();
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
-        Clotho clothoObject = new Clotho(conn);
         
         map = (Map) clothoObject.get(rootModule);
         
@@ -1203,7 +1192,7 @@ public class ClothoAdaptor {
         JSONArray children = new JSONArray();
         children = (JSONArray) map.get("children");
         for(Object childObj:children){
-            Module childModule = getModule(childObj.toString());
+            Module childModule = getModule(childObj.toString(), clothoObject);
             childModule.getParents().add(module);
             module.getChildren().add(childModule);
         }
@@ -1219,22 +1208,18 @@ public class ClothoAdaptor {
 
         //Get NucSeq fields
         JSONObject jsonNucSeq = (JSONObject) jsonPart.get("sequence");
-        Part p = Part.generateBasic(name, "", getNucSeqs(jsonNucSeq), null, null);
+        Part p = Part.generateBasic(name, "", convertJSONtoNucSeq(jsonNucSeq), null, null);
 
         return p;
     }
     
     //Get all Clotho Parts
-    public static HashSet<Part> queryParts() {
+    public static HashSet<Part> queryParts(Map map, Clotho clothoObject) {
         
         //Establish Clotho connection
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
-        Clotho clothoObject = new Clotho(conn);
-
+        
         HashSet<Part> parts = new HashSet<>();
 
-        Map map = new HashMap();
-        map.put("schema", "org.cidarlab.phoenix.core.dom.Part");
         Object query = clothoObject.query(map);
         JSONArray array = (JSONArray) query;
 
@@ -1246,27 +1231,22 @@ public class ClothoAdaptor {
             
             //Get NucSeq fields
             JSONObject jsonNucSeq = (JSONObject) jsonPart.get("sequence");
-            Part p = Part.generateBasic(name, "", getNucSeqs(jsonNucSeq), null, null);
+            Part p = Part.generateBasic(name, "", convertJSONtoNucSeq(jsonNucSeq), null, null);
             p.setClothoID(jsonPart.get("id").toString());
             
             parts.add(p);
         }
-        conn.closeConnection();
         
         return parts;
     }
     
     //Get all Clotho Polynucleotides
-    public static HashSet<Polynucleotide> queryPolynucleotides() {
+    public static HashSet<Polynucleotide> queryPolynucleotides(Map map, Clotho clothoObject) {
         
         //Establish Clotho connection
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
-        Clotho clothoObject = new Clotho(conn);
-
+        
         HashSet<Polynucleotide> polynucs = new HashSet<>();
 
-        Map map = new HashMap();
-        map.put("schema", "org.cidarlab.phoenix.core.dom.Polynucleotide");
         Object query = clothoObject.query(map);
         JSONArray array = (JSONArray) query;
 
@@ -1291,7 +1271,7 @@ public class ClothoAdaptor {
             
             //Imbedded objects
             JSONObject jsonNucSeq = (JSONObject) jsonPolynuc.get("sequence");
-            pn.setSequence(getNucSeqs(jsonNucSeq));
+            pn.setSequence(convertJSONtoNucSeq(jsonNucSeq));
             JSONObject jsonPart = (JSONObject) clothoObject.get((String)jsonPolynuc.get("part"));
             pn.setPart(getParts(jsonPart));
             JSONObject jsonVec = (JSONObject) clothoObject.get((String)jsonPolynuc.get("vector"));
@@ -1302,22 +1282,16 @@ public class ClothoAdaptor {
             pn.setLevel(Integer.valueOf(jsonPolynuc.get("level").toString()));
             polynucs.add(pn);
         }
-        conn.closeConnection();
         
         return polynucs;
     }
     
     //Get all Clotho Cytometers
-    public static HashSet<Cytometer> queryCytometers() {
+    public static HashSet<Cytometer> queryCytometers(Map map, Clotho clothoObject) {
         
         //Establish Clotho connection
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
-        Clotho clothoObject = new Clotho(conn);
-        
         HashSet<Cytometer> cytometers = new HashSet<>();
         
-        Map map = new HashMap();
-        map.put("schema", "org.cidarlab.phoenix.core.dom.Cytometer");
         Object query = clothoObject.query(map);
         JSONArray arrayCytometer = (JSONArray) query;
         
@@ -1367,17 +1341,14 @@ public class ClothoAdaptor {
             
             cytometers.add(c);
         }         
-        conn.closeConnection();
         
         return cytometers;
     }
     
     //Get assembly parameters
-    public static AssemblyParameters queryAssemblyParameters (String ID) {
+    public static AssemblyParameters queryAssemblyParameters (String id,Clotho clothoObject) {
         
         //Establish Clotho connection
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
-        Clotho clothoObject = new Clotho(conn);
         
         AssemblyParameters aP = new AssemblyParameters();
         
@@ -1391,26 +1362,26 @@ public class ClothoAdaptor {
             JSONObject jsonAP = arrayAP.getJSONObject(i);
             AssemblyParameters candidate = new AssemblyParameters(jsonAP);
             
-            if (ID != null) {
-                if (candidate.getClothoID().equalsIgnoreCase(ID)) {
+            if (id != null) {
+                if (candidate.getClothoID().equalsIgnoreCase(id)) {
                     aP = candidate;
                     break;
                 }
             }
         }
         
-        conn.closeConnection();
-        
         return aP;
     }
     
     //Remove parts from a set with duplicate sequence
-    public static void removeDuplicateParts (HashSet<Polynucleotide> polyNucs) {
+    public static void removeDuplicateParts (HashSet<Polynucleotide> polyNucs, Clotho clothoObject) {
         
         HashMap<String, Part> sequencePartMap = new HashMap();
         
         //Put all existing parts in the Map
-        HashSet<Part> queryParts = queryParts();
+        Map partQuery = new HashMap();
+        partQuery.put("schema", "org.cidarlab.phoenix.core.dom.Part");
+        HashSet<Part> queryParts = queryParts(partQuery,clothoObject);
         for (Part p : queryParts) {
             sequencePartMap.put(p.getSequence().getSeq(), p);
         }

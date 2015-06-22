@@ -5,8 +5,10 @@
 package org.cidarlab.phoenix.core.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
 import org.cidarlab.phoenix.core.dom.Cytometer;
 import org.cidarlab.phoenix.core.dom.Experiment;
@@ -16,6 +18,8 @@ import org.cidarlab.phoenix.core.dom.PrimitiveModule;
 import org.cidarlab.phoenix.core.dom.Feature;
 import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
 import org.cidarlab.phoenix.core.dom.Part;
+import org.clothoapi.clotho3javaapi.Clotho;
+import org.clothoapi.clotho3javaapi.ClothoConnection;
 
 /**
  *
@@ -27,6 +31,10 @@ public class FeatureAssignment {
     //This method will be hacky until we have a real part assignment algorithm based on simulation
     public static HashSet<Module> partialAssignment(List<Module> testingModules) {
         
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
+        
+        
         HashSet<Module> modulesToTest = new HashSet<>();
         HashSet<List<Feature>> assignedFeatureLists = new HashSet<>();
         
@@ -34,7 +42,10 @@ public class FeatureAssignment {
         addFPs(testingModules);
         
         //Query promoters and regulator features, assign to abstract spots for EXPRESSORS and EXPRESSEES
-        HashSet<Feature> features = ClothoAdaptor.queryFeatures(); 
+        
+        Map featureQuery = new HashMap();
+        featureQuery.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
+        HashSet<Feature> features = ClothoAdaptor.queryFeatures(featureQuery,clothoObject); 
         HashSet<Module> exp = getExpressorsExpressees(testingModules);
         featureMatchAssign(exp, features);
         
@@ -68,19 +79,26 @@ public class FeatureAssignment {
         for (Module m : modulesToTest) {
             TestingStructures.wildcardAssign(m);
         }
-
+        conn.closeConnection();
         return modulesToTest;
     }
     
     //Method for traverisng graphs, adding fluorescent proteins
     private static void addFPs(List<Module> testingModules) {
         
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
+        
         //Recieve data from Clotho
         HashSet<Fluorophore> FPs = new HashSet<Fluorophore>();
-        FPs = ClothoAdaptor.queryFluorophores();
+        Map fluorophoreQuery = new HashMap();
+        fluorophoreQuery.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
+        FPs = ClothoAdaptor.queryFluorophores(fluorophoreQuery,clothoObject);
         
         Cytometer cytometer = new Cytometer();
-        HashSet<Cytometer> allCytometers = ClothoAdaptor.queryCytometers();
+        Map cytometerQuery = new HashMap();
+        cytometerQuery.put("schema", "org.cidarlab.phoenix.core.dom.Cytometer");
+        HashSet<Cytometer> allCytometers = ClothoAdaptor.queryCytometers(cytometerQuery,clothoObject);
         for (Cytometer c : allCytometers) {
             if (c.getName().startsWith("BU")) {
                 cytometer = c;
@@ -105,6 +123,7 @@ public class FeatureAssignment {
             ArrayList<Fluorophore> bestSet = FluorescentProteinSelector.solve(FPs, cytometer, count);
             addFPsHelper(root, bestSet, children);
         }
+        conn.closeConnection();
     }
     
     //Helper method for traverisng graphs, adding fluorescent proteins
@@ -365,7 +384,14 @@ public class FeatureAssignment {
     
     //Gets a list of experiments and for all modules in the each experiment, it converts features to parts
     public static HashSet<Part> getExperimentParts(List<Experiment> experiments) {
-        HashSet<Part> parts = ClothoAdaptor.queryParts();
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
+        
+        Map partQuery = new HashMap();
+        partQuery.put("schema", "org.cidarlab.phoenix.core.dom.Part");
+        HashSet<Part> parts = ClothoAdaptor.queryParts(partQuery,clothoObject);
+        
+        conn.closeConnection();
         return null;
     }
     

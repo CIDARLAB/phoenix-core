@@ -9,6 +9,8 @@ import java.util.List;
 import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
 import org.cidarlab.phoenix.core.controller.PhoenixController;
 import org.cidarlab.phoenix.core.dom.AssemblyParameters;
+import org.clothoapi.clotho3javaapi.Clotho;
+import org.clothoapi.clotho3javaapi.ClothoConnection;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -52,6 +54,10 @@ public class RavenTest {
     @Test
     public void testParameterUpload() {
         
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
+        
+        
         String[] efficiency = new String[]{"1.0", "1.0", "1.0", "1.0", "1.0"};
         List<String> effArray = Arrays.asList(efficiency);
         AssemblyParameters assmP = new AssemblyParameters();
@@ -59,7 +65,9 @@ public class RavenTest {
         assmP.setMethod("moclo");
         assmP.setOligoNameRoot("phoenix");
         assmP.setName("default");
-        ClothoAdaptor.createAssemblyParameters(assmP);
+        
+        ClothoAdaptor.createAssemblyParameters(assmP,clothoObject);
+        conn.closeConnection();
     }
 //    
 //    public static void main (String[] args) {

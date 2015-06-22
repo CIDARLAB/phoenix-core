@@ -28,10 +28,16 @@ public class PhoenixController {
     public static void preliminaryDataUpload (File featureLib, File plasmidLib, File fluorophoreSpectra, File cytometer) throws FileNotFoundException, Exception {
      
         //Import data from Benchling multi-part Genbank files to Clotho
-        ClothoAdaptor.uploadSequences(featureLib, true);
-        ClothoAdaptor.uploadFluorescenceSpectrums(fluorophoreSpectra);
-        ClothoAdaptor.uploadSequences(plasmidLib, false);
-        ClothoAdaptor.uploadCytometer(cytometer);        
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
+        
+        
+        ClothoAdaptor.uploadSequences(featureLib, true,clothoObject);
+        ClothoAdaptor.uploadFluorescenceSpectrums(fluorophoreSpectra,clothoObject);
+        ClothoAdaptor.uploadSequences(plasmidLib, false,clothoObject);
+        ClothoAdaptor.uploadCytometer(cytometer,clothoObject);
+        
+        conn.closeConnection();
     }
     
     //Main Phoenix design decomposition method
@@ -93,10 +99,14 @@ public class PhoenixController {
     //FILES IN, NOTHING OUT
     public static void interpretData (List<File> fcsFiles, File plasmidsCreated, List<Module> modules) throws Exception {
         
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
+        
+        
         List<Experiment> currentExperiments = new ArrayList<>();
         
         //Import data from experiments
-        ClothoAdaptor.uploadSequences(plasmidsCreated, false);
+        ClothoAdaptor.uploadSequences(plasmidsCreated, false,clothoObject);
         FeatureAssignment.completeAssignmentSeqResults(modules);
         ClothoAdaptor.uploadCytometryData(fcsFiles, currentExperiments);
 
@@ -113,5 +123,7 @@ public class PhoenixController {
         //Update module graphs based upon simulations
         HashSet<Module> modulesToTest = FeatureAssignment.completeAssignmentSim(bestCombinedModules, modules);
 //        createExperimentInstructions (modulesToTest);
+        
+        conn.closeConnection();
     }    
 }

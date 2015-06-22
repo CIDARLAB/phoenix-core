@@ -58,8 +58,7 @@ public class RavenAdaptor {
         
         //Run Raven to get assembly instructions
         Raven raven = new Raven();                
-        File assemblyInstructions = null;
-        //assemblyInstructions = raven.assemblyInstructions(targetParts, partsLibR, vectorsLibR, libPairs, new HashMap(), rParameters, null);
+        File assemblyInstructions = raven.assemblyInstructions(targetParts, partsLibR, vectorsLibR, libPairs, new HashMap(), rParameters, null);
         
         return assemblyInstructions;
     }

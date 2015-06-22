@@ -259,22 +259,32 @@ public class ClothoAdaptor {
      * 
      */
     
-    public static String createStrain(Strain strain, Clotho clothoObject){
+    public static Map createSmallMolecule(SmallMolecule smolecule){
+        Map map = new HashMap();
+        map.put("name", smolecule.getName());
+        map.put("role", smolecule.getRole());
+        return map;
+    }
+    
+    public static Map createStrain(Strain strain){
         String id = "";
         Map map = new HashMap();
         map.put("schema", "org.cidarlab.phoenix.core.dom.Strain");
-        
-        return id;
+        map.put("name", strain.getName());
+        return map;
     }
     
-    public static String createMedium(Medium medium,Clotho clothoObject){
+    public static Map createMedium(Medium medium){
         String id = "";
         Map map = new HashMap();
         map.put("schema", "org.cidarlab.phoenix.core.dom.Medium");
-        
-        id = (String)clothoObject.set(map);
-        
-        return id;
+        map.put("concentration", medium.getConcentration());
+        map.put("name", medium.getName());
+        map.put("type", medium.getType());
+        Map smallMoleculeMap = new HashMap();
+        smallMoleculeMap = createSmallMolecule(medium.getSmallmolecule());
+        map.put("smallMolecule", smallMoleculeMap);
+        return map;
     }
     
     public static String createSample(Sample sample,Clotho clothoObject){
@@ -288,12 +298,19 @@ public class ClothoAdaptor {
             map.put("name", sample.getName());
         }
         
-        //Check this..
-        String mediaId = createMedium(sample.getMedia(),clothoObject);
-        map.put("media", mediaId);
+        Map mediaMap = createMedium(sample.getMedia());
+        map.put("media", mediaMap);
         
-        //sample.getPolynucleotide();
-        //sample.getStrain();
+        Map strainMap = createStrain(sample.getStrain());
+        map.put("strain", strainMap);
+        
+        JSONArray polyIds = new JSONArray();
+        for(Polynucleotide p:sample.getPolynucleotides()){
+            String polyId = createPolynucleotide(p,clothoObject);
+            polyIds.add(polyId);
+        }
+        map.put("polynucleotides", polyIds);
+        
         map.put("time", sample.getTime());
         return id;
     }
@@ -374,16 +391,18 @@ public class ClothoAdaptor {
             
             //Change this. Make it point to a Clotho Id instead.
             //Part and vector
-            Map createPart = createPart(pn.getPart(), clothoObject);
-            Map createVec = createPart(pn.getVector(), clothoObject);
+            String partId = createPart(pn.getPart(), clothoObject);
+            String vectorId = createPart(pn.getVector(), clothoObject);
+            //Map createPart = createPart(pn.getPart(), clothoObject);
+            //Map createVec = createPart(pn.getVector(), clothoObject);
 
             createPolynucleotide.put("sequence", createNucSeqMain);
-            createPolynucleotide.put("part", createPart);
-            createPolynucleotide.put("vector", createVec);
+            createPolynucleotide.put("part", partId);
+            createPolynucleotide.put("vector", vectorId);
             createPolynucleotide.put("isDV", pn.isDV());
             createPolynucleotide.put("level", pn.getLevel());
             
-            id = (String)clothoObject.create(createPolynucleotide);
+            id = (String)clothoObject.set(createPolynucleotide);
             pn.setClothoID(id);
         return id;
     }
@@ -393,8 +412,6 @@ public class ClothoAdaptor {
         
         List<String> ids = new ArrayList<String>();
         for (Polynucleotide pn : polyNucs) {
-
-            //Polynucleotide schema
             String id = createPolynucleotide(pn,clothoObject);
             ids.add(id);
         }
@@ -485,13 +502,10 @@ public class ClothoAdaptor {
     public static List<String> createFeatures(HashSet<Feature> features,Clotho clothoObject) {
         
         List<String> featureIds = new ArrayList<String>();
-        //ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
-        //Clotho clothoObject = new Clotho(conn);
         for (Feature f : features) {
             String id = createFeature(f,clothoObject);
             featureIds.add(id);
         }
-        //conn.closeConnection();
         return featureIds;
     }
     
@@ -671,9 +685,10 @@ public class ClothoAdaptor {
     
     //Change this to string??
     //Add parts to Clotho via Clotho Server API
-    public static Map createPart(Part p, Clotho clothoObject) {
+    public static String createPart(Part p, Clotho clothoObject) {
 
         //Part schema
+        String id = "";
         Map createPart = new HashMap();
         createPart.put("schema", "org.cidarlab.phoenix.core.dom.Part");
         createPart.put("name", p.getName());
@@ -687,11 +702,9 @@ public class ClothoAdaptor {
             createPart.put("id", p.getName());
         }
 
-        if (clothoObject != null) {
-            clothoObject.set(createPart);
-        }
-
-        return createPart;
+        id = (String) clothoObject.set(createPart);
+        p.setClothoID(id);
+        return id;
     }
 
     //Add nucseqs to Clotho via Clotho Server API
@@ -1279,9 +1292,9 @@ public class ClothoAdaptor {
             //Imbedded objects
             JSONObject jsonNucSeq = (JSONObject) jsonPolynuc.get("sequence");
             pn.setSequence(getNucSeqs(jsonNucSeq));
-            JSONObject jsonPart = (JSONObject) jsonPolynuc.get("part");
+            JSONObject jsonPart = (JSONObject) clothoObject.get((String)jsonPolynuc.get("part"));
             pn.setPart(getParts(jsonPart));
-            JSONObject jsonVec = (JSONObject) jsonPolynuc.get("vector");
+            JSONObject jsonVec = (JSONObject) clothoObject.get((String)jsonPolynuc.get("vector"));
             pn.setVector(getParts(jsonVec));
             
             pn.setClothoID(jsonPolynuc.get("id").toString());

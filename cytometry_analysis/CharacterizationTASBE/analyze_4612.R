@@ -68,7 +68,7 @@ colorControls <- colorControls[,columnIndexes]
 negativeControl <- negativeControl[,columnIndexes]
 
 #Determine the spillover matrix
-# comp.mat <- spillover(x=colorControls,unstained=sampleNames(negativeControl),fsc="FSC-A",ssc="SSC-A",method="mean", stain_match = c("regexpr"))
+comp.mat <- spillover(x=colorControls,unstained=sampleNames(negativeControl),fsc="FSC-A",ssc="SSC-A",method="mean", stain_match = c("regexpr"))
 
 #Group files by part name
 #Determine unique parts and unique types of media

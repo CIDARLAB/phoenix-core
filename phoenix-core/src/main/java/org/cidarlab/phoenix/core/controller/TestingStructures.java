@@ -177,7 +177,7 @@ public class TestingStructures {
     }
     
     //Method for forming sets of experiments given a paritally assigned module graph
-    public static void createExperiments(HashSet<Module> modules) {
+    public static List<Experiment> createExperiments(HashSet<Module> modules) {
         
         //Initialize experiment set - some types of modules require multiple experiments
         HashSet<Module> controlModulesAll = new HashSet<>();
@@ -273,8 +273,7 @@ public class TestingStructures {
         }
         removeDuplicatePolynucleotides(allExperiments);
         
-        //Add control modules
-        modules.addAll(controlModulesAll);
+        return allExperiments;
     }
     
     //Add controls and samples

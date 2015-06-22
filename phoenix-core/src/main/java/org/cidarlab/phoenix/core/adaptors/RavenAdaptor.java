@@ -4,6 +4,7 @@
  */
 package org.cidarlab.phoenix.core.adaptors;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,7 +31,7 @@ import org.cidarlab.raven.javaapi.Raven;
 public class RavenAdaptor {
     
     //Create assembly plans for given parts and return instructions file
-    public static String generateAssemblyPlan(HashSet<Module> targetModules) throws Exception {
+    public static File generateAssemblyPlan(HashSet<Module> targetModules) throws Exception {
         
         //Get Phoenix data from Clotho
         JSONObject parameters = ClothoAdaptor.queryAssemblyParameters("default").toJSON();
@@ -57,7 +58,7 @@ public class RavenAdaptor {
         
         //Run Raven to get assembly instructions
         Raven raven = new Raven();                
-        String assemblyInstructions = raven.assemblyInstructions(targetParts, partsLibR, vectorsLibR, libPairs, new HashMap(), rParameters);
+        File assemblyInstructions = raven.assemblyInstructions(targetParts, partsLibR, vectorsLibR, libPairs, new HashMap(), rParameters, null);
         
         return assemblyInstructions;
     }

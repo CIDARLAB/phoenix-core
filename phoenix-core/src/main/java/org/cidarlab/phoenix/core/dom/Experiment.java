@@ -31,7 +31,21 @@ public class Experiment {
         colorControls = new ArrayList<>();
         regulationControls = new ArrayList<>();
         expDegControls = new ArrayList<>();
-    }    
+    }   
+    
+    //Get all samples in an experiment
+    public List<Sample> getAllSamples() {
+        
+        List<Sample> allSamples = new ArrayList<>();
+        allSamples.add(this.beadControl);
+        allSamples.add(this.negativeControl);
+        allSamples.addAll(this.colorControls);
+        allSamples.addAll(this.expDegControls);
+        allSamples.addAll(this.regulationControls);
+        allSamples.addAll(this.experimentSamples);
+        
+        return allSamples;
+    }
     
     //Experiment name
     @Setter

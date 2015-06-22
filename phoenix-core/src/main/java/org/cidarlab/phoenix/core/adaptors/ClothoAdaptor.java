@@ -371,6 +371,8 @@ public class ClothoAdaptor {
             //NucSeq data
             Map createNucSeqMain = createNucSeq(pn.getSequence());
 
+            
+            //Change this. Make it point to a Clotho Id instead.
             //Part and vector
             Map createPart = createPart(pn.getPart(), clothoObject);
             Map createVec = createPart(pn.getVector(), clothoObject);
@@ -412,8 +414,6 @@ public class ClothoAdaptor {
             createSequence.put("schema", "org.cidarlab.phoenix.core.dom.Sequence");
             createSequence.put("sequence", f.getSequence().getSequence());
             createFeature.put("sequence", createSequence);
-            
-            
             
             //FeatureRole sub-schema
             Map createFeatureRole = new HashMap();
@@ -561,7 +561,6 @@ public class ClothoAdaptor {
         return id;
     }
     
-    
     //Add fluorophores to Clotho via Clotho Server API
     public static List<String> createFluorophores(HashSet<Fluorophore> flourophores,Clotho clothoObject) {
         
@@ -574,9 +573,12 @@ public class ClothoAdaptor {
     }
     
     
-    public static void createModule(Module module, Clotho clothoObject){
-        createModuleTree(module,clothoObject);
+    //<editor-fold  desc="Create a Module Tree in Clotho">
+    public static String createModule(Module module, Clotho clothoObject){
+        String id = "";
+        id = createModuleTree(module,clothoObject);
         setNeighbors(module,clothoObject);
+        return id;
     
     }
     
@@ -605,8 +607,9 @@ public class ClothoAdaptor {
         }
     }
     
-    public static void createModuleTree(Module module, Clotho clothoObject){
+    public static String createModuleTree(Module module, Clotho clothoObject){
         
+        String id = "";
         Map createModule = new HashMap();
         createModule.put("name", module.getName());
         createModule.put("schema", "org.cidarlab.phoenix.core.dom.Module");
@@ -646,21 +649,26 @@ public class ClothoAdaptor {
         
         System.out.println("Module Name :: " + createModule.get("name"));
         
-        clothoObject.create(createModule);
-        module.setClothoID(module.getName());
+        id = (String) clothoObject.create(createModule);
+        module.setClothoID(id);
         
         for (Module child : module.getChildren()) {
             createModuleTree(child, clothoObject);
         }
+        return id;
+    }
+    //</editor-fold>
+    
+    
+    public static String createLTLFunction(LTLFunction ltl,Clotho clothoObject){
+        String id = "";
+        Map map = new HashMap();
+        map.put("schema", "org.cidarlab.phoenix.core.dom.Part");
+        return id;
     }
     
     
-    
-    public static Map createLTLFunction(LTLFunction ltl){
-        Map createltl = new HashMap();
-        return createltl;
-    }
-    
+    //Change this to string??
     //Add parts to Clotho via Clotho Server API
     public static Map createPart(Part p, Clotho clothoObject) {
 

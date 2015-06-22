@@ -38,7 +38,7 @@ public class ClientServlet extends HttpServlet {
             throws ServletException, IOException, JSONException {
         
         Part test = null;
-        test = request.getPart("plasmidLib3");
+        test = request.getPart("plasmidLib");
         
         if(test != null){
             System.out.println("\n\n\nSUCCESS!");

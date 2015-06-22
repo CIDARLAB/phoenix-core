@@ -5,9 +5,12 @@
 package org.cidarlab.phoenix.core.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
 import org.cidarlab.phoenix.core.dom.Arc;
 import org.cidarlab.phoenix.core.dom.Component;
 import org.cidarlab.phoenix.core.dom.ComponentType;
@@ -19,10 +22,13 @@ import org.cidarlab.phoenix.core.dom.Primitive;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
 import org.cidarlab.phoenix.core.dom.Feature;
 import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
+import org.cidarlab.phoenix.core.dom.Medium;
 import org.cidarlab.phoenix.core.dom.NucSeq;
 import org.cidarlab.phoenix.core.dom.Person;
 import org.cidarlab.phoenix.core.dom.Polynucleotide;
 import org.cidarlab.phoenix.core.dom.Sample;
+import org.cidarlab.phoenix.core.dom.Sample.SampleType;
+import org.cidarlab.phoenix.core.dom.Strain;
 
 /**
  *
@@ -171,262 +177,123 @@ public class TestingStructures {
     }
     
     //Method for forming sets of experiments given a paritally assigned module graph
-    public static HashSet<Experiment> createExperiments(HashSet<Module> modules) {
+    public static List<Experiment> createExperiments(HashSet<Module> modules) {
         
         //Initialize experiment set - some types of modules require multiple experiments
-        HashSet<Experiment> experimentSet = new HashSet<>();
-        HashSet<Module> controlModulesAll = new HashSet<>(); 
+        HashSet<Module> controlModulesAll = new HashSet<>();
+        List<Medium> defaultMedia = new ArrayList<>();
+        defaultMedia.add(new Medium("LB", Medium.MediaType.RICH));        
+        List<Integer> defaultTime = Arrays.asList(new Integer[]{0, 10, 20, 30, 40, 50, 60});
         
         for (Module m : modules) {
 
-            HashSet<Module> controlsThisModule = new HashSet<>();
+            List<Experiment> experimentList = new ArrayList<>();
             
             //Experiments for EXPRESSEE
             if (m.getRole().equals(ModuleRole.EXPRESSEE)) {
-
-                //Add control constructs                    
-                controlsThisModule.add(createExpDegControl());
-                controlsThisModule.addAll(createRegControls(m));
-                controlsThisModule = createColorControls(controlsThisModule);                
-                removeDuplicateModules(controlsThisModule, controlModulesAll, m);
-                
-                //Initialize experiment object(s)
-                Experiment degradation = new Experiment(ExperimentType.DEGRADATION);
-                degradation.setName(degradation.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
-                createExperimentSamples(degradation, m);
-                createControlSamples(degradation, controlsThisModule);
                 
                 //Add these experiments to the returned experiment set
-                experimentSet.add(degradation);
+                experimentList.add(new Experiment(ExperimentType.DEGRADATION, "DEGRADATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));
+                addSamples(experimentList, controlModulesAll, m, true);
                 
-                //Add these experiments to a module
-                if (m.getExperiments() != null) {
-                    m.getExperiments().add(degradation);
-                } else {
-                    List<Experiment> mExperiments = new ArrayList<>();
-                    mExperiments.add(degradation);
-                    m.setExperiments(mExperiments);
-                }
+                m.getExperiments().addAll(experimentList);
 
             //Experiments for EXPRESSEE_ACTIVATIBLE_ACTIVATOR
-            } else if (m.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR)) {
-
-                //Add control constructs                   
-                controlsThisModule.add(createExpDegControl());
-                controlsThisModule.addAll(createRegControls(m));
-                controlsThisModule = createColorControls(controlsThisModule);                
-                removeDuplicateModules(controlsThisModule, controlModulesAll, m);
-                
-                //Initialize experiment object(s)
-                Experiment degradation = new Experiment(ExperimentType.DEGRADATION);
-                degradation.setName(degradation.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
-                createExperimentSamples(degradation, m);
-                createControlSamples(degradation, controlsThisModule);
-                
-                Experiment regulation = new Experiment(ExperimentType.REGULATION);
-                regulation.setName(regulation.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
-                createExperimentSamples(regulation, m);
-                createControlSamples(regulation, controlsThisModule);
-                
-                Experiment smallMolecule = new Experiment(ExperimentType.SMALL_MOLECULE);
-                smallMolecule.setName(smallMolecule.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
-                createExperimentSamples(smallMolecule, m);
-                createControlSamples(smallMolecule, controlsThisModule);
+            } else if (m.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR)) {             
                 
                 //Add these experiments to the returned experiment set
-                experimentSet.add(degradation);
-                experimentSet.add(regulation);
-                experimentSet.add(smallMolecule);
+                experimentList.add(new Experiment(ExperimentType.DEGRADATION, "DEGRADATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));
+                experimentList.add(new Experiment(ExperimentType.REGULATION, "REGULATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<Integer>()));
+                experimentList.add(new Experiment(ExperimentType.SMALL_MOLECULE, "SMALL_MOLECULE_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<Integer>()));                
+                addSamples(experimentList, controlModulesAll, m, true);               
                 
-                //Add these experiments to a module
-                if (m.getExperiments() != null) {
-                    m.getExperiments().add(degradation);
-                    m.getExperiments().add(regulation);
-                    m.getExperiments().add(smallMolecule);
-                } else {
-                    List<Experiment> mExperiments = new ArrayList<>();
-                    mExperiments.add(degradation);
-                    mExperiments.add(regulation);
-                    mExperiments.add(smallMolecule);
-                    m.setExperiments(mExperiments);
-                }
+                m.getExperiments().addAll(experimentList);
 
             //Experiments for EXPRESSEE_ACTIVATOR
             } else if (m.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR)) {
-
-                //Add control constructs                    
-                controlsThisModule.add(createExpDegControl());
-                controlsThisModule.addAll(createRegControls(m));
-                controlsThisModule = createColorControls(controlsThisModule);                
-                removeDuplicateModules(controlsThisModule, controlModulesAll, m);
-                
-                //Initialize experiment object(s)
-                Experiment degradation = new Experiment(ExperimentType.DEGRADATION);
-                degradation.setName(degradation.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
-                createExperimentSamples(degradation, m);
-                createControlSamples(degradation, controlsThisModule);
-                
-                Experiment regulation = new Experiment(ExperimentType.REGULATION);
-                regulation.setName(regulation.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
-                createExperimentSamples(regulation, m);
-                createControlSamples(regulation, controlsThisModule);
                 
                 //Add these experiments to the returned experiment set
-                experimentSet.add(degradation);
-                experimentSet.add(regulation);
+                experimentList.add(new Experiment(ExperimentType.DEGRADATION, "DEGRADATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));
+                experimentList.add(new Experiment(ExperimentType.REGULATION, "REGULATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<Integer>()));            
+                addSamples(experimentList, controlModulesAll, m, true); 
                 
-                //Add these experiments to a module
-                if (m.getExperiments() != null) {
-                    m.getExperiments().add(degradation);
-                    m.getExperiments().add(regulation);
-                } else {
-                    List<Experiment> mExperiments = new ArrayList<>();
-                    mExperiments.add(degradation);
-                    mExperiments.add(regulation);
-                    m.setExperiments(mExperiments);
-                }
+                m.getExperiments().addAll(experimentList);
 
             //Experiments for EXPRESSEE_REPRESSIBLE_REPRESSOR
             } else if (m.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR)) {
 
-                //Add control constructs                   
-                controlsThisModule.add(createExpDegControl());
-                controlsThisModule.addAll(createRegControls(m));
-                controlsThisModule = createColorControls(controlsThisModule);                
-                removeDuplicateModules(controlsThisModule, controlModulesAll, m);
-                
-                //Initialize experiment object(s)
-                Experiment degradation = new Experiment(ExperimentType.DEGRADATION);
-                degradation.setName(degradation.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
-                createExperimentSamples(degradation, m);
-                createControlSamples(degradation, controlsThisModule);
-                
-                Experiment regulation = new Experiment(ExperimentType.REGULATION);
-                regulation.setName(regulation.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
-                createExperimentSamples(regulation, m);
-                createControlSamples(regulation, controlsThisModule);
-                
-                Experiment smallMolecule = new Experiment(ExperimentType.SMALL_MOLECULE);
-                smallMolecule.setName(smallMolecule.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
-                createExperimentSamples(smallMolecule, m);
-                createControlSamples(smallMolecule, controlsThisModule);
-                
                 //Add these experiments to the returned experiment set
-                experimentSet.add(degradation);
-                experimentSet.add(regulation);
-                experimentSet.add(smallMolecule);
-                
-                //Add these experiments to a module
-                if (m.getExperiments() != null) {
-                    m.getExperiments().add(degradation);
-                    m.getExperiments().add(regulation);
-                    m.getExperiments().add(smallMolecule);
-                } else {
-                    List<Experiment> mExperiments = new ArrayList<>();
-                    mExperiments.add(degradation);
-                    mExperiments.add(regulation);
-                    mExperiments.add(smallMolecule);
-                    m.setExperiments(mExperiments);
-                }
+                experimentList.add(new Experiment(ExperimentType.DEGRADATION, "DEGRADATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));
+                experimentList.add(new Experiment(ExperimentType.REGULATION, "REGULATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<Integer>()));
+                experimentList.add(new Experiment(ExperimentType.SMALL_MOLECULE, "SMALL_MOLECULE_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<Integer>()));                
+                addSamples(experimentList, controlModulesAll, m, true);
+
+                m.getExperiments().addAll(experimentList);              
 
             //Experiments for EXPRESSEE_REPRESSOR    
             } else if (m.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)) {
-
-                //Add control constructs                  
-                controlsThisModule.add(createExpDegControl());
-                controlsThisModule.addAll(createRegControls(m));
-                controlsThisModule = createColorControls(controlsThisModule);                
-                removeDuplicateModules(controlsThisModule, controlModulesAll, m);
-                
-                //Initialize experiment object(s)
-                Experiment degradation = new Experiment(ExperimentType.DEGRADATION);
-                degradation.setName(degradation.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
-                createExperimentSamples(degradation, m);
-                createControlSamples(degradation, controlsThisModule);
-                
-                Experiment regulation = new Experiment(ExperimentType.REGULATION);
-                regulation.setName(regulation.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
-                createExperimentSamples(regulation, m);
-                createControlSamples(regulation, controlsThisModule);               
                 
                 //Add these experiments to the returned experiment set
-                experimentSet.add(degradation);
-                experimentSet.add(regulation);
+                experimentList.add(new Experiment(ExperimentType.DEGRADATION, "DEGRADATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));
+                experimentList.add(new Experiment(ExperimentType.REGULATION, "REGULATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<Integer>()));            
+                addSamples(experimentList, controlModulesAll, m, true);
                 
-                //Add these experiments to a module
-                if (m.getExperiments() != null) {
-                    m.getExperiments().add(degradation);
-                    m.getExperiments().add(regulation);
-                } else {
-                    List<Experiment> mExperiments = new ArrayList<>();
-                    mExperiments.add(degradation);
-                    mExperiments.add(regulation);
-                    m.setExperiments(mExperiments);
-                }
+                m.getExperiments().addAll(experimentList);
 
             //Experiments for EXPRESSOR
             } else if (m.getRole().equals(ModuleRole.EXPRESSOR)) {
-
-                //Add control constructs                  
-                controlsThisModule.add(createExpDegControl());
-                controlsThisModule = createColorControls(controlsThisModule);                
-                removeDuplicateModules(controlsThisModule, controlModulesAll, m);
-                
-                //Initialize experiment object
-                Experiment expression = new Experiment(ExperimentType.EXPRESSION);
-                expression.setName(expression.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
-                createExperimentSamples(expression, m);
-                createControlSamples(expression, controlsThisModule);
                 
                 //Add these experiments to the returned experiment set
-                experimentSet.add(expression);
+                experimentList.add(new Experiment(ExperimentType.EXPRESSION, "EXPRESSION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<Integer>()));          
+                addSamples(experimentList, controlModulesAll, m, false);
                 
-                //Add these experiments to a module
-                if (m.getExperiments() != null) {
-                    m.getExperiments().add(expression);
-                } else {
-                    List<Experiment> mExperiments = new ArrayList<>();
-                    mExperiments.add(expression);
-                    m.setExperiments(mExperiments);
-                }
+                m.getExperiments().addAll(experimentList);
 
             //Experiments for TRANSCRIPTIONAL_UNIT
             } else if (m.getRole().equals(ModuleRole.TRANSCRIPTIONAL_UNIT)) {
-
-                //Add control constructs                  
-                controlsThisModule.add(createExpDegControl());
-                controlsThisModule = createColorControls(controlsThisModule);                
-                removeDuplicateModules(controlsThisModule, controlModulesAll, m);
                 
-                //Initialize experiment object(s)
-                Experiment rbs_context = new Experiment(ExperimentType.RBS_CONTEXT);
-                rbs_context.setName(rbs_context.getExType().toString() + "_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"));
-                createExperimentSamples(rbs_context, m);
-                createControlSamples(rbs_context, controlsThisModule);
-                experimentSet.add(rbs_context);
+                //Add these experiments to the returned experiment set
+                experimentList.add(new Experiment(ExperimentType.RBS_CONTEXT, "RBS_CONTEXT_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));          
+                addSamples(experimentList, controlModulesAll, m, false);
                 
-                //Add these experiments to a module
-                if (m.getExperiments() != null) {
-                    m.getExperiments().add(rbs_context);
-                } else {
-                    List<Experiment> mExperiments = new ArrayList<>();
-                    mExperiments.add(rbs_context);
-                    m.setExperiments(mExperiments);
-                }
+                m.getExperiments().addAll(experimentList);
 
             //Experiments for HIGHER_FUNCTION
             } else if (m.getRole().equals(ModuleRole.HIGHER_FUNCTION)) {
 
                 //Initialize experiment object
-                Experiment ex = new Experiment();
-                experimentSet.add(ex);
+                experimentList.add(new Experiment(ExperimentType.SPECIFICATION, "SPECIFICATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));
             }
         }
         
-        //Add control modules
-        modules.addAll(controlModulesAll);
+        //Make sure all duplicate samples are merged
+        List<Experiment> allExperiments = new ArrayList<>();
+        for (Module m : modules) {
+            allExperiments.addAll(m.getExperiments());
+        }
+        removeDuplicatePolynucleotides(allExperiments);
         
-        return experimentSet;
+        return allExperiments;
+    }
+    
+    //Add controls and samples
+    private static void addSamples(List<Experiment> experiments, HashSet<Module> controlModulesAll, Module m, boolean regControls) {
+
+        //Add control constructs 
+        HashSet<Module> controlsThisModule = new HashSet<>();
+        controlsThisModule.add(createExpDegControl());
+        controlsThisModule = createColorControls(controlsThisModule);
+        if (regControls) {
+            controlsThisModule.addAll(createRegControls(m));
+        }
+        
+        removeDuplicateModules(controlsThisModule, controlModulesAll, m);
+
+        //Add samples
+        for (Experiment e : experiments) {
+            createExperimentSamples(e, m);
+            createControlSamples(e, controlsThisModule, m);
+        }
     }
     
     //Make a standard expression/degradation control for EXPRESSORs and all types of EXPRESSEEs
@@ -442,7 +309,7 @@ public class TestingStructures {
         testSubmodules.add(testVector1);
         expDegControl.setSubmodules(testSubmodules);
         expDegControl.updateModuleFeatures();
-        expDegControl.setRole(ModuleRole.TESTING_CONTROL);
+        expDegControl.setRole(ModuleRole.EXPRESSION_DEGRATATION_CONTROL);
         
         return expDegControl;
     }
@@ -466,7 +333,7 @@ public class TestingStructures {
                         Feature regulatee = a.getRegulatee();
                         PrimitiveModule regPromoter = new PrimitiveModule(regulatee.getRole(), new Primitive(new ComponentType("p"), regulatee.getName()), regulatee);
                         
-                        Module regControl = new Module(expressee.getName() + "_REGULATION_CONTROL_" + count);
+                        Module regControl = new Module(regulatee.getClothoID().replaceAll(".ref", "") + "_REGULATION_CONTROL_" + count);
                         count++;
                         List<PrimitiveModule> testSubmodules = new ArrayList<>();
                         
@@ -477,7 +344,7 @@ public class TestingStructures {
                         testSubmodules.add(testVector2);
                         regControl.setSubmodules(testSubmodules);
                         regControl.updateModuleFeatures();
-                        regControl.setRole(ModuleRole.TESTING_CONTROL);
+                        regControl.setRole(ModuleRole.REGULATION_CONTROL);
 
                         regControls.add(regControl);
                     }
@@ -500,7 +367,7 @@ public class TestingStructures {
                 if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
 
                     //Expression control
-                    Module colorControl = new Module(pm.getModuleFeatures().get(0).getName() + "_COLOR_CONTROL");
+                    Module colorControl = new Module(pm.getModuleFeatures().get(0).getName().replaceAll(".ref", "") + "_COLOR_CONTROL");
                     List<PrimitiveModule> testSubmodules = new ArrayList<>();
                     testSubmodules.add(testPromoter);
                     testSubmodules.add(testRBS);
@@ -509,7 +376,7 @@ public class TestingStructures {
                     testSubmodules.add(testVector2);
                     colorControl.setSubmodules(testSubmodules);
                     colorControl.updateModuleFeatures();
-                    colorControl.setRole(ModuleRole.TESTING_CONTROL);
+                    colorControl.setRole(ModuleRole.COLOR_CONTROL);
                     colorControls.add(colorControl);
                 }
             }
@@ -541,18 +408,222 @@ public class TestingStructures {
     }
     
     //Method for forming an experiment from a module which has partial part assignment
-    private static void createExperimentSamples(Experiment e, Module m) {
+    private static void createExperimentSamples(Experiment experiment, Module m) {
 
+        Strain defaultStrain = new Strain("E. coli DH5a");
         
+        //Create regulation control sample with test sample for each media condition
+        List<Polynucleotide> pNs = new ArrayList<>();
+        pNs.add(makePolynucleotide(m));
+        List<Sample> experimentSamples = experiment.getExpDegControls();
+        
+        //EXPRESSION EXPERIMENT
+        if (experiment.getExType().equals(ExperimentType.EXPRESSION)) {
+            
+            //Add time series of samples for each media condition
+            for (Medium media : experiment.getMediaConditions()) {
+                List<Integer> times = experiment.getTimes();
+                if (!times.isEmpty()) {
+                    Sample degControl = new Sample(m.getName(), SampleType.EXPERIMENT, defaultStrain, pNs, media, 0);
+                    experimentSamples.add(degControl);
+                }
+            }
+            
+        //DEGRADATION EXPERIMENT
+        } else if (experiment.getExType().equals(ExperimentType.DEGRADATION)) {
+            
+            //Add time series of samples for each media condition
+            for (Medium media : experiment.getMediaConditions()) {
+                List<Integer> times = experiment.getTimes();
+                if (!times.isEmpty()) {
+                    for (Integer i : times) {
+                        Sample degControl = new Sample(m.getName(), SampleType.EXPERIMENT, defaultStrain, pNs, media, i);
+                        experimentSamples.add(degControl);
+                    }
+                }
+            }
+            
+        //REGULATION EXPERIMENT
+        } else if (experiment.getExType().equals(ExperimentType.REGULATION)) {
+            
+            //Add time series of samples for each media condition
+            for (Medium media : experiment.getMediaConditions()) {
+                List<Integer> times = experiment.getTimes();
+                if (!times.isEmpty()) {
+                    Sample degControl = new Sample(m.getName(), SampleType.EXPERIMENT, defaultStrain, pNs, media, 0);
+                    experimentSamples.add(degControl);
+                }
+            }
+            
+        //SMALL MOLECULE EXPERIMENT    
+        } else if (experiment.getExType().equals(ExperimentType.SMALL_MOLECULE)) {
+            
+            //Add time series of samples for each media condition
+            for (Medium media : experiment.getMediaConditions()) {
+                List<Integer> times = experiment.getTimes();
+                if (!times.isEmpty()) {
+                    Sample degControl = new Sample(m.getName(), SampleType.EXPERIMENT, defaultStrain, pNs, media, 0);
+                    experimentSamples.add(degControl);
+                }
+            }
+            
+        //RBS CONTEXT     
+        } else if (experiment.getExType().equals(ExperimentType.RBS_CONTEXT)) {
+            
+            //Add time series of samples for each media condition
+            for (Medium media : experiment.getMediaConditions()) {
+                List<Integer> times = experiment.getTimes();
+                if (!times.isEmpty()) {
+                    Sample degControl = new Sample(m.getName(), SampleType.EXPERIMENT, defaultStrain, pNs, media, 0);
+                    experimentSamples.add(degControl);
+                }
+            }
+            
+        //SPECIFICATION
+        } else if (experiment.getExType().equals(ExperimentType.SPECIFICATION)) {
+            
+            //Add time series of samples for each media condition
+            for (Medium media : experiment.getMediaConditions()) {
+                List<Integer> times = experiment.getTimes();
+                if (!times.isEmpty()) {
+                    Sample degControl = new Sample(m.getName(), SampleType.EXPERIMENT, defaultStrain, pNs, media, 0);
+                    experimentSamples.add(degControl);
+                }
+            }
+            
+        }
     }
     
     //Method for forming an experiment from a module which has partial part assignment
-    private static void createControlSamples(Experiment e, HashSet<Module> modules) {
-
+    private static void createControlSamples(Experiment experiment, HashSet<Module> controlModules, Module testModule) {
+        
+        Strain defaultStrain = new Strain("E. coli DH5a");
+        
+        //Initialize control samples
+        Sample beadControl = new Sample("RaibowBeads", SampleType.BEADS, null, null, null, 0);
+        Sample negativeControl = new Sample("Negative", SampleType.NEGATIVE, defaultStrain, null, null, 0);
+        
+        experiment.setNegativeControl(negativeControl);
+        experiment.setBeadControl(beadControl);
+        
+        //Loop through modules to create samples
+        for (Module m : controlModules) {
+            
+            //Regulation controls
+            if (m.getRole().equals(ModuleRole.REGULATION_CONTROL)) {
+                
+                //Get exisiting regulation controls if they exist
+                List<Sample> regulationControls = experiment.getRegulationControls();
+                
+                //Create regulation control sample with test sample for each media condition
+                List<Polynucleotide> pNs = new ArrayList<>();
+                pNs.add(makePolynucleotide(testModule));
+                pNs.add(makePolynucleotide(m));                
+                for (Medium media : experiment.getMediaConditions()) {
+                    Sample regulationControl = new Sample(m.getName(), SampleType.REGULATION, defaultStrain, pNs, media, 0);
+                    regulationControls.add(regulationControl);
+                }
+                
+                //Create regulation control sample in the absence of the test sample for each media condition
+                List<Polynucleotide> pNsUR = new ArrayList<>();
+                pNsUR.add(makePolynucleotide(m));
+                for (Medium media : experiment.getMediaConditions()) {
+                    Sample unregulatedRegulationControl = new Sample(m.getName(), SampleType.REGULATION, defaultStrain, pNsUR, media, 0);
+                    regulationControls.add(unregulatedRegulationControl);
+                }
+                
+            //Color controls
+            } else if (m.getRole().equals(ModuleRole.COLOR_CONTROL)) {
+                
+                //Get existing color controls if they exist
+                List<Sample> colorControls = experiment.getRegulationControls();
+                
+                //Create color control sample for each media condition
+                List<Polynucleotide> pNs = new ArrayList<>();
+                pNs.add(makePolynucleotide(testModule));               
+                for (Medium media : experiment.getMediaConditions()) {
+                    Sample colorControl = new Sample(m.getName(), SampleType.FLUORESCENT, defaultStrain, pNs, media, 0);
+                    colorControls.add(colorControl);
+                }
+                
+            //Expression and degration control
+            } else if (m.getRole().equals(ModuleRole.EXPRESSION_DEGRATATION_CONTROL)) {
+        
+                List<Sample> expDegControls = experiment.getExpDegControls();
+                
+                List<Polynucleotide> pNs = new ArrayList<>();
+                pNs.add(makePolynucleotide(testModule));
+                
+                //Add degradation control samples if this experiment is a degradation experiment
+                if (experiment.getExType().equals(ExperimentType.DEGRADATION)) {
+                    
+                    //Add time series of samples for each media condition
+                    for (Medium media : experiment.getMediaConditions()) {
+                        List<Integer> times = experiment.getTimes();
+                        if (!times.isEmpty()) {
+                            for (Integer i : times) {
+                                Sample degControl = new Sample(m.getName(), SampleType.EXPRESSION_DEGRATATION, defaultStrain, pNs, media, i);
+                                expDegControls.add(degControl);
+                            }
+                        }
+                    }
+                
+                //Add expression control if this is an expression experiment    
+                } else if (experiment.getExType().equals(ExperimentType.EXPRESSION)) {
+                    
+                    for (Medium media : experiment.getMediaConditions()) {
+                        Sample expControl = new Sample(m.getName(), SampleType.EXPRESSION_DEGRATATION, defaultStrain, pNs, media, 0);
+                        expDegControls.add(expControl);
+                    }
+                }
+            }
+        }
+    }
+    
+    //Make a new polynucleotide with the same name as the module, but no other information
+    private static Polynucleotide makePolynucleotide(Module m) {
+        
+        Polynucleotide pn = new Polynucleotide(m.getName());        
+        return pn;
+    }
+    
+    //Remove merge an duplicate samples across experiments
+    private static void removeDuplicatePolynucleotides(List<Experiment> experiments) {
+        
+        //Initiate hashes for existing polynucleotides
+        HashSet<Polynucleotide> polyNucs = ClothoAdaptor.queryPolynucleotides();
+        HashMap<String, Polynucleotide> pnNameHash = new HashMap<>(); //key: clothoID, value: polynucleotide with that clothoID
+        for (Polynucleotide pn : polyNucs) {
+            pnNameHash.put(pn.getClothoID(), pn);
+        }
+        
+        //Look through each experiment for duplicated samples
+        for (Experiment ex : experiments) {
+            
+            HashSet<Sample> allSamples = new HashSet<>();
+            allSamples.add(ex.getBeadControl());
+            allSamples.add(ex.getNegativeControl());
+            allSamples.addAll(ex.getColorControls());
+            allSamples.addAll(ex.getExpDegControls());
+            allSamples.addAll(ex.getExperimentSamples());
+            allSamples.addAll(ex.getRegulationControls());
+            
+            //Remove duplicate polynucleotides
+            for (Sample s : allSamples) {
+                List<Polynucleotide> polynucleotides = s.getPolynucleotides();
+                
+                for (Polynucleotide pn : polynucleotides) {
+                    if (pnNameHash.containsKey(pn.getClothoID())) {
+                        pn = pnNameHash.get(pn.getClothoID());
+                    } else {
+                        pnNameHash.put(pn.getClothoID(), pn);
+                    }
+                }
+            }
+        }        
     }
      
     //FIELDS
-    public static int nameCount = 1;
     private static final PrimitiveModule testPromoter = new PrimitiveModule(FeatureRole.PROMOTER_CONSTITUTIVE, new Primitive(new ComponentType("p"), "pTEST"), new Feature("pTEST", new NucSeq("ttgacggctagctcagtcctaggtacagtgctagc"), new Person(), FeatureRole.PROMOTER_CONSTITUTIVE));
     private static final PrimitiveModule testRBS = new PrimitiveModule(FeatureRole.RBS, new Primitive(new ComponentType("r"), "rTEST"), new Feature("rTEST", new NucSeq("gggcccaagttcacttaaaaaggagatcaacaatgaaagcaattttcgtactgaaacatcttaatcatgctaaggaggttttct"), new Person(), FeatureRole.RBS));
     private static final PrimitiveModule testCDS1 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("c"), "cTEST1"), new Feature("cTEST1", new NucSeq("atgcgtaaaggagaagaacttttcactggagttgtcccaattcttgttgaattagatggtgatgttaatgggcacaaattttctgtcagtggagagggtgaaggtgatgcaacatacggaaaacttacccttaaatttatttgcactactggaaaactacctgttccatggccaacacttgtcactactttcggttatggtgttcaatgctttgcgagatacccagatcatatgaaacagcatgactttttcaagagtgccatgcccgaaggttatgtacaggaaagaactatatttttcaaagatgacgggaactacaagacacgtgctgaagtcaagtttgaaggtgatacccttgttaatagaatcgagttaaaaggtattgattttaaagaagatggaaacattcttggacacaaattggaatacaactataactcacacaatgtatacatcatggcagacaaacaaaagaatggaatcaaagttaacttcaaaattagacacaacattgaagatggaagcgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtccacacaatctgccctttcgaaagatcccaacgaaaagagagatcacatggtccttcttgagtttgtaacagctgctgggattacacatggcatggatgaactatacaaataataa"), new Person(), FeatureRole.CDS_FLUORESCENT));

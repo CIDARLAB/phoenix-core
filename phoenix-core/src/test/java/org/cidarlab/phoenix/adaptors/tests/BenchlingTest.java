@@ -102,7 +102,7 @@ public class BenchlingTest {
         }
     }
     
-    @Test
+//    @Test
     public void testFluorophoreUpload() {
         try {
             

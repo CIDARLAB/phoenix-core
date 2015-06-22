@@ -138,6 +138,18 @@ public class ClothoTest {
         }
     }
     
+    @Test
+    public void testCytometerUpload() {
+        
+        String filePath = getFilepath() + "/src/main/resources/FluorescentProteins/cosbi_fortessa_bd.csv";
+        File toLoad = new File(filePath);
+        try {
+            ClothoAdaptor.uploadCytometer(toLoad);
+        } catch (Exception ex) {
+            Logger.getLogger(ClothoTest.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }
+    
 //    @Test
     public void testQuery() {
         System.out.println("Start Test");
@@ -159,18 +171,6 @@ public class ClothoTest {
         System.out.println("End of Tests");
     }
     
-    @Test
-    public void testCytometerUpload() {
-        
-        String filePath = getFilepath() + "/src/main/resources/FluorescentProteins/cosbi_fortessa_bd.csv";
-        File toLoad = new File(filePath);
-        try {
-            ClothoAdaptor.uploadCytometer(toLoad);
-        } catch (Exception ex) {
-            Logger.getLogger(ClothoTest.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-    }
-      
 //    public ClothoTest() {
 //        
 //    }

@@ -34,6 +34,7 @@ public class Module {
         this.name = name;
         this.clothoID = name;
         this.color = Color.white;
+        this.experiments = new ArrayList<>();
     }
     
     //Module constructor for root and stage
@@ -72,6 +73,10 @@ public class Module {
         }
         clone.submodules = pmList;
         
+        List<Experiment> exList = new ArrayList<>();
+        exList.addAll(this.experiments);        
+        clone.experiments = exList;
+        
         clone.function = this.function;
         clone.isForward = this.isForward;
         clone.role = this.role;
@@ -109,7 +114,7 @@ public class Module {
     //LTL function associated with this module
     @Getter
     @Setter
-    private LTLFunction function;
+    private STLFunction function;
     
     //Directionality
     @Getter
@@ -177,7 +182,10 @@ public class Module {
         EXPRESSEE_ACTIVATOR,
         EXPRESSEE_ACTIVATIBLE_ACTIVATOR,
         TRANSCRIPTIONAL_UNIT,
-        TESTING_CONTROL,
+//        TESTING_CONTROL,
+        EXPRESSION_DEGRATATION_CONTROL,
+        REGULATION_CONTROL,
+        COLOR_CONTROL,
         HIGHER_FUNCTION;
     }
     

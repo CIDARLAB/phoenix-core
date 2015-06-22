@@ -36,8 +36,8 @@ import org.clothoapi.clotho3javaapi.ClothoConnection;
 import org.cidarlab.phoenix.core.dom.Annotation;
 import org.cidarlab.phoenix.core.dom.Arc;
 import org.cidarlab.phoenix.core.dom.AssemblyParameters;
-import org.cidarlab.phoenix.core.dom.LTLFunction;
 import org.cidarlab.phoenix.core.dom.Medium;
+import org.cidarlab.phoenix.core.dom.STLFunction;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Person;
 import org.cidarlab.phoenix.core.dom.Sample;
@@ -660,7 +660,8 @@ public class ClothoAdaptor {
     //</editor-fold>
     
     
-    public static String createLTLFunction(LTLFunction ltl,Clotho clothoObject){
+
+    public static String createLTLFunction(STLFunction ltl,Clotho clothoObject){
         String id = "";
         Map map = new HashMap();
         map.put("schema", "org.cidarlab.phoenix.core.dom.Part");

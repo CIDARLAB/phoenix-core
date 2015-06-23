@@ -90,7 +90,7 @@ public class ClothoTest {
         conn.closeConnection();
     }
     
-    @Test
+//    @Test
     public void testPlasmidLibraryUpload() {
         
         ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
@@ -138,7 +138,7 @@ public class ClothoTest {
         conn.closeConnection();
     }
     
-    @Test
+//    @Test
     public void testFeatureUpload() {
         ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
         Clotho clothoObject = new Clotho(conn);
@@ -169,7 +169,7 @@ public class ClothoTest {
         conn.closeConnection();
     }
     
-    @Test
+//    @Test
     public void testCytometerUpload() {
         
         ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");

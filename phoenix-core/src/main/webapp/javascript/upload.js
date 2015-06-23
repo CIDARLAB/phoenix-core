@@ -104,7 +104,7 @@ form.onsubmit = function(event) {
             upload.innerHTML = data;
             if(upload.innerHTML === "Done!"){
                 $('#loading').hide();
-                window.location = "dynamicForm2.html";
+                window.location = "specification.html";
             } else {$('#loading').hide();}
         }
     });

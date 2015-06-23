@@ -83,7 +83,7 @@ public class ClientServlet extends HttpServlet {
             File cytometer = partConverter(cytometerPart, "cytometer_config.csv");
             File fluorophoreSpectra = partConverter(fluorophoreSpectraPart, "fp_spectra.csv");
             
-//            preliminaryDataUpload (featureLib, plasmidLib, fluorophoreSpectra, cytometer);
+            preliminaryDataUpload (featureLib, plasmidLib, fluorophoreSpectra, cytometer);
             
             System.out.println("\n\nSUCCESS\n\n");
             holdingData = true;

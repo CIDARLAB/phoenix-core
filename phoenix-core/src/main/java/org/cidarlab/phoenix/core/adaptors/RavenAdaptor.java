@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import net.sf.json.JSONObject;
 import org.cidarlab.phoenix.core.dom.Annotation;
@@ -22,6 +23,8 @@ import org.cidarlab.phoenix.core.dom.PrimitiveModule;
 import org.cidarlab.raven.algorithms.core.PrimerDesign;
 import org.cidarlab.raven.datastructures.Vector;
 import org.cidarlab.raven.javaapi.Raven;
+import org.clothoapi.clotho3javaapi.Clotho;
+import org.clothoapi.clotho3javaapi.ClothoConnection;
 
 /**
  * This class has all methods for sending and receiving information to Raven
@@ -33,13 +36,25 @@ public class RavenAdaptor {
     //Create assembly plans for given parts and return instructions file
     public static File generateAssemblyPlan(HashSet<Module> targetModules) throws Exception {
         
-        //Get Phoenix data from Clotho
-        JSONObject parameters = ClothoAdaptor.queryAssemblyParameters("default").toJSON();
-        org.json.JSONObject rParameters = convertJSONs(parameters);
-        HashSet<Polynucleotide> polyNucs = ClothoAdaptor.queryPolynucleotides();
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
         
-        HashSet<Feature> allFeatures = ClothoAdaptor.queryFeatures();
-        allFeatures.addAll(ClothoAdaptor.queryFluorophores());
+        
+        //Get Phoenix data from Clotho
+        JSONObject parameters = ClothoAdaptor.queryAssemblyParameters("default",clothoObject).toJSON();
+        org.json.JSONObject rParameters = convertJSONs(parameters);
+        
+        Map polyNucQuery = new HashMap();
+        polyNucQuery.put("schema", "org.cidarlab.phoenix.core.dom.Polynucleotide");
+        HashSet<Polynucleotide> polyNucs = ClothoAdaptor.queryPolynucleotides(polyNucQuery,clothoObject);
+        
+        Map featureQuery = new HashMap();
+        featureQuery.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
+        HashSet<Feature> allFeatures = ClothoAdaptor.queryFeatures(featureQuery,clothoObject);
+        
+        Map fluorophoreQuery = new HashMap();
+        fluorophoreQuery.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
+        allFeatures.addAll(ClothoAdaptor.queryFluorophores(fluorophoreQuery,clothoObject));
         
         //Determine parts library
         HashSet<org.cidarlab.raven.datastructures.Part> partsLibR = new HashSet();
@@ -60,6 +75,7 @@ public class RavenAdaptor {
         Raven raven = new Raven();                
         File assemblyInstructions = raven.assemblyInstructions(targetParts, partsLibR, vectorsLibR, libPairs, new HashMap(), rParameters, null);
         
+        conn.closeConnection();
         return assemblyInstructions;
     }
     

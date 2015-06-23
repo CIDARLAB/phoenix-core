@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
 import org.cidarlab.phoenix.core.dom.Arc;
 import org.cidarlab.phoenix.core.dom.Component;
@@ -29,6 +30,8 @@ import org.cidarlab.phoenix.core.dom.Polynucleotide;
 import org.cidarlab.phoenix.core.dom.Sample;
 import org.cidarlab.phoenix.core.dom.Sample.SampleType;
 import org.cidarlab.phoenix.core.dom.Strain;
+import org.clothoapi.clotho3javaapi.Clotho;
+import org.clothoapi.clotho3javaapi.ClothoConnection;
 
 /**
  *
@@ -591,7 +594,14 @@ public class TestingStructures {
     private static void removeDuplicatePolynucleotides(List<Experiment> experiments) {
         
         //Initiate hashes for existing polynucleotides
-        HashSet<Polynucleotide> polyNucs = ClothoAdaptor.queryPolynucleotides();
+        
+        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        Clotho clothoObject = new Clotho(conn);
+        
+        
+        Map polyNucQuery = new HashMap();
+        polyNucQuery.put("schema", "org.cidarlab.phoenix.core.dom.Polynucleotide");
+        HashSet<Polynucleotide> polyNucs = ClothoAdaptor.queryPolynucleotides(polyNucQuery,clothoObject);
         HashMap<String, Polynucleotide> pnNameHash = new HashMap<>(); //key: clothoID, value: polynucleotide with that clothoID
         for (Polynucleotide pn : polyNucs) {
             pnNameHash.put(pn.getClothoID(), pn);
@@ -620,7 +630,8 @@ public class TestingStructures {
                     }
                 }
             }
-        }        
+        }
+        conn.closeConnection();
     }
      
     //FIELDS

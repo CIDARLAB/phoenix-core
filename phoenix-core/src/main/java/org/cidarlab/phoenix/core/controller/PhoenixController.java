@@ -77,7 +77,7 @@ public class PhoenixController {
 
     //Create assembly and testing instructions from a set of Modules that need to be built and tested
     //MODULES IN, FILES OUT
-    public static List<File> createExperimentInstructions (HashSet<Module> modulesToTest) throws Exception {
+    public static List<File> createExperimentInstructions (HashSet<Module> modulesToTest, String filePath) throws Exception {
         
         //Determine experiments from current module assignment state
         //Create expreriment objects based upon the modules being tested
@@ -85,8 +85,8 @@ public class PhoenixController {
         currentExperiments.addAll(TestingStructures.createExperiments(modulesToTest));
 
         //Create assembly and testing plans
-        File assemblyInstructions = RavenAdaptor.generateAssemblyPlan(modulesToTest);
-        File testingInstructions = PhoenixInstructions.generateTestingInstructions(currentExperiments);
+        File assemblyInstructions = RavenAdaptor.generateAssemblyPlan(modulesToTest, filePath);
+        File testingInstructions = PhoenixInstructions.generateTestingInstructions(currentExperiments, filePath);
 
         //Save these strings to files and return them from this method
         List<File> assmTestFiles = new ArrayList<>();

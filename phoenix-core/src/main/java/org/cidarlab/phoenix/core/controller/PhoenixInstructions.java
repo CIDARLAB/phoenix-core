@@ -30,36 +30,35 @@ public class PhoenixInstructions {
     }
     
     //Method for producing testing instructions from Experiments
-    public static File generateTestingInstructions(List<Experiment> experiments) throws IOException {
+    public static File generateTestingInstructions(List<Experiment> experiments, String filePath) throws IOException {
         
-        File testingInstructions = new File(getFilepath() + "/src/main/resources/InstructionFiles/testingInstructionsTest.csv");
+        File testingInstructions = new File(filePath + "/testingInstructionsTest.csv");
         FileWriter instructionsFileWriter = new FileWriter(testingInstructions);
-        BufferedWriter instructionsBufferedWriter = new BufferedWriter(instructionsFileWriter);
-        instructionsBufferedWriter.write("FILENAME,PART,CONTROL,MEDIA,TIME");
-        
-        //Get all the samples from all experiments under consideration
-        List<Sample> allSamples = new ArrayList<>();
-        for (Experiment ex : experiments) {
-            allSamples.addAll(ex.getAllSamples());
+        try (BufferedWriter instructionsBufferedWriter = new BufferedWriter(instructionsFileWriter)) {
+            instructionsBufferedWriter.write("FILENAME,PART,CONTROL,MEDIA,TIME");
+            
+            //Get all the samples from all experiments under consideration
+            List<Sample> allSamples = new ArrayList<>();
+            for (Experiment ex : experiments) {
+                allSamples.addAll(ex.getAllSamples());
+            }
+            
+            //Write one line per sample - this will change to triplicates after debugging
+            for (Sample s : allSamples) {
+                if (s.getType().equals(SampleType.BEADS) || s.getType().equals(SampleType.NEGATIVE)) {                
+                    instructionsBufferedWriter.write("\n," + s.getClothoID() + "," + s.getType() + "," + "," + ",");
+                } else if (s.getType().equals(SampleType.FLUORESCENT)) {
+                    instructionsBufferedWriter.write("\n," + s.getClothoID() + "," + s.getType() + "," + "," + ",");
+                } else {
+                    Medium media = s.getMedia();
+                    String mediaString = media.getName();                
+                    if (media.getSmallmolecule()!= null) {
+                        mediaString = media.getConcentration() + "_" + media.getSmallmolecule() + "_" + mediaString;
+                    }
+                    instructionsBufferedWriter.write("\n," + s.getClothoID() + ",," + mediaString + "," + s.getTime() + ",");
+                }   
+            }
         }
-        
-        //Write one line per sample - this will change to triplicates after debugging
-        for (Sample s : allSamples) {
-            if (s.getType().equals(SampleType.BEADS) || s.getType().equals(SampleType.NEGATIVE)) {                
-                instructionsBufferedWriter.write("\n," + s.getClothoID() + "," + s.getType() + "," + "," + ",");
-            } else if (s.getType().equals(SampleType.FLUORESCENT)) {
-                instructionsBufferedWriter.write("\n," + s.getClothoID() + "," + s.getType() + "," + "," + ",");
-            } else {
-                Medium media = s.getMedia();
-                String mediaString = media.getName();                
-                if (media.getSmallmolecule()!= null) {
-                    mediaString = media.getConcentration() + "_" + media.getSmallmolecule() + "_" + mediaString;
-                }
-                instructionsBufferedWriter.write("\n," + s.getClothoID() + "," + s.getType() + "," + mediaString + "," + s.getTime() + ",");
-            }   
-        }
-        
-        instructionsBufferedWriter.close();
         
         return testingInstructions;
     }

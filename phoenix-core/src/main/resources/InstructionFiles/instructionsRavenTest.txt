@@ -1,0 +1,545 @@
+**********************************************
+Assembly Instructions for target part: toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2
+**********************************************
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2|5|6|[+, +, +, +, +, +, +, +] by performing a moclo cloning reaction with: pTEST|5|12|[+], toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2_intermediate_1_raven_TueJun2314:18:49EDT2015|12|0|[+, +], toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2_intermediate_2_raven_TueJun2314:18:49EDT2015|0|1|[+, +], mAmetrine|1|2|[+], tTEST|2|3|[+], tTEST|3|6|[+], pSB1A2|5|6
+
+-> Assemble pTEST|5|12|[+] by performing a moclo cloning reaction with: pTEST|5|12|[+], pSB1A2|5|12
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2_intermediate_1_raven_TueJun2314:18:49EDT2015|12|0|[+, +] by performing a moclo cloning reaction with: pTEST|12|4|[+], rTEST|4|0|[+], pSB1K3|12|0
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2_intermediate_2_raven_TueJun2314:18:49EDT2015|0|1|[+, +] by performing a moclo cloning reaction with: rTEST|0|4|[+], lacIm|4|1|[+], pSB1K3|0|1
+
+-> Assemble mAmetrine|1|2|[+] by performing a moclo cloning reaction with: mAmetrine|1|2|[+], pSB1A2|1|2
+
+-> Assemble tTEST|2|3|[+] by performing a moclo cloning reaction with: tTEST|2|3|[+], pSB1A2|2|3
+
+-> Assemble tTEST|3|6|[+] by performing a moclo cloning reaction with: tTEST|3|6|[+], pSB1A2|3|6
+
+-> Assemble pTEST|12|4|[+] by performing a moclo cloning reaction with: pTEST|12|4|[+], pSB1A2|12|4
+
+-> Assemble rTEST|4|0|[+] by performing a moclo cloning reaction with: rTEST|4|0|[+], pSB1A2|4|0
+
+-> Assemble rTEST|0|4|[+] by performing a moclo cloning reaction with: rTEST|0|4|[+], pSB1A2|0|4
+
+-> Assemble lacIm|4|1|[+] by performing a moclo cloning reaction with: lacIm|4|1|[+], pSB1A2|4|1
+
+PCR lacIm part with oligos: phoenix1 and phoenix2 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): lacIm|4|1|[+]
+PCR rTEST part with oligos: phoenix3 and phoenix4 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): rTEST|4|0|[+]
+PCR tTEST part with oligos: phoenix5 and phoenix6 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): tTEST|2|3|[+]
+PCR pTEST part with oligos: phoenix7 and phoenix8 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): pTEST|5|12|[+]
+PCR tTEST part with oligos: phoenix9 and phoenix10 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): tTEST|3|6|[+]
+PCR pTEST part with oligos: phoenix11 and phoenix12 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): pTEST|12|4|[+]
+PCR rTEST part with oligos: phoenix13 and phoenix14 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): rTEST|0|4|[+]
+PCR mAmetrine part with oligos: phoenix15 and phoenix16 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): mAmetrine|1|2|[+]
+PCR lacZ part with oligos: phoenix17 and phoenix18 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
+PCR lacZ part with oligos: phoenix19 and phoenix20 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|6
+PCR lacZ part with oligos: phoenix21 and phoenix22 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|12
+PCR lacZ part with oligos: phoenix23 and phoenix24 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|6
+PCR lacZ part with oligos: phoenix25 and phoenix26 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|0|4
+PCR lacZ part with oligos: phoenix27 and phoenix28 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|1
+PCR lacZ part with oligos: phoenix29 and phoenix30 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|12|4
+PCR lacZ part with oligos: phoenix31 and phoenix32 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|1
+PCR lacZ part with oligos: phoenix33 and phoenix34 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|3
+PCR lacZ part with oligos: phoenix35 and phoenix36 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|12|0
+PCR lacZ part with oligos: phoenix37 and phoenix38 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|0
+
+**********************************************
+Assembly Instructions for target part: toggle_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0_2
+**********************************************
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0_2|5|6|[+, +, +, +, +, +, +, +] by performing a moclo cloning reaction with: pTEST|5|12|[+], toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2_intermediate_1_raven_TueJun2314:18:49EDT2015|12|0|[+, +], toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2_intermediate_2_raven_TueJun2314:18:49EDT2015|0|1|[+, +], mCitrine|1|2|[+], tTEST|2|3|[+], tTEST|3|6|[+], pSB1A2|5|6
+
+-> Assemble pTEST|5|12|[+] by performing a moclo cloning reaction with: pTEST|5|12|[+], pSB1A2|5|12
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2_intermediate_1_raven_TueJun2314:18:49EDT2015|12|0|[+, +] by performing a moclo cloning reaction with: pTEST|12|4|[+], rTEST|4|0|[+], pSB1K3|12|0
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2_intermediate_2_raven_TueJun2314:18:49EDT2015|0|1|[+, +] by performing a moclo cloning reaction with: rTEST|0|4|[+], lacIm|4|1|[+], pSB1K3|0|1
+
+-> Assemble mCitrine|1|2|[+] by performing a moclo cloning reaction with: mCitrine|1|2|[+], pSB1A2|1|2
+
+-> Assemble tTEST|2|3|[+] by performing a moclo cloning reaction with: tTEST|2|3|[+], pSB1A2|2|3
+
+-> Assemble tTEST|3|6|[+] by performing a moclo cloning reaction with: tTEST|3|6|[+], pSB1A2|3|6
+
+-> Assemble pTEST|12|4|[+] by performing a moclo cloning reaction with: pTEST|12|4|[+], pSB1A2|12|4
+
+-> Assemble rTEST|4|0|[+] by performing a moclo cloning reaction with: rTEST|4|0|[+], pSB1A2|4|0
+
+-> Assemble rTEST|0|4|[+] by performing a moclo cloning reaction with: rTEST|0|4|[+], pSB1A2|0|4
+
+-> Assemble lacIm|4|1|[+] by performing a moclo cloning reaction with: lacIm|4|1|[+], pSB1A2|4|1
+
+PCR lacIm part with oligos: phoenix1 and phoenix2 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): lacIm|4|1|[+]
+PCR rTEST part with oligos: phoenix3 and phoenix4 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): rTEST|4|0|[+]
+PCR tTEST part with oligos: phoenix5 and phoenix6 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): tTEST|2|3|[+]
+PCR mCitrine part with oligos: phoenix39 and phoenix40 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): mCitrine|1|2|[+]
+PCR pTEST part with oligos: phoenix7 and phoenix8 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): pTEST|5|12|[+]
+PCR tTEST part with oligos: phoenix9 and phoenix10 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): tTEST|3|6|[+]
+PCR pTEST part with oligos: phoenix11 and phoenix12 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): pTEST|12|4|[+]
+PCR rTEST part with oligos: phoenix13 and phoenix14 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): rTEST|0|4|[+]
+PCR lacZ part with oligos: phoenix19 and phoenix20 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|6
+PCR lacZ part with oligos: phoenix21 and phoenix22 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|12
+PCR lacZ part with oligos: phoenix25 and phoenix26 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|0|4
+PCR lacZ part with oligos: phoenix27 and phoenix28 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|1
+PCR lacZ part with oligos: phoenix29 and phoenix30 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|12|4
+PCR lacZ part with oligos: phoenix31 and phoenix32 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|1
+PCR lacZ part with oligos: phoenix33 and phoenix34 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|3
+PCR lacZ part with oligos: phoenix17 and phoenix18 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
+PCR lacZ part with oligos: phoenix35 and phoenix36 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|12|0
+PCR lacZ part with oligos: phoenix37 and phoenix38 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|0
+PCR lacZ part with oligos: phoenix23 and phoenix24 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|6
+
+**********************************************
+Assembly Instructions for target part: toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_0
+**********************************************
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_0|5|6|[+, +, +, +, +, +, +, +] by performing a moclo cloning reaction with: pTEST|5|12|[+], toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2_intermediate_1_raven_TueJun2314:18:49EDT2015|12|0|[+, +], toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2_intermediate_3_raven_TueJun2314:18:49EDT2015|0|1|[+, +], mAmetrine|1|2|[+], tTEST|2|3|[+], tTEST|3|6|[+], pSB1A2|5|6
+
+-> Assemble pTEST|5|12|[+] by performing a moclo cloning reaction with: pTEST|5|12|[+], pSB1A2|5|12
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2_intermediate_1_raven_TueJun2314:18:49EDT2015|12|0|[+, +] by performing a moclo cloning reaction with: pTEST|12|4|[+], rTEST|4|0|[+], pSB1K3|12|0
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2_intermediate_3_raven_TueJun2314:18:49EDT2015|0|1|[+, +] by performing a moclo cloning reaction with: rTEST|0|4|[+], phlF|4|1|[+], pSB1K3|0|1
+
+-> Assemble mAmetrine|1|2|[+] by performing a moclo cloning reaction with: mAmetrine|1|2|[+], pSB1A2|1|2
+
+-> Assemble tTEST|2|3|[+] by performing a moclo cloning reaction with: tTEST|2|3|[+], pSB1A2|2|3
+
+-> Assemble tTEST|3|6|[+] by performing a moclo cloning reaction with: tTEST|3|6|[+], pSB1A2|3|6
+
+-> Assemble pTEST|12|4|[+] by performing a moclo cloning reaction with: pTEST|12|4|[+], pSB1A2|12|4
+
+-> Assemble rTEST|4|0|[+] by performing a moclo cloning reaction with: rTEST|4|0|[+], pSB1A2|4|0
+
+-> Assemble rTEST|0|4|[+] by performing a moclo cloning reaction with: rTEST|0|4|[+], pSB1A2|0|4
+
+-> Assemble phlF|4|1|[+] by performing a moclo cloning reaction with: phlF|4|1|[+], pSB1A2|4|1
+
+PCR phlF part with oligos: phoenix41 and phoenix42 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): phlF|4|1|[+]
+PCR rTEST part with oligos: phoenix3 and phoenix4 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): rTEST|4|0|[+]
+PCR tTEST part with oligos: phoenix5 and phoenix6 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): tTEST|2|3|[+]
+PCR pTEST part with oligos: phoenix7 and phoenix8 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): pTEST|5|12|[+]
+PCR tTEST part with oligos: phoenix9 and phoenix10 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): tTEST|3|6|[+]
+PCR pTEST part with oligos: phoenix11 and phoenix12 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): pTEST|12|4|[+]
+PCR rTEST part with oligos: phoenix13 and phoenix14 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): rTEST|0|4|[+]
+PCR mAmetrine part with oligos: phoenix15 and phoenix16 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): mAmetrine|1|2|[+]
+PCR lacZ part with oligos: phoenix17 and phoenix18 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
+PCR lacZ part with oligos: phoenix19 and phoenix20 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|6
+PCR lacZ part with oligos: phoenix21 and phoenix22 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|12
+PCR lacZ part with oligos: phoenix25 and phoenix26 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|0|4
+PCR lacZ part with oligos: phoenix23 and phoenix24 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|6
+PCR lacZ part with oligos: phoenix29 and phoenix30 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|12|4
+PCR lacZ part with oligos: phoenix31 and phoenix32 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|1
+PCR lacZ part with oligos: phoenix33 and phoenix34 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|3
+PCR lacZ part with oligos: phoenix27 and phoenix28 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|1
+PCR lacZ part with oligos: phoenix35 and phoenix36 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|12|0
+PCR lacZ part with oligos: phoenix37 and phoenix38 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|0
+
+**********************************************
+Assembly Instructions for target part: toggle_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0_0
+**********************************************
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0_0|5|6|[+, +, +, +, +, +, +, +] by performing a moclo cloning reaction with: pTEST|5|12|[+], toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2_intermediate_1_raven_TueJun2314:18:49EDT2015|12|0|[+, +], toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2_intermediate_3_raven_TueJun2314:18:49EDT2015|0|1|[+, +], mCitrine|1|2|[+], tTEST|2|3|[+], tTEST|3|6|[+], pSB1A2|5|6
+
+-> Assemble pTEST|5|12|[+] by performing a moclo cloning reaction with: pTEST|5|12|[+], pSB1A2|5|12
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2_intermediate_1_raven_TueJun2314:18:49EDT2015|12|0|[+, +] by performing a moclo cloning reaction with: pTEST|12|4|[+], rTEST|4|0|[+], pSB1K3|12|0
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2_intermediate_3_raven_TueJun2314:18:49EDT2015|0|1|[+, +] by performing a moclo cloning reaction with: rTEST|0|4|[+], phlF|4|1|[+], pSB1K3|0|1
+
+-> Assemble mCitrine|1|2|[+] by performing a moclo cloning reaction with: mCitrine|1|2|[+], pSB1A2|1|2
+
+-> Assemble tTEST|2|3|[+] by performing a moclo cloning reaction with: tTEST|2|3|[+], pSB1A2|2|3
+
+-> Assemble tTEST|3|6|[+] by performing a moclo cloning reaction with: tTEST|3|6|[+], pSB1A2|3|6
+
+-> Assemble pTEST|12|4|[+] by performing a moclo cloning reaction with: pTEST|12|4|[+], pSB1A2|12|4
+
+-> Assemble rTEST|4|0|[+] by performing a moclo cloning reaction with: rTEST|4|0|[+], pSB1A2|4|0
+
+-> Assemble rTEST|0|4|[+] by performing a moclo cloning reaction with: rTEST|0|4|[+], pSB1A2|0|4
+
+-> Assemble phlF|4|1|[+] by performing a moclo cloning reaction with: phlF|4|1|[+], pSB1A2|4|1
+
+PCR phlF part with oligos: phoenix41 and phoenix42 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): phlF|4|1|[+]
+PCR rTEST part with oligos: phoenix3 and phoenix4 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): rTEST|4|0|[+]
+PCR tTEST part with oligos: phoenix5 and phoenix6 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): tTEST|2|3|[+]
+PCR mCitrine part with oligos: phoenix39 and phoenix40 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): mCitrine|1|2|[+]
+PCR pTEST part with oligos: phoenix7 and phoenix8 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): pTEST|5|12|[+]
+PCR tTEST part with oligos: phoenix9 and phoenix10 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): tTEST|3|6|[+]
+PCR pTEST part with oligos: phoenix11 and phoenix12 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): pTEST|12|4|[+]
+PCR rTEST part with oligos: phoenix13 and phoenix14 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): rTEST|0|4|[+]
+PCR lacZ part with oligos: phoenix19 and phoenix20 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|6
+PCR lacZ part with oligos: phoenix21 and phoenix22 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|12
+PCR lacZ part with oligos: phoenix25 and phoenix26 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|0|4
+PCR lacZ part with oligos: phoenix29 and phoenix30 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|12|4
+PCR lacZ part with oligos: phoenix23 and phoenix24 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|6
+PCR lacZ part with oligos: phoenix31 and phoenix32 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|1
+PCR lacZ part with oligos: phoenix33 and phoenix34 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|3
+PCR lacZ part with oligos: phoenix27 and phoenix28 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|1
+PCR lacZ part with oligos: phoenix17 and phoenix18 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
+PCR lacZ part with oligos: phoenix35 and phoenix36 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|12|0
+PCR lacZ part with oligos: phoenix37 and phoenix38 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|0
+
+**********************************************
+Assembly Instructions for target part: toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_1
+**********************************************
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_1|5|6|[+, +, +, +, +, +, +, +] by performing a moclo cloning reaction with: pTEST|5|12|[+], toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2_intermediate_1_raven_TueJun2314:18:49EDT2015|12|0|[+, +], toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2_intermediate_4_raven_TueJun2314:18:49EDT2015|0|1|[+, +], mAmetrine|1|2|[+], tTEST|2|3|[+], tTEST|3|6|[+], pSB1A2|5|6
+
+-> Assemble pTEST|5|12|[+] by performing a moclo cloning reaction with: pTEST|5|12|[+], pSB1A2|5|12
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2_intermediate_1_raven_TueJun2314:18:49EDT2015|12|0|[+, +] by performing a moclo cloning reaction with: pTEST|12|4|[+], rTEST|4|0|[+], pSB1K3|12|0
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2_intermediate_4_raven_TueJun2314:18:49EDT2015|0|1|[+, +] by performing a moclo cloning reaction with: rTEST|0|4|[+], tetR|4|1|[+], pSB1K3|0|1
+
+-> Assemble mAmetrine|1|2|[+] by performing a moclo cloning reaction with: mAmetrine|1|2|[+], pSB1A2|1|2
+
+-> Assemble tTEST|2|3|[+] by performing a moclo cloning reaction with: tTEST|2|3|[+], pSB1A2|2|3
+
+-> Assemble tTEST|3|6|[+] by performing a moclo cloning reaction with: tTEST|3|6|[+], pSB1A2|3|6
+
+-> Assemble pTEST|12|4|[+] by performing a moclo cloning reaction with: pTEST|12|4|[+], pSB1A2|12|4
+
+-> Assemble rTEST|4|0|[+] by performing a moclo cloning reaction with: rTEST|4|0|[+], pSB1A2|4|0
+
+-> Assemble rTEST|0|4|[+] by performing a moclo cloning reaction with: rTEST|0|4|[+], pSB1A2|0|4
+
+-> Assemble tetR|4|1|[+] by performing a moclo cloning reaction with: tetR|4|1|[+], pSB1A2|4|1
+
+PCR rTEST part with oligos: phoenix3 and phoenix4 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): rTEST|4|0|[+]
+PCR tTEST part with oligos: phoenix5 and phoenix6 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): tTEST|2|3|[+]
+PCR pTEST part with oligos: phoenix7 and phoenix8 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): pTEST|5|12|[+]
+PCR tTEST part with oligos: phoenix9 and phoenix10 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): tTEST|3|6|[+]
+PCR tetR part with oligos: phoenix43 and phoenix44 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): tetR|4|1|[+]
+PCR pTEST part with oligos: phoenix11 and phoenix12 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): pTEST|12|4|[+]
+PCR rTEST part with oligos: phoenix13 and phoenix14 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): rTEST|0|4|[+]
+PCR mAmetrine part with oligos: phoenix15 and phoenix16 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): mAmetrine|1|2|[+]
+PCR lacZ part with oligos: phoenix17 and phoenix18 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
+PCR lacZ part with oligos: phoenix19 and phoenix20 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|6
+PCR lacZ part with oligos: phoenix21 and phoenix22 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|12
+PCR lacZ part with oligos: phoenix25 and phoenix26 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|0|4
+PCR lacZ part with oligos: phoenix29 and phoenix30 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|12|4
+PCR lacZ part with oligos: phoenix27 and phoenix28 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|1
+PCR lacZ part with oligos: phoenix23 and phoenix24 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|6
+PCR lacZ part with oligos: phoenix31 and phoenix32 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|1
+PCR lacZ part with oligos: phoenix33 and phoenix34 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|3
+PCR lacZ part with oligos: phoenix35 and phoenix36 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|12|0
+PCR lacZ part with oligos: phoenix37 and phoenix38 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|0
+
+**********************************************
+Assembly Instructions for target part: toggle_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0_1
+**********************************************
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0_1|5|6|[+, +, +, +, +, +, +, +] by performing a moclo cloning reaction with: pTEST|5|12|[+], toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2_intermediate_1_raven_TueJun2314:18:49EDT2015|12|0|[+, +], toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2_intermediate_4_raven_TueJun2314:18:49EDT2015|0|1|[+, +], mCitrine|1|2|[+], tTEST|2|3|[+], tTEST|3|6|[+], pSB1A2|5|6
+
+-> Assemble pTEST|5|12|[+] by performing a moclo cloning reaction with: pTEST|5|12|[+], pSB1A2|5|12
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2_intermediate_1_raven_TueJun2314:18:49EDT2015|12|0|[+, +] by performing a moclo cloning reaction with: pTEST|12|4|[+], rTEST|4|0|[+], pSB1K3|12|0
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_1_EXPRESSEE_0_2_intermediate_4_raven_TueJun2314:18:49EDT2015|0|1|[+, +] by performing a moclo cloning reaction with: rTEST|0|4|[+], tetR|4|1|[+], pSB1K3|0|1
+
+-> Assemble mCitrine|1|2|[+] by performing a moclo cloning reaction with: mCitrine|1|2|[+], pSB1A2|1|2
+
+-> Assemble tTEST|2|3|[+] by performing a moclo cloning reaction with: tTEST|2|3|[+], pSB1A2|2|3
+
+-> Assemble tTEST|3|6|[+] by performing a moclo cloning reaction with: tTEST|3|6|[+], pSB1A2|3|6
+
+-> Assemble pTEST|12|4|[+] by performing a moclo cloning reaction with: pTEST|12|4|[+], pSB1A2|12|4
+
+-> Assemble rTEST|4|0|[+] by performing a moclo cloning reaction with: rTEST|4|0|[+], pSB1A2|4|0
+
+-> Assemble rTEST|0|4|[+] by performing a moclo cloning reaction with: rTEST|0|4|[+], pSB1A2|0|4
+
+-> Assemble tetR|4|1|[+] by performing a moclo cloning reaction with: tetR|4|1|[+], pSB1A2|4|1
+
+PCR rTEST part with oligos: phoenix3 and phoenix4 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): rTEST|4|0|[+]
+PCR tTEST part with oligos: phoenix5 and phoenix6 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): tTEST|2|3|[+]
+PCR mCitrine part with oligos: phoenix39 and phoenix40 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): mCitrine|1|2|[+]
+PCR pTEST part with oligos: phoenix7 and phoenix8 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): pTEST|5|12|[+]
+PCR tTEST part with oligos: phoenix9 and phoenix10 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): tTEST|3|6|[+]
+PCR tetR part with oligos: phoenix43 and phoenix44 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): tetR|4|1|[+]
+PCR pTEST part with oligos: phoenix11 and phoenix12 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): pTEST|12|4|[+]
+PCR rTEST part with oligos: phoenix13 and phoenix14 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): rTEST|0|4|[+]
+PCR lacZ part with oligos: phoenix19 and phoenix20 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|6
+PCR lacZ part with oligos: phoenix21 and phoenix22 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|12
+PCR lacZ part with oligos: phoenix25 and phoenix26 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|0|4
+PCR lacZ part with oligos: phoenix23 and phoenix24 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|6
+PCR lacZ part with oligos: phoenix29 and phoenix30 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|12|4
+PCR lacZ part with oligos: phoenix27 and phoenix28 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|1
+PCR lacZ part with oligos: phoenix31 and phoenix32 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|1
+PCR lacZ part with oligos: phoenix33 and phoenix34 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|3
+PCR lacZ part with oligos: phoenix17 and phoenix18 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
+PCR lacZ part with oligos: phoenix35 and phoenix36 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|12|0
+PCR lacZ part with oligos: phoenix37 and phoenix38 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|0
+
+**********************************************
+Assembly Instructions for target part: toggle_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_0_0
+**********************************************
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_0_0|12|4|[+, +, +, +] by performing a moclo cloning reaction with: pA1LacO|12|1|[+], RBS?|1|2|[+], mCitrine|2|3|[+], TERMINATOR?|3|4|[+], pSB1K3|12|4
+
+-> Assemble pA1LacO|12|1|[+] by performing a moclo cloning reaction with: 
+-> Assemble RBS?|1|2|[+] by performing a moclo cloning reaction with: RBS?|1|2|[+], pSB1A2|1|2
+
+-> Assemble mCitrine|2|3|[+] by performing a moclo cloning reaction with: mCitrine|2|3|[+], pSB1A2|2|3
+
+-> Assemble TERMINATOR?|3|4|[+] by performing a moclo cloning reaction with: TERMINATOR?|3|4|[+], pSB1A2|3|4
+
+PCR mCitrine part with oligos: phoenix45 and phoenix46 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): mCitrine|2|3|[+]
+PCR TERMINATOR? part with oligos: phoenix47 and phoenix48 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|3|4|[+]
+PCR RBS? part with oligos: phoenix49 and phoenix50 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
+PCR lacZ part with oligos: phoenix17 and phoenix18 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
+PCR lacZ part with oligos: phoenix33 and phoenix34 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|3
+PCR lacZ part with oligos: phoenix51 and phoenix52 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|4
+PCR lacZ part with oligos: phoenix53 and phoenix54 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|12|1
+PCR lacZ part with oligos: phoenix55 and phoenix56 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|12|4
+
+**********************************************
+Assembly Instructions for target part: toggle_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_0_1
+**********************************************
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_0_1|12|4|[+, +, +, +] by performing a moclo cloning reaction with: pBM3R1|12|1|[+], RBS?|1|2|[+], mCitrine|2|3|[+], TERMINATOR?|3|4|[+], pSB1K3|12|4
+
+-> Assemble pBM3R1|12|1|[+] by performing a moclo cloning reaction with: 
+-> Assemble RBS?|1|2|[+] by performing a moclo cloning reaction with: RBS?|1|2|[+], pSB1A2|1|2
+
+-> Assemble mCitrine|2|3|[+] by performing a moclo cloning reaction with: mCitrine|2|3|[+], pSB1A2|2|3
+
+-> Assemble TERMINATOR?|3|4|[+] by performing a moclo cloning reaction with: TERMINATOR?|3|4|[+], pSB1A2|3|4
+
+PCR mCitrine part with oligos: phoenix45 and phoenix46 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): mCitrine|2|3|[+]
+PCR TERMINATOR? part with oligos: phoenix47 and phoenix48 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|3|4|[+]
+PCR RBS? part with oligos: phoenix49 and phoenix50 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
+PCR lacZ part with oligos: phoenix17 and phoenix18 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
+PCR lacZ part with oligos: phoenix33 and phoenix34 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|3
+PCR lacZ part with oligos: phoenix51 and phoenix52 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|4
+PCR lacZ part with oligos: phoenix55 and phoenix56 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|12|4
+PCR lacZ part with oligos: phoenix53 and phoenix54 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|12|1
+
+**********************************************
+Assembly Instructions for target part: toggle_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_0_3
+**********************************************
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_0_3|12|4|[+, +, +, +] by performing a moclo cloning reaction with: pBetI|12|1|[+], RBS?|1|2|[+], mCitrine|2|3|[+], TERMINATOR?|3|4|[+], pSB1K3|12|4
+
+-> Assemble pBetI|12|1|[+] by performing a moclo cloning reaction with: 
+-> Assemble RBS?|1|2|[+] by performing a moclo cloning reaction with: RBS?|1|2|[+], pSB1A2|1|2
+
+-> Assemble mCitrine|2|3|[+] by performing a moclo cloning reaction with: mCitrine|2|3|[+], pSB1A2|2|3
+
+-> Assemble TERMINATOR?|3|4|[+] by performing a moclo cloning reaction with: TERMINATOR?|3|4|[+], pSB1A2|3|4
+
+PCR mCitrine part with oligos: phoenix45 and phoenix46 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): mCitrine|2|3|[+]
+PCR TERMINATOR? part with oligos: phoenix47 and phoenix48 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|3|4|[+]
+PCR RBS? part with oligos: phoenix49 and phoenix50 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
+PCR lacZ part with oligos: phoenix17 and phoenix18 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
+PCR lacZ part with oligos: phoenix53 and phoenix54 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|12|1
+PCR lacZ part with oligos: phoenix33 and phoenix34 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|3
+PCR lacZ part with oligos: phoenix51 and phoenix52 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|4
+PCR lacZ part with oligos: phoenix55 and phoenix56 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|12|4
+
+**********************************************
+Assembly Instructions for target part: toggle_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_0_6
+**********************************************
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_0_6|12|4|[+, +, +, +] by performing a moclo cloning reaction with: pLmrA|12|1|[+], RBS?|1|2|[+], mCitrine|2|3|[+], TERMINATOR?|3|4|[+], pSB1K3|12|4
+
+-> Assemble pLmrA|12|1|[+] by performing a moclo cloning reaction with: 
+-> Assemble RBS?|1|2|[+] by performing a moclo cloning reaction with: RBS?|1|2|[+], pSB1A2|1|2
+
+-> Assemble mCitrine|2|3|[+] by performing a moclo cloning reaction with: mCitrine|2|3|[+], pSB1A2|2|3
+
+-> Assemble TERMINATOR?|3|4|[+] by performing a moclo cloning reaction with: TERMINATOR?|3|4|[+], pSB1A2|3|4
+
+PCR mCitrine part with oligos: phoenix45 and phoenix46 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): mCitrine|2|3|[+]
+PCR TERMINATOR? part with oligos: phoenix47 and phoenix48 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|3|4|[+]
+PCR RBS? part with oligos: phoenix49 and phoenix50 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
+PCR lacZ part with oligos: phoenix55 and phoenix56 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|12|4
+PCR lacZ part with oligos: phoenix17 and phoenix18 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
+PCR lacZ part with oligos: phoenix53 and phoenix54 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|12|1
+PCR lacZ part with oligos: phoenix33 and phoenix34 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|3
+PCR lacZ part with oligos: phoenix51 and phoenix52 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|4
+
+**********************************************
+Assembly Instructions for target part: toggle_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_0_5
+**********************************************
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_0_5|12|4|[+, +, +, +] by performing a moclo cloning reaction with: pLtetO-1|12|1|[+], RBS?|1|2|[+], mCitrine|2|3|[+], TERMINATOR?|3|4|[+], pSB1K3|12|4
+
+-> Assemble pLtetO-1|12|1|[+] by performing a moclo cloning reaction with: 
+-> Assemble RBS?|1|2|[+] by performing a moclo cloning reaction with: RBS?|1|2|[+], pSB1A2|1|2
+
+-> Assemble mCitrine|2|3|[+] by performing a moclo cloning reaction with: mCitrine|2|3|[+], pSB1A2|2|3
+
+-> Assemble TERMINATOR?|3|4|[+] by performing a moclo cloning reaction with: TERMINATOR?|3|4|[+], pSB1A2|3|4
+
+PCR mCitrine part with oligos: phoenix45 and phoenix46 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): mCitrine|2|3|[+]
+PCR TERMINATOR? part with oligos: phoenix47 and phoenix48 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|3|4|[+]
+PCR RBS? part with oligos: phoenix49 and phoenix50 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
+PCR lacZ part with oligos: phoenix17 and phoenix18 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
+PCR lacZ part with oligos: phoenix53 and phoenix54 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|12|1
+PCR lacZ part with oligos: phoenix33 and phoenix34 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|3
+PCR lacZ part with oligos: phoenix51 and phoenix52 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|4
+PCR lacZ part with oligos: phoenix55 and phoenix56 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|12|4
+
+**********************************************
+Assembly Instructions for target part: toggle_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_0_2
+**********************************************
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_0_2|12|4|[+, +, +, +] by performing a moclo cloning reaction with: pPhlF|12|1|[+], RBS?|1|2|[+], mCitrine|2|3|[+], TERMINATOR?|3|4|[+], pSB1K3|12|4
+
+-> Assemble pPhlF|12|1|[+] by performing a moclo cloning reaction with: 
+-> Assemble RBS?|1|2|[+] by performing a moclo cloning reaction with: RBS?|1|2|[+], pSB1A2|1|2
+
+-> Assemble mCitrine|2|3|[+] by performing a moclo cloning reaction with: mCitrine|2|3|[+], pSB1A2|2|3
+
+-> Assemble TERMINATOR?|3|4|[+] by performing a moclo cloning reaction with: TERMINATOR?|3|4|[+], pSB1A2|3|4
+
+PCR mCitrine part with oligos: phoenix45 and phoenix46 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): mCitrine|2|3|[+]
+PCR TERMINATOR? part with oligos: phoenix47 and phoenix48 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|3|4|[+]
+PCR RBS? part with oligos: phoenix49 and phoenix50 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
+PCR lacZ part with oligos: phoenix17 and phoenix18 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
+PCR lacZ part with oligos: phoenix33 and phoenix34 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|3
+PCR lacZ part with oligos: phoenix53 and phoenix54 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|12|1
+PCR lacZ part with oligos: phoenix51 and phoenix52 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|4
+PCR lacZ part with oligos: phoenix55 and phoenix56 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|12|4
+
+**********************************************
+Assembly Instructions for target part: toggle_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_0_4
+**********************************************
+
+-> Assemble toggle_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_0_4|12|4|[+, +, +, +] by performing a moclo cloning reaction with: pSrpR|12|1|[+], RBS?|1|2|[+], mCitrine|2|3|[+], TERMINATOR?|3|4|[+], pSB1K3|12|4
+
+-> Assemble pSrpR|12|1|[+] by performing a moclo cloning reaction with: 
+-> Assemble RBS?|1|2|[+] by performing a moclo cloning reaction with: RBS?|1|2|[+], pSB1A2|1|2
+
+-> Assemble mCitrine|2|3|[+] by performing a moclo cloning reaction with: mCitrine|2|3|[+], pSB1A2|2|3
+
+-> Assemble TERMINATOR?|3|4|[+] by performing a moclo cloning reaction with: TERMINATOR?|3|4|[+], pSB1A2|3|4
+
+PCR mCitrine part with oligos: phoenix45 and phoenix46 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): mCitrine|2|3|[+]
+PCR TERMINATOR? part with oligos: phoenix47 and phoenix48 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|3|4|[+]
+PCR RBS? part with oligos: phoenix49 and phoenix50 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
+PCR lacZ part with oligos: phoenix17 and phoenix18 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
+PCR lacZ part with oligos: phoenix53 and phoenix54 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|12|1
+PCR lacZ part with oligos: phoenix33 and phoenix34 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|3
+PCR lacZ part with oligos: phoenix51 and phoenix52 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|4
+PCR lacZ part with oligos: phoenix55 and phoenix56 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|12|4
+
+
+**********************************************
+OLIGOS
+>phoenix1
+atgaagacgtGCTTATGGTGAATGTGAAACCAGTAACG
+>phoenix2
+acgaagacctAGTACTGCCCGCTTTCCAGTCGGGAAAC
+>phoenix3
+atgaagacgtGCTTGGGCCCAAGTTCACTTAAAAAGGA
+>phoenix4
+acgaagacctCTCCAGAAAACCTCCTTAGCATGATTAA
+>phoenix5
+atgaagacgtAATGCCAGGCATCAAATAAAACGAAAGG
+>phoenix6
+acgaagacctACCTTATAAACGCAGAAAGGCCCACCCG
+>phoenix7
+atgaagacgtCGCTTTGACGGCTAGCTCAGTCCTAGGT
+>phoenix8
+acgaagacctGCATGCTAGCACTGTACCTAGGACTGAG
+>phoenix9
+atgaagacgtAGGTCCAGGCATCAAATAAAACGAAAGG
+>phoenix10
+acgaagacctGGCATATAAACGCAGAAAGGCCCACCCG
+>phoenix11
+atgaagacgtATGCTTGACGGCTAGCTCAGTCCTAGGT
+>phoenix12
+acgaagacctAAGCGCTAGCACTGTACCTAGGACTGAG
+>phoenix13
+atgaagacgtGGAGGGGCCCAAGTTCACTTAAAAAGGA
+>phoenix14
+acgaagacctAAGCAGAAAACCTCCTTAGCATGATTAA
+>phoenix15
+atgaagacgtTACTATGGTGAGCAAGGGCGAGGAGCTG
+>phoenix16
+acgaagacctCATTCTTGTACAGCTCGTCCATGCCGGG
+>phoenix17
+actagtgggtctcaTACTatgtcttctgcaccatatgcggtgtgaaatac
+>phoenix18
+actagtaggtctctCATTacgtcttccccgcgcgttggccgattcattaa
+>phoenix19
+actagtgggtctcaAGGTatgtcttctgcaccatatgcggtgtgaaatac
+>phoenix20
+actagtaggtctctGGCAacgtcttccccgcgcgttggccgattcattaa
+>phoenix21
+actagtgggtctcaCGCTatgtcttctgcaccatatgcggtgtgaaatac
+>phoenix22
+actagtaggtctctGCATacgtcttccccgcgcgttggccgattcattaa
+>phoenix23
+actagtgggtctcaCGCTatgtcttctgcaccatatgcggtgtgaaatac
+>phoenix24
+actagtaggtctctGGCAacgtcttccccgcgcgttggccgattcattaa
+>phoenix25
+actagtgggtctcaGGAGatgtcttctgcaccatatgcggtgtgaaatac
+>phoenix26
+actagtaggtctctAAGCacgtcttccccgcgcgttggccgattcattaa
+>phoenix27
+actagtggaagacatGGAGagagacctgcaccatatgcggtgtgaaatac
+>phoenix28
+actagtagaagacatAGTAagagacccccgcgcgttggccgattcattaa
+>phoenix29
+actagtgggtctcaATGCatgtcttctgcaccatatgcggtgtgaaatac
+>phoenix30
+actagtaggtctctAAGCacgtcttccccgcgcgttggccgattcattaa
+>phoenix31
+actagtgggtctcaGCTTatgtcttctgcaccatatgcggtgtgaaatac
+>phoenix32
+actagtaggtctctAGTAacgtcttccccgcgcgttggccgattcattaa
+>phoenix33
+actagtgggtctcaAATGatgtcttctgcaccatatgcggtgtgaaatac
+>phoenix34
+actagtaggtctctACCTacgtcttccccgcgcgttggccgattcattaa
+>phoenix35
+actagtggaagacatATGCagagacctgcaccatatgcggtgtgaaatac
+>phoenix36
+actagtagaagacatCTCCagagacccccgcgcgttggccgattcattaa
+>phoenix37
+actagtgggtctcaGCTTatgtcttctgcaccatatgcggtgtgaaatac
+>phoenix38
+actagtaggtctctCTCCacgtcttccccgcgcgttggccgattcattaa
+>phoenix39
+atgaagacgtTACTATGGTGAGCAAGGGCGAGGAGCTG
+>phoenix40
+acgaagacctCATTCTTGTACAGCTCGTCCATGCCGAG
+>phoenix41
+atgaagacgtGCTTATGGCACGTACCCCGAGCCGTAGC
+>phoenix42
+acgaagacctAGTAACGCTGTGTACCCGGACAAACACC
+>phoenix43
+atgaagacgtGCTTATGTCCAGATTAGATAAAAGTAAA
+>phoenix44
+acgaagacctAGTAGGACCCACTTTCACATTTAAGTTG
+>phoenix45
+atgaagacgtAATGATGGTGAGCAAGGGCGAGGAGCTG
+>phoenix46
+acgaagacctACCTCTTGTACAGCTCGTCCATGCCGAG
+>phoenix47
+atgaagacgtAGGT[ PART TERMINATOR? FORWARD HOMOLOGY REGION ]
+>phoenix48
+acgaagacctAAGC[ PART TERMINATOR? REVERSE HOMOLOGY REGION ]
+>phoenix49
+atgaagacgtTACT[ PART RBS? FORWARD HOMOLOGY REGION ]
+>phoenix50
+acgaagacctCATT[ PART RBS? REVERSE HOMOLOGY REGION ]
+>phoenix51
+actagtgggtctcaAGGTatgtcttctgcaccatatgcggtgtgaaatac
+>phoenix52
+actagtaggtctctAAGCacgtcttccccgcgcgttggccgattcattaa
+>phoenix53
+actagtgggtctcaATGCatgtcttctgcaccatatgcggtgtgaaatac
+>phoenix54
+actagtaggtctctAGTAacgtcttccccgcgcgttggccgattcattaa
+>phoenix55
+actagtggaagacatATGCagagacctgcaccatatgcggtgtgaaatac
+>phoenix56
+actagtagaagacatAAGCagagacccccgcgcgttggccgattcattaa

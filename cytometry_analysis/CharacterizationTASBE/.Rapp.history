@@ -1,467 +1,3 @@
-nbasis=3;#
-mbmydata=create.monomial.basis(c(-3, 1.7),nbasis=nbasis)#
-myfd2=smooth.basis(conc,max,mbmydata)#
-plotfit.fd(max,conc,myfd2$fd)
-nbasis=3;#
-mbmydata=create.monomial.basis(c(-.302, 1.7),nbasis=nbasis)#
-myfd2=smooth.basis(conc,max,mbmydata)#
-plotfit.fd(max,conc,myfd2$fd)
-nbasis=5;#
-mbmydata=create.monomial.basis(c(-.302, 1.7),nbasis=nbasis)#
-myfd2=smooth.basis(conc,max,mbmydata)#
-plotfit.fd(max,conc,myfd2$fd)
-nbasis=7;#
-mbmydata=create.monomial.basis(c(-.302, 1.7),nbasis=nbasis)#
-myfd2=smooth.basis(conc,max,mbmydata)#
-plotfit.fd(max,conc,myfd2$fd)
-nbasis=5;#
-mbmydata=create.monomial.basis(c(-.302, 1.7),nbasis=nbasis)#
-myfd2=smooth.basis(conc,max,mbmydata)#
-plotfit.fd(max,conc,myfd2$fd)
-data(CanadianWeather)#
-day = c(1:365)#
-temp = CanadianWeather$dailyAv[,'Montreal','Temperature.C']#
-prec = CanadianWeather$dailyAv[,'Montreal','Precipitation.mm']#
-#
-fbasist=create.fourier.basis(c(1,365),nbasis=51)#
-fdt=Data2fd(day,temp,fbasist)#
-haccLfd2=vec2Lfd(c(0,(2*pi/diff(c(0,365)))^2), c(1,365))#
-fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e-9)#
-fdts=smooth.fd(fdt, fdtPar)#
-plotfit.fd(temp,day,fdts)
-fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e-5)#
-fdts=smooth.fd(fdt, fdtPar)#
-plotfit.fd(temp,day,fdts)
-fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e-4)#
-fdts=smooth.fd(fdt, fdtPar)#
-plotfit.fd(temp,day,fdts)
-fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e-3)#
-fdts=smooth.fd(fdt, fdtPar)#
-plotfit.fd(temp,day,fdts)
-fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e-2)#
-fdts=smooth.fd(fdt, fdtPar)#
-plotfit.fd(temp,day,fdts)
-fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e-1)#
-fdts=smooth.fd(fdt, fdtPar)#
-plotfit.fd(temp,day,fdts)
-fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e0)#
-fdts=smooth.fd(fdt, fdtPar)#
-plotfit.fd(temp,day,fdts)
-fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e1)#
-fdts=smooth.fd(fdt, fdtPar)#
-plotfit.fd(temp,day,fdts)
-fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e2)#
-fdts=smooth.fd(fdt, fdtPar)#
-plotfit.fd(temp,day,fdts)
-fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e3)#
-fdts=smooth.fd(fdt, fdtPar)#
-plotfit.fd(temp,day,fdts)
-fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e4)#
-fdts=smooth.fd(fdt, fdtPar)#
-plotfit.fd(temp,day,fdts)
-fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e5)#
-fdts=smooth.fd(fdt, fdtPar)#
-plotfit.fd(temp,day,fdts)
-fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e6)#
-fdts=smooth.fd(fdt, fdtPar)#
-plotfit.fd(temp,day,fdts)
-fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e7)#
-fdts=smooth.fd(fdt, fdtPar)#
-plotfit.fd(temp,day,fdts)
-fdps
-fdps$gcv\
-fdps$gcv
-smooth.basisPar(day,prec,fdps)
-fdpss=smooth.basisPar(day,prec,fdps)
-fdpss$gcv
-fbasist=create.fourier.basis(c(1,365),nbasis=51)#
-fdt=Data2fd(day,temp,fbasist)#
-haccLfd2=vec2Lfd(c(0,(2*pi/diff(c(0,365)))^2), c(1,365))#
-fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e-5)#
-fdts=smooth.fd(fdt, fdtPar)#
-plotfit.fd(temp,day,fdts)
-fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=1e5)#
-fdts=smooth.fd(fdt, fdtPar)#
-plotfit.fd(temp,day,fdts)
-fbasisp=create.fourier.basis(c(1,365),nbasis=5)#
-fdp=Data2fd(day,prec,fbasisp)#
-haccLfd2=vec2Lfd(c(0,(2*pi/diff(c(0,365)))^2), c(1,365))#
-fdpPar <- fdPar(fdp, Lfdobj=haccLfd2, lambda=1e-5)#
-fdps=smooth.fd(fdp, fdpPar)#
-plotfit.fd(prec,day,fdps)
-fdpPar <- fdPar(fdp, Lfdobj=haccLfd2, lambda=1e9)#
-fdps=smooth.fd(fdp, fdpPar)#
-plotfit.fd(prec,day,fdps)
-fdpPar <- fdPar(fdp, Lfdobj=haccLfd2, lambda=1e5)#
-fdps=smooth.fd(fdp, fdpPar)#
-plotfit.fd(prec,day,fdps)
--5:5
-1e0
-1e1
-1e2
-?append
-f=NULL
-f
-f[5]=1
-f
-a=c(-5:5)
-a
-gcvvect=NULL#
-lambda=c(-5:5)#
-for (i in -5:5){#
-	fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=10^i)#
-	fdts=smooth.fd(fdt, fdtPar)#
-	fdtss=smooth.basisPar(day,prec,fdpt)#
-	gcvvect=append(gcvvec,fdtss$gcv)}#
-plot(lambda,gcvvect)
-gcvvect=NULL#
-lambda=c(-5:5)#
-for (i in -5:5){#
-	fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=10^i)#
-	fdts=smooth.fd(fdt, fdtPar)#
-	fdtss=smooth.basisPar(day,prec,fdpt)#
-	gcvvect=append(gcvvec,fdtss$gcv)}#
-plot(gcvvect,lambda)
-gcvvect=NULL#
-lambda=c(-5:5)#
-for (i in -5:5){#
-	fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=10^i)#
-	fdts=smooth.fd(fdt, fdtPar)#
-	fdtss=smooth.basisPar(day,prec,fdts)#
-	gcvvect=append(gcvvec,fdtss$gcv)}#
-plot(lambda,gcvvect)
-gcvvect=NULL#
-lambda=c(-5:5)#
-for (i in -5:5){#
-	fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=10^i)#
-	fdts=smooth.fd(fdt, fdtPar)#
-	fdtss=smooth.basisPar(day,prec,fdts)#
-	gcvvect=append(gcvvect,fdtss$gcv)}#
-plot(lambda,gcvvect)
-gcvvect=NULL#
-lambda=c(-5:5)#
-for (i in -5:5){#
-	fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=10^i)#
-	fdts=smooth.fd(fdt, fdtPar)#
-	fdtss=smooth.basisPar(day,prec,fdts)#
-	gcvvect=append(gcvvect,fdtss$gcv)}#
-	fdtss$gcv#
-plot(lambda,gcvvect)
-gcvvect=NULL#
-lambda=c(-5:5)#
-for (i in -5:5){#
-	fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=10^i)#
-	fdts=smooth.fd(fdt, fdtPar)#
-	fdtss=smooth.basisPar(day,prec,fdts)#
-	gcvvect=append(gcvvect,fdtss$gcv)#
-	fdtss$gcv}#
-plot(lambda,gcvvect)
-gcvvect=NULL#
-lambda=c(-9:9)#
-for (i in lambda){#
-	fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=10^i)#
-	fdts=smooth.fd(fdt, fdtPar)#
-	fdtss=smooth.basisPar(day,prec,fdts)#
-	gcvvect=append(gcvvect,fdtss$gcv)#
-	fdtss$gcv}#
-plot(lambda,gcvvect)
-gcvvect=NULL#
-lambda=c(-9:9)#
-for (i in lambda){#
-	fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=10^i)#
-	fdts=smooth.fd(fdt, fdtPar)#
-	fdtss=smooth.basisPar(day,temp,fdts)#
-	gcvvect=append(gcvvect,fdtss$gcv)#
-	fdtss$gcv}#
-plot(lambda,gcvvect)
-?fdtPar
-?fdPar
-gcvvect=NULL#
-lambda=c(-9:9)#
-for (i in lambda){#
-	fdtPar <- fdPar(fdt, Lfdobj=haccLfd2, lambda=10^i)#
-	fdts=smooth.basisPar(day, temp, fdtPar, Lfdobj=haccLfd2, lambda=10^i)#
-	gcvvect=append(gcvvect,fdtss$gcv)#
-	fdtss$gcv}#
-plot(lambda,gcvvect)
-fdt
-gcvvect=NULL#
-lambda=c(-9:9)#
-for (i in lambda){#
-	fdtPar <- fdPar(fdt=fdobj, Lfdobj=haccLfd2, lambda=10^i)#
-	fdts=smooth.basisPar(day, temp, fdtPar, Lfdobj=haccLfd2, lambda=10^i)#
-	gcvvect=append(gcvvect,fdtss$gcv)#
-	fdtss$gcv}#
-plot(lambda,gcvvect)
-gcvvect=NULL#
-lambda=c(-9:9)#
-for (i in lambda){#
-	fdts=smooth.basisPar(day, temp, fdt, Lfdobj=haccLfd2, lambda=10^i)#
-	gcvvect=append(gcvvect,fdtss$gcv)#
-	fdtss$gcv}#
-plot(lambda,gcvvect)
-gcvvect=NULL#
-lambda=c(-9:9)#
-for (i in lambda){#
-	fdts=smooth.basisPar(day, temp, fdt, Lfdobj=haccLfd2, lambda=10^i)#
-	gcvvect=append(gcvvect,fdtss$gcv)#
-	fdts$gcv}#
-plot(lambda,gcvvect)
-gcvvect=NULL#
-lambda=c(-9:9)#
-for (i in lambda){#
-	fdts=smooth.basisPar(day, temp, fdt, Lfdobj=haccLfd2, lambda=10^i)#
-	gcvvect=append(gcvvect,fdts$gcv)#
-	fdts$gcv}#
-plot(lambda,gcvvect)
-gcvvecp=NULL#
-for (i in lambda){#
-	fdps=smooth.basisPar(day, temp, fdp, Lfdobj=haccLfd2, lambda=10^i)#
-	gcvvect=append(gcvvecp,fdps$gcv)}#
-plot(lambda,gcvvecp)
-gcvvecp=NULL#
-for (i in lambda){#
-	fdps=smooth.basisPar(day, temp, fdp, Lfdobj=haccLfd2, lambda=10^i)#
-	gcvvecp=append(gcvvecp,fdps$gcv)}#
-plot(lambda,gcvvecp)
-fdps
-gcvvect=NULL#
-lambda=c(-21:9)#
-for (i in lambda){#
-	fdts=smooth.basisPar(day, temp, fdt, Lfdobj=haccLfd2, lambda=10^i)#
-	gcvvect=append(gcvvect,fdts$gcv)}#
-plot(lambda,gcvvect)
-gcvvect=NULL#
-lambda=c(-21:21)#
-for (i in lambda){#
-	fdts=smooth.basisPar(day, temp, fdt, Lfdobj=haccLfd2, lambda=10^i)#
-	gcvvect=append(gcvvect,fdts$gcv)}#
-plot(lambda,gcvvect)
-gcvvecp=NULL#
-for (i in lambda){#
-	fdps=smooth.basisPar(day, temp, fdp, Lfdobj=haccLfd2, lambda=10^i)#
-	gcvvecp=append(gcvvecp,fdps$gcv)}#
-plot(lambda,gcvvecp)
-gcvvecp=NULL#
-for (i in lambda){#
-	fdps=smooth.basisPar(day, prec, fdp, Lfdobj=haccLfd2, lambda=10^i)#
-	gcvvecp=append(gcvvecp,fdps$gcv)}#
-plot(lambda,gcvvecp)
-?smooth.basis
-fbasist=create.fourier.basis(c(1,365),nbasis=51)#
-fdt=Data2fd(day,temp,fbasist)#
-haccLfd2=vec2Lfd(c(0,(2*pi/diff(c(0,365)))^2), c(1,365))#
-fdtPar=fdPar(fdt, Lfdobj=haccLfd2, lambda=1e-5)#
-fdts=smooth.basis(day,temp,fdtPar)#
-plotfit.fd(temp,day,fdts)
-fbasist=create.fourier.basis(c(1,365),nbasis=51)#
-fdt=Data2fd(day,temp,fbasist)#
-haccLfd2=vec2Lfd(c(0,(2*pi/diff(c(0,365)))^2), c(1,365))#
-fdtPar=fdPar(fdt, Lfdobj=haccLfd2, lambda=1e-5)#
-fdts=smooth.basis(day,temp,fdtPar)#
-plotfit.fd(temp,day,fdts$fd)
-fdtPar=fdPar(fdt, Lfdobj=haccLfd2, lambda=1e0)#
-fdts=smooth.basis(day,temp,fdtPar)#
-plotfit.fd(temp,day,fdts$fd)
-fdtPar=fdPar(fdt, Lfdobj=haccLfd2, lambda=1e5)#
-fdts=smooth.basis(day,temp,fdtPar)#
-plotfit.fd(temp,day,fdts$fd)
-gcvvect=NULL#
-lambda=c(-21:21)#
-for (i in lambda){#
-	fdtPar=fdPar(fdt, Lfdobj=haccLfd2, lambda=10^i)#
-	fdts=smooth.basis(day,temp,fdtPar)#
-	gcvvect=append(gcvvect,fdts$gcv)}#
-plot(lambda,gcvvect)
-gcvvecp=NULL#
-for (i in lambda){#
-	fdpPar=fdPar(fdp, Lfdobj=haccLfd2, lambda=10^i)#
-	fdps=smooth.basis(day,prec,fdpPar)#
-	gcvvecp=append(gcvvecp,fdps$gcv)}#
-plot(lambda,gcvvecp)
-gcvvect=NULL#
-lambda=c(-13:13)#
-for (i in lambda){#
-	fdtPar=fdPar(fdt, Lfdobj=haccLfd2, lambda=10^i)#
-	fdts=smooth.basis(day,temp,fdtPar)#
-	gcvvect=append(gcvvect,fdts$gcv)}#
-plot(lambda,gcvvect)
-gcvvecp=NULL#
-for (i in lambda){#
-	fdpPar=fdPar(fdp, Lfdobj=haccLfd2, lambda=10^i)#
-	fdps=smooth.basis(day,prec,fdpPar)#
-	gcvvecp=append(gcvvecp,fdps$gcv)}#
-plot(lambda,gcvvecp)
-mean(gcvvect)
-mean(gcvvecp)
-?eval.bifd
-?eval.fd
-?cor.fd
-fdtPar=fdPar(fdt, Lfdobj=haccLfd2, lambda=1e0)#
-fdts=smooth.basis(day,temp,fdtPar)#
-X11()#
-corfdt=cor.fd(day,fdts)#
-levelplot(row.values=day,column.values=day,#
-x=corfda,contour=TRUE,labels=FALSE)
-fdtPar=fdPar(fdt, Lfdobj=haccLfd2, lambda=1e0)#
-fdts=smooth.basis(day,temp,fdtPar)#
-X11()#
-corfdt=cor.fd(day,fdts$fd)#
-levelplot(row.values=day,column.values=day,#
-x=corfda,contour=TRUE,labels=FALSE)
-library('lattice')#
-fdtPar=fdPar(fdt, Lfdobj=haccLfd2, lambda=1e0)#
-fdts=smooth.basis(day,temp,fdtPar)#
-X11()#
-corfdt=cor.fd(day,fdts$fd)#
-levelplot(row.values=day,column.values=day,#
-x=corfda,contour=TRUE,labels=FALSE)
-library('lattice')#
-fdtPar=fdPar(fdt, Lfdobj=haccLfd2, lambda=1e0)#
-fdts=smooth.basis(day,temp,fdtPar)#
-X11()#
-corfdt=cor.fd(day,fdts$fd)#
-levelplot(row.values=day,column.values=day,#
-x=corfdt,contour=TRUE,labels=FALSE)
-fdtPar=fdPar(fdt, Lfdobj=haccLfd2, lambda=1e0)#
-fdts=smooth.basis(day,temp,fdtPar)#
-X11()#
-corfdt=cor.fd(day,fdts$fd)
-corfdt
-fdtPar=fdPar(fdt, Lfdobj=haccLfd2, lambda=1e0)#
-fdts=smooth.basis(day,temp,fdtPar)#
-X11()#
-corfdt=cor.fd(day,fdts$fd,day,fdts$fd)#
-levelplot(row.values=day,column.values=day,#
-x=corfdt,contour=TRUE,labels=FALSE)
-corfdt=cor.fd(day,fdts$fd,day,fdts$fd)#
-levelplot(row.values=day,column.values=day,x=corfdt,contour=TRUE,labels=FALSE)
-corfdt
-?cor.fd
-temp = CanadianWeather$dailyAv[,,'Temperature.C']#
-prec = CanadianWeather$dailyAv[,,'Precipitation.mm']#
-#
-fbasist=create.fourier.basis(c(1,365),nbasis=51)#
-fdt=Data2fd(day,temp,fbasist)#
-haccLfd2=vec2Lfd(c(0,(2*pi/diff(c(0,365)))^2), c(1,365))#
-fdtPar=fdPar(fdt, Lfdobj=haccLfd2, lambda=1e-5)#
-fdts=smooth.basis(day,temp,fdtPar)#
-plotfit.fd(temp,day,fdts$fd)
-?cor.fd
-par(mfrow=c(2,1))
-corfdt=cor.fd(day,fdts,day,fdts)
-corfdt=cor.fd(c(1:10),fdts$fd,c(1:10),fdts$fd)#
-levelplot(row.values=day,column.values=day,x=corfdt,contour=TRUE,labels=FALSE)
-corfdt=cor.fd(c(1:10),fdts$fd,c(1:10),fdts$fd)
-corfdt
-corfdt=cor.fd(time,fdts$fd,time,fdts$fd)#
-levelplot(row.values=time,column.values=time,x=corfdt,contour=TRUE,labels=FALSE)
-time=c(1:300)#
-corfdt=cor.fd(time,fdts$fd,time,fdts$fd)#
-levelplot(row.values=time,column.values=time,x=corfdt,contour=TRUE,labels=FALSE)
-?var.fd
-time=c(1:365)#
-corfdt=cor.fd(time,fdts$fd,time,fdts$fd)#
-levelplot(row.values=time,column.values=time,x=corfdt,contour=TRUE,labels=FALSE)
-varfda=var.fd(fdts$fd,fdps$fd)
-fdpPar=fdPar(fdp, Lfdobj=haccLfd2, lambda=1e6)#
-fdps=smooth.basis(day,prec,fdpPar)#
-varfda=var.fd(fdts$fd,fdps$fd)
-varfda
-varfdavals=eval.bifd(time,time,varfda)
-dim(varfdavals)
-varfdavals
-dim(varfdavals)
-levelplot(row.values=time,column.values=time, x=varfdavals[,,1,2],contour=TRUE,labels=FALSE)
-levelplot(row.values=time,column.values=time, x=varfdavals,contour=TRUE,labels=FALSE)
-varfda2=var.fd(fdts$fd)#
-varfdavals2=eval.bifd(time,time,varfda2)#
-levelplot(row.values=time,column.values=time, x=varfdavals2,contour=TRUE,labels=FALSE)
-levelplot(row.values=time,column.values=time, x=varfdavals2,contour=TRUE,labels=TRUE)
-?var.fd
-varfda3=var.fd(myfd2$fd)#
-varfdavals3=eval.bifd(conc,conc,varfda3)
-levelplot(row.values=conc,column.values=conc, x=varfdavals3,contour=TRUE,labels=FALSE)
-varfdavals3
-conc=log10(c(0.5,1,2.5,5,7.5,10,50))
-varfda3=var.fd(myfd2$fd)#
-varfdavals3=eval.bifd(conc,conc,varfda3)
-varfdavals3
-conc=c(0.5,1,2.5,5,7.5,10,50)
-varfda3=var.fd(myfd2$fd)#
-varfdavals3=eval.bifd(conc,conc,varfda3)
-varfda3=var.fd(myfd$fd)#
-varfdavals3=eval.bifd(conc,conc,varfda3)
-varfda3=var.fd(myfd$fd)
-varfda3
-varfda2=var.fd(fdts$fd)#
-varfdavals2=eval.bifd(time,time,varfda2)#
-levelplot(row.values=time,column.values=time, x=varfdavals2[,1:30],contour=TRUE,labels=FALSE)
-levelplot(row.values=time,column.values=c(1:30), x=varfdavals2,contour=TRUE,labels=FALSE)
-length(column.values)
-levelplot(row.values=time,column.values=time, x=varfdavals2,contour=TRUE,labels=FALSE)
-jan=c(1:30)#
-varfda2=var.fd(fdts$fd)#
-varfdavals2=eval.bifd(jan,jan,varfda2)#
-levelplot(row.values=jan,column.values=jan, x=varfdavals2,contour=TRUE,labels=FALSE)
-varfda3=var.fd(myfd2$fd)
-varfda3
-varfda3=var.fd(myfd$fd)
-varfda3
-conc
-conc=log(conc)
-conc
-breaks=c(-0.30103,0.5,1.69897)#
-norder=3#
-conc=log10(c(0.5,1,2.5,5,7.5,10,50))#
-max=log10(c(2.8963e3, 3.3415e3, 3.5411e3, 3.3687e3, 9.8506e3, 8.0680e3, 6.9461e3))#
-bbmydata=create.bspline.basis(c(-0.302, 1.7),norder=norder,breaks=breaks)#
-myfd=smooth.basis(conc,max,bbmydata)#
-plotfit.fd(max,conc,myfd$fd)
-nbasis=5;#
-mbmydata=create.monomial.basis(c(-.302, 1.7),nbasis=nbasis)#
-myfd2=smooth.basis(conc,max,mbmydata)#
-plotfit.fd(max,conc,myfd2$fd)
-varfda3=var.fd(myfd2$fd)
-varfda3
-conc
-varfdavals3=eval.bifd(conc,conc,varfda3)
-varfdavals3
-conc1=c(-.302 0 .397 .0699 0.875 1 1.699)
-conc1=c(-0.302 0 .397 .0699 0.875 1 1.699)
-conc1=c(-0.302,0,.397,.0699,0.875,1,1.699)
-varfdavals3=eval.bifd(conc1,conc1,varfda3)
-varfdavals3
-conc1=c(0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1)
-varfdavals3=eval.bifd(conc1,conc1,varfda3)
-varfdavals3
-?eval.bifd
-c=c(0,1)
-varfdavals3=eval.bifd(c,c,varfda3)
-varfdavals3
-?eval.bifd
-varfda3
-?eval.bifd
-day
-f=c(0, 0.2, 0.4, 0.6, 0.8, 1)
-f
-varfdavals3=eval.bifd(f,f,varfda3)
-varfdavals3
-varfdavals3=eval.bifd(conc,conc,varfda3)
-varfdavals3
-varfdavals3=eval.bifd(c(1),c(1),varfda3)
-varfdavals3
-varfdavals3=eval.bifd(conc,conc,varfda3)
-plot(conc)
-varfda3=var.fd(myfd2$fd)
-varfdavals3=eval.bifd(conc,conc,varfda3)
-levelplot(row.values=conc,column.values=conc, x=varfdavals3,contour=TRUE,labels=FALSE)
-v=1:8
-varfdavals3=eval.bifd(v,v,varfda3)
-v=0:1
-v
-varfdavals3=eval.bifd(v,v,varfda3)
-varfdavals3
 source("/Users/evanappleton/Documents/Documents/Spring2012/MA882/Project/pcascript.R")
 pred.e.fd
 varsim <- read.table("/Users/evanappleton/Documents/Documents/Spring2012/MA882/Project/VarSim.csv", sep=",")#
@@ -781,4 +317,193 @@ browseVignettes("flowBeads")
 biocLite("flowBeads")
 citation("flowCore")
 citation("flowBeads")
-source("analyze_4612.R")
+source("analze_5615.R")
+source("analyze_5615.R")
+ls()
+uniqueMediaTypeThisPart
+unique
+replicates
+replicateFiles
+files
+keys
+nrow(uniqueMediaTypeThisPart)
+k
+file
+media
+for (k in 1:nrow(uniqueMediaTypeThisPart)) {#
+				file <- as.character(uniqueMediaTypeThisPart[k,]$FILENAME)#
+				media <- c(media, as.character(uniqueMediaTypeThisPart[k,]$MEDIA)) }
+k
+media
+file
+xaxis
+means
+standardDevs
+source("analyze_5615.R")
+media
+uniqueMediaTypeThisPart
+uniqueMediaTypes
+ls()
+blankMediaTypeThisPart
+blankMediaTypeThisPart <- uniqueMediaThisPart[which(mediaNonDuplicatesKey$MEDIA == ""),]#
+			uniqueMediaTypeThisPart <- uniqueMediaThisPart[which(TRUE == grepl(mediaType, mediaNonDuplicatesKey$MEDIA)),]#
+			uniqueMediaTypeThisPart <- rbind(blankMediaTypeThisPart,uniqueMediaTypeThisPart)
+uniqueMediaTypeThisPart
+uniqueMediaTypeThisPart <- uniqueMediaThisPart[which(TRUE == grepl(mediaType, uniqueMediaThisPart$MEDIA)),]
+uniqueMediaTypeThisPart
+unique
+mediaType
+blankMediaTypeThisPart
+uniqueMediaThisPart
+mediaNonDuplicatesKey
+uniqueMediaTypeThisPart <- uniqueMediaThisPart[which(TRUE == grepl(mediaType, mediaTimeNonDuplicatesKey$MEDIA)),]#
+			uniqueMediaTypeThisPart <- rbind(blankMediaTypeThisPart,uniqueMediaTypeThisPart)
+source("analyze_5615.R")
+uniqueMediaTypeThisPart
+uniqueMediaTypeThisPart[!duplicated(uniqueMediaTypeThisPart)]
+uniqueMediaTypeThisPart[!duplicated(uniqueMediaTypeThisPart$MEDIA)]
+!duplicated(uniqueMediaTypeThisPart$MEDIA)
+uniqueMediaTypeThisPart$MEDIA[!duplicated(uniqueMediaTypeThisPart$MEDIA)]
+b <- uniqueMediaTypeThisPart$MEDIA[!duplicated(uniqueMediaTypeThisPart$MEDIA)]
+b
+b <- as.character(uniqueMediaTypeThisPart$MEDIA[!duplicated(uniqueMediaTypeThisPart$MEDIA)])
+b
+uniqueMediaTypes
+timesThisMedia <- uniqueMediaTimeThisPart[which(TRUE == grepl(uniqueMediaTypes[1], uniqueMediaTimeThisPart$MEDIA)),]
+timesThisMedia <- uniqueMediaTypeThisPart[which(TRUE == grepl(uniqueMediaTypes[1], uniqueMediaTypeThisPart$MEDIA)),]
+timesThisMedia
+timesThisMedia <- uniqueMediaTypeThisPart[which(TRUE == grepl("ara", uniqueMediaTypeThisPart$MEDIA)),]
+timesThisMedia
+unique(uniqueMediaTypeThisPart$TIME)
+as.character(unique(uniqueMediaTypeThisPart$TIME))
+source("analyze_5615.R")
+uniqueMediaTimeThisPart
+uniqueMediaTypes
+source("analyze_5615.R")
+uniqueMediaTypes
+uniqueMediaTimeThisPart
+timesThisMedia <- as.character(unique(uniqueMediaTimeThisPart$TIME))
+timesThisMedia
+time <- timesThisMedia[5]
+time
+uniquePartMediaTime <- uniqueMediaTimeThisPart[which(TRUE == grepl(time, uniqueMediaTimeThisPart$TIME)),]
+uniquePartMediaTime
+uniqueMediaThisPart
+uniqueMediaTypes
+mediaType
+uniqueMediaTimeThisPart
+uniqueMediaTimeThisPart <- uniqueConditionsThisPart[which(TRUE == grepl(mediaType, mediaTimeNonDuplicatesKey$MEDIA)),]
+source("analyze_5615.R")
+uniqueMediaTimeThisPart <- uniqueConditionsThisPart[which(TRUE == grepl(mediaType, mediaTimeNonDuplicatesKey$MEDIA)),]
+uniqueMediaTimeThisPart
+uniqueConditionsThisPart
+mediaType
+uniqueMediaTimeThisPart <- uniqueConditionsThisPart[which(TRUE == grepl(mediaType, uniqueConditionsThisPart$MEDIA)),]
+uniqueMediaTimeThisPart
+source("analyze_5615.R")
+uniqueConditionsThisPart
+mediaTimeNonDuplicatesKey
+part
+mediaTimeNonDuplicatesKey[which(TRUE == grepl(part, mediaTimeNonDuplicatesKey$PART)),]
+mediaTimeNonDuplicatesKey[which(TRUE == grepl(J23104_BCD2_rfp_LAA_B0015, mediaTimeNonDuplicatesKey$PART)),]
+mediaTimeNonDuplicatesKey[which(TRUE == grepl("J23104_BCD2_rfp_LAA_B0015", mediaTimeNonDuplicatesKey$PART)),]
+uniqueConditionsThisPart <- mediaTimeNonDuplicatesKey[which(TRUE == grepl("J23104_BCD2_rfp_LAA_B0015", mediaTimeNonDuplicatesKey$PART)),]
+uniqueConditionsThisPart
+mediaTypes <- sub("\\(?[0-9,.]+\\)?","", mediaTimeNonDuplicatesKey$MEDIA)
+mediaTypes
+uniqueMediaTypes <- unique(sub("^\\s+|\\s+$","",mediaTypes))
+uniqueMediaTypes
+mediaType
+blankMediaTypeThisPart <- uniqueConditionsThisPart[which(mediaTimeNonDuplicatesKey$MEDIA == ""),]#
+			uniqueMediaTimeThisPart <- uniqueConditionsThisPart[which(TRUE == grepl(mediaType, uniqueConditionsThisPart$MEDIA)),]#
+			uniqueMediaTimeThisPart <- rbind(blankMediaTypeThisPart,uniqueMediaTimeThisPart)
+uniqueMediaTimeThisPart
+source("analyze_5615.R")
+uniqueMediaTypes
+mediaTypes
+part
+uniqueMediaTimeThisPart
+meansa
+means
+uniqueMediaTimeThisPart
+k
+source("analyze_5615.R")
+uniqueMediaTypes
+uniqueMediaRows
+unique(uniqueMediaRows$Media)
+unique(uniqueMediaRows$MEDIA)
+as.character(unique(uniqueMediaRows$MEDIA))
+length(as.character(unique(uniqueMediaRows$MEDIA)))
+blankMediaTimeRow
+source("analyze_5615.R")
+mediaType
+uniqueMediaTypes
+uniqueMediaTypeConcentration <- uniqueMediaTypeConcentrations[k]#
+			uniqueMediaTypeConcentration <- gsub("\\(","\\\\(",uniqueMediaTypeConcentration)#
+			uniqueMediaTypeConcentration <- gsub("\\)","\\\\)",uniqueMediaTypeConcentration)
+uniqueMediaTypeConcentrations <- as.character(unique(uniqueMediaRows$MEDIA))
+uniqueMediaTypeConcentration <- uniqueMediaTypeConcentrations[k]#
+			uniqueMediaTypeConcentration <- gsub("\\(","\\\\(",uniqueMediaTypeConcentration)#
+			uniqueMediaTypeConcentration <- gsub("\\)","\\\\)",uniqueMediaTypeConcentration)
+uniqueMediaTypeConcentration
+uniqueMediaRowsAllTimes <- uniqueTimeMediaRows[which(TRUE == grepl(uniqueMediaTypeConcentration, uniqueMediaRows$MEDIA)),]
+uniqueMediaRowsAllTimes
+t <- as.character(unique(uniqueMediaRowsAllTimes$TIME))
+t
+uniqueMediaTimes <- as.character(unique(uniqueMediaRowsAllTimes$TIME))
+uniqueMediaTimes
+uniqueMediaTimeRow <- uniqueMediaRowsAllTimes[which(TRUE == grepl(uniqueMediaTimes, uniqueMediaRowsAllTimes$TIME)),]
+uniqueMediaTimeRow
+file <- as.character(uniqueMediaTimeRow$FILENAME)
+file
+partMediaKey <- c("MEDIA", "PART", "TIME")
+duplicateRowsThisExactMedia <- data.table(allPartTimeMediaDuplicateRows, key=partMediaKey)
+duplicateRowsThisExactMedia
+# uniqueRowsThisExactMedia <- data.table(uniqueMediaRows[k,], key=partMediaKey)
+uniqueRowsThisExactMedia <- data.table(uniqueMediaTimeRow, key=partMediaKey)
+uniqueRowsThisExactMedia
+replicateFiles <- as.character(merge(uniqueRowsThisExactMedia, duplicateRowsThisExactMedia)$FILENAME.y)
+replicateFiles
+source("analyze_5615.R")
+uniqueMediaTypeConcentrations
+filesMediaConcentration
+files
+uniqueMediaTimes
+media
+xaxis
+files
+filesMediaConcentration
+uniqueMediaTypeConcentrations
+uniqueMediaRowsAllTimes
+uniqueMediaTypeConcentration
+uniqueTimeMediaRows[which(TRUE == grepl(uniqueMediaTypeConcentration, uniqueMediaRows$MEDIA)),]
+uniqueMediaRows
+uniqueMediaTypeConcentration
+which(TRUE == grepl(uniqueMediaTypeConcentration, uniqueMediaRows$MEDIA))
+uniqueTimeMediaRows
+mediaType
+which(TRUE == grepl(mediaType, allPartTimeMediaUniqueRows$MEDIA))
+uniqueTimeMediaRows
+uniqueMediaRows
+uniqueMediaRows[which(TRUE == grepl(uniqueMediaTypeConcentration, uniqueMediaRows$MEDIA)),]
+source("analyze_5615.R")
+files
+filesMediaConcentration
+meansMediaTime
+source("analyze_5615.R")
+nrows(meanMediaTime)
+nrow(meansMediaTime)
+source("analyze_5615.R")
+meansMediaTime
+if (nrow(meansMediaTime) > 1)
+nrow(meansMediaTime) > 1
+source("analyze_5615.R")
+u
+length(colnames(meansMediaTime))
+u
+source("analyze_5615.R")
+uniqueMediaTimes
+ls
+ls()
+source("analyze_5615.R")
+key

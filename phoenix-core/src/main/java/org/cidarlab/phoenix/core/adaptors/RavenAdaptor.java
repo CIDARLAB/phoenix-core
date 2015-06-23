@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import net.sf.json.JSONObject;
+import org.cidarlab.phoenix.core.controller.Utilities;
 import org.cidarlab.phoenix.core.dom.Annotation;
 import org.cidarlab.phoenix.core.dom.Component;
 import org.cidarlab.phoenix.core.dom.Feature;
@@ -34,7 +35,7 @@ import org.clothoapi.clotho3javaapi.ClothoConnection;
 public class RavenAdaptor {
     
     //Create assembly plans for given parts and return instructions file
-    public static File generateAssemblyPlan(HashSet<Module> targetModules) throws Exception {
+    public static File generateAssemblyPlan(HashSet<Module> targetModules, String filePath) throws Exception {
         
         ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
         Clotho clothoObject = new Clotho(conn);
@@ -73,7 +74,7 @@ public class RavenAdaptor {
         
         //Run Raven to get assembly instructions
         Raven raven = new Raven();                
-        File assemblyInstructions = raven.assemblyInstructions(targetParts, partsLibR, vectorsLibR, libPairs, new HashMap(), rParameters, null);
+        File assemblyInstructions = raven.assemblyInstructions(targetParts, partsLibR, vectorsLibR, libPairs, new HashMap(), rParameters, filePath);
         
         conn.closeConnection();
         return assemblyInstructions;
@@ -139,6 +140,7 @@ public class RavenAdaptor {
                 sequence = a.getFeature().getSequence().getSequence();
                 if (!a.isForwardStrand()) {
                     bpDirection = "-";
+                    sequence = Utilities.reverseComplement(sequence);
                 }
                 
                 //Correct type
@@ -336,6 +338,9 @@ public class RavenAdaptor {
                 
                 String name = f.getName().replaceAll(".ref", "");
                 String type = f.getRole().toString().toLowerCase();
+                if (type.contains("cds")) {
+                    type = "gene";
+                }
                 String sequence = f.getSequence().getSequence();
                 
                 ArrayList<String> dirF = new ArrayList();

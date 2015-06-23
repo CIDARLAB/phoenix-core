@@ -23,6 +23,7 @@ public class Sample {
         strain = _strain;
         polynucleotides = _polynucleotides;
         media = _media;
+        time = _time;
     }
     
     //Module measured

@@ -60,7 +60,7 @@ public class CoreTest {
         //Run a design decomposition
         File structureFile = new File(getFilepath() + "/src/main/resources/miniEugeneFiles/toggle-switch-full.eug");
         HashSet<Module> modulesToTest = PhoenixController.initializeDesign(structureFile, null);
-        PhoenixController.createExperimentInstructions(modulesToTest);
+        PhoenixController.createExperimentInstructions(modulesToTest, getFilepath() + "/src/main/resources/InstructionFiles");
     }
     
     //Main testing class

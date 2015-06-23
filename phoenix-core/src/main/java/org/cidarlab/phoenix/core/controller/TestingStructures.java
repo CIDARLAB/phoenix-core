@@ -285,7 +285,7 @@ public class TestingStructures {
         //Add control constructs 
         HashSet<Module> controlsThisModule = new HashSet<>();
         controlsThisModule.add(createExpDegControl());
-        controlsThisModule = createColorControls(controlsThisModule);
+        controlsThisModule.addAll(createColorControls(controlsThisModule, m));
         if (regControls) {
             controlsThisModule.addAll(createRegControls(m));
         }
@@ -293,9 +293,9 @@ public class TestingStructures {
         removeDuplicateModules(controlsThisModule, controlModulesAll, m);
 
         //Add samples
-        for (Experiment e : experiments) {
-            createExperimentSamples(e, m);
+        for (Experiment e : experiments) {            
             createControlSamples(e, controlsThisModule, m);
+            createExperimentSamples(e, m);
         }
     }
     
@@ -361,12 +361,16 @@ public class TestingStructures {
     }
     
     //Make a standard expression/degradation control for EXPRESSORs and all types of EXPRESSEEs
-    private static HashSet<Module> createColorControls(HashSet<Module> modules) {
+    private static HashSet<Module> createColorControls(HashSet<Module> controlModules, Module m) {
         
         HashSet<Module> colorControls = new HashSet<>();
         
-        for (Module m : modules) {
-            for (PrimitiveModule pm : m.getSubmodules()) {
+        HashSet<Module> allModulesNeedingColorControl = new HashSet<>();
+        allModulesNeedingColorControl.add(m);
+        allModulesNeedingColorControl.addAll(controlModules);
+        
+        for (Module cm : allModulesNeedingColorControl) {
+            for (PrimitiveModule pm : cm.getSubmodules()) {
                 if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
 
                     //Expression control
@@ -385,8 +389,8 @@ public class TestingStructures {
             }
         }
 
-        modules.addAll(colorControls);
-        return modules;
+        controlModules.addAll(colorControls);
+        return controlModules;
     }
     
     //Remove duplicate modules based on PrimitiveModules
@@ -418,7 +422,8 @@ public class TestingStructures {
         //Create regulation control sample with test sample for each media condition
         List<Polynucleotide> pNs = new ArrayList<>();
         pNs.add(makePolynucleotide(m));
-        List<Sample> experimentSamples = experiment.getExpDegControls();
+        List<Sample> experimentSamples = new ArrayList<>();
+        experimentSamples.addAll(experiment.getExpDegControls());
         
         //EXPRESSION EXPERIMENT
         if (experiment.getExType().equals(ExperimentType.EXPRESSION)) {
@@ -495,6 +500,8 @@ public class TestingStructures {
             }
             
         }
+        
+        experiment.setExperimentSamples(experimentSamples);
     }
     
     //Method for forming an experiment from a module which has partial part assignment
@@ -504,7 +511,7 @@ public class TestingStructures {
         
         //Initialize control samples
         Sample beadControl = new Sample("RaibowBeads", SampleType.BEADS, null, null, null, 0);
-        Sample negativeControl = new Sample("Negative", SampleType.NEGATIVE, defaultStrain, null, null, 0);
+        Sample negativeControl = new Sample("Negative", SampleType.NEGATIVE, defaultStrain, null, experiment.getMediaConditions().get(0), 0);
         
         experiment.setNegativeControl(negativeControl);
         experiment.setBeadControl(beadControl);
@@ -539,7 +546,7 @@ public class TestingStructures {
             } else if (m.getRole().equals(ModuleRole.COLOR_CONTROL)) {
                 
                 //Get existing color controls if they exist
-                List<Sample> colorControls = experiment.getRegulationControls();
+                List<Sample> colorControls = experiment.getColorControls();
                 
                 //Create color control sample for each media condition
                 List<Polynucleotide> pNs = new ArrayList<>();
@@ -611,8 +618,8 @@ public class TestingStructures {
         for (Experiment ex : experiments) {
             
             HashSet<Sample> allSamples = new HashSet<>();
-            allSamples.add(ex.getBeadControl());
-            allSamples.add(ex.getNegativeControl());
+//            allSamples.add(ex.getBeadControl());
+//            allSamples.add(ex.getNegativeControl());
             allSamples.addAll(ex.getColorControls());
             allSamples.addAll(ex.getExpDegControls());
             allSamples.addAll(ex.getExperimentSamples());

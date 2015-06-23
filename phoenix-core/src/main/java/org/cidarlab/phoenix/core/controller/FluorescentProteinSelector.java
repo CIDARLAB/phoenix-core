@@ -65,7 +65,11 @@ public class FluorescentProteinSelector {
             solnList.add(selectFluorophore);
             candidateList.remove(selectFluorophore);
         }
-
+        
+        System.out.println("Solution ::");
+        for(Fluorophore fp:solnList){
+            System.out.println(fp.getName());
+        }
         return solnList;
 
     }

@@ -31,6 +31,7 @@ public class FeatureAssignment {
     //This method will be hacky until we have a real part assignment algorithm based on simulation
     public static HashSet<Module> partialAssignment(List<Module> testingModules) {
         
+        
         ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
         Clotho clothoObject = new Clotho(conn);
         
@@ -39,9 +40,10 @@ public class FeatureAssignment {
         HashSet<List<Feature>> assignedFeatureLists = new HashSet<>();
         
         //Add fluorescent proteins to each module
-        addFPs(testingModules);
+        addFPs(testingModules,clothoObject);
         
         //Query promoters and regulator features, assign to abstract spots for EXPRESSORS and EXPRESSEES
+        
         
         Map featureQuery = new HashMap();
         featureQuery.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
@@ -84,10 +86,8 @@ public class FeatureAssignment {
     }
     
     //Method for traverisng graphs, adding fluorescent proteins
-    private static void addFPs(List<Module> testingModules) {
+    private static void addFPs(List<Module> testingModules,Clotho clothoObject) {
         
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
-        Clotho clothoObject = new Clotho(conn);
         
         //Recieve data from Clotho
         HashSet<Fluorophore> FPs = new HashSet<Fluorophore>();
@@ -123,7 +123,6 @@ public class FeatureAssignment {
             ArrayList<Fluorophore> bestSet = FluorescentProteinSelector.solve(FPs, cytometer, count);
             addFPsHelper(root, bestSet, children);
         }
-        conn.closeConnection();
     }
     
     //Helper method for traverisng graphs, adding fluorescent proteins

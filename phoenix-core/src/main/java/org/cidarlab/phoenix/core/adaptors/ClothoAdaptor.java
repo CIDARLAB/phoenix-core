@@ -22,7 +22,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.cidarlab.phoenix.core.adaptors.BenchlingAdaptor.*;
 import org.cidarlab.phoenix.core.controller.Utilities;
 import org.cidarlab.phoenix.core.dom.Cytometer;
 import org.cidarlab.phoenix.core.dom.Experiment;
@@ -32,7 +31,6 @@ import org.cidarlab.phoenix.core.dom.NucSeq;
 import org.cidarlab.phoenix.core.dom.Part;
 import org.cidarlab.phoenix.core.dom.Polynucleotide;
 import org.clothoapi.clotho3javaapi.Clotho;
-import org.clothoapi.clotho3javaapi.ClothoConnection;
 import org.cidarlab.phoenix.core.dom.Annotation;
 import org.cidarlab.phoenix.core.dom.Arc;
 import org.cidarlab.phoenix.core.dom.AssemblyParameters;
@@ -659,10 +657,9 @@ public class ClothoAdaptor {
     
         }
         createModule.put("features", featureIds);
-        //createModule.put("ltlFunction", createLTLFunction(module.getFunction()));
+        createModule.put("stlFunction", createSTLFunction(module.getFunction(),clothoObject));
         //Should be someway to create Primitive Modules
         
-        System.out.println("Module Name :: " + createModule.get("name"));
         
         id = (String) clothoObject.create(createModule);
         module.setClothoID(id);
@@ -1177,12 +1174,11 @@ public class ClothoAdaptor {
     }
     
     public static Module getModule(String rootModule,Clotho clothoObject){
-        Module module = new Module(rootModule);
         Map map = new HashMap();
-        
         map = (Map) clothoObject.get(rootModule);
         
-        module.setName(map.get("name").toString());
+        Module module = new Module(map.get("name").toString());
+        //module.setName(map.get("name").toString()); //This seems redundant since the Module constructor sets the name of the module.
         module.setClothoID(map.get("id").toString());
         module.setRole(Module.ModuleRole.valueOf(map.get("role").toString()));
         module.setStage((int)map.get("stage"));

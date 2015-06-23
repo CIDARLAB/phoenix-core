@@ -48,7 +48,7 @@ process.samples <- function(experimentFlowSet, comp.mat, colorControlsFlowSet, d
 }
 
 #Import key file
-key <- read.csv("key_4612.csv", header = TRUE)
+key <- read.csv("key.csv", header = TRUE)
 key [is.na(key)] <- ""
 
 #Find bead controls, apply bead normalization
@@ -133,9 +133,9 @@ for (i in 1:length(uniquePartNames)) {
 		mediaType <- gsub("\\)","\\\\)",mediaType)				
 		
 		#Get unique media rows with this media type				
-		blankMediaTimeRow <- uniqueTimeMediaRows[which(allPartTimeMediaUniqueRows$MEDIA == ""),]
+		# blankMediaTimeRow <- uniqueTimeMediaRows[which(allPartTimeMediaUniqueRows$MEDIA == ""),]
 		uniqueMediaRows <- uniqueTimeMediaRows[which(TRUE == grepl(mediaType, uniqueTimeMediaRows$MEDIA)),]
-		uniqueMediaRows <- rbind(blankMediaTimeRow,uniqueMediaRows)			
+		# uniqueMediaRows <- rbind(blankMediaTimeRow,uniqueMediaRows)			
 		
 		uniqueMediaTypeConcentrations <- as.character(unique(uniqueMediaRows$MEDIA))
 	
@@ -242,7 +242,7 @@ for (i in 1:length(uniquePartNames)) {
 					name <- as.character(paste(uniquePartNames[i],"_",as.character(uniqueMediaTypeConcentrations[k]),"_",colnames(meansMediaTime)[u],".png"))
 					name <- str_replace_all(name, fixed(" "), "")
 					name <- sub("/","",name)
-					png(name)
+					png(name, width=960, height=960, res=120)
 	    			pt <- ggplot(data = plotMat, aes(x = xaxis, y = yaxis)) +
 	    			geom_errorbar(aes(ymin=yaxis-error, ymax=yaxis+error)) +
 					geom_line() +
@@ -309,7 +309,7 @@ for (i in 1:length(uniquePartNames)) {
 				name <- as.character(paste(uniquePartNames[i],"_",as.character(uniqueMediaTypes[j]),"_",colnames(meansMedia)[l],".png"))
 				name <- str_replace_all(name, fixed(" "), "")
 				name <- sub("/","",name)
-				png(name)
+				png(name, width=960, height=960, res=120)
     			p <- ggplot(plotMat, aes(x = xaxis, y = yaxis)) +
     			geom_errorbar(aes(ymin=yaxis-error, ymax=yaxis+error)) +
 				geom_line() +
@@ -380,16 +380,12 @@ if (length(oneMediaParts) > 1) {
 		name <- as.character(paste("Mean_Population_Averages_Parts_One_Medium",".png"))
 		name <- str_replace_all(name, fixed(" "), "")
 		name <- sub("/","",name)
-		png(name)
+		png(name, width=960, height=960, res=120)
    		
    		po <- ggplot(plotMat, aes(x = xaxis, y = yaxis)) +
    		geom_bar(colour="black", fill="#DD8888", width=.8, stat="identity") + 
     	guides(fill=FALSE) +
    		geom_errorbar(aes(ymin=yaxis-error, ymax=yaxis+error)) +
-		# geom_line() +
-   		# geom_point(size = 4, shape=21, fill="white") +
-   		# ylim(0,max(ymax)) +   		
-   		#theme_bw() +
   		ggtitle(as.character("Mean Population Averages")) +    			
    		xlab(as.character("PARTS")) +
    		ylab(as.character(paste(colnames(meansOneMedia)[v]," (RFU)"))) +
@@ -423,7 +419,7 @@ if (length(multiplexVals) > 1) {
 
 		name <- as.character(paste(colnames(multiplexDataFrame)[o],".png"))
 		name <- str_replace_all(name, fixed(" "), "")
-		png(name)
+		png(name, width=960, height=960, res=120)
 		PartType <- multiplexDataFrame$TYPE
 		
     	p <- ggplot(multiplexDataFrame, aes(x = multiplexDataFrame$MULTIPLEX, y = yaxis, group = PartType, colour = PartType)) +

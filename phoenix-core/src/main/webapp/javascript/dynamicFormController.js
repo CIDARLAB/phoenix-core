@@ -4,8 +4,9 @@ var form = document.getElementById('fileUploads');
 // Upload button
 var upload = document.getElementById('uploadButton');
 
-// Check if all files are present
+// File checks
 var fileMissing = false;
+var wrongExtension = false;
 
 // Called when upload/submit button is pressed
 form.onsubmit = function(event) {
@@ -16,8 +17,9 @@ form.onsubmit = function(event) {
     upload.innerHTML = 'Uploading...';
     $('#loading').show();
 
-    // Reset file checker
+    // Reset file checks
     fileMissing = false;
+    wrongExtension = false;
 
     // Get files from the input
     var plasmidFile = document.getElementById('plasmidLib').files[0];
@@ -38,8 +40,8 @@ form.onsubmit = function(event) {
         fileMissing = true;
     } else {document.getElementById('fcc').style.color = "#000000";}
 
-    var flouresenceFile = document.getElementById('fSpectra').files[0];
-    if(typeof flouresenceFile === 'undefined'){
+    var fluoresenceFile = document.getElementById('fSpectra').files[0];
+    if(typeof fluoresenceFile === 'undefined'){
         document.getElementById('fs').style.color = "#FF0000";
         fileMissing = true;
     } else {document.getElementById('fs').style.color = "#000000";}
@@ -52,14 +54,41 @@ form.onsubmit = function(event) {
         return;
     }
 
-    // Further file checking done here if desired
+    // Check if extensions are correct
+    if(plasmidFile.name.substring(plasmidFile.name.length - 2, plasmidFile.name.length) !== 'gb') {
+        document.getElementById('gpl').style.color = "#FF0000";
+        wrongExtension = true;
+    } else {document.getElementById('gpl').style.color = "#000000";}
+
+    if(featureFile.name.substring(featureFile.name.length - 2, featureFile.name.length) !== 'gb') {
+        document.getElementById('gfl').style.color = "#FF0000";
+        wrongExtension = true;
+    } else {document.getElementById('gfl').style.color = "#000000";}
+
+    if(flowFile.name.substring(flowFile.name.length - 3, flowFile.name.length) !== 'csv') {
+        document.getElementById('fcc').style.color = "#FF0000";
+        wrongExtension = true;
+    } else {document.getElementById('fcc').style.color = "#000000";}
+
+    if(fluoresenceFile.name.substring(fluoresenceFile.name.length - 3, fluoresenceFile.name.length) !== 'csv') {
+        document.getElementById('fs').style.color = "#FF0000";
+        wrongExtension = true;
+    } else {document.getElementById('fs').style.color = "#000000";}
+
+    // If wrong extensions are used, alert the user and start over
+    if(wrongExtension){
+        alert("Select files with the correct extensions (problematic fields shown in red)!");
+        upload.innerHTML = 'Upload';
+        $('#loading').hide();
+        return;
+    }
 
     // Create FormData object (if it is necessary to know the uploaded file's names, uncomment the names below)
     var formData = new FormData();
     formData.append('plasmidLib', plasmidFile/*, plasmidFile.name*/);
     formData.append('featureLib', featureFile/*, featureFile.name*/);
     formData.append('fcConfig', flowFile/*, flowFile.name*/);
-    formData.append('fSpectra', flouresenceFile/*, flouresenceFile.name*/);
+    formData.append('fSpectra', fluoresenceFile/*, fluoresenceFile.name*/);
 
     // Send ajax form
     $.ajax({

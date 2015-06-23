@@ -38,13 +38,13 @@
         <div id="config">
             <form id="fileUploads" enctype="multipart/form-data">
                 <div style="margin-bottom:10px" id="gpl"><h4>GenBank Plasmid Library</h4></div>
-                <input style="margin-bottom:20px" type="file" id="plasmidLib" name ="plasmidLibrary" />
+                <input style="margin-bottom:20px" type="file" id="plasmidLib" name ="plasmidLibrary" accept=".gb" />
                 <div style="margin-bottom:10px" id="gfl"><h4>GenBank Feature Library</h4></div>
-                <input style="margin-bottom:20px" type="file" id="featureLib" name ="featureLibrary" />
+                <input style="margin-bottom:20px" type="file" id="featureLib" name ="featureLibrary" accept=".gb" />
                 <div style="margin-bottom:10px" id="fcc"><h4>Flow Cytometer Configuration</h4></div>
-                <input style="margin-bottom:20px" type="file" id="fcConfig" name ="fcConfiguration" />
-                <div style="margin-bottom:10px" id="fs"><h4>Flouresence Spectra</h4></div>
-                <input style="margin-bottom:20px" type="file" id="fSpectra" name ="flouresenceSpectra" />
+                <input style="margin-bottom:20px" type="file" id="fcConfig" name ="fcConfiguration" accept=".csv" />
+                <div style="margin-bottom:10px" id="fs"><h4>Fluoresence Spectra</h4></div>
+                <input style="margin-bottom:20px" type="file" id="fSpectra" name ="fluoresenceSpectra" accept=".csv" />
                 <div><button style="margin-top:7px" class="btn btn-primary" type="submit" id="uploadButton">Upload</button>
                 <img id = "loading" style = "position:relative; padding-top:2px; padding-left:10px;" src ="images/ajax-loader.gif" hidden></div>
             </form>

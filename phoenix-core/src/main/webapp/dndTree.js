@@ -380,7 +380,21 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
             .attr("transform", function(d) {
                 return "translate(" + source.y0 + "," + source.x0 + ")";
             })
-            .on('click', click);
+            .on('click', click)
+            .on("mouseover", function(d) {
+                var g = d3.select(this); // The node
+                // The class is used to remove the additional text later
+                if(!g.attr('children')){
+                var info = g.append('text')
+                    .classed('info', true)
+                    .attr('x', 30)
+                    .attr('y', 0)
+                    .text('More info');
+            }})
+            .on("mouseout", function() {
+                // Remove the info text on mouse out.
+                d3.select(this).select('text.info').remove();
+            });
 
         nodeEnter.append("circle")
             .attr('class', 'nodeCircle')

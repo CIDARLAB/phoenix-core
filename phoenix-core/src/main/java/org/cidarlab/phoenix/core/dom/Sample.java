@@ -8,7 +8,6 @@ import java.io.File;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang.builder.EqualsBuilder;
 
 /**
  *
@@ -18,8 +17,7 @@ public class Sample {
    
     //Constructor
     public Sample(SampleType _type, Strain _strain, List<Polynucleotide> _polynucleotides, Medium _media, Integer _time) {
-//        name = _name;
-//        clothoID = _name;
+        
         type = _type;
         strain = _strain;
         polynucleotides = _polynucleotides;
@@ -46,32 +44,7 @@ public class Sample {
         } else {
             clothoID = _type.toString();
         }
-    }
-    
-//    @Override
-//    public boolean equals(Object obj) {
-//        if (obj == null) {
-//            return false;
-//        }
-//        if (obj == this) {
-//            return true;
-//        }
-//        if (obj.getClass() != getClass()) {
-//            return false;
-//        }
-//        Sample rhs = (Sample) obj;
-//        return new EqualsBuilder()
-//                .appendSuper(super.equals(obj))
-//                .append(name, rhs.name)
-//                .append(clothoID, rhs.clothoID)
-//                .append(media, rhs.media)
-//                .append(polynucleotides, rhs.polynucleotides)
-//                .append(strain, rhs.strain)
-//                .append(time, rhs.time)
-//                .append(type, rhs.type)
-//                .append(fcsFile, rhs.fcsFile)
-//                .isEquals();
-//    }
+    }    
     
     //Module measured
     @Setter

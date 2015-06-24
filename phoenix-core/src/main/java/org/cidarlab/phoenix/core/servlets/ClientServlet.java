@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -23,7 +24,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import static org.cidarlab.phoenix.core.controller.PhoenixController.initializeDesign;
 import static org.cidarlab.phoenix.core.controller.PhoenixController.preliminaryDataUpload;
+import org.cidarlab.phoenix.core.dom.Module;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -123,10 +126,10 @@ public class ClientServlet extends HttpServlet {
             // If files are valid, proceed
             if(structuralPart != null && functionalPart != null){
                 // Convert servlet.Part objects to java.io.File objects
-                File structuralSpec = partConverter(structuralPart, "FILENAME_HERE_YO.eug");
-                File functionalSpec = partConverter(functionalPart, "FILENAME_HERE_YO.txt");
+                File structuralSpec = partConverter(structuralPart, "structural_file.eug");
+                File functionalSpec = partConverter(functionalPart, "temp.txt");
                 // Pass files to correct method
-    //            preliminaryDataUpload (featureLib, plasmidLib, fluorophoreSpectra, cytometer);
+//                HashSet<Module> modulesToTest = initializeDesign(structuralSpec, functionalSpec);
                 // If we made it here then everything was successful
                 System.out.println("\n\nINFO: SUCCESS\n\n");
                 holdingData = true;

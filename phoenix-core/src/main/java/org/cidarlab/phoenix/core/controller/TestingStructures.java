@@ -665,7 +665,7 @@ public class TestingStructures {
         
         //Initiate hashes for existing polynucleotides
         
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
         Clotho clothoObject = new Clotho(conn);
         
         

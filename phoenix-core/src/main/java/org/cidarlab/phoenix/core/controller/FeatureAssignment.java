@@ -32,7 +32,7 @@ public class FeatureAssignment {
     public static HashSet<Module> partialAssignment(List<Module> testingModules) {
         
         
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
         Clotho clothoObject = new Clotho(conn);
         
         
@@ -383,7 +383,7 @@ public class FeatureAssignment {
     
     //Gets a list of experiments and for all modules in the each experiment, it converts features to parts
     public static HashSet<Part> getExperimentParts(List<Experiment> experiments) {
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
         Clotho clothoObject = new Clotho(conn);
         
         Map partQuery = new HashMap();

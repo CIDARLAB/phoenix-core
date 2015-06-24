@@ -28,7 +28,7 @@ public class PhoenixController {
     public static void preliminaryDataUpload (File featureLib, File plasmidLib, File fluorophoreSpectra, File cytometer) throws FileNotFoundException, Exception {
      
         //Import data from Benchling multi-part Genbank files to Clotho
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
         Clotho clothoObject = new Clotho(conn);
         
         
@@ -66,7 +66,7 @@ public class PhoenixController {
 //        }
         
         //Remove this once you've got it working.
-//        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+//        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
 //        Clotho clothoObject = new Clotho(conn);
 //        for (Module module : modulesToTest) {
 //            ClothoAdaptor.createModule(module, clothoObject);
@@ -99,7 +99,7 @@ public class PhoenixController {
     //FILES IN, NOTHING OUT
     public static void interpretData (List<File> fcsFiles, File plasmidsCreated, List<Module> modules) throws Exception {
         
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
         Clotho clothoObject = new Clotho(conn);
         
         

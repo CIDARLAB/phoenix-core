@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import net.sf.json.JSONObject;
+import org.cidarlab.phoenix.core.controller.Args;
 import org.cidarlab.phoenix.core.controller.Utilities;
 import org.cidarlab.phoenix.core.dom.Annotation;
 import org.cidarlab.phoenix.core.dom.Component;
@@ -37,7 +38,7 @@ public class RavenAdaptor {
     //Create assembly plans for given parts and return instructions file
     public static File generateAssemblyPlan(HashSet<Module> targetModules, String filePath) throws Exception {
         
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
         Clotho clothoObject = new Clotho(conn);
         
         

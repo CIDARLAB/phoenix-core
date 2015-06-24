@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
+import org.cidarlab.phoenix.core.controller.Args;
 import org.cidarlab.phoenix.core.controller.PhoenixController;
 import org.clothoapi.clotho3javaapi.Clotho;
 import org.clothoapi.clotho3javaapi.ClothoConnection;
@@ -61,7 +62,7 @@ public class ClothoTest {
 //    @Test
     public void testSinglePartUpload() {
         
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
         Clotho clothoObject = new Clotho(conn);
         
         String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/benchling_export_120514_single.gb";
@@ -77,7 +78,7 @@ public class ClothoTest {
 //    @Test
     public void testMultiPartUpload() {
         
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
         Clotho clothoObject = new Clotho(conn);
         
         String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/benchling_export_120514_multi.gb";
@@ -93,7 +94,7 @@ public class ClothoTest {
     @Test
     public void testPlasmidLibraryUpload() {
         
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
         Clotho clothoObject = new Clotho(conn);
         
         String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_plasmid_lib_61115.gb";
@@ -109,7 +110,7 @@ public class ClothoTest {
 //    @Test
     public void testPlasmidLibraryBPOnlyUpload() {
         
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
         Clotho clothoObject = new Clotho(conn);
         
         String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_plasmid_lib_bp_only.gb";
@@ -125,7 +126,7 @@ public class ClothoTest {
 //    @Test
     public void testGenericUpload() {
         
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
         Clotho clothoObject = new Clotho(conn);
         
         String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/generic.gb";
@@ -140,7 +141,7 @@ public class ClothoTest {
     
     @Test
     public void testFeatureUpload() {
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
         Clotho clothoObject = new Clotho(conn);
         
         String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_feature_lib.gb";
@@ -172,7 +173,7 @@ public class ClothoTest {
     @Test
     public void testCytometerUpload() {
         
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
         Clotho clothoObject = new Clotho(conn);
         
         String filePath = getFilepath() + "/src/main/resources/FluorescentProteins/cosbi_fortessa_bd.csv";
@@ -189,7 +190,7 @@ public class ClothoTest {
     public void testQuery() {
         System.out.println("Start Test");
         
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
         Clotho clothoObject = new Clotho(conn);
         
         Map featureQuery = new HashMap();

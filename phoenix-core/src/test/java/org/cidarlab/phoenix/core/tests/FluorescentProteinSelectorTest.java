@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
+import org.cidarlab.phoenix.core.controller.Args;
 import org.cidarlab.phoenix.core.controller.FluorescentProteinSelector;
 import org.cidarlab.phoenix.core.dom.Cytometer;
 import org.cidarlab.phoenix.core.dom.Fluorophore;
@@ -95,7 +96,7 @@ public class FluorescentProteinSelectorTest {
     //Runs test on FP Selector algorithm to get 1 FP with configured cytometer
 //    @Test
     public void getOneFPTest() {        
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
         Clotho clothoObject = new Clotho(conn);
         
         Map fluorophoreQuery = new HashMap();
@@ -116,7 +117,7 @@ public class FluorescentProteinSelectorTest {
 //    @Test
     public void getMultiFPTest() {        
         
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
         Clotho clothoObject = new Clotho(conn);
         
         Map fluorophoreQuery = new HashMap();

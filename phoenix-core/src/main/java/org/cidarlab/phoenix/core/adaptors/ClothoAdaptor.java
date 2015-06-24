@@ -1056,7 +1056,6 @@ public class ClothoAdaptor {
         
         Object query = clothoObject.query(map);
         JSONArray arrayFluorophore = (JSONArray) query;
-        System.out.println("FP Query :: "+ arrayFluorophore.size());
         for (int i = 0; i < arrayFluorophore.size(); i++) {
             
             Fluorophore fluorophore = new Fluorophore();

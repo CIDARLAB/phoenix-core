@@ -7,6 +7,7 @@ package org.cidarlab.phoenix.adaptors.tests;
 import java.util.Arrays;
 import java.util.List;
 import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
+import org.cidarlab.phoenix.core.controller.Args;
 import org.cidarlab.phoenix.core.controller.PhoenixController;
 import org.cidarlab.phoenix.core.dom.AssemblyParameters;
 import org.clothoapi.clotho3javaapi.Clotho;
@@ -54,7 +55,7 @@ public class RavenTest {
     @Test
     public void testParameterUpload() {
         
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
         Clotho clothoObject = new Clotho(conn);
         
         

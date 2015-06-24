@@ -129,7 +129,7 @@ public class ClientServlet extends HttpServlet {
                 File structuralSpec = partConverter(structuralPart, "structural_file.eug");
                 File functionalSpec = partConverter(functionalPart, "temp.txt");
                 // Pass files to correct method
-//                HashSet<Module> modulesToTest = initializeDesign(structuralSpec, functionalSpec);
+                HashSet<Module> modulesToTest = initializeDesign(structuralSpec, functionalSpec);
                 // If we made it here then everything was successful
                 System.out.println("\n\nINFO: SUCCESS\n\n");
                 holdingData = true;

@@ -20,7 +20,7 @@ public class ClientSideAdaptor {
     public static JSONObject convertModuleToJSON(Module module){
         JSONObject json = new JSONObject();
         json.put("name", module.getName());
-        json.put("id", module.getClothoID());
+        json.put("clothoId", module.getClothoID());
         if(!module.getChildren().isEmpty()){
         
             JSONArray children = new JSONArray();

@@ -5,9 +5,11 @@
  */
 package org.cidarlab.phoenix.core.adaptors;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.cidarlab.phoenix.core.dom.Module;
@@ -33,12 +35,9 @@ public class ClientSideAdaptor {
     }
     
     public static void createFlareFile(String filepath, JSONObject json) throws IOException{
-        FileWriter file = new FileWriter(filepath);
-        try{
-            file.write(json.toString());
-        }catch(Exception e){
-            System.out.println("Error ::" + e.getMessage());
-        }
-        
+        File file = new File(filepath);
+        Writer output = new BufferedWriter(new FileWriter(file));
+        output.write(json.toString());
+        output.close();
     }
 }

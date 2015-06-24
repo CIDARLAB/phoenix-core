@@ -6,6 +6,7 @@ package org.cidarlab.phoenix.core.tests;
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.List;
 import org.cidarlab.phoenix.core.controller.PhoenixController;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.junit.After;
@@ -59,8 +60,8 @@ public class CoreTest {
         
         //Run a design decomposition
         File structureFile = new File(getFilepath() + "/src/main/resources/miniEugeneFiles/toggle-switch-full.eug");
-        HashSet<Module> modulesToTest = PhoenixController.initializeDesign(structureFile, null);
-        PhoenixController.createExperimentInstructions(modulesToTest, getFilepath() + "/src/main/resources/InstructionFiles");
+        List<Module> modulesToTest = PhoenixController.initializeDesign(structureFile, null);
+        //PhoenixController.createExperimentInstructions(modulesToTest, getFilepath() + "/src/main/resources/InstructionFiles");
     }
     
     //Main testing class

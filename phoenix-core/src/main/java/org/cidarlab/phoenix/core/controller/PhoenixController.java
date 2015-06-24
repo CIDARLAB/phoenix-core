@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import net.sf.json.JSONObject;
 import org.cidarlab.phoenix.core.adaptors.*;
 import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Module;
@@ -43,7 +44,7 @@ public class PhoenixController {
     //Main Phoenix design decomposition method
     //Remember to start Clotho before this initializeDesign
     //FILES IN, NOTHING OUT
-    public static HashSet<Module> initializeDesign (File structuralSpecification, File functionalSpecification) throws Exception {
+    public static List<Module> initializeDesign (File structuralSpecification, File functionalSpecification) throws Exception {
 
         //STL function decomposition
         
@@ -64,7 +65,10 @@ public class PhoenixController {
             HashSet<Module> testableModules = FeatureAssignment.partialAssignment(modules);
             modulesToTest.addAll(testableModules);
 //        }
+        JSONObject flareValue = new JSONObject();
+        flareValue = ClientSideAdaptor.convertModuleToJSON(modules.get(0));
         
+        ClientSideAdaptor.createFlareFile(Args.flareJSONfilepath,flareValue);
         //Remove this once you've got it working.
 //        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
 //        Clotho clothoObject = new Clotho(conn);
@@ -72,7 +76,7 @@ public class PhoenixController {
 //            ClothoAdaptor.createModule(module, clothoObject);
 //        }
      
-        return modulesToTest;
+        return modules;
     }
 
     //Create assembly and testing instructions from a set of Modules that need to be built and tested

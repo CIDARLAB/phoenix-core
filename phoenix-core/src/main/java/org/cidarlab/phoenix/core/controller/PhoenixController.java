@@ -60,15 +60,13 @@ public class PhoenixController {
         TestingStructures.addTestingPrimitives(modules);
 
         //Perform partial part assignments given the feature library
-        HashSet<Module> modulesToTest = new HashSet<Module>();
-//        for (Module m : modules) {
-            HashSet<Module> testableModules = FeatureAssignment.partialAssignment(modules);
-            modulesToTest.addAll(testableModules);
-//        }
+        FeatureAssignment.partialAssignment(modules);
+        
         JSONObject flareValue = new JSONObject();
         flareValue = ClientSideAdaptor.convertModuleToJSON(modules.get(0));
         
         ClientSideAdaptor.createFlareFile(Args.flareJSONfilepath,flareValue);
+        
         //Remove this once you've got it working.
 //        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
 //        Clotho clothoObject = new Clotho(conn);

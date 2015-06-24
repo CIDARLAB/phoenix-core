@@ -511,10 +511,10 @@ public class ClothoAdaptor {
             if (f.getClothoID() != null) {
                 createFeature.put("id", f.getClothoID());
             }
-            else{
-                createFeature.put("id", f.getName());
-                f.setClothoID(f.getName());
-            }
+            //else{
+            //    createFeature.put("id", f.getName());
+            //    f.setClothoID(f.getName());
+            //}
             id = (String)clothoObject.set(createFeature);
             f.setClothoID(id);
         return id;
@@ -656,9 +656,9 @@ public class ClothoAdaptor {
         JSONArray featureIds = new JSONArray();
         HashSet<Feature> features = new HashSet<Feature>(module.getModuleFeatures());
         
-        //for(String fId:createFeatures(features,clothoObject)){
-        //    featureIds.add(fId);
-        //}
+        for(String fId:createFeatures(features,clothoObject)){
+            featureIds.add(fId);
+        }
         
         JSONArray exptIds = new JSONArray();
 

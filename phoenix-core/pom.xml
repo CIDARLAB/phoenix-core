@@ -280,8 +280,6 @@
   
     
   <repositories>
-      
-      <!-- BioJava -->
       <repository>
           <id>biojava-maven-repo</id>
           <name>BioJava repository</name>

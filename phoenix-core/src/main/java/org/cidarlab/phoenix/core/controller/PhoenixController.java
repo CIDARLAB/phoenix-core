@@ -59,20 +59,18 @@ public class PhoenixController {
         TestingStructures.addTestingPrimitives(modules);
 
         //Perform partial part assignments given the feature library
-        HashSet<Module> modulesToTest = new HashSet<Module>();
-//        for (Module m : modules) {
-            HashSet<Module> testableModules = FeatureAssignment.partialAssignment(modules);
-            modulesToTest.addAll(testableModules);
-//        }
-        
+        FeatureAssignment.partialAssignment(modules);
+
         //Remove this once you've got it working.
 //        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
 //        Clotho clothoObject = new Clotho(conn);
 //        for (Module module : modulesToTest) {
 //            ClothoAdaptor.createModule(module, clothoObject);
 //        }
-     
-        return modulesToTest;
+
+        HashSet<Module> modulesHash = new HashSet<>(modules);
+
+        return modulesHash;
     }
 
     //Create assembly and testing instructions from a set of Modules that need to be built and tested

@@ -4,7 +4,11 @@
  */
 package org.cidarlab.phoenix.adaptors.tests;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import org.cidarlab.phoenix.core.controller.PhoenixController;
+import org.cidarlab.phoenix.core.controller.PhoenixInstructions;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -47,8 +51,12 @@ public class AnalyticsTest {
     }
     
 //    @Test
-    public void testUploadKeyFile() {
+    public void testUploadCytometryResultsFile() throws FileNotFoundException, IOException {
         
+        String filePath = getFilepath() + "/src/main/resources/ResultsFiles/results_5615.csv";
+        File input = new File(filePath);
+        
+        PhoenixInstructions.parseTestingResults(input);
     }
     
 //    @Test
@@ -56,8 +64,8 @@ public class AnalyticsTest {
         
     }
     
-    public static void main (String[] args) {
+    public static void main (String[] args) throws FileNotFoundException, IOException {
         AnalyticsTest at = new AnalyticsTest();
-        at.testUploadKeyFile();
+        at.testUploadCytometryResultsFile();
     }
 }

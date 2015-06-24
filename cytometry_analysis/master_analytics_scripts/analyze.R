@@ -72,7 +72,7 @@ functionalDiversity <- function(multiplexMeansDataSet) {
 }
 
 #Import key file
-key <- read.csv("key.csv", header = TRUE)
+key <- read.csv("key_5615.csv", header = TRUE)
 key [is.na(key)] <- ""
 
 #Find bead controls, apply bead normalization
@@ -129,6 +129,10 @@ colnames(meansOneMedia) <- gsub("-",".", colnames(colorControlsFlowSet))
 standardDevsOneMedia <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=0))
 colnames(standardDevsOneMedia) <- gsub("-",".", colnames(colorControlsFlowSet))
 oneMediaParts <- c()
+
+#Initialize output file
+output <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)) + 1, nrow=0))
+colnames(output) <- c("PART", "MEDIA", "TIME", gsub("-",".", colnames(colorControlsFlowSet))[3:length(colnames(colorControlsFlowSet))])
 
 #Loop through all unique parts to make plots
 for (i in 1:length(uniquePartNames)) {
@@ -222,6 +226,13 @@ for (i in 1:length(uniquePartNames)) {
 				}	
 			}
 			
+			#Add data to output file
+			for (w in 1:length(uniqueMediaTimes)) {
+				outputDataRow <- as.data.frame(rbind(c(part, uniqueMediaTypeConcentrations[k], uniqueMediaTimes[w], as.character(meansMediaTime[w,3:length(meansMediaTime)]))))
+				colnames(outputDataRow) <- colnames(output)
+				output <- rbind(output, outputDataRow)
+			}
+			
 			#Make a time v. media plot if more than one media time
 			if (length(uniqueMediaTimes) > 1) {
 				
@@ -239,7 +250,7 @@ for (i in 1:length(uniquePartNames)) {
 				if (length(colnames(meansMediaTime)) == 0) {
 					colnames(meansMediaTime) <- storedColName
 					colnames(standardDevsMediaTime) <- storedColName
-				}
+				}			
 				
 				#Make plots				
 	    		colnames(meansMediaTime) <- paste("MEAN", colnames(meansMediaTime), sep = "_")
@@ -294,12 +305,11 @@ for (i in 1:length(uniquePartNames)) {
 			if (length(uniqueMediaTypeConcentrations) == 1) {				
 				oneMediaParts <- c(oneMediaParts, paste(part, uniqueMediaTypeConcentrations[k], sep = "_"))				
 				meansOneMedia <- rbind(meansOneMedia, meansMedia[k,])
-				standardDevsOneMedia <- rbind(standardDevsOneMedia, standardDevsMedia[k,])
+				standardDevsOneMedia <- rbind(standardDevsOneMedia, standardDevsMedia[k,])				
 			}				
 		}
 		
 		#Only do this loop if a media type is entered
-		# if (!(mediaType=="") && length(uniqueMediaTypeConcentrations) > 1) {
 		if (length(uniqueMediaTypeConcentrations) > 1) {
 		
 			### PLOTTING OF PART MEDIA CONDITIONS ###
@@ -377,7 +387,7 @@ if (length(oneMediaParts) > 1) {
 	if (length(colnames(meansOneMedia)) == 0) {
 		colnames(meansOneMedia) <- storedColName
 		colnames(standardDevsOneMedia) <- storedColName
-	}
+	}			
 	
 	#Make plots
 	colnames(meansOneMedia) <- paste("MEAN", colnames(meansOneMedia), sep = "_")
@@ -453,10 +463,14 @@ if (length(multiplexVals) > 1) {
     	geom_point(size = 4, shape=21, fill="white") +
     	theme_bw() +
     	ylim(0,max(yaxis)) +
-    	ggtitle("Standard Deviation of Triplicate Population Averages") +    			
+    	ggtitle("Functional Richness of Triplicate Population Averages") +    			
     	xlab("Number of Parts Multiplexed") +
     	ylab(paste(as.character(colnames(multiplexDataFrame)[o])," (RFU)"))
     	print(p)
     	dev.off()
     }
 }
+
+#Write output into an exported csv file for Phoenix
+filename <- "results_5615.csv"
+write.csv(file=filename, x=output, row.names=FALSE)

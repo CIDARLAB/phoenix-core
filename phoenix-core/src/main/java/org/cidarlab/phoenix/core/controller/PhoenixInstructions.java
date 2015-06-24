@@ -4,8 +4,11 @@
  */
 package org.cidarlab.phoenix.core.controller;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -95,8 +98,21 @@ public class PhoenixInstructions {
     }
     
     
-    //Method for producing testing instructions from Experiments
-    public static void parseTestingInstructions(File instructionsFile) {
+    //Method for reading results file from R
+    public static void parseTestingResults(File resultsFile) throws FileNotFoundException, IOException {
+        
+        BufferedReader reader = new BufferedReader(new FileReader(resultsFile.getAbsolutePath()));
+        String line = reader.readLine();
+        line = reader.readLine(); //skip first line
+        
+        //Read each line of the input file to parse parts
+        while (line != null) {
+            while (line.matches("^[\\s,]+")) {
+                line = reader.readLine();
+            }
+            
+            
+        }
         
     }
 }

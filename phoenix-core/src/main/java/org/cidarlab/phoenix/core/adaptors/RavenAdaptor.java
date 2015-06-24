@@ -253,7 +253,6 @@ public class RavenAdaptor {
     public static HashSet<org.cidarlab.raven.datastructures.Part> phoenixModulesToRavenParts(HashSet<Module> modules, HashSet<org.cidarlab.raven.datastructures.Part> libParts) {
         
         HashSet<org.cidarlab.raven.datastructures.Part> ravenParts = new HashSet();
-        int i = 1;
         
         //For each module, make a Raven part
         for (Module m : modules) {

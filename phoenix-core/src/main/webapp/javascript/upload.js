@@ -90,6 +90,9 @@ form.onsubmit = function(event) {
     formData.append('fcConfig', flowFile/*, flowFile.name*/);
     formData.append('fSpectra', fluoresenceFile/*, fluoresenceFile.name*/);
 
+    // Let servlet know what to expect
+    formData.append('mode','upload');
+
     // Send ajax form
     $.ajax({
         url: 'ClientServlet',

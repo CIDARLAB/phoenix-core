@@ -5,11 +5,13 @@
  */
 package org.cidarlab.phoenix.core.servlets;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.logging.Level;
@@ -42,6 +44,16 @@ public class ClientServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    private static String getValue(Part part) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(part.getInputStream(), "UTF-8"));
+        StringBuilder value = new StringBuilder();
+        char[] buffer = new char[1024];
+        for (int length = 0; (length = reader.read(buffer)) > 0;) {
+            value.append(buffer, 0, length);
+        }
+        return value.toString();
+    }
+    
     public String getFilepath() {
         String filepath = "/C:/Users/zchap_000/Documents/BU_Spring_2015/phoenix-core/phoenix-core/src/main";
         return filepath;
@@ -72,28 +84,60 @@ public class ClientServlet extends HttpServlet {
     
     protected void processPostRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, JSONException, Exception {
-        Part plasmidPart = request.getPart("plasmidLib");
-        Part featurePart = request.getPart("featureLib");
-        Part cytometerPart = request.getPart("fcConfig");
-        Part fluorophoreSpectraPart = request.getPart("fSpectra");
-
-        if(plasmidPart != null && featurePart != null && cytometerPart != null && fluorophoreSpectraPart != null){
-            File plasmidLib = partConverter(plasmidPart, "plasmid_lib.gb");
-            File featureLib = partConverter(featurePart, "feature_lib.gb");
-            File cytometer = partConverter(cytometerPart, "cytometer_config.csv");
-            File fluorophoreSpectra = partConverter(fluorophoreSpectraPart, "fp_spectra.csv");
-            
-            preliminaryDataUpload (featureLib, plasmidLib, fluorophoreSpectra, cytometer);
-            
-            System.out.println("\n\nSUCCESS\n\n");
-            holdingData = true;
-            PrintWriter out = response.getWriter();
-            out.write("Done!");
-        } else {
-            System.out.println("\n\nFAILURE\n\n");
-            holdingData = true;
-            PrintWriter out = response.getWriter();
-            out.write("Error");
+        // Figure out what mode to use
+        String mode = getValue(request.getPart("mode"));
+        // Request was sent from upload.html
+        if(mode.equals("upload")){
+            // Get files in
+            Part plasmidPart = request.getPart("plasmidLib");
+            Part featurePart = request.getPart("featureLib");
+            Part cytometerPart = request.getPart("fcConfig");
+            Part fluorophoreSpectraPart = request.getPart("fSpectra");
+            // If files are valid, proceed
+            if(plasmidPart != null && featurePart != null && cytometerPart != null && fluorophoreSpectraPart != null){
+                // Convert servlet.Part objects to java.io.File objects
+                File plasmidLib = partConverter(plasmidPart, "plasmid_lib.gb");
+                File featureLib = partConverter(featurePart, "feature_lib.gb");
+                File cytometer = partConverter(cytometerPart, "cytometer_config.csv");
+                File fluorophoreSpectra = partConverter(fluorophoreSpectraPart, "fp_spectra.csv");
+                // Pass files to correct method
+                preliminaryDataUpload (featureLib, plasmidLib, fluorophoreSpectra, cytometer);
+                // If we made it here then everything was successful
+                System.out.println("\n\nINFO: SUCCESS\n\n");
+                holdingData = true;
+                PrintWriter out = response.getWriter();
+                out.write("Done!");
+            } else {
+                // If here there was an error with the file upload
+                System.out.println("\n\nINFO: FAILURE\n\n");
+                holdingData = true;
+                PrintWriter out = response.getWriter();
+                out.write("Error");
+            }
+            // Request was sent from specification.html
+        } else if(mode.equals("specification")){
+            // Get files in
+            Part structuralPart = request.getPart("structuralSpec");
+            Part functionalPart = request.getPart("functionalSpec");
+            // If files are valid, proceed
+            if(structuralPart != null && functionalPart != null){
+                // Convert servlet.Part objects to java.io.File objects
+                File structuralSpec = partConverter(structuralPart, "FILENAME_HERE_YO.eug");
+                File functionalSpec = partConverter(functionalPart, "FILENAME_HERE_YO.txt");
+                // Pass files to correct method
+    //            preliminaryDataUpload (featureLib, plasmidLib, fluorophoreSpectra, cytometer);
+                // If we made it here then everything was successful
+                System.out.println("\n\nINFO: SUCCESS\n\n");
+                holdingData = true;
+                PrintWriter out = response.getWriter();
+                out.write("Done!");
+            } else {
+                // If here there was an error with the file upload
+                System.out.println("\n\nINFO: FAILURE\n\n");
+                holdingData = true;
+                PrintWriter out = response.getWriter();
+                out.write("Error");
+            }
         }
     }
     

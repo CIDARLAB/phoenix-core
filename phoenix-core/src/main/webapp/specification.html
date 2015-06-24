@@ -37,12 +37,14 @@
             <h1><img style="height: 40px; margin-bottom:5px" src="images/phoenix_cropped.jpg"> <small>Upload Specification Files</small></h1>
         </div>
         <div id="config">
-                <div style="margin-bottom:10px"><h4>Structural Specification</h4></div>
-                <input style="margin-bottom:20px" type="file" id="files" name ="file" accept="text/plain" />
-                <div style="margin-bottom:10px"><h4>Functional Specification</h4></div>
-                <input style="margin-bottom:20px" type="file" id="files" name ="file" accept=".csv" />
-                <div><button class="btn btn-primary" id="uploadButton" style="margin-top:7px" onclick="readConfig()">Upload</button>
+            <form id="specUploads" enctype="multipart/form-data">
+                <div style="margin-bottom:10px" id="ss"><h4>Structural Specification</h4></div>
+                <input style="margin-bottom:20px" type="file" id="structuralSpec" name ="structuralSpecification" accept=".eug" />
+                <div style="margin-bottom:10px" id="fs"><h4>Functional Specification</h4></div>
+                <input style="margin-bottom:20px" type="file" id="functionalSpec" name ="functionalSpecification" accept="text/plain" />
+                <div><button style="margin-top:7px" class="btn btn-primary" type="submit" id="uploadButton">Upload</button>
                 <img id = "loading" style = "position:relative; padding-top:2px; padding-left:10px;" src ="images/ajax-loader.gif" hidden></div>
+            </form>
         </div>
         <div id="output" hidden>
             <div class="tabbable tabs-left">
@@ -57,7 +59,8 @@
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>      
         <script type="text/javascript" src="libraries/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="libraries/jquery-ui.min.js"></script>
-        <script src="libraries/bootstrap.min.js"></script>   
+        <script src="libraries/bootstrap.min.js"></script>
+        <script src="javascript/specification.js"></script>
         <script src="javascript/SessionController.js"></script>
 
         <script>

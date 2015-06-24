@@ -389,7 +389,7 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
                     .classed('info', true)
                     .attr('x', 30)
                     .attr('y', 0)
-                    .text('More info');
+                    .text(d.clothoId);
             }})
             .on("mouseout", function() {
                 // Remove the info text on mouse out.

@@ -60,17 +60,17 @@ public class PhoenixController {
 
         //Perform partial part assignments given the feature library
         HashSet<Module> modulesToTest = new HashSet<Module>();
-        for (Module m : modules) {
+//        for (Module m : modules) {
             HashSet<Module> testableModules = FeatureAssignment.partialAssignment(modules);
             modulesToTest.addAll(testableModules);
-        }
+//        }
         
         //Remove this once you've got it working.
-        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
-        Clotho clothoObject = new Clotho(conn);
-        for (Module module : modulesToTest) {
-            ClothoAdaptor.createModule(module, clothoObject);
-        }
+//        ClothoConnection conn = new ClothoConnection("wss://localhost:8443/websocket");
+//        Clotho clothoObject = new Clotho(conn);
+//        for (Module module : modulesToTest) {
+//            ClothoAdaptor.createModule(module, clothoObject);
+//        }
      
         return modulesToTest;
     }

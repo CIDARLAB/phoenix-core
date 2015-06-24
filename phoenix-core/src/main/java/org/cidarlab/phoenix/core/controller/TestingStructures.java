@@ -187,6 +187,7 @@ public class TestingStructures {
         List<Medium> defaultMedia = new ArrayList<>();
         defaultMedia.add(new Medium("LB", Medium.MediaType.RICH));        
         List<Integer> defaultTime = Arrays.asList(new Integer[]{0, 10, 20, 30, 40, 50, 60});
+        HashMap<String, Sample> sampleHash = new HashMap<>();
         
         for (Module m : modules) {
 
@@ -197,7 +198,7 @@ public class TestingStructures {
                 
                 //Add these experiments to the returned experiment set
                 experimentList.add(new Experiment(ExperimentType.DEGRADATION, "DEGRADATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));
-                addSamples(experimentList, controlModulesAll, m, true);
+                addSamples(experimentList, controlModulesAll, sampleHash, m, true);
                 
                 m.getExperiments().addAll(experimentList);
 
@@ -208,7 +209,7 @@ public class TestingStructures {
                 experimentList.add(new Experiment(ExperimentType.DEGRADATION, "DEGRADATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));
                 experimentList.add(new Experiment(ExperimentType.REGULATION, "REGULATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<Integer>()));
                 experimentList.add(new Experiment(ExperimentType.SMALL_MOLECULE, "SMALL_MOLECULE_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<Integer>()));                
-                addSamples(experimentList, controlModulesAll, m, true);               
+                addSamples(experimentList, controlModulesAll, sampleHash, m, true);               
                 
                 m.getExperiments().addAll(experimentList);
 
@@ -218,7 +219,7 @@ public class TestingStructures {
                 //Add these experiments to the returned experiment set
                 experimentList.add(new Experiment(ExperimentType.DEGRADATION, "DEGRADATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));
                 experimentList.add(new Experiment(ExperimentType.REGULATION, "REGULATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<Integer>()));            
-                addSamples(experimentList, controlModulesAll, m, true); 
+                addSamples(experimentList, controlModulesAll, sampleHash, m, true); 
                 
                 m.getExperiments().addAll(experimentList);
 
@@ -229,7 +230,7 @@ public class TestingStructures {
                 experimentList.add(new Experiment(ExperimentType.DEGRADATION, "DEGRADATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));
                 experimentList.add(new Experiment(ExperimentType.REGULATION, "REGULATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<Integer>()));
                 experimentList.add(new Experiment(ExperimentType.SMALL_MOLECULE, "SMALL_MOLECULE_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<Integer>()));                
-                addSamples(experimentList, controlModulesAll, m, true);
+                addSamples(experimentList, controlModulesAll, sampleHash, m, true);
 
                 m.getExperiments().addAll(experimentList);              
 
@@ -239,7 +240,7 @@ public class TestingStructures {
                 //Add these experiments to the returned experiment set
                 experimentList.add(new Experiment(ExperimentType.DEGRADATION, "DEGRADATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));
                 experimentList.add(new Experiment(ExperimentType.REGULATION, "REGULATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<Integer>()));            
-                addSamples(experimentList, controlModulesAll, m, true);
+                addSamples(experimentList, controlModulesAll, sampleHash, m, true);
                 
                 m.getExperiments().addAll(experimentList);
 
@@ -248,7 +249,7 @@ public class TestingStructures {
                 
                 //Add these experiments to the returned experiment set
                 experimentList.add(new Experiment(ExperimentType.EXPRESSION, "EXPRESSION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<Integer>()));          
-                addSamples(experimentList, controlModulesAll, m, false);
+                addSamples(experimentList, controlModulesAll, sampleHash, m, false);
                 
                 m.getExperiments().addAll(experimentList);
 
@@ -257,7 +258,7 @@ public class TestingStructures {
                 
                 //Add these experiments to the returned experiment set
                 experimentList.add(new Experiment(ExperimentType.RBS_CONTEXT, "RBS_CONTEXT_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));          
-                addSamples(experimentList, controlModulesAll, m, false);
+                addSamples(experimentList, controlModulesAll, sampleHash, m, false);
                 
                 m.getExperiments().addAll(experimentList);
 
@@ -274,13 +275,13 @@ public class TestingStructures {
         for (Module m : modules) {
             allExperiments.addAll(m.getExperiments());
         }
-        removeDuplicatePolynucleotides(allExperiments);
+        removeDuplicateSamplesPolynucleotides(allExperiments);
         
         return allExperiments;
     }
     
     //Add controls and samples
-    private static void addSamples(List<Experiment> experiments, HashSet<Module> controlModulesAll, Module m, boolean regControls) {
+    private static void addSamples(List<Experiment> experiments, HashSet<Module> controlModulesAll, HashMap<String, Sample> sampleHash, Module m, boolean regControls) {
 
         //Add control constructs 
         HashSet<Module> controlsThisModule = new HashSet<>();
@@ -294,8 +295,8 @@ public class TestingStructures {
 
         //Add samples
         for (Experiment e : experiments) {            
-            createControlSamples(e, controlsThisModule, m);
-            createExperimentSamples(e, m);
+            createControlSamples(e, controlsThisModule, m, sampleHash);
+            createExperimentSamples(e, m, sampleHash);
         }
     }
     
@@ -415,7 +416,7 @@ public class TestingStructures {
     }
     
     //Method for forming an experiment from a module which has partial part assignment
-    private static void createExperimentSamples(Experiment experiment, Module m) {
+    private static void createExperimentSamples(Experiment experiment, Module m, HashMap<String, Sample> sampleHash) {
 
         Strain defaultStrain = new Strain("E. coli DH5a");
         
@@ -432,8 +433,13 @@ public class TestingStructures {
             for (Medium media : experiment.getMediaConditions()) {
                 List<Integer> times = experiment.getTimes();
                 if (!times.isEmpty()) {
-                    Sample degControl = new Sample(m.getName(), SampleType.EXPERIMENT, defaultStrain, pNs, media, 0);
-                    experimentSamples.add(degControl);
+                    Sample expTest = new Sample(SampleType.EXPERIMENT, defaultStrain, pNs, media, 0);
+                    if (sampleHash.get(expTest.getClothoID()) == null) {
+                        sampleHash.put(expTest.getClothoID(), expTest);
+                        experimentSamples.add(expTest);
+                    } else {
+                        experimentSamples.add(sampleHash.get(expTest.getClothoID()));
+                    }
                 }
             }
             
@@ -445,8 +451,13 @@ public class TestingStructures {
                 List<Integer> times = experiment.getTimes();
                 if (!times.isEmpty()) {
                     for (Integer i : times) {
-                        Sample degControl = new Sample(m.getName(), SampleType.EXPERIMENT, defaultStrain, pNs, media, i);
-                        experimentSamples.add(degControl);
+                        Sample degTest = new Sample(SampleType.EXPERIMENT, defaultStrain, pNs, media, i);
+                        if (sampleHash.get(degTest.getClothoID()) == null) {                                                    
+                            sampleHash.put(degTest.getClothoID(), degTest);
+                            experimentSamples.add(degTest);
+                        } else {
+                            experimentSamples.add(sampleHash.get(degTest.getClothoID()));
+                        }
                     }
                 }
             }
@@ -458,8 +469,13 @@ public class TestingStructures {
             for (Medium media : experiment.getMediaConditions()) {
                 List<Integer> times = experiment.getTimes();
                 if (!times.isEmpty()) {
-                    Sample degControl = new Sample(m.getName(), SampleType.EXPERIMENT, defaultStrain, pNs, media, 0);
-                    experimentSamples.add(degControl);
+                    Sample regTest = new Sample(SampleType.EXPERIMENT, defaultStrain, pNs, media, 0);
+                    if (sampleHash.get(regTest.getClothoID()) == null) {
+                        sampleHash.put(regTest.getClothoID(), regTest);
+                        experimentSamples.add(regTest);
+                    } else {
+                        experimentSamples.add(sampleHash.get(regTest.getClothoID()));
+                    }
                 }
             }
             
@@ -470,8 +486,13 @@ public class TestingStructures {
             for (Medium media : experiment.getMediaConditions()) {
                 List<Integer> times = experiment.getTimes();
                 if (!times.isEmpty()) {
-                    Sample degControl = new Sample(m.getName(), SampleType.EXPERIMENT, defaultStrain, pNs, media, 0);
-                    experimentSamples.add(degControl);
+                    Sample smTest = new Sample(SampleType.EXPERIMENT, defaultStrain, pNs, media, 0);
+                    if (sampleHash.get(smTest.getClothoID()) == null) {
+                        sampleHash.put(smTest.getClothoID(), smTest);
+                        experimentSamples.add(smTest);
+                    } else {
+                        experimentSamples.add(sampleHash.get(smTest.getClothoID()));
+                    }
                 }
             }
             
@@ -482,8 +503,13 @@ public class TestingStructures {
             for (Medium media : experiment.getMediaConditions()) {
                 List<Integer> times = experiment.getTimes();
                 if (!times.isEmpty()) {
-                    Sample degControl = new Sample(m.getName(), SampleType.EXPERIMENT, defaultStrain, pNs, media, 0);
-                    experimentSamples.add(degControl);
+                    Sample rbsContextTest = new Sample(SampleType.EXPERIMENT, defaultStrain, pNs, media, 0);
+                    if (sampleHash.get(rbsContextTest.getClothoID()) == null) {
+                        sampleHash.put(rbsContextTest.getClothoID(), rbsContextTest);
+                        experimentSamples.add(rbsContextTest);
+                    } else {
+                        experimentSamples.add(sampleHash.get(rbsContextTest.getClothoID()));
+                    }
                 }
             }
             
@@ -494,7 +520,7 @@ public class TestingStructures {
             for (Medium media : experiment.getMediaConditions()) {
                 List<Integer> times = experiment.getTimes();
                 if (!times.isEmpty()) {
-                    Sample degControl = new Sample(m.getName(), SampleType.EXPERIMENT, defaultStrain, pNs, media, 0);
+                    Sample degControl = new Sample(SampleType.EXPERIMENT, defaultStrain, pNs, media, 0);
                     experimentSamples.add(degControl);
                 }
             }
@@ -505,16 +531,27 @@ public class TestingStructures {
     }
     
     //Method for forming an experiment from a module which has partial part assignment
-    private static void createControlSamples(Experiment experiment, HashSet<Module> controlModules, Module testModule) {
+    private static void createControlSamples(Experiment experiment, HashSet<Module> controlModules, Module testModule, HashMap<String, Sample> sampleHash) {
         
         Strain defaultStrain = new Strain("E. coli DH5a");
         
         //Initialize control samples
-        Sample beadControl = new Sample("RaibowBeads", SampleType.BEADS, null, null, null, 0);
-        Sample negativeControl = new Sample("Negative", SampleType.NEGATIVE, defaultStrain, null, experiment.getMediaConditions().get(0), 0);
+        Sample beadControl = new Sample(SampleType.BEADS, null, null, null, 0);
+        Sample negativeControl = new Sample(SampleType.NEGATIVE, defaultStrain, null, experiment.getMediaConditions().get(0), 0);
         
-        experiment.setNegativeControl(negativeControl);
-        experiment.setBeadControl(beadControl);
+        if (sampleHash.get(beadControl.getClothoID()) == null) {
+            sampleHash.put(beadControl.getClothoID(), beadControl);
+            experiment.setBeadControl(beadControl);
+        } else {
+            experiment.setBeadControl(sampleHash.get(beadControl.getClothoID()));
+        }
+        
+        if (sampleHash.get(negativeControl.getClothoID()) == null) {
+            sampleHash.put(negativeControl.getClothoID(), negativeControl);
+            experiment.setNegativeControl(negativeControl);
+        } else {
+            experiment.setNegativeControl(sampleHash.get(negativeControl.getClothoID()));
+        }
         
         //Loop through modules to create samples
         for (Module m : controlModules) {
@@ -530,16 +567,26 @@ public class TestingStructures {
                 pNs.add(makePolynucleotide(testModule));
                 pNs.add(makePolynucleotide(m));                
                 for (Medium media : experiment.getMediaConditions()) {
-                    Sample regulationControl = new Sample(m.getName(), SampleType.REGULATION, defaultStrain, pNs, media, 0);
-                    regulationControls.add(regulationControl);
+                    Sample regulationControl = new Sample(SampleType.REGULATION, defaultStrain, pNs, media, 0);
+                    if (sampleHash.get(regulationControl.getClothoID()) == null) {
+                        sampleHash.put(regulationControl.getClothoID(), regulationControl);
+                        regulationControls.add(regulationControl);
+                    } else {
+                        regulationControls.add(sampleHash.get(regulationControl.getClothoID()));
+                    }
                 }
                 
                 //Create regulation control sample in the absence of the test sample for each media condition
                 List<Polynucleotide> pNsUR = new ArrayList<>();
                 pNsUR.add(makePolynucleotide(m));
                 for (Medium media : experiment.getMediaConditions()) {
-                    Sample unregulatedRegulationControl = new Sample(m.getName(), SampleType.REGULATION, defaultStrain, pNsUR, media, 0);
-                    regulationControls.add(unregulatedRegulationControl);
+                    Sample regulationControl = new Sample(SampleType.REGULATION, defaultStrain, pNsUR, media, 0);
+                    if (sampleHash.get(regulationControl.getClothoID()) == null) {
+                        sampleHash.put(regulationControl.getClothoID(), regulationControl);
+                        regulationControls.add(regulationControl);
+                    } else {
+                        regulationControls.add(sampleHash.get(regulationControl.getClothoID()));
+                    }
                 }
                 
             //Color controls
@@ -550,9 +597,15 @@ public class TestingStructures {
                 
                 //Create color control sample for each media condition
                 List<Polynucleotide> pNs = new ArrayList<>();
-                pNs.add(makePolynucleotide(testModule));               
+                pNs.add(makePolynucleotide(m));               
                 for (Medium media : experiment.getMediaConditions()) {
-                    Sample colorControl = new Sample(m.getName(), SampleType.FLUORESCENT, defaultStrain, pNs, media, 0);
+                    Sample colorControl = new Sample(SampleType.FLUORESCENT, defaultStrain, pNs, media, 0);
+                    if (sampleHash.get(colorControl.getClothoID()) == null) {
+                        sampleHash.put(colorControl.getClothoID(), colorControl);
+                        colorControls.add(colorControl);
+                    } else {
+                        colorControls.add(sampleHash.get(colorControl.getClothoID()));
+                    }
                     colorControls.add(colorControl);
                 }
                 
@@ -572,8 +625,13 @@ public class TestingStructures {
                         List<Integer> times = experiment.getTimes();
                         if (!times.isEmpty()) {
                             for (Integer i : times) {
-                                Sample degControl = new Sample(m.getName(), SampleType.EXPRESSION_DEGRATATION, defaultStrain, pNs, media, i);
-                                expDegControls.add(degControl);
+                                Sample degControl = new Sample(SampleType.EXPRESSION_DEGRATATION, defaultStrain, pNs, media, i);                                
+                                if (sampleHash.get(degControl.getClothoID()) == null) {
+                                    sampleHash.put(degControl.getClothoID(), degControl);
+                                    expDegControls.add(degControl);
+                                } else {
+                                    expDegControls.add(sampleHash.get(degControl.getClothoID()));
+                                }
                             }
                         }
                     }
@@ -582,8 +640,13 @@ public class TestingStructures {
                 } else if (experiment.getExType().equals(ExperimentType.EXPRESSION)) {
                     
                     for (Medium media : experiment.getMediaConditions()) {
-                        Sample expControl = new Sample(m.getName(), SampleType.EXPRESSION_DEGRATATION, defaultStrain, pNs, media, 0);
-                        expDegControls.add(expControl);
+                        Sample expControl = new Sample(SampleType.EXPRESSION_DEGRATATION, defaultStrain, pNs, media, 0);
+                        if (sampleHash.get(expControl.getClothoID()) == null) {
+                            sampleHash.put(expControl.getClothoID(), expControl);
+                            expDegControls.add(expControl);
+                        } else {
+                            expDegControls.add(sampleHash.get(expControl.getClothoID()));
+                        }
                     }
                 }
             }
@@ -593,12 +656,12 @@ public class TestingStructures {
     //Make a new polynucleotide with the same name as the module, but no other information
     private static Polynucleotide makePolynucleotide(Module m) {
         
-        Polynucleotide pn = new Polynucleotide(m.getName());        
+        Polynucleotide pn = new Polynucleotide(m.getName()+"_Polynucleotide");        
         return pn;
     }
     
     //Remove merge an duplicate samples across experiments
-    private static void removeDuplicatePolynucleotides(List<Experiment> experiments) {
+    private static void removeDuplicateSamplesPolynucleotides(List<Experiment> experiments) {
         
         //Initiate hashes for existing polynucleotides
         
@@ -615,20 +678,19 @@ public class TestingStructures {
         }
         
         //Look through each experiment for duplicated samples
-        for (Experiment ex : experiments) {
+        List<Sample> allSamples = new ArrayList<>();
+        List<Sample> sampleList = new ArrayList<>();
+        
+        for (Experiment ex : experiments) {                        
+            allSamples.addAll(ex.getAllSamples());
+        }
             
-            HashSet<Sample> allSamples = new HashSet<>();
-//            allSamples.add(ex.getBeadControl());
-//            allSamples.add(ex.getNegativeControl());
-            allSamples.addAll(ex.getColorControls());
-            allSamples.addAll(ex.getExpDegControls());
-            allSamples.addAll(ex.getExperimentSamples());
-            allSamples.addAll(ex.getRegulationControls());
-            
+        //Remove duplicate polynucleotides
+        for (Sample s : allSamples) {
+
             //Remove duplicate polynucleotides
-            for (Sample s : allSamples) {
+            if (s.getPolynucleotides() != null) {
                 List<Polynucleotide> polynucleotides = s.getPolynucleotides();
-                
                 for (Polynucleotide pn : polynucleotides) {
                     if (pnNameHash.containsKey(pn.getClothoID())) {
                         pn = pnNameHash.get(pn.getClothoID());
@@ -638,6 +700,23 @@ public class TestingStructures {
                 }
             }
         }
+        
+        //Make the final sample list
+//        for (Sample s : allSamples) {
+//            
+//            //Check all existing samples in the 
+//            boolean inList = false;
+//            for (Sample fS : sampleList) {
+//                if (s.equals(fS)) {
+//                    inList = true;
+//                }
+//            }
+//            
+//            if (!inList) {
+//                sampleList.add(s);
+//            }
+//        }
+        
         conn.closeConnection();
     }
      

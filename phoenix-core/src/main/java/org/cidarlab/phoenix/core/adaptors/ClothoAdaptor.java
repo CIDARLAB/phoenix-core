@@ -68,6 +68,8 @@ public class ClothoAdaptor {
             HashSet<Fluorophore> fluorophores = BenchlingAdaptor.getFluorophores(features);
             features.removeAll(fluorophores);
             
+            System.out.println("From Benchling Fluorophores:: " + fluorophores.size());
+            
             createFeatures(features,clothoObject);
             createFluorophores(fluorophores,clothoObject);
             
@@ -420,7 +422,28 @@ public class ClothoAdaptor {
     public static String createFeature(Feature f,Clotho clothoObject){
         String id = "";
         Map createFeature = new HashMap();
+        /*
+        boolean isFP = false;
+        Map fluorophoreQuery = new HashMap();
+        fluorophoreQuery.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
+        JSONArray fps = new JSONArray();
+        fps = (JSONArray) clothoObject.query(fluorophoreQuery);
+        for(Object obj:fps){
+            Map map = new HashMap();
+            map = (JSONObject)obj;
+            if(map.get("name").equals(f.getName())){
+                isFP = true;
+                break;
+            }
+        }
+        if(isFP){
+            createFeature.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
+        }
+        else{
             createFeature.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
+        }*/
+        
+            createFeature.put("schema", "org.cidarlab.phoenix.core.dom.Feature");        
             createFeature.put("name", f.getName());
             createFeature.put("forwardColor", f.getForwardColor().toString());
             createFeature.put("reverseColor", f.getReverseColor().toString());
@@ -488,10 +511,10 @@ public class ClothoAdaptor {
             if (f.getClothoID() != null) {
                 createFeature.put("id", f.getClothoID());
             }
-            else{
-                createFeature.put("id", f.getName());
-                f.setClothoID(f.getName());
-            }
+            //else{
+            //    createFeature.put("id", f.getName());
+            //    f.setClothoID(f.getName());
+            //}
             id = (String)clothoObject.set(createFeature);
             f.setClothoID(id);
         return id;
@@ -553,24 +576,17 @@ public class ClothoAdaptor {
             //Clotho ID
             if (f.getClothoID() != null) {
                 createFluorophore.put("id", f.getClothoID());
-                id = f.getClothoID();
+                //id = f.getClothoID();
             } else {
                 createFluorophore.put("id", f.getName());
                 f.setClothoID(f.getName());
-                id = f.getName();
+                //id = f.getName();
             }
-            clothoObject.set(createFluorophore);
-            
-            createFluorophore = new HashMap();
-            createFluorophore.put("id", id);
             createFluorophore.put("em_spectrum", em_array);
-            clothoObject.set(createFluorophore);
-            
-            createFluorophore = new HashMap();
-            createFluorophore.put("id", id);
             createFluorophore.put("ex_spectrum", ex_array);
-            clothoObject.set(createFluorophore);
-        
+            
+            id = (String) clothoObject.set(createFluorophore);
+            f.setClothoID(id);
         return id;
     }
     
@@ -661,7 +677,7 @@ public class ClothoAdaptor {
         //Should be someway to create Primitive Modules
         
         
-        id = (String) clothoObject.create(createModule);
+        id = (String) clothoObject.set(createModule);
         module.setClothoID(id);
         
         for (Module child : module.getChildren()) {
@@ -1040,7 +1056,7 @@ public class ClothoAdaptor {
         
         Object query = clothoObject.query(map);
         JSONArray arrayFluorophore = (JSONArray) query;
-        
+        System.out.println("FP Query :: "+ arrayFluorophore.size());
         for (int i = 0; i < arrayFluorophore.size(); i++) {
             
             Fluorophore fluorophore = new Fluorophore();

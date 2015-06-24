@@ -5,6 +5,7 @@
 package org.cidarlab.phoenix.core.dom;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -81,10 +82,10 @@ public class Sample {
     @Getter
     private SampleType type;
     
-    //fcs files
+    //Results from cytometry experiment
     @Setter
     @Getter
-    private File fcsFile;
+    private HashMap<Detector, Double> results;
     
     //Experiment types
     public enum SampleType {

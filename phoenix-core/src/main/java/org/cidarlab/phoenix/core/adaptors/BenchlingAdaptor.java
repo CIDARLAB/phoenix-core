@@ -242,17 +242,17 @@ public class BenchlingAdaptor {
         //If there is a supplied vector name, that becomes the vector name
         String vecName;
         if (vectorName != null) {
-            vecName = vectorName + "|" + LO + "|" + RO;
+            vecName = vectorName + "_" + LO + "_" + RO;
         } else {
-            vecName = seq.getName() + "_vector|" + LO + "|" + RO;
+            vecName = seq.getName() + "_vector_" + LO + "_" + RO;
         }
         
         //Generate parts and vector parts
         if (seq.getAnnotation().containsProperty("COMMENT")) {
-            part = Part.generateBasic(seq.getName() + "_part|" + LO + "|" + RO, seq.getAnnotation().getProperty("COMMENT").toString(), new NucSeq(partSeq), null, null);
+            part = Part.generateBasic(seq.getName() + "_part_" + LO + "_" + RO, seq.getAnnotation().getProperty("COMMENT").toString(), new NucSeq(partSeq), null, null);
             vector = Part.generateBasic(vecName, "", new NucSeq(vecSeq), null, null);
         } else {
-            part = Part.generateBasic(seq.getName() + "_part|" + LO + "|" + RO, "", new NucSeq(partSeq), null, null);
+            part = Part.generateBasic(seq.getName() + "_part_" + LO + "_" + RO, "", new NucSeq(partSeq), null, null);
             vector = Part.generateBasic(vecName, "", new NucSeq(vecSeq), null, null);
         }
 

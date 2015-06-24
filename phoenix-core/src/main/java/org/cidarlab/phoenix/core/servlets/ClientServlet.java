@@ -55,6 +55,7 @@ public class ClientServlet extends HttpServlet {
     }
     
     public String getFilepath() {
+        //String filepath = "/home/prash/cidar/phoenix-core/phoenix-core/src/main";
         String filepath = "/C:/Users/zchap_000/Documents/BU_Spring_2015/phoenix-core/phoenix-core/src/main";
         return filepath;
     }

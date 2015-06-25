@@ -24,6 +24,7 @@ public class ClientSideAdaptor {
         JSONObject json = new JSONObject();
         json.put("name", module.getName());
         json.put("clothoId", module.getClothoID());
+        json.put("hex", "#FF0000");
         JSONArray children = new JSONArray();
         if((!module.getChildren().isEmpty())){
         
@@ -41,11 +42,13 @@ public class ClientSideAdaptor {
                     for(Experiment expt:aModule.getExperiments()){
                         JSONObject exptObj = new JSONObject();
                         exptObj.put("name", expt.getExType());
+                        exptObj.put("hex", "#00FF00");
                         exptChildren.add(exptObj);
                     }
                 }
                 if(exptChildren.size()>0){
                     assignedModuleObj.put("children", exptChildren);
+                    assignedModuleObj.put("hex", "#0000FF");
                 }
                 children.add(assignedModuleObj);
             }

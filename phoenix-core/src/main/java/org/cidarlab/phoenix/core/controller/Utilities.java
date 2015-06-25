@@ -145,4 +145,10 @@ public class Utilities {
         return overhangVariableSequenceHash;
     }
     
+    public static void printDebugStatement(String message){
+        System.out.println("#########################################");
+        System.out.println("######################" + message);
+        System.out.println("#########################################");
+    }
+    
 }

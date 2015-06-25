@@ -409,7 +409,7 @@ public class ClothoAdaptor {
     public static String createFeature(Feature f, Clotho clothoObject) {
         String id = "";
         Map createFeature = new HashMap();
-
+        //if(f.getClass())
         createFeature.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
         createFeature.put("name", f.getName());
         createFeature.put("forwardColor", f.getForwardColor().toString());
@@ -484,6 +484,7 @@ public class ClothoAdaptor {
         //}
         id = (String) clothoObject.set(createFeature);
         f.setClothoID(id);
+        System.out.println("Feature ID:: " + id);
         return id;
     }
 
@@ -615,9 +616,10 @@ public class ClothoAdaptor {
 
         if (module.getClothoID() != null) {
             createModule.put("id", module.getClothoID());
-        } else {
-            createModule.put("id", module.getName());
-        }
+        } 
+        //else {
+        //    createModule.put("id", module.getName());
+        //}
 
         JSONArray featureIds = new JSONArray();
         HashSet<Feature> features = new HashSet<Feature>(module.getModuleFeatures());
@@ -1073,6 +1075,28 @@ public class ClothoAdaptor {
         return fluorophores;
     }
 
+    public static Experiment convertJSONtoExperiment(JSONObject exptObj){
+        Experiment experiment = new Experiment();
+        experiment.setClothoID((String)exptObj.get("id"));
+        experiment.setExType(Experiment.ExperimentType.valueOf((String)exptObj.get("exType")));
+        JSONArray timeArray = new JSONArray();
+        if(timeArray.size()>0){
+            List<Integer> times = new ArrayList<Integer>();
+            experiment.setTimes(times);
+            for (Object obj : timeArray) {
+                experiment.getTimes().add(Integer.getInteger((String)obj));
+            }    
+        }
+        
+        return experiment;
+    }
+    
+    public static Sample convertJSONtoSample(JSONObject sampleObj){
+        Sample sample = null;
+        return sample;
+    }
+    
+    
     //Get all Clotho NucSeqs
     public static NucSeq convertJSONtoNucSeq(JSONObject jsonNucSeq) {
 

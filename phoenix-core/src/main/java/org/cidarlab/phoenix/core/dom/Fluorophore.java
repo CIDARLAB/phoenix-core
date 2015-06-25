@@ -37,6 +37,27 @@ public class Fluorophore extends Feature {
         this.ex_spectrum = new HashMap<>();
     }
     
+    @Override
+    public Fluorophore clone() {
+        Fluorophore clone = new Fluorophore();
+        clone.setPDBId(this.getPDBId());
+        clone.setClothoID(this.getClothoID());
+        clone.setForwardColor(this.getForwardColor());
+        clone.setReverseColor(this.getReverseColor());
+        clone.setGenbankId(this.getGenbankId());
+//        clone = this.isCDS;
+        clone.setRiskGroup(this.getRiskGroup());
+        clone.setRole(this.getRole());
+        clone.setSequence(this.getSequence());
+        clone.setSwissProtId(this.getSwissProtId());
+        clone.brightness = this.brightness;
+        clone.em_spectrum = this.em_spectrum;
+        clone.ex_spectrum = this.ex_spectrum;
+        clone.oligomerization = this.oligomerization;
+        clone.emission_max = this.emission_max;
+        clone.excitation_max = this.excitation_max;
+        return clone;
+    }
     //Oligomerization of fluorophore
     @Setter
     @Getter

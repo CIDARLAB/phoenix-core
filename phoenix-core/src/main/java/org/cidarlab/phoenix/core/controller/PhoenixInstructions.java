@@ -185,4 +185,33 @@ public class PhoenixInstructions {
         }
         
     }
+    
+    //Method for changing key file name in R script
+    public static void changeKeyFileName (File Rscript, String keyFileName) {
+        
+        try {
+            String verify, putData;
+//            File file = new File("file.txt");
+//            file.createNewFile();
+            FileWriter fw = new FileWriter(Rscript);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write("Some text here for a reason");
+            bw.flush();
+
+            FileReader fr = new FileReader(Rscript);
+            BufferedReader br = new BufferedReader(fr);
+
+            while ((verify = br.readLine()) != null) {
+                if (verify != null) {
+                    putData = verify.replaceAll("here", "there");
+                    bw.write(putData);
+                }
+            }
+            br.close();
+            bw.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

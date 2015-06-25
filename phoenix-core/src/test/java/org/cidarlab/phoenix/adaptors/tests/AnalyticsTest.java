@@ -60,12 +60,21 @@ public class AnalyticsTest {
     }
     
 //    @Test
+    public void testEditRScriptFile() throws FileNotFoundException, IOException {
+        
+        String filePath = getFilepath() + "/src/main/resources/AnalyticsInput/analyze.R";
+        File input = new File(filePath);
+        
+        PhoenixInstructions.changeKeyFileName(input, "foo");
+    }
+    
+//    @Test
     public void testCreateKeyFile() {
         
     }
     
     public static void main (String[] args) throws FileNotFoundException, IOException {
         AnalyticsTest at = new AnalyticsTest();
-        at.testUploadCytometryResultsFile();
+//        at.testUploadCytometryResultsFile();
     }
 }

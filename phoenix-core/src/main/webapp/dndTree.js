@@ -396,11 +396,15 @@ treeJSON = d3.json("test.json?nocache=123", function(error, treeData) {
                 d3.select(this).select('text.info').remove();
             });
 
-        nodeEnter.append("circle")
+        nodeEnter.append("circle")  //COLOR STUFF NOTED IN RETURN STATEMENT
             .attr('class', 'nodeCircle')
             .attr("r", 0)
             .style("fill", function(d) {
-                return d._children ? "lightsteelblue" : "#fff";
+                // var sty = d3.select(this);
+                // var hexColor = sty.append('hexColor')
+                //     .classed('nodeColor',true)
+                //     .style("fill", d.hex);
+                return /*d._children ? */d.hex /*: "#fff"*/;
             });
 
         nodeEnter.append("text")
@@ -443,11 +447,11 @@ treeJSON = d3.json("test.json?nocache=123", function(error, treeData) {
                 return d.name;
             });
 
-        // Change the circle fill depending on whether it has children and is collapsed
+        // Change the circle fill depending on whether it has children and is collapsed //MODIFIED
         node.select("circle.nodeCircle")
-            .attr("r", 4.5)
+            .attr("r", 6)
             .style("fill", function(d) {
-                return d._children ? "lightsteelblue" : "#fff";
+                return /*d._children ? */d.hex/* : "#fff"*/;
             });
 
         // Transition nodes to their new position.

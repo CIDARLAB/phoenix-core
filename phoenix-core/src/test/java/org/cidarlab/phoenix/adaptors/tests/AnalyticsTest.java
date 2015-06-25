@@ -56,7 +56,7 @@ public class AnalyticsTest {
         String filePath = getFilepath() + "/src/main/resources/ResultsFiles/results_5615.csv";
         File input = new File(filePath);
         
-        PhoenixInstructions.parseTestingResults(input);
+        PhoenixInstructions.parseTestingResults(input, null);
     }
     
 //    @Test

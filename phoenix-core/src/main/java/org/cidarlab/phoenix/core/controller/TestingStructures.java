@@ -186,7 +186,7 @@ public class TestingStructures {
         HashSet<Module> controlModulesAll = new HashSet<>();
         List<Medium> defaultMedia = new ArrayList<>();
         defaultMedia.add(new Medium("LB", Medium.MediaType.RICH));        
-        List<Integer> defaultTime = Arrays.asList(new Integer[]{0, 10, 20, 30, 40, 50, 60});
+        List<String> defaultTime = Arrays.asList(new String[]{"0 min", "10 min", "20 min", "30 min", "40 min", "50 min", "60 min"});
         HashMap<String, Sample> sampleHash = new HashMap<>();
         
         for (Module m : modules) {
@@ -207,8 +207,8 @@ public class TestingStructures {
                 
                 //Add these experiments to the returned experiment set
                 experimentList.add(new Experiment(ExperimentType.DEGRADATION, "DEGRADATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));
-                experimentList.add(new Experiment(ExperimentType.REGULATION, "REGULATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<Integer>()));
-                experimentList.add(new Experiment(ExperimentType.SMALL_MOLECULE, "SMALL_MOLECULE_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<Integer>()));                
+                experimentList.add(new Experiment(ExperimentType.REGULATION, "REGULATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<String>()));
+                experimentList.add(new Experiment(ExperimentType.SMALL_MOLECULE, "SMALL_MOLECULE_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<String>()));                
                 addSamples(experimentList, controlModulesAll, sampleHash, m, true);               
                 
                 m.getExperiments().addAll(experimentList);
@@ -218,7 +218,7 @@ public class TestingStructures {
                 
                 //Add these experiments to the returned experiment set
                 experimentList.add(new Experiment(ExperimentType.DEGRADATION, "DEGRADATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));
-                experimentList.add(new Experiment(ExperimentType.REGULATION, "REGULATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<Integer>()));            
+                experimentList.add(new Experiment(ExperimentType.REGULATION, "REGULATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<String>()));            
                 addSamples(experimentList, controlModulesAll, sampleHash, m, true); 
                 
                 m.getExperiments().addAll(experimentList);
@@ -228,8 +228,8 @@ public class TestingStructures {
 
                 //Add these experiments to the returned experiment set
                 experimentList.add(new Experiment(ExperimentType.DEGRADATION, "DEGRADATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));
-                experimentList.add(new Experiment(ExperimentType.REGULATION, "REGULATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<Integer>()));
-                experimentList.add(new Experiment(ExperimentType.SMALL_MOLECULE, "SMALL_MOLECULE_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<Integer>()));                
+                experimentList.add(new Experiment(ExperimentType.REGULATION, "REGULATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<String>()));
+                experimentList.add(new Experiment(ExperimentType.SMALL_MOLECULE, "SMALL_MOLECULE_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<String>()));                
                 addSamples(experimentList, controlModulesAll, sampleHash, m, true);
 
                 m.getExperiments().addAll(experimentList);              
@@ -239,7 +239,7 @@ public class TestingStructures {
                 
                 //Add these experiments to the returned experiment set
                 experimentList.add(new Experiment(ExperimentType.DEGRADATION, "DEGRADATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));
-                experimentList.add(new Experiment(ExperimentType.REGULATION, "REGULATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<Integer>()));            
+                experimentList.add(new Experiment(ExperimentType.REGULATION, "REGULATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<String>()));            
                 addSamples(experimentList, controlModulesAll, sampleHash, m, true);
                 
                 m.getExperiments().addAll(experimentList);
@@ -248,7 +248,7 @@ public class TestingStructures {
             } else if (m.getRole().equals(ModuleRole.EXPRESSOR)) {
                 
                 //Add these experiments to the returned experiment set
-                experimentList.add(new Experiment(ExperimentType.EXPRESSION, "EXPRESSION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<Integer>()));          
+                experimentList.add(new Experiment(ExperimentType.EXPRESSION, "EXPRESSION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<String>()));          
                 addSamples(experimentList, controlModulesAll, sampleHash, m, false);
                 
                 m.getExperiments().addAll(experimentList);
@@ -431,9 +431,9 @@ public class TestingStructures {
             
             //Add time series of samples for each media condition
             for (Medium media : experiment.getMediaConditions()) {
-                List<Integer> times = experiment.getTimes();
+                List<String> times = experiment.getTimes();
                 if (!times.isEmpty()) {
-                    Sample expTest = new Sample(SampleType.EXPERIMENT, defaultStrain, pNs, media, 0);
+                    Sample expTest = new Sample(SampleType.EXPERIMENT, defaultStrain, pNs, media, "0 min");
                     if (sampleHash.get(expTest.getClothoID()) == null) {
                         sampleHash.put(expTest.getClothoID(), expTest);
                         experimentSamples.add(expTest);
@@ -448,9 +448,9 @@ public class TestingStructures {
             
             //Add time series of samples for each media condition
             for (Medium media : experiment.getMediaConditions()) {
-                List<Integer> times = experiment.getTimes();
+                List<String> times = experiment.getTimes();
                 if (!times.isEmpty()) {
-                    for (Integer i : times) {
+                    for (String i : times) {
                         Sample degTest = new Sample(SampleType.EXPERIMENT, defaultStrain, pNs, media, i);
                         if (sampleHash.get(degTest.getClothoID()) == null) {                                                    
                             sampleHash.put(degTest.getClothoID(), degTest);
@@ -467,9 +467,9 @@ public class TestingStructures {
             
             //Add time series of samples for each media condition
             for (Medium media : experiment.getMediaConditions()) {
-                List<Integer> times = experiment.getTimes();
+                List<String> times = experiment.getTimes();
                 if (!times.isEmpty()) {
-                    Sample regTest = new Sample(SampleType.EXPERIMENT, defaultStrain, pNs, media, 0);
+                    Sample regTest = new Sample(SampleType.EXPERIMENT, defaultStrain, pNs, media, "0 min");
                     if (sampleHash.get(regTest.getClothoID()) == null) {
                         sampleHash.put(regTest.getClothoID(), regTest);
                         experimentSamples.add(regTest);
@@ -484,9 +484,9 @@ public class TestingStructures {
             
             //Add time series of samples for each media condition
             for (Medium media : experiment.getMediaConditions()) {
-                List<Integer> times = experiment.getTimes();
+                List<String> times = experiment.getTimes();
                 if (!times.isEmpty()) {
-                    Sample smTest = new Sample(SampleType.EXPERIMENT, defaultStrain, pNs, media, 0);
+                    Sample smTest = new Sample(SampleType.EXPERIMENT, defaultStrain, pNs, media, "0 min");
                     if (sampleHash.get(smTest.getClothoID()) == null) {
                         sampleHash.put(smTest.getClothoID(), smTest);
                         experimentSamples.add(smTest);
@@ -501,9 +501,9 @@ public class TestingStructures {
             
             //Add time series of samples for each media condition
             for (Medium media : experiment.getMediaConditions()) {
-                List<Integer> times = experiment.getTimes();
+                List<String> times = experiment.getTimes();
                 if (!times.isEmpty()) {
-                    Sample rbsContextTest = new Sample(SampleType.EXPERIMENT, defaultStrain, pNs, media, 0);
+                    Sample rbsContextTest = new Sample(SampleType.EXPERIMENT, defaultStrain, pNs, media, "0 min");
                     if (sampleHash.get(rbsContextTest.getClothoID()) == null) {
                         sampleHash.put(rbsContextTest.getClothoID(), rbsContextTest);
                         experimentSamples.add(rbsContextTest);
@@ -518,9 +518,9 @@ public class TestingStructures {
             
             //Add time series of samples for each media condition
             for (Medium media : experiment.getMediaConditions()) {
-                List<Integer> times = experiment.getTimes();
+                List<String> times = experiment.getTimes();
                 if (!times.isEmpty()) {
-                    Sample degControl = new Sample(SampleType.EXPERIMENT, defaultStrain, pNs, media, 0);
+                    Sample degControl = new Sample(SampleType.EXPERIMENT, defaultStrain, pNs, media, "0 min");
                     experimentSamples.add(degControl);
                 }
             }
@@ -536,8 +536,8 @@ public class TestingStructures {
         Strain defaultStrain = new Strain("E. coli DH5a");
         
         //Initialize control samples
-        Sample beadControl = new Sample(SampleType.BEADS, null, null, null, 0);
-        Sample negativeControl = new Sample(SampleType.NEGATIVE, defaultStrain, null, experiment.getMediaConditions().get(0), 0);
+        Sample beadControl = new Sample(SampleType.BEADS, null, null, null, "0 min");
+        Sample negativeControl = new Sample(SampleType.NEGATIVE, defaultStrain, null, experiment.getMediaConditions().get(0), "0 min");
         
         if (sampleHash.get(beadControl.getClothoID()) == null) {
             sampleHash.put(beadControl.getClothoID(), beadControl);
@@ -567,7 +567,7 @@ public class TestingStructures {
                 pNs.add(makePolynucleotide(testModule));
                 pNs.add(makePolynucleotide(m));                
                 for (Medium media : experiment.getMediaConditions()) {
-                    Sample regulationControl = new Sample(SampleType.REGULATION, defaultStrain, pNs, media, 0);
+                    Sample regulationControl = new Sample(SampleType.REGULATION, defaultStrain, pNs, media, "0 min");
                     if (sampleHash.get(regulationControl.getClothoID()) == null) {
                         sampleHash.put(regulationControl.getClothoID(), regulationControl);
                         regulationControls.add(regulationControl);
@@ -580,7 +580,7 @@ public class TestingStructures {
                 List<Polynucleotide> pNsUR = new ArrayList<>();
                 pNsUR.add(makePolynucleotide(m));
                 for (Medium media : experiment.getMediaConditions()) {
-                    Sample regulationControl = new Sample(SampleType.REGULATION, defaultStrain, pNsUR, media, 0);
+                    Sample regulationControl = new Sample(SampleType.REGULATION, defaultStrain, pNsUR, media, "0 min");
                     if (sampleHash.get(regulationControl.getClothoID()) == null) {
                         sampleHash.put(regulationControl.getClothoID(), regulationControl);
                         regulationControls.add(regulationControl);
@@ -599,7 +599,7 @@ public class TestingStructures {
                 List<Polynucleotide> pNs = new ArrayList<>();
                 pNs.add(makePolynucleotide(m));               
                 for (Medium media : experiment.getMediaConditions()) {
-                    Sample colorControl = new Sample(SampleType.FLUORESCENT, defaultStrain, pNs, media, 0);
+                    Sample colorControl = new Sample(SampleType.FLUORESCENT, defaultStrain, pNs, media, "0 min");
                     if (sampleHash.get(colorControl.getClothoID()) == null) {
                         sampleHash.put(colorControl.getClothoID(), colorControl);
                         colorControls.add(colorControl);
@@ -622,9 +622,9 @@ public class TestingStructures {
                     
                     //Add time series of samples for each media condition
                     for (Medium media : experiment.getMediaConditions()) {
-                        List<Integer> times = experiment.getTimes();
+                        List<String> times = experiment.getTimes();
                         if (!times.isEmpty()) {
-                            for (Integer i : times) {
+                            for (String i : times) {
                                 Sample degControl = new Sample(SampleType.EXPRESSION_DEGRATATION, defaultStrain, pNs, media, i);                                
                                 if (sampleHash.get(degControl.getClothoID()) == null) {
                                     sampleHash.put(degControl.getClothoID(), degControl);
@@ -640,7 +640,7 @@ public class TestingStructures {
                 } else if (experiment.getExType().equals(ExperimentType.EXPRESSION)) {
                     
                     for (Medium media : experiment.getMediaConditions()) {
-                        Sample expControl = new Sample(SampleType.EXPRESSION_DEGRATATION, defaultStrain, pNs, media, 0);
+                        Sample expControl = new Sample(SampleType.EXPRESSION_DEGRATATION, defaultStrain, pNs, media, "0 min");
                         if (sampleHash.get(expControl.getClothoID()) == null) {
                             sampleHash.put(expControl.getClothoID(), expControl);
                             expDegControls.add(expControl);

@@ -12,8 +12,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import org.cidarlab.phoenix.core.dom.Detector;
 import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Medium;
 import org.cidarlab.phoenix.core.dom.Polynucleotide;
@@ -80,14 +83,14 @@ public class PhoenixInstructions {
                         if (name.isEmpty()) {
                             name = pN.getClothoID();
                         } else {
-                            name = name + "_" + pN.getClothoID();
+                            name = name + "|" + pN.getClothoID();
                         }
                     }
                     
                     Medium media = s.getMedia();
                     String mediaString = media.getName();                
                     if (media.getSmallmolecule()!= null) {
-                        mediaString = media.getConcentration() + "_" + media.getSmallmolecule() + "_" + mediaString;
+                        mediaString = media.getSmallmolecule().getConcentration() + "_" + media.getSmallmolecule().getName() + "_" + mediaString;
                     }
                     instructionsBufferedWriter.write("\n," + name + ",," + mediaString + "," + s.getTime() + ",");
                 }   
@@ -99,11 +102,24 @@ public class PhoenixInstructions {
     
     
     //Method for reading results file from R
-    public static void parseTestingResults(File resultsFile) throws FileNotFoundException, IOException {
+    public static void parseTestingResults(File resultsFile, Experiment e) throws FileNotFoundException, IOException {
         
         BufferedReader reader = new BufferedReader(new FileReader(resultsFile.getAbsolutePath()));
         String line = reader.readLine();
-        line = reader.readLine(); //skip first line
+        
+        //Initialize detector set
+        String[] columns = line.split(",");
+        List<Detector> detectors = new ArrayList<>();
+        for (int i = 3; i < columns.length; i++) {
+            Detector d = new Detector();
+            d.setParameter(columns[i]);
+            detectors.add(d);
+        }
+        
+        //Get samples from input experiment
+        List<Sample> allSamples = e.getAllSamples();
+        
+        line = reader.readLine();
         
         //Read each line of the input file to parse parts
         while (line != null) {
@@ -111,7 +127,61 @@ public class PhoenixInstructions {
                 line = reader.readLine();
             }
             
+            //Obtain information to find relevant samples in an experiment
+            String[] sampleVals = line.split(",");
             
+            //Get polynucleotide names
+            String polynucleotideNames = sampleVals[0];
+            String[] singlePnNames = polynucleotideNames.split("|");
+            List<String> pnNames = new ArrayList(Arrays.asList(singlePnNames));
+            
+            String time = sampleVals[2];
+            
+            //Get media
+            String media = sampleVals[1];
+            String mediaName = "";
+            String smallMoleculeName = "";
+            String concentration = "";
+            String[] mediaConditions = media.split("_");
+            if (mediaConditions.length == 1) {
+                mediaName = mediaConditions[0];
+            } else if (mediaConditions.length == 3) {
+                smallMoleculeName = mediaConditions[1];
+                concentration = mediaConditions[0];
+            }                        
+            
+            for (Sample s : allSamples) {
+                
+                List<String> sPnNames = new ArrayList<>();
+                for (Polynucleotide pn : s.getPolynucleotides()) {
+                    sPnNames.add(pn.getAccession());
+                }
+                
+                String sMediaName = s.getMedia().getName();
+                
+                String sSmallMoleculeName = "";
+                String sConcentration = "";
+                if (s.getMedia().getSmallmolecule() != null) {
+                    sSmallMoleculeName = s.getMedia().getSmallmolecule().getName();
+                    sConcentration = s.getMedia().getSmallmolecule().getConcentration().toString();
+                }
+                
+                if (sPnNames.equals(pnNames) && sMediaName.equalsIgnoreCase(mediaName) && sSmallMoleculeName.equalsIgnoreCase(smallMoleculeName) && sConcentration.equalsIgnoreCase(concentration)) {
+                    
+                    if (s.getResults() == null) {
+                        s.setResults(new HashMap());
+                    }
+                                        
+                    //Assign values to the detectors in the results file
+                    for (int j = 3; j < sampleVals.length; j++) {
+                        double parseDouble = Double.parseDouble(sampleVals[j]);
+                        Detector d = detectors.get(j - 3);
+                        s.getResults().put(d, parseDouble);
+                    }
+                }
+            }
+                       
+            line = reader.readLine();
         }
         
     }

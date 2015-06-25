@@ -272,11 +272,14 @@ public class ClothoAdaptor {
         String id = "";
         Map map = new HashMap();
         map.put("schema", "org.cidarlab.phoenix.core.dom.Medium");
-        map.put("concentration", medium.getConcentration());
+//        map.put("concentration", medium.getConcentration());
         map.put("name", medium.getName());
         map.put("type", medium.getType());
         Map smallMoleculeMap = new HashMap();
         smallMoleculeMap = createSmallMoleculeMap(medium.getSmallmolecule());
+        if (medium.getSmallmolecule() != null) {
+            smallMoleculeMap.put("concentration", medium.getSmallmolecule().getConcentration());
+        }
         map.put("smallMolecule", smallMoleculeMap);
         return map;
     }
@@ -323,7 +326,8 @@ public class ClothoAdaptor {
         }
 
         JSONArray experimentTimes = new JSONArray();
-        for (Integer time : experiment.getTimes()) {
+
+        for(String time:experiment.getTimes()){
             experimentTimes.add(time);
         }
         map.put("times", experimentTimes);
@@ -1081,10 +1085,10 @@ public class ClothoAdaptor {
         experiment.setExType(Experiment.ExperimentType.valueOf((String)exptObj.get("exType")));
         JSONArray timeArray = new JSONArray();
         if(timeArray.size()>0){
-            List<Integer> times = new ArrayList<Integer>();
+            List<String> times = new ArrayList<String>();
             experiment.setTimes(times);
             for (Object obj : timeArray) {
-                experiment.getTimes().add(Integer.getInteger((String)obj));
+                experiment.getTimes().add((String)obj);
             }    
         }
         

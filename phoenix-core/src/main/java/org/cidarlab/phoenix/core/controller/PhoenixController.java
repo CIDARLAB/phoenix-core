@@ -70,16 +70,15 @@ public class PhoenixController {
         //Perform partial part assignments given the feature library
         FeatureAssignment.partialAssignment(modules);
         
-        Utilities.printDebugStatement("Start saving to Clotho");
-        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
-        Clotho clothoObject = new Clotho(conn);
-        String rootId = ClothoAdaptor.createModule(modules.get(0), clothoObject);
-        Module rootModule = ClothoAdaptor.getModule(rootId, clothoObject);
+        //ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
+        //Clotho clothoObject = new Clotho(conn);
+        //String rootId = ClothoAdaptor.createModule(modules.get(0), clothoObject);
+        //Module rootModule = ClothoAdaptor.getModule(rootId, clothoObject);
         
-        conn.closeConnection();
+        //conn.closeConnection();
         
         JSONObject flareValue = new JSONObject();
-        flareValue = ClientSideAdaptor.convertModuleToJSON(rootModule);
+        flareValue = ClientSideAdaptor.convertModuleToJSON(modules.get(0));
         
         String JSONFilePath = getJSONFilepath();
         

@@ -24,6 +24,14 @@ import org.clothoapi.clotho3javaapi.ClothoConnection;
  */
 public class PhoenixController {
     
+    public static String getJSONFilepath()
+    {
+        String filepath = PhoenixController.class.getClassLoader().getResource(".").getPath();
+        filepath = filepath.substring(0,filepath.indexOf("WEB-INF/classes/"));
+        filepath += "test.json";
+        return filepath;
+    }
+    
     //Data upload method
     //FILE IN, NOTHING OUT
     public static void preliminaryDataUpload (File featureLib, File plasmidLib, File fluorophoreSpectra, File cytometer) throws FileNotFoundException, Exception {
@@ -72,8 +80,9 @@ public class PhoenixController {
         JSONObject flareValue = new JSONObject();
         flareValue = ClientSideAdaptor.convertModuleToJSON(modules.get(0));
         
-        ClientSideAdaptor.createFlareFile(Args.flareJSONfilepath,flareValue);
+        String JSONFilePath = getJSONFilepath();
         
+        ClientSideAdaptor.createFlareFile(JSONFilePath,flareValue);
         //Remove this once you've got it working.
 //        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
 //        Clotho clothoObject = new Clotho(conn);

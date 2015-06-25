@@ -1,5 +1,5 @@
 // Get JSON data
-treeJSON = d3.json("flare.json", function(error, treeData) {
+treeJSON = d3.json("test.json?nocache=123", function(error, treeData) {
 
     // Calculate total nodes, max label length
     var totalNodes = 0;
@@ -380,7 +380,21 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
             .attr("transform", function(d) {
                 return "translate(" + source.y0 + "," + source.x0 + ")";
             })
-            .on('click', click);
+            .on('click', click)
+            .on("mouseover", function(d) {
+                var g = d3.select(this); // The node
+                // The class is used to remove the additional text later
+                if(!g.attr('children')){
+                var info = g.append('text')
+                    .classed('info', true)
+                    .attr('x', 30)
+                    .attr('y', 0)
+                    .text(d.clothoId);
+            }})
+            .on("mouseout", function() {
+                // Remove the info text on mouse out.
+                d3.select(this).select('text.info').remove();
+            });
 
         nodeEnter.append("circle")
             .attr('class', 'nodeCircle')

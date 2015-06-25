@@ -66,7 +66,6 @@ public class AnalyticsTest {
         File input = new File(filePath);
         
         PhoenixInstructions.changeKeyFileName(input, "foo");
-        String t = "";
     }
     
 //    @Test

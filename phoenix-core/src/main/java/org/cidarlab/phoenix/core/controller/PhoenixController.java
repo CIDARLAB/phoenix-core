@@ -82,6 +82,7 @@ public class PhoenixController {
         flareValue = ClientSideAdaptor.convertModuleToJSON(modules.get(0));
         
         String JSONFilePath = getJSONFilepath();
+        //String JSONFilePath = Args.flareJSONfilepath;
         
         ClientSideAdaptor.createFlareFile(JSONFilePath,flareValue);
         //Remove this once you've got it working.

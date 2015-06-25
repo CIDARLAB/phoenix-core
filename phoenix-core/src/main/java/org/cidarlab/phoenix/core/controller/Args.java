@@ -11,6 +11,6 @@ package org.cidarlab.phoenix.core.controller;
  */
 public class Args {
     public static final String clothoLocation = "wss://localhost:8443/websocket";
-    public static final String flareJSONfilepath = "/C:/Users/zchap_000/Documents/BU_Spring_2015/phoenix-core/phoenix-core/src/main/webapp/test.json";
-    //public static final String flareJSONfilepath = "/home/prash/cidar/phoenix-core/phoenix-core/src/main/webapp/flare.json";
+    //public static final String flareJSONfilepath = "/C:/Users/zchap_000/Documents/BU_Spring_2015/phoenix-core/phoenix-core/src/main/webapp/test.json";
+    public static final String flareJSONfilepath = "/home/prash/cidar/phoenix-core/phoenix-core/src/main/webapp/flare.json";
 }

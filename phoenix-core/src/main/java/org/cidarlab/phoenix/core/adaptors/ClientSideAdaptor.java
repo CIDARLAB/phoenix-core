@@ -24,17 +24,33 @@ public class ClientSideAdaptor {
         JSONObject json = new JSONObject();
         json.put("name", module.getName());
         json.put("clothoId", module.getClothoID());
-        if((!module.getChildren().isEmpty()) || (!module.getExperiments().isEmpty())){
+        JSONArray children = new JSONArray();
+        if((!module.getChildren().isEmpty())){
         
-            JSONArray children = new JSONArray();
+            
             for(Module child:module.getChildren()){
                 children.add(convertModuleToJSON(child));
             }
-            for(Experiment expt:module.getExperiments()){
-                JSONObject exptObj = new JSONObject();
-                exptObj.put("name", expt.getName());
-                children.add(exptObj);
+        }
+        if(module.getAssignedModules() != null){
+            for(Module aModule:module.getAssignedModules()){
+                JSONObject assignedModuleObj = new JSONObject();
+                assignedModuleObj.put("name", aModule.getName());
+                JSONArray exptChildren = new JSONArray();
+                if(aModule.getExperiments()!= null){
+                    for(Experiment expt:aModule.getExperiments()){
+                        JSONObject exptObj = new JSONObject();
+                        exptObj.put("name", expt.getExType());
+                        exptChildren.add(exptObj);
+                    }
+                }
+                if(exptChildren.size()>0){
+                    assignedModuleObj.put("children", exptChildren);
+                }
+                children.add(assignedModuleObj);
             }
+        }
+        if(children.size()>0){
             json.put("children", children);
         }
         

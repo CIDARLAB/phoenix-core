@@ -190,21 +190,26 @@ public class PhoenixInstructions {
     public static void changeKeyFileName (File Rscript, String keyFileName) {
         
         try {
-            String verify, putData;
-//            File file = new File("file.txt");
-//            file.createNewFile();
-            FileWriter fw = new FileWriter(Rscript);
+            String currentLine, editedLine;
+            
+            String path = Rscript.getAbsolutePath();
+            File outTest = new File(path.substring(0, path.lastIndexOf("/") + 1) + "analyze_" + keyFileName + ".R");
+            FileWriter fw = new FileWriter(outTest);
             BufferedWriter bw = new BufferedWriter(fw);
-            bw.write("Some text here for a reason");
             bw.flush();
-
+            
             FileReader fr = new FileReader(Rscript);
             BufferedReader br = new BufferedReader(fr);
 
-            while ((verify = br.readLine()) != null) {
-                if (verify != null) {
-                    putData = verify.replaceAll("here", "there");
-                    bw.write(putData);
+            while ((currentLine = br.readLine()) != null) {
+                if (currentLine.startsWith("key <- read.csv")) {
+                    editedLine = "key <- read.csv(\"" + keyFileName + ".csv\", header = TRUE)"; 
+                    bw.write(editedLine + "\n");
+                } else if (currentLine.startsWith("filename <-")) {
+                    editedLine = "filename <- \"" + keyFileName + ".csv\", header = TRUE)"; 
+                    bw.write(editedLine + "\n");
+                } else {
+                    bw.write(currentLine + "\n");
                 }
             }
             br.close();

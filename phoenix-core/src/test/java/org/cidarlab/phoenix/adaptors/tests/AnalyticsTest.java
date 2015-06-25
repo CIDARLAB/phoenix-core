@@ -75,6 +75,6 @@ public class AnalyticsTest {
     
     public static void main (String[] args) throws FileNotFoundException, IOException {
         AnalyticsTest at = new AnalyticsTest();
-//        at.testUploadCytometryResultsFile();
+        at.testEditRScriptFile();
     }
 }

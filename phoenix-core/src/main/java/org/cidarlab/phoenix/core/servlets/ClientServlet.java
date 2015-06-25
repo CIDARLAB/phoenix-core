@@ -57,14 +57,16 @@ public class ClientServlet extends HttpServlet {
         return value.toString();
     }
     
-    public String getFilepath() {
-        //String filepath = "/home/prash/cidar/phoenix-core/phoenix-core/src/main";
-        String filepath = "/C:/Users/zchap_000/Documents/BU_Spring_2015/phoenix-core/phoenix-core/src/main";
+    public static String getFilepath()
+    {
+        String filepath = ClientServlet.class.getClassLoader().getResource(".").getPath();
+        filepath = filepath.substring(0,filepath.indexOf("WEB-INF/classes/"));
+        filepath += "upload/";
         return filepath;
     }
     
     public File partConverter(Part part, String fileName) throws IOException {
-        String pathAndName = getFilepath() + "/webapp/tmp/" + fileName;
+        String pathAndName = getFilepath() + fileName;
         
         OutputStream out = null;
         InputStream filecontent = null;

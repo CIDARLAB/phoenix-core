@@ -97,6 +97,8 @@ public class Feature extends SharableObjBase {
         super(name, author);
         sequence = seq;
         this.role = role;
+        this.forwardColor = new Color(0);
+        this.reverseColor = new Color(0);
         isCDS = (role == FeatureRole.CDS);
     }
 	
@@ -483,7 +485,7 @@ public class Feature extends SharableObjBase {
     private String clothoID;
     
     @Override
-    public Feature clone() {
+    public Feature clone() {        
         Feature clone = new Feature();
         clone.PDBId = this.PDBId;
         clone.clothoID = this.clothoID;

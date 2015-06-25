@@ -21,7 +21,7 @@ public class Experiment {
     }
     
     //No args constructor
-    public Experiment(ExperimentType exptType, String _name, List<Medium> _media, List<Integer> _times) {
+    public Experiment(ExperimentType exptType, String _name, List<Medium> _media, List<String> _times) {
         exType = exptType;
         name = _name;
         clothoID = _name;
@@ -95,7 +95,7 @@ public class Experiment {
     //Time series for measurements
     @Setter
     @Getter
-    private List<Integer> times;
+    private List<String> times;
     
     //Time series for measurements
     @Setter

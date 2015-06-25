@@ -17,7 +17,7 @@ import lombok.Setter;
 public class Sample {
    
     //Constructor
-    public Sample(SampleType _type, Strain _strain, List<Polynucleotide> _polynucleotides, Medium _media, Integer _time) {
+    public Sample(SampleType _type, Strain _strain, List<Polynucleotide> _polynucleotides, Medium _media, String _time) {
         
         type = _type;
         strain = _strain;
@@ -75,7 +75,7 @@ public class Sample {
     //Time of experiment (for dynamic measurements)
     @Setter
     @Getter
-    private Integer time;
+    private String time;
     
     //Control type
     @Setter

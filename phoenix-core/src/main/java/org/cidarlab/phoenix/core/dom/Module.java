@@ -63,7 +63,12 @@ public class Module {
         
         List<Feature> fList = new ArrayList<>();
         for (Feature f : this.moduleFeatures) {
-            fList.add(f.clone());
+            if (f.getClass().equals(Fluorophore.class)) {
+                Fluorophore fl = (Fluorophore) f;
+                fList.add(fl.clone());
+            } else {
+                fList.add(f.clone());
+            }
         }
         clone.moduleFeatures = fList;
  

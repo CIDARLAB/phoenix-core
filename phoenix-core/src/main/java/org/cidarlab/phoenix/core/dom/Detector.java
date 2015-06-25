@@ -18,6 +18,9 @@ public class Detector {
     @Getter
     private String DetectorValue;
     
+    @Setter
+    @Getter
+    private String parameter;
     
     @Setter
     @Getter

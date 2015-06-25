@@ -34,6 +34,11 @@ public class SmallMolecule {
     @Setter
     private String name;    
     
+    //Concentration of small molecule in solution
+    //This should only have a value if a small moecule is specified
+    @Setter
+    @Getter
+    private Double concentration;
    
     //Might have more Roles. Something to look into.
     public enum SmallMoleculeRole{

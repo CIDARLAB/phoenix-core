@@ -58,7 +58,7 @@ public class PhoenixController {
         
         //Map STL decomposition to structure contstraint libraries
 
-        //Create target modules with miniEugene
+        //Create target modules with miniEugene        
         String path = structuralSpecification.getAbsolutePath();
         String miniEugeneFileName = path.substring(path.lastIndexOf("/") + 1, path.length() - 4);
         List<Module> modules = EugeneAdaptor.getStructures(structuralSpecification, 1, miniEugeneFileName);

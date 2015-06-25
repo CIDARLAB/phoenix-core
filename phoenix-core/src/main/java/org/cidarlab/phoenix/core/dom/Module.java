@@ -70,8 +70,7 @@ public class Module {
                 fList.add(f.clone());
             }
         }
-        clone.moduleFeatures = fList;
- 
+       clone.moduleFeatures = fList;
         List<PrimitiveModule> pmList = new ArrayList<>();
         for (PrimitiveModule pm : this.submodules) {
             pmList.add(pm.clone());

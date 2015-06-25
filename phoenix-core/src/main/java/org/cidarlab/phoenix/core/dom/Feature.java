@@ -100,6 +100,8 @@ public class Feature extends SharableObjBase {
         this.forwardColor = new Color(0);
         this.reverseColor = new Color(0);
         isCDS = (role == FeatureRole.CDS);
+        this.forwardColor = new Color(0);
+        this.reverseColor = new Color(0);
     }
 	
     /**
@@ -112,6 +114,8 @@ public class Feature extends SharableObjBase {
         super(name, author);
         sequence = seq;
         isCDS = iscds;
+        this.forwardColor = new Color(0);
+        this.reverseColor = new Color(0);
     }
 
     /**

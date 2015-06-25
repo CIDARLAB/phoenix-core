@@ -58,7 +58,7 @@ public class Fluorophore extends Feature {
         clone.excitation_max = this.excitation_max;
         return clone;
     }
-    
+
     //Oligomerization of fluorophore
     @Setter
     @Getter

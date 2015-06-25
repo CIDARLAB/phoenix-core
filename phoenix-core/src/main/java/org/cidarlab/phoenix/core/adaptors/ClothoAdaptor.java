@@ -1085,7 +1085,7 @@ public class ClothoAdaptor {
         experiment.setExType(Experiment.ExperimentType.valueOf((String)exptObj.get("exType")));
         JSONArray timeArray = new JSONArray();
         if(timeArray.size()>0){
-            List<String> times = new ArrayList<String>();
+            List<String> times = new ArrayList<>();
             experiment.setTimes(times);
             for (Object obj : timeArray) {
                 experiment.getTimes().add((String)obj);

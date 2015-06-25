@@ -234,7 +234,8 @@ public class BenchlingAdaptor {
         if (inverse.containsKey(RO)) {
             RO = inverse.get(RO);
         }
-        
+        RO = RO.replaceAll("\\*", "#");
+        LO = LO.replaceAll("\\*","#");
         //Make a new Part and Vector
         Part part;
         Part vector;

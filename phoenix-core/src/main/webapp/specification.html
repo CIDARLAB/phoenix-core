@@ -17,10 +17,11 @@
                 <div class="container">
                     <a class="brand" href="index.html">Phoenix</a>
                     <ul class="nav">
-                        <li class="active"><a href="dynamicForm.html">Initialize</a></li>
-                        <li><a href="dynamicForm2.html">Return</a></li>
-                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="upload.html">Upload</a></li>
+                        <li class="active"><a href="specification.html">Specification</a></li>
                         <li><a href="tree.html">Tree</a></li>
+                        <li><a href="documentation.html">Documentation</a></li>
+                        <li><a href="contact.html">Contact</a></li>
                     </ul> 
                     <div id="loginArea" class="navbar-form pull-right">
                         <input id="login_username" type="text" class="span2" placeholder="Login">
@@ -33,30 +34,35 @@
         </div>
         
         <div class="page-header" style="margin-top:60px">
-            <h1><img style="height: 40px; margin-bottom:5px" src="images/phoenix_cropped.jpg"> <small>Upload Initial Files</small></h1>
+            <h1><img style="height: 40px; margin-bottom:5px" src="images/phoenix_cropped.jpg"> <small>Upload Specification Files</small></h1>
         </div>
         <div id="config">
-            <form enctype="multipart/form-data" id="fileUploads">
-                <div style="margin-bottom:10px"><h4>GenBank Plasmid Library</h4></div>
-                <input style="margin-bottom:20px" type="file" id="plasmidLib" name ="plasmidLib" />
+            <form id="specUploads" enctype="multipart/form-data">
+                <div style="margin-bottom:10px" id="ss"><h4>Structural Specification</h4></div>
+                <input style="margin-bottom:20px" type="file" id="structuralSpec" name ="structuralSpecification" accept=".eug" />
+                <div style="margin-bottom:10px" id="fs"><h4>Functional Specification</h4></div>
+                <input style="margin-bottom:20px" type="file" id="functionalSpec" name ="functionalSpecification" accept="text/plain" />
+                <div><button style="margin-top:7px" class="btn btn-primary" type="submit" id="uploadButton">Upload</button>
+                <img id = "loading" style = "position:relative; padding-top:2px; padding-left:10px;" src ="images/ajax-loader.gif" hidden></div>
             </form>
-                <div style="margin-bottom:10px"><h4>GenBank Feature Library</h4></div>
-                <input style="margin-bottom:20px" type="file" id="featureLib" name ="featureLib" />
-                <div style="margin-bottom:10px"><h4>Flow Cytometer Configuration</h4></div>
-                <input style="margin-bottom:20px" type="file" id="fcConfig" name ="fcConfig" />
-                <div style="margin-bottom:10px"><h4>Flouresence Spectra</h4></div>
-                <input style="margin-bottom:20px" type="file" id="fSpectra" name ="fSpectra" />
-                <div><button class="btn btn-primary" id="uploadButton" style="margin-top:7px" onclick="upload()">Upload</button>
-                <img id = "loading" style = "position:relative; padding-top:2px; padding-left:10px;" src ="images/ajax-loader.gif" hidden></div>     
+        </div>
+        <div id="output" hidden>
+            <div class="tabbable tabs-left">
+                <ul id ="wellTabs" class="nav nav-tabs nav-pills well">
+                </ul>
+                <div class="tab-content" id="tabs">
+                </div>
+            </div>
+        </div>        
         
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script> 
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>      
         <script type="text/javascript" src="libraries/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="libraries/jquery-ui.min.js"></script>
-        <script src="libraries/bootstrap.min.js"></script>   
-        <script src="javascript/dynamicFormController.js"></script>
+        <script src="libraries/bootstrap.min.js"></script>
+        <script src="javascript/specification.js"></script>
         <script src="javascript/SessionController.js"></script>
-        
+
         <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -101,5 +107,3 @@
         </footer>
     </body>
 </html>
-
-

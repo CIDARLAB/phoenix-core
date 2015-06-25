@@ -66,6 +66,7 @@ public class AnalyticsTest {
         File input = new File(filePath);
         
         PhoenixInstructions.changeKeyFileName(input, "foo");
+        String t = "";
     }
     
 //    @Test
@@ -75,6 +76,6 @@ public class AnalyticsTest {
     
     public static void main (String[] args) throws FileNotFoundException, IOException {
         AnalyticsTest at = new AnalyticsTest();
-//        at.testUploadCytometryResultsFile();
+        at.testEditRScriptFile();
     }
 }

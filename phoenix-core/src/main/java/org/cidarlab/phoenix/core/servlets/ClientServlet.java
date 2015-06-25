@@ -88,6 +88,10 @@ public class ClientServlet extends HttpServlet {
     
     protected void processPostRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, JSONException, Exception {
+        // Disable the cache once and for all
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        response.setHeader("Pragma", "no-cache");                                   // HTTP 1.0.
+        response.setDateHeader("Expires", 0);                                       // Proxies.
         // Figure out what mode to use
         String mode = getValue(request.getPart("mode"));
         // Request was sent from upload.html
@@ -129,7 +133,7 @@ public class ClientServlet extends HttpServlet {
                 File structuralSpec = partConverter(structuralPart, "structural_file.eug");
                 File functionalSpec = partConverter(functionalPart, "temp.txt");
                 // Pass files to correct method
-                HashSet<Module> modulesToTest = initializeDesign(structuralSpec, functionalSpec);
+                initializeDesign(structuralSpec, functionalSpec);
                 // If we made it here then everything was successful
                 System.out.println("\n\nINFO: SUCCESS\n\n");
                 holdingData = true;

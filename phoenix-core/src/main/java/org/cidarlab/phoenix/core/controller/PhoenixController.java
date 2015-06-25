@@ -66,9 +66,10 @@ public class PhoenixController {
 
         //Extend the modules for testing
         TestingStructures.addTestingPrimitives(modules);
-
+        
         //Perform partial part assignments given the feature library
-        FeatureAssignment.partialAssignment(modules);
+        HashSet<Module> modulesToTest = new HashSet<Module>(FeatureAssignment.partialAssignment(modules));        
+        TestingStructures.createExperiments(modulesToTest);
         
         //ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
         //Clotho clothoObject = new Clotho(conn);
@@ -100,8 +101,10 @@ public class PhoenixController {
         //Determine experiments from current module assignment state
         //Create expreriment objects based upon the modules being tested
         List<Experiment> currentExperiments = new ArrayList<>();
-        currentExperiments.addAll(TestingStructures.createExperiments(modulesToTest));
-
+        for (Module m : modulesToTest) {
+            currentExperiments.addAll(m.getExperiments());
+        }
+        
         //Create assembly and testing plans
         File assemblyInstructions = RavenAdaptor.generateAssemblyPlan(modulesToTest, filePath);
         File testingInstructions = PhoenixInstructions.generateTestingInstructions(currentExperiments, filePath);

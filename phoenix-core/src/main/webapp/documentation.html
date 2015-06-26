@@ -58,19 +58,19 @@
                 <div class="span10">
                     
                     <div class="well" id="overview">
-                        <h3>Owl Overview</h3>
+                        <h3>Phoenix Overview</h3>
                         
                         <p>
-                            Owl is a tool for automatically generating stylized datasheets [1]. 
-                            Owl uses configuration files to create automatically typeset datasheets (see <a href="#guide">Guides</a> for example Owl files). 
-                            Data for datasheets can either be entered manually in the Owl user interface or Owl can use a mapping file to search existing data sources.
+                            Phoenix is a tool for automated design-build-test cycles. 
+                            Phoenix uses configuration files to create automatically typeset datasheets (see <a href="#guide">Guides</a> for example Phoenix files). 
+                            Data for datasheets can either be entered manually in the Phoenix user interface or Phoenix can use a mapping file to search existing data sources.
                         </p>
                         <p>
                             This version of Owl is open-source and the source code for the assembly algorithms is available on <a href="http://www.github.com/CIDARLAB">github</a>.
                             If you are interested in having Owl tailored for your company or have interest in other design-automation software, please contact <a href="http://latticeautomation.com">Lattice Automation</a>.
                         </p>
                         <p>
-                            Have additional questions or wish to provide feedback to the developers? Please post to the <a href="https://groups.google.com/forum/#!forum/raven-forum/new">Owl Forum</a> or contact the <a href="contact.html">developers</a>.
+                            Have additional questions or wish to provide feedback to the developers? Please post to the <a href="https://groups.google.com/forum/#!forum/raven-forum/new">Phoenix Forum</a> or contact the <a href="contact.html">developers</a>.
                         </p>
                     </div>
 
@@ -78,15 +78,15 @@
                         <h3>PDF Generation</h3>
                         <!--<hr/>-->
                         <p>
-                            Owl uses configuration files to determine the fields and organization of the datasheets. These files have a convention for specifying the type of data to be uploaded (see <a href="#detailedInput">guides</a> for this convention).
+                            Phoenix uses configuration files to determine the fields and organization of the datasheets. These files have a convention for specifying the type of data to be uploaded (see <a href="#detailedInput">guides</a> for this convention).
                             Based upon the uploaded configuration, fields are generated for data entry in the user interface.
                         </p>
                         <p>
-                            Once all data is entered, Owl uses runs LaTeX to produce typeset datasheets.
+                            Once all data is entered, Phoenix uses runs LaTeX to produce typeset datasheets.
                         </p>
                         <p>
-                            Additional cloning methods are not currently supported, however, Owl's core algorithm is highly generalizable and new methods can be added with relative ease. 
-                            Please contact the <a href="contact.html">developers</a> if you are interested in Owl support for an assembly method that is not currently supported.
+                            Additional cloning methods are not currently supported, however, Phoenix's core algorithm is highly generalizable and new methods can be added with relative ease. 
+                            Please contact the <a href="contact.html">developers</a> if you are interested in Phoenix support for an assembly method that is not currently supported.
                         </p>
                     </div>
                     
@@ -94,12 +94,12 @@
                         <h3>Import Existing Data</h3>
                         <!--<hr/>-->
                         <p>
-                            Owl mapping files can also be used to search existing data sources. Owl will search existing sources for all fields in the input configuration file.
+                            Phoenix mapping files can also be used to search existing data sources. Phoenix will search existing sources for all fields in the input configuration file.
                             If these fields are not found or do not comply with the expected data type, they are left empty.
                         </p>
                         <p>
                             This search currently only supports searches on the Standard Registry of Parts. Mappings to additional data sources such as JBEI ICE is in progress. 
-                            Please contact the <a href="contact.html">developers</a> if you are interested in Owl support for additional data sources.
+                            Please contact the <a href="contact.html">developers</a> if you are interested in Phoenix support for additional data sources.
                         </p>
                     </div>
 
@@ -108,23 +108,23 @@
                         <!--<hr/>-->
                         <dl>
                             <dt>
-                            What do I need to use Owl?
+                            What do I need to use Phoenix?
                             </dt>
                             <dd>
-                                A user must provide a configuration file to specify which data fields will be in the datasheet. Example configuration files can be found <a href="#exampleFiles">here</a>.
+                                A user must provide a plasmid library, a feature library, a flow cytometer file, and fluorescence spectrum files. Example configuration files can be found <a href="#exampleFiles">here</a>.
                             </dd>
                             <dt>
-                            What do I input into Owl?
+                            What do I input into Phoenix?
                             </dt>
                             <dd>
-                                An Owl configuration file is required. Details about this file can be found <a href="#detailedInput">here</a>.
+                                The list of file types needed to use Phoenix can be found <a href="#detailedInput">here</a>.
                                 Example input files can be found <a href="#exampleFiles">here</a>
                             </dd>
                             <dt>
-                            What does Owl output?
+                            What does Phoenix output?
                             </dt>
                             <dd>
-                                Owl outputs a typeset, stylized PDF.
+                                Phoenix outputs assembly and testing instructions
                             </dd>                           
                         </dl>
                     </div>

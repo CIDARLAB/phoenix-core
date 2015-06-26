@@ -17,7 +17,12 @@ import lombok.Setter;
 public class Experiment {
     
     //No args constructor
-    public Experiment() {  
+    public Experiment() {
+        experimentSamples = new ArrayList<>();
+        colorControls = new ArrayList<>();
+        regulationControls = new ArrayList<>();
+        expDegControls = new ArrayList<>();
+        mediaConditions = new ArrayList<>();
     }
     
     //No args constructor

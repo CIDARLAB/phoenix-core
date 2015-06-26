@@ -58,7 +58,7 @@ public class PhoenixController {
         
         //Map STL decomposition to structure contstraint libraries
 
-        //Create target modules with miniEugene
+        //Create target modules with miniEugene        
         String path = structuralSpecification.getAbsolutePath();
         String miniEugeneFileName = path.substring(path.lastIndexOf("/") + 1, path.length() - 4);
         List<Module> modules = EugeneAdaptor.getStructures(structuralSpecification, 1, miniEugeneFileName);
@@ -73,26 +73,12 @@ public class PhoenixController {
         HashSet<Module> modulesToTest = new HashSet<Module>(FeatureAssignment.partialAssignment(modules));        
         TestingStructures.createExperiments(modulesToTest);
         
-        //ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
-        //Clotho clothoObject = new Clotho(conn);
-        //String rootId = ClothoAdaptor.createModule(modules.get(0), clothoObject);
-        //Module rootModule = ClothoAdaptor.getModule(rootId, clothoObject);
-        
-        //conn.closeConnection();
-        
         JSONObject flareValue = new JSONObject();
         flareValue = ClientSideAdaptor.convertModuleToJSON(modules.get(0));
         
         String JSONFilePath = getJSONFilepath();
-        //String JSONFilePath = Args.flareJSONfilepath;
         
         ClientSideAdaptor.createFlareFile(JSONFilePath,flareValue);
-        //Remove this once you've got it working.
-//        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
-//        Clotho clothoObject = new Clotho(conn);
-//        for (Module module : modulesToTest) {
-//            ClothoAdaptor.createModule(module, clothoObject);
-//        }
      
         return modules;
     }

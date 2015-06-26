@@ -90,6 +90,11 @@ form.onsubmit = function(event) {
     formData.append('fcConfig', flowFile/*, flowFile.name*/);
     formData.append('fSpectra', fluoresenceFile/*, fluoresenceFile.name*/);
 
+    formData.append('plasmidLibName', plasmidFile.name);
+    formData.append('featureLibName', featureFile.name);
+    formData.append('fcConfigName', flowFile.name);
+    formData.append('fSpectraName', fluoresenceFile.name);
+
     // Let servlet know what to expect
     formData.append('mode','upload');
 

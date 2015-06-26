@@ -66,6 +66,9 @@ form.onsubmit = function(event) {
     formData.append('structuralSpec', structuralFile/*, plasmidFile.name*/);
     formData.append('functionalSpec', functionalFile/*, featureFile.name*/);
 
+    formData.append('structuralSpecName', plasmidFile.name);
+    formData.append('functionalSpecName', featureFile.name);
+
     // Let servlet know what to expect
     formData.append('mode','specification');
 

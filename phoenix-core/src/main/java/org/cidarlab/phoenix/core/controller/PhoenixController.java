@@ -59,8 +59,16 @@ public class PhoenixController {
         //Map STL decomposition to structure contstraint libraries
 
         //Create target modules with miniEugene        
-        String path = structuralSpecification.getAbsolutePath();
-        String miniEugeneFileName = path.substring(path.lastIndexOf("/") + 1, path.length() - 4);
+        String path = structuralSpecification.getAbsolutePath();        
+        String miniEugeneFileName;
+        if (System.getProperty("os.name").contains("Mac")) {
+            miniEugeneFileName = path.substring(path.lastIndexOf("/") + 1, path.length() - 4);
+        } else if (System.getProperty("os.name").contains("Linux")) {
+            miniEugeneFileName = path.substring(path.lastIndexOf("/") + 1, path.length() - 4);
+        } else {
+            miniEugeneFileName = path.substring(path.lastIndexOf("\\") + 1, path.length() - 4);
+        }        
+        
         List<Module> modules = EugeneAdaptor.getStructures(structuralSpecification, 1, miniEugeneFileName);
 
         //Decompose target modules with PhoenixGrammar to get module graphs
@@ -110,8 +118,7 @@ public class PhoenixController {
     public static void interpretData (List<File> fcsFiles, File plasmidsCreated, List<Module> modules) throws Exception {
         
         ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
-        Clotho clothoObject = new Clotho(conn);
-        
+        Clotho clothoObject = new Clotho(conn);        
         
         List<Experiment> currentExperiments = new ArrayList<>();
         

@@ -156,6 +156,11 @@ public class ClientServlet extends HttpServlet {
                 PrintWriter out = response.getWriter();
                 out.write("Error");
             }
+        } else if(mode.equals("update")){
+            System.out.println("\n\nINFO: SUCCESS\n\n");
+            holdingData = true;
+            PrintWriter out = response.getWriter();
+            out.write("Done!");
         }
     }
     

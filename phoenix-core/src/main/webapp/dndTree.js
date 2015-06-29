@@ -551,6 +551,15 @@ treeJSON = d3.json("test.json", function(error, treeData) {
 });
 
 function JSONupdate(){
+    // Update button
+    var update = document.getElementById('updateButton');
+
+    // Update button text, show loading wheel
+    update.disabled = true;
+    update.innerHTML = 'Updating...';
+    $('#loading').show();
+
+    // Get string to update the JSON
     var seen = [];
     var treeString = JSON.stringify(arrayJSON, function(key, val) {
        if (val != null && typeof val == "object") {
@@ -562,5 +571,39 @@ function JSONupdate(){
         return val;
     });
     treeString = treeString.substring(1, treeString.length - 1);
-    console.log(treeString);
+
+    // Print string if you like
+    // console.log(treeString);
+
+    // If the tree was actually updated
+    if(treeString !== ""){
+        var formData = new FormData();
+        formData.append('treeUpdate', treeString);
+
+        // Let servlet know what to expect
+        formData.append('mode','update');
+
+        // Send ajax form
+        $.ajax({
+            url: 'ClientServlet',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function(data){
+                // Reset button and loading wheel
+                update.innerHTML = 'Update';
+                $('#loading').hide();
+                update.disabled = false;
+            }
+        });
+    } else {
+        // If the tree wasn't actually updated
+        alert("Tree is already up-to-date!");
+        update.innerHTML = 'Update';
+        $('#loading').hide();
+        update.disabled = false;
+    }
+    
 }

@@ -14,6 +14,7 @@ form.onsubmit = function(event) {
     event.preventDefault();
 
     // Update button text, show loading wheel
+    upload.disabled = true;
     upload.innerHTML = 'Uploading...';
     $('#loading').show();
 
@@ -51,6 +52,7 @@ form.onsubmit = function(event) {
         alert("Select files for missing fields (shown in red)!");
         upload.innerHTML = 'Upload';
         $('#loading').hide();
+        upload.disabled = false;
         return;
     }
 
@@ -80,6 +82,7 @@ form.onsubmit = function(event) {
         alert("Select files with the correct extensions (problematic fields shown in red)!");
         upload.innerHTML = 'Upload';
         $('#loading').hide();
+        upload.disabled = false;
         return;
     }
 

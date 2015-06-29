@@ -331,7 +331,7 @@ public class TestingStructures {
             if (pR.equals(FeatureRole.CDS_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSOR) || pR.equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR)) {
                 
                 Feature f = pm.getModuleFeatures().get(0);
-                if (f.getArcs() != null) {                    
+                if (!f.getArcs().isEmpty()) {                    
                     for (Arc a : f.getArcs()) {
                         
                         Feature regulatee = a.getRegulatee();

@@ -441,7 +441,9 @@ public class ClothoAdaptor {
     public static String createFeature(Feature f, Clotho clothoObject) {
         String id = "";
         Map createFeature = new HashMap();
-        //if(f.getClass())
+        
+        
+        
         createFeature.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
         createFeature.put("name", f.getName());
         createFeature.put("forwardColor", f.getForwardColor().toString());
@@ -462,7 +464,7 @@ public class ClothoAdaptor {
         List<Arc> arcs = f.getArcs();
         List<Map> arcList = new ArrayList<>();
 
-        if (arcs != null) {
+        if (!arcs.isEmpty()) {
             for (Arc a : arcs) {
 
                 //Arc sub-schema
@@ -508,7 +510,9 @@ public class ClothoAdaptor {
 
         //Clotho ID
         if (f.getClothoID() != null) {
-            createFeature.put("id", f.getClothoID());
+            if(!f.isFP()){
+                    createFeature.put("id", f.getClothoID());
+            }
         }
             //else{
         //    createFeature.put("id", f.getName());
@@ -577,11 +581,11 @@ public class ClothoAdaptor {
         if (f.getClothoID() != null) {
             createFluorophore.put("id", f.getClothoID());
             //id = f.getClothoID();
-        } else {
-            createFluorophore.put("id", f.getName());
-            f.setClothoID(f.getName());
-            //id = f.getName();
-        }
+        } 
+        //else {
+        //    createFluorophore.put("id", f.getName());
+        //    f.setClothoID(f.getName());
+        //}
         createFluorophore.put("em_spectrum", em_array);
         createFluorophore.put("ex_spectrum", ex_array);
 
@@ -649,10 +653,7 @@ public class ClothoAdaptor {
         if (module.getClothoID() != null) {
             createModule.put("id", module.getClothoID());
         } 
-        //else {
-        //    createModule.put("id", module.getName());
-        //}
-
+        
         JSONArray featureIds = new JSONArray();
         HashSet<Feature> features = new HashSet<Feature>(module.getModuleFeatures());
 
@@ -1025,7 +1026,7 @@ public class ClothoAdaptor {
                 a.setRegulator(featureNameHash.get(reg.get("regulator")));
                 a.setRegulatee(featureNameHash.get(reg.get("regulatee")));
 
-                if (f.getArcs() != null) {
+                if (!f.getArcs().isEmpty()) {
                     f.getArcs().add(a);
                 } else {
                     List<Arc> arcs = new ArrayList<>();

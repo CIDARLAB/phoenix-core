@@ -27,6 +27,7 @@ import javax.servlet.http.Part;
 import static org.cidarlab.phoenix.core.controller.PhoenixController.initializeDesign;
 import static org.cidarlab.phoenix.core.controller.PhoenixController.preliminaryDataUpload;
 import org.cidarlab.phoenix.core.dom.Module;
+import static org.cidarlab.phoenix.core.servlets.ServletIO.writeUpdatedJSON;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -157,6 +158,8 @@ public class ClientServlet extends HttpServlet {
                 out.write("Error");
             }
         } else if(mode.equals("update")){
+            String updatedJSON = getValue(request.getPart("treeUpdate"));
+            writeUpdatedJSON(updatedJSON);
             System.out.println("\n\nINFO: SUCCESS\n\n");
             holdingData = true;
             PrintWriter out = response.getWriter();

@@ -605,5 +605,4 @@ function JSONupdate(){
         $('#loading').hide();
         update.disabled = false;
     }
-    
 }

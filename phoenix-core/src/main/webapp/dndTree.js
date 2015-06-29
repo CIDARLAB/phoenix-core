@@ -1,5 +1,8 @@
+// Global variable for updating the tree
+arrayJSON = [];
+
 // Get JSON data
-treeJSON = d3.json("test.json?nocache=123", function(error, treeData) {
+treeJSON = d3.json("test.json", function(error, treeData) {
 
     // Calculate total nodes, max label length
     var totalNodes = 0;
@@ -16,8 +19,8 @@ treeJSON = d3.json("test.json?nocache=123", function(error, treeData) {
     var root;
 
     // size of the diagram
-    var viewerWidth = $(document).width();
-    var viewerHeight = $(document).height();
+    var viewerWidth = $("#tree-container").width();
+    var viewerHeight = $("#tree-container").height();
 
     var tree = d3.layout.tree()
         .size([viewerHeight, viewerWidth]);
@@ -240,6 +243,9 @@ treeJSON = d3.json("test.json?nocache=123", function(error, treeData) {
             update(root);
             centerNode(draggingNode);
             draggingNode = null;
+            // At the end of dragging the tree should be updated
+            arrayJSON = [];
+            arrayJSON.push(root);
         }
     }
 
@@ -396,16 +402,16 @@ treeJSON = d3.json("test.json?nocache=123", function(error, treeData) {
                 d3.select(this).select('text.info').remove();
             });
 
-        nodeEnter.append("circle")  //COLOR STUFF NOTED IN RETURN STATEMENT
+        nodeEnter.append("circle")  // Color styling updated to reflect hex parameter addition
             .attr('class', 'nodeCircle')
             .attr("r", 0)
             .style("fill", function(d) {
-                // var sty = d3.select(this);
-                // var hexColor = sty.append('hexColor')
-                //     .classed('nodeColor',true)
-                //     .style("fill", d.hex);
-                return /*d._children ? */d.hex /*: "#fff"*/;
-            });
+                return d._children ? d.hex : "#fff";
+            })
+            .style("stroke", function(d) {
+                return d.hex;
+            })
+            .style("stroke-width", "1.5px");
 
         nodeEnter.append("text")
             .attr("x", function(d) {
@@ -447,12 +453,17 @@ treeJSON = d3.json("test.json?nocache=123", function(error, treeData) {
                 return d.name;
             });
 
-        // Change the circle fill depending on whether it has children and is collapsed //MODIFIED
+        // Change the circle fill depending on whether it has children and is collapsed
+        // Color styling updated to reflect hex parameter addition
         node.select("circle.nodeCircle")
-            .attr("r", 5)
+            .attr("r", 4)
             .style("fill", function(d) {
-                return /*d._children ? */d.hex/* : "#fff"*/;
-            });
+                return d._children ? d.hex : "#fff";
+            })
+            .style("stroke", function(d) {
+                return d.hex;
+            })
+            .style("stroke-width", "1.5px");
 
         // Transition nodes to their new position.
         var nodeUpdate = node.transition()
@@ -538,3 +549,18 @@ treeJSON = d3.json("test.json?nocache=123", function(error, treeData) {
     update(root);
     centerNode(root);
 });
+
+function JSONupdate(){
+    var seen = [];
+    var treeString = JSON.stringify(arrayJSON, function(key, val) {
+       if (val != null && typeof val == "object") {
+            if (seen.indexOf(val) >= 0) {
+                return;
+            }
+            seen.push(val);
+        }
+        return val;
+    });
+    treeString = treeString.substring(1, treeString.length - 1);
+    console.log(treeString);
+}

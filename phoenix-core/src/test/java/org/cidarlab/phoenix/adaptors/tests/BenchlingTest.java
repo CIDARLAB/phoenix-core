@@ -57,7 +57,7 @@ public class BenchlingTest {
     }
     
     
-    @Test
+    //@Test
     public void testSinglePartUpload() {
         try {
             String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/benchling_export_120514_single.gb";

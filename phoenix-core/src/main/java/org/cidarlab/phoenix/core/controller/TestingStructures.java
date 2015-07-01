@@ -331,32 +331,31 @@ public class TestingStructures {
             if (pR.equals(FeatureRole.CDS_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSOR) || pR.equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR)) {
                 
                 Feature f = pm.getModuleFeatures().get(0);
-                if (f.getArcs() != null) {                    
-                    for (Arc a : f.getArcs()) {
-                        
-                        Feature regulatee = a.getRegulatee();
-                        PrimitiveModule regPromoter = new PrimitiveModule(regulatee.getRole(), new Primitive(new ComponentType("p"), regulatee.getName()), regulatee);
-                        
-                        Module regControl = new Module(regulatee.getClothoID().replaceAll(".ref", "") + "_REGULATION_CONTROL_" + count);
-                        count++;
-                        List<PrimitiveModule> testSubmodules = new ArrayList<>();
-                        
-                        testSubmodules.add(regPromoter);
-                        testSubmodules.add(testRBS);
-                        testSubmodules.add(testCDS2);
-                        testSubmodules.add(testTerminator);
-                        testSubmodules.add(testVector2);
-                        regControl.setSubmodules(testSubmodules);
-                        regControl.updateModuleFeatures();
-                        regControl.setRole(ModuleRole.REGULATION_CONTROL);
+                for (Arc a : f.getArcs()) {
 
-                        regControls.add(regControl);
-                    }
+                    Feature regulatee = a.getRegulatee();
+                    PrimitiveModule regPromoter = new PrimitiveModule(regulatee.getRole(), new Primitive(new ComponentType("p"), regulatee.getName()), regulatee);
+
+                    Module regControl = new Module(regulatee.getClothoID().replaceAll(".ref", "") + "_REGULATION_CONTROL_" + count);
+                    count++;
+                    List<PrimitiveModule> testSubmodules = new ArrayList<>();
+
+                    testSubmodules.add(regPromoter);
+                    testSubmodules.add(testRBS);
+                    testSubmodules.add(testCDS2);
+                    testSubmodules.add(testTerminator);
+                    testSubmodules.add(testVector2);
+                    regControl.setSubmodules(testSubmodules);
+                    regControl.updateModuleFeatures();
+                    regControl.setRole(ModuleRole.REGULATION_CONTROL);
+
+                    regControls.add(regControl);
                 }
+
             }
         }
-        
-        
+
+
         
         return regControls;
     }

@@ -347,6 +347,8 @@ public class PhoenixGrammar {
             } else {
                 
                 //Check for TUs
+                int TUCount = 0;
+                
                 for (PrimitiveModule subnodes : node.getSubmodules()) {
                     
                     if (stack == 0) {
@@ -360,7 +362,8 @@ public class PhoenixGrammar {
                             moduleFeatures = new ArrayList<>();
 
                             //Create new Module to be made for each TRANSCRIPTIONAL_UNIT
-                            child = new Module();
+                            child = new Module(node.getName() + "_" + ModuleRole.TRANSCRIPTIONAL_UNIT.toString() + "_" + TUCount);
+                            TUCount++;
                             child.setStage(node.getStage() + 1);  //Set the Stage of the Child Node
                             child.setRoot(false);                 //Wont be the root.     
                             child.setForward(true);               //These are all Forward oriented. 
@@ -392,8 +395,11 @@ public class PhoenixGrammar {
             
             //Initialize EXPRESSEEs and EXPRESSOR
             List<Module> expresseeList = new ArrayList<>();
+            int expressorCount = 0;
+            int expresseeCount = 0; 
             
-            Module expressor = new Module();            
+            Module expressor = new Module(node.getName() + "_" + ModuleRole.EXPRESSOR.toString() + "_" + expressorCount);
+            expressorCount++;
             expressor.setStage(node.getStage() + 1);
             expressor.setRole(ModuleRole.EXPRESSOR);
             expressor.setRoot(false);
@@ -406,10 +412,13 @@ public class PhoenixGrammar {
                 //If we run into a CDS, we know that this will be an EXPRESSEE and replace this spot with an TESTING SLOT IN EXPRESSOR
                 FeatureRole pR = primitive.getPrimitiveRole();
                 if (pR.equals(FeatureRole.CDS) || pR.equals(FeatureRole.CDS_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSOR) || pR.equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR)) {
+                                                           
+                    Module expressee = new Module(node.getName() + "_" + ModuleRole.EXPRESSEE.toString() + "_" + expresseeCount);
+                    expresseeCount++;
                     
                     //Create a new EXPRESSEE from this CDS primitive and copy the feature
                     moduleFeatures.add(primitive.getModuleFeatures().get(0));
-                    Module expressee = getExpresseeModule(primitive);
+                    expressee = getExpresseeModule(primitive, expressee);
                     expressee.setStage(node.getStage() + 1);
                     expresseeList.add(expressee);
 
@@ -447,7 +456,7 @@ public class PhoenixGrammar {
     //Pre-processing steps for the globally forward version of the structure
     private static Module forwardModulePreProcessing(Module node) {
         
-        Module forwardModule = new Module();
+        Module forwardModule = new Module(node.getName() + "_F");
         forwardModule.setRoot(false);
         forwardModule.setRole(ModuleRole.HIGHER_FUNCTION);
         forwardModule.setStage(node.getStage()+1);
@@ -490,7 +499,7 @@ public class PhoenixGrammar {
     //Pre-processing steps for the globally reverse version of the structure
     private static Module reverseModulePreProcessing(Module node) {
 
-        Module reverseModule = new Module();
+        Module reverseModule = new Module(node.getName() + "_R");
         reverseModule.setRoot(false);
         reverseModule.setRole(ModuleRole.HIGHER_FUNCTION);
         reverseModule.setStage(node.getStage()+1);
@@ -561,9 +570,7 @@ public class PhoenixGrammar {
     }
     
     //Create a new EXPRESSEE
-    private static Module getExpresseeModule(PrimitiveModule node) {
-        
-        Module expressee = new Module();
+    private static Module getExpresseeModule(PrimitiveModule node, Module expressee) {
         
         if (node.getPrimitiveRole().equals(FeatureRole.CDS)) {
             expressee.setRole(ModuleRole.EXPRESSEE);

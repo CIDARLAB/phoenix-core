@@ -18,8 +18,84 @@ import net.sf.json.JSONObject;
  */
 public class AssemblyParameters {
  
+    //Recommended compositions
+    @Setter
+    @Getter
+    private HashSet<String> recommended;
+    
+    //Discouraged compositions
+    @Setter
+    @Getter
+    private HashSet<String> discouraged;
+    
+    //Requried compositions
+    @Setter
+    @Getter
+    private HashSet<String> required;
+    
+    //Forbidden compositions
+    @Setter
+    @Getter
+    private HashSet<String> forbidden;
+    
+    //Oligo name root
+    @Setter
+    @Getter
+    private String oligoNameRoot;
+    
+    //Oligo melting temp
+    @Setter
+    @Getter
+    private String meltingTemperature;
+    
+    //Oligo min PCR length
+    @Setter
+    @Getter
+    private String minPCRLength;
+    
+    //Oligo target homology length
+    @Setter
+    @Getter
+    private String targetHomologyLength;
+    
+    //Oligo minimum cloning length
+    @Setter
+    @Getter
+    private String minCloneLength;
+    
+    //Oligo maximum primer length
+    @Setter
+    @Getter
+    private String maxPrimerLength;
+    
+    //Assembly efficiencies
+    @Setter
+    @Getter
+    private List<String> efficiency;
+    
+    //Assembly method
+    @Setter
+    @Getter
+    private String method;
+    
+    //Assembly method
+    @Setter
+    @Getter
+    private String clothoID;
+    
+    //Assembly method
+    @Setter
+    @Getter
+    private String name;
+    
+    
     //No parameters constructor
-    public AssemblyParameters() {        
+    public AssemblyParameters() {
+        efficiency = new ArrayList<>();
+        forbidden = new HashSet<>();
+        required = new HashSet<>();
+        discouraged = new HashSet<>();
+        recommended = new HashSet<>();
     }
     
     //JSON contructor
@@ -193,73 +269,5 @@ public class AssemblyParameters {
         return json;
     }
     
-    //Recommended compositions
-    @Setter
-    @Getter
-    private HashSet<String> recommended;
     
-    //Discouraged compositions
-    @Setter
-    @Getter
-    private HashSet<String> discouraged;
-    
-    //Requried compositions
-    @Setter
-    @Getter
-    private HashSet<String> required;
-    
-    //Forbidden compositions
-    @Setter
-    @Getter
-    private HashSet<String> forbidden;
-    
-    //Oligo name root
-    @Setter
-    @Getter
-    private String oligoNameRoot;
-    
-    //Oligo melting temp
-    @Setter
-    @Getter
-    private String meltingTemperature;
-    
-    //Oligo min PCR length
-    @Setter
-    @Getter
-    private String minPCRLength;
-    
-    //Oligo target homology length
-    @Setter
-    @Getter
-    private String targetHomologyLength;
-    
-    //Oligo minimum cloning length
-    @Setter
-    @Getter
-    private String minCloneLength;
-    
-    //Oligo maximum primer length
-    @Setter
-    @Getter
-    private String maxPrimerLength;
-    
-    //Assembly efficiencies
-    @Setter
-    @Getter
-    private List<String> efficiency;
-    
-    //Assembly method
-    @Setter
-    @Getter
-    private String method;
-    
-    //Assembly method
-    @Setter
-    @Getter
-    private String clothoID;
-    
-    //Assembly method
-    @Setter
-    @Getter
-    private String name;
 }

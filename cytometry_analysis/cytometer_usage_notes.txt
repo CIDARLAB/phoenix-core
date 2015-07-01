@@ -1,0 +1,31 @@
+FORTESSA USAGE NOTES
+-Turn on machine first, then software
+-Most don't change laser strengths
+-Run water before CS&T to check for cleanliness
+	-(Fresh water)
+	-Highest speed possible on machine
+-Primes to flush the machine (multiple primes if machine is sitting for a while)
+-Check waste
+-Check water
+-Dump waste if full (treat with bleach like LB)
+-Refill DI water if empty
+
+CST RUN (MOSTLY FOR LASER DELAY)
+-Run on tube
+-Run on lowest setting
+-Run for laser delays
+-1 mL PBS, 1-2 drops beads (CS&T)
+-Look for 200-500 events/sec, if high, dilute
+-Trigger on Fluorescence: If delays are more than 5-10 points off recorded values, check waste tank for back pressure
+-Bright Bead % Robust CV: must be < 6%
+-Contact Ben or Sylvia to run a new baseline
+
+AUTOSAMPLER
+-Sample Flow Rate: 1.5
+-Sample volume: At least 20uL more than total sample
+-Mixes: optional
+-Wash volume: 400uL
+
+DAILY CLEANING
+-Check daily clean protocols (Requires ~1h)
+-Run water after the run to check for cleanliness

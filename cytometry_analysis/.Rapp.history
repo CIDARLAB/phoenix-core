@@ -1,0 +1,836 @@
+levelplot(row.values=time,column.values=time, x=varfdavals[,,1,2],contour=TRUE,labels=FALSE)
+levelplot(row.values=time,column.values=time, x=varfdavals,contour=TRUE,labels=FALSE)
+varfda2=var.fd(fdts$fd)#
+varfdavals2=eval.bifd(time,time,varfda2)#
+levelplot(row.values=time,column.values=time, x=varfdavals2,contour=TRUE,labels=FALSE)
+levelplot(row.values=time,column.values=time, x=varfdavals2,contour=TRUE,labels=TRUE)
+?var.fd
+varfda3=var.fd(myfd2$fd)#
+varfdavals3=eval.bifd(conc,conc,varfda3)
+levelplot(row.values=conc,column.values=conc, x=varfdavals3,contour=TRUE,labels=FALSE)
+varfdavals3
+conc=log10(c(0.5,1,2.5,5,7.5,10,50))
+varfda3=var.fd(myfd2$fd)#
+varfdavals3=eval.bifd(conc,conc,varfda3)
+varfdavals3
+conc=c(0.5,1,2.5,5,7.5,10,50)
+varfda3=var.fd(myfd2$fd)#
+varfdavals3=eval.bifd(conc,conc,varfda3)
+varfda3=var.fd(myfd$fd)#
+varfdavals3=eval.bifd(conc,conc,varfda3)
+varfda3=var.fd(myfd$fd)
+varfda3
+varfda2=var.fd(fdts$fd)#
+varfdavals2=eval.bifd(time,time,varfda2)#
+levelplot(row.values=time,column.values=time, x=varfdavals2[,1:30],contour=TRUE,labels=FALSE)
+levelplot(row.values=time,column.values=c(1:30), x=varfdavals2,contour=TRUE,labels=FALSE)
+length(column.values)
+levelplot(row.values=time,column.values=time, x=varfdavals2,contour=TRUE,labels=FALSE)
+jan=c(1:30)#
+varfda2=var.fd(fdts$fd)#
+varfdavals2=eval.bifd(jan,jan,varfda2)#
+levelplot(row.values=jan,column.values=jan, x=varfdavals2,contour=TRUE,labels=FALSE)
+varfda3=var.fd(myfd2$fd)
+varfda3
+varfda3=var.fd(myfd$fd)
+varfda3
+conc
+conc=log(conc)
+conc
+breaks=c(-0.30103,0.5,1.69897)#
+norder=3#
+conc=log10(c(0.5,1,2.5,5,7.5,10,50))#
+max=log10(c(2.8963e3, 3.3415e3, 3.5411e3, 3.3687e3, 9.8506e3, 8.0680e3, 6.9461e3))#
+bbmydata=create.bspline.basis(c(-0.302, 1.7),norder=norder,breaks=breaks)#
+myfd=smooth.basis(conc,max,bbmydata)#
+plotfit.fd(max,conc,myfd$fd)
+nbasis=5;#
+mbmydata=create.monomial.basis(c(-.302, 1.7),nbasis=nbasis)#
+myfd2=smooth.basis(conc,max,mbmydata)#
+plotfit.fd(max,conc,myfd2$fd)
+varfda3=var.fd(myfd2$fd)
+varfda3
+conc
+varfdavals3=eval.bifd(conc,conc,varfda3)
+varfdavals3
+conc1=c(-.302 0 .397 .0699 0.875 1 1.699)
+conc1=c(-0.302 0 .397 .0699 0.875 1 1.699)
+conc1=c(-0.302,0,.397,.0699,0.875,1,1.699)
+varfdavals3=eval.bifd(conc1,conc1,varfda3)
+varfdavals3
+conc1=c(0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1)
+varfdavals3=eval.bifd(conc1,conc1,varfda3)
+varfdavals3
+?eval.bifd
+c=c(0,1)
+varfdavals3=eval.bifd(c,c,varfda3)
+varfdavals3
+?eval.bifd
+varfda3
+?eval.bifd
+day
+f=c(0, 0.2, 0.4, 0.6, 0.8, 1)
+f
+varfdavals3=eval.bifd(f,f,varfda3)
+varfdavals3
+varfdavals3=eval.bifd(conc,conc,varfda3)
+varfdavals3
+varfdavals3=eval.bifd(c(1),c(1),varfda3)
+varfdavals3
+varfdavals3=eval.bifd(conc,conc,varfda3)
+plot(conc)
+varfda3=var.fd(myfd2$fd)
+varfdavals3=eval.bifd(conc,conc,varfda3)
+levelplot(row.values=conc,column.values=conc, x=varfdavals3,contour=TRUE,labels=FALSE)
+v=1:8
+varfdavals3=eval.bifd(v,v,varfda3)
+v=0:1
+v
+varfdavals3=eval.bifd(v,v,varfda3)
+varfdavals3
+source("/Users/evanappleton/Documents/Documents/Spring2012/MA882/Project/pcascript.R")
+pred.e.fd
+varsim <- read.table("/Users/evanappleton/Documents/Documents/Spring2012/MA882/Project/VarSim.csv", sep=",")#
+varobs <- read.table("/Users/evanappleton/Documents/Documents/Spring2012/MA882/Project/VarObs.csv", sep=",")#
+pred = (varobs-varsim)/varobs#
+#
+days = 1:365#
+#
+#Divide data into 3 regions#
+wce <- read.table("/Users/evanappleton/Documents/Documents/Spring2012/MA882/Project/WCE.csv", sep=",")#
+w = wce[1,]#
+c = wce[2,]#
+e = wce[3,]#
+#
+wInd = which(w==1)#
+cInd = which(c==1)#
+eInd = which(e==1)#
+#
+#Harmonic accelerator for smoothing of fourier basis#
+harmLfd = vec2Lfd(c(0,(2*pi/365)^2,1), c(0, 365))#
+#
+###### Observed Variance ########
+#
+varobsw = varobs[, wInd]#
+varobsc = varobs[, cInd]#
+varobse = varobs[, eInd]#
+#
+###### Simulated Variance ########
+#
+varsimw = varsim[, wInd]#
+varsimc = varsim[, cInd]#
+varsime = varsim[, eInd]#
+#
+###### Predictability ########
+#
+predw = pred[, wInd]#
+predc = pred[, cInd]#
+prede = pred[, eInd]#
+#
+#For west, use 171 fourier basis functions, lambda = 0.1#
+#
+###### Observed Variance #######
+fbasis.varobs.w = create.fourier.basis(c(0, 365), nbasis=171)#
+D2fdPar.varobs.w = fdPar(fbasis.varobs.w, Lfdobj=harmLfd, lambda=0.1)#
+varobs.w.fd = smooth.basis(days, varobsw, D2fdPar.varobs.w)#
+#
+###### Simulated Variance #######
+fbasis.varsim.w = create.fourier.basis(c(0, 365), nbasis=171)#
+D2fdPar.varsim.w = fdPar(fbasis.varsim.w, Lfdobj=harmLfd, lambda=0.1)#
+varsim.w.fd = smooth.basis(days, varsimw, D2fdPar.varsim.w)#
+#
+###### Predictability #######
+fbasis.pred.w = create.fourier.basis(c(0, 365), nbasis=171)#
+D2fdPar.pred.w = fdPar(fbasis.pred.w, Lfdobj=harmLfd, lambda=0.1)#
+pred.w.fd = smooth.basis(days, predw, D2fdPar.pred.w)#
+#
+#For central, use 191 fourier basis functions, lambda = 0.1#
+#
+###### Observed Variance #######
+fbasis.varobs.c = create.fourier.basis(c(0, 365), nbasis=191)#
+D2fdPar.varobs.c = fdPar(fbasis.varobs.c, Lfdobj=harmLfd, lambda=0.1)#
+varobs.c.fd = smooth.basis(days, varobsc, D2fdPar.varobs.c)#
+#
+###### Simulated Variance #######
+fbasis.varsim.c = create.fourier.basis(c(0, 365), nbasis=191)#
+D2fdPar.varsim.c = fdPar(fbasis.varsim.c, Lfdobj=harmLfd, lambda=0.1)#
+varsim.c.fd = smooth.basis(days, varsimc, D2fdPar.varsim.c)#
+#
+###### Predictability #######
+fbasis.pred.c = create.fourier.basis(c(0, 365), nbasis=191)#
+D2fdPar.pred.c = fdPar(fbasis.pred.c, Lfdobj=harmLfd, lambda=0.1)#
+pred.c.fd = smooth.basis(days, pred, D2fdPar.pred.c)#
+#
+#For east, use 171 fourier basis functions, lambda = 0.1#
+#
+###### Observed Variance #######
+fbasis.varobs.e = create.fourier.basis(c(0, 365), nbasis=171)#
+D2fdPar.varobs.e = fdPar(fbasis.varobs.e, Lfdobj=harmLfd, lambda=0.1)#
+varobs.e.fd = smooth.basis(days, varobse, D2fdPar.varobs.e)#
+#
+###### Simulated Variance #######
+fbasis.varsim.e = create.fourier.basis(c(0, 365), nbasis=171)#
+D2fdPar.varsim.e = fdPar(fbasis.varsim.e, Lfdobj=harmLfd, lambda=0.1)#
+varsim.e.fd = smooth.basis(days, varsim, D2fdPar.varsim.e)#
+#
+###### Predictability #######
+fbasis.pred.e = create.fourier.basis(c(0, 365), nbasis=171)#
+D2fdPar.pred.e = fdPar(fbasis.pred.e, Lfdobj=harmLfd, lambda=0.1)#
+pred.e.fd = smooth.basis(days, pred, D2fdPar.pred.e)
+varsim <- read.table("/Users/evanappleton/Documents/Documents/Spring2012/MA882/Project/VarSim.csv", sep=",")#
+varobs <- read.table("/Users/evanappleton/Documents/Documents/Spring2012/MA882/Project/VarObs.csv", sep=",")#
+pred = (varobs-varsim)/varobs#
+#
+days = 1:365#
+#
+#Divide data into 3 regions#
+wce <- read.table("/Users/evanappleton/Documents/Documents/Spring2012/MA882/Project/WCE.csv", sep=",")#
+w = wce[1,]#
+c = wce[2,]#
+e = wce[3,]#
+#
+wInd = which(w==1)#
+cInd = which(c==1)#
+eInd = which(e==1)#
+#
+#Harmonic accelerator for smoothing of fourier basis#
+harmLfd = vec2Lfd(c(0,(2*pi/365)^2,1), c(0, 365))#
+#
+###### Observed Variance ########
+#
+varobsw = varobs[, wInd]#
+varobsc = varobs[, cInd]#
+varobse = varobs[, eInd]#
+#
+###### Simulated Variance ########
+#
+varsimw = varsim[, wInd]#
+varsimc = varsim[, cInd]#
+varsime = varsim[, eInd]#
+#
+###### Predictability ########
+#
+predw = pred[, wInd]#
+predc = pred[, cInd]#
+prede = pred[, eInd]
+predw
+fbasis.varobs.w = create.fourier.basis(c(0, 365), nbasis=171)
+fbasis.varobs.w
+D2fdPar.varobs.w = fdPar(fbasis.varobs.w, Lfdobj=harmLfd, lambda=0.1)
+D2fdPar.varobs.w
+varobs.w.fd = smooth.basis(days, varobsw, D2fdPar.varobs.w)
+varobswfd = smooth.basis(days, varobsw, D2fdPar.varobs.w)
+D2fdPar.varobs.w
+fbasis.varsim.w = create.fourier.basis(c(0, 365), nbasis=171)#
+D2fdPar.varsim.w = fdPar(fbasis.varsim.w, Lfdobj=harmLfd, lambda=0.1)#
+varsim.w.fd = smooth.basis(days, varsimw, D2fdPar.varsim.w)
+fbasis.varobs.w = create.fourier.basis(c(0, 365), nbasis=171)
+VarObsWestfd = smooth.basis(day, varobsw, fbasis.varobs.w)
+VarObsWestfd = smooth.basis(days, varobsw, fbasis.varobs.w)
+VarObsWestfd = smooth.basis(days, varobs, fbasis.varobs.w)
+source("/Users/evanappleton/Dropbox/MA882_final_project/Lijun/882.R")
+varobsw
+varobs
+predw = pred[wInd, ]#
+predc = pred[cInd, ]#
+prede = pred[eInd, ]
+predw
+wInd
+w
+varsim <- read.table("/Users/evanappleton/Documents/Documents/Spring2012/MA882/Project/VarSim.csv", sep=",")
+varsim
+varsim <- t(read.table("/Users/evanappleton/Documents/Documents/Spring2012/MA882/Project/VarSim.csv", sep=","))
+varsim
+varsim <- t(read.table("/Users/evanappleton/Documents/Documents/Spring2012/MA882/Project/VarSim.csv", sep=","))#
+varobs <- t(read.table("/Users/evanappleton/Documents/Documents/Spring2012/MA882/Project/VarObs.csv", sep=","))#
+pred = (varobs-varsim)/varobs#
+#
+days = 1:365#
+#
+#Divide data into 3 regions#
+wce <- t(read.table("/Users/evanappleton/Documents/Documents/Spring2012/MA882/Project/WCE.csv", sep=","))#
+w = wce[1,]#
+c = wce[2,]#
+e = wce[3,]#
+#
+wInd = which(w==1)#
+cInd = which(c==1)#
+eInd = which(e==1)#
+#
+#Harmonic accelerator for smoothing of fourier basis#
+harmLfd = vec2Lfd(c(0,(2*pi/365)^2,1), c(0, 365))#
+#
+###### Observed Variance ########
+#
+varobsw = varobs[, wInd]#
+varobsc = varobs[, cInd]#
+varobse = varobs[, eInd]#
+#
+###### Simulated Variance ########
+#
+varsimw = varsim[, wInd]#
+varsimc = varsim[, cInd]#
+varsime = varsim[, eInd]#
+#
+###### Predictability ########
+#
+predw = pred[, wInd]#
+predc = pred[, cInd]#
+prede = pred[, eInd]#
+#
+#For west, use 171 fourier basis functions, lambda = 0.1#
+#
+###### Observed Variance #######
+fbasis.varobs.w = create.fourier.basis(c(0, 365), nbasis=171)#
+D2fdPar.varobs.w = fdPar(fbasis.varobs.w, Lfdobj=harmLfd, lambda=0.1)#
+varobs.w.fd = smooth.basis(days, varobsw, D2fdPar.varobs.w)
+varobs.w.fd
+plot(varobs.w.fd)
+source("/Users/evanappleton/Documents/Documents/Spring2012/MA882/Project/pcascript.R")
+?smooth.basis
+source("/Users/evanappleton/Documents/Documents/Spring2012/MA882/Project/pcascript.R")
+source("/Users/evanappleton/Documents/Documents/Spring2012/MA882/Project/fPCA_project.R")
+#fPCA for West with 50 components, no smoothing#
+#
+fpca.varobsw.fd = pca.fd(varobs.w.fd$fd, nharm = 50)#
+fpca.varsimw.fd = pca.fd(varsim.w.fd$fd, nharm = 50)#
+fpca.predw.fd = pca.fd(pred.w.fd$fd, nharm = 50)#
+#
+#fPCA for Central with 50 components, no smoothing#
+#
+fpca.varobsc.fd = pca.fd(varobs.c.fd$fd, nharm = 50)#
+fpca.varsimc.fd = pca.fd(varsim.c.fd$fd, nharm = 50)#
+fpca.predc.fd = pca.fd(pred.c.fd$fd, nharm = 50)#
+#
+#fPCA for East with 50 components, no smoothing#
+#
+fpca.varobse.fd = pca.fd(varobs.e.fd$fd, nharm = 50)#
+fpca.varsime.fd = pca.fd(varsim.e.fd$fd, nharm = 50)#
+fpca.prede.fd = pca.fd(pred.e.fd$fd, nharm = 50)
+fpca.prede.fd
+plot(fpca.prede.fd$varprop)
+plot.pca.fd(fpca.prede.fd)
+?plot.pca.fd
+plot.pca.fd(fpca.prede.fd, nx=50)
+plot.pca.fd(fpca.prede.fd, pointplot=FALSE)
+plot.pca.fd(fpca.prede.fd, pointplot=FALSE, harm = 1:8)
+plot(fpca.prede.fd)
+#fPCA for West with 50 components, no smoothing#
+#
+fpca.varobsw.fd = pca.fd(varobs.w.fd$fd, nharm = 40)#
+fpca.varsimw.fd = pca.fd(varsim.w.fd$fd, nharm = 40)#
+fpca.predw.fd = pca.fd(pred.w.fd$fd, nharm = 40)#
+#
+#fPCA for Central with 50 components, no smoothing#
+#
+fpca.varobsc.fd = pca.fd(varobs.c.fd$fd, nharm = 40)#
+fpca.varsimc.fd = pca.fd(varsim.c.fd$fd, nharm = 40)#
+fpca.predc.fd = pca.fd(pred.c.fd$fd, nharm = 40)#
+#
+#fPCA for East with 50 components, no smoothing#
+#
+fpca.varobse.fd = pca.fd(varobs.e.fd$fd, nharm = 40)#
+fpca.varsime.fd = pca.fd(varsim.e.fd$fd, nharm = 40)#
+fpca.prede.fd = pca.fd(pred.e.fd$fd, nharm = 40)
+plot(fpca.prede.fd)
+f
+c
+#fPCA for West with 50 components, no smoothing#
+#
+fpca.varobsw.fd = pca.fd(varobs.w.fd$fd, nharm = 40)#
+fpca.varsimw.fd = pca.fd(varsim.w.fd$fd, nharm = 40)#
+fpca.predw.fd = pca.fd(pred.w.fd$fd, nharm = 40)#
+#
+#fPCA for Central with 50 components, no smoothing#
+#
+fpca.varobsc.fd = pca.fd(varobs.c.fd$fd, nharm = 40)#
+fpca.varsimc.fd = pca.fd(varsim.c.fd$fd, nharm = 40)#
+fpca.predc.fd = pca.fd(pred.c.fd$fd, nharm = 40)#
+#
+#fPCA for East with 50 components, no smoothing#
+#
+fpca.varobse.fd = pca.fd(varobs.e.fd$fd, nharm = 40)#
+fpca.varsime.fd = pca.fd(varsim.e.fd$fd, nharm = 40)#
+fpca.prede.fd = pca.fd(pred.e.fd$fd, nharm = 40)
+#fPCA for West with 50 components, no smoothing#
+#
+fpca.varobsw.fd = pca.fd(varobs.w.fd$fd, nharm = 5)#
+fpca.varsimw.fd = pca.fd(varsim.w.fd$fd, nharm = 5)#
+fpca.predw.fd = pca.fd(pred.w.fd$fd, nharm = 5)#
+#
+#fPCA for Central with 50 components, no smoothing#
+#
+fpca.varobsc.fd = pca.fd(varobs.c.fd$fd, nharm = 5)#
+fpca.varsimc.fd = pca.fd(varsim.c.fd$fd, nharm = 5)#
+fpca.predc.fd = pca.fd(pred.c.fd$fd, nharm = 5)#
+#
+#fPCA for East with 50 components, no smoothing#
+#
+fpca.varobse.fd = pca.fd(varobs.e.fd$fd, nharm = 5)#
+fpca.varsime.fd = pca.fd(varsim.e.fd$fd, nharm = 5)#
+fpca.prede.fd = pca.fd(pred.e.fd$fd, nharm = 5)
+plot(fpca.prede.fd)
+#fPCA for West with 15 components, no smoothing#
+#
+fpca.varobsw.fd = pca.fd(varobs.w.fd$fd, nharm = 15)#
+fpca.varsimw.fd = pca.fd(varsim.w.fd$fd, nharm = 15)#
+fpca.predw.fd = pca.fd(pred.w.fd$fd, nharm = 15)#
+#
+#fPCA for Central with 50 components, no smoothing#
+#
+fpca.varobsc.fd = pca.fd(varobs.c.fd$fd, nharm = 15)#
+fpca.varsimc.fd = pca.fd(varsim.c.fd$fd, nharm = 15)#
+fpca.predc.fd = pca.fd(pred.c.fd$fd, nharm = 15)#
+#
+#fPCA for East with 50 components, no smoothing#
+#
+fpca.varobse.fd = pca.fd(varobs.e.fd$fd, nharm = 15)#
+fpca.varsime.fd = pca.fd(varsim.e.fd$fd, nharm = 15)#
+fpca.prede.fd = pca.fd(pred.e.fd$fd, nharm = 15)
+plot(fpca.prede.fd$meanfd)
+plot(fpca.prede.fd$harmonics)
+?dev.off
+plot(fpca.prede.fd$harmonics(1:8))
+plot(fpca.prede.fd$harmonics(1))
+plot(fpca.prede.fd$harmonics)
+fpca.prede.fd$harmonics
+plot(fpca.prede.fd$harmonics)
+?plot
+source("/Users/evanappleton/Documents/Documents/Spring2012/MA882/Project/fPCA_project.R")
+plot(fpca.prede.fd$values)
+plot(fpca.prede.fd$varprop)
+source("/Users/evanappleton/Documents/Documents/Spring2012/MA882/Project/fPCA_project.R")
+source("http://bioconductor.org/biocLite.R")#
+biocLite("flowCore")
+biocLite("flowBeads")
+browseVignettes("flowBeads")
+biocLite("flowBeads")
+source("analyze.R")
+multiplexDataFrame
+title <- colnames(multiplexDataFrame)[4]#
+    	yaxis <- cbind(multiplexDataFrame[,colnames(multiplexDataFrame)[4]])#
+#
+		name <- as.character(paste(colnames(multiplexDataFrame)[4],".png"))#
+		name <- sub(" ","",name)#
+		png(name)#
+    	ggplot(multiplexDataFrame, aes(x = multiplexDataFrame$MULTIPLEX, y = yaxis, group = multiplexDataFrame$TYPE)) +#
+    	geom_line() +#
+    	geom_point() +#
+    	theme_bw() +#
+    	ggtitle("VARIANCE(AVERAGE)") +    			#
+    	xlab("MULTIPLEX") +#
+    	ylab(as.character(colnames(multiplexDataFrame)[4]))
+title <- colnames(multiplexDataFrame)[4]#
+    	yaxis <- cbind(multiplexDataFrame[,colnames(multiplexDataFrame)[4]])#
+#
+		name <- as.character(paste(colnames(multiplexDataFrame)[4],".png"))#
+		name <- sub(" ","",name)#
+		png(name)#
+    	p <- ggplot(multiplexDataFrame, aes(x = multiplexDataFrame$MULTIPLEX, y = yaxis, group = multiplexDataFrame$TYPE)) +#
+    	geom_line() +#
+    	geom_point() +#
+    	theme_bw() +#
+    	ggtitle("VARIANCE(AVERAGE)") +    			#
+    	xlab("MULTIPLEX") +#
+    	ylab(as.character(colnames(multiplexDataFrame)[4]))
+print(p)
+yaxis
+title <- colnames(multiplexDataFrame)[4]#
+    	yaxis <- cbind(multiplexDataFrame[,colnames(multiplexDataFrame)[4]])#
+#
+		name <- as.character(paste(colnames(multiplexDataFrame)[4],".png"))#
+		name <- sub(" ","",name)#
+		png(name)#
+    	p <- ggplot(multiplexDataFrame, aes(x = multiplexDataFrame$MULTIPLEX, y = yaxis, group = multiplexDataFrame$TYPE, color =multiplexDataFrame$TYPE)) +#
+    	geom_line() +#
+    	geom_point() +#
+    	theme_bw() +#
+    	ggtitle("VARIANCE(AVERAGE)") +    			#
+    	xlab("MULTIPLEX") +#
+    	ylab(as.character(colnames(multiplexDataFrame)[4]))
+print(p)
+title <- colnames(multiplexDataFrame)[4]#
+    	yaxis <- cbind(multiplexDataFrame[,colnames(multiplexDataFrame)[4]])#
+#
+		name <- as.character(paste(colnames(multiplexDataFrame)[4],".png"))#
+		name <- sub(" ","",name)#
+		png(name)#
+    	p <- ggplot(multiplexDataFrame, aes(x = multiplexDataFrame$MULTIPLEX, y = yaxis, group = multiplexDataFrame$TYPE, colour =multiplexDataFrame$TYPE)) +#
+    	geom_line() +#
+    	geom_point() +#
+    	theme_bw() +#
+    	ggtitle("VARIANCE(AVERAGE)") +    			#
+    	xlab("MULTIPLEX") +#
+    	ylab(as.character(colnames(multiplexDataFrame)[4]))
+print(p)
+?ggplot
+title <- colnames(multiplexDataFrame)[4]#
+    	yaxis <- cbind(multiplexDataFrame[,colnames(multiplexDataFrame)[4]])#
+#
+		name <- as.character(paste(colnames(multiplexDataFrame)[4],".png"))#
+		name <- sub(" ","",name)#
+		png(name)#
+    	p <- ggplot2(multiplexDataFrame, aes(x = multiplexDataFrame$MULTIPLEX, y = yaxis, group = multiplexDataFrame$TYPE, colour =multiplexDataFrame$TYPE)) +#
+    	geom_line() +#
+    	geom_point() +#
+    	theme_bw() +#
+    	ggtitle("VARIANCE(AVERAGE)") +    			#
+    	xlab("MULTIPLEX") +#
+    	ylab(as.character(colnames(multiplexDataFrame)[4]))
+?aes
+title <- colnames(multiplexDataFrame)[4]#
+    	yaxis <- cbind(multiplexDataFrame[,colnames(multiplexDataFrame)[4]])#
+#
+		name <- as.character(paste(colnames(multiplexDataFrame)[4],".png"))#
+		name <- sub(" ","",name)#
+		png(name)#
+    	p <- ggplot(multiplexDataFrame, aes(x = multiplexDataFrame$MULTIPLEX, y = yaxis, group = multiplexDataFrame$TYPE, colour =multiplexDataFrame$TYPE)) +#
+    	geom_line() +#
+    	geom_point(size = 4) +#
+    	theme_bw() +#
+    	ggtitle("VARIANCE(AVERAGE)") +    			#
+    	xlab("MULTIPLEX") +#
+    	ylab(as.character(colnames(multiplexDataFrame)[4]))
+print(p)
+title <- colnames(multiplexDataFrame)[4]#
+    	yaxis <- cbind(multiplexDataFrame[,colnames(multiplexDataFrame)[4]])#
+#
+		name <- as.character(paste(colnames(multiplexDataFrame)[4],".png"))#
+		name <- sub(" ","",name)#
+		png(name)#
+    	p <- ggplot(multiplexDataFrame, aes(x = multiplexDataFrame$MULTIPLEX, y = yaxis, group = multiplexDataFrame$TYPE, colour =multiplexDataFrame$TYPE)) +#
+    	geom_line() +#
+    	geom_point(size = 4) +#
+    	theme_bw() +#
+    	ggtitle("VARIANCE(AVERAGE)") +    			#
+    	xlab("MULTIPLEX") +#
+    	ylab(as.character(colnames(multiplexDataFrame)[4]))
+title <- colnames(multiplexDataFrame)[4]#
+    	yaxis <- cbind(multiplexDataFrame[,colnames(multiplexDataFrame)[4]])#
+#
+		name <- as.character(paste(colnames(multiplexDataFrame)[4],".png"))#
+		name <- sub(" ","",name)#
+		png(name)#
+		PartType <- multiplexDataFrame$TYPE#
+    	p <- ggplot(multiplexDataFrame, aes(x = multiplexDataFrame$MULTIPLEX, y = yaxis, group = PartType, colour = PartType))+#
+    	geom_line() +#
+    	geom_point(size = 4) +#
+    	theme_bw() +#
+    	ggtitle("VARIANCE(AVERAGE)") +    			#
+    	xlab("MULTIPLEX") +#
+    	ylab(as.character(colnames(multiplexDataFrame)[4]))
+print(p)
+?max
+title <- colnames(multiplexDataFrame)[4]#
+    	yaxis <- cbind(multiplexDataFrame[,colnames(multiplexDataFrame)[4]])#
+#
+		name <- as.character(paste(colnames(multiplexDataFrame)[4],".png"))#
+		name <- sub(" ","",name)#
+		png(name)#
+		PartType <- multiplexDataFrame$TYPE#
+    	p <- ggplot(multiplexDataFrame, aes(x = multiplexDataFrame$MULTIPLEX, y = yaxis, group = PartType, colour = PartType))+#
+    	geom_line() +#
+    	geom_point(size = 4) +#
+    	theme_bw() +#
+    	ylim(0,max(yaxis))#
+    	ggtitle("VARIANCE(AVERAGE)") +    			#
+    	xlab("MULTIPLEX") +#
+    	ylab(as.character(colnames(multiplexDataFrame)[4]))
+title <- colnames(multiplexDataFrame)[4]#
+    	yaxis <- cbind(multiplexDataFrame[,colnames(multiplexDataFrame)[4]])#
+#
+		name <- as.character(paste(colnames(multiplexDataFrame)[4],".png"))#
+		name <- sub(" ","",name)#
+		png(name)#
+		PartType <- multiplexDataFrame$TYPE#
+    	p <- ggplot(multiplexDataFrame, aes(x = multiplexDataFrame$MULTIPLEX, y = yaxis, group = PartType, colour = PartType))+#
+    	geom_line() +#
+    	geom_point(size = 4) +#
+    	theme_bw() +#
+    	ylim(0,max(yaxis)) +#
+    	ggtitle("VARIANCE(AVERAGE)") +    			#
+    	xlab("MULTIPLEX") +#
+    	ylab(as.character(colnames(multiplexDataFrame)[4]))
+print(p)
+yaxis
+max(yaxis)
+max(as.numeric(yaxis))
+> title <- colnames(multiplexDataFrame)[4]#
+>     	yaxis <- as.numeric(cbind(multiplexDataFrame[,colnames(multiplexDataFrame)[4]]))#
+> #
+> 		name <- as.character(paste(colnames(multiplexDataFrame)[4],".png"))#
+> 		name <- sub(" ","",name)#
+> 		png(name)#
+> 		PartType <- multiplexDataFrame$TYPE#
+>     	p <- ggplot(multiplexDataFrame, aes(x = multiplexDataFrame$MULTIPLEX, y = yaxis, group = PartType, colour = PartType))+#
++     	geom_line() +#
++     	geom_point(size = 4) +#
++     	theme_bw() +#
++     	ylim(0,max(yaxis)) +#
++     	ggtitle("VARIANCE(AVERAGE)") +    			#
++     	xlab("MULTIPLEX") +#
++     	ylab(as.character(colnames(multiplexDataFrame)[4]))
+for (o in 3:length(colnames(multiplexDataFrame))) {#
+    	title <- colnames(multiplexDataFrame)[4]#
+    	yaxis <- cbind(multiplexDataFrame[,colnames(multiplexDataFrame)[4]])#
+		yaxis <- as.numeric(yaxis)#
+#
+		name <- as.character(paste(colnames(multiplexDataFrame)[4],".png"))#
+		name <- sub(" ","",name)#
+		png(name)#
+		PartType <- multiplexDataFrame$TYPE#
+    	p <- ggplot(multiplexDataFrame, aes(x = multiplexDataFrame$MULTIPLEX, y = yaxis, group = PartType, colour = PartType))+#
+    	geom_line() +#
+    	geom_point(size = 4) +#
+    	theme_bw() +#
+    	ylim(0,max(yaxis))#
+    	ggtitle("VARIANCE(AVERAGE)") +    			#
+    	xlab("MULTIPLEX") +#
+    	ylab(as.character(colnames(multiplexDataFrame)[4]))#
+    	print(p)
+title <- colnames(multiplexDataFrame)[4]#
+    	yaxis <- cbind(multiplexDataFrame[,colnames(multiplexDataFrame)[4]])#
+		yaxis <- as.numeric(yaxis)#
+#
+		name <- as.character(paste(colnames(multiplexDataFrame)[4],".png"))#
+		name <- sub(" ","",name)#
+		png(name)#
+		PartType <- multiplexDataFrame$TYPE#
+    	p <- ggplot(multiplexDataFrame, aes(x = multiplexDataFrame$MULTIPLEX, y = yaxis, group = PartType, colour = PartType))+#
+    	geom_line() +#
+    	geom_point(size = 4) +#
+    	theme_bw() +#
+    	ylim(0,max(yaxis))#
+    	ggtitle("VARIANCE(AVERAGE)") +    			#
+    	xlab("MULTIPLEX") +#
+    	ylab(as.character(colnames(multiplexDataFrame)[4])) +#
+    	print(p)
+title <- colnames(multiplexDataFrame)[4]#
+    	yaxis <- cbind(multiplexDataFrame[,colnames(multiplexDataFrame)[4]])#
+		yaxis <- as.numeric(yaxis)#
+#
+		name <- as.character(paste(colnames(multiplexDataFrame)[4],".png"))#
+		name <- sub(" ","",name)#
+		png(name)#
+		PartType <- multiplexDataFrame$TYPE#
+    	p <- ggplot(multiplexDataFrame, aes(x = multiplexDataFrame$MULTIPLEX, y = yaxis, group = PartType, colour = PartType))+#
+    	geom_line() +#
+    	geom_point(size = 4) +#
+    	theme_bw() +#
+    	ylim(0,max(yaxis))#
+    	ggtitle("VARIANCE(AVERAGE)") +    			#
+    	xlab("MULTIPLEX") +#
+    	ylab(as.character(colnames(multiplexDataFrame)[4]))
+title <- colnames(multiplexDataFrame)[4]#
+    	yaxis <- cbind(multiplexDataFrame[,colnames(multiplexDataFrame)[4]])#
+		yaxis <- as.numeric(yaxis)#
+#
+		name <- as.character(paste(colnames(multiplexDataFrame)[4],".png"))#
+		name <- sub(" ","",name)#
+		png(name)#
+		PartType <- multiplexDataFrame$TYPE#
+    	p <- ggplot(multiplexDataFrame, aes(x = multiplexDataFrame$MULTIPLEX, y = yaxis, group = PartType, colour = PartType))+#
+    	geom_line() +#
+    	geom_point(size = 4) +#
+    	theme_bw() +#
+    	ylim(0,max(yaxis))#
+    	ggtitle("VARIANCE\\(AVERAGE\\)") +    			#
+    	xlab("MULTIPLEX") +#
+    	ylab(as.character(colnames(multiplexDataFrame)[4]))
+title <- colnames(multiplexDataFrame)[4]#
+    	yaxis <- cbind(multiplexDataFrame[,colnames(multiplexDataFrame)[4]])#
+		yaxis <- as.numeric(yaxis)#
+#
+		name <- as.character(paste(colnames(multiplexDataFrame)[4],".png"))#
+		name <- sub(" ","",name)#
+		png(name)#
+		PartType <- multiplexDataFrame$TYPE#
+    	p <- ggplot(multiplexDataFrame, aes(x = multiplexDataFrame$MULTIPLEX, y = yaxis, group = PartType, colour = PartType))+#
+    	geom_line() +#
+    	geom_point(size = 4) +#
+    	theme_bw() +#
+    	ylim(0,max(yaxis))#
+    	ggtitle("VARIANCE(AVERAGE)") +		#
+    	xlab("MULTIPLEX") +#
+    	ylab(as.character(colnames(multiplexDataFrame)[4]))
+title <- colnames(multiplexDataFrame)[4]#
+    	yaxis <- cbind(multiplexDataFrame[,colnames(multiplexDataFrame)[4]])#
+		yaxis <- as.numeric(yaxis)#
+#
+		name <- as.character(paste(colnames(multiplexDataFrame)[4],".png"))#
+		name <- sub(" ","",name)#
+		png(name)#
+		PartType <- multiplexDataFrame$TYPE#
+    	p <- ggplot(multiplexDataFrame, aes(x = multiplexDataFrame$MULTIPLEX, y = yaxis, group = PartType, colour = PartType))+#
+    	geom_line() +#
+    	geom_point(size = 4) +#
+    	theme_bw() +#
+    	ylim(0,max(yaxis)) +#
+    	ggtitle("VARIANCE(AVERAGE)") +		#
+    	xlab("MULTIPLEX") +#
+    	ylab(as.character(colnames(multiplexDataFrame)[4]))
+print(p)
+p
+print(p)
+source("analyze.R)
+source("analyze.R")
+p
+ls()
+name
+o
+multiplexDataFrame
+source("analyze.R")
+match(colorControlsKey$CONTROL, colnames(colorControls))
+source("analyze.R")
+ls()
+uniqueMediaTypes
+length(uniqueMediaTypes)
+!(mediaType=="") && length(uniqueMediaTypes) > 1
+mediaType
+source("analyze.R")
+yaxis
+ls()
+error
+source("analyze.R")
+ls()
+yaxis
+cbind(means[,colnames(means)[l]])
+yaxis <- cbind(means[,colnames(means)[l]])
+yaxis
+yaxis <- as.numeric(yaxis)
+yaxis
+ymin <- yaxis-error
+ymin
+ymax <- yaxis+error
+ymax
+limits <- aes(ymin=yaxis-error, ymax=yaxis+error)
+limits
+p <- ggplot(plotMat, aes(x = xaxis, y = yaxis)) +#
+    			geom_errorbar(limits) +#
+				geom_line() +#
+    			geom_point() +#
+    			theme_bw() +#
+    			ggtitle(as.character(part)) +    			#
+    			xlab(as.character(uniqueMediaTypes[j])) +#
+    			ylab(as.character(colnames(means)[l]))
+print(p)
+title <- colnames(means)[l]#
+    			yaxis <- cbind(means[,colnames(means)[l]])#
+    			yaxis <- as.numeric(yaxis)#
+    			error <- standardDevs[colnames(standardDevs)[l]]#
+    			error <- as.numeric(error)#
+    			ymin <- yaxis-error#
+    			ymax <- yaxis+error#
+    			limits <- aes(ymin=yaxis-error, ymax=yaxis+error)#
+#
+				name <- as.character(paste(colnames(means)[l],".png"))#
+				name <- sub(" ","",name)#
+				png(name)#
+    			p <- ggplot(plotMat, aes(x = xaxis, y = yaxis)) +#
+    			geom_errorbar(aes(ymin=yaxis-error, ymax=yaxis+error)) +#
+				geom_line() +#
+    			geom_point() +#
+    			theme_bw() +#
+    			ggtitle(as.character(part)) +    			#
+    			xlab(as.character(uniqueMediaTypes[j])) +#
+    			ylab(as.character(colnames(means)[l]))
+error <- standardDevs[colnames(standardDevs)[l]]
+error
+title <- colnames(means)[l]#
+    			yaxis <- cbind(means[,colnames(means)[l]])#
+    			yaxis <- as.numeric(yaxis)#
+    			error <- standardDevs[,colnames(standardDevs)[l]]#
+    			error <- as.numeric(error)#
+    			ymin <- yaxis-error#
+    			ymax <- yaxis+error#
+    			limits <- aes(ymin=yaxis-error, ymax=yaxis+error)#
+#
+				name <- as.character(paste(colnames(means)[l],".png"))#
+				name <- sub(" ","",name)#
+				png(name)#
+    			p <- ggplot(plotMat, aes(x = xaxis, y = yaxis)) +#
+    			geom_errorbar(aes(ymin=yaxis-error, ymax=yaxis+error)) +#
+				geom_line() +#
+    			geom_point() +#
+    			theme_bw() +#
+    			ggtitle(as.character(part)) +    			#
+    			xlab(as.character(uniqueMediaTypes[j])) +#
+    			ylab(as.character(colnames(means)[l]))
+print(p)
+source("analyze.R")
+title <- colnames(means)[l]#
+    			yaxis <- cbind(means[,colnames(means)[l]])#
+    			yaxis <- as.numeric(yaxis)#
+    			error <- standardDevs[,colnames(standardDevs)[l]]#
+    			error <- as.numeric(error)#
+    			ymin <- yaxis-error#
+    			ymax <- yaxis+error#
+    			limits <- aes(ymin=yaxis-error, ymax=yaxis+error)#
+#
+				name <- as.character(paste(colnames(means)[l],".png"))#
+				name <- sub(" ","",name)#
+				png(name)#
+    			p <- ggplot(plotMat, aes(x = xaxis, y = yaxis)) +#
+    			geom_errorbar(aes(ymin=yaxis-error, ymax=yaxis+error)) +#
+				geom_line() +#
+    			geom_point(size = 4, fill="white") +#
+    			ylim(0,max(ymax)) +#
+    			theme_bw() +#
+    			ggtitle(as.character(part)) +    			#
+    			xlab(as.character(uniqueMediaTypes[j])) +#
+    			ylab(as.character(paste(colnames(means)[l]," (RFU)")))
+print(p)
+title <- colnames(means)[l]#
+    			yaxis <- cbind(means[,colnames(means)[l]])#
+    			yaxis <- as.numeric(yaxis)#
+    			error <- standardDevs[,colnames(standardDevs)[l]]#
+    			error <- as.numeric(error)#
+    			ymin <- yaxis-error#
+    			ymax <- yaxis+error#
+    			limits <- aes(ymin=yaxis-error, ymax=yaxis+error)#
+#
+				name <- as.character(paste(colnames(means)[l],".png"))#
+				name <- sub(" ","",name)#
+				png(name)#
+    			p <- ggplot(plotMat, aes(x = xaxis, y = yaxis)) +#
+    			geom_errorbar(aes(ymin=yaxis-error, ymax=yaxis+error)) +#
+				geom_line() +#
+    			geom_point(size = 4, shape=21, fill="white") +#
+    			ylim(0,max(ymax)) +#
+    			theme_bw() +#
+    			ggtitle(as.character(part)) +    			#
+    			xlab(as.character(uniqueMediaTypes[j])) +#
+    			ylab(as.character(paste(colnames(means)[l]," (RFU)")))
+print(p)
+source("analyze.R")
+FSCSSCIndexes <- match(colnames(colorControls), c("FSC-A", "SSC-A"))
+FSCSSCIndexes
+source("analyze.R")
+columnIndexes <- c(columnIndexes[!is.na(FSCSSCIndexes)], columnIndexes[!is.na(columnIndexes)])
+columnIndexes
+columnIndexes <- match(colorControlsKey$CONTROL, colnames(colorControls))#
+FSCSSCIndexes <- match(colnames(colorControls), c("FSC-A", "SSC-A"))
+columnIndexes
+FSCSSCIndexes
+columnIndexes <- c(FSCSSCIndexes[!is.na(FSCSSCIndexes)], columnIndexes[!is.na(columnIndexes)])
+columnIndexes
+colnames(colorControls)
+columnIndexes <- match(colorControlsKey$CONTROL, colnames(colorControls))#
+FSCSSCIndexes <- match(c("FSC-A", "SSC-A"), colnames(colorControls)) #
+columnIndexes <- c(FSCSSCIndexes[!is.na(FSCSSCIndexes)], columnIndexes[!is.na(columnIndexes)])
+columnIndexes
+source("analyze.R")
+source('bead.R')
+source("beads.R")
+library(flowClust)
+source("http://bioconductor.org/biocLite.R")#
+biocLite("flowClust")
+source("beads.R")
+curlVersion
+getCurlHandle()
+require(RCurl)
+install.packages("RCurl")
+require(RCurl)
+source("beads.R")
+ls()
+source_https

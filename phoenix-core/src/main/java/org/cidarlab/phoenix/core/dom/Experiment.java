@@ -4,7 +4,7 @@
  */
 package org.cidarlab.phoenix.core.dom;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,48 +17,95 @@ import lombok.Setter;
 public class Experiment {
     
     //No args constructor
-    public Experiment() {  
+    public Experiment() {
+        experimentSamples = new ArrayList<>();
+        colorControls = new ArrayList<>();
+        regulationControls = new ArrayList<>();
+        expDegControls = new ArrayList<>();
+        mediaConditions = new ArrayList<>();
     }
     
     //No args constructor
-    public Experiment(ExperimentType exType) {
-        exType = exType;
-    }
+    public Experiment(ExperimentType exptType, String _name, List<Medium> _media, List<String> _times) {
+        exType = exptType;
+        name = _name;
+        clothoID = _name;
+        mediaConditions = _media;
+        times = _times;
+        experimentSamples = new ArrayList<>();
+        colorControls = new ArrayList<>();
+        regulationControls = new ArrayList<>();
+        expDegControls = new ArrayList<>();
+    }   
     
-    //Convert an experiment list to an output csv
-    public void createExperimentFile(Experiment experiments) {
+    //Get all samples in an experiment
+    public List<Sample> getAllSamples() {
         
+        List<Sample> allSamples = new ArrayList<>();
+        allSamples.add(this.beadControl);
+        allSamples.add(this.negativeControl);
+        allSamples.addAll(this.colorControls);
+        allSamples.addAll(this.expDegControls);
+        allSamples.addAll(this.regulationControls);
+        allSamples.addAll(this.experimentSamples);
+        
+        return allSamples;
     }
     
-    //Read an experiment csv file and create experiment objects
-    public List<Experiment> parseExperimentFile() {
-        return null;
-    }    
+    //Experiment name
+    @Setter
+    @Getter
+    private String name;
+    
+    //Experiment clothoID
+    @Setter
+    @Getter
+    private String clothoID;
     
     //Experiment type
     @Setter
     @Getter
     private ExperimentType exType;
         
-    //Experiment type
+    //Experiment testing samples
     @Setter
     @Getter
-    private HashSet<Sample> experimentSamples;
+    private List<Sample> experimentSamples;
     
-    //Experiment type
+    //Bead control sample
     @Setter
     @Getter
     private Sample beadControl;
     
-    //Experiment type
+    //Negative control sample
     @Setter
     @Getter
     private Sample negativeControl;
     
-    //Experiment type
+    //Color control samples
     @Setter
     @Getter
-    private HashSet<Sample> colorControls;
+    private List<Sample> colorControls;
+    
+    //Regulation control samples
+    @Setter
+    @Getter
+    private List<Sample> regulationControls;
+    
+    //Regulation control samples
+    @Setter
+    @Getter
+    private List<Sample> expDegControls;
+    
+    //Time series for measurements
+    @Setter
+    @Getter
+    private List<String> times;
+    
+    //Time series for measurements
+    @Setter
+    @Getter
+    private List<Medium> mediaConditions;
     
     //Experiment types
     public enum ExperimentType {
@@ -72,6 +119,7 @@ public class Experiment {
         READ_THROUGH,
         ORTHOGONALITY,
         RECOMBINATION,
-        TRANSCRIPTIONAL_INTERFERENCE;
+        TRANSCRIPTIONAL_INTERFERENCE,
+        SPECIFICATION;
     }
 }

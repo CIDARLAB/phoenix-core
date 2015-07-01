@@ -5,7 +5,10 @@
 package org.cidarlab.phoenix.core.tests;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.List;
 import org.cidarlab.phoenix.core.controller.PhoenixController;
+import org.cidarlab.phoenix.core.dom.Module;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -48,11 +51,17 @@ public class CoreTest {
 //    @Test
     public void coreTest() throws Exception {
         
+        //Upload data from back end
         File featureLib = new File(getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_feature_lib.gb");
-        File plasmidLib = new File(getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_plasmid_lib_6315.gb");
-        File structureFile = new File(getFilepath() + "/src/main/resources/miniEugeneFiles/toggle-switch-full.eug");
+        File plasmidLib = new File(getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_plasmid_lib_6315.gb");        
         File fluorophoreSpectra = new File(getFilepath() + "/src/main/resources/FluorescentProteins/fp_spectra.csv");
-        PhoenixController.run(featureLib, plasmidLib, structureFile, fluorophoreSpectra, null, null, null);
+        File cytometer = new File(getFilepath() + "/src/main/resources/FluorescentProteins/cosbi_fortessa_bd.csv");
+        PhoenixController.preliminaryDataUpload (featureLib, plasmidLib, fluorophoreSpectra, cytometer);
+        
+        //Run a design decomposition
+        File structureFile = new File(getFilepath() + "/src/main/resources/miniEugeneFiles/toggle-switch-full.eug");
+        List<Module> modulesToTest = PhoenixController.initializeDesign(structureFile, null);
+        //PhoenixController.createExperimentInstructions(modulesToTest, getFilepath() + "/src/main/resources/InstructionFiles");
     }
     
     //Main testing class

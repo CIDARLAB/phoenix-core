@@ -14,19 +14,14 @@ import org.clothocad.core.datums.ObjBase;
 @NoArgsConstructor
 public class Polynucleotide extends ObjBase implements Serializable {
 
-    //@Getter
-    //private ObjectId id;
-    //@Getter
+    public Polynucleotide (String _name) {
+        clothoID = _name;
+    }
+    
     private String description, accession;
-    
-    //@Getter
     private boolean isLinear, isSingleStranded;
-    
-    //@Getter
     private Date submissionDate;
-    
-    //@Getter
-    private List<Highlight> highlights;
+        
     @NotNull
     private NucSeq sequence;
     

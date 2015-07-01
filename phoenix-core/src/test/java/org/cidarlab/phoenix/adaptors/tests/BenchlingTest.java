@@ -102,7 +102,7 @@ public class BenchlingTest {
         }
     }
     
-    @Test
+//    @Test
     public void testFluorophoreUpload() {
         try {
             
@@ -124,7 +124,7 @@ public class BenchlingTest {
 //    
 //    public static void main(String[] args) {
 //        BenchlingTest t = new BenchlingTest();
-//        t.testMultiPartUpload();
+//        t.testFeatureLibraryUpload();
 //        String t2 = "";
 //    }
 }

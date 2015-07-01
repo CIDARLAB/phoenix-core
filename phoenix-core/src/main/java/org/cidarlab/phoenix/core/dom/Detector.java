@@ -18,6 +18,9 @@ public class Detector {
     @Getter
     private String DetectorValue;
     
+    @Setter
+    @Getter
+    private String parameter;
     
     @Setter
     @Getter
@@ -52,6 +55,9 @@ public class Detector {
         
     }
     
+    public Detector(){
+        
+    }
     
     private double getLowerRange(){
         double filterLowerLimit = (filterMidPoint - (filterWidth/2));

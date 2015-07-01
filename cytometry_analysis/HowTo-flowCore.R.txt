@@ -1,0 +1,496 @@
+### R code from vignette source 'vignettes/flowCore/inst/doc/HowTo-flowCore.Rnw'
+
+###################################################
+### code chunk number 1: loadPackage
+###################################################
+library(flowCore)
+
+
+###################################################
+### code chunk number 2: ReadFiles
+###################################################
+file.name <- system.file("extdata","0877408774.B08", package="flowCore")
+x <- read.FCS(file.name, transformation=FALSE)
+summary(x)
+
+
+###################################################
+### code chunk number 3: SearchKeywords
+###################################################
+keyword(x,c("$P1E", "$P2E", "$P3E", "$P4E"))
+
+
+###################################################
+### code chunk number 4: PrintSummary
+###################################################
+summary(read.FCS(file.name))
+
+
+###################################################
+### code chunk number 5: PrintSummary2
+###################################################
+summary(read.FCS(file.name,transformation="scale")) 
+
+
+###################################################
+### code chunk number 6: ReadFiles2
+###################################################
+read.FCS(file.name,alter.names=TRUE) 
+
+
+###################################################
+### code chunk number 7: RedFiles3
+###################################################
+x <- read.FCS(file.name, column.pattern="-H") 
+x 
+
+
+###################################################
+### code chunk number 8: RedFiles3
+###################################################
+lines <- sample(100:500, 50)
+y <- read.FCS(file.name, which.lines = lines) 
+y 
+
+
+###################################################
+### code chunk number 9: Plot1
+###################################################
+library(flowViz)
+plot(x)
+
+
+###################################################
+### code chunk number 10: Plot2
+###################################################
+plot(x,c("FL1-H", "FL2-H"))
+
+
+###################################################
+### code chunk number 11: plot3
+###################################################
+plot(x, "FL1-H", breaks=256)
+
+
+###################################################
+### code chunk number 12: Frames
+###################################################
+frames <- lapply(dir(system.file("extdata", "compdata", "data",
+                                 package="flowCore"), full.names=TRUE), 
+                 read.FCS)
+as(frames, "flowSet")
+
+
+###################################################
+### code chunk number 13: Frames
+###################################################
+names(frames) <- sapply(frames, keyword, "SAMPLE ID")
+fs <- as(frames, "flowSet")
+fs
+
+
+###################################################
+### code chunk number 14: metaData
+###################################################
+phenoData(fs)$Filename <- fsApply(fs,keyword, "$FIL")
+pData(phenoData(fs))
+
+
+###################################################
+### code chunk number 15: ReadFlowSet
+###################################################
+read.flowSet(path = system.file("extdata", "compdata", "data", 
+             package="flowCore"))
+
+
+###################################################
+### code chunk number 16: ReadFowSet2
+###################################################
+fs <- read.flowSet(path=system.file("extdata", "compdata", "data",
+                   package="flowCore"), name.keyword="SAMPLE ID",
+                   phenoData=list(name="SAMPLE ID", Filename="$FIL"))
+fs
+pData(phenoData(fs))
+
+
+###################################################
+### code chunk number 17: fsApply1
+###################################################
+fsApply(fs, each_col, median)
+
+
+###################################################
+### code chunk number 18: fsApply2
+###################################################
+fsApply(fs,function(x) apply(x, 2, median), use.exprs=TRUE)
+
+
+###################################################
+### code chunk number 19: Transfo1
+###################################################
+plot(transform(fs[[1]], `FL1-H`=log(`FL1-H`), `FL2-H`=log(`FL2-H`)), 
+     c("FL1-H","FL2-H"))
+
+
+###################################################
+### code chunk number 20: Transfo2
+###################################################
+plot(transform(fs[[1]], log.FL1.H=log(`FL1-H`), 
+               log.FL2.H=log(`FL2-H`)), c("log.FL1.H", "log.FL2.H"))
+
+
+###################################################
+### code chunk number 21: Transfo3
+###################################################
+aTrans <- truncateTransform("truncate at 1", a=1)
+aTrans
+
+
+###################################################
+### code chunk number 22: Transfo4
+###################################################
+transform(fs,`FL1-H`=aTrans(`FL1-H`))
+
+
+###################################################
+### code chunk number 23: rectGate
+###################################################
+rectGate <- rectangleGate(filterId="Fluorescence Region", 
+                          "FL1-H"=c(0, 12), "FL2-H"=c(0, 12))
+
+
+###################################################
+### code chunk number 24: HowTo-flowCore.Rnw:592-594
+###################################################
+result = filter(fs[[1]],rectGate)
+result
+
+
+###################################################
+### code chunk number 25: Summary3
+###################################################
+summary(result)
+summary(result)$n
+summary(result)$true
+summary(result)$p
+
+
+###################################################
+### code chunk number 26: SummarFilter
+###################################################
+summary(filter(fs[[1]], kmeansFilter("FSC-H"=c("Low", "Medium", "High"),
+                                     filterId="myKMeans")))
+
+
+###################################################
+### code chunk number 27: HowTo-flowCore.Rnw:621-622
+###################################################
+filter(fs,rectGate)
+
+
+###################################################
+### code chunk number 28: Norm2Filter
+###################################################
+morphGate <- norm2Filter("FSC-H", "SSC-H", filterId="MorphologyGate", 
+                         scale=2)
+smaller <- Subset(fs, morphGate)
+fs[[1]]
+smaller[[1]]
+
+
+###################################################
+### code chunk number 29: Split
+###################################################
+split(smaller[[1]], kmeansFilter("FSC-H"=c("Low","Medium","High"),
+                                 filterId="myKMeans"))
+
+
+###################################################
+### code chunk number 30: Split2
+###################################################
+split(smaller, kmeansFilter("FSC-H"=c("Low", "Medium", "High"),
+                            filterId="myKMeans"))
+
+
+###################################################
+### code chunk number 31: CombineFilter
+###################################################
+
+rectGate & morphGate
+rectGate | morphGate
+!morphGate
+
+
+
+###################################################
+### code chunk number 32: Summary5
+###################################################
+summary(filter(smaller[[1]],rectGate %&% morphGate))
+
+
+###################################################
+### code chunk number 33: Transfo5
+###################################################
+tFilter <- transform("FL1-H"=log,"FL2-H"=log)
+tFilter
+
+
+###################################################
+### code chunk number 34: TectGate3
+###################################################
+rect2 <- rectangleGate(filterId="Another Rect", "FL1-H"=c(1,2), 
+"FL2-H"=c(2,3)) %on% tFilter
+rect2
+
+
+###################################################
+### code chunk number 35: Plot6
+###################################################
+plot(tFilter %on% smaller[[1]],c("FL1-H","FL2-H"))
+
+
+###################################################
+### code chunk number 36: loadData
+###################################################
+library(flowWorkspace)
+fcsfiles <- list.files(pattern = "CytoTrol"
+                       , system.file("extdata", package = "flowWorkspaceData")
+                       , full = TRUE)
+fs <- read.flowSet(fcsfiles)
+
+
+###################################################
+### code chunk number 37: getComp
+###################################################
+gs_manual <- load_gs(list.files(pattern = "gs_manual"
+                                , system.file("extdata", package = "flowWorkspaceData")
+                                , full = TRUE))
+comp <- getCompensationMatrices(gs_manual[[1]])
+
+
+###################################################
+### code chunk number 38: Compensate
+###################################################
+comp
+fs_comp <- compensate(fs, comp)
+
+
+###################################################
+### code chunk number 39: plotComp
+###################################################
+transList <- estimateLogicle(fs[[1]], c("V545-A","V450-A"))
+grid.arrange(
+xyplot(`V545-A`~`V450-A`, transform(fs[[1]], transList), smooth = FALSE, xbin = 32, main = "Before")
+, xyplot(`V545-A`~`V450-A`, transform(fs_comp[[1]], transList)
+         , smooth = FALSE, xbin = 32, main = "After")
+, ncol = 2)
+
+
+###################################################
+### code chunk number 40: createGatingSet (eval = FALSE)
+###################################################
+## gs <- GatingSet(fs_comp)
+## gs
+
+
+###################################################
+### code chunk number 41: transOutsideOfGS
+###################################################
+biexpTrans <- flowJoTrans(channelRange=4096, maxValue=262144
+                          , pos=4.5,neg=0, widthBasis=-10)
+tf <- transformList(parameters(comp), biexpTrans)
+fs_trans <- transform(fs_comp, tf)
+gs <- GatingSet(fs_trans)
+gs
+
+
+###################################################
+### code chunk number 42: nodes
+###################################################
+getNodes(gs)
+
+
+###################################################
+### code chunk number 43: addTrans (eval = FALSE)
+###################################################
+## biexpTrans <- flowJoTrans(channelRange=4096, maxValue=262144
+##                           , pos=4.5,neg=0, widthBasis=-10)
+## tf <- transformList(parameters(comp), biexpTrans)
+## gs <- transform(gs, tf)
+
+
+###################################################
+### code chunk number 44: plotTrans
+###################################################
+grid.arrange(
+  densityplot(~`B710-A`, fs_comp[[1]], main = "raw")
+  ,densityplot(~`B710-A`, flowData(gs)[[1]], main = "trans")
+  , ncol = 2
+)
+
+
+###################################################
+### code chunk number 45: transOutsideOfGSDemo (eval = FALSE)
+###################################################
+## tf <- transformList(parameters(comp), myFun)#myFun is any customized flowCore compatible transformation function
+## fs_trans <- transform(fs_comp, tf)
+## gs <- GatingSet(fs_trans)
+
+
+###################################################
+### code chunk number 46: addGate-nonDebris
+###################################################
+rg1 <- rectangleGate("FSC-A"=c(50000, Inf), filterId="NonDebris")
+add(gs, rg1, parent = "root")
+getNodes(gs)
+# gate the data
+recompute(gs)
+
+
+###################################################
+### code chunk number 47: plotGate
+###################################################
+plotGate(gs, "NonDebris")
+
+
+###################################################
+### code chunk number 48: plotGate-density
+###################################################
+plotGate(gs, "NonDebris", type = "densityplot")
+
+
+###################################################
+### code chunk number 49: getStats
+###################################################
+getTotal(gs[[1]], "NonDebris")#counts
+getProp(gs[[1]], "NonDebris")#proportion
+
+
+###################################################
+### code chunk number 50: addGate-singlets
+###################################################
+# add the second gate
+mat <- matrix(c(54272,59392,259071.99382782
+                ,255999.994277954,62464,43008,70656
+                ,234495.997428894,169983.997344971,34816)
+              , nrow = 5)
+colnames(mat) <-c("FSC-A", "FSC-H")
+mat
+pg <- polygonGate(mat)
+add(gs, pg, parent = "NonDebris", name = "singlets")
+
+# add the third gate
+rg2 <- rectangleGate("V450-A"=c(2000, Inf))
+add(gs, rg2, parent = "singlets", name = "CD3")
+getNodes(gs)
+
+
+
+###################################################
+### code chunk number 51: addQuadGate
+###################################################
+qg <- quadGate("B710-A" = 2000, "R780-A" = 3000)
+add(gs, qg, parent="CD3", names = c("CD8", "DPT", "CD4", "DNT"))
+getChildren(gs[[1]], "CD3")
+# gate the data from "singlets"
+recompute(gs, "singlets")
+
+
+###################################################
+### code chunk number 52: plotgs (eval = FALSE)
+###################################################
+## plot(gs)
+
+
+###################################################
+### code chunk number 53: plotwfdo
+###################################################
+if(suppressWarnings(require(Rgraphviz))){
+    plot(gs)
+}else{
+    plot(1,1, type="n", axes=FALSE, ann=FALSE)
+    text(1,1,"Need to install Rgraphviz")
+}
+
+
+###################################################
+### code chunk number 54: plotGateAll
+###################################################
+plotGate(gs[[1]])
+
+
+###################################################
+### code chunk number 55: getData
+###################################################
+fs_nonDebris <- getData(gs, "NonDebris")
+fs_nonDebris 
+nrow(fs_nonDebris[[1]])
+nrow(fs[[1]])
+
+
+###################################################
+### code chunk number 56: getStats
+###################################################
+getPopStats(gs)
+
+
+###################################################
+### code chunk number 57: Rm
+###################################################
+Rm('CD3', gs)
+getNodes(gs)
+Rm('NonDebris', gs)
+getNodes(gs)
+
+
+###################################################
+### code chunk number 58: openCyto-nonDebris
+###################################################
+library(openCyto)
+thisData <- getData(gs)
+nonDebris_gate <- fsApply(thisData, function(fr)
+                            openCyto:::.mindensity(fr, channels = "FSC-A"))
+add(gs, nonDebris_gate, parent = "root", name = "nonDebris")
+recompute(gs)
+
+
+###################################################
+### code chunk number 59: openCyto-singletGate
+###################################################
+thisData <- getData(gs, "nonDebris") #get parent data
+singlet_gate <- fsApply(thisData, function(fr)
+                          openCyto:::.singletGate(fr, channels =c("FSC-A", "FSC-H")))
+add(gs, singlet_gate, parent = "nonDebris", name = "singlets")
+recompute(gs)
+
+
+###################################################
+### code chunk number 60: openCyto-CD3
+###################################################
+thisData <- getData(gs, "singlets") #get parent data
+CD3_gate <- fsApply(thisData, function(fr)
+                        openCyto:::.mindensity(fr, channels ="V450-A"))
+add(gs, CD3_gate, parent = "singlets", name = "CD3")
+recompute(gs)
+
+
+###################################################
+### code chunk number 61: openCyto-Tsub
+###################################################
+thisData <- getData(gs, "CD3") #get parent data
+Tsub_gate <- fsApply(thisData, function(fr)
+      openCyto::quadGate.seq(fr
+                             , channels = c("B710-A", "R780-A")
+                             , gFunc = 'mindensity'
+                            )
+                  )
+add(gs, Tsub_gate, parent = "CD3", names = c("CD8", "DPT", "CD4", "DNT"))
+recompute(gs)
+
+
+###################################################
+### code chunk number 62: plotALL-openCyto
+###################################################
+plotGate(gs[[1]])
+
+

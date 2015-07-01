@@ -31,9 +31,11 @@ public class PrimitiveModule extends Module {
     
     //Blank constructor
     public PrimitiveModule() {
+        super("");
     }
     
     public PrimitiveModule(FeatureRole role, Primitive primitive, Feature moduleFeature) {
+        super("");
         this.primitiveRole = role;
         this.primitive = primitive;
         this.getModuleFeatures().add(moduleFeature);

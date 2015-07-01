@@ -1,0 +1,197 @@
+### R code from vignette source 'vignettes/flowBeads/inst/doc/HowTo-flowBeads.Rnw'
+
+###################################################
+### code chunk number 1: loadPackage
+###################################################
+library(flowBeads)
+
+
+###################################################
+### code chunk number 2: HowTo-flowBeads.Rnw:116-117
+###################################################
+data(dakomef)
+
+
+###################################################
+### code chunk number 3: MEF
+###################################################
+library(xtable)
+data(dakomef)
+print(xtable(dakomef,
+             caption=
+             "
+             FluoroSpheres from Dakocytomation.
+             The Molecules of Equivalent Fluorochromes (MEF) values for the six bead populations as provided by the manufacturer
+             for the LSRII.
+             The first bead population are blank as they contain contain no flurochrome by design.
+             "
+             ))
+
+
+###################################################
+### code chunk number 4: HowTo-flowBeads.Rnw:136-137
+###################################################
+data(cytocalmef)
+
+
+###################################################
+### code chunk number 5: loadBeads (eval = FALSE)
+###################################################
+## beads1 <- BeadFlowFrame(fcs.filename=system.file('extdata', 'beads1.fcs', package='flowBeads'),
+##                         bead.filename=system.file('extdata', 'dakomef.csv', package='flowBeads'))
+## beads2 <- BeadFlowFrame(fcs.filename=system.file('extdata', 'beads2.fcs', package='flowBeads'),
+##                         bead.filename=system.file('extdata', 'dakomef.csv', package='flowBeads'))
+
+
+###################################################
+### code chunk number 6: fastLoadBeads
+###################################################
+data(beads1)
+data(beads2)
+
+
+###################################################
+### code chunk number 7: beads1
+###################################################
+show(beads1)
+
+
+###################################################
+### code chunk number 8: beads2
+###################################################
+length(beads1)
+getDate(beads1)
+getParams(beads1)
+getMEFparams(beads1)
+
+
+###################################################
+### code chunk number 9: gateBeads
+###################################################
+gbeads1 <- gateBeads(beads1)
+gbeads2 <- gateBeads(beads2)
+
+
+###################################################
+### code chunk number 10: gbeads1plot
+###################################################
+plot(gbeads1)
+
+
+###################################################
+### code chunk number 11: gbeads2plot
+###################################################
+plot(gbeads2)
+
+
+###################################################
+### code chunk number 12: beadplotAPC (eval = FALSE)
+###################################################
+## plot(gbeads1, 'APC')
+
+
+###################################################
+### code chunk number 13: HowTo-flowBeads.Rnw:249-250
+###################################################
+getClusteringStats(gbeads1)[,,1]
+
+
+###################################################
+### code chunk number 14: HowTo-flowBeads.Rnw:253-255
+###################################################
+beads1.mean.fi.APC <- getClusteringStats(gbeads1)['mean.fi','APC',]
+beads2.mean.fi.APC <- getClusteringStats(gbeads2)['mean.fi','APC',]
+
+
+###################################################
+### code chunk number 15: HowTo-flowBeads.Rnw:263-265
+###################################################
+mef.transform <- getMEFtransform(gbeads1)
+names(mef.transform)
+
+
+###################################################
+### code chunk number 16: HowTo-flowBeads.Rnw:270-272
+###################################################
+mef.transform$APC$alpha
+mef.transform$APC$beta
+
+
+###################################################
+### code chunk number 17: HowTo-flowBeads.Rnw:277-278
+###################################################
+mef.transform$APC$fun
+
+
+###################################################
+### code chunk number 18: plotMEFrepeatability
+###################################################
+old.par <- par(no.readonly=T)
+par(mfrow=c(1,2))
+plot(getTransformFunction(beads1)(beads1.mean.fi.APC),
+     getTransformFunction(beads2)(beads2.mean.fi.APC),
+     xlim=c(0,5),
+     ylim=c(0,5),
+     xlab='APC MFI Beads Day 1',
+     ylab='APC MFI Beads Day 2')
+abline(b=1,a=0)
+plot(getTransformFunction(beads1)(getMEFtransform(gbeads1)$APC$fun(beads1.mean.fi.APC)),
+     getTransformFunction(beads2)(getMEFtransform(gbeads2)$APC$fun(beads2.mean.fi.APC)),
+     xlim=c(0,5),
+     ylim=c(0,5),
+     xlab='APC MEF Beads Day 1',
+     ylab='APC MEF Beads Day 2')
+abline(b=1,a=0)
+par(old.par)
+
+
+###################################################
+### code chunk number 19: toMEF (eval = FALSE)
+###################################################
+## toMEF(gbeads1, flow.data)
+
+
+###################################################
+### code chunk number 20: HowTo-flowBeads.Rnw:326-328
+###################################################
+relative.transforms <- relativeNormalise(gbeads1, gbeads2)
+names(relative.transforms)
+
+
+###################################################
+### code chunk number 21: HowTo-flowBeads.Rnw:331-335
+###################################################
+fun <- relative.transforms$APC$fun
+mfi1 <- getTransformFunction(gbeads1)(getClusteringStats(gbeads1)['mean.fi','APC',])
+mfi2 <- getTransformFunction(gbeads2)(getClusteringStats(gbeads2)['mean.fi','APC',])
+fun.mfi1 <- fun(mfi1)
+
+
+###################################################
+### code chunk number 22: plotMFIrepeatability
+###################################################
+old.par <- par(no.readonly=T)
+par(mfrow=c(1,2))
+plot(mfi1,
+     mfi2,
+     xlim=c(0,5),
+     ylim=c(0,5),
+     xlab='APC MFI Beads Day 1',
+     ylab='APC MFI Beads Day 2')
+abline(b=1,a=0)
+plot(fun.mfi1,
+     mfi2,
+     xlim=c(0,5),
+     ylim=c(0,5),
+     xlab='APC MFI Beads Day 1 (Relative Normalisation)',
+     ylab='APC MFI Beads Day 2')
+abline(b=1,a=0)
+par(old.par)
+
+
+###################################################
+### code chunk number 23: generateReport (eval = FALSE)
+###################################################
+## generateReport(gbeads1, output.file='report.html')
+
+

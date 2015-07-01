@@ -26,34 +26,28 @@ public class ClientSideAdaptor {
         json.put("clothoId", module.getClothoID());
         json.put("hex", "#FF0000");
         JSONArray children = new JSONArray();
-        if((!module.getChildren().isEmpty())){
-        
-            
-            for(Module child:module.getChildren()){
-                children.add(convertModuleToJSON(child));
-            }
+        for (Module child : module.getChildren()) {
+            children.add(convertModuleToJSON(child));
         }
-        if(module.getAssignedModules() != null){
-            for(Module aModule:module.getAssignedModules()){
-                JSONObject assignedModuleObj = new JSONObject();
-                assignedModuleObj.put("name", aModule.getName());
-                JSONArray exptChildren = new JSONArray();
-                if(aModule.getExperiments()!= null){
-                    for(Experiment expt:aModule.getExperiments()){
-                        JSONObject exptObj = new JSONObject();
-                        exptObj.put("name", expt.getExType());
-                        exptObj.put("hex", "#00FF00");
-                        exptChildren.add(exptObj);
-                    }
+        for (Module aModule : module.getAssignedModules()) {
+            JSONObject assignedModuleObj = new JSONObject();
+            assignedModuleObj.put("name", aModule.getName());
+            JSONArray exptChildren = new JSONArray();
+            if (aModule.getExperiments() != null) {
+                for (Experiment expt : aModule.getExperiments()) {
+                    JSONObject exptObj = new JSONObject();
+                    exptObj.put("name", expt.getExType());
+                    exptObj.put("hex", "#00FF00");
+                    exptChildren.add(exptObj);
                 }
-                if(exptChildren.size()>0){
-                    assignedModuleObj.put("children", exptChildren);
-                    assignedModuleObj.put("hex", "#0000FF");
-                }
-                children.add(assignedModuleObj);
             }
+            if (exptChildren.size() > 0) {
+                assignedModuleObj.put("children", exptChildren);
+                assignedModuleObj.put("hex", "#0000FF");
+            }
+            children.add(assignedModuleObj);
         }
-        if(children.size()>0){
+        if(!children.isEmpty()){
             json.put("children", children);
         }
         

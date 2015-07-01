@@ -152,6 +152,7 @@ public class FeatureAssignment {
                     } else {
                         List<Feature> pFeatures = new ArrayList<>();
                         pFeatures.add(FPs.get(count));
+                        
                         p.setModuleFeatures(pFeatures);
                         count++;
                     }                    

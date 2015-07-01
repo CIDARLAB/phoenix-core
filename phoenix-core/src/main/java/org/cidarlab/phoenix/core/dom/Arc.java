@@ -5,6 +5,7 @@
  */
 package org.cidarlab.phoenix.core.dom;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import lombok.Getter;
@@ -17,6 +18,7 @@ import lombok.Setter;
 public class Arc {
     
     public Arc(){
+        molecules = new ArrayList<>();
         
     }
     
@@ -24,6 +26,8 @@ public class Arc {
         regulator = _regulator;
         regulatee = _regulatee;
         role = _role;
+        molecules = new ArrayList<>();
+        
     }
     
     //Regulator

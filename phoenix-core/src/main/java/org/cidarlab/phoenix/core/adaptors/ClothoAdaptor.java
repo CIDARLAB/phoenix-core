@@ -994,14 +994,7 @@ public class ClothoAdaptor {
                 Arc a = regNamesArcsHash.get(reg);
                 a.setRegulator(featureNameHash.get(reg.get("regulator")));
                 a.setRegulatee(featureNameHash.get(reg.get("regulatee")));
-
-                if (!f.getArcs().isEmpty()) {
-                    f.getArcs().add(a);
-                } else {
-                    List<Arc> arcs = new ArrayList<>();
-                    arcs.add(a);
-                    f.setArcs(arcs);
-                }
+                f.getArcs().add(a);
             }
         }
 

@@ -334,8 +334,8 @@ public class BenchlingAdaptor {
                 //Get rest of feature information and apply it to the features
                 NucSeq nucSeq = new NucSeq(seqString.substring(startFeat - 1, endFeat), ss, linearity);
                 
-                Color fwd = null;
-                Color rev = null;
+                Color fwd = new Color(0);
+                Color rev = new Color(0);
 //                String name = "";
                 if (feature.getAnnotation().containsProperty("ApEinfo_fwdcolor") && feature.getAnnotation().containsProperty("ApEinfo_revcolor")) {
                     fwd = Color.decode(feature.getAnnotation().getProperty("ApEinfo_fwdcolor").toString());
@@ -764,8 +764,8 @@ public class BenchlingAdaptor {
             //Get rest of feature information and apply it to the features
             NucSeq nucSeq = new NucSeq(seqString.substring(startFeat, endFeat + 1), ss, linearity);
 
-            Color fwd = null;
-            Color rev = null;
+            Color fwd = new Color(0);
+            Color rev = new Color(0);
             String name = "";
             if (feature.getAnnotation().containsProperty("ApEinfo_fwdcolor") && feature.getAnnotation().containsProperty("ApEinfo_revcolor")) {
                 fwd = Color.decode(feature.getAnnotation().getProperty("ApEinfo_fwdcolor").toString());

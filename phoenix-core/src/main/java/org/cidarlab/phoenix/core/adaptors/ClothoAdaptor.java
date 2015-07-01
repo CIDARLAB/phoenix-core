@@ -311,7 +311,7 @@ public class ClothoAdaptor {
         }
         map.put("polynucleotides", polyIds);
         map.put("time", sample.getTime());
-        id = (String)clothoObject.create(map);
+        id = (String) clothoObject.create(map);
         sample.setClothoID(id);
         return id;
     }
@@ -332,24 +332,24 @@ public class ClothoAdaptor {
 
         JSONArray experimentTimes = new JSONArray();
 
-        for(String time:experiment.getTimes()){
+        for (String time : experiment.getTimes()) {
             experimentTimes.add(time);
         }
         map.put("times", experimentTimes);
-        
-        String negativeControlId = createSample(experiment.getNegativeControl(),clothoObject);
+
+        String negativeControlId = createSample(experiment.getNegativeControl(), clothoObject);
         map.put("negativeControl", negativeControlId);
-        
+
         String beadControlId = createSample(experiment.getBeadControl(), clothoObject);
         map.put("beadControl", beadControlId);
-        
+
         JSONArray colorControlIds = new JSONArray();
         for (Sample sample : experiment.getColorControls()) {
             String colorControlId = createSample(sample, clothoObject);
             colorControlIds.add(colorControlId);
         }
         map.put("colorControls", colorControlIds);
-       
+
         JSONArray experimentSampleIds = new JSONArray();
         for (Sample sample : experiment.getExperimentSamples()) {
             String expSampleId = createSample(sample, clothoObject);
@@ -363,21 +363,20 @@ public class ClothoAdaptor {
             exptDegControlIds.add(exptDegCntrlId);
         }
         map.put("experimentDegreeControls", exptDegControlIds);
-        
+
         JSONArray regulationControlIds = new JSONArray();
         for (Sample sample : experiment.getRegulationControls()) {
             String regulationCntrlId = createSample(sample, clothoObject);
             regulationControlIds.add(regulationCntrlId);
         }
         map.put("regulationControls", regulationControlIds);
-        
-        
+
         JSONArray mediaConditions = new JSONArray();
-        for(Medium medium:experiment.getMediaConditions()){
+        for (Medium medium : experiment.getMediaConditions()) {
             mediaConditions.add(createMediumMap(medium));
         }
         map.put("mediaConditions", mediaConditions);
-        
+
         id = (String) clothoObject.set(map);
         experiment.setClothoID(id);
 
@@ -409,11 +408,11 @@ public class ClothoAdaptor {
         //NucSeq data
         Map createNucSeqMain = createNucSeqMap(pn.getSequence());
 
-            //Change this. Make it point to a Clotho Id instead.
+        //Change this. Make it point to a Clotho Id instead.
         //Part and vector
         String partId = createPart(pn.getPart(), clothoObject);
         String vectorId = createPart(pn.getVector(), clothoObject);
-            //Map createPart = createPart(pn.getPart(), clothoObject);
+        //Map createPart = createPart(pn.getPart(), clothoObject);
         //Map createVec = createPart(pn.getVector(), clothoObject);
 
         createPolynucleotide.put("sequence", createNucSeqMain);
@@ -441,9 +440,7 @@ public class ClothoAdaptor {
     public static String createFeature(Feature f, Clotho clothoObject) {
         String id = "";
         Map createFeature = new HashMap();
-        
-        
-        
+
         createFeature.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
         createFeature.put("name", f.getName());
         createFeature.put("forwardColor", f.getForwardColor().toString());
@@ -464,63 +461,58 @@ public class ClothoAdaptor {
         List<Arc> arcs = f.getArcs();
         List<Map> arcList = new ArrayList<>();
 
-        if (!arcs.isEmpty()) {
-            for (Arc a : arcs) {
+        for (Arc a : arcs) {
 
-                //Arc sub-schema
-                //This assignment in particular assumes feature name and clothoID are the same
-                Map createArc = new HashMap();
-                createArc.put("schema", "org.cidarlab.phoenix.core.dom.Arc");
-                createArc.put("regulator", a.getRegulator().getName());
-                createArc.put("regulatee", a.getRegulatee().getName());
+            //Arc sub-schema
+            //This assignment in particular assumes feature name and clothoID are the same
+            Map createArc = new HashMap();
+            createArc.put("schema", "org.cidarlab.phoenix.core.dom.Arc");
+            createArc.put("regulator", a.getRegulator().getName());
+            createArc.put("regulatee", a.getRegulatee().getName());
 
-                //ArcRole sub-sub-schema
-                Map createArcRole = new HashMap();
-                createArcRole.put("schema", "org.cidarlab.phoenix.core.dom.Arc.ArcRole");
-                createArcRole.put("ArcRole", a.getRole().toString());
-                createArc.put("role", createArcRole);
+            //ArcRole sub-sub-schema
+            Map createArcRole = new HashMap();
+            createArcRole.put("schema", "org.cidarlab.phoenix.core.dom.Arc.ArcRole");
+            createArcRole.put("ArcRole", a.getRole().toString());
+            createArc.put("role", createArcRole);
 
-                List<SmallMolecule> molecules = a.getMolecules();
-                List<Map> smList = new ArrayList<>();
+            List<SmallMolecule> molecules = a.getMolecules();
+            List<Map> smList = new ArrayList<>();
 
-                if (molecules != null) {
-                    for (SmallMolecule sm : molecules) {
+            for (SmallMolecule sm : molecules) {
 
-                        //SmallMolecule sub-sub-schema
-                        Map createSmallMolecule = new HashMap();
-                        createSmallMolecule.put("schema", "org.cidarlab.phoenix.core.dom.SmallMolecule");
-                        createSmallMolecule.put("name", sm.getName());
+                //SmallMolecule sub-sub-schema
+                Map createSmallMolecule = new HashMap();
+                createSmallMolecule.put("schema", "org.cidarlab.phoenix.core.dom.SmallMolecule");
+                createSmallMolecule.put("name", sm.getName());
 
-                        //SmallMoleculeRol sub-sub-sub-schema
-                        Map createSmallMoleculeRole = new HashMap();
-                        createSmallMoleculeRole.put("schema", "org.cidarlab.phoenix.core.dom.SmallMolecule.SmallMoleculeRole");
-                        createSmallMoleculeRole.put("SmallMoleculeRole", sm.getRole().toString());
-                        createSmallMolecule.put("role", createSmallMoleculeRole);
+                //SmallMoleculeRol sub-sub-sub-schema
+                Map createSmallMoleculeRole = new HashMap();
+                createSmallMoleculeRole.put("schema", "org.cidarlab.phoenix.core.dom.SmallMolecule.SmallMoleculeRole");
+                createSmallMoleculeRole.put("SmallMoleculeRole", sm.getRole().toString());
+                createSmallMolecule.put("role", createSmallMoleculeRole);
 
-                        smList.add(createSmallMolecule);
-                    }
-
-                    createArc.put("molecules", smList);
-                }
-                arcList.add(createArc);
+                smList.add(createSmallMolecule);
             }
 
-            createFeature.put("arcs", arcList);
+            createArc.put("molecules", smList);
+            arcList.add(createArc);
         }
+
+        createFeature.put("arcs", arcList);
 
         //Clotho ID
         if (f.getClothoID() != null) {
-            if(!f.isFP()){
-                    createFeature.put("id", f.getClothoID());
+            if (!f.isFP()) {
+                createFeature.put("id", f.getClothoID());
             }
         }
-            //else{
+        //else{
         //    createFeature.put("id", f.getName());
         //    f.setClothoID(f.getName());
         //}
         id = (String) clothoObject.set(createFeature);
         f.setClothoID(id);
-        System.out.println("Feature ID:: " + id);
         return id;
     }
 
@@ -581,7 +573,7 @@ public class ClothoAdaptor {
         if (f.getClothoID() != null) {
             createFluorophore.put("id", f.getClothoID());
             //id = f.getClothoID();
-        } 
+        }
         //else {
         //    createFluorophore.put("id", f.getName());
         //    f.setClothoID(f.getName());
@@ -609,12 +601,12 @@ public class ClothoAdaptor {
     public static String createModule(Module module, Clotho clothoObject) {
         String id = "";
         id = createModuleTree(module, clothoObject);
-        setNeighbors(module, clothoObject);
+        setModuleNeighbors(module, clothoObject);
         return id;
 
     }
 
-    public static void setNeighbors(Module module, Clotho clothoObject) {
+    public static void setModuleNeighbors(Module module, Clotho clothoObject) {
 
         Map setNeighbor = new HashMap();
         setNeighbor.put("id", module.getClothoID());
@@ -635,7 +627,7 @@ public class ClothoAdaptor {
 
         clothoObject.set(setNeighbor);
         for (Module child : module.getChildren()) {
-            setNeighbors(child, clothoObject);
+            setModuleNeighbors(child, clothoObject);
         }
     }
 
@@ -652,8 +644,8 @@ public class ClothoAdaptor {
 
         if (module.getClothoID() != null) {
             createModule.put("id", module.getClothoID());
-        } 
-        
+        }
+
         JSONArray featureIds = new JSONArray();
         HashSet<Feature> features = new HashSet<Feature>(module.getModuleFeatures());
 
@@ -662,16 +654,11 @@ public class ClothoAdaptor {
         }
 
         JSONArray exptIds = new JSONArray();
-
-        //This needs to be fixed
-        if (module.getExperiments() != null) {
-            for (Experiment experiment : module.getExperiments()) {
-                String exptId = createExperiment(experiment, clothoObject);
-                exptIds.add(exptId);
-            }
-            createModule.put("experiments", exptIds);
-
+        for (Experiment experiment : module.getExperiments()) {
+            String exptId = createExperiment(experiment, clothoObject);
+            exptIds.add(exptId);
         }
+        createModule.put("experiments", exptIds);
         createModule.put("features", featureIds);
         createModule.put("stlFunction", createSTLFunction(module.getFunction(), clothoObject));
         //Should be someway to create Primitive Modules
@@ -859,34 +846,26 @@ public class ClothoAdaptor {
         createAssmParam.put("minCloneLength", aP.getMinCloneLength());
         createAssmParam.put("maxPrimerLength", aP.getMaxPrimerLength());
 
-        if (aP.getRecommended() != null) {
-            List<String> recommended = new ArrayList<>(aP.getRecommended());
-            createAssmParam.put("recommended", recommended);
-        }
-        if (aP.getRequired() != null) {
-            List<String> required = new ArrayList<>(aP.getRequired());
-            createAssmParam.put("required", required);
-        }
-        if (aP.getDiscouraged() != null) {
-            List<String> discouraged = new ArrayList<>(aP.getDiscouraged());
-            createAssmParam.put("discouraged", discouraged);
-        }
-        if (aP.getForbidden() != null) {
-            List<String> forbidden = new ArrayList<>(aP.getForbidden());
-            createAssmParam.put("forbidden", forbidden);
-        }
-        if (aP.getEfficiency() != null) {
-            List<String> efficiency = new ArrayList<>(aP.getEfficiency());
-            createAssmParam.put("efficiency", efficiency);
-        }
+        List<String> recommended = new ArrayList<>(aP.getRecommended());
+        createAssmParam.put("recommended", recommended);
+
+        List<String> required = new ArrayList<>(aP.getRequired());
+        createAssmParam.put("required", required);
+
+        List<String> discouraged = new ArrayList<>(aP.getDiscouraged());
+        createAssmParam.put("discouraged", discouraged);
+
+        List<String> forbidden = new ArrayList<>(aP.getForbidden());
+        createAssmParam.put("forbidden", forbidden);
+
+        List<String> efficiency = new ArrayList<>(aP.getEfficiency());
+        createAssmParam.put("efficiency", efficiency);
 
         //Clotho ID
         if (aP.getClothoID() != null) {
             createAssmParam.put("id", aP.getClothoID());
-        } else {
-            createAssmParam.put("id", aP.getName());
-            aP.setClothoID(aP.getName());
         }
+
         id = (String) clothoObject.set(createAssmParam);
         aP.setClothoID(id);
 
@@ -949,63 +928,53 @@ public class ClothoAdaptor {
             //Get arcs
             JSONArray arrayArcs = (JSONArray) jsonFeature.get("arcs");
 
-            if (arrayArcs != null) {
-                for (int j = 0; j < arrayArcs.size(); j++) {
+            for (int j = 0; j < arrayArcs.size(); j++) {
 
-                    Arc arc = new Arc();
+                Arc arc = new Arc();
 
-                    //Get arc fields
-                    JSONObject jsonArc = arrayArcs.getJSONObject(j);
-                    String regulator = jsonArc.get("regulator").toString();
-                    String regulatee = jsonArc.get("regulatee").toString();
+                //Get arc fields
+                JSONObject jsonArc = arrayArcs.getJSONObject(j);
+                String regulator = jsonArc.get("regulator").toString();
+                String regulatee = jsonArc.get("regulatee").toString();
+
+                //Get ArcRole
+                JSONObject jsonArcRole = (JSONObject) jsonArc.get("role");
+                String arcRoleString = jsonArcRole.get("ArcRole").toString();
+                arc.setRole(Arc.ArcRole.valueOf(arcRoleString));
+
+                //Get small molecules
+                JSONArray arraySMs = (JSONArray) jsonArc.get("molecules");
+
+                for (int k = 0; k < arraySMs.size(); k++) {
+
+                    SmallMolecule sm = new SmallMolecule();
+
+                    //Get small molecule fields
+                    JSONObject jsonSM = arraySMs.getJSONObject(k);
+                    String smName = jsonSM.get("name").toString();
+                    sm.setName(smName);
 
                     //Get ArcRole
-                    JSONObject jsonArcRole = (JSONObject) jsonArc.get("role");
-                    String arcRoleString = jsonArcRole.get("ArcRole").toString();
-                    arc.setRole(Arc.ArcRole.valueOf(arcRoleString));
+                    JSONObject jsonSMRole = (JSONObject) jsonSM.get("role");
+                    String smRoleString = jsonSMRole.get("SmallMoleculeRole").toString();
+                    sm.setRole(SmallMolecule.SmallMoleculeRole.valueOf(smRoleString));
+                    arc.getMolecules().add(sm);
 
-                    //Get small molecules
-                    JSONArray arraySMs = (JSONArray) jsonArc.get("molecules");
+                }
 
-                    if (arraySMs != null) {
-                        for (int k = 0; k < arraySMs.size(); k++) {
+                //Save feature names to arcHash for second pass
+                HashMap<String, String> reg = new HashMap<>();
+                reg.put("regulator", regulator);
+                reg.put("regulatee", regulatee);
 
-                            SmallMolecule sm = new SmallMolecule();
+                regNamesArcsHash.put(reg, arc);
 
-                            //Get small molecule fields
-                            JSONObject jsonSM = arraySMs.getJSONObject(k);
-                            String smName = jsonSM.get("name").toString();
-                            sm.setName(smName);
-
-                            //Get ArcRole
-                            JSONObject jsonSMRole = (JSONObject) jsonSM.get("role");
-                            String smRoleString = jsonSMRole.get("SmallMoleculeRole").toString();
-                            sm.setRole(SmallMolecule.SmallMoleculeRole.valueOf(smRoleString));
-
-                            if (arc.getMolecules() != null) {
-                                arc.getMolecules().add(sm);
-                            } else {
-                                List<SmallMolecule> SMs = new ArrayList<>();
-                                SMs.add(sm);
-                                arc.setMolecules(SMs);
-                            }
-                        }
-                    }
-
-                    //Save feature names to arcHash for second pass
-                    HashMap<String, String> reg = new HashMap<>();
-                    reg.put("regulator", regulator);
-                    reg.put("regulatee", regulatee);
-
-                    regNamesArcsHash.put(reg, arc);
-
-                    if (arcHash.get(name) != null) {
-                        arcHash.get(name).add(reg);
-                    } else {
-                        List<HashMap<String, String>> regPairs = new ArrayList<>();
-                        regPairs.add(reg);
-                        arcHash.put(name, regPairs);
-                    }
+                if (arcHash.get(name) != null) {
+                    arcHash.get(name).add(reg);
+                } else {
+                    List<HashMap<String, String>> regPairs = new ArrayList<>();
+                    regPairs.add(reg);
+                    arcHash.put(name, regPairs);
                 }
             }
 
@@ -1107,103 +1076,103 @@ public class ClothoAdaptor {
 
         return fluorophores;
     }
-    public static Experiment getExperiment(String experimentid,Clotho clothoObject){
-        
+
+    public static Experiment getExperiment(String experimentid, Clotho clothoObject) {
+
         JSONObject exptObj = new JSONObject();
-        exptObj = (JSONObject)clothoObject.get(experimentid);
+        exptObj = (JSONObject) clothoObject.get(experimentid);
         Experiment experiment = new Experiment();
-        experiment.setClothoID((String)exptObj.get("id"));
-        experiment.setExType(Experiment.ExperimentType.valueOf((String)exptObj.get("exType")));
+        experiment.setClothoID((String) exptObj.get("id"));
+        experiment.setExType(Experiment.ExperimentType.valueOf((String) exptObj.get("exType")));
         JSONArray timeArray = new JSONArray();
-        if(timeArray.size()>0){
+        if (timeArray.size() > 0) {
             List<String> times = new ArrayList<>();
             experiment.setTimes(times);
             for (Object obj : timeArray) {
-                experiment.getTimes().add((String)obj);
-            }    
+                experiment.getTimes().add((String) obj);
+            }
         }
-        
+
         //Get Negative Control
-        experiment.setNegativeControl(getSample((String)exptObj.get("negativeControl"),clothoObject));
+        experiment.setNegativeControl(getSample((String) exptObj.get("negativeControl"), clothoObject));
         //Get Bead Control
-        experiment.setBeadControl(getSample((String)exptObj.get("beadControl"),clothoObject));
+        experiment.setBeadControl(getSample((String) exptObj.get("beadControl"), clothoObject));
         //Get Color Controls
-        for(Object sampleId: (JSONArray)exptObj.get("colorControls")){
-            experiment.getColorControls().add(getSample((String)sampleId,clothoObject));
+        for (Object sampleId : (JSONArray) exptObj.get("colorControls")) {
+            experiment.getColorControls().add(getSample((String) sampleId, clothoObject));
         }
         //Get Experiment Samples
-        for(Object sampleId: (JSONArray)exptObj.get("experimentSamples")){
-            experiment.getExperimentSamples().add(getSample((String)sampleId,clothoObject));
+        for (Object sampleId : (JSONArray) exptObj.get("experimentSamples")) {
+            experiment.getExperimentSamples().add(getSample((String) sampleId, clothoObject));
         }
         //Get Experiment Degree Controls
-        for(Object sampleId: (JSONArray)exptObj.get("experimentDegreeControls")){
-            experiment.getExpDegControls().add(getSample((String)sampleId,clothoObject));
+        for (Object sampleId : (JSONArray) exptObj.get("experimentDegreeControls")) {
+            experiment.getExpDegControls().add(getSample((String) sampleId, clothoObject));
         }
         //Get Regulation Controls
-        for(Object sampleId: (JSONArray)exptObj.get("regulationControls")){
-            experiment.getRegulationControls().add(getSample((String)sampleId,clothoObject));
+        for (Object sampleId : (JSONArray) exptObj.get("regulationControls")) {
+            experiment.getRegulationControls().add(getSample((String) sampleId, clothoObject));
         }
-        
+
         //Get Media Conditions
-        for(Object mediaObj: (JSONArray)exptObj.get("mediaConditions")){
+        for (Object mediaObj : (JSONArray) exptObj.get("mediaConditions")) {
             Map mediaMap = new HashMap();
-            String mediaName = (String)mediaMap.get("name");
-            MediaType mediaType = MediaType.valueOf((String)mediaMap.get("type"));
-            Medium media = new Medium(mediaName,mediaType);
+            String mediaName = (String) mediaMap.get("name");
+            MediaType mediaType = MediaType.valueOf((String) mediaMap.get("type"));
+            Medium media = new Medium(mediaName, mediaType);
             Map smoleculeMap = new HashMap();
             smoleculeMap = (Map) mediaMap.get("smallMolecule");
             SmallMolecule smolecule = new SmallMolecule();
             smolecule.setName((String) smoleculeMap.get("name"));
-            smolecule.setRole(SmallMolecule.SmallMoleculeRole.valueOf((String)smoleculeMap.get("role")));
-            smolecule.setConcentration(Double.valueOf((String)smoleculeMap.get("concentration")));
+            smolecule.setRole(SmallMolecule.SmallMoleculeRole.valueOf((String) smoleculeMap.get("role")));
+            smolecule.setConcentration(Double.valueOf((String) smoleculeMap.get("concentration")));
             media.setSmallmolecule(smolecule);
             experiment.getMediaConditions().add(media);
         }
-        
+
         return experiment;
     }
-    
-    public static Sample getSample(String sampleId, Clotho clothoObject){
+
+    public static Sample getSample(String sampleId, Clotho clothoObject) {
         JSONObject sampleObj = new JSONObject();
-        sampleObj = (JSONObject)clothoObject.get(sampleId);
+        sampleObj = (JSONObject) clothoObject.get(sampleId);
         //Get Sample Type
-        SampleType sType = SampleType.valueOf((String)sampleObj.get("type"));
-        
+        SampleType sType = SampleType.valueOf((String) sampleObj.get("type"));
+
         //Get Media Map from Sample and convert it to a Medium object
         Map mediaMap = new HashMap();
-        mediaMap = (Map)sampleObj.get("media");
+        mediaMap = (Map) sampleObj.get("media");
         String mediaName = (String) mediaMap.get("name");
-        Medium.MediaType mediaType = MediaType.valueOf((String)mediaMap.get("type"));
-        Medium media = new Medium(mediaName,mediaType);
+        Medium.MediaType mediaType = MediaType.valueOf((String) mediaMap.get("type"));
+        Medium media = new Medium(mediaName, mediaType);
         //Get SmallMolecule Map from Media Map and convert it to a SmallMolecule Object
         Map smoleculeMap = new HashMap();
         smoleculeMap = (Map) mediaMap.get("smallMolecule");
         SmallMolecule smolecule = new SmallMolecule();
         smolecule.setName((String) smoleculeMap.get("name"));
-        smolecule.setRole(SmallMolecule.SmallMoleculeRole.valueOf((String)smoleculeMap.get("role")));
-        smolecule.setConcentration(Double.valueOf((String)smoleculeMap.get("concentration")));
+        smolecule.setRole(SmallMolecule.SmallMoleculeRole.valueOf((String) smoleculeMap.get("role")));
+        smolecule.setConcentration(Double.valueOf((String) smoleculeMap.get("concentration")));
         media.setSmallmolecule(smolecule);
-        
+
         Map strainMap = new HashMap();
-        strainMap = (Map)sampleObj.get("strain");
-        Strain strain = new Strain((String)strainMap.get("name"));
-        
+        strainMap = (Map) sampleObj.get("strain");
+        Strain strain = new Strain((String) strainMap.get("name"));
+
         List<Polynucleotide> polynucleotides = new ArrayList<Polynucleotide>();
         JSONArray polyNucIds = new JSONArray();
-        polyNucIds = (JSONArray)sampleObj.get("polynucleotides");
-        for(Object obj:polyNucIds){
-            String polyNucId = (String)obj;
-            polynucleotides.add(getPolynucleotide(polyNucId,clothoObject));
+        polyNucIds = (JSONArray) sampleObj.get("polynucleotides");
+        for (Object obj : polyNucIds) {
+            String polyNucId = (String) obj;
+            polynucleotides.add(getPolynucleotide(polyNucId, clothoObject));
         }
-        String time = (String)sampleObj.get("time");
-        Sample sample = new Sample(sType,strain,polynucleotides,media,time);
-        sample.setClothoID((String)sampleObj.get("id"));
-        sample.setName((String)sampleObj.get("name"));
-        
+        String time = (String) sampleObj.get("time");
+        Sample sample = new Sample(sType, strain, polynucleotides, media, time);
+        sample.setClothoID((String) sampleObj.get("id"));
+        sample.setName((String) sampleObj.get("name"));
+
         return sample;
     }
-    
-    
+
     //Get all Clotho NucSeqs
     public static NucSeq convertJSONtoNucSeq(JSONObject jsonNucSeq) {
 
@@ -1311,14 +1280,14 @@ public class ClothoAdaptor {
             childModule.getParents().add(module);
             module.getChildren().add(childModule);
         }
-        if(((JSONArray)map.get("experiments")).size()>0){
+        if (((JSONArray) map.get("experiments")).size() > 0) {
             List<Experiment> experiments = new ArrayList<Experiment>();
             module.setExperiments(experiments);
-            for(Object exptIdObj: (JSONArray)map.get("experiments")){
-                module.getExperiments().add(getExperiment((String)exptIdObj,clothoObject));
-            }    
+            for (Object exptIdObj : (JSONArray) map.get("experiments")) {
+                module.getExperiments().add(getExperiment((String) exptIdObj, clothoObject));
+            }
         }
-        
+
         return module;
     }
 
@@ -1359,11 +1328,11 @@ public class ClothoAdaptor {
         }
         return parts;
     }
-    
-    public static Polynucleotide getPolynucleotide(String polynucleotideId, Clotho clothoObject){
+
+    public static Polynucleotide getPolynucleotide(String polynucleotideId, Clotho clothoObject) {
         Polynucleotide pn = new Polynucleotide();
         JSONObject jsonPolynuc = new JSONObject();
-        jsonPolynuc = (JSONObject)clothoObject.get(polynucleotideId);
+        jsonPolynuc = (JSONObject) clothoObject.get(polynucleotideId);
         pn.setName(jsonPolynuc.get("name").toString());
         pn.setAccession(jsonPolynuc.get("accession").toString());
         pn.setDescription(jsonPolynuc.get("description").toString());
@@ -1389,7 +1358,7 @@ public class ClothoAdaptor {
 
         return pn;
     }
-    
+
     //Get all Clotho Polynucleotides.. Why man? Why do you want all the Polynucleotides???
     public static HashSet<Polynucleotide> queryPolynucleotides(Map map, Clotho clothoObject) {
 
@@ -1492,14 +1461,21 @@ public class ClothoAdaptor {
         return cytometers;
     }
 
+    public static AssemblyParameters getAssemblyParameters(String id, Clotho clothoObject){
+        AssemblyParameters aP = new AssemblyParameters();
+        JSONObject apObject = new JSONObject();
+        apObject = (JSONObject)clothoObject.get(id);
+        if(apObject != null){
+            aP = new AssemblyParameters(apObject);
+        }
+        return aP;
+    }
+    
     //Get assembly parameters
-    public static AssemblyParameters queryAssemblyParameters(String id, Clotho clothoObject) {
+    public static List<AssemblyParameters> queryAssemblyParameters(Map map, Clotho clothoObject) {
 
         //Establish Clotho connection
-        AssemblyParameters aP = new AssemblyParameters();
-
-        Map map = new HashMap();
-        map.put("schema", "org.cidarlab.phoenix.core.dom.AssemblyParameters");
+        List<AssemblyParameters> aPs = new ArrayList<>();
         Object query = clothoObject.query(map);
         JSONArray arrayAP = (JSONArray) query;
 
@@ -1507,16 +1483,9 @@ public class ClothoAdaptor {
 
             JSONObject jsonAP = arrayAP.getJSONObject(i);
             AssemblyParameters candidate = new AssemblyParameters(jsonAP);
-
-            if (id != null) {
-                if (candidate.getClothoID().equalsIgnoreCase(id)) {
-                    aP = candidate;
-                    break;
-                }
-            }
+            aPs.add(candidate);
         }
-
-        return aP;
+        return aPs;
     }
 
     //Remove parts from a set with duplicate sequence

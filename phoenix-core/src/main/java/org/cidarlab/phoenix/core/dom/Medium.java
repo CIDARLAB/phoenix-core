@@ -7,8 +7,8 @@ public class Medium {
 
     //Constructor
     public Medium(String _name, MediaType _type) {
-        name = _name;
-        type = _type;
+        this.name = _name;
+        this.type = _type;
     }
     
     //Module measured

@@ -66,8 +66,7 @@ public class RavenTest {
         assmP.setMethod("moclo");
         assmP.setOligoNameRoot("phoenix");
         assmP.setName("default");
-        
-        ClothoAdaptor.createAssemblyParameters(assmP,clothoObject);
+        ClothoAdaptor.createAssemblyParameters(assmP, clothoObject);
         conn.closeConnection();
     }
 //    

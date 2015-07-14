@@ -91,7 +91,7 @@ public class ClothoTest {
         conn.closeConnection();
     }
     
-//    @Test
+    @Test
     public void testPlasmidLibraryUpload() {
         
         ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
@@ -139,7 +139,7 @@ public class ClothoTest {
         conn.closeConnection();
     }
     
-//    @Test
+    @Test
     public void testFeatureUpload() {
         ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
         Clotho clothoObject = new Clotho(conn);
@@ -170,7 +170,7 @@ public class ClothoTest {
         conn.closeConnection();
     }
     
-//    @Test
+    @Test
     public void testCytometerUpload() {
         
         ClothoConnection conn = new ClothoConnection(Args.clothoLocation);

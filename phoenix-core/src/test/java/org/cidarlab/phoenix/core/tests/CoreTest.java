@@ -20,7 +20,7 @@ import org.junit.BeforeClass;
  */
 public class CoreTest {
     
-     @BeforeClass
+    @BeforeClass
     public static void setUpBeforeClass()
             throws Exception {
     }
@@ -53,7 +53,7 @@ public class CoreTest {
         
         //Upload data from back end
         File featureLib = new File(getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_feature_lib.gb");
-        File plasmidLib = new File(getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_plasmid_lib_6315.gb");        
+        File plasmidLib = new File(getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_plasmid_lib_61115.gb");        
         File fluorophoreSpectra = new File(getFilepath() + "/src/main/resources/FluorescentProteins/fp_spectra.csv");
         File cytometer = new File(getFilepath() + "/src/main/resources/FluorescentProteins/cosbi_fortessa_bd.csv");
         PhoenixController.preliminaryDataUpload (featureLib, plasmidLib, fluorophoreSpectra, cytometer);
@@ -61,7 +61,8 @@ public class CoreTest {
         //Run a design decomposition
         File structureFile = new File(getFilepath() + "/src/main/resources/miniEugeneFiles/toggle-switch-full.eug");
         List<Module> modulesToTest = PhoenixController.initializeDesign(structureFile, null);
-        //PhoenixController.createExperimentInstructions(modulesToTest, getFilepath() + "/src/main/resources/InstructionFiles");
+        HashSet<Module> modulesToTestHash = new HashSet<>(modulesToTest);
+        PhoenixController.createExperimentInstructions(modulesToTestHash, getFilepath() + "/src/main/resources/InstructionFiles");
     }
     
     //Main testing class

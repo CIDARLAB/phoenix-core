@@ -214,7 +214,7 @@ public class Utilities {
         overhangVariableSequenceHash.put("115", "tgtt");
         overhangVariableSequenceHash.put("116", "aacc");
         overhangVariableSequenceHash.put("117", "tttg");
-        overhangVariableSequenceHash.put("118", "aatt");
+        /*overhangVariableSequenceHash.put("118", "aatt");
         overhangVariableSequenceHash.put("119", "ggcc");        
         overhangVariableSequenceHash.put("120", "ctag");
         overhangVariableSequenceHash.put("121", "tcga");
@@ -223,7 +223,7 @@ public class Utilities {
         overhangVariableSequenceHash.put("124", "agct");
         overhangVariableSequenceHash.put("125", "gatc");
         overhangVariableSequenceHash.put("126", "acgt");
-        overhangVariableSequenceHash.put("127", "catg");
+        overhangVariableSequenceHash.put("127", "catg");*/
         
         overhangVariableSequenceHash.put("0*", "ctcc");
         overhangVariableSequenceHash.put("1*", "agta");
@@ -239,7 +239,7 @@ public class Utilities {
         overhangVariableSequenceHash.put("11*", "caca");
         overhangVariableSequenceHash.put("12*", "gcat");
         overhangVariableSequenceHash.put("13*", "tgac");
-        overhangVariableSequenceHash.put("14*", "gtcc");
+        overhangVariableSequenceHash.put("14*", "gttc");
         overhangVariableSequenceHash.put("15*", "tcag");
         overhangVariableSequenceHash.put("16*", "ctgt");
         overhangVariableSequenceHash.put("17*", "gcta");
@@ -343,7 +343,7 @@ public class Utilities {
         overhangVariableSequenceHash.put("115*", "aaca");
         overhangVariableSequenceHash.put("116*", "ggtt");
         overhangVariableSequenceHash.put("117*", "caaa");
-        overhangVariableSequenceHash.put("118*", "aatt");
+        /*overhangVariableSequenceHash.put("118*", "aatt");
         overhangVariableSequenceHash.put("119*", "ggcc");
         overhangVariableSequenceHash.put("120*", "ctag");
         overhangVariableSequenceHash.put("121*", "tcga");
@@ -352,7 +352,7 @@ public class Utilities {
         overhangVariableSequenceHash.put("124*", "agct");
         overhangVariableSequenceHash.put("125*", "gatc");
         overhangVariableSequenceHash.put("126*", "acgt");
-        overhangVariableSequenceHash.put("127*", "catg");
+        overhangVariableSequenceHash.put("127*", "catg");*/
         return overhangVariableSequenceHash;
     }
     

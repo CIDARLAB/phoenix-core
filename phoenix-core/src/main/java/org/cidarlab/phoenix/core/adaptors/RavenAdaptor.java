@@ -158,12 +158,12 @@ public class RavenAdaptor {
             ArrayList<String> typeL = new ArrayList();
             typeL.add(type);
             
-            ravenPart = org.cidarlab.raven.datastructures.Part.generateBasic(basicPartName, sequence, null, new ArrayList(), bpDirectionL, moCloLO, moCloRO, typeL);
+            ravenPart = org.cidarlab.raven.datastructures.Part.generateBasic(basicPartName, sequence, null, typeL, bpDirectionL, moCloLO, moCloRO);
             ravenPart.setTransientStatus(false);
             libParts.add(ravenPart);
             
             composition.add(ravenPart);
-            newPlasmid = org.cidarlab.raven.datastructures.Part.generateBasic(basicPartName, sequence, composition, new ArrayList(), bpDirectionL, moCloLO, moCloRO, typeP);
+            newPlasmid = org.cidarlab.raven.datastructures.Part.generateBasic(basicPartName, sequence, composition, typeP, bpDirectionL, moCloLO, moCloRO);
             newPlasmid.setTransientStatus(false);
             
         //Make Raven composite parts based on annotations
@@ -202,12 +202,12 @@ public class RavenAdaptor {
             }
             
             //Composite version
-            ravenPart = org.cidarlab.raven.datastructures.Part.generateComposite(name, composition, new ArrayList(), new ArrayList(), directions, moCloLO, moCloRO, typeC);
+            ravenPart = org.cidarlab.raven.datastructures.Part.generateComposite(name, composition, new ArrayList(), new ArrayList(), null, directions, moCloLO, moCloRO, typeC);
             ravenPart.setTransientStatus(false);
             libParts.add(ravenPart);
             
             //Plasmid version
-            newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite(name, composition, new ArrayList(),  new ArrayList(), directions, moCloLO, moCloRO, typeP);
+            newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite(name, composition, new ArrayList(),  new ArrayList(), null, directions, moCloLO, moCloRO, typeP);
             newPlasmid.setTransientStatus(false);
         }       
         
@@ -299,7 +299,7 @@ public class RavenAdaptor {
                     ArrayList<String> typeM = new ArrayList();
                     typeM.add(type);                    
                     
-                    org.cidarlab.raven.datastructures.Part newBasicPart = org.cidarlab.raven.datastructures.Part.generateBasic(name, "", null, new ArrayList(), aDir, "", "", typeM);
+                    org.cidarlab.raven.datastructures.Part newBasicPart = org.cidarlab.raven.datastructures.Part.generateBasic(name, "", null, typeM, aDir, "", "");
                     newBasicPart.setTransientStatus(false);
                     libParts.add(newBasicPart);
                     
@@ -319,7 +319,7 @@ public class RavenAdaptor {
 //            pnSet.add(pnPlaceholder);
 //            m.setPolynucleotides(pnSet);
             
-            newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite(m.getName(), composition, new ArrayList(), new ArrayList(), directions, "", "", typeP);
+            newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite(m.getName(), composition, new ArrayList(), new ArrayList(), null, directions, "", "", typeP);
             newPlasmid.setTransientStatus(false);   
             
             ravenParts.add(newPlasmid);
@@ -351,11 +351,11 @@ public class RavenAdaptor {
                 typeL.add(type);
                 
                 //Forward version
-                org.cidarlab.raven.datastructures.Part newBasicPart = org.cidarlab.raven.datastructures.Part.generateBasic(name, sequence, null, new ArrayList(), dirF, "", "", typeL);
+                org.cidarlab.raven.datastructures.Part newBasicPart = org.cidarlab.raven.datastructures.Part.generateBasic(name, sequence, null, typeL, dirF, "", "");
                 newBasicPart.setTransientStatus(false);
 
                 //Reverse version
-                org.cidarlab.raven.datastructures.Part newReverseBasicPart = org.cidarlab.raven.datastructures.Part.generateBasic(name, PrimerDesign.reverseComplement(sequence), null, new ArrayList(), dirR, "", "", typeL);
+                org.cidarlab.raven.datastructures.Part newReverseBasicPart = org.cidarlab.raven.datastructures.Part.generateBasic(name, PrimerDesign.reverseComplement(sequence), null, typeL, dirR, "", "");
                 newReverseBasicPart.setTransientStatus(false);
                 
                 ravenParts.add(newBasicPart);

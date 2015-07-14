@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import net.sf.json.JSONArray;
 import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
 import org.cidarlab.phoenix.core.dom.Arc;
 import org.cidarlab.phoenix.core.dom.Component;
@@ -25,7 +26,6 @@ import org.cidarlab.phoenix.core.dom.Feature;
 import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
 import org.cidarlab.phoenix.core.dom.Medium;
 import org.cidarlab.phoenix.core.dom.NucSeq;
-import org.cidarlab.phoenix.core.dom.Person;
 import org.cidarlab.phoenix.core.dom.Polynucleotide;
 import org.cidarlab.phoenix.core.dom.Sample;
 import org.cidarlab.phoenix.core.dom.Sample.SampleType;
@@ -43,6 +43,7 @@ public class TestingStructures {
     public static void addTestingPrimitives (List<Module> modules) {
         
         //For each module, traverse graph
+        initializeTestingPrimitiveModules();
         for (Module m : modules) {
             addTestingPrimitivesHelper(m.getChildren());            
         } 
@@ -701,32 +702,62 @@ public class TestingStructures {
             }
         }
         
-        //Make the final sample list
-//        for (Sample s : allSamples) {
-//            
-//            //Check all existing samples in the 
-//            boolean inList = false;
-//            for (Sample fS : sampleList) {
-//                if (s.equals(fS)) {
-//                    inList = true;
-//                }
-//            }
-//            
-//            if (!inList) {
-//                sampleList.add(s);
-//            }
-//        }
+        conn.closeConnection();
+    }
+    
+    //Initialize testing primitive modules
+    private static void initializeTestingPrimitiveModules() {
+
+        //Initiate hashes for existing polynucleotides
+        
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
+        Clotho clothoObject = new Clotho(conn);        
+                
+        Map J23104 = new HashMap();
+        J23104.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
+        J23104.put("name", "J23104.ref");
+        testPromoter = new PrimitiveModule(FeatureRole.PROMOTER_CONSTITUTIVE, new Primitive(new ComponentType("p"), "pTEST"), ClothoAdaptor.convertJSONArrayToFeatures((JSONArray) clothoObject.query(J23104)).iterator().next());
+        
+        Map BCD2 = new HashMap();
+        BCD2.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
+        BCD2.put("name", "BCD2.ref");
+        testRBS = new PrimitiveModule(FeatureRole.RBS, new Primitive(new ComponentType("r"), "rTEST"), ClothoAdaptor.convertJSONArrayToFeatures((JSONArray) clothoObject.query(BCD2)).iterator().next());
+        
+        Map GFPm = new HashMap();
+        GFPm.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
+        GFPm.put("name", "EGFPm.ref");
+        testCDS1 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("c"), "cTEST1"), ClothoAdaptor.convertJSONArrayToFeatures((JSONArray) clothoObject.query(GFPm)).iterator().next());
+        
+        Map EBFP2 = new HashMap();
+        EBFP2.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
+        EBFP2.put("name", "EBFP2.ref");
+        testCDS2 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("c"), "cTEST2"), ClothoAdaptor.convertJSONArrayToFeatures((JSONArray) clothoObject.query(EBFP2)).iterator().next());
+        
+        Map B0015 = new HashMap();
+        B0015.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
+        B0015.put("name", "B0015.ref");
+        testTerminator = new PrimitiveModule(FeatureRole.TERMINATOR, new Primitive(new ComponentType("t"), "tTEST"), ClothoAdaptor.convertJSONArrayToFeatures((JSONArray) clothoObject.query(B0015)).iterator().next());
+        
+        Map ColE1 = new HashMap();
+        ColE1.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
+        ColE1.put("name", "ColE1.ref");
+        testVector1 = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST1"), ClothoAdaptor.convertJSONArrayToFeatures((JSONArray) clothoObject.query(ColE1)).iterator().next());        
+        testVector2 = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST2"), ClothoAdaptor.convertJSONArrayToFeatures((JSONArray) clothoObject.query(ColE1)).iterator().next());        
+        finalVector = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vFINAL"), ClothoAdaptor.convertJSONArrayToFeatures((JSONArray) clothoObject.query(ColE1)).iterator().next());
         
         conn.closeConnection();
     }
+    
+    //Method for grabbing the only element of a HashSet
+    
      
     //FIELDS
-    private static final PrimitiveModule testPromoter = new PrimitiveModule(FeatureRole.PROMOTER_CONSTITUTIVE, new Primitive(new ComponentType("p"), "pTEST"), new Feature("pTEST", new NucSeq("ttgacggctagctcagtcctaggtacagtgctagc"), new Person(), FeatureRole.PROMOTER_CONSTITUTIVE));
-    private static final PrimitiveModule testRBS = new PrimitiveModule(FeatureRole.RBS, new Primitive(new ComponentType("r"), "rTEST"), new Feature("rTEST", new NucSeq("gggcccaagttcacttaaaaaggagatcaacaatgaaagcaattttcgtactgaaacatcttaatcatgctaaggaggttttct"), new Person(), FeatureRole.RBS));
-    private static final PrimitiveModule testCDS1 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("c"), "cTEST1"), new Feature("cTEST1", new NucSeq("atgcgtaaaggagaagaacttttcactggagttgtcccaattcttgttgaattagatggtgatgttaatgggcacaaattttctgtcagtggagagggtgaaggtgatgcaacatacggaaaacttacccttaaatttatttgcactactggaaaactacctgttccatggccaacacttgtcactactttcggttatggtgttcaatgctttgcgagatacccagatcatatgaaacagcatgactttttcaagagtgccatgcccgaaggttatgtacaggaaagaactatatttttcaaagatgacgggaactacaagacacgtgctgaagtcaagtttgaaggtgatacccttgttaatagaatcgagttaaaaggtattgattttaaagaagatggaaacattcttggacacaaattggaatacaactataactcacacaatgtatacatcatggcagacaaacaaaagaatggaatcaaagttaacttcaaaattagacacaacattgaagatggaagcgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtccacacaatctgccctttcgaaagatcccaacgaaaagagagatcacatggtccttcttgagtttgtaacagctgctgggattacacatggcatggatgaactatacaaataataa"), new Person(), FeatureRole.CDS_FLUORESCENT));
-    private static final PrimitiveModule testCDS2 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("c"), "cTEST2"), new Feature("cTEST2", new NucSeq("atgcggggttctcatcatcatcatcatcatggtatggctagcatgactggtggacagcaaatgggtcgggatctgtacgagaacctgtacttccagggctcgagcatggtgagcaagggcgaggagctgttcaccggggtggtgcccatcctggtcgagctggacggcgacgtaaacggccacaagttcagcgtgaggggcgagggcgagggcgatgccaccaacggcaagctgaccctgaagttcatctgcaccaccggcaagctgcccgtgccctggcccaccctcgtgaccaccctgagccacggcgtgcagtgcttcgcccgctaccccgaccacatgaagcagcacgacttcttcaagtccgccatgcccgaaggctacgtccaggagcgcaccatcttcttcaaggacgacggcacctacaagacccgcgccgaggtgaagttcgagggcgacaccctggtgaaccgcatcgagctgaagggcgtcgacttcaaggaggacggcaacatcctggggcacaagctggagtacaacttcaacagccacaacatctatatcatggccgtcaagcagaagaacggcatcaaggtgaacttcaagatccgccacaacgtggaggacggcagcgtgcagctcgccgaccactaccagcagaacacccccatcggcgacggccccgtgctgctgcccgacagccactacctgagcacccagtccgtgctgagcaaagaccccaacgagaagcgcgatcacatggtcctgctggagttccgcaccgccgcctaa"), new Person(), FeatureRole.CDS_FLUORESCENT));
-    private static final PrimitiveModule testTerminator = new PrimitiveModule(FeatureRole.TERMINATOR, new Primitive(new ComponentType("t"), "tTEST"), new Feature("tTEST", new NucSeq("ccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttata"), new Person(), FeatureRole.TERMINATOR));
-    private static final PrimitiveModule testVector1 = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST1"), new Feature("vTEST1", new NucSeq(""), new Person(), FeatureRole.VECTOR));
-    private static final PrimitiveModule testVector2 = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST2"), new Feature("vTEST2", new NucSeq(""), new Person(), FeatureRole.VECTOR));
-    private static final PrimitiveModule finalVector = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vFINAL"), new Feature("vFINAL", new NucSeq(""), new Person(), FeatureRole.VECTOR));
+    private static PrimitiveModule testPromoter;
+    private static PrimitiveModule testRBS;
+    private static PrimitiveModule testCDS1;
+    private static PrimitiveModule testCDS2;
+    private static PrimitiveModule testTerminator;
+    private static PrimitiveModule testVector1;
+    private static PrimitiveModule testVector2;
+    private static PrimitiveModule finalVector;
 }

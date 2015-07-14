@@ -202,12 +202,12 @@ public class RavenAdaptor {
             }
             
             //Composite version
-            ravenPart = org.cidarlab.raven.datastructures.Part.generateComposite(name, composition, new ArrayList(), new ArrayList(), null, directions, moCloLO, moCloRO, typeC);
+            ravenPart = org.cidarlab.raven.datastructures.Part.generateComposite(name, composition, new ArrayList(), new ArrayList(), new ArrayList(), directions, moCloLO, moCloRO, typeC);
             ravenPart.setTransientStatus(false);
             libParts.add(ravenPart);
             
             //Plasmid version
-            newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite(name, composition, new ArrayList(),  new ArrayList(), null, directions, moCloLO, moCloRO, typeP);
+            newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite(name, composition, new ArrayList(),  new ArrayList(), new ArrayList(), directions, moCloLO, moCloRO, typeP);
             newPlasmid.setTransientStatus(false);
         }       
         

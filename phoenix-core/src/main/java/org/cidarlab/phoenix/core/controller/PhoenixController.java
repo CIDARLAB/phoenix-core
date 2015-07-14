@@ -81,13 +81,20 @@ public class PhoenixController {
         HashSet<Module> modulesToTest = new HashSet<Module>(FeatureAssignment.partialAssignment(modules));        
         TestingStructures.createExperiments(modulesToTest);
         
-        JSONObject flareValue = new JSONObject();
-        flareValue = ClientSideAdaptor.convertModuleToJSON(modules.get(0));
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
+        Clotho clothoObject = new Clotho(conn);
+        String moduleId = ClothoAdaptor.createModule(modules.get(0), clothoObject);
         
-//        String JSONFilePath = getJSONFilepath();
-//        
-//        ClientSideAdaptor.createFlareFile(JSONFilePath,flareValue);
-     
+        
+        JSONObject flareValue = new JSONObject();
+        //flareValue = ClientSideAdaptor.convertModuleToJSON(modules.get(0));
+        flareValue = ClientSideAdaptor.convertModuleToJSON(ClothoAdaptor.getModule(moduleId, clothoObject));
+        
+        //String JSONFilePath = getJSONFilepath();
+        String JSONFilePath = Args.flareJSONfilepath;
+        
+        ClientSideAdaptor.createFlareFile(JSONFilePath,flareValue);
+        conn.closeConnection();
         return modules;
     }
 

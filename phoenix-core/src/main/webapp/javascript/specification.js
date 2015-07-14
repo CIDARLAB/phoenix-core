@@ -14,6 +14,7 @@ form.onsubmit = function(event) {
     event.preventDefault();
 
     // Update button text, show loading wheel
+    upload.disabled = true;
     upload.innerHTML = 'Uploading...';
     $('#loading').show();
 
@@ -39,6 +40,7 @@ form.onsubmit = function(event) {
         alert("Select files for missing fields (shown in red)!");
         upload.innerHTML = 'Upload';
         $('#loading').hide();
+        upload.disabled = false;
         return;
     }
 
@@ -58,13 +60,17 @@ form.onsubmit = function(event) {
         alert("Select files with the correct extensions (problematic fields shown in red)!");
         upload.innerHTML = 'Upload';
         $('#loading').hide();
+        upload.disabled = false;
         return;
     }
 
     // Create FormData object (if it is necessary to know the uploaded file's names, uncomment the names below)
     var formData = new FormData();
-    formData.append('structuralSpec', structuralFile/*, plasmidFile.name*/);
-    formData.append('functionalSpec', functionalFile/*, featureFile.name*/);
+    formData.append('structuralSpec', structuralFile/*, structuralFile.name*/);
+    formData.append('functionalSpec', functionalFile/*, functionalFile.name*/);
+
+    formData.append('structuralSpecName', structuralFile.name);
+    formData.append('functionalSpecName', functionalFile.name);
 
     // Let servlet know what to expect
     formData.append('mode','specification');

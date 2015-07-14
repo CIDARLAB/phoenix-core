@@ -27,6 +27,7 @@ import javax.servlet.http.Part;
 import static org.cidarlab.phoenix.core.controller.PhoenixController.initializeDesign;
 import static org.cidarlab.phoenix.core.controller.PhoenixController.preliminaryDataUpload;
 import org.cidarlab.phoenix.core.dom.Module;
+import static org.cidarlab.phoenix.core.servlets.ServletIO.writeUpdatedJSON;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -103,13 +104,18 @@ public class ClientServlet extends HttpServlet {
             Part featurePart = request.getPart("featureLib");
             Part cytometerPart = request.getPart("fcConfig");
             Part fluorophoreSpectraPart = request.getPart("fSpectra");
+            // Get filenames
+            String plasmidPartName = getValue(request.getPart("plasmidLibName"));
+            String featurePartName = getValue(request.getPart("featureLibName"));
+            String cytometerPartName = getValue(request.getPart("fcConfigName"));
+            String fluorophoreSpectraPartName = getValue(request.getPart("fSpectraName"));
             // If files are valid, proceed
             if(plasmidPart != null && featurePart != null && cytometerPart != null && fluorophoreSpectraPart != null){
                 // Convert servlet.Part objects to java.io.File objects
-                File plasmidLib = partConverter(plasmidPart, "plasmid_lib.gb");
-                File featureLib = partConverter(featurePart, "feature_lib.gb");
-                File cytometer = partConverter(cytometerPart, "cytometer_config.csv");
-                File fluorophoreSpectra = partConverter(fluorophoreSpectraPart, "fp_spectra.csv");
+                File plasmidLib = partConverter(plasmidPart, plasmidPartName);
+                File featureLib = partConverter(featurePart, featurePartName);
+                File cytometer = partConverter(cytometerPart, cytometerPartName);
+                File fluorophoreSpectra = partConverter(fluorophoreSpectraPart, fluorophoreSpectraPartName);
                 // Pass files to correct method
                 preliminaryDataUpload (featureLib, plasmidLib, fluorophoreSpectra, cytometer);
                 // If we made it here then everything was successful
@@ -129,11 +135,14 @@ public class ClientServlet extends HttpServlet {
             // Get files in
             Part structuralPart = request.getPart("structuralSpec");
             Part functionalPart = request.getPart("functionalSpec");
+            // Get filenames
+            String structuralPartName = getValue(request.getPart("structuralSpecName"));
+            String functionalPartName = getValue(request.getPart("functionalSpecName"));
             // If files are valid, proceed
             if(structuralPart != null && functionalPart != null){
                 // Convert servlet.Part objects to java.io.File objects
-                File structuralSpec = partConverter(structuralPart, "structural_file.eug");
-                File functionalSpec = partConverter(functionalPart, "temp.txt");
+                File structuralSpec = partConverter(structuralPart, structuralPartName);
+                File functionalSpec = partConverter(functionalPart, functionalPartName);
                 // Pass files to correct method
                 initializeDesign(structuralSpec, functionalSpec);
                 // If we made it here then everything was successful
@@ -148,6 +157,13 @@ public class ClientServlet extends HttpServlet {
                 PrintWriter out = response.getWriter();
                 out.write("Error");
             }
+        } else if(mode.equals("update")){
+            String updatedJSON = getValue(request.getPart("treeUpdate"));
+            writeUpdatedJSON(updatedJSON);
+            System.out.println("\n\nINFO: SUCCESS\n\n");
+            holdingData = true;
+            PrintWriter out = response.getWriter();
+            out.write("Done!");
         }
     }
     

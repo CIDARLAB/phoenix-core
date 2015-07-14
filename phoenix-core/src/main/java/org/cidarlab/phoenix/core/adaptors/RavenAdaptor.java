@@ -43,7 +43,7 @@ public class RavenAdaptor {
         
         
         //Get Phoenix data from Clotho
-        JSONObject parameters = ClothoAdaptor.queryAssemblyParameters("default",clothoObject).toJSON();
+        JSONObject parameters = ClothoAdaptor.getAssemblyParameters("default",clothoObject).toJSON();
         org.json.JSONObject rParameters = convertJSONs(parameters);
         
         Map polyNucQuery = new HashMap();

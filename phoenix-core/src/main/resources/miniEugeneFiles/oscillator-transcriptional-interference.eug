@@ -81,4 +81,7 @@ forward rc1 or reverse rc1
 ip1_1 SAME_ORIENTATION t1
 ip1_2 SAME_ORIENTATION t2
 
-//all_forward
+//Alternating TUs
+not rp1_1 SAME_ORIENTATION rp1_2
+ip1_1 NEXTTO t2
+ip1_2 NEXTTO t1

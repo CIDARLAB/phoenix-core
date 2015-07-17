@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import net.sf.json.JSONObject;
@@ -37,11 +38,29 @@ import org.clothoapi.clotho3javaapi.ClothoConnection;
 public class RavenAdaptor {
     
     //Create assembly plans for given parts and return instructions file
-    public static File generateAssemblyPlan(HashSet<Module> targetModules, String filePath) throws Exception {
+    public static File generateAssemblyPlan(HashSet<Module> modulesToTest, String filePath) throws Exception {
+        
+        //Add testing modules to target modules
+        HashSet<Module> targetModules = new HashSet<>();
+        HashSet<List<Feature>> moduleFeatureHash = new HashSet<>();
+        
+        for (Module targetModule : modulesToTest) {
+            if (!moduleFeatureHash.contains(targetModule.getModuleFeatures())) {
+                targetModules.add(targetModule);
+                moduleFeatureHash.add(targetModule.getModuleFeatures());
+            }
+
+            HashSet<Module> controlModules = targetModule.getControlModules();
+            for (Module controlModule : controlModules) {
+                if (!moduleFeatureHash.contains(controlModule.getModuleFeatures())) {
+                    targetModules.add(controlModule);
+                    moduleFeatureHash.add(controlModule.getModuleFeatures());
+                }
+            }
+        }
         
         ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
-        Clotho clothoObject = new Clotho(conn);
-        
+        Clotho clothoObject = new Clotho(conn);        
         
         //Get Phoenix data from Clotho
         JSONObject parameters = ClothoAdaptor.getAssemblyParameters("default",clothoObject).toJSON();
@@ -73,9 +92,9 @@ public class RavenAdaptor {
         
         //Convert Phoenix Modules to Raven Plasmids
         HashSet<org.cidarlab.raven.datastructures.Part> targetParts = phoenixModulesToRavenParts(targetModules, partsLibR);
-        
+               
         //Run Raven to get assembly instructions
-        Raven raven = new Raven();                
+        Raven raven = new Raven();         
         File assemblyInstructions = raven.assemblyInstructions(targetParts, partsLibR, vectorsLibR, libPairs, new HashMap(), rParameters, filePath);
         
         conn.closeConnection();

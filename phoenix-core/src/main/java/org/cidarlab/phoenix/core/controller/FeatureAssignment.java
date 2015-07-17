@@ -218,13 +218,17 @@ public class FeatureAssignment {
                             //Assign a regulator from the feature library
                             HashSet<Feature> featuresOfRole = getAllFeaturesOfRole(features, pm.getPrimitiveRole());
                             for (Feature fR : featuresOfRole) {
-                                Module clone = m.clone(m.getName() + "_" + count);
-                                count++;
-                                List<Feature> mfClone = new ArrayList<>();
-                                mfClone.add(fR);
-                                clone.getSubmodules().get(i).setModuleFeatures(mfClone);
-                                clone.updateModuleFeatures();
-                                assignedModules.add(clone);
+                                
+                                //Get rid of features that were saved when the module was saved that are only placeholders
+                                if (!fR.getSequence().getSequence().isEmpty()) {
+                                    Module clone = m.clone(m.getName() + "_" + count);
+                                    count++;
+                                    List<Feature> mfClone = new ArrayList<>();
+                                    mfClone.add(fR);
+                                    clone.getSubmodules().get(i).setModuleFeatures(mfClone);
+                                    clone.updateModuleFeatures();
+                                    assignedModules.add(clone);
+                                }
                             }
                         }
                     }
@@ -253,16 +257,20 @@ public class FeatureAssignment {
                             if (clonesThisModule.isEmpty()) {
 
                                 //Assign a promoter from the feature library
-                                HashSet<Feature> featuresOfRole = new HashSet<>();
-                                featuresOfRole.addAll(getAllFeaturesOfRole(features, pm.getPrimitiveRole()));
+                                HashSet<Feature> featuresOfRole = getAllFeaturesOfRole(features, pm.getPrimitiveRole());
+//                                featuresOfRole.addAll(getAllFeaturesOfRole(features, pm.getPrimitiveRole()));
                                 for (Feature fR : featuresOfRole) {
-                                    Module clone = m.clone(m.getName() + "_" + count);
-                                    count++;
-                                    List<Feature> mfClone = new ArrayList<>();
-                                    mfClone.add(fR);
-                                    clone.getSubmodules().get(i).setModuleFeatures(mfClone);
-                                    clone.updateModuleFeatures();
-                                    clonesThisModule.add(clone);
+                                    
+                                    //Get rid of features that were saved when the module was saved that are only placeholders
+                                    if (!fR.getSequence().getSequence().isEmpty()) {
+                                        Module clone = m.clone(m.getName() + "_" + count);
+                                        count++;
+                                        List<Feature> mfClone = new ArrayList<>();
+                                        mfClone.add(fR);
+                                        clone.getSubmodules().get(i).setModuleFeatures(mfClone);
+                                        clone.updateModuleFeatures();
+                                        clonesThisModule.add(clone);
+                                    }
                                 }
 
                             //Assign additional promoters
@@ -424,7 +432,7 @@ public class FeatureAssignment {
 
         HashSet<Feature> featuresOfRole = new HashSet<>();
         for (Feature f : allFeatures) {
-            if (f.getRole().equals(role)) {
+            if (f.getRole().equals(role) && !f.getSequence().getSequence().isEmpty()) {
                 featuresOfRole.add(f);
             }
         }

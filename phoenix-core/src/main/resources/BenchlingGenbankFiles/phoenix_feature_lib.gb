@@ -610,19 +610,18 @@ ORIGIN
         1 GACGAACAAT AAGGCCGCAA ATCGCGGCCT TTTTTATTGA TAACAAAAag gttctgttaa
        61 gtaactgaac ccaatgtcgt tagtga
 //
-LOCUS       L3S2P21*.ref              61 bp ds-DNA     linear       26-NOV-2014
+LOCUS       L3S2P21*.ref              60 bp ds-DNA     linear       26-NOV-2014
 DEFINITION  .
 KEYWORDS    "source:Addgene 46004" "part-subtype:Synthetic"                    
             "part-type:Terminator"
 COMMENT     MoClo basic part: Terminator                                       
 FEATURES             Location/Qualifiers
-     misc_feature    1..61
+     misc_feature    1..60
                      /label="L3S2P21*"
                      /ApEinfo_revcolor=#f8d3a9
                      /ApEinfo_fwdcolor=#f8d3a9
 ORIGIN
-        1 CTCGGTACCA AATTCCAGAA AAGAGGCCTC CCGAAAGGGG GGCCTTTTTT CGTTTTGGTC
-       61 C
+        1 TCGGTACCAA ATTCCAGAAA AGAGGCCTCC CGAAAGGGGG GCCTTTTTTC GTTTTGGTCC
 //
 LOCUS       LAA.ref                   36 bp ds-DNA     linear       07-JAN-2015
 DEFINITION  .

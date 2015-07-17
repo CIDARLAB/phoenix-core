@@ -83,6 +83,7 @@ public class TestingStructures {
                 testSubmodules.add(testPromoter);
                 testSubmodules.add(testRBS);
                 testSubmodules.add(m.getSubmodules().get(0));
+                testSubmodules.add(testLinker);
                 testSubmodules.add(new PrimitiveModule(FeatureRole.CDS_FLUORESCENT_FUSION, new Primitive(new ComponentType("fc"), "FP"), new Feature("EXPRESSEE", new NucSeq(), null, Feature.FeatureRole.CDS_FLUORESCENT_FUSION)));
                 testSubmodules.add(testTerminator);
                 testSubmodules.add(testVector1);
@@ -722,15 +723,20 @@ public class TestingStructures {
         BCD2.put("name", "BCD2.ref");
         testRBS = new PrimitiveModule(FeatureRole.RBS, new Primitive(new ComponentType("r"), "rTEST"), ClothoAdaptor.convertJSONArrayToFeatures((JSONArray) clothoObject.query(BCD2)).iterator().next());
         
+        Map HelicalLinker = new HashMap();
+        HelicalLinker.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
+        HelicalLinker.put("name", "HelicalLinker.ref");
+        testLinker = new PrimitiveModule(FeatureRole.CDS_LINKER, new Primitive(new ComponentType("c"), "linkerTEST"), ClothoAdaptor.convertJSONArrayToFeatures((JSONArray) clothoObject.query(HelicalLinker)).iterator().next());
+        
         Map GFPm = new HashMap();
         GFPm.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
         GFPm.put("name", "EGFPm.ref");
-        testCDS1 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("c"), "cTEST1"), ClothoAdaptor.convertJSONArrayToFeatures((JSONArray) clothoObject.query(GFPm)).iterator().next());
+        testCDS1 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("c"), "cTEST1"), ClothoAdaptor.convertJSONArrayToFluorophores((JSONArray) clothoObject.query(GFPm)).iterator().next());
         
         Map EBFP2 = new HashMap();
         EBFP2.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
         EBFP2.put("name", "EBFP2.ref");
-        testCDS2 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("c"), "cTEST2"), ClothoAdaptor.convertJSONArrayToFeatures((JSONArray) clothoObject.query(EBFP2)).iterator().next());
+        testCDS2 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("c"), "cTEST2"), ClothoAdaptor.convertJSONArrayToFluorophores((JSONArray) clothoObject.query(EBFP2)).iterator().next());
         
         Map B0015 = new HashMap();
         B0015.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
@@ -753,6 +759,7 @@ public class TestingStructures {
     //FIELDS
     private static PrimitiveModule testPromoter;
     private static PrimitiveModule testRBS;
+    private static PrimitiveModule testLinker;
     private static PrimitiveModule testCDS1;
     private static PrimitiveModule testCDS2;
     private static PrimitiveModule testTerminator;

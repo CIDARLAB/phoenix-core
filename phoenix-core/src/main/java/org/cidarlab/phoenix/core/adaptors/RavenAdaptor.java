@@ -22,6 +22,7 @@ import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Part;
 import org.cidarlab.phoenix.core.dom.Polynucleotide;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
+import org.cidarlab.raven.accessibility.ClothoWriter;
 import org.cidarlab.raven.algorithms.core.PrimerDesign;
 import org.cidarlab.raven.datastructures.Vector;
 import org.cidarlab.raven.javaapi.Raven;
@@ -111,9 +112,11 @@ public class RavenAdaptor {
         Set<Annotation> annotations = pPart.getSequence().getAnnotations();
         
         String partSeq = pPart.getSequence().getSeq();
+        
+        //Get MoClo overhangs, including a search for linkers        
+        String moCloLO;
+        String moCloRO;
         HashMap<String, String> moCloOHs = reverseKeysVals(PrimerDesign.getMoCloOHseqs());
-        String moCloLO = moCloOHs.get(partSeq.substring(0, 4).toLowerCase());
-        String moCloRO = moCloOHs.get(partSeq.substring(partSeq.length() - 4).toLowerCase());
         
         String name = pPart.getName();
         
@@ -134,6 +137,8 @@ public class RavenAdaptor {
             String bpDirection = "+";            
             String sequence = "";
             String type = "";
+            int annotationStartIndex = 0;
+            int annotationEndIndex = 0;
             
             for (Annotation a : annotations) {
 
@@ -144,6 +149,9 @@ public class RavenAdaptor {
                     sequence = Utilities.reverseComplement(sequence);
                 }
                 
+                annotationStartIndex = a.getStart();
+                annotationEndIndex = a.getEnd();
+                
                 //Correct type
                 type = a.getFeature().getRole().toString().toLowerCase();
                 if (type.contains("cds")) {
@@ -151,8 +159,12 @@ public class RavenAdaptor {
                 } else if (type.contains("promoter")) {
                     type = "promoter";
                 }
-            }            
-            
+            }                
+                        
+            //Determine MoClo overhangs, searching for 
+            moCloLO = getMoCloOHs(partSeq.substring(0, annotationStartIndex).toLowerCase(), true, libParts);           
+            moCloRO = getMoCloOHs(partSeq.substring(annotationEndIndex).toLowerCase(), false, libParts);    
+
             ArrayList<String> bpDirectionL = new ArrayList();
             bpDirectionL.add(bpDirection);
             ArrayList<String> typeL = new ArrayList();
@@ -169,6 +181,15 @@ public class RavenAdaptor {
         //Make Raven composite parts based on annotations
         } else {
             
+            //Scars and linkers
+            ArrayList<String> scars = new ArrayList<>();
+            ArrayList<String> linkers = new ArrayList<>();
+            ArrayList<String> scarSeqs = new ArrayList<>();
+            
+            int lastAnnotationEndIndex = 0;
+            int annotationStartIndex = 0;
+            int annotationEndIndex = 0;
+            
             //Organize annotations by start order
             HashMap<Integer, Annotation> annotationOrderMap = new HashMap();            
             for (Annotation a : annotations) {
@@ -177,18 +198,58 @@ public class RavenAdaptor {
             ArrayList<Integer> startOrder = new ArrayList(annotationOrderMap.keySet());
             Collections.sort(startOrder);
             
+            boolean previousIsLinker = false;
+            
             //Get composition and direction
-            for (Integer start : startOrder) {
-                Annotation a = annotationOrderMap.get(start);
-                ArrayList<String> aDir = new ArrayList();
+            for (int i = 0; i < startOrder.size(); i++) {
+                                
+                Annotation a = annotationOrderMap.get(startOrder.get(i));
                 
                 //Directions
+                ArrayList<String> aDir = new ArrayList();
                 if (a.isForwardStrand()) {
                     directions.add("+");
                     aDir.add("+");
                 } else {
                     directions.add("-");
                     aDir.add("-");
+                }
+                
+                //Scars and linkers
+                if (i > 0) {
+              
+                    String scar = "_";
+                    String scarSeq = "";
+                    String linker = "_";
+                    
+                    //Linkers
+                    if (a.getFeature().getRole() == FeatureRole.CDS_LINKER) {
+                       
+                        //Consecutive linkers edge case
+                        if (!linkers.get(linkers.size()-1).equals("_")) {
+                            linker = linkers.get(linkers.size()-1) + "|" + a.getFeature().getName(); 
+                            linkers.remove(linkers.size()-1);
+                        } else {
+                            linker = a.getFeature().getName();
+                        }
+                        
+                        linkers.add(linker);
+                        scarSeq = partSeq.substring(a.getStart(), a.getEnd() + 1);
+                        previousIsLinker = true;
+
+                    } else {
+                        if (!previousIsLinker) {
+                            linkers.add(linker);
+                        } else {
+                            previousIsLinker = false;
+                        }
+                        
+                        scarSeq = partSeq.substring(lastAnnotationEndIndex, a.getStart());
+                        scar = reverseScarLookup(scarSeq);
+                    }
+
+                    scarSeqs.add(scarSeq);
+                    scars.add(scar);
                 }
                 
                 //Find Raven basic part for this composition
@@ -199,15 +260,32 @@ public class RavenAdaptor {
                         }
                     }
                 }
+                
+                if (i == 0) {
+                    annotationStartIndex = a.getStart();
+                    lastAnnotationEndIndex = a.getEnd();
+                } else if (i == startOrder.size() - 1) {
+                    annotationEndIndex = a.getEnd();
+                } else {
+                    lastAnnotationEndIndex = a.getEnd();
+                }                
             }
             
+            //Determine MoClo overhangs, searching for 
+            if (partSeq.substring(0, annotationStartIndex).length() < 4 || partSeq.substring(annotationEndIndex).length() < 4) {
+                String flag = "";
+            }            
+            
+            moCloLO = getMoCloOHs(partSeq.substring(0, annotationStartIndex).toLowerCase(), true, libParts);           
+            moCloRO = getMoCloOHs(partSeq.substring(annotationEndIndex).toLowerCase(), false, libParts);
+            
             //Composite version
-            ravenPart = org.cidarlab.raven.datastructures.Part.generateComposite(name, composition, new ArrayList(), new ArrayList(), null, directions, moCloLO, moCloRO, typeC);
+            ravenPart = org.cidarlab.raven.datastructures.Part.generateComposite(name, composition, scars, scarSeqs, linkers, directions, moCloLO, moCloRO, typeC);
             ravenPart.setTransientStatus(false);
             libParts.add(ravenPart);
             
             //Plasmid version
-            newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite(name, composition, new ArrayList(),  new ArrayList(), null, directions, moCloLO, moCloRO, typeP);
+            newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite(name, composition, scars, scarSeqs, linkers, directions, moCloLO, moCloRO, typeP);
             newPlasmid.setTransientStatus(false);
         }       
         
@@ -223,12 +301,10 @@ public class RavenAdaptor {
         String moCloLO = "";
         String moCloRO = "";
         String resistance = "";
-        
+       
         //If both ends match MoClo overhangs, add them as overhangs
-        if (moCloOHs.containsKey(vecSeq.substring(vecSeq.length() - 4).toLowerCase()) && moCloOHs.containsKey(vecSeq.substring(vecSeq.length() - 4).toLowerCase())) {
-            moCloLO = moCloOHs.get(vecSeq.substring(vecSeq.length() - 4).toLowerCase());
-            moCloRO = moCloOHs.get(vecSeq.substring(0, 4).toLowerCase());
-        }        
+        moCloLO = moCloOHs.get(vecSeq.substring(vecSeq.length() - 4).toLowerCase());
+        moCloRO = moCloOHs.get(vecSeq.substring(0, 4).toLowerCase());     
         
         //Get the resistance
         Set<Annotation> annotations = pPart.getSequence().getAnnotations();
@@ -260,9 +336,19 @@ public class RavenAdaptor {
             org.cidarlab.raven.datastructures.Part newPlasmid;
             ArrayList<org.cidarlab.raven.datastructures.Part> composition = new ArrayList();
             ArrayList<String> directions = new ArrayList();            
+           
+            //Scars and linkers
+            ArrayList<String> scars = new ArrayList<>();
+            ArrayList<String> linkers = new ArrayList<>();
+            boolean previousIsLinker = false;
             
             //Make target plasmids by either finding existing parts or creating new ones
-            for (PrimitiveModule pm : m.getSubmodules()) {
+            for (int i = 0; i < m.getSubmodules().size(); i++) {
+                
+                PrimitiveModule pm = m.getSubmodules().get(i);
+                
+                String scar = "_";                
+                String linker = "_";
                 
                 //Determine direction
                 ArrayList<String> aDir = new ArrayList();
@@ -273,16 +359,45 @@ public class RavenAdaptor {
                 }
                 
                 //Regular parts with sequences
-                if (!pm.getModuleFeatures().get(0).getSequence().getSequence().isEmpty()) {
-                    for (Feature f : pm.getModuleFeatures()) {
-                        String fName = f.getName().replaceAll(".ref", "");
+                if (!pm.getModuleFeatures().get(0).getSequence().getSequence().isEmpty() && pm.getPrimitiveRole() != FeatureRole.VECTOR) {
+                    
+                    if (pm.getPrimitiveRole() == FeatureRole.CDS_LINKER) {
+                        String fName = pm.getModuleFeatures().get(0).getName().replaceAll(".ref", "");
                         
-                        //Find Raven basic part for this composition
-                        for (org.cidarlab.raven.datastructures.Part p : libParts) {
-                            if (p.getName().equalsIgnoreCase(fName)) {
-                                if (p.getLeftOverhang().isEmpty() && p.getRightOverhang().isEmpty() && p.getDirections().equals(aDir)) {
-                                    composition.add(p);
-                                    directions.addAll(aDir);
+                        //Consecutive linkers edge case
+                        if (!linkers.get(linkers.size()-1).equals("_")) {
+                            linker = linkers.get(linkers.size()-1) + "|" + fName; 
+                            linkers.remove(linkers.size()-1);
+                        } else {
+                            linker = fName;
+                        }
+
+//                        isLinker = true;
+                        previousIsLinker = true;
+                        linkers.add(linker);
+                        
+                    } else {
+
+                        if (i > 0) {
+                            if (!previousIsLinker) {
+                                linkers.add(linker);
+                            } else {
+                                previousIsLinker = false;
+                            }
+                            //Scars and linkers
+                            scars.add(scar);
+                        }
+                        
+                        for (Feature f : pm.getModuleFeatures()) {
+                            String fName = f.getName().replaceAll(".ref", "");
+
+                            //Find Raven basic part for this composition
+                            for (org.cidarlab.raven.datastructures.Part p : libParts) {
+                                if (p.getName().equalsIgnoreCase(fName)) {
+                                    if (p.getLeftOverhang().isEmpty() && p.getRightOverhang().isEmpty() && p.getDirections().equals(aDir)) {
+                                        composition.add(p);
+                                        directions.addAll(aDir);
+                                    }
                                 }
                             }
                         }
@@ -291,8 +406,20 @@ public class RavenAdaptor {
                 //Vector edge case
                 } else if (pm.getPrimitiveRole() == FeatureRole.VECTOR) {
                     
+                    String flag = "";
+                    
                 //Multiplex parts
                 } else {
+                    
+                    if (i > 0) {
+                        if (!previousIsLinker) {
+                            linkers.add(linker);
+                        } else {
+                            previousIsLinker = false;
+                        }
+                        //Scars and linkers
+                        scars.add(scar);
+                    }
                     
                     String type = pm.getPrimitiveRole() + "_multiplex";
                     String name = pm.getPrimitiveRole() + "?";
@@ -311,6 +438,8 @@ public class RavenAdaptor {
             ArrayList<String> typeP = new ArrayList();
             typeP.add("plasmid");            
             
+            ArrayList<String> scarSeqs = ClothoWriter.scarsToSeqs(scars, null);
+            
             //Create blank polynucleotide as a placeholders
             //Here is where the colony picking math should be applied
 //            HashSet<Polynucleotide> pnSet = new HashSet<>();
@@ -319,7 +448,7 @@ public class RavenAdaptor {
 //            pnSet.add(pnPlaceholder);
 //            m.setPolynucleotides(pnSet);
             
-            newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite(m.getName(), composition, new ArrayList(), new ArrayList(), null, directions, "", "", typeP);
+            newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite(m.getName(), composition, scars, scarSeqs, linkers, directions, "", "", typeP);
             newPlasmid.setTransientStatus(false);   
             
             ravenParts.add(newPlasmid);
@@ -364,6 +493,70 @@ public class RavenAdaptor {
         }
         
         return ravenParts;
+    }
+    
+    //Get MoClo overhangs, including a search for linker sequence
+    private static String getMoCloOHs(String seq, boolean left, HashSet<org.cidarlab.raven.datastructures.Part> libParts) {
+        
+        String OH;
+        
+        //Loop through the part libary to see in the input sequence is contained in any of these parts
+        org.cidarlab.raven.datastructures.Part linkerPart = null;
+        for (org.cidarlab.raven.datastructures.Part libPart : libParts) {
+            if (libPart.getSeq().contains(seq) || libPart.getSeq().contains(Utilities.reverseComplement(seq))) {
+                linkerPart = libPart;
+            }
+        }
+        
+        //Check to see if requesting a left (TRUE) or right (FALSE) overhang
+        HashMap<String, String> moCloOHs = reverseKeysVals(PrimerDesign.getMoCloOHseqs());        
+        if (left) {
+            OH = moCloOHs.get(seq.substring(0,4).toLowerCase());
+            String linkFragSeq = seq.substring(4);
+            if (linkFragSeq.length() > 6) {
+                for (org.cidarlab.raven.datastructures.Part libPart : libParts) {
+                    if (libPart.getSeq().toLowerCase().contains(linkFragSeq.toLowerCase()) || libPart.getSeq().toLowerCase().contains(Utilities.reverseComplement(linkFragSeq).toLowerCase())) {
+                        if (libPart.getType().contains("gene")) {
+                            linkerPart = libPart;
+                            break;
+                        }
+                    }
+                }
+            }
+            
+        } else {
+            
+            OH = moCloOHs.get(seq.substring(seq.length() - 4).toLowerCase());            
+            String linkFragSeq = seq.substring(0, seq.length() - 4);
+            if (linkFragSeq.length() > 6) {
+                for (org.cidarlab.raven.datastructures.Part libPart : libParts) {
+                    if (libPart.getSeq().toLowerCase().contains(linkFragSeq.toLowerCase()) || libPart.getSeq().toLowerCase().contains(Utilities.reverseComplement(linkFragSeq).toLowerCase())) {
+                        if (libPart.getType().contains("gene")) {
+                            linkerPart = libPart;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (linkerPart != null) {
+            OH = "(" + linkerPart.getName() + ")" + OH;
+        }
+        
+        return OH;
+    }
+    
+    private static String reverseScarLookup(String scarSeq) {
+        
+        String scar = "_";
+        
+        HashMap<String, String> moCloOHs = reverseKeysVals(PrimerDesign.getMoCloOHseqs());
+        if (moCloOHs.containsKey(scarSeq.toLowerCase())) {
+            scar = moCloOHs.get(scarSeq.toLowerCase());
+        }
+        
+        return scar;
     }
         
     //Convert types of JSONObjects

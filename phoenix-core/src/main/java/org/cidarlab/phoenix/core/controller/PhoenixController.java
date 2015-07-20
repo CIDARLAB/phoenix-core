@@ -83,8 +83,7 @@ public class PhoenixController {
         
         ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
         Clotho clothoObject = new Clotho(conn);
-        String moduleId = ClothoAdaptor.createModule(modules.get(0), clothoObject);
-        
+        String moduleId = ClothoAdaptor.createModule(modules.get(0), clothoObject);        
         
         JSONObject flareValue = new JSONObject();
         //flareValue = ClientSideAdaptor.convertModuleToJSON(modules.get(0));
@@ -95,7 +94,9 @@ public class PhoenixController {
         
         ClientSideAdaptor.createFlareFile(JSONFilePath,flareValue);
         conn.closeConnection();
-        return modules;
+//        return modules;
+        
+        return new ArrayList<>(modulesToTest);
     }
 
     //Create assembly and testing instructions from a set of Modules that need to be built and tested

@@ -883,6 +883,12 @@ public class ClothoAdaptor {
         JSONArray array = (JSONArray) query;
         return convertJSONArrayToFeatures(array);
     }
+    
+    public static HashSet<Fluorophore> queryFluorophores(Map map, Clotho clothoObject) {
+        Object query = clothoObject.query(map);
+        JSONArray array = (JSONArray) query;
+        return convertJSONArrayToFluorophores(array);
+    }
 
     //Get all Clotho Features
     //The way features and arcs are handled here seems kinda fucked, but works
@@ -928,6 +934,7 @@ public class ClothoAdaptor {
             //Get arcs
             JSONArray arrayArcs = (JSONArray) jsonFeature.get("arcs");
 
+            if (arrayArcs != null) {
             for (int j = 0; j < arrayArcs.size(); j++) {
 
                 Arc arc = new Arc();
@@ -979,8 +986,9 @@ public class ClothoAdaptor {
             }
 
             featureNameHash.put(feature.getName(), feature);
-
+            }
             features.add(feature);
+        
         }
 
         //Loop to match features in arcHash
@@ -1000,15 +1008,13 @@ public class ClothoAdaptor {
 
         return features;
     }
-
-    //Get all Clotho Fluorophores
-    public static HashSet<Fluorophore> queryFluorophores(Map map, Clotho clothoObject) {
-
-        //Establish Clotho connection
+    
+    //Get all Clotho Features
+    //The way features and arcs are handled here seems kinda fucked, but works
+    public static HashSet<Fluorophore> convertJSONArrayToFluorophores(JSONArray arrayFluorophore) {
+        
         HashSet<Fluorophore> fluorophores = new HashSet<>();
-
-        Object query = clothoObject.query(map);
-        JSONArray arrayFluorophore = (JSONArray) query;
+        
         for (int i = 0; i < arrayFluorophore.size(); i++) {
 
             Fluorophore fluorophore = new Fluorophore();
@@ -1068,7 +1074,77 @@ public class ClothoAdaptor {
         }
 
         return fluorophores;
+        
     }
+
+    //Get all Clotho Fluorophores
+//    public static HashSet<Fluorophore> queryFluorophores(Map map, Clotho clothoObject) {
+//
+//        //Establish Clotho connection
+//        HashSet<Fluorophore> fluorophores = new HashSet<>();
+//
+//        Object query = clothoObject.query(map);
+//        JSONArray arrayFluorophore = (JSONArray) query;
+//        for (int i = 0; i < arrayFluorophore.size(); i++) {
+//
+//            Fluorophore fluorophore = new Fluorophore();
+//
+//            //Get fluorophore fields
+//            JSONObject jsonFluorophore = arrayFluorophore.getJSONObject(i);
+//            String fwdColorSt = jsonFluorophore.get("forwardColor").toString();
+//            String[] rgbfwd = fwdColorSt.substring(15, fwdColorSt.length() - 1).split(",");
+//            Color fwdColor = new Color(Integer.valueOf(rgbfwd[0].substring(2)), Integer.valueOf(rgbfwd[1].substring(2)), Integer.valueOf(rgbfwd[2].substring(2)));
+//            String revColorSt = jsonFluorophore.get("reverseColor").toString();
+//            String[] rgbrev = revColorSt.substring(15, revColorSt.length() - 1).split(",");
+//            Color revColor = new Color(Integer.valueOf(rgbrev[0].substring(2)), Integer.valueOf(rgbrev[1].substring(2)), Integer.valueOf(rgbrev[2].substring(2)));
+//            String name = jsonFluorophore.get("name").toString();
+//            Integer oligo = Integer.valueOf(jsonFluorophore.get("oligomerization").toString());
+//            Double brightness = Double.valueOf(jsonFluorophore.get("brightness").toString());
+//            Double ex = Double.valueOf(jsonFluorophore.get("excitation_max").toString());
+//            Double em = Double.valueOf(jsonFluorophore.get("emission_max").toString());
+//
+//            //Get excitation and emmission spectrums
+//            HashMap<Double, Double> em_spectrum = new HashMap<>();
+//            JSONArray jsonEm_spectrum = (JSONArray) jsonFluorophore.get("em_spectrum");
+//            for (int j = 0; j < jsonEm_spectrum.size(); j++) {
+//                JSONObject jsonObject = jsonEm_spectrum.getJSONObject(j);
+//                em_spectrum.put(Double.valueOf(jsonObject.get("x").toString()), Double.valueOf(jsonObject.get("y").toString()));
+//            }
+//            fluorophore.setEm_spectrum(em_spectrum);
+//
+//            HashMap<Double, Double> ex_spectrum = new HashMap<>();
+//            JSONArray jsonEx_spectrum = (JSONArray) jsonFluorophore.get("ex_spectrum");
+//            for (int k = 0; k < jsonEx_spectrum.size(); k++) {
+//                JSONObject jsonObject = jsonEx_spectrum.getJSONObject(k);
+//                ex_spectrum.put(Double.valueOf(jsonObject.get("x").toString()), Double.valueOf(jsonObject.get("y").toString()));
+//            }
+//            fluorophore.setEx_spectrum(ex_spectrum);
+//
+//            //Get sequence object and fields
+//            JSONObject jsonSequence = (JSONObject) jsonFluorophore.get("sequence");
+//            String seq = jsonSequence.get("sequence").toString();
+//            NucSeq sequence = new NucSeq(seq);
+//
+//            //Get FeatureRole
+//            JSONObject jsonFeatureRole = (JSONObject) jsonFluorophore.get("role");
+//            String roleString = jsonFeatureRole.get("FeatureRole").toString();
+//            fluorophore.setRole(Feature.FeatureRole.valueOf(roleString));
+//
+//            fluorophore.setForwardColor(fwdColor);
+//            fluorophore.setReverseColor(revColor);
+//            fluorophore.setName(name);
+//            fluorophore.setSequence(sequence);
+//            fluorophore.setOligomerization(oligo);
+//            fluorophore.setBrightness(brightness);
+//            fluorophore.setEmission_max(em);
+//            fluorophore.setExcitation_max(ex);
+//            fluorophore.setClothoID(jsonFluorophore.get("id").toString());
+//
+//            fluorophores.add(fluorophore);
+//        }
+//
+//        return fluorophores;
+//    }
 
     public static Experiment getExperiment(String experimentid, Clotho clothoObject) {
 
@@ -1456,10 +1532,16 @@ public class ClothoAdaptor {
 
     public static AssemblyParameters getAssemblyParameters(String id, Clotho clothoObject){
         AssemblyParameters aP = new AssemblyParameters();
+        Map assmParamMap = new HashMap<String, String>();
+        assmParamMap.put("schema", "org.cidarlab.phoenix.core.dom.AssemblyParameters");
+        assmParamMap.put("name", "default");
+        
         JSONObject apObject = new JSONObject();
-        apObject = (JSONObject)clothoObject.get(id);
+        //        apObject = (JSONObject) clothoObject.query(assmParamMap);
+        Object query = clothoObject.query(assmParamMap);
+        JSONArray arrayAP = (JSONArray) query;
         if(apObject != null){
-            aP = new AssemblyParameters(apObject);
+            aP = new AssemblyParameters(arrayAP.getJSONObject(0));
         }
         return aP;
     }

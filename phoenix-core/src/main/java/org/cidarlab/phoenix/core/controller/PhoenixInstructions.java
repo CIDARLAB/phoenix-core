@@ -42,9 +42,9 @@ public class PhoenixInstructions {
         
         File testingInstructions = new File(filePath + "/testingInstructionsTest.csv");
         FileWriter instructionsFileWriter = new FileWriter(testingInstructions);
-        BufferedWriter instructionsBufferedWriter;
-        instructionsBufferedWriter = new BufferedWriter(instructionsFileWriter);
-//        try (BufferedWriter instructionsBufferedWriter = new BufferedWriter(instructionsFileWriter)) {
+//        BufferedWriter instructionsBufferedWriter;
+//        instructionsBufferedWriter = new BufferedWriter(instructionsFileWriter);
+        try (BufferedWriter instructionsBufferedWriter = new BufferedWriter(instructionsFileWriter)) {
             instructionsBufferedWriter.write("FILENAME,PART,CONTROL,MEDIA,TIME");
             
             //Get all the samples from all experiments under consideration
@@ -97,7 +97,7 @@ public class PhoenixInstructions {
                     instructionsBufferedWriter.write("\n," + name + ",," + mediaString + "," + s.getTime() + ",");
                 }   
             }
-//        }
+        }
         
         return testingInstructions;
     }

@@ -20,6 +20,7 @@ import org.cidarlab.phoenix.core.dom.Component;
 import org.cidarlab.phoenix.core.dom.Feature;
 import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
 import org.cidarlab.phoenix.core.dom.Module;
+import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
 import org.cidarlab.phoenix.core.dom.Part;
 import org.cidarlab.phoenix.core.dom.Polynucleotide;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
@@ -89,6 +90,15 @@ public class RavenAdaptor {
         HashMap<org.cidarlab.raven.datastructures.Part, Vector> libPairs = ravenPartVectorPairs(polyNucs, partsLibR, vectorsLibR);
         vectorsLibR.addAll(libPairs.values());
         partsLibR.addAll(libPairs.keySet());
+        
+        //Temporary Hack to see if the assignments change by removing some of the constructs
+        HashSet<Module> toRemove = new HashSet<>();
+        for (Module m : targetModules) {
+            if (m.getRole() != ModuleRole.EXPRESSOR) {
+                toRemove.add(m);
+            }
+        }
+        targetModules.removeAll(toRemove);
         
         //Convert Phoenix Modules to Raven Plasmids
         HashSet<org.cidarlab.raven.datastructures.Part> targetParts = phoenixModulesToRavenParts(targetModules, partsLibR);
@@ -179,10 +189,10 @@ public class RavenAdaptor {
                     type = "promoter";
                 }
             }                
-                        
-            //Determine MoClo overhangs, searching for 
-            moCloLO = getMoCloOHs(partSeq.substring(0, annotationStartIndex).toLowerCase(), true, libParts);           
-            moCloRO = getMoCloOHs(partSeq.substring(annotationEndIndex).toLowerCase(), false, libParts);    
+                         
+            //Determine MoClo overhangs, searching for
+            moCloLO = getMoCloOHs(partSeq.substring(0, annotationStartIndex).toLowerCase(), true, libParts);
+            moCloRO = getMoCloOHs(partSeq.substring(annotationEndIndex).toLowerCase(), false, libParts);
 
             ArrayList<String> bpDirectionL = new ArrayList();
             bpDirectionL.add(bpDirection);

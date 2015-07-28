@@ -1,0 +1,87 @@
+// Size=10
+// 24 Solutions
+
+// COUNTING
+ip1_1 exactly 1
+ip1_2 exactly 1
+rp1_1 exactly 1
+rp1_2 exactly 1
+rc1 exactly 1
+fc2 exactly 1
+r1 exactly 1
+r2 exactly 1
+t1 exactly 1
+t2 exactly 1
+
+// INTERACTIONS
+rc1 represses rp1_1
+rc1 represses rp1_2
+fc2 induces ip1_1
+fc2 induces ip1_2
+
+ip1_1 drives rc1
+not ip1_1 drives fc2 
+
+ip1_2 drives fc2
+not ip1_2 drives rc1
+
+rp1_1 drives rc1
+not rp1_1 drives fc2
+
+rp1_2 drives fc2
+not rp1_2 drives rc1
+
+//POSITIONING
+ip1_1 nextto rp1_1
+ip1_1 SAME_ORIENTATION rp1_1
+//ip1_1 before rp1_1 or ip1_1 after rp1_1
+//ip1_1 before rp1_1 or reverse ip1_1
+//forward ip1_1 or ip1_1 after rp1_1
+//forward ip1_1 or reverse ip1_1
+
+ip1_2 nextto rp1_2
+ip1_2 SAME_ORIENTATION rp1_2
+//ip1_2 before rp1_2 or ip1_2 after rp1_2
+//ip1_2 before rp1_2 or reverse ip1_2
+//forward ip1_2 or ip1_2 after rp1_2
+//forward ip1_2 or reverse ip1_2
+
+r1 nextto rc1
+r1 SAME_ORIENTATION rc1
+r1 before rc1 or r1 after rc1
+r1 before rc1 or reverse r1
+forward r1 or r1 after rc1
+forward r1 or reverse r1
+
+r1 nextto rc1
+r1 SAME_ORIENTATION rc1
+r1 before rc1 or r1 after rc1
+r1 before rc1 or reverse r1
+forward r1 or r1 after rc1
+forward r1 or reverse r1
+
+r2 nextto fc2
+r2 SAME_ORIENTATION fc2
+r2 before fc2 or r2 after fc2
+r2 before fc2 or reverse r2
+forward r2 or r2 after fc2
+forward r2 or reverse r2
+
+t2 after fc2 or t2 before fc2
+t2 after fc2 or reverse fc2
+forward fc2 or t2 before fc2
+forward fc2 or reverse fc2
+
+t1 after rc1 or t1 before rc1
+t1 after rc1 or reverse rc1
+forward rc1 or t1 before rc1
+forward rc1 or reverse rc1
+
+//ORIENTATION
+ip1_1 SAME_ORIENTATION t1
+ip1_2 SAME_ORIENTATION t2
+
+//Alternating TUs
+not rp1_1 SAME_ORIENTATION rp1_2
+rp1_1 NEXTTO rp1_2
+ip1_1 NEXTTO r1

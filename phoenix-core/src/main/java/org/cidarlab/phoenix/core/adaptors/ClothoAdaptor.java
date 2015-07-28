@@ -1648,55 +1648,58 @@ public class ClothoAdaptor {
         String seq = ns.getSeq();
         for (Feature f : features) {
 
-            //Form feature regex
-            String fSeq = f.getSequence().getSequence();
-            Color forwardColor = f.getForwardColor();
-            Color reverseColor = f.getReverseColor();
+            if (!seq.isEmpty()) {
 
-            //Forward sequence search
-            Pattern p = Pattern.compile(fSeq);
-            Matcher m = p.matcher(seq);
-            while (m.find()) {
-                int start = m.start();
-                int end = m.end();
-                Annotation a = new Annotation(f, ns, forwardColor, reverseColor, start, end, new Person(), true, null);
+                //Form feature regex
+                String fSeq = f.getSequence().getSequence();
+                Color forwardColor = f.getForwardColor();
+                Color reverseColor = f.getReverseColor();
 
-                //Only add if there is no duplicate annotation
-                boolean preexisting = false;
-                for (Annotation existingA : annotations) {
-                    if (existingA.getStart() == a.getStart() && existingA.getEnd() == a.getEnd()) {
-                        preexisting = true;
+                //Forward sequence search
+                Pattern p = Pattern.compile(fSeq);
+                Matcher m = p.matcher(seq);
+                while (m.find()) {
+                    int start = m.start();
+                    int end = m.end();
+                    Annotation a = new Annotation(f, ns, forwardColor, reverseColor, start, end, new Person(), true, null);
+
+                    //Only add if there is no duplicate annotation
+                    boolean preexisting = false;
+                    for (Annotation existingA : annotations) {
+                        if (existingA.getStart() == a.getStart() && existingA.getEnd() == a.getEnd()) {
+                            preexisting = true;
+                        }
+                    }
+
+                    if (!preexisting && !f.getName().contains("TEST")) {
+                        annotations.add(a);
                     }
                 }
 
-                if (!preexisting && !f.getName().contains("TEST")) {
-                    annotations.add(a);
-                }
-            }
+                //Reverse sequence search
+                NucSeq fNucSeq = (NucSeq) f.getSequence();
+                String revfSeq = fNucSeq.revComp();
+                Pattern pR = Pattern.compile(revfSeq);
+                Matcher mR = pR.matcher(seq);
+                while (mR.find()) {
+                    int start = mR.start();
+                    int end = mR.end();
+                    Annotation a = new Annotation(f, ns, reverseColor, forwardColor, start, end, new Person(), false, null);
 
-            //Reverse sequence search
-            NucSeq fNucSeq = (NucSeq) f.getSequence();
-            String revfSeq = fNucSeq.revComp();
-            Pattern pR = Pattern.compile(revfSeq);
-            Matcher mR = pR.matcher(seq);
-            while (mR.find()) {
-                int start = mR.start();
-                int end = mR.end();
-                Annotation a = new Annotation(f, ns, reverseColor, forwardColor, start, end, new Person(), false, null);
+                    //Only add if there is no duplicate annotation
+                    boolean preexisting = false;
+                    for (Annotation existingA : annotations) {
+                        if (existingA.getStart() == a.getStart() && existingA.getEnd() == a.getEnd()) {
+                            preexisting = true;
+                        }
+                    }
 
-                //Only add if there is no duplicate annotation
-                boolean preexisting = false;
-                for (Annotation existingA : annotations) {
-                    if (existingA.getStart() == a.getStart() && existingA.getEnd() == a.getEnd()) {
-                        preexisting = true;
+                    if (!preexisting && !f.getName().contains("TEST")) {
+                        annotations.add(a);
                     }
                 }
-
-                if (!preexisting && !f.getName().contains("TEST")) {
-                    annotations.add(a);
-                }
             }
+            ns.setAnnotations(annotations);
         }
-        ns.setAnnotations(annotations);
     }
 }

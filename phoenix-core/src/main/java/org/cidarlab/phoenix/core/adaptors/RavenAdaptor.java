@@ -42,19 +42,19 @@ public class RavenAdaptor {
     public static File generateAssemblyPlan(HashSet<Module> modulesToTest, String filePath) throws Exception {
         
         //Add testing modules to target modules
-        HashSet<Module> targetModules = new HashSet<>();
+        HashSet<Module> allModules = new HashSet<>();
         HashSet<List<Feature>> moduleFeatureHash = new HashSet<>();
         
         for (Module targetModule : modulesToTest) {
             if (!moduleFeatureHash.contains(targetModule.getModuleFeatures())) {
-                targetModules.add(targetModule);
+                allModules.add(targetModule);
                 moduleFeatureHash.add(targetModule.getModuleFeatures());
             }
 
             HashSet<Module> controlModules = targetModule.getControlModules();
             for (Module controlModule : controlModules) {
                 if (!moduleFeatureHash.contains(controlModule.getModuleFeatures())) {
-                    targetModules.add(controlModule);
+                    allModules.add(controlModule);
                     moduleFeatureHash.add(controlModule.getModuleFeatures());
                 }
             }
@@ -91,21 +91,28 @@ public class RavenAdaptor {
         vectorsLibR.addAll(libPairs.values());
         partsLibR.addAll(libPairs.keySet());
         
-//        //Temporary Hack to see if the assignments change by removing some of the constructs
-//        HashSet<Module> toRemove = new HashSet<>();
-//        for (Module m : targetModules) {
-//            if (m.getRole() == ModuleRole.EXPRESSOR) {
-//                toRemove.add(m);
-//            }
-//        }
-//        targetModules.removeAll(toRemove);
-        
         //Convert Phoenix Modules to Raven Plasmids
-        HashSet<org.cidarlab.raven.datastructures.Part> targetParts = phoenixModulesToRavenParts(targetModules, partsLibR);
+        ArrayList<HashSet<org.cidarlab.raven.datastructures.Part>> listTargetSets = new ArrayList();
+        HashSet<Module> expressees = new HashSet<>();
+        HashSet<Module> expressors = new HashSet<>();
+        for (Module m : allModules) {
+            if (m.getRole() == ModuleRole.EXPRESSEE || m.getRole() == ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR || m.getRole() == ModuleRole.EXPRESSEE_ACTIVATOR || m.getRole() == ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR || m.getRole() == ModuleRole.EXPRESSEE_REPRESSOR) {
+                expressees.add(m);
+            } else if (m.getRole() == ModuleRole.EXPRESSOR) {
+                expressors.add(m);
+            }
+        }
+        allModules.removeAll(expressees);
+        allModules.removeAll(expressors);
+                
+        listTargetSets.add(phoenixModulesToRavenParts(allModules, partsLibR));
+        listTargetSets.add(phoenixModulesToRavenParts(expressees, partsLibR));
+        listTargetSets.add(phoenixModulesToRavenParts(expressors, partsLibR));
+//        HashSet<org.cidarlab.raven.datastructures.Part> targetPartsNonExpressee = phoenixModulesToRavenParts(targetModules, partsLibR);
                
         //Run Raven to get assembly instructions
         Raven raven = new Raven();         
-        File assemblyInstructions = raven.assemblyInstructions(targetParts, partsLibR, vectorsLibR, libPairs, new HashMap(), rParameters, filePath);
+        File assemblyInstructions = raven.assemblyInstructions(listTargetSets, partsLibR, vectorsLibR, libPairs, new HashMap(), rParameters, filePath);
         
         conn.closeConnection();
         return assemblyInstructions;

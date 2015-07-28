@@ -104,10 +104,10 @@ public class RavenAdaptor {
         }
         allModules.removeAll(expressees);
         allModules.removeAll(expressors);
-                
-        listTargetSets.add(phoenixModulesToRavenParts(allModules, partsLibR));
+             
         listTargetSets.add(phoenixModulesToRavenParts(expressees, partsLibR));
-        listTargetSets.add(phoenixModulesToRavenParts(expressors, partsLibR));
+//        listTargetSets.add(phoenixModulesToRavenParts(expressors, partsLibR));
+//        listTargetSets.add(phoenixModulesToRavenParts(allModules, partsLibR));        
 //        HashSet<org.cidarlab.raven.datastructures.Part> targetPartsNonExpressee = phoenixModulesToRavenParts(targetModules, partsLibR);
                
         //Run Raven to get assembly instructions

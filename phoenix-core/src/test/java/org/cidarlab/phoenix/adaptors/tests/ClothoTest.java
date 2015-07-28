@@ -97,7 +97,7 @@ public class ClothoTest {
         ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
         Clotho clothoObject = new Clotho(conn);
         
-        String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_plasmid_lib_61115.gb";
+        String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_plasmid_lib_72715.gb";
         File toLoad = new File(filePath);
         try {
             ClothoAdaptor.uploadSequences(toLoad, false,clothoObject);

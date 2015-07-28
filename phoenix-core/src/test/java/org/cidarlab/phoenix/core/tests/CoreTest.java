@@ -53,13 +53,13 @@ public class CoreTest {
         
         //Upload data from back end
         File featureLib = new File(getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_feature_lib.gb");
-        File plasmidLib = new File(getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_plasmid_lib_61115.gb");        
+        File plasmidLib = new File(getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_plasmid_lib_72715.gb");        
         File fluorophoreSpectra = new File(getFilepath() + "/src/main/resources/FluorescentProteins/fp_spectra.csv");
         File cytometer = new File(getFilepath() + "/src/main/resources/FluorescentProteins/cosbi_fortessa_bd.csv");
 //        PhoenixController.preliminaryDataUpload (featureLib, plasmidLib, fluorophoreSpectra, cytometer);
         
         //Run a design decomposition
-        File structureFile = new File(getFilepath() + "/src/main/resources/miniEugeneFiles/oscillator-transcriptional-interference.eug");
+        File structureFile = new File(getFilepath() + "/src/main/resources/miniEugeneFiles/toggle-switch-full-adjacent-promoters-2.eug");
         List<Module> modulesToTest = PhoenixController.initializeDesign(structureFile, null);
         HashSet<Module> modulesToTestHash = new HashSet<>(modulesToTest);
         PhoenixController.createExperimentInstructions(modulesToTestHash, getFilepath() + "/src/main/resources/InstructionFiles");

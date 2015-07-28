@@ -400,7 +400,7 @@ public class FeatureAssignment {
         HashSet<Part> parts = ClothoAdaptor.queryParts(partQuery,clothoObject);
         
         conn.closeConnection();
-        return null;
+        return parts;
     }
     
     //Method for converting a module to a part

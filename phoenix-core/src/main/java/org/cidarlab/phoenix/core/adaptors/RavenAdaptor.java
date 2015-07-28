@@ -91,14 +91,14 @@ public class RavenAdaptor {
         vectorsLibR.addAll(libPairs.values());
         partsLibR.addAll(libPairs.keySet());
         
-        //Temporary Hack to see if the assignments change by removing some of the constructs
-        HashSet<Module> toRemove = new HashSet<>();
-        for (Module m : targetModules) {
-            if (m.getRole() != ModuleRole.EXPRESSOR) {
-                toRemove.add(m);
-            }
-        }
-        targetModules.removeAll(toRemove);
+//        //Temporary Hack to see if the assignments change by removing some of the constructs
+//        HashSet<Module> toRemove = new HashSet<>();
+//        for (Module m : targetModules) {
+//            if (m.getRole() == ModuleRole.EXPRESSOR) {
+//                toRemove.add(m);
+//            }
+//        }
+//        targetModules.removeAll(toRemove);
         
         //Convert Phoenix Modules to Raven Plasmids
         HashSet<org.cidarlab.raven.datastructures.Part> targetParts = phoenixModulesToRavenParts(targetModules, partsLibR);
@@ -121,13 +121,14 @@ public class RavenAdaptor {
         
             //Special case for destination vector
             Vector vector;
+            int level = pn.getLevel();
             if (pn.isDV()) {
-                int level = pn.getLevel();
                 vector = phoenixPartToRavenVector(pn.getVector(), Integer.toString(level));
                 vectorsLib.add(vector);
             } else {
                 org.cidarlab.raven.datastructures.Part part = phoenixPartToRavenPart(pn.getPart(), libParts);
-                vector = phoenixPartToRavenVector(pn.getVector(), null);
+                vector = phoenixPartToRavenVector(pn.getVector(), Integer.toString(level));
+                vectorsLib.add(vector);
                 plasmidPairs.put(part, vector);
             }            
         }
@@ -348,7 +349,7 @@ public class RavenAdaptor {
             newVector = Vector.generateVector(pPart.getName(), pPart.getSequence().getSeq(), "", "", "vector", "", "", resistance, -1);
             newVector.setTransientStatus(false);
         } else {
-            newVector = Vector.generateVector(pPart.getName(), pPart.getSequence().getSeq(), moCloLO, moCloRO, "destination vector", pPart.getName(), "lacZ|" + moCloLO + "|" + moCloRO + "|+", resistance, -1);
+            newVector = Vector.generateVector(pPart.getName(), pPart.getSequence().getSeq(), moCloLO, moCloRO, "destination vector", pPart.getName(), "lacZ|" + moCloLO + "|" + moCloRO + "|+", resistance, Integer.valueOf(level));
             newVector.setTransientStatus(false);
         }
 
@@ -570,7 +571,7 @@ public class RavenAdaptor {
         }
 
         if (linkerPart != null) {
-            OH = "(" + linkerPart.getName() + ")" + OH;
+            OH = OH + "(" + linkerPart.getName() + ")";
         }
         
         return OH;

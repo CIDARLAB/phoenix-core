@@ -223,16 +223,13 @@ public class ClothoTest {
         conn.closeConnection();
     }
     
-//    public ClothoTest() {
-//        
-//    }
-//    
-//    public static void main(String[] args) {
-//        ClothoTest t = new ClothoTest();
-////        t.testQuery();
-////        t.testMultiPartUpload();
-//        t.testFeatureUpload();
-//        t.testQuery();
-//        String t2 = "";
-//    }
+    public ClothoTest() {
+    }
+    
+    public static void main(String[] args) {
+        ClothoTest t = new ClothoTest();
+        t.testFeatureUpload();
+        t.testPlasmidLibraryUpload();
+        t.testCytometerUpload();
+    }
 }

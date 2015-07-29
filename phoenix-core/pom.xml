@@ -285,15 +285,20 @@
             <artifactId>miniEugene</artifactId>
             <version>1.0</version>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>Raven</groupId>
             <artifactId>RavenCAD</artifactId>
             <version>1.1-SNAPSHOT</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.sbml</groupId>
             <artifactId>jsbml</artifactId>
             <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>Raven</groupId>
+            <artifactId>RavenCAD</artifactId>
+            <version>1.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
   

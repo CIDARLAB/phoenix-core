@@ -106,10 +106,9 @@ public class RavenAdaptor {
         allModules.removeAll(expressors);
              
         listTargetSets.add(phoenixModulesToRavenParts(expressees, partsLibR));
-//        listTargetSets.add(phoenixModulesToRavenParts(expressors, partsLibR));
-//        listTargetSets.add(phoenixModulesToRavenParts(allModules, partsLibR));        
-//        HashSet<org.cidarlab.raven.datastructures.Part> targetPartsNonExpressee = phoenixModulesToRavenParts(targetModules, partsLibR);
-               
+        listTargetSets.add(phoenixModulesToRavenParts(expressors, partsLibR));
+        listTargetSets.add(phoenixModulesToRavenParts(allModules, partsLibR));        
+     
         //Run Raven to get assembly instructions
         Raven raven = new Raven();         
         File assemblyInstructions = raven.assemblyInstructions(listTargetSets, partsLibR, vectorsLibR, libPairs, new HashMap(), rParameters, filePath);
@@ -308,10 +307,10 @@ public class RavenAdaptor {
                 }                
             }
             
-            //Determine MoClo overhangs, searching for 
-            if (partSeq.substring(0, annotationStartIndex).length() < 4 || partSeq.substring(annotationEndIndex).length() < 4) {
-                String flag = "";
-            }            
+//            //Determine MoClo overhangs, searching for 
+//            if (partSeq.substring(0, annotationStartIndex).length() < 4 || partSeq.substring(annotationEndIndex).length() < 4) {
+//                String flag = "";
+//            }            
             
             moCloLO = getMoCloOHs(partSeq.substring(0, annotationStartIndex).toLowerCase(), true, libParts);           
             moCloRO = getMoCloOHs(partSeq.substring(annotationEndIndex).toLowerCase(), false, libParts);

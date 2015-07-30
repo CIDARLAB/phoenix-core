@@ -27,8 +27,9 @@ public class PhoenixController {
     public static String getJSONFilepath()
     {
         String filepath = PhoenixController.class.getClassLoader().getResource(".").getPath();
+        System.out.println("\n\nTHIS IS THE FILEPATH: " + filepath + "\n\n");
         filepath = filepath.substring(0,filepath.indexOf("WEB-INF/classes/"));
-        filepath += "test.json";
+        filepath += "flare.json";
         return filepath;
     }
     
@@ -89,8 +90,8 @@ public class PhoenixController {
         //flareValue = ClientSideAdaptor.convertModuleToJSON(modules.get(0));
         flareValue = ClientSideAdaptor.convertModuleToJSON(ClothoAdaptor.getModule(moduleId, clothoObject));
         
-        //String JSONFilePath = getJSONFilepath();
-        String JSONFilePath = Args.flareJSONfilepath;
+        String JSONFilePath = getJSONFilepath();
+        //String JSONFilePath = Args.flareJSONfilepath;
         
         ClientSideAdaptor.createFlareFile(JSONFilePath,flareValue);
         conn.closeConnection();

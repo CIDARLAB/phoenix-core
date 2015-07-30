@@ -15,10 +15,11 @@ public class Args {
     {
         String filepath = PhoenixController.class.getClassLoader().getResource(".").getPath();
         filepath = filepath.substring(0,filepath.indexOf("/target/"));
+        System.out.println("\n\nTHIS IS THE FILEPATH: " + filepath + "\n\n");
         return filepath;
     }
     
     public static final String clothoLocation = "wss://localhost:8443/websocket";
-    //public static final String flareJSONfilepath = "/C:/Users/zchap_000/Documents/BU_Spring_2015/phoenix-core/phoenix-core/src/main/webapp/test.json";
+    //public static final String flareJSONfilepath = "/C:/Users/zchap_000/Documents/BU_Spring_2015/phoenix-core/phoenix-core/src/main/webapp/flare.json";
     public static final String flareJSONfilepath = getFilepath() + "/src/main/webapp/flare.json";
 }

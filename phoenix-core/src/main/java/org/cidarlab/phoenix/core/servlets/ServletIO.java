@@ -18,7 +18,7 @@ public class ServletIO {
     {
         String filepath = ServletIO.class.getClassLoader().getResource(".").getPath();
         filepath = filepath.substring(0,filepath.indexOf("WEB-INF/classes/"));
-        filepath += "test.json";
+        filepath += "flare.json";
         return filepath;
     }
     

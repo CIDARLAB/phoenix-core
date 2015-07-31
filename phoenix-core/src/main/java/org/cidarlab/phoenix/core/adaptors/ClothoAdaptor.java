@@ -278,8 +278,9 @@ public class ClothoAdaptor {
         map.put("name", medium.getName());
         map.put("type", medium.getType());
         Map smallMoleculeMap = new HashMap();
-        smallMoleculeMap = createSmallMoleculeMap(medium.getSmallmolecule());
+//        smallMoleculeMap = createSmallMoleculeMap(medium.getSmallmolecule());
         if (medium.getSmallmolecule() != null) {
+            smallMoleculeMap = createSmallMoleculeMap(medium.getSmallmolecule());
             smallMoleculeMap.put("concentration", medium.getSmallmolecule().getConcentration());
         }
         map.put("smallMolecule", smallMoleculeMap);
@@ -298,16 +299,24 @@ public class ClothoAdaptor {
             map.put("name", sample.getName());
         }
 
-        Map mediaMap = createMediumMap(sample.getMedia());
+        Map mediaMap = new HashMap();
+        if (sample.getMedia() != null) {
+            mediaMap = createMediumMap(sample.getMedia());
+        }
         map.put("media", mediaMap);
 
-        Map strainMap = createStrainMap(sample.getStrain());
+        Map strainMap = new HashMap();
+        if (sample.getStrain() != null) {
+            strainMap = createStrainMap(sample.getStrain());
+        }
         map.put("strain", strainMap);
 
         JSONArray polyIds = new JSONArray();
-        for (Polynucleotide p : sample.getPolynucleotides()) {
-            String polyId = createPolynucleotide(p, clothoObject);
-            polyIds.add(polyId);
+        if (sample.getPolynucleotides() != null) {
+            for (Polynucleotide p : sample.getPolynucleotides()) {
+                String polyId = createPolynucleotide(p, clothoObject);
+                polyIds.add(polyId);
+            }
         }
         map.put("polynucleotides", polyIds);
         map.put("time", sample.getTime());
@@ -613,6 +622,7 @@ public class ClothoAdaptor {
 
         JSONArray childrenIds = new JSONArray();
         JSONArray parentIds = new JSONArray();
+        JSONArray assignedModuleIds = new JSONArray();
 
         for (Module child : module.getChildren()) {
             childrenIds.add(child.getClothoID());
@@ -621,9 +631,14 @@ public class ClothoAdaptor {
         for (Module parent : module.getParents()) {
             parentIds.add(parent.getClothoID());
         }
+        
+        for (Module assignedModule : module.getAssignedModules()) {
+            assignedModuleIds.add(assignedModule.getClothoID());
+        }
 
         setNeighbor.put("children", childrenIds);
         setNeighbor.put("parents", parentIds);
+        setNeighbor.put("assignedModules", assignedModuleIds);
 
         clothoObject.set(setNeighbor);
         for (Module child : module.getChildren()) {
@@ -666,9 +681,16 @@ public class ClothoAdaptor {
         id = (String) clothoObject.set(createModule);
         module.setClothoID(id);
 
+        //Recursive call for all children of this module
         for (Module child : module.getChildren()) {
             createModuleTree(child, clothoObject);
         }
+        
+        //Recursive call for all assigned module clones of this module
+        for (Module assignedModule : module.getAssignedModules()) {
+            createModuleTree(assignedModule, clothoObject);
+        }
+        
         return id;
     }
     //</editor-fold>
@@ -1077,75 +1099,6 @@ public class ClothoAdaptor {
         
     }
 
-    //Get all Clotho Fluorophores
-//    public static HashSet<Fluorophore> queryFluorophores(Map map, Clotho clothoObject) {
-//
-//        //Establish Clotho connection
-//        HashSet<Fluorophore> fluorophores = new HashSet<>();
-//
-//        Object query = clothoObject.query(map);
-//        JSONArray arrayFluorophore = (JSONArray) query;
-//        for (int i = 0; i < arrayFluorophore.size(); i++) {
-//
-//            Fluorophore fluorophore = new Fluorophore();
-//
-//            //Get fluorophore fields
-//            JSONObject jsonFluorophore = arrayFluorophore.getJSONObject(i);
-//            String fwdColorSt = jsonFluorophore.get("forwardColor").toString();
-//            String[] rgbfwd = fwdColorSt.substring(15, fwdColorSt.length() - 1).split(",");
-//            Color fwdColor = new Color(Integer.valueOf(rgbfwd[0].substring(2)), Integer.valueOf(rgbfwd[1].substring(2)), Integer.valueOf(rgbfwd[2].substring(2)));
-//            String revColorSt = jsonFluorophore.get("reverseColor").toString();
-//            String[] rgbrev = revColorSt.substring(15, revColorSt.length() - 1).split(",");
-//            Color revColor = new Color(Integer.valueOf(rgbrev[0].substring(2)), Integer.valueOf(rgbrev[1].substring(2)), Integer.valueOf(rgbrev[2].substring(2)));
-//            String name = jsonFluorophore.get("name").toString();
-//            Integer oligo = Integer.valueOf(jsonFluorophore.get("oligomerization").toString());
-//            Double brightness = Double.valueOf(jsonFluorophore.get("brightness").toString());
-//            Double ex = Double.valueOf(jsonFluorophore.get("excitation_max").toString());
-//            Double em = Double.valueOf(jsonFluorophore.get("emission_max").toString());
-//
-//            //Get excitation and emmission spectrums
-//            HashMap<Double, Double> em_spectrum = new HashMap<>();
-//            JSONArray jsonEm_spectrum = (JSONArray) jsonFluorophore.get("em_spectrum");
-//            for (int j = 0; j < jsonEm_spectrum.size(); j++) {
-//                JSONObject jsonObject = jsonEm_spectrum.getJSONObject(j);
-//                em_spectrum.put(Double.valueOf(jsonObject.get("x").toString()), Double.valueOf(jsonObject.get("y").toString()));
-//            }
-//            fluorophore.setEm_spectrum(em_spectrum);
-//
-//            HashMap<Double, Double> ex_spectrum = new HashMap<>();
-//            JSONArray jsonEx_spectrum = (JSONArray) jsonFluorophore.get("ex_spectrum");
-//            for (int k = 0; k < jsonEx_spectrum.size(); k++) {
-//                JSONObject jsonObject = jsonEx_spectrum.getJSONObject(k);
-//                ex_spectrum.put(Double.valueOf(jsonObject.get("x").toString()), Double.valueOf(jsonObject.get("y").toString()));
-//            }
-//            fluorophore.setEx_spectrum(ex_spectrum);
-//
-//            //Get sequence object and fields
-//            JSONObject jsonSequence = (JSONObject) jsonFluorophore.get("sequence");
-//            String seq = jsonSequence.get("sequence").toString();
-//            NucSeq sequence = new NucSeq(seq);
-//
-//            //Get FeatureRole
-//            JSONObject jsonFeatureRole = (JSONObject) jsonFluorophore.get("role");
-//            String roleString = jsonFeatureRole.get("FeatureRole").toString();
-//            fluorophore.setRole(Feature.FeatureRole.valueOf(roleString));
-//
-//            fluorophore.setForwardColor(fwdColor);
-//            fluorophore.setReverseColor(revColor);
-//            fluorophore.setName(name);
-//            fluorophore.setSequence(sequence);
-//            fluorophore.setOligomerization(oligo);
-//            fluorophore.setBrightness(brightness);
-//            fluorophore.setEmission_max(em);
-//            fluorophore.setExcitation_max(ex);
-//            fluorophore.setClothoID(jsonFluorophore.get("id").toString());
-//
-//            fluorophores.add(fluorophore);
-//        }
-//
-//        return fluorophores;
-//    }
-
     public static Experiment getExperiment(String experimentid, Clotho clothoObject) {
 
         JSONObject exptObj = new JSONObject();
@@ -1349,6 +1302,7 @@ public class ClothoAdaptor {
             childModule.getParents().add(module);
             module.getChildren().add(childModule);
         }
+        
         if (((JSONArray) map.get("experiments")).size() > 0) {
             List<Experiment> experiments = new ArrayList<Experiment>();
             module.setExperiments(experiments);
@@ -1357,6 +1311,14 @@ public class ClothoAdaptor {
             }
         }
 
+        if (((JSONArray) map.get("assignedModules")).size() > 0) {
+            HashSet<Module> assignedModules = new HashSet();
+            module.setAssignedModules(assignedModules);
+            for (Object aMIdObj : (JSONArray) map.get("assignedModules")) {
+                module.getAssignedModules().add(getModule((String) aMIdObj, clothoObject));
+            }
+        }
+        
         return module;
     }
 

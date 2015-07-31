@@ -90,10 +90,10 @@ public class PhoenixController {
         //flareValue = ClientSideAdaptor.convertModuleToJSON(modules.get(0));
 //        flareValue = ClientSideAdaptor.convertModuleToJSON(ClothoAdaptor.getModule(moduleId, clothoObject));
         
-        String JSONFilePath = getJSONFilepath();
+//        String JSONFilePath = getJSONFilepath();
         //String JSONFilePath = Args.flareJSONfilepath;
         
-        ClientSideAdaptor.createFlareFile(JSONFilePath,flareValue);
+//        ClientSideAdaptor.createFlareFile(JSONFilePath,flareValue);
         conn.closeConnection();
 //        return modules;
         

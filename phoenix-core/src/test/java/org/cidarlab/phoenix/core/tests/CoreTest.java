@@ -59,7 +59,7 @@ public class CoreTest {
 //        PhoenixController.preliminaryDataUpload (featureLib, plasmidLib, fluorophoreSpectra, cytometer);
         
         //Run a design decomposition
-        File structureFile = new File(getFilepath() + "/src/main/resources/miniEugeneFiles/toggle-switch-full-adjacent-promoters-2.eug");
+        File structureFile = new File(getFilepath() + "/src/main/resources/miniEugeneFiles/oscillator-transcriptional-interference.eug");
         List<Module> modulesToTest = PhoenixController.initializeDesign(structureFile, null);
         HashSet<Module> modulesToTestHash = new HashSet<>(modulesToTest);
         PhoenixController.createExperimentInstructions(modulesToTestHash, getFilepath() + "/src/main/resources/InstructionFiles");

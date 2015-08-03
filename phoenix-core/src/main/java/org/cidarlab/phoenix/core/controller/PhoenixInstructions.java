@@ -50,14 +50,26 @@ public class PhoenixInstructions {
             //Get all the samples from all experiments under consideration
             HashSet<String> sampleIDs = new HashSet<String>();
             List<Sample> allSamples = new ArrayList<>();
+            
             for (Experiment ex : experiments) {
+                HashSet<String> sampleIDsThisExpt = new HashSet<>();
                 List<Sample> allSamplesEx = ex.getAllSamples();
                 for (Sample s : allSamplesEx) {
-                    if (!sampleIDs.contains(s.getClothoID())) {
+                    if (s.getType().equals(SampleType.NEGATIVE) || s.getType().equals(SampleType.FLUORESCENT) || s.getType().equals(SampleType.BEADS)) {
+                        if (!sampleIDs.contains(s.getClothoID())) {
+                            allSamples.add(s);
+                            sampleIDs.add(s.getClothoID());
+                        }
+                    } else if (s.getType().equals(SampleType.EXPRESSION_DEGRATATION)) {
+                        if (!sampleIDs.contains(s.getClothoID())) {
+                            sampleIDsThisExpt.add(s.getClothoID());
+                            allSamples.add(s);
+                        }
+                    } else {
                         allSamples.add(s);
-                        sampleIDs.add(s.getClothoID());
                     }
                 }
+                sampleIDs.addAll(sampleIDsThisExpt);
             }
             
             //Write one line per sample - this will change to triplicates after debugging

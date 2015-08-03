@@ -5,6 +5,7 @@
 package org.cidarlab.phoenix.core.dom;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import lombok.Getter;
@@ -24,6 +25,7 @@ public class Sample {
         polynucleotides = _polynucleotides;
         media = _media;
         time = _time;
+        results = new HashMap();
         
         String pnNames = "";
         if (_polynucleotides != null) {
@@ -46,6 +48,30 @@ public class Sample {
             clothoID = _type.toString();
         }
     }    
+    
+    //No args constructor
+    public Sample() {    
+    }
+    
+    //Cloning method
+    @Override
+    public Sample clone() {
+        Sample clone = new Sample();
+        clone.clothoID = this.clothoID;
+        clone.media = this.media;
+        clone.name = this.name;
+        clone.strain = this.strain;
+        clone.time = this.time;
+        clone.type = this.type;
+        
+        List<Polynucleotide> pns = new ArrayList();
+        pns.addAll(this.polynucleotides);
+        clone.polynucleotides = pns;
+        
+        clone.results = new HashMap();
+        
+        return clone;
+    }
     
     //Module measured
     @Setter

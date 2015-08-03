@@ -297,8 +297,8 @@ public class TestingStructures {
 
         //Add samples
         for (Experiment e : experiments) {            
-            createControlSamples(e, controlsThisModule, m, sampleHash);
-            createExperimentSamples(e, m, sampleHash);
+            createControlSamples(e, controlsThisModule, m, sampleHash, 3);
+            createExperimentSamples(e, m, sampleHash, 3);
         }
     }
     
@@ -417,7 +417,7 @@ public class TestingStructures {
     }
     
     //Method for forming an experiment from a module which has partial part assignment
-    private static void createExperimentSamples(Experiment experiment, Module m, HashMap<String, Sample> sampleHash) {
+    private static void createExperimentSamples(Experiment experiment, Module m, HashMap<String, Sample> sampleHash, Integer replicates) {
 
         Strain defaultStrain = new Strain("E. coli DH5a");
         
@@ -425,7 +425,7 @@ public class TestingStructures {
         List<Polynucleotide> pNs = new ArrayList<>();
         pNs.add(makePolynucleotide(m));
         List<Sample> experimentSamples = new ArrayList<>();
-        experimentSamples.addAll(experiment.getExpDegControls());
+//        experimentSamples.addAll(experiment.getExpDegControls());
         
         //EXPRESSION EXPERIMENT
         if (experiment.getExType().equals(ExperimentType.EXPRESSION)) {
@@ -433,7 +433,7 @@ public class TestingStructures {
             //Add time series of samples for each media condition
             for (Medium media : experiment.getMediaConditions()) {
                 List<String> times = experiment.getTimes();
-                if (!times.isEmpty()) {
+                if (times.isEmpty()) {
                     Sample expTest = new Sample(SampleType.EXPERIMENT, defaultStrain, pNs, media, "0 min");
                     if (sampleHash.get(expTest.getClothoID()) == null) {
                         sampleHash.put(expTest.getClothoID(), expTest);
@@ -528,11 +528,19 @@ public class TestingStructures {
             
         }
         
-        experiment.setExperimentSamples(experimentSamples);
+        //Add sample replicates
+        List<Sample> replicateExperimentSamples = new ArrayList();
+        for (Sample s : experimentSamples) {
+            List<Sample> createReplicates = createReplicates(s, replicates);
+            replicateExperimentSamples.addAll(createReplicates);
+        }
+        
+//        experiment.setExperimentSamples(experimentSamples);
+        experiment.setExperimentSamples(replicateExperimentSamples);
     }
     
     //Method for forming an experiment from a module which has partial part assignment
-    private static void createControlSamples(Experiment experiment, HashSet<Module> controlModules, Module testModule, HashMap<String, Sample> sampleHash) {
+    private static void createControlSamples(Experiment experiment, HashSet<Module> controlModules, Module testModule, HashMap<String, Sample> sampleHash, Integer replicates) {
         
         Strain defaultStrain = new Strain("E. coli DH5a");
         
@@ -561,7 +569,7 @@ public class TestingStructures {
             if (m.getRole().equals(ModuleRole.REGULATION_CONTROL)) {
                 
                 //Get exisiting regulation controls if they exist
-                List<Sample> regulationControls = experiment.getRegulationControls();
+                List<Sample> regulationControls = new ArrayList();
                 
                 //Create regulation control sample with test sample for each media condition
                 List<Polynucleotide> pNs = new ArrayList<>();
@@ -590,6 +598,15 @@ public class TestingStructures {
                     }
                 }
                 
+                //Add sample replicates
+                List<Sample> replicateControlSamples = new ArrayList();
+                for (Sample s : regulationControls) {
+                    List<Sample> createReplicates = createReplicates(s, replicates);
+                    replicateControlSamples.addAll(createReplicates);
+                }
+
+                experiment.setRegulationControls(replicateControlSamples);
+                
             //Color controls
             } else if (m.getRole().equals(ModuleRole.COLOR_CONTROL)) {
                 
@@ -613,10 +630,10 @@ public class TestingStructures {
             //Expression and degration control
             } else if (m.getRole().equals(ModuleRole.EXPRESSION_DEGRATATION_CONTROL)) {
         
-                List<Sample> expDegControls = experiment.getExpDegControls();
+                List<Sample> expDegControls = new ArrayList();
                 
                 List<Polynucleotide> pNs = new ArrayList<>();
-                pNs.add(makePolynucleotide(testModule));
+                pNs.add(makePolynucleotide(m));
                 
                 //Add degradation control samples if this experiment is a degradation experiment
                 if (experiment.getExType().equals(ExperimentType.DEGRADATION)) {
@@ -650,6 +667,15 @@ public class TestingStructures {
                         }
                     }
                 }
+                
+                //Add sample replicates
+                List<Sample> replicateControlSamples = new ArrayList();
+                for (Sample s : expDegControls) {
+                List<Sample> createReplicates = createReplicates(s, replicates);
+                    replicateControlSamples.addAll(createReplicates);
+                }
+
+                experiment.setExpDegControls(replicateControlSamples);
             }
         }
     }
@@ -753,9 +779,18 @@ public class TestingStructures {
         conn.closeConnection();
     }
     
-    //Method for grabbing the only element of a HashSet
-    
+    //Method for creating replicate samples
+    private static List<Sample> createReplicates(Sample s, int n) {
      
+        List<Sample> replicates = new ArrayList();
+        for (int i = 0; i < n; i++) {
+            Sample clone = s.clone();
+            replicates.add(clone);
+        }
+        
+        return replicates;
+    }    
+    
     //FIELDS
     private static PrimitiveModule testPromoter;
     private static PrimitiveModule testRBS;

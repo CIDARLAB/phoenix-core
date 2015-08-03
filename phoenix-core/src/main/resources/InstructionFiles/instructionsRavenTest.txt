@@ -1,46 +1,46 @@
 **********************************************
-Assembly Instructions for target part: oscillator-transcriptional-interference_0_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0
-**********************************************
-
--> Assemble oscillator-transcriptional-interference_0_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: J23104|0|1|[+], BCD2|1|2|[+], araC|2|22(HelicalLinker)|[+], EBFP2|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
-
-
-**********************************************
 Assembly Instructions for target part: oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0
 **********************************************
 
--> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: J23104|0|1|[+], BCD2|1|2|[+], lacIm|2|22(HelicalLinker)|[+], EGFPm|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: J23104|0|1|[+], BCD2|1|2|[+], araC|2|22(HelicalLinker)|[+], EGFPm|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
 
 **********************************************
-Assembly Instructions for target part: oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_2
+Assembly Instructions for target part: oscillator-transcriptional-interference_0_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0
 **********************************************
 
--> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_2|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: J23104|0|1|[+], BCD2|1|2|[+], phlF|2|22(HelicalLinker)|[+], EGFPm|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble oscillator-transcriptional-interference_0_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: J23104|0|1|[+], BCD2|1|2|[+], lacIm|2|22(HelicalLinker)|[+], EBFP2|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
 
 **********************************************
-Assembly Instructions for target part: oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_1
+Assembly Instructions for target part: oscillator-transcriptional-interference_0_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_2
 **********************************************
 
--> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_1|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: J23104|0|1|[+], BCD2|1|2|[+], tetR|2|22(HelicalLinker)|[+], EGFPm|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble oscillator-transcriptional-interference_0_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_2|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: J23104|0|1|[+], BCD2|1|2|[+], phlF|2|22(HelicalLinker)|[+], EBFP2|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
+
+
+**********************************************
+Assembly Instructions for target part: oscillator-transcriptional-interference_0_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_1
+**********************************************
+
+-> Assemble oscillator-transcriptional-interference_0_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_1|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: J23104|0|1|[+], BCD2|1|2|[+], tetR|2|22(HelicalLinker)|[+], EBFP2|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
 
 **********************************************
 Assembly Instructions for target part: oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1
 **********************************************
 
--> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1|12*|7|[+, +, -, -, +, +, -, -, +] by performing a moclo cloning reaction with: oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1_intermediate_1_raven_MonAug0319:46:05EDT2015|12*|1|[+, +, -, -], oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1_intermediate_2_raven_MonAug0319:46:05EDT2015|1|7|[+, +, -, -, +], pSB1A2|12*|7
+-> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1|12*|7|[+, +, -, -, +, +, -, -, +] by performing a moclo cloning reaction with: oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1_intermediate_1_raven_MonAug0319:52:14EDT2015|12*|1|[+, +, -, -], oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1_intermediate_2_raven_MonAug0319:52:14EDT2015|1|7|[+, +, -, -, +], pSB1A2|12*|7
 
--> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1_intermediate_1_raven_MonAug0319:46:05EDT2015|12*|1|[+, +, -, -] by performing a moclo cloning reaction with: para-1|12*|2|[+], pA1LacO|2|3|[+], EGFPm|3|0*|[-], BCD2|0*|1|[-], pSB1K3|12*|1
+-> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1_intermediate_1_raven_MonAug0319:52:14EDT2015|12*|1|[+, +, -, -] by performing a moclo cloning reaction with: para-1|12*|2|[+], pA1LacO|2|3|[+], EBFP2|3|0*|[-], BCD2|0*|1|[-], pSB1K3|12*|1
 
--> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1_intermediate_2_raven_MonAug0319:46:05EDT2015|1|7|[+, +, -, -, +] by performing a moclo cloning reaction with: RBS?|1|2|[+], EGFPm|2|3|[+], J23104|3|12|[-], J23104|12|0*|[-], TERMINATOR?|0*|7|[+], pSB1K3|1|7
+-> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1_intermediate_2_raven_MonAug0319:52:14EDT2015|1|7|[+, +, -, -, +] by performing a moclo cloning reaction with: RBS?|1|2|[+], EGFPm|2|3|[+], J23104|3|12|[-], J23104|12|0*|[-], TERMINATOR?|0*|7|[+], pSB1K3|1|7
 
 -> Assemble para-1|12*|2|[+] by performing a moclo cloning reaction with: para-1|12*|2|[+], pSB1A2|12*|2
 
 -> Assemble pA1LacO|2|3|[+] by performing a moclo cloning reaction with: pA1LacO|2|3|[+], pSB1A2|2|3
 
--> Assemble EGFPm|3|0*|[-] by performing a moclo cloning reaction with: EGFPm|3|0*|[-], pSB1A2|3|0*
+-> Assemble EBFP2|3|0*|[-] by performing a moclo cloning reaction with: EBFP2|3|0*|[-], pSB1A2|3|0*
 
 -> Assemble BCD2|0*|1|[-] by performing a moclo cloning reaction with: BCD2|0*|1|[-], pSB1A2|0*|1
 
@@ -55,7 +55,7 @@ Assembly Instructions for target part: oscillator-transcriptional-interference_0
 PCR pA1LacO part with oligos: phoenix1 and phoenix2 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): pA1LacO|2|3|[+]
 PCR TERMINATOR? part with oligos: phoenix3 and phoenix4 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|0*|7|[+]
 PCR para-1 part with oligos: phoenix5 and phoenix6 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): para-1|12*|2|[+]
-PCR EGFPm part with oligos: phoenix7 and phoenix8 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): EGFPm|3|0*|[-]
+PCR EBFP2 part with oligos: phoenix7 and phoenix8 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): EBFP2|3|0*|[-]
 PCR RBS? part with oligos: phoenix9 and phoenix10 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
 PCR J23104 part with oligos: phoenix11 and phoenix12 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|12|0*|[-]
 PCR J23104 part with oligos: phoenix13 and phoenix14 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|3|12|[-]
@@ -75,17 +75,17 @@ PCR lacZ part with oligos: phoenix35 and phoenix36 and clone into vector: pSB1A2
 Assembly Instructions for target part: oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_2_8
 **********************************************
 
--> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_2_8|12*|7|[+, +, -, -, +, +, -, -, +] by performing a moclo cloning reaction with: oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1_intermediate_3_raven_MonAug0319:46:05EDT2015|12*|1|[+, +, -, -], oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1_intermediate_2_raven_MonAug0319:46:05EDT2015|1|7|[+, +, -, -, +], pSB1A2|12*|7
+-> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_2_8|12*|7|[+, +, -, -, +, +, -, -, +] by performing a moclo cloning reaction with: oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1_intermediate_3_raven_MonAug0319:52:14EDT2015|12*|1|[+, +, -, -], oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1_intermediate_2_raven_MonAug0319:52:14EDT2015|1|7|[+, +, -, -, +], pSB1A2|12*|7
 
--> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1_intermediate_3_raven_MonAug0319:46:05EDT2015|12*|1|[+, +, -, -] by performing a moclo cloning reaction with: para-1|12*|2|[+], pLtetO-1|2|3|[+], EGFPm|3|0*|[-], BCD2|0*|1|[-], pSB1K3|12*|1
+-> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1_intermediate_3_raven_MonAug0319:52:14EDT2015|12*|1|[+, +, -, -] by performing a moclo cloning reaction with: para-1|12*|2|[+], pLtetO-1|2|3|[+], EBFP2|3|0*|[-], BCD2|0*|1|[-], pSB1K3|12*|1
 
--> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1_intermediate_2_raven_MonAug0319:46:05EDT2015|1|7|[+, +, -, -, +] by performing a moclo cloning reaction with: RBS?|1|2|[+], EGFPm|2|3|[+], J23104|3|12|[-], J23104|12|0*|[-], TERMINATOR?|0*|7|[+], pSB1K3|1|7
+-> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1_intermediate_2_raven_MonAug0319:52:14EDT2015|1|7|[+, +, -, -, +] by performing a moclo cloning reaction with: RBS?|1|2|[+], EGFPm|2|3|[+], J23104|3|12|[-], J23104|12|0*|[-], TERMINATOR?|0*|7|[+], pSB1K3|1|7
 
 -> Assemble para-1|12*|2|[+] by performing a moclo cloning reaction with: para-1|12*|2|[+], pSB1A2|12*|2
 
 -> Assemble pLtetO-1|2|3|[+] by performing a moclo cloning reaction with: pLtetO-1|2|3|[+], pSB1A2|2|3
 
--> Assemble EGFPm|3|0*|[-] by performing a moclo cloning reaction with: EGFPm|3|0*|[-], pSB1A2|3|0*
+-> Assemble EBFP2|3|0*|[-] by performing a moclo cloning reaction with: EBFP2|3|0*|[-], pSB1A2|3|0*
 
 -> Assemble BCD2|0*|1|[-] by performing a moclo cloning reaction with: BCD2|0*|1|[-], pSB1A2|0*|1
 
@@ -99,7 +99,7 @@ Assembly Instructions for target part: oscillator-transcriptional-interference_0
 
 PCR TERMINATOR? part with oligos: phoenix3 and phoenix4 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|0*|7|[+]
 PCR para-1 part with oligos: phoenix5 and phoenix6 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): para-1|12*|2|[+]
-PCR EGFPm part with oligos: phoenix7 and phoenix8 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): EGFPm|3|0*|[-]
+PCR EBFP2 part with oligos: phoenix7 and phoenix8 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): EBFP2|3|0*|[-]
 PCR RBS? part with oligos: phoenix9 and phoenix10 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
 PCR J23104 part with oligos: phoenix11 and phoenix12 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|12|0*|[-]
 PCR pLtetO-1 part with oligos: phoenix37 and phoenix38 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): pLtetO-1|2|3|[+]
@@ -120,17 +120,17 @@ PCR lacZ part with oligos: phoenix27 and phoenix28 and clone into vector: pSB1A2
 Assembly Instructions for target part: oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_1_9
 **********************************************
 
--> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_1_9|12*|7|[+, +, -, -, +, +, -, -, +] by performing a moclo cloning reaction with: oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1_intermediate_4_raven_MonAug0319:46:05EDT2015|12*|1|[+, +, -, -], oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1_intermediate_2_raven_MonAug0319:46:05EDT2015|1|7|[+, +, -, -, +], pSB1A2|12*|7
+-> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_1_9|12*|7|[+, +, -, -, +, +, -, -, +] by performing a moclo cloning reaction with: oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1_intermediate_4_raven_MonAug0319:52:14EDT2015|12*|1|[+, +, -, -], oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1_intermediate_2_raven_MonAug0319:52:14EDT2015|1|7|[+, +, -, -, +], pSB1A2|12*|7
 
--> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1_intermediate_4_raven_MonAug0319:46:05EDT2015|12*|1|[+, +, -, -] by performing a moclo cloning reaction with: para-1|12*|2|[+], pPhlF|2|3|[+], EGFPm|3|0*|[-], BCD2|0*|1|[-], pSB1K3|12*|1
+-> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1_intermediate_4_raven_MonAug0319:52:14EDT2015|12*|1|[+, +, -, -] by performing a moclo cloning reaction with: para-1|12*|2|[+], pPhlF|2|3|[+], EBFP2|3|0*|[-], BCD2|0*|1|[-], pSB1K3|12*|1
 
--> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1_intermediate_2_raven_MonAug0319:46:05EDT2015|1|7|[+, +, -, -, +] by performing a moclo cloning reaction with: RBS?|1|2|[+], EGFPm|2|3|[+], J23104|3|12|[-], J23104|12|0*|[-], TERMINATOR?|0*|7|[+], pSB1K3|1|7
+-> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_1_intermediate_2_raven_MonAug0319:52:14EDT2015|1|7|[+, +, -, -, +] by performing a moclo cloning reaction with: RBS?|1|2|[+], EGFPm|2|3|[+], J23104|3|12|[-], J23104|12|0*|[-], TERMINATOR?|0*|7|[+], pSB1K3|1|7
 
 -> Assemble para-1|12*|2|[+] by performing a moclo cloning reaction with: para-1|12*|2|[+], pSB1A2|12*|2
 
 -> Assemble pPhlF|2|3|[+] by performing a moclo cloning reaction with: pPhlF|2|3|[+], pSB1A2|2|3
 
--> Assemble EGFPm|3|0*|[-] by performing a moclo cloning reaction with: EGFPm|3|0*|[-], pSB1A2|3|0*
+-> Assemble EBFP2|3|0*|[-] by performing a moclo cloning reaction with: EBFP2|3|0*|[-], pSB1A2|3|0*
 
 -> Assemble BCD2|0*|1|[-] by performing a moclo cloning reaction with: BCD2|0*|1|[-], pSB1A2|0*|1
 
@@ -144,7 +144,7 @@ Assembly Instructions for target part: oscillator-transcriptional-interference_0
 
 PCR TERMINATOR? part with oligos: phoenix3 and phoenix4 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|0*|7|[+]
 PCR para-1 part with oligos: phoenix5 and phoenix6 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): para-1|12*|2|[+]
-PCR EGFPm part with oligos: phoenix7 and phoenix8 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): EGFPm|3|0*|[-]
+PCR EBFP2 part with oligos: phoenix7 and phoenix8 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): EBFP2|3|0*|[-]
 PCR RBS? part with oligos: phoenix9 and phoenix10 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
 PCR J23104 part with oligos: phoenix11 and phoenix12 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|12|0*|[-]
 PCR J23104 part with oligos: phoenix13 and phoenix14 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|3|12|[-]
@@ -219,9 +219,9 @@ atgaagacgtGCATAAGAAACCAATTGTCCATATTGCA
 >phoenix6
 acgaagacctCATTTATGGAGAAACAGTAGAGAGTTGC
 >phoenix7
-atgaagacgtAGGTTTTGTATAGTTCATCCATGCCATG
+atgaagacgtAGGTGGCGGCGGTGCGGAACTCCAGCAG
 >phoenix8
-acgaagacctGGAGATGCGTAAAGGAGAAGAACTTTTC
+acgaagacctGGAGATGCGGGGTTCTCATCATCATCAT
 >phoenix9
 atgaagacgtTACT[ PART RBS? FORWARD HOMOLOGY REGION ]
 >phoenix10

@@ -167,8 +167,8 @@ public class TestingStructures {
                     pm.setModuleFeatures(testRBS.getModuleFeatures());
                     pm.getPrimitive().setOrientation(Component.Orientation.REVERSE);
                 } else if (type.equals("c") || type.equals("rc") || type.equals("fc")) {
-                    pm.setPrimitive(testCDS1.getPrimitive().clone());
-                    pm.setModuleFeatures(testCDS1.getModuleFeatures());
+                    pm.setPrimitive(testCDS2.getPrimitive().clone());
+                    pm.setModuleFeatures(testCDS2.getModuleFeatures());
                     pm.getPrimitive().setOrientation(Component.Orientation.REVERSE);
                 } else if (type.equals("t")) {
                     pm.setPrimitive(testTerminator.getPrimitive().clone());

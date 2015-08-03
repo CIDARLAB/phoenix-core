@@ -338,7 +338,7 @@ public class TestingStructures {
                     Feature regulatee = a.getRegulatee();
                     PrimitiveModule regPromoter = new PrimitiveModule(regulatee.getRole(), new Primitive(new ComponentType("p"), regulatee.getName()), regulatee);
 
-                    Module regControl = new Module(regulatee.getName().replaceAll(".ref", "") + "_REGULATION_CONTROL_" + count);
+                    Module regControl = new Module(regulatee.getName().replaceAll(".ref", "") + "_REGULATION_CONTROL");
                     count++;
                     List<PrimitiveModule> testSubmodules = new ArrayList<>();
 

@@ -398,7 +398,7 @@ public class PhoenixGrammar {
             int expressorCount = 0;
             int expresseeCount = 0; 
             
-            Module expressor = new Module(node.getName() + "_" + ModuleRole.EXPRESSOR.toString() + "_" + expressorCount);
+            Module expressor = new Module(node.getName() + "_" + ModuleRole.EXPRESSOR.toString());
             expressorCount++;
             expressor.setStage(node.getStage() + 1);
             expressor.setRole(ModuleRole.EXPRESSOR);
@@ -413,7 +413,7 @@ public class PhoenixGrammar {
                 FeatureRole pR = primitive.getPrimitiveRole();
                 if (pR.equals(FeatureRole.CDS) || pR.equals(FeatureRole.CDS_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSOR) || pR.equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR)) {
                                                            
-                    Module expressee = new Module(node.getName() + "_" + ModuleRole.EXPRESSEE.toString() + "_" + expresseeCount);
+                    Module expressee = new Module(node.getName() + "_" + ModuleRole.EXPRESSEE.toString());
                     expresseeCount++;
                     
                     //Create a new EXPRESSEE from this CDS primitive and copy the feature

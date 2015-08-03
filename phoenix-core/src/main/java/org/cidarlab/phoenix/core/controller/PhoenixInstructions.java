@@ -4,6 +4,7 @@
  */
 package org.cidarlab.phoenix.core.controller;
 
+import edu.emory.mathcs.backport.java.util.Collections;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,6 +14,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -60,7 +62,7 @@ public class PhoenixInstructions {
                             allSamples.add(s);
                             sampleIDs.add(s.getClothoID());
                         }
-                    } else if (s.getType().equals(SampleType.EXPRESSION_DEGRATATION)) {
+                    } else if (s.getType().equals(SampleType.EXPRESSION_DEGRATATION) || s.getType().equals(SampleType.REGULATION)) {
                         if (!sampleIDs.contains(s.getClothoID())) {
                             sampleIDsThisExpt.add(s.getClothoID());
                             allSamples.add(s);
@@ -70,6 +72,45 @@ public class PhoenixInstructions {
                     }
                 }
                 sampleIDs.addAll(sampleIDsThisExpt);
+            }
+            
+            //Sort the sample lines
+            if (!allSamples.isEmpty()) {
+                Collections.sort(allSamples, new Comparator<Sample>() {
+                    @Override
+                    public int compare(Sample s1, Sample s2) {
+                        
+                        String name1 = "";
+                        List<Polynucleotide> polynucleotides1 = s1.getPolynucleotides();
+                        if (!s1.getType().equals(SampleType.BEADS) && !s1.getType().equals(SampleType.NEGATIVE)) {
+                            for (Polynucleotide pN : polynucleotides1) {
+                                if (name1.isEmpty()) {
+                                    name1 = pN.getClothoID();
+                                } else {
+                                    name1 = name1 + "_" + pN.getClothoID();
+                                }
+                            }
+                        } else {
+                            name1 = s1.getType().toString();
+                        }
+
+                        String name2 = "";
+                        if (!s2.getType().equals(SampleType.BEADS) && !s2.getType().equals(SampleType.NEGATIVE)) {
+                            List<Polynucleotide> polynucleotides2 = s2.getPolynucleotides();
+                            for (Polynucleotide pN : polynucleotides2) {
+                                if (name2.isEmpty()) {
+                                    name2 = pN.getClothoID();
+                                } else {
+                                    name2 = name2 + "|" + pN.getClothoID();
+                                }
+                            }
+                        } else {
+                            name2 = s2.getType().toString();
+                        }
+
+                        return name1.compareTo(name2);
+                    }
+                });
             }
             
             //Write one line per sample - this will change to triplicates after debugging
@@ -84,7 +125,7 @@ public class PhoenixInstructions {
                         if (name.isEmpty()) {
                             name = pN.getClothoID();
                         } else {
-                            name = name + "_" + pN.getClothoID();
+                            name = name + "|" + pN.getClothoID();
                         }
                     }
                     

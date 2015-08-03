@@ -18,6 +18,7 @@ import org.cidarlab.phoenix.core.dom.Arc;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
 import org.cidarlab.phoenix.core.dom.Feature;
 import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
+import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
 import org.cidarlab.phoenix.core.dom.Part;
 import org.clothoapi.clotho3javaapi.Clotho;
 import org.clothoapi.clotho3javaapi.ClothoConnection;
@@ -30,7 +31,7 @@ public class FeatureAssignment {
     
     //Method for traverisng graphs performing a partial assignment
     //This method will be hacky until we have a real part assignment algorithm based on simulation
-    public static HashSet<Module> partialAssignment(List<Module> testingModules) {
+    public static HashSet<Module> partialAssignment(List<Module> testingModules, Double percentage) {
         
         
         ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
@@ -65,7 +66,7 @@ public class FeatureAssignment {
             //Add each of the assigned modules to the `modules to test' collection
             for (Module assignedM : m.getAssignedModules()) {
                 
-                //Check the features to remove an duplicate assignments
+                //Check the features to remove any duplicate assignments
                 List<Feature> assignedFeatureList = new ArrayList<>();
                 for (PrimitiveModule pm : assignedM.getSubmodules()) {
                     for (Feature f : pm.getModuleFeatures()) {
@@ -75,8 +76,11 @@ public class FeatureAssignment {
                     }
                 }
                 
+                //If this is a unique feature assignment, add assigned modules and multiplex copies to the modules to test
                 if (assignedFeatureLists.add(assignedFeatureList)) {
-                    modulesToTest.addAll(m.getAssignedModules());
+                    
+                    HashSet<Module> multiplexModules = addMultiplexModules(assignedM, percentage, features);
+                    modulesToTest.addAll(multiplexModules);
                 }
             }
         }
@@ -261,7 +265,7 @@ public class FeatureAssignment {
 
                             //Assign a promoter from the feature library
                             HashSet<Feature> featuresOfRole = getAllFeaturesOfRole(features, pm.getPrimitiveRole());
-                            makeAssignedClones(featuresOfRole, assignedRegulators, m, pm, clonesThisModule, count, i);
+                            count = makeAssignedClones(featuresOfRole, assignedRegulators, m, pm, clonesThisModule, count, i);
 
                             //Assign additional promoters
                         } else {
@@ -283,11 +287,13 @@ public class FeatureAssignment {
 
                             //If a new promoter needs to be assigned, more clones will be made from the existing one
                             if (differentPromoter) {
-
+                                
                                 List<Module> incompleteClones = new ArrayList<>();
                                 incompleteClones.addAll(clonesThisModule);
                                 for (Module clone : incompleteClones) {
 
+                                    clone.setName(clone.getName().substring(0, clone.getName().length()-2));
+                                    
                                     //Find promoters that should not be assigned again
                                     List<Feature> usedPromoters = new ArrayList<>();
                                     for (int index : promoterIndicies) {
@@ -298,7 +304,7 @@ public class FeatureAssignment {
                                     featuresOfRole.removeAll(usedPromoters);
 
                                     //Make new clones for all non-duplicate possibilities
-                                    makeAssignedClones(featuresOfRole, assignedRegulators, clone, pm, clonesThisModule, count, i);
+                                    count = makeAssignedClones(featuresOfRole, assignedRegulators, clone, pm, clonesThisModule, count, i);
                                 }
                                 clonesThisModule.removeAll(incompleteClones);
                             }
@@ -313,7 +319,7 @@ public class FeatureAssignment {
         }
     }
     
-    private static void makeAssignedClones(HashSet<Feature> featuresOfRole, HashSet<Feature> assignedRegulators, Module m, PrimitiveModule pm, HashSet<Module> clonesThisModule, int count, int i) {
+    private static Integer makeAssignedClones(HashSet<Feature> featuresOfRole, HashSet<Feature> assignedRegulators, Module m, PrimitiveModule pm, HashSet<Module> clonesThisModule, int count, int i) {
         
         for (Feature fR : featuresOfRole) {
 
@@ -356,6 +362,8 @@ public class FeatureAssignment {
                 }
             }
         }
+        
+        return count;
     }
     
     //Check to see how many CDS_FLUORESCENT_FUSION a Module has
@@ -435,9 +443,56 @@ public class FeatureAssignment {
         return parts;
     }
     
+    //Based upon the desired percentage of the module space returned make clones of assigned modules
+    private static HashSet<Module> addMultiplexModules(Module aM, double percentage, HashSet<Feature> features) {
+        
+        HashSet<Module> multiplexedAM = new HashSet(); 
+        
+//        for (Module aM : m.getAssignedModules()) {
+            int numVariants = getNumVariants(aM, features);
+            int multiplexNum = getMultiplexNumber(aM, numVariants, percentage);
+            
+            if (multiplexNum > 1) {
+                for (int i = 0; i < multiplexNum; i++) {
+                    Module clone = aM.clone(aM.getName() + "_" + i);
+                    multiplexedAM.add(clone);
+                }
+            } else {
+                multiplexedAM.add(aM);
+            }
+//        }
+        
+        return multiplexedAM;
+    }
+    
     //Method for converting a module to a part
-    private static Part moduleToPart(Module tesingModule) {
-        return null;
+    private static Integer getMultiplexNumber(Module m, int numVariants, double percentage) {
+        if (m.getRole().equals(ModuleRole.EXPRESSOR)) {
+            return 12;
+        } else {
+            return 1;
+        }
+    }
+    
+    //Method for converting a module to a part
+    private static Integer getNumVariants(Module m, HashSet<Feature> features) {
+        
+        int numVariants = 1;
+        
+        //Look for regulators that are abstract
+        for (int i = 0; i < m.getSubmodules().size(); i++) {
+            PrimitiveModule pm = m.getSubmodules().get(i);
+            for (Feature f : pm.getModuleFeatures()) {
+                if (f.getSequence().getSequence().isEmpty() && !pm.getPrimitiveRole().equals(FeatureRole.WILDCARD)) {
+
+                    //Assign a regulator from the feature library
+                    HashSet<Feature> featuresOfRole = getAllFeaturesOfRole(features, pm.getPrimitiveRole());
+                    numVariants = numVariants * featuresOfRole.size();
+                }
+            }
+        }
+        
+        return numVariants;
     }
     
     //Checks to see whether there is a stage of partial assignments that still exist

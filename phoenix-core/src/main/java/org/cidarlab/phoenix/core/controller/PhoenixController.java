@@ -79,7 +79,7 @@ public class PhoenixController {
         TestingStructures.addTestingPrimitives(modules);
         
         //Perform partial part assignments given the feature library
-        HashSet<Module> modulesToTest = new HashSet<Module>(FeatureAssignment.partialAssignment(modules));        
+        HashSet<Module> modulesToTest = new HashSet<Module>(FeatureAssignment.partialAssignment(modules, 0.5));        
         TestingStructures.createExperiments(modulesToTest);
         
         ClothoConnection conn = new ClothoConnection(Args.clothoLocation);

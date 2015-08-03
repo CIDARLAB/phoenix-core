@@ -298,7 +298,7 @@ public class FeatureAssignment {
                                     featuresOfRole.removeAll(usedPromoters);
 
                                     //Make new clones for all non-duplicate possibilities
-                                    makeAssignedClones(featuresOfRole, assignedRegulators, m, pm, clonesThisModule, count, i);
+                                    makeAssignedClones(featuresOfRole, assignedRegulators, clone, pm, clonesThisModule, count, i);
                                 }
                                 clonesThisModule.removeAll(incompleteClones);
                             }

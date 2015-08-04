@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
+import org.sbml.jsbml.SBMLDocument;
 
 /**
  *
@@ -127,6 +128,11 @@ public class Module {
     @Getter
     @Setter
     private HashSet<Module> assignedModules;
+    
+    //SBML Model
+    @Getter
+    @Setter
+    private SBMLDocument SBMLDocument;
 
     // Sub-Module(s)
     @Getter

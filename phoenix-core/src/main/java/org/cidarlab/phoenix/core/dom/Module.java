@@ -27,8 +27,8 @@ public class Module {
         this.isRoot = false;
         this.children = new ArrayList<>();
         this.parents = new ArrayList<>();
-        this.assignedModules = new HashSet<>();
-        this.controlModules = new HashSet<>();
+        this.assignedModules = new ArrayList<>();
+        this.controlModules = new ArrayList<>();
         this.submodules = new ArrayList<>();
         this.moduleFeatures = new ArrayList<>();
         this.isForward = true;
@@ -123,12 +123,12 @@ public class Module {
     //Child module(s)
     @Getter
     @Setter
-    private HashSet<Module> controlModules;
+    private List<Module> controlModules;
 
     //Assigned module(s)
     @Getter
     @Setter
-    private HashSet<Module> assignedModules;
+    private ArrayList<Module> assignedModules;
     
     //SBML Model
     @Getter
@@ -177,7 +177,6 @@ public class Module {
         EXPRESSEE_ACTIVATOR,
         EXPRESSEE_ACTIVATIBLE_ACTIVATOR,
         TRANSCRIPTIONAL_UNIT,
-        //        TESTING_CONTROL,
         EXPRESSION_DEGRATATION_CONTROL,
         REGULATION_CONTROL,
         COLOR_CONTROL,

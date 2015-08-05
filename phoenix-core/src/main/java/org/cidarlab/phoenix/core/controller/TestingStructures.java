@@ -185,7 +185,7 @@ public class TestingStructures {
     public static List<Experiment> createExperiments(HashSet<Module> modules) {
         
         //Initialize experiment set - some types of modules require multiple experiments
-        HashSet<Module> controlModulesAll = new HashSet<>();
+        ArrayList<Module> controlModulesAll = new ArrayList<>();
         List<Medium> defaultMedia = new ArrayList<>();
         defaultMedia.add(new Medium("LB", Medium.MediaType.RICH));        
         List<String> defaultTime = Arrays.asList(new String[]{"0 min", "10 min", "20 min", "30 min", "40 min", "50 min", "60 min"});
@@ -283,10 +283,10 @@ public class TestingStructures {
     }
     
     //Add controls and samples
-    private static void addSamples(List<Experiment> experiments, HashSet<Module> controlModulesAll, HashMap<String, Sample> sampleHash, Module m, boolean regControls) {
+    private static void addSamples(List<Experiment> experiments, ArrayList<Module> controlModulesAll, HashMap<String, Sample> sampleHash, Module m, boolean regControls) {
 
         //Add control constructs 
-        HashSet<Module> controlsThisModule = new HashSet<>();
+        ArrayList<Module> controlsThisModule = new ArrayList<>();
         controlsThisModule.add(createExpDegControl());
         controlsThisModule.addAll(createColorControls(controlsThisModule, m));
         if (regControls) {
@@ -362,7 +362,7 @@ public class TestingStructures {
     }
     
     //Make a standard expression/degradation control for EXPRESSORs and all types of EXPRESSEEs
-    private static HashSet<Module> createColorControls(HashSet<Module> controlModules, Module m) {
+    private static ArrayList<Module> createColorControls(ArrayList<Module> controlModules, Module m) {
         
         HashSet<Module> colorControls = new HashSet<>();
         
@@ -395,7 +395,7 @@ public class TestingStructures {
     }
     
     //Remove duplicate modules based on PrimitiveModules
-    private static void removeDuplicateModules(HashSet<Module> controlsThisModule, HashSet<Module> controlModulesAll, Module m) {
+    private static void removeDuplicateModules(ArrayList<Module> controlsThisModule, ArrayList<Module> controlModulesAll, Module m) {
         
         for (Module cM : controlsThisModule) {
             for (Module cMA : controlModulesAll) {
@@ -406,7 +406,7 @@ public class TestingStructures {
 
             controlModulesAll.add(cM);
             if (m.getControlModules() == null) {
-                HashSet<Module> cMs = new HashSet<>();
+                ArrayList<Module> cMs = new ArrayList<>();
                 cMs.add(cM);
                 m.setControlModules(cMs);
             } else {
@@ -539,7 +539,7 @@ public class TestingStructures {
     }
     
     //Method for forming an experiment from a module which has partial part assignment
-    private static void createControlSamples(Experiment experiment, HashSet<Module> controlModules, Module testModule, HashMap<String, Sample> sampleHash, Integer replicates) {
+    private static void createControlSamples(Experiment experiment, ArrayList<Module> controlModules, Module testModule, HashMap<String, Sample> sampleHash, Integer replicates) {
         
         Strain defaultStrain = new Strain("E. coli DH5a");
         

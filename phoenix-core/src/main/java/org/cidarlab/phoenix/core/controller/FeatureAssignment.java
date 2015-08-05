@@ -209,7 +209,7 @@ public class FeatureAssignment {
     private static HashSet<Feature> regulatorAssign(Module m, HashSet<Feature> features) {
 
         HashSet<Feature> assignedRegulators = new HashSet();
-        HashSet<Module> assignedModules = m.getAssignedModules();
+        ArrayList<Module> assignedModules = m.getAssignedModules();
         int count = 0;
 
         //Look for regulators that are abstract
@@ -247,7 +247,7 @@ public class FeatureAssignment {
         
         //Keep track of already assigned promoters in the case of multiple promoters... no duplicates
         //This needs a more robust long-term solution - Double-dutch??
-        HashSet<Module> clonesThisModule = new HashSet<>();
+        ArrayList<Module> clonesThisModule = new ArrayList<>();
         ArrayList<Integer> promoterIndicies = new ArrayList<>();
         int count = 0;
 
@@ -318,7 +318,7 @@ public class FeatureAssignment {
         }
     }
     
-    private static Integer makeAssignedClones(HashSet<Feature> featuresOfRole, HashSet<Feature> assignedRegulators, Module m, PrimitiveModule pm, HashSet<Module> clonesThisModule, int count, int i) {
+    private static Integer makeAssignedClones(HashSet<Feature> featuresOfRole, HashSet<Feature> assignedRegulators, Module m, PrimitiveModule pm, ArrayList<Module> clonesThisModule, int count, int i) {
         
         for (Feature fR : featuresOfRole) {
 

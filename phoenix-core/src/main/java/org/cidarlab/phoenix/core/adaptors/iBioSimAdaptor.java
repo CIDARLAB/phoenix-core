@@ -178,7 +178,7 @@ public class iBioSimAdaptor {
     }
     
     //Makes combinatorial SBML Models for Transcriptional Units
-    private static void makeTUModel (Module TU, HashSet<Module> expressees, HashSet<Module> expressors) {
+    private static void makeTUModel (Module TU, List<Module> expressees, List<Module> expressors) {
 
         //Search combinatorial space of arcs for valid expressee and expressor pairs
         
@@ -192,7 +192,7 @@ public class iBioSimAdaptor {
     }
     
     //Makes combinatorial SBML Models for Specification models
-    private static void makeSpecificationModel (Module specified, HashSet<Module> TUs) {
+    private static void makeSpecificationModel (Module specified, List<Module> TUs) {
  
         //Search combinatorial space of arcs for valid TUs
         

@@ -1312,7 +1312,7 @@ public class ClothoAdaptor {
         }
 
         if (((JSONArray) map.get("assignedModules")).size() > 0) {
-            HashSet<Module> assignedModules = new HashSet();
+            ArrayList<Module> assignedModules = new ArrayList();
             module.setAssignedModules(assignedModules);
             for (Object aMIdObj : (JSONArray) map.get("assignedModules")) {
                 module.getAssignedModules().add(getModule((String) aMIdObj, clothoObject));

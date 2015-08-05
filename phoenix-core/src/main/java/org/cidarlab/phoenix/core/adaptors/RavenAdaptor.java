@@ -51,7 +51,7 @@ public class RavenAdaptor {
                 moduleFeatureHash.add(targetModule.getModuleFeatures());
             }
 
-            HashSet<Module> controlModules = targetModule.getControlModules();
+            List<Module> controlModules = targetModule.getControlModules();
             for (Module controlModule : controlModules) {
                 if (!moduleFeatureHash.contains(controlModule.getModuleFeatures())) {
                     allModules.add(controlModule);

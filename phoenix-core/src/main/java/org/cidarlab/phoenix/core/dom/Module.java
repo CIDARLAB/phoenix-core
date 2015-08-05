@@ -28,6 +28,7 @@ public class Module {
         this.children = new ArrayList<>();
         this.parents = new ArrayList<>();
         this.assignedModules = new HashSet<>();
+        this.controlModules = new HashSet<>();
         this.submodules = new ArrayList<>();
         this.moduleFeatures = new ArrayList<>();
         this.isForward = true;

@@ -6,15 +6,22 @@ package org.cidarlab.phoenix.core.adaptors;
 
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import org.cidarlab.phoenix.core.dom.Feature;
+import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
+import org.cidarlab.phoenix.core.dom.PrimitiveModule;
 import org.sbml.jsbml.ASTNode;
 import org.sbml.jsbml.KineticLaw;
+import org.sbml.jsbml.LocalParameter;
 import org.sbml.jsbml.Model;
+import org.sbml.jsbml.ModifierSpeciesReference;
 import org.sbml.jsbml.Reaction;
 import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.Species;
+import org.sbml.jsbml.SpeciesReference;
 import org.sbml.jsbml.text.parser.FormulaParserLL3;
 import org.sbml.jsbml.text.parser.IFormulaParser;
 import org.sbml.jsbml.text.parser.ParseException;
@@ -34,79 +41,168 @@ public class iBioSimAdaptor {
     * METHODS FOR SBML MODEL CREATION
     */    
     
+    //Make SBML Documents, which contain models, based upon each type of module
+    //The modules in the tree will be passed in, not assigned modules
     public static void makeSBMLDocument(Module m) {
      
-        SBMLDocument sbmlDoc = new SBMLDocument();
-        Model model = new Model();
-        if (m.getRole().equals(ModuleRole.EXPRESSEE) || m.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || m.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR) || m.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || m.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR) || m.getRole().equals(ModuleRole.EXPRESSION_DEGRATATION_CONTROL) || m.getRole().equals(ModuleRole.EXPRESSOR)) {
-            model = makeEXPDEGModel(m);
-        } else if (m.getRole().equals(ModuleRole.REGULATION_CONTROL)) {
-            model = makeRegulationModel(m);
-        } else if (m.getRole().equals(ModuleRole.TRANSCRIPTIONAL_UNIT)) {
-            model = makeTUModel(m);
-        } else if (m.getRole().equals(ModuleRole.HIGHER_FUNCTION)) {
-            model = makeSpecificationModel(m);
+        for (Module aM : m.getAssignedModules()) {
+            if (aM.getRole().equals(ModuleRole.EXPRESSION_DEGRATATION_CONTROL) || aM.getRole().equals(ModuleRole.EXPRESSOR)) {
+                makeEXPDEGModel(aM);
+            } else if (aM.getRole().equals(ModuleRole.EXPRESSEE) || aM.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || aM.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR) || aM.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || aM.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)) {
+                makeRegulationModel(aM);
+            } else if (aM.getRole().equals(ModuleRole.TRANSCRIPTIONAL_UNIT)) {
+                
+                //Find expressors and expressees
+                ArrayList<Module> expressors = new ArrayList();
+                ArrayList<Module> expressees = new ArrayList();
+                for (Module child : m.getChildren()) {
+                    if (child.getRole().equals(ModuleRole.EXPRESSEE) || child.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || child.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR) || child.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || child.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)) {
+                        expressees.add(child);
+                    } else if (child.getRole().equals(ModuleRole.EXPRESSOR)) {
+                        expressors.add(child);
+                    }
+                }
+                
+                //Make a model for all combinatrial expressors and expressees
+                for (Module expressee : expressees) {
+                    for (Module expressor : expressors) {
+                        makeTUModel(aM, expressee.getAssignedModules(), expressor.getAssignedModules());
+                    }
+                }                
+            } else if (aM.getRole().equals(ModuleRole.HIGHER_FUNCTION)) {
+                
+                //Find expressors and expressees
+                ArrayList<Module> TUs = new ArrayList();
+                for (Module child : m.getChildren()) {
+                    if (child.getRole().equals(ModuleRole.TRANSCRIPTIONAL_UNIT)) {
+                        TUs.add(child);
+                    } 
+                }
+             
+                //Make a model for all combinatrial expressors and expressees
+                for (Module TU : TUs) {
+                    makeSpecificationModel(aM, TU.getAssignedModules());
+                }
+            }
         }
-        sbmlDoc.setModel(model);
     }    
     
     //Makes SBML Model for single expression cassettes
-    private static Model makeEXPDEGModel (Module m) {
+    private static void makeEXPDEGModel (Module m) {
         
         //Search the module to find the name of the species being expressed i.e. REGULATORS or FPs
+        String productID = "";
+        for (PrimitiveModule pm : m.getSubmodules()) {
+            if (pm.isForward()) {
+                if (pm.getPrimitiveRole().equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pm.getPrimitiveRole().equals(FeatureRole.CDS_ACTIVATOR) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION) || pm.getPrimitiveRole().equals(FeatureRole.CDS_LINKER) || pm.getPrimitiveRole().equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR) || pm.getPrimitiveRole().equals(FeatureRole.CDS_REPRESSOR)) {
+                    if (productID.isEmpty()) {
+                        productID = pm.getModuleFeatures().get(0).getName().replaceAll(".ref", "");
+                    } else {
+                        productID = productID + "_" + pm.getModuleFeatures().get(0).getName().replaceAll(".ref", "");
+                    }
+                }
+            }
+        }
         
+        //Create new model reactions for protein expression        
+        Reaction proteinExpression = new Reaction(m.getName() + "_pEXP");
+        Species product = new Species(productID);                                               
+        SpeciesReference productSpecRef = proteinExpression.createProduct(product);
         
-        //Create new model reactions for protein expression and degradation        
-        Species product = new Species();
-        
-        Reaction proteinExpression = new Reaction();                                                      
-        proteinExpression.createProduct(product);        
-        
+        //Expression kinetic law
         KineticLaw expressionKL = new KineticLaw(proteinExpression);
-        expressionKL.setMath(parseFormula("k0"));
+        LocalParameter k0 = new LocalParameter("k0_" + m.getName());
+        k0.setValue(1.0);
+        expressionKL.addLocalParameter(k0);
+        expressionKL.setMath(parseFormula(k0.getId()));
         
-        Reaction proteinDegradation = new Reaction();          
+        //Create new model reactions for protein degradation
+        Reaction proteinDegradation = new Reaction(m.getName() + "_pDEG");          
+        proteinDegradation.addReactant(productSpecRef);
+        
+        //Degradation kinetic law
+        KineticLaw degradationKL = new KineticLaw(proteinDegradation);
+        LocalParameter gamma = new LocalParameter("gamma");
+        gamma.setValue(1.0);
+        LocalParameter kD = new LocalParameter("kD_" + productSpecRef.getId());
+        kD.setValue(1.0);
+        degradationKL.addLocalParameter(gamma);
+        degradationKL.addLocalParameter(kD);
+        degradationKL.setMath(parseFormula("(" + gamma.getId() + "*" + productSpecRef.getId() + "/" + kD.getId() + ")/(1+(" + productSpecRef.getId() + "/" + kD.getId() + "))"));
         
         Model model = new Model();
         model.addReaction(proteinExpression);
         model.addReaction(proteinDegradation);
-        return model;
+        
+        SBMLDocument sbmlDoc = new SBMLDocument();
+        sbmlDoc.setModel(model);
+        m.setSBMLDocument(sbmlDoc);
     }
     
     //Makes SBML Model for regulation controls
-    private static Model makeRegulationModel (Module regControl) {
+    private static void makeRegulationModel (Module expressee) {
         
-        //Search primitive modules for promoter and regulator arcs?
+        //Make the regular model for the EXPRESSEE
+        makeEXPDEGModel(expressee);
         
-        //Create expression and degradation reactions for both the transcriptional unit expressing regulator and being regulated
-        //Search arcs to create links?
+        HashSet<Module> regulationControls = new HashSet();
+        for (Module cM : expressee.getControlModules()) {
+            if (cM.getRole().equals(ModuleRole.REGULATION_CONTROL)) {
+                regulationControls.add(cM);
+            }
+        }
         
-        Model model = new Model();
-        return model;
+        //Get reactions from the EXPREESSE
+        Reaction expresseeExpression = expressee.getSBMLDocument().getModel().getReaction(expressee.getName() + "_pEXP");
+        Reaction expresseeDegradation = expressee.getSBMLDocument().getModel().getReaction(expressee.getName() + "_pDEG");
+        
+        //Create expression and degradation reactions for both the regulation control
+        for (Module rCM : regulationControls) {
+            makeEXPDEGModel(rCM);
+            Reaction rCMExpression = rCM.getSBMLDocument().getModel().getReaction(rCM.getName() + "_pEXP");
+            
+            KineticLaw rCMExpressionKL = rCMExpression.getKineticLaw();
+            LocalParameter kL = new LocalParameter("kL_" + expressee.getName());
+            kL.setValue(1.0);
+            rCMExpressionKL.addLocalParameter(kL);
+            LocalParameter k0 = rCMExpressionKL.getLocalParameter("k0_" + rCM.getName());
+            
+            SpeciesReference productSpecRef = expresseeExpression.getProduct(expressee.getName() + "_pEXP");
+            rCMExpression.addModifier(new ModifierSpeciesReference(productSpecRef.getSpeciesInstance()));
+            rCMExpressionKL.setMath(parseFormula(k0.getId() + "/(1+" + kL.getId() + "*" + productSpecRef.getId() + ")"));
+            
+            Model model = rCM.getSBMLDocument().getModel();
+            model.addReaction(expresseeExpression);
+            model.addReaction(expresseeDegradation);
+        }
     }
     
-    //Makes SBML Model for Transcriptional Units
-    private static Model makeTUModel (Module TU) {
+    //Makes combinatorial SBML Models for Transcriptional Units
+    private static void makeTUModel (Module TU, HashSet<Module> expressees, HashSet<Module> expressors) {
+
+        //Search combinatorial space of arcs for valid expressee and expressor pairs
         
-        //Find the child expressor and expressee modules
-        
-        //Grab the expression reaction from the expressor and degradation reactions from the expressees
+        //Grab the expression reaction from the expressor and degradation reactions from the expressees        
         
         Model model = new Model();
-        return model;
+        
+        SBMLDocument sbmlDoc = new SBMLDocument();
+        sbmlDoc.setModel(model);
+        TU.setSBMLDocument(sbmlDoc);
     }
     
-    
-    private static Model makeSpecificationModel (Module specified) {
-        
-        //Find child TUs
-        
-        //Search primitive modules for promoter and regulator arcs?
+    //Makes combinatorial SBML Models for Specification models
+    private static void makeSpecificationModel (Module specified, HashSet<Module> TUs) {
+ 
+        //Search combinatorial space of arcs for valid TUs
         
         //Use expression and degradation reactions from TUs, link together and add regulation modification to to reactions based upon arcs
         
         Model model = new Model();
-        return model;
+        
+        SBMLDocument sbmlDoc = new SBMLDocument();
+        sbmlDoc.setModel(model);
+        specified.setSBMLDocument(sbmlDoc);
     }
 
     //Parse a string fomula to make an ASTNode for a KineticLaw object

@@ -95,8 +95,7 @@ public class FeatureAssignment {
     
     //Method for traverisng graphs, adding fluorescent proteins
     private static void addFPs(List<Module> testingModules,Clotho clothoObject) {
-        
-        
+                
         //Recieve data from Clotho
         HashSet<Fluorophore> FPs = new HashSet<Fluorophore>();
         Map fluorophoreQuery = new HashMap();

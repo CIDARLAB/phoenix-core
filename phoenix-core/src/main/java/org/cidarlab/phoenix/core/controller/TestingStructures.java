@@ -300,6 +300,8 @@ public class TestingStructures {
             createControlSamples(e, controlsThisModule, m, sampleHash, 3);
             createExperimentSamples(e, m, sampleHash, 3);
         }
+        
+        m.setControlModules(controlsThisModule);
     }
     
     //Make a standard expression/degradation control for EXPRESSORs and all types of EXPRESSEEs
@@ -356,9 +358,6 @@ public class TestingStructures {
 
             }
         }
-
-
-        
         return regControls;
     }
     

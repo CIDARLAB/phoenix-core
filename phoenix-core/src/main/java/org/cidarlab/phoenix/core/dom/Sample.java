@@ -25,7 +25,7 @@ public class Sample {
         polynucleotides = _polynucleotides;
         media = _media;
         time = _time;
-        results = new HashMap();
+//        results = new HashMap();
         
         String pnNames = "";
         if (_polynucleotides != null) {
@@ -68,7 +68,7 @@ public class Sample {
         pns.addAll(this.polynucleotides);
         clone.polynucleotides = pns;
         
-        clone.results = new HashMap();
+//        clone.results = new HashMap();
         
         return clone;
     }
@@ -109,9 +109,9 @@ public class Sample {
     private SampleType type;
     
     //Results from cytometry experiment
-    @Setter
-    @Getter
-    private HashMap<Detector, Double> results;
+//    @Setter
+//    @Getter
+//    private HashMap<Detector, Double> results;
     
     //Experiment types
     public enum SampleType {

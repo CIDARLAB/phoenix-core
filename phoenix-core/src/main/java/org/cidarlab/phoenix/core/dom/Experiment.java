@@ -107,6 +107,11 @@ public class Experiment {
     @Getter
     private List<Medium> mediaConditions;
     
+    //Experiment results object
+    @Setter
+    @Getter
+    private ExperimentResults results;
+    
     //Experiment types
     public enum ExperimentType {
         EXPRESSION,

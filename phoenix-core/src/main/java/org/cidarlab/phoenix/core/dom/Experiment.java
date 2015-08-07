@@ -28,6 +28,7 @@ public class Experiment {
     //No args constructor
     public Experiment(ExperimentType exptType, String _name, List<Medium> _media, List<String> _times) {
         exType = exptType;
+        results = new ExperimentResults(exptType);
         name = _name;
         clothoID = _name;
         mediaConditions = _media;
@@ -63,10 +64,15 @@ public class Experiment {
     private String clothoID;
     
     //Experiment type
-    @Setter
     @Getter
     private ExperimentType exType;
         
+    //Set experiment type and create an experiment results object
+    public void setExType(ExperimentType _exType) {
+        exType = _exType;
+        results = new ExperimentResults(_exType);
+    }
+    
     //Experiment testing samples
     @Setter
     @Getter

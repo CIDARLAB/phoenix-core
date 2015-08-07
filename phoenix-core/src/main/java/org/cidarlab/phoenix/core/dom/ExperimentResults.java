@@ -28,6 +28,9 @@ public class ExperimentResults {
             regulation = new HashMap();
         } else if (eType.equals(ExperimentType.SMALL_MOLECULE)) {
             induction = new HashMap();
+        } else {
+            timeSeries = new HashMap();
+            induction = new HashMap();
         }
     }
     

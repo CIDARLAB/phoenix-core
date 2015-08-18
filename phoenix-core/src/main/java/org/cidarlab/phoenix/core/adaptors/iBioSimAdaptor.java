@@ -8,6 +8,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
@@ -177,7 +178,7 @@ public class iBioSimAdaptor {
     }
     
     //Makes combinatorial SBML Models for Transcriptional Units
-    private static void makeTUModel (Module TU, List<Module> expressees, List<Module> expressors) {
+    private static void makeTUModel (Module TU, List<AssignedModule> expressees, List<AssignedModule> expressors) {
 
         //Search combinatorial space of arcs for valid expressee and expressor pairs
         
@@ -191,7 +192,7 @@ public class iBioSimAdaptor {
     }
     
     //Makes combinatorial SBML Models for Specification models
-    private static void makeSpecificationModel (Module specified, List<Module> TUs) {
+    private static void makeSpecificationModel (Module specified, List<AssignedModule> TUs) {
  
         //Search combinatorial space of arcs for valid TUs
         

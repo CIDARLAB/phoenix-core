@@ -35,7 +35,7 @@ public class Module {
         this.name = name;
         this.clothoID = name;
         this.color = Color.white;
-        this.experiments = new ArrayList<>();
+//        this.experiments = new ArrayList<>();
     }
 
     //Get all neighbors i.e. parents and children
@@ -62,9 +62,9 @@ public class Module {
         }
         clone.submodules = pmList;
 
-        List<Experiment> exList = new ArrayList<>();
-        exList.addAll(this.experiments);
-        clone.experiments = exList;
+//        List<Experiment> exList = new ArrayList<>();
+//        exList.addAll(this.experiments);
+//        clone.experiments = exList;
 
         clone.function = this.function;
         clone.isForward = this.isForward;
@@ -128,7 +128,7 @@ public class Module {
     //Assigned module(s)
     @Getter
     @Setter
-    private ArrayList<Module> assignedModules;
+    private ArrayList<AssignedModule> assignedModules;
     
     //SBML Model
     @Getter
@@ -153,11 +153,6 @@ public class Module {
     @Getter
     @Setter
     private Color color;
-
-    //Experiment associated with this module
-    @Getter
-    @Setter
-    private List<Experiment> experiments;
 
     //Graph Traversal
     public enum Color {

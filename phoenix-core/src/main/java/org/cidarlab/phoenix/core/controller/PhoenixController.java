@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import net.sf.json.JSONObject;
 import org.cidarlab.phoenix.core.adaptors.*;
+import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.grammars.PhoenixGrammar;
@@ -53,7 +54,7 @@ public class PhoenixController {
     //Main Phoenix design decomposition method
     //Remember to start Clotho before this initializeDesign
     //FILES IN, NOTHING OUT
-    public static List<Module> initializeDesign (File structuralSpecification, File functionalSpecification) throws Exception {
+    public static List<AssignedModule> initializeDesign (File structuralSpecification, File functionalSpecification) throws Exception {
 
         //STL function decomposition
         
@@ -79,7 +80,7 @@ public class PhoenixController {
         TestingStructures.addTestingPrimitives(modules);
         
         //Perform partial part assignments given the feature library
-        HashSet<Module> modulesToTest = new HashSet<Module>(FeatureAssignment.partialAssignment(modules, 0.5));        
+        HashSet<AssignedModule> modulesToTest = new HashSet<AssignedModule>(FeatureAssignment.partialAssignment(modules, 0.5));        
         TestingStructures.createExperiments(modulesToTest);
         
         ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
@@ -102,12 +103,12 @@ public class PhoenixController {
 
     //Create assembly and testing instructions from a set of Modules that need to be built and tested
     //MODULES IN, FILES OUT
-    public static List<File> createExperimentInstructions (HashSet<Module> modulesToTest, String filePath) throws Exception {
+    public static List<File> createExperimentInstructions (HashSet<AssignedModule> modulesToTest, String filePath) throws Exception {
         
         //Determine experiments from current module assignment state
         //Create expreriment objects based upon the modules being tested
         List<Experiment> currentExperiments = new ArrayList<>();
-        for (Module m : modulesToTest) {
+        for (AssignedModule m : modulesToTest) {
             currentExperiments.addAll(m.getExperiments());
         }
         

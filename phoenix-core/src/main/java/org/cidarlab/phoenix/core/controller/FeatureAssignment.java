@@ -15,6 +15,7 @@ import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Fluorophore;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Arc;
+import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
 import org.cidarlab.phoenix.core.dom.Feature;
 import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
@@ -31,14 +32,12 @@ public class FeatureAssignment {
     
     //Method for traverisng graphs performing a partial assignment
     //This method will be hacky until we have a real part assignment algorithm based on simulation
-    public static HashSet<Module> partialAssignment(List<Module> testingModules, Double percentage) {
-        
-        
+    public static HashSet<AssignedModule> partialAssignment(List<Module> testingModules, Double percentage) {
+                
         ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
-        Clotho clothoObject = new Clotho(conn);
+        Clotho clothoObject = new Clotho(conn);        
         
-        
-        HashSet<Module> modulesToTest = new HashSet<>();
+        HashSet<AssignedModule> modulesToTest = new HashSet<>();
         HashSet<List<Feature>> assignedFeatureLists = new HashSet<>();
         
         //Add fluorescent proteins to each module
@@ -64,7 +63,7 @@ public class FeatureAssignment {
             }
             
             //Add each of the assigned modules to the `modules to test' collection
-            for (Module assignedM : m.getAssignedModules()) {
+            for (AssignedModule assignedM : m.getAssignedModules()) {
                 
                 //Check the features to remove any duplicate assignments
                 List<Feature> assignedFeatureList = new ArrayList<>();
@@ -79,7 +78,7 @@ public class FeatureAssignment {
                 //If this is a unique feature assignment, add assigned modules and multiplex copies to the modules to test
                 if (assignedFeatureLists.add(assignedFeatureList)) {
                     
-                    HashSet<Module> multiplexModules = addMultiplexModules(assignedM, percentage, features);
+                    HashSet<AssignedModule> multiplexModules = addMultiplexModules(assignedM, percentage, features);
                     modulesToTest.addAll(multiplexModules);
                 }
             }
@@ -209,7 +208,7 @@ public class FeatureAssignment {
     private static HashSet<Feature> regulatorAssign(Module m, HashSet<Feature> features) {
 
         HashSet<Feature> assignedRegulators = new HashSet();
-        ArrayList<Module> assignedModules = m.getAssignedModules();
+        ArrayList<AssignedModule> assignedModules = m.getAssignedModules();
         int count = 0;
 
         //Look for regulators that are abstract
@@ -227,12 +226,13 @@ public class FeatureAssignment {
                             //Get rid of features that were saved when the module was saved that are only placeholders
                             if (!fR.getSequence().getSequence().isEmpty()) {
                                 Module clone = m.clone(m.getName() + "_" + count);
+                                AssignedModule assignedClone = new AssignedModule(clone);
                                 count++;
                                 List<Feature> mfClone = new ArrayList<>();
                                 mfClone.add(fR);
-                                clone.getSubmodules().get(i).setModuleFeatures(mfClone);
-                                clone.updateModuleFeatures();
-                                assignedModules.add(clone);
+                                assignedClone.getSubmodules().get(i).setModuleFeatures(mfClone);
+                                assignedClone.updateModuleFeatures();
+                                assignedModules.add(assignedClone);
                             }
                         }
                     }
@@ -247,7 +247,7 @@ public class FeatureAssignment {
         
         //Keep track of already assigned promoters in the case of multiple promoters... no duplicates
         //This needs a more robust long-term solution - Double-dutch??
-        ArrayList<Module> clonesThisModule = new ArrayList<>();
+        ArrayList<AssignedModule> clonesThisModule = new ArrayList<>();
         ArrayList<Integer> promoterIndicies = new ArrayList<>();
         int count = 0;
 
@@ -318,7 +318,7 @@ public class FeatureAssignment {
         }
     }
     
-    private static Integer makeAssignedClones(HashSet<Feature> featuresOfRole, HashSet<Feature> assignedRegulators, Module m, PrimitiveModule pm, ArrayList<Module> clonesThisModule, int count, int i) {
+    private static Integer makeAssignedClones(HashSet<Feature> featuresOfRole, HashSet<Feature> assignedRegulators, Module m, PrimitiveModule pm, ArrayList<AssignedModule> clonesThisModule, int count, int i) {
         
         for (Feature fR : featuresOfRole) {
 
@@ -339,12 +339,13 @@ public class FeatureAssignment {
                 //Get rid of features that were saved when the module was saved that are only placeholders
                 if (!fR.getSequence().getSequence().isEmpty() && regulatorAssigned) {
                     Module clone = m.clone(m.getName() + "_" + count);
+                    AssignedModule assignedClone = new AssignedModule(clone);
                     count++;
                     List<Feature> mfClone = new ArrayList<>();
                     mfClone.add(fR);
-                    clone.getSubmodules().get(i).setModuleFeatures(mfClone);
-                    clone.updateModuleFeatures();
-                    clonesThisModule.add(clone);
+                    assignedClone.getSubmodules().get(i).setModuleFeatures(mfClone);
+                    assignedClone.updateModuleFeatures();
+                    clonesThisModule.add(assignedClone);                    
                 }
 
             } else {
@@ -352,12 +353,13 @@ public class FeatureAssignment {
                 //Get rid of features that were saved when the module was saved that are only placeholders
                 if (!fR.getSequence().getSequence().isEmpty()) {
                     Module clone = m.clone(m.getName() + "_" + count);
+                    AssignedModule assignedClone = new AssignedModule(clone);
                     count++;
                     List<Feature> mfClone = new ArrayList<>();
                     mfClone.add(fR);
-                    clone.getSubmodules().get(i).setModuleFeatures(mfClone);
-                    clone.updateModuleFeatures();
-                    clonesThisModule.add(clone);
+                    assignedClone.getSubmodules().get(i).setModuleFeatures(mfClone);
+                    assignedClone.updateModuleFeatures();
+                    clonesThisModule.add(assignedClone);  
                 }
             }
         }
@@ -443,9 +445,9 @@ public class FeatureAssignment {
     }
     
     //Based upon the desired percentage of the module space returned make clones of assigned modules
-    private static HashSet<Module> addMultiplexModules(Module aM, double percentage, HashSet<Feature> features) {
+    private static HashSet<AssignedModule> addMultiplexModules(AssignedModule aM, double percentage, HashSet<Feature> features) {
         
-        HashSet<Module> multiplexedAM = new HashSet(); 
+        HashSet<AssignedModule> multiplexedAM = new HashSet(); 
         
 //        for (Module aM : m.getAssignedModules()) {
             int numVariants = getNumVariants(aM, features);
@@ -453,7 +455,7 @@ public class FeatureAssignment {
             
             if (multiplexNum > 1) {
                 for (int i = 0; i < multiplexNum; i++) {
-                    Module clone = aM.clone(aM.getName() + "_" + i);
+                    AssignedModule clone = aM.clone(aM.getName() + "_" + i);
                     multiplexedAM.add(clone);
                 }
             } else {

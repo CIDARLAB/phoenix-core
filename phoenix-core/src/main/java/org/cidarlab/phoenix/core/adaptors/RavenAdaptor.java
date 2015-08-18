@@ -16,6 +16,7 @@ import net.sf.json.JSONObject;
 import org.cidarlab.phoenix.core.controller.Args;
 import org.cidarlab.phoenix.core.controller.Utilities;
 import org.cidarlab.phoenix.core.dom.Annotation;
+import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.Component;
 import org.cidarlab.phoenix.core.dom.Feature;
 import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
@@ -39,7 +40,7 @@ import org.clothoapi.clotho3javaapi.ClothoConnection;
 public class RavenAdaptor {
     
     //Create assembly plans for given parts and return instructions file
-    public static File generateAssemblyPlan(HashSet<Module> modulesToTest, String filePath) throws Exception {
+    public static File generateAssemblyPlan(HashSet<AssignedModule> modulesToTest, String filePath) throws Exception {
         
         //Add testing modules to target modules
         HashSet<Module> allModules = new HashSet<>();

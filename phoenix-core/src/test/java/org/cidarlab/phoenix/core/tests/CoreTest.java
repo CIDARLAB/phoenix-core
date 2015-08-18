@@ -8,6 +8,7 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 import org.cidarlab.phoenix.core.controller.PhoenixController;
+import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -60,8 +61,8 @@ public class CoreTest {
         
         //Run a design decomposition
         File structureFile = new File(getFilepath() + "/src/main/resources/miniEugeneFiles/oscillator-transcriptional-interference.eug");
-        List<Module> modulesToTest = PhoenixController.initializeDesign(structureFile, null);
-        HashSet<Module> modulesToTestHash = new HashSet<>(modulesToTest);
+        List<AssignedModule> modulesToTest = PhoenixController.initializeDesign(structureFile, null);
+        HashSet<AssignedModule> modulesToTestHash = new HashSet<>(modulesToTest);
         PhoenixController.createExperimentInstructions(modulesToTestHash, getFilepath() + "/src/main/resources/InstructionFiles");
     }
     

@@ -14,6 +14,7 @@ import java.util.Map;
 import net.sf.json.JSONArray;
 import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
 import org.cidarlab.phoenix.core.dom.Arc;
+import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.Component;
 import org.cidarlab.phoenix.core.dom.ComponentType;
 import org.cidarlab.phoenix.core.dom.Experiment;
@@ -182,7 +183,7 @@ public class TestingStructures {
     }
     
     //Method for forming sets of experiments given a paritally assigned module graph
-    public static List<Experiment> createExperiments(HashSet<Module> modules) {
+    public static List<Experiment> createExperiments(HashSet<AssignedModule> modules) {
         
         //Initialize experiment set - some types of modules require multiple experiments
         ArrayList<Module> controlModulesAll = new ArrayList<>();
@@ -191,7 +192,7 @@ public class TestingStructures {
         List<String> defaultTime = Arrays.asList(new String[]{"0 min", "10 min", "20 min", "30 min", "40 min", "50 min", "60 min"});
         HashMap<String, Sample> sampleHash = new HashMap<>();
         
-        for (Module m : modules) {
+        for (AssignedModule m : modules) {
 
             List<Experiment> experimentList = new ArrayList<>();
             
@@ -274,7 +275,7 @@ public class TestingStructures {
         
         //Make sure all duplicate samples are merged
         List<Experiment> allExperiments = new ArrayList<>();
-        for (Module m : modules) {
+        for (AssignedModule m : modules) {
             allExperiments.addAll(m.getExperiments());
         }
         removeDuplicateSamplesPolynucleotides(allExperiments);

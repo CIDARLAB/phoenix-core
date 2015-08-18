@@ -157,6 +157,7 @@ public class PhoenixInstructions {
     
     
     //Method for reading results file from R
+    //This method needs to be fixed to assign results to the experiment, not the samples
     public static void parseTestingResults(File resultsFile, Experiment e) throws FileNotFoundException, IOException {
         
         BufferedReader reader = new BufferedReader(new FileReader(resultsFile.getAbsolutePath()));

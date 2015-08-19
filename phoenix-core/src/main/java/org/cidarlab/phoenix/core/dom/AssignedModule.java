@@ -20,13 +20,14 @@ public class AssignedModule extends Module {
     //Name only constructor
     public AssignedModule (String name) {
         super(name);
+        this.experiments = new ArrayList<>();
     }    
     
     //Constructor for module to assignedModule
     public AssignedModule (Module m) {
 //        AssignedModule aM = new AssignedModule(m.getName());
         super(m.getName());
-        
+        this.experiments = new ArrayList<>();
         List<Feature> fList = new ArrayList<>();
         for (Feature f : m.getModuleFeatures()) {
             fList.add(f.clone());

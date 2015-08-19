@@ -34,11 +34,13 @@ import org.clothoapi.clotho3javaapi.Clotho;
 import org.cidarlab.phoenix.core.dom.Annotation;
 import org.cidarlab.phoenix.core.dom.Arc;
 import org.cidarlab.phoenix.core.dom.AssemblyParameters;
+import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.Medium;
 import org.cidarlab.phoenix.core.dom.Medium.MediaType;
 import org.cidarlab.phoenix.core.dom.STLFunction;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Person;
+import org.cidarlab.phoenix.core.dom.PrimitiveModule;
 import org.cidarlab.phoenix.core.dom.Sample;
 import org.cidarlab.phoenix.core.dom.Sample.SampleType;
 import org.cidarlab.phoenix.core.dom.SmallMolecule;
@@ -606,6 +608,41 @@ public class ClothoAdaptor {
         return ids;
     }
 
+    public static Map createPrimitiveModuleMap(PrimitiveModule pmodule){
+        Map pmoduleMap = new HashMap();
+        
+        return pmoduleMap;
+    }
+    
+    public static String createAssignedModules(AssignedModule amodule, Clotho clothoObject){
+        String id = "";
+        Map amoduleMap = new HashMap();
+        amoduleMap.put("name",amodule.getName());
+        if(amodule.getClothoID() != null){
+            amoduleMap.put("id", amodule.getClothoID());
+        }
+        JSONArray exptIds = new JSONArray();
+        for (Experiment experiment : amodule.getExperiments()) {
+            String exptId = createExperiment(experiment, clothoObject);
+            exptIds.add(exptId);
+        }
+        amoduleMap.put("experiments", exptIds);
+        
+        JSONArray featureIds = new JSONArray();
+        for(Feature f:amodule.getModuleFeatures()){
+            featureIds.add(createFeature(f,clothoObject));
+        }
+        amoduleMap.put("features", featureIds);
+        amoduleMap.put("function", createSTLFunction(amodule.getFunction(),clothoObject));
+        amoduleMap.put("forward", amodule.isForward());
+        amoduleMap.put("role", amodule.getRole().toString());
+        amoduleMap.put("stage", amodule.getStage());
+        
+        id = (String)clothoObject.set(amoduleMap);
+        amodule.setClothoID(id);
+        return id;
+    }
+    
     //<editor-fold  desc="Create a Module Tree in Clotho">
     public static String createModule(Module module, Clotho clothoObject) {
         String id = "";
@@ -632,13 +669,13 @@ public class ClothoAdaptor {
             parentIds.add(parent.getClothoID());
         }
         
-        for (Module assignedModule : module.getAssignedModules()) {
+        /*for (Module assignedModule : module.getAssignedModules()) {
             assignedModuleIds.add(assignedModule.getClothoID());
-        }
+        }*/
 
         setNeighbor.put("children", childrenIds);
         setNeighbor.put("parents", parentIds);
-        setNeighbor.put("assignedModules", assignedModuleIds);
+        //setNeighbor.put("assignedModules", assignedModuleIds);
 
         clothoObject.set(setNeighbor);
         for (Module child : module.getChildren()) {
@@ -667,13 +704,22 @@ public class ClothoAdaptor {
         for (String fId : createFeatures(features, clothoObject)) {
             featureIds.add(fId);
         }
-
+        
+        JSONArray assignedModuleIds = new JSONArray();
+        for(AssignedModule amodule:module.getAssignedModules()){
+            assignedModuleIds.add(createAssignedModules(amodule,clothoObject));
+        }
+        createModule.put("assignedModules", assignedModuleIds);
+        
+        /*
         JSONArray exptIds = new JSONArray();
         for (Experiment experiment : module.getExperiments()) {
             String exptId = createExperiment(experiment, clothoObject);
             exptIds.add(exptId);
         }
         createModule.put("experiments", exptIds);
+        */
+        
         createModule.put("features", featureIds);
         createModule.put("stlFunction", createSTLFunction(module.getFunction(), clothoObject));
         //Should be someway to create Primitive Modules
@@ -1099,6 +1145,21 @@ public class ClothoAdaptor {
         
     }
 
+    public static AssignedModule getAssignedModule(String assignedModuleId, Clotho clothoObject){
+        
+        JSONObject amObj = new JSONObject();
+        amObj = (JSONObject)clothoObject.get(assignedModuleId);
+        
+        AssignedModule amodule = new AssignedModule((String)amObj.get("name"));
+        for(Object expId: (JSONArray)amObj.get("experiments")){
+            amodule.getExperiments().add(getExperiment((String)expId,clothoObject));
+        }
+        
+        return amodule;
+        
+    }
+    
+    
     public static Experiment getExperiment(String experimentid, Clotho clothoObject) {
 
         JSONObject exptObj = new JSONObject();
@@ -1303,14 +1364,20 @@ public class ClothoAdaptor {
             module.getChildren().add(childModule);
         }
         
-        if (((JSONArray) map.get("experiments")).size() > 0) {
+        for(Object amoduleId : (JSONArray)map.get("assignedModules")){
+            module.getAssignedModules().add(getAssignedModule((String)amoduleId,clothoObject));
+        }
+        
+        /*if (((JSONArray) map.get("experiments")).size() > 0) {
             List<Experiment> experiments = new ArrayList<Experiment>();
             module.setExperiments(experiments);
             for (Object exptIdObj : (JSONArray) map.get("experiments")) {
                 module.getExperiments().add(getExperiment((String) exptIdObj, clothoObject));
             }
         }
-
+        */
+        
+        /*
         if (((JSONArray) map.get("assignedModules")).size() > 0) {
             ArrayList<Module> assignedModules = new ArrayList();
             module.setAssignedModules(assignedModules);
@@ -1318,10 +1385,13 @@ public class ClothoAdaptor {
                 module.getAssignedModules().add(getModule((String) aMIdObj, clothoObject));
             }
         }
-        
+        */
         return module;
     }
-
+    
+    
+    
+    
     //Get all Clotho Parts
     public static Part getParts(JSONObject jsonPart) {
 

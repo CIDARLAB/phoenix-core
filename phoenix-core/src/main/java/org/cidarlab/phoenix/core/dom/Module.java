@@ -100,7 +100,7 @@ public class Module {
     @Setter
     private List<Feature> moduleFeatures;
 
-    //LTL function associated with this module
+    //STL function associated with this module
     @Getter
     @Setter
     private STLFunction function;

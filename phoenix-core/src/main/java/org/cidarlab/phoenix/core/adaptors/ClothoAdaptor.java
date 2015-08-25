@@ -614,7 +614,7 @@ public class ClothoAdaptor {
         return pmoduleMap;
     }
     
-    public static String createAssignedModules(AssignedModule amodule, Clotho clothoObject){
+    public static String createAssignedModule(AssignedModule amodule, Clotho clothoObject){
         String id = "";
         Map amoduleMap = new HashMap();
         amoduleMap.put("name",amodule.getName());
@@ -646,10 +646,13 @@ public class ClothoAdaptor {
     //<editor-fold  desc="Create a Module Tree in Clotho">
     public static String createModule(Module module, Clotho clothoObject) {
         String id = "";
+        
+        //Recursively create a Module Tree in Clotho. Returns the id of the Root Module
         id = createModuleTree(module, clothoObject);
+        //Recursively call each Module and set it's Parents and Children
         setModuleNeighbors(module, clothoObject);
+        
         return id;
-
     }
 
     public static void setModuleNeighbors(Module module, Clotho clothoObject) {
@@ -669,15 +672,12 @@ public class ClothoAdaptor {
             parentIds.add(parent.getClothoID());
         }
         
-        /*for (Module assignedModule : module.getAssignedModules()) {
-            assignedModuleIds.add(assignedModule.getClothoID());
-        }*/
-
         setNeighbor.put("children", childrenIds);
         setNeighbor.put("parents", parentIds);
-        //setNeighbor.put("assignedModules", assignedModuleIds);
-
+        
         clothoObject.set(setNeighbor);
+        
+        //Recursively call Children of the Module and set Neighbors. 
         for (Module child : module.getChildren()) {
             setModuleNeighbors(child, clothoObject);
         }
@@ -687,54 +687,43 @@ public class ClothoAdaptor {
 
         String id = "";
         Map createModule = new HashMap();
+        
         createModule.put("name", module.getName());
         createModule.put("schema", "org.cidarlab.phoenix.core.dom.Module");
         createModule.put("stage", module.getStage());
         createModule.put("role", module.getRole().toString());
         createModule.put("isForward", module.isForward());
         createModule.put("isRoot", module.isRoot());
-
         if (module.getClothoID() != null) {
             createModule.put("id", module.getClothoID());
         }
-
-        JSONArray featureIds = new JSONArray();
-        HashSet<Feature> features = new HashSet<Feature>(module.getModuleFeatures());
-
-        for (String fId : createFeatures(features, clothoObject)) {
-            featureIds.add(fId);
-        }
         
+        //Create and add AssignedModules
         JSONArray assignedModuleIds = new JSONArray();
         for(AssignedModule amodule:module.getAssignedModules()){
-            assignedModuleIds.add(createAssignedModules(amodule,clothoObject));
+            assignedModuleIds.add(createAssignedModule(amodule,clothoObject));
         }
         createModule.put("assignedModules", assignedModuleIds);
         
-        /*
-        JSONArray exptIds = new JSONArray();
-        for (Experiment experiment : module.getExperiments()) {
-            String exptId = createExperiment(experiment, clothoObject);
-            exptIds.add(exptId);
+        //Create and add ModuleFeatures
+        JSONArray featureIds = new JSONArray();
+        HashSet<Feature> features = new HashSet<Feature>(module.getModuleFeatures());
+        for (String fId : createFeatures(features, clothoObject)) {
+            featureIds.add(fId);
         }
-        createModule.put("experiments", exptIds);
-        */
+        createModule.put("moduleFeatures", featureIds);
         
-        createModule.put("features", featureIds);
         createModule.put("stlFunction", createSTLFunction(module.getFunction(), clothoObject));
+        
         //Should be someway to create Primitive Modules
-
+        //Make a createPrimitiveModules Function...
+        
         id = (String) clothoObject.set(createModule);
         module.setClothoID(id);
 
         //Recursive call for all children of this module
         for (Module child : module.getChildren()) {
             createModuleTree(child, clothoObject);
-        }
-        
-        //Recursive call for all assigned module clones of this module
-        for (Module assignedModule : module.getAssignedModules()) {
-            createModuleTree(assignedModule, clothoObject);
         }
         
         return id;
@@ -1340,7 +1329,7 @@ public class ClothoAdaptor {
         module.setRoot((boolean) map.get("isRoot"));
 
         JSONArray featureIds = new JSONArray();
-        featureIds = (JSONArray) map.get("features");
+        featureIds = (JSONArray) map.get("moduleFeatures");
         JSONArray featureJSONArray = new JSONArray();
         for (Object obj : featureIds) {
             String featureId = (String) obj;

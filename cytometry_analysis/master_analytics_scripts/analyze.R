@@ -10,7 +10,7 @@ library(stringr)
 library(FD)
 
 #Function for processing meansMedia and standard deviations with filtering and compensating
-process.samples <- function(experimentFlowSet, comp.mat, colorControlsFlowSet, dataFiles) {
+process.samples <- function(experimentFlowSet, comp.mat, colorControlsFlowSet, dataFiles) {		
 	
 	if (!is.null(comp.mat)) {
 		compensatedData <- compensate(experimentFlowSet, comp.mat)
@@ -25,8 +25,13 @@ process.samples <- function(experimentFlowSet, comp.mat, colorControlsFlowSet, d
 				
 	#Remove negative and fringe values
 	for (q in 1:length(compensatedData)) {
-		nmRemove(compensatedData[[q]], colnames(compensatedData), neg=TRUE)
-	}
+				
+		#Logicle Transform
+		# lgcl <- estimateLogicle(compensatedData[[q]], colnames(compensatedData))
+		# compensatedData[[q]] <- transform(compensatedData[[q]], lgcl)	
+		
+		compensatedData[[q]] <- nmRemove(compensatedData[[q]], colnames(compensatedData), neg=TRUE)
+	}							
 				
 	#Processing for row and column names
 	colnames(compensatedData) <- gsub("-",".", colnames(compensatedData))
@@ -72,8 +77,8 @@ functionalDiversity <- function(multiplexMeansDataSet) {
 }
 
 #Import key file
-key <- read.csv("key_5615.csv", header = TRUE)
-key [is.na(key)] <- ""
+# key <- read.csv("key_EXPRESSEE_DEGRADATION_81215.csv", header = TRUE)
+# key [is.na(key)] <- ""
 
 #Find bead controls, apply bead normalization
 beadsControlRow <- key[which(TRUE == grepl("beads", key$CONTROL, ignore.case=TRUE)),]
@@ -92,6 +97,9 @@ FSCSSCIndexes <- match(c("FSC-A", "SSC-A"), colnames(colorControlsFlowSet))
 columnIndexes <- c(FSCSSCIndexes[!is.na(FSCSSCIndexes)], columnIndexes[!is.na(columnIndexes)])
 colorControlsFlowSet <- colorControlsFlowSet[,columnIndexes]
 negativeControlFlowSet <- negativeControlFlowSet[,columnIndexes]
+
+#Specify minimum number of events to be considered
+# minEvents <- 500
 
 #Determine the spillover matrix
 comp.mat <- NULL
@@ -215,12 +223,21 @@ for (i in 1:length(uniquePartNames)) {
 				#Only process this data if there is more than one media time
 				if (length(uniqueMediaTimes) > 1) {
 				
+					#Do not evaluate files with less than 1000 events
+					finalFiles <- c()
+					for (nFile in 1:length(files)) {
+						frame <- read.flowSet(path = "data", files[nFile])
+						if (length(frame[[1]]) > minEvents) {
+							finalFiles <- c(finalFiles, files[nFile])
+						}
+					}
+				
 					#Analyze this flowset
-					experimentFlowSet <- read.flowSet(path = "data", files, phenoData=list(Filename="$FIL"))
+					experimentFlowSet <- read.flowSet(path = "data", finalFiles, phenoData=list(Filename="$FIL"))
 					experimentFlowSet <- experimentFlowSet[,columnIndexes]				
 									
 					#Process experiments for this flowSet
-					analyzedExptsMediaTimeEval <- process.samples(experimentFlowSet, comp.mat, colorControlsFlowSet, files)
+					analyzedExptsMediaTimeEval <- process.samples(experimentFlowSet, comp.mat, colorControlsFlowSet, finalFiles)
 					meansMediaTime[t,] <- colMeans(analyzedExptsMediaTimeEval)
 					standardDevsMediaTime[t,] <- colSds(analyzedExptsMediaTimeEval)
 				}	
@@ -265,22 +282,33 @@ for (i in 1:length(uniquePartNames)) {
 	    		#Plot each color
 	    		for (u in 1:length(colnames(meansMediaTime))) {
 	    			title <- colnames(meansMediaTime)[u]
+	    			
+	    			#Define y values
 	    			yaxis <- cbind(meansMediaTime[,colnames(meansMediaTime)[u]])
 	    			yaxis <- as.numeric(yaxis)
-	    			error <- standardDevsMediaTime[,colnames(standardDevsMediaTime)[u]]
-	    			error <- as.numeric(error)
 	    			
+	    			#Get standard error values for y values
+	    			error <- standardDevsMediaTime[,colnames(standardDevsMediaTime)[u]]
+	    			error <- as.numeric(error)	    			
 	    			ymin <- yaxis-error
 	    			ymax <- yaxis+error
 	    			limits <- aes(ymin=yaxis-error, ymax=yaxis+error)
 	
+					#File naming and placement in a subdirectory
 					name <- as.character(paste(uniquePartNames[i],"_",as.character(uniqueMediaTypeConcentrations[k]),"_",colnames(meansMediaTime)[u],".png"))
 					name <- str_replace_all(name, fixed(" "), "")
 					name <- sub("/","",name)
-					png(name, width=960, height=960, res=120)
+					File <- as.character(paste("./multiple_times/", name))
+   					File <- str_replace_all(File, fixed(" "), "")
+					# if (file.exists(File)) stop(File, " already exists")
+					dir.create(dirname(File), showWarnings = FALSE)
+					png(File, width=960, height=960, res=120)
+	    			
+	    			#Plotting
 	    			pt <- ggplot(data = plotMat, aes(x = xaxis, y = yaxis)) +
 	    			geom_errorbar(aes(ymin=yaxis-error, ymax=yaxis+error)) +
 					geom_line() +
+					scale_y_log10(limits = c(1,1e6)) +
 	    			geom_point(size = 4, shape=21, fill="white") +
 	    			ylim(0,max(ymax)) +
 	    			# #theme_bw() +
@@ -292,12 +320,21 @@ for (i in 1:length(uniquePartNames)) {
 	    		}
 			}			
 	
+			#Do not evaluate files with less than 1000 events
+			finalFilesMediaConcentration <- c()
+			for (nFile in 1:length(filesMediaConcentration)) {
+				frame <- read.flowSet(path = "data", filesMediaConcentration[nFile])
+				if (length(frame[[1]]) > minEvents) {
+					finalFilesMediaConcentration <- c(finalFilesMediaConcentration, filesMediaConcentration[nFile])
+				}
+			}
+	
 			#Analyze this flowset for all times of this media condition
-			experimentFlowSetMedia <- read.flowSet(path = "data", filesMediaConcentration, phenoData=list(Filename="$FIL"))
+			experimentFlowSetMedia <- read.flowSet(path = "data", finalFilesMediaConcentration, phenoData=list(Filename="$FIL"))
 			experimentFlowSetMedia <- experimentFlowSetMedia[,columnIndexes]				
 							
 			#Process experiments for this flowSet
-			analyzedExptsMediaEval <- process.samples(experimentFlowSetMedia, comp.mat, colorControlsFlowSet, filesMediaConcentration)		
+			analyzedExptsMediaEval <- process.samples(experimentFlowSetMedia, comp.mat, colorControlsFlowSet, finalFilesMediaConcentration)		
 			meansMedia[k,] <- colMeans(analyzedExptsMediaEval)
 			standardDevsMedia[k,] <- colSds(analyzedExptsMediaEval)
 			
@@ -330,23 +367,35 @@ for (i in 1:length(uniquePartNames)) {
     		
     		#Plot each color
     		for (l in 1:length(colnames(meansMedia))) {
+    			
     			title <- colnames(meansMedia)[l]
+    			
+    			#Define y values
     			yaxis <- cbind(meansMedia[,colnames(meansMedia)[l]])
     			yaxis <- as.numeric(yaxis)
-    			error <- standardDevsMedia[,colnames(standardDevsMedia)[l]]
-    			error <- as.numeric(error)
     			
+    			#Get standard error values for y values
+    			error <- standardDevsMedia[,colnames(standardDevsMedia)[l]]
+    			error <- as.numeric(error)    			
     			ymin <- yaxis-error
     			ymax <- yaxis+error
     			limits <- aes(ymin=yaxis-error, ymax=yaxis+error)
 
+				#File naming and placement in a subdirectory
 				name <- as.character(paste(uniquePartNames[i],"_",as.character(uniqueMediaTypes[j]),"_",colnames(meansMedia)[l],".png"))
 				name <- str_replace_all(name, fixed(" "), "")
 				name <- sub("/","",name)
-				png(name, width=960, height=960, res=120)
+				File <- as.character(paste("./multiple_media/", name))
+   				File <- str_replace_all(File, fixed(" "), "")
+				# if (file.exists(File)) stop(File, " already exists")
+				dir.create(dirname(File), showWarnings = FALSE)
+				png(File, width=960, height=960, res=120)
+				
+				#Plotting
     			p <- ggplot(plotMat, aes(x = xaxis, y = yaxis)) +
     			geom_errorbar(aes(ymin=yaxis-error, ymax=yaxis+error)) +
 				geom_line() +
+				scale_y_log10(limits = c(1,1e6)) +
     			geom_point(size = 4, shape=21, fill="white") +
     			ylim(0,max(ymax)) +
     			#theme_bw() +
@@ -401,24 +450,35 @@ if (length(oneMediaParts) > 1) {
  		
     #Plot each color
     for (v in 1:length(colnames(meansOneMedia))) {
+		
 		title <- colnames(meansOneMedia)[v]
+   		
+   		#Define y values
    		yaxis <- cbind(meansOneMedia[,colnames(meansOneMedia)[v]])
    		yaxis <- as.numeric(yaxis)
+   		
+   		#Get standard error values for y values
    		error <- standardDevsOneMedia[,colnames(standardDevsOneMedia)[v]]
-   		error <- as.numeric(error)
-    			
+   		error <- as.numeric(error)    			
    		ymin <- yaxis-error
    		ymax <- yaxis+error
-   		limits <- aes(ymin=yaxis-error, ymax=yaxis+error)
+   		limits <- aes(ymin=yaxis-error, ymax=yaxis+error)		
 
-		name <- as.character(paste("Mean_Population_Averages_Parts_One_Medium",".png"))
+		#File naming and placement in a subdirectory
+		name <- as.character(paste("Mean_Population_Averages_Parts_One_Medium",as.character(title),".png"))
 		name <- str_replace_all(name, fixed(" "), "")
-		name <- sub("/","",name)
-		png(name, width=960, height=960, res=120)
+		name <- sub("/","",name)		   		
+   		File <- as.character(paste("./one_media/", name))
+   		File <- str_replace_all(File, fixed(" "), "")
+		# if (file.exists(File)) stop(File, " already exists")
+		dir.create(dirname(File), showWarnings = FALSE)   		
+   		png(File, width=960, height=960, res=120)
    		
+   		#Plotting
    		po <- ggplot(plotMat, aes(x = xaxis, y = yaxis)) +
    		geom_bar(colour="black", fill="#DD8888", width=.8, stat="identity") + 
     	guides(fill=FALSE) +
+    	scale_y_log10(limits = c(1,1e6)) +
    		geom_errorbar(aes(ymin=yaxis-error, ymax=yaxis+error)) +
   		ggtitle(as.character("Mean Population Averages")) +    			
    		xlab(as.character("PARTS")) +
@@ -449,13 +509,22 @@ if (length(multiplexVals) > 1) {
 	
 	#Plot solutions
     for (o in 3:length(colnames(multiplexDataFrame))) {
+    	
     	title <- colnames(multiplexDataFrame)[o]
+    	
+    	#Define y values
     	yaxis <- cbind(multiplexDataFrame[,colnames(multiplexDataFrame)[o]])
 		yaxis <- as.numeric(yaxis)
 
+		#File naming and placement in a subdirectory
 		name <- as.character(paste(colnames(multiplexDataFrame)[o],".png"))
 		name <- str_replace_all(name, fixed(" "), "")
-		png(name, width=960, height=960, res=120)
+		File <- as.character(paste("./functional_richness/", name))
+   		File <- str_replace_all(File, fixed(" "), "")
+		# if (file.exists(File)) stop(File, " already exists")
+		dir.create(dirname(File), showWarnings = FALSE)		
+		png(File, width=960, height=960, res=120)
+
 		PartType <- multiplexDataFrame$TYPE
 		
     	p <- ggplot(multiplexDataFrame, aes(x = multiplexDataFrame$MULTIPLEX, y = yaxis, group = PartType, colour = PartType)) +
@@ -472,5 +541,5 @@ if (length(multiplexVals) > 1) {
 }
 
 #Write output into an exported csv file for Phoenix
-filename <- "results_5615.csv"
-write.csv(file=filename, x=output, row.names=FALSE)
+# filename <- "results_5615.csv"
+# write.csv(file=filename, x=output, row.names=FALSE)

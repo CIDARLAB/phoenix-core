@@ -2,29 +2,21 @@
 Assembly Instructions for target part: oscillator-transcriptional-interference_0_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0
 **********************************************
 
--> Assemble oscillator-transcriptional-interference_0_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: J23104|0|1|[+], BCD2|1|2|[+], araC|2|22(HelicalLinker)|[+], EBFP2|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble oscillator-transcriptional-interference_0_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: J23104|0|1|[+], BCD2|1|2|[+], CDS_ACTIVATIBLE_ACTIVATOR?|2|22(HelicalLinker)|[+], EBFP2|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
+-> Assemble CDS_ACTIVATIBLE_ACTIVATOR?|2|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: CDS_ACTIVATIBLE_ACTIVATOR?|2|22(HelicalLinker)|[+], pSB1A2|2|22
 
-**********************************************
-Assembly Instructions for target part: oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_2
-**********************************************
-
--> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_2|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: J23104|0|1|[+], BCD2|1|2|[+], lacIm|2|22(HelicalLinker)|[+], EGFPm|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
-
+PCR CDS_ACTIVATIBLE_ACTIVATOR? part with oligos: phoenix1 and phoenix2 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): CDS_ACTIVATIBLE_ACTIVATOR?|2|22(HelicalLinker)|[+]
 
 **********************************************
 Assembly Instructions for target part: oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0
 **********************************************
 
--> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: J23104|0|1|[+], BCD2|1|2|[+], phlF|2|22(HelicalLinker)|[+], EGFPm|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: J23104|0|1|[+], BCD2|1|2|[+], CDS_REPRESSIBLE_REPRESSOR?|2|22(HelicalLinker)|[+], EGFPm|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
+-> Assemble CDS_REPRESSIBLE_REPRESSOR?|2|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: CDS_REPRESSIBLE_REPRESSOR?|2|22(HelicalLinker)|[+], pSB1A2|2|22
 
-**********************************************
-Assembly Instructions for target part: oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_1
-**********************************************
-
--> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_1|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: J23104|0|1|[+], BCD2|1|2|[+], tetR|2|22(HelicalLinker)|[+], EGFPm|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
-
+PCR CDS_REPRESSIBLE_REPRESSOR? part with oligos: phoenix3 and phoenix4 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): CDS_REPRESSIBLE_REPRESSOR?|2|22(HelicalLinker)|[+]
 
 **********************************************
 Assembly Instructions for target part: EBFP2_COLOR_CONTROL
@@ -38,12 +30,20 @@ Assembly Instructions for target part: EXPRESSION_DEGRADATION_CONTROL
 **********************************************
 
 -> Assemble EXPRESSION_DEGRADATION_CONTROL|0|4|[+, +, +, +] by performing a moclo cloning reaction with: 
-PCR lacZ part with oligos: phoenix1 and phoenix2 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|0|4
+PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|0|4
 
 
 **********************************************
 OLIGOS
 >phoenix1
-gttctttactagtgggtctcaGGAGatgtcttctgcaccatatgcggtgtgaaatac
+atgaagacgtAATG[ PART CDS_ACTIVATIBLE_ACTIVATOR? FORWARD HOMOLOGY REGION ]
 >phoenix2
+acgaagacctTCTTTAGCAGCAGCTTCAGC[ PART CDS_ACTIVATIBLE_ACTIVATOR? REVERSE HOMOLOGY REGION ]
+>phoenix3
+atgaagacgtAATG[ PART CDS_REPRESSIBLE_REPRESSOR? FORWARD HOMOLOGY REGION ]
+>phoenix4
+acgaagacctTCTTTAGCAGCAGCTTCAGC[ PART CDS_REPRESSIBLE_REPRESSOR? REVERSE HOMOLOGY REGION ]
+>phoenix5
+gttctttactagtgggtctcaGGAGatgtcttctgcaccatatgcggtgtgaaatac
+>phoenix6
 gcggccgctactagtaggtctctAAGCacgtcttccccgcgcgttggccgattcattaa

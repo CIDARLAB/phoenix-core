@@ -74,6 +74,12 @@ public class AssignedModule extends Module {
         return clone;
     }
     
+    
+    //Control Modules as a property of Assigned Modules.
+    @Getter
+    @Setter
+    private List<Module> controlModules;
+    
     //SBML Model
     @Getter
     @Setter

@@ -111,7 +111,7 @@ public class EugeneAdaptor {
                 
                 
                 //Create a new primitive module
-                PrimitiveModule pm = new PrimitiveModule();
+                
                 Primitive primitive = new Primitive(ctype,c.getName());
                 
                 //Primitive orientation                
@@ -121,11 +121,7 @@ public class EugeneAdaptor {
                     primitive.setOrientation(Orientation.REVERSE);
                 }
                 
-                pm.setPrimitive(primitive);
-                List<Feature> pmf = new ArrayList<>();
-                pmf.add(f);
-                pm.setModuleFeatures(pmf);
-                pm.setPrimitiveRole(PhoenixGrammar.findRole(ctype));
+                PrimitiveModule pm = new PrimitiveModule(PhoenixGrammar.findRole(ctype),primitive,f);
                 pm.setForward(c.isForward());
                 primitiveModules.add(pm);
             }

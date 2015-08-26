@@ -68,10 +68,8 @@ public class FeatureAssignment {
                 //Check the features to remove any duplicate assignments
                 List<Feature> assignedFeatureList = new ArrayList<>();
                 for (PrimitiveModule pm : assignedM.getSubmodules()) {
-                    for (Feature f : pm.getModuleFeatures()) {
-                        if (!f.getSequence().getSequence().isEmpty()) {
-                            assignedFeatureList.add(f);
-                        }
+                    if(!pm.getModuleFeature().getSequence().getSequence().isEmpty()){
+                        assignedFeatureList.add(pm.getModuleFeature());
                     }
                 }
                 
@@ -150,16 +148,19 @@ public class FeatureAssignment {
                 if (p.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
                     
                     //If the parent has FPs already assigned, pull those down
-                    if (parentFluorescentFusions.size() > 0) {                        
-                        List<Feature> pFeatures = new ArrayList<>();
-                        pFeatures.add(parentFluorescentFusions.get(count));
-                        p.setModuleFeatures(pFeatures);         
+                    if (parentFluorescentFusions.size() > 0) {
+                        p.setModuleFeature(parentFluorescentFusions.get(count));
+                        //List<Feature> pFeatures = new ArrayList<>();
+                        //pFeatures.add(parentFluorescentFusions.get(count));
+                        //p.setModuleFeatures(pFeatures);         
                         count++;
                     } else {
-                        List<Feature> pFeatures = new ArrayList<>();
-                        pFeatures.add(FPs.get(count));
                         
-                        p.setModuleFeatures(pFeatures);
+                        p.setModuleFeature(FPs.get(count));
+                        //List<Feature> pFeatures = new ArrayList<>();
+                        //pFeatures.add(FPs.get(count));
+                        //p.setModuleFeatures(pFeatures);
+                        
                         count++;
                     }                    
                 
@@ -187,6 +188,14 @@ public class FeatureAssignment {
             //Look for regulators that are abstract
             for (int i = 0; i < m.getSubmodules().size(); i++) {
                 PrimitiveModule pm = m.getSubmodules().get(i);
+                if(pm.getModuleFeature()!= null){
+                    for(Feature libF : getAllFeaturesOfRole(features,pm.getModuleFeature().getRole())){
+                        if(pm.getModuleFeature().getName().equalsIgnoreCase(libF.getName())){
+                            pm.setModuleFeature(libF);
+                        }
+                    }
+                }
+                /*
                 if (!pm.getModuleFeatures().isEmpty()) {
                     for (Feature f : pm.getModuleFeatures()) {
                         for (Feature libF : getAllFeaturesOfRole(features, f.getRole())) {
@@ -197,7 +206,7 @@ public class FeatureAssignment {
                             }
                         }
                     }
-                }
+                }*/
             }
             
             m.updateModuleFeatures();
@@ -214,9 +223,9 @@ public class FeatureAssignment {
         //Look for regulators that are abstract
         for (int i = 0; i < m.getSubmodules().size(); i++) {
             PrimitiveModule pm = m.getSubmodules().get(i);
-            for (Feature f : pm.getModuleFeatures()) {
+            //for (Feature f : pm.getModuleFeatures()) {
                 if (pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS) || pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_ACTIVATOR) || pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_REPRESSOR) || pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_REPRESSIBLE_REPRESSOR)) {
-                    if (f.getSequence().getSequence().isEmpty()) {
+                    if (pm.getModuleFeature().getSequence().getSequence().isEmpty()) {
 
                         //Assign a regulator from the feature library
                         HashSet<Feature> featuresOfRole = getAllFeaturesOfRole(features, pm.getPrimitiveRole());
@@ -237,7 +246,7 @@ public class FeatureAssignment {
                         }
                     }
                 }
-            }
+            //}
         }
         return assignedRegulators;
     }
@@ -254,10 +263,10 @@ public class FeatureAssignment {
         //Look for promoters that are abstract
         for (int i = 0; i < m.getSubmodules().size(); i++) {
             PrimitiveModule pm = m.getSubmodules().get(i);
-            for (Feature f : pm.getModuleFeatures()) {
+            //for (Feature f : pm.getModuleFeatures()) {
                 if (pm.getPrimitiveRole().equals(Feature.FeatureRole.PROMOTER) || pm.getPrimitiveRole().equals(Feature.FeatureRole.PROMOTER_CONSTITUTIVE) || pm.getPrimitiveRole().equals(Feature.FeatureRole.PROMOTER_REPRESSIBLE) || pm.getPrimitiveRole().equals(Feature.FeatureRole.PROMOTER_INDUCIBLE)) {
 
-                    if (f.getSequence().getSequence().isEmpty()) {
+                    if (pm.getModuleFeature().getSequence().getSequence().isEmpty()) {
 
                         //If there are already clones with a promoter that was assigned
                         if (clonesThisModule.isEmpty()) {
@@ -314,7 +323,7 @@ public class FeatureAssignment {
                 }
 
                 m.setAssignedModules(clonesThisModule);
-            }
+            //}
         }
     }
     
@@ -373,7 +382,7 @@ public class FeatureAssignment {
         List<Feature> FPList = new ArrayList<>();
         for (PrimitiveModule pm : m.getSubmodules()) {
             if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
-                FPList.addAll(pm.getModuleFeatures());
+                FPList.add(pm.getModuleFeature());
             }
         }
         
@@ -483,14 +492,14 @@ public class FeatureAssignment {
         //Look for regulators that are abstract
         for (int i = 0; i < m.getSubmodules().size(); i++) {
             PrimitiveModule pm = m.getSubmodules().get(i);
-            for (Feature f : pm.getModuleFeatures()) {
-                if (f.getSequence().getSequence().isEmpty() && !pm.getPrimitiveRole().equals(FeatureRole.WILDCARD)) {
+            //for (Feature f : pm.getModuleFeatures()) {
+                if (pm.getModuleFeature().getSequence().getSequence().isEmpty() && !pm.getPrimitiveRole().equals(FeatureRole.WILDCARD)) {
 
                     //Assign a regulator from the feature library
                     HashSet<Feature> featuresOfRole = getAllFeaturesOfRole(features, pm.getPrimitiveRole());
                     numVariants = numVariants * featuresOfRole.size();
                 }
-            }
+            //}
         }
         
         return numVariants;
@@ -506,11 +515,11 @@ public class FeatureAssignment {
         
         //If a null sequence for a feature is found, not fully assigned
         for (PrimitiveModule pm : module.getSubmodules()) {
-            for (Feature f : pm.getModuleFeatures()) {
-                if (f.getSequence().getSequence().isEmpty()) {
+            //for (Feature f : pm.getModuleFeatures()) {
+                if (pm.getModuleFeature().getSequence().getSequence().isEmpty()) {
                     return false;
                 }
-            }
+            //}
         }        
         return true;
     }

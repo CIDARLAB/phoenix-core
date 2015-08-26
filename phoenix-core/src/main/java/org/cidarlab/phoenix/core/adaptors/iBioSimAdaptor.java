@@ -45,7 +45,7 @@ public class iBioSimAdaptor {
     //The modules in the tree will be passed in, not assigned modules
     public static void makeSBMLDocument(Module m) {
      
-        for (Module aM : m.getAssignedModules()) {
+        for (AssignedModule aM : m.getAssignedModules()) {
             if (aM.getRole().equals(ModuleRole.EXPRESSION_DEGRATATION_CONTROL) || aM.getRole().equals(ModuleRole.EXPRESSOR)) {
                 makeEXPDEGModel(aM);
             } else if (aM.getRole().equals(ModuleRole.EXPRESSEE) || aM.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || aM.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR) || aM.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || aM.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)) {
@@ -96,7 +96,7 @@ public class iBioSimAdaptor {
             if (pm.isForward()) {
                 if (pm.getPrimitiveRole().equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pm.getPrimitiveRole().equals(FeatureRole.CDS_ACTIVATOR) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION) || pm.getPrimitiveRole().equals(FeatureRole.CDS_LINKER) || pm.getPrimitiveRole().equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR) || pm.getPrimitiveRole().equals(FeatureRole.CDS_REPRESSOR)) {
                     if (productID.isEmpty()) {
-                        productID = pm.getModuleFeatures().get(0).getName().replaceAll(".ref", "");
+                        productID = pm.getModuleFeature().getName().replaceAll(".ref", "");
                     } else {
                         productID = productID + "_" + pm.getModuleFeatures().get(0).getName().replaceAll(".ref", "");
                     }
@@ -140,7 +140,7 @@ public class iBioSimAdaptor {
     }
     
     //Makes SBML Model for regulation controls
-    private static void makeRegulationModel (Module expressee) {
+    private static void makeRegulationModel (AssignedModule expressee) {
         
         //Make the regular model for the EXPRESSEE
         makeEXPDEGModel(expressee);

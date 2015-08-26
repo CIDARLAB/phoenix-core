@@ -368,13 +368,13 @@ public class PhoenixGrammar {
                             child.setRoot(false);                 //Wont be the root.     
                             child.setForward(true);               //These are all Forward oriented. 
                             child.setRole(ModuleRole.TRANSCRIPTIONAL_UNIT);         //Set Child as a TU
-                            moduleFeatures.add(subnodes.getModuleFeatures().get(0));
+                            moduleFeatures.add(subnodes.getModuleFeature());
                             submoduleStack.add(subnodes);
                         }
 
                     } else if (stack == 1) {
 
-                        moduleFeatures.add(subnodes.getModuleFeatures().get(0));
+                        moduleFeatures.add(subnodes.getModuleFeature());
                         submoduleStack.add(subnodes);
                         
                         //Termintors pop the stack
@@ -417,7 +417,7 @@ public class PhoenixGrammar {
                     expresseeCount++;
                     
                     //Create a new EXPRESSEE from this CDS primitive and copy the feature
-                    moduleFeatures.add(primitive.getModuleFeatures().get(0));
+                    moduleFeatures.add(primitive.getModuleFeature());
                     expressee = getExpresseeModule(primitive, expressee);
                     expressee.setStage(node.getStage() + 1);
                     expresseeList.add(expressee);
@@ -425,7 +425,7 @@ public class PhoenixGrammar {
                     //Add a new TESTING primitve to the expressor composition
                     //This piece will get replaced in the next step (adding testing pieces)
                     PrimitiveModule testing = new PrimitiveModule();
-                    testing.setModuleFeatures(primitive.getModuleFeatures());
+                    testing.setModuleFeature(primitive.getModuleFeature());
                     testing.setPrimitive(primitive.getPrimitive());
                     testing.setPrimitiveRole(FeatureRole.TESTING);
                     submoduleStack.add(testing);
@@ -433,7 +433,7 @@ public class PhoenixGrammar {
                 //Else, continue adding features to EXPRESSOR    
                 } else {
                     
-                    moduleFeatures.add(primitive.getModuleFeatures().get(0));
+                    moduleFeatures.add(primitive.getModuleFeature());
                     submoduleStack.add(primitive);
                 }
             }
@@ -474,9 +474,9 @@ public class PhoenixGrammar {
                 PrimitiveModule wildCard = new PrimitiveModule(FeatureRole.WILDCARD, pm.getPrimitive().clone(), null);
                 wildCard.getPrimitive().setOrientation(Orientation.REVERSE);
                 wildCard.setPrimitiveRole(FeatureRole.WILDCARD);
-                wildCard.setModuleFeatures(pm.getModuleFeatures());
+                wildCard.setModuleFeature(pm.getModuleFeature());
                 primModules.add(wildCard);
-                moduleFeature.add(pm.getModuleFeatures().get(0));
+                moduleFeature.add(pm.getModuleFeature());
                 
             //If not, copy components
             } else {
@@ -484,10 +484,10 @@ public class PhoenixGrammar {
                 PrimitiveModule forModule = new PrimitiveModule();
                 forModule.setPrimitive(pm.getPrimitive().clone());
                 forModule.setPrimitiveRole(pm.getPrimitiveRole());
-                forModule.setModuleFeatures(pm.getModuleFeatures());
+                forModule.setModuleFeature(pm.getModuleFeature());
                 forModule.setPrimitiveRole(findRole(forModule.getPrimitive().getType()));
                 primModules.add(forModule);
-                moduleFeature.add(pm.getModuleFeatures().get(0));
+                moduleFeature.add(pm.getModuleFeature());
             }
         }
         
@@ -518,9 +518,9 @@ public class PhoenixGrammar {
                 PrimitiveModule wildCard = new PrimitiveModule(FeatureRole.WILDCARD, pm.getPrimitive().clone(), null);
                 wildCard.getPrimitive().setOrientation(Orientation.REVERSE);
                 wildCard.setPrimitiveRole(FeatureRole.WILDCARD);
-                wildCard.setModuleFeatures(pm.getModuleFeatures());
+                wildCard.setModuleFeature(pm.getModuleFeature());
                 primModules.add(wildCard);
-                moduleFeature.add(pm.getModuleFeatures().get(0)); // May have to comment this out later on?
+                moduleFeature.add(pm.getModuleFeature()); // May have to comment this out later on?
             
             //If not, copy components
             } else {
@@ -529,10 +529,10 @@ public class PhoenixGrammar {
                 revModule.setPrimitive(pm.getPrimitive().clone());
                 revModule.setPrimitiveRole(pm.getPrimitiveRole());
                 revModule.getPrimitive().setOrientation(Orientation.FORWARD); // Again needed?
-                revModule.setModuleFeatures(pm.getModuleFeatures());
+                revModule.setModuleFeature(pm.getModuleFeature());
                 revModule.setPrimitiveRole(findRole(revModule.getPrimitive().getType()));
                 primModules.add(revModule);
-                moduleFeature.add(pm.getModuleFeatures().get(0)); //Does anything change here?? (Due to the flip in the orientation?)
+                moduleFeature.add(pm.getModuleFeature()); //Does anything change here?? (Due to the flip in the orientation?)
             }
 
         }
@@ -584,7 +584,7 @@ public class PhoenixGrammar {
             expressee.setRole(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR);
         }
         
-        expressee.setModuleFeatures(node.getModuleFeatures());
+        expressee.getModuleFeatures().add(node.getModuleFeature());
         expressee.setRoot(false);
         expressee.getSubmodules().add(node);
         return expressee;

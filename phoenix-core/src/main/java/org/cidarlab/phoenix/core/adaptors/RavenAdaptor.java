@@ -46,7 +46,7 @@ public class RavenAdaptor {
         HashSet<Module> allModules = new HashSet<>();
         HashSet<List<Feature>> moduleFeatureHash = new HashSet<>();
         
-        for (Module targetModule : modulesToTest) {
+        for (AssignedModule targetModule : modulesToTest) {
             if (!moduleFeatureHash.contains(targetModule.getModuleFeatures())) {
                 allModules.add(targetModule);
                 moduleFeatureHash.add(targetModule.getModuleFeatures());
@@ -396,10 +396,10 @@ public class RavenAdaptor {
                 }
                 
                 //Regular parts with sequences
-                if (!pm.getModuleFeatures().get(0).getSequence().getSequence().isEmpty() && pm.getPrimitiveRole() != FeatureRole.VECTOR) {
+                if (!pm.getModuleFeature().getSequence().getSequence().isEmpty() && pm.getPrimitiveRole() != FeatureRole.VECTOR) {
                     
                     if (pm.getPrimitiveRole() == FeatureRole.CDS_LINKER) {
-                        String fName = pm.getModuleFeatures().get(0).getName().replaceAll(".ref", "");
+                        String fName = pm.getModuleFeature().getName().replaceAll(".ref", "");
                         
                         //Consecutive linkers edge case
                         if (!linkers.get(linkers.size()-1).equals("_")) {
@@ -425,8 +425,8 @@ public class RavenAdaptor {
                             scars.add(scar);
                         }
                         
-                        for (Feature f : pm.getModuleFeatures()) {
-                            String fName = f.getName().replaceAll(".ref", "");
+                        //for (Feature f : pm.getModuleFeatures()) {
+                            String fName = pm.getModuleFeature().getName().replaceAll(".ref", "");
 
                             //Find Raven basic part for this composition
                             for (org.cidarlab.raven.datastructures.Part p : libParts) {
@@ -437,7 +437,7 @@ public class RavenAdaptor {
                                     }
                                 }
                             }
-                        }
+                        //}
                     }
                     
                 //Vector edge case

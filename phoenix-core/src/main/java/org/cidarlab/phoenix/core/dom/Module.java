@@ -28,7 +28,6 @@ public class Module {
         this.children = new ArrayList<>();
         this.parents = new ArrayList<>();
         this.assignedModules = new ArrayList<>();
-        this.controlModules = new ArrayList<>();
         this.submodules = new ArrayList<>();
         this.moduleFeatures = new ArrayList<>();
         this.isForward = true;
@@ -89,12 +88,16 @@ public class Module {
     @Setter
     private ModuleRole role;
 
+    
     //Repression or Activation Arcs. This will be used to indentify structures that can realize an Inverter, Oscillator or Switches
     //Arcs created by this module
+    /*
     @Getter
     @Setter
     private List<Arc> arcs;
-
+    */
+    
+    
     //Module features
     @Getter
     @Setter
@@ -120,10 +123,8 @@ public class Module {
     @Setter
     private List<Module> children;
 
-    //Child module(s)
-    @Getter
-    @Setter
-    private List<Module> controlModules;
+   
+    
 
     //Assigned module(s)
     @Getter
@@ -182,7 +183,8 @@ public class Module {
     public void updateModuleFeatures() {
         List<Feature> updatedFeatures = new ArrayList<>();
         for (PrimitiveModule pm : this.submodules) {
-            updatedFeatures.addAll(pm.getModuleFeatures());
+            updatedFeatures.add(pm.getModuleFeature());
+            //updatedFeatures.addAll(pm.getModuleFeatures());
         }
         this.setModuleFeatures(updatedFeatures);
     }

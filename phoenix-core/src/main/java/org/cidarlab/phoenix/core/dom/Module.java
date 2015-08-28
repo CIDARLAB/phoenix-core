@@ -8,6 +8,7 @@ package org.cidarlab.phoenix.core.dom;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.sbml.jsbml.SBMLDocument;
@@ -64,7 +65,7 @@ public class Module {
 //        List<Experiment> exList = new ArrayList<>();
 //        exList.addAll(this.experiments);
 //        clone.experiments = exList;
-
+        clone.SBMLDocument = this.SBMLDocument;
         clone.function = this.function;
         clone.isForward = this.isForward;
         clone.role = this.role;

@@ -40,11 +40,13 @@ import org.cidarlab.phoenix.core.dom.Medium.MediaType;
 import org.cidarlab.phoenix.core.dom.STLFunction;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Person;
+import org.cidarlab.phoenix.core.dom.Primitive;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
 import org.cidarlab.phoenix.core.dom.Sample;
 import org.cidarlab.phoenix.core.dom.Sample.SampleType;
 import org.cidarlab.phoenix.core.dom.SmallMolecule;
 import org.cidarlab.phoenix.core.dom.Strain;
+import org.sbml.jsbml.SBMLDocument;
 
 /**
  * This class has all methods for sending and receiving information to Clotho
@@ -53,6 +55,8 @@ import org.cidarlab.phoenix.core.dom.Strain;
  */
 public class ClothoAdaptor {
 
+    
+    //<editor-fold desc="Upload Methods">
     /*
      * 
      * DATA UPLOAD METHODS
@@ -71,8 +75,10 @@ public class ClothoAdaptor {
             features.removeAll(fluorophores);
 
             System.out.println("From Benchling Fluorophores:: " + fluorophores.size());
-
-            createFeatures(features, clothoObject);
+            
+            for(Feature f:features){
+                createFeature(f,clothoObject);
+            }
             createFluorophores(fluorophores, clothoObject);
 
         } else {
@@ -249,12 +255,15 @@ public class ClothoAdaptor {
     public static void uploadCytometryData(List<File> input, List<Experiment> experiment) throws FileNotFoundException, IOException {
 
     }
-
-    /*
-     * 
-     * CLOTHO OBJECT CREATION METHODS
-     * 
-     */
+    
+    
+    //</editor-fold>
+    
+    
+    //<editor-fold desc="Create Methods">
+    
+    //<editor-fold desc="Map Creation Methods">
+        
     public static Map createSmallMoleculeMap(SmallMolecule smolecule) {
         Map map = new HashMap();
         map.put("name", smolecule.getName());
@@ -288,7 +297,154 @@ public class ClothoAdaptor {
         map.put("smallMolecule", smallMoleculeMap);
         return map;
     }
+    
+    //</editor-fold>
+    
+    
+    //<editor-fold desc="Clotho Object Creation Methods">
+    
+    
+    //<editor-fold  desc="Create a Module Tree in Clotho">
+    public static String createModule(Module module, Clotho clothoObject) {
+        String id = "";
+        
+        //Recursively create a Module Tree in Clotho. Returns the id of the Root Module
+        id = createModuleTree(module, clothoObject);
+        //Recursively call each Module and set it's Parents and Children
+        setModuleNeighbors(module, clothoObject);
+        
+        return id;
+    }
 
+    public static void setModuleNeighbors(Module module, Clotho clothoObject) {
+
+        Map setNeighbor = new HashMap();
+        setNeighbor.put("id", module.getClothoID());
+
+        JSONArray childrenIds = new JSONArray();
+        JSONArray parentIds = new JSONArray();
+        JSONArray assignedModuleIds = new JSONArray();
+
+        for (Module child : module.getChildren()) {
+            childrenIds.add(child.getClothoID());
+        }
+
+        for (Module parent : module.getParents()) {
+            parentIds.add(parent.getClothoID());
+        }
+        
+        setNeighbor.put("children", childrenIds);
+        setNeighbor.put("parents", parentIds);
+        
+        clothoObject.set(setNeighbor);
+        
+        //Recursively call Children of the Module and set Neighbors. 
+        for (Module child : module.getChildren()) {
+            setModuleNeighbors(child, clothoObject);
+        }
+    }
+
+    public static String createModuleTree(Module module, Clotho clothoObject) {
+
+        String id = "";
+        Map createModule = new HashMap();
+        
+        createModule.put("name", module.getName());
+        createModule.put("schema", "org.cidarlab.phoenix.core.dom.Module");
+        createModule.put("stage", module.getStage());
+        createModule.put("role", module.getRole().toString());
+        createModule.put("isForward", module.isForward());
+        createModule.put("isRoot", module.isRoot());
+        if (module.getClothoID() != null) {
+            createModule.put("id", module.getClothoID());
+        }
+        
+        //Create and add AssignedModules
+        JSONArray assignedModuleIds = new JSONArray();
+        for(AssignedModule amodule:module.getAssignedModules()){
+            assignedModuleIds.add(createAssignedModule(amodule,clothoObject));
+        }
+        createModule.put("assignedModules", assignedModuleIds);
+        
+        if(module.getSBMLDocument() != null){
+            createModule.put("SBMLDocument", module.getSBMLDocument().getSBMLDocumentAttributes());
+        }
+        
+        
+        //Create and add ModuleFeatures
+        JSONArray featureIds = new JSONArray();
+        HashSet<Feature> features = new HashSet<Feature>();
+        
+        for(Feature f:module.getModuleFeatures()){
+            String fId = createFeature(f,clothoObject);
+            featureIds.add(fId);
+        }
+        createModule.put("moduleFeatures", featureIds);
+        createModule.put("stlFunction", createSTLFunction(module.getFunction(), clothoObject));
+        
+        //Make a createPrimitiveModules Function...
+        
+        id = (String) clothoObject.set(createModule);
+        module.setClothoID(id);
+
+        //Recursive call for all children of this module
+        for (Module child : module.getChildren()) {
+            createModuleTree(child, clothoObject);
+        }
+        
+        return id;
+    }
+    //</editor-fold>
+    
+    
+    public static Map createPrimitiveModuleMap(PrimitiveModule pmodule){
+        Map map = new HashMap();
+        map.put("name", pmodule.getName());
+        map.put("moduleFeature", createFeatureMap(pmodule.getModuleFeature()));
+        map.put("isForward", pmodule.isForward());
+        map.put("primitiveRole", pmodule.getPrimitiveRole().toString());
+        
+        //Decide about Primitive Object. Store only Sequence? Orientation can be gleaned from isForward.
+        
+        
+        return map;
+    }
+    
+    public static Map createPrimitiveMap(Primitive primitive){
+        Map map = new HashMap();
+        
+        return map;
+    }
+    public static String createAssignedModule(AssignedModule amodule, Clotho clothoObject){
+        String id = "";
+        Map amoduleMap = new HashMap();
+        amoduleMap.put("name",amodule.getName());
+        if(amodule.getClothoID() != null){
+            amoduleMap.put("id", amodule.getClothoID());
+        }
+        JSONArray exptIds = new JSONArray();
+        for (Experiment experiment : amodule.getExperiments()) {
+            String exptId = createExperiment(experiment, clothoObject);
+            exptIds.add(exptId);
+        }
+        amoduleMap.put("experiments", exptIds);
+        
+        JSONArray featureIds = new JSONArray();
+        for(Feature f:amodule.getModuleFeatures()){
+            featureIds.add(createFeature(f,clothoObject));
+        }
+        amoduleMap.put("features", featureIds);
+        amoduleMap.put("function", createSTLFunction(amodule.getFunction(),clothoObject));
+        amoduleMap.put("forward", amodule.isForward());
+        amoduleMap.put("role", amodule.getRole().toString());
+        amoduleMap.put("stage", amodule.getStage());
+        
+        id = (String)clothoObject.set(amoduleMap);
+        amodule.setClothoID(id);
+        return id;
+    }
+    
+    
     public static String createSample(Sample sample, Clotho clothoObject) {
         String id = "";
         Map map = new HashMap();
@@ -450,24 +606,38 @@ public class ClothoAdaptor {
 
     public static String createFeature(Feature f, Clotho clothoObject) {
         String id = "";
-        Map createFeature = new HashMap();
+        
+        Map map = new HashMap();
+        map = createFeatureMap(f);
+        //Clotho ID
+        if (f.getClothoID() != null) {
+            if (!f.isFP()) {
+                map.put("id", f.getClothoID());
+            }
+        }
+        id = (String) clothoObject.set(map);
+        f.setClothoID(id);
+        return id;
+    }
 
-        createFeature.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
-        createFeature.put("name", f.getName());
-        createFeature.put("forwardColor", f.getForwardColor().toString());
-        createFeature.put("reverseColor", f.getReverseColor().toString());
+    public static Map createFeatureMap(Feature f){
+        Map map = new HashMap();
+        map.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
+        map.put("name", f.getName());
+        map.put("forwardColor", f.getForwardColor().toString());
+        map.put("reverseColor", f.getReverseColor().toString());
 
         //NucSeq sub-schema
         Map createSequence = new HashMap();
         createSequence.put("schema", "org.cidarlab.phoenix.core.dom.Sequence");
         createSequence.put("sequence", f.getSequence().getSequence());
-        createFeature.put("sequence", createSequence);
+        map.put("sequence", createSequence);
 
         //FeatureRole sub-schema
         Map createFeatureRole = new HashMap();
         createFeatureRole.put("schema", "org.cidarlab.phoenix.core.dom.Feature.FeatureRole");
         createFeatureRole.put("FeatureRole", f.getRole().toString());
-        createFeature.put("role", createFeatureRole);
+        map.put("role", createFeatureRole);
 
         List<Arc> arcs = f.getArcs();
         List<Map> arcList = new ArrayList<>();
@@ -510,34 +680,11 @@ public class ClothoAdaptor {
             arcList.add(createArc);
         }
 
-        createFeature.put("arcs", arcList);
+        map.put("arcs", arcList);
 
-        //Clotho ID
-        if (f.getClothoID() != null) {
-            if (!f.isFP()) {
-                createFeature.put("id", f.getClothoID());
-            }
-        }
-        //else{
-        //    createFeature.put("id", f.getName());
-        //    f.setClothoID(f.getName());
-        //}
-        id = (String) clothoObject.set(createFeature);
-        f.setClothoID(id);
-        return id;
+        return map;
     }
-
-    //Add features to Clotho via Clotho Server API
-    public static List<String> createFeatures(HashSet<Feature> features, Clotho clothoObject) {
-
-        List<String> featureIds = new ArrayList<String>();
-        for (Feature f : features) {
-            String id = createFeature(f, clothoObject);
-            featureIds.add(id);
-        }
-        return featureIds;
-    }
-
+    
     public static String createFluorophore(Fluorophore f, Clotho clothoObject) {
         String id = "";
         //Fluorophore schema
@@ -607,129 +754,7 @@ public class ClothoAdaptor {
         }
         return ids;
     }
-
-    public static Map createPrimitiveModuleMap(PrimitiveModule pmodule){
-        Map pmoduleMap = new HashMap();
-        
-        return pmoduleMap;
-    }
     
-    public static String createAssignedModule(AssignedModule amodule, Clotho clothoObject){
-        String id = "";
-        Map amoduleMap = new HashMap();
-        amoduleMap.put("name",amodule.getName());
-        if(amodule.getClothoID() != null){
-            amoduleMap.put("id", amodule.getClothoID());
-        }
-        JSONArray exptIds = new JSONArray();
-        for (Experiment experiment : amodule.getExperiments()) {
-            String exptId = createExperiment(experiment, clothoObject);
-            exptIds.add(exptId);
-        }
-        amoduleMap.put("experiments", exptIds);
-        
-        JSONArray featureIds = new JSONArray();
-        for(Feature f:amodule.getModuleFeatures()){
-            featureIds.add(createFeature(f,clothoObject));
-        }
-        amoduleMap.put("features", featureIds);
-        amoduleMap.put("function", createSTLFunction(amodule.getFunction(),clothoObject));
-        amoduleMap.put("forward", amodule.isForward());
-        amoduleMap.put("role", amodule.getRole().toString());
-        amoduleMap.put("stage", amodule.getStage());
-        
-        id = (String)clothoObject.set(amoduleMap);
-        amodule.setClothoID(id);
-        return id;
-    }
-    
-    //<editor-fold  desc="Create a Module Tree in Clotho">
-    public static String createModule(Module module, Clotho clothoObject) {
-        String id = "";
-        
-        //Recursively create a Module Tree in Clotho. Returns the id of the Root Module
-        id = createModuleTree(module, clothoObject);
-        //Recursively call each Module and set it's Parents and Children
-        setModuleNeighbors(module, clothoObject);
-        
-        return id;
-    }
-
-    public static void setModuleNeighbors(Module module, Clotho clothoObject) {
-
-        Map setNeighbor = new HashMap();
-        setNeighbor.put("id", module.getClothoID());
-
-        JSONArray childrenIds = new JSONArray();
-        JSONArray parentIds = new JSONArray();
-        JSONArray assignedModuleIds = new JSONArray();
-
-        for (Module child : module.getChildren()) {
-            childrenIds.add(child.getClothoID());
-        }
-
-        for (Module parent : module.getParents()) {
-            parentIds.add(parent.getClothoID());
-        }
-        
-        setNeighbor.put("children", childrenIds);
-        setNeighbor.put("parents", parentIds);
-        
-        clothoObject.set(setNeighbor);
-        
-        //Recursively call Children of the Module and set Neighbors. 
-        for (Module child : module.getChildren()) {
-            setModuleNeighbors(child, clothoObject);
-        }
-    }
-
-    public static String createModuleTree(Module module, Clotho clothoObject) {
-
-        String id = "";
-        Map createModule = new HashMap();
-        
-        createModule.put("name", module.getName());
-        createModule.put("schema", "org.cidarlab.phoenix.core.dom.Module");
-        createModule.put("stage", module.getStage());
-        createModule.put("role", module.getRole().toString());
-        createModule.put("isForward", module.isForward());
-        createModule.put("isRoot", module.isRoot());
-        if (module.getClothoID() != null) {
-            createModule.put("id", module.getClothoID());
-        }
-        
-        //Create and add AssignedModules
-        JSONArray assignedModuleIds = new JSONArray();
-        for(AssignedModule amodule:module.getAssignedModules()){
-            assignedModuleIds.add(createAssignedModule(amodule,clothoObject));
-        }
-        createModule.put("assignedModules", assignedModuleIds);
-        
-        //Create and add ModuleFeatures
-        JSONArray featureIds = new JSONArray();
-        HashSet<Feature> features = new HashSet<Feature>(module.getModuleFeatures());
-        for (String fId : createFeatures(features, clothoObject)) {
-            featureIds.add(fId);
-        }
-        createModule.put("moduleFeatures", featureIds);
-        
-        createModule.put("stlFunction", createSTLFunction(module.getFunction(), clothoObject));
-        
-        //Should be someway to create Primitive Modules
-        //Make a createPrimitiveModules Function...
-        
-        id = (String) clothoObject.set(createModule);
-        module.setClothoID(id);
-
-        //Recursive call for all children of this module
-        for (Module child : module.getChildren()) {
-            createModuleTree(child, clothoObject);
-        }
-        
-        return id;
-    }
-    //</editor-fold>
-
     public static String createSTLFunction(STLFunction ltl, Clotho clothoObject) {
         String id = "";
         Map map = new HashMap();
@@ -929,7 +954,21 @@ public class ClothoAdaptor {
         return id;
 
     }
-
+    //</editor-fold>
+    
+    //</editor-fold>
+    
+    
+    //<editor-fold desc="Query Methods">
+    
+    //</editor-fold>
+    
+    
+    //<editor-fold desc="Get Methods">
+    
+    //</editor-fold>
+    
+    
     /*
      * 
      * CLOTHO OBJECT QUERY METHODS
@@ -1377,8 +1416,6 @@ public class ClothoAdaptor {
         */
         return module;
     }
-    
-    
     
     
     //Get all Clotho Parts

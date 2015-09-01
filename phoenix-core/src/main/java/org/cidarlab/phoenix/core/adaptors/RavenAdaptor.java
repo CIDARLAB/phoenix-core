@@ -70,11 +70,11 @@ public class RavenAdaptor {
         
         Map polyNucQuery = new HashMap();
         polyNucQuery.put("schema", "org.cidarlab.phoenix.core.dom.Polynucleotide");
-        HashSet<Polynucleotide> polyNucs = ClothoAdaptor.queryPolynucleotides(polyNucQuery,clothoObject);
+        HashSet<Polynucleotide> polyNucs = new HashSet<>(ClothoAdaptor.queryPolynucleotides(polyNucQuery,clothoObject));
         
         Map featureQuery = new HashMap();
         featureQuery.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
-        HashSet<Feature> allFeatures = ClothoAdaptor.queryFeatures(featureQuery,clothoObject);
+        List<Feature> allFeatures = ClothoAdaptor.queryFeatures(featureQuery,clothoObject);
         
         Map fluorophoreQuery = new HashMap();
         fluorophoreQuery.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
@@ -494,7 +494,7 @@ public class RavenAdaptor {
     }
     
     //Convert Phoenix modules to Raven parts
-    public static HashSet<org.cidarlab.raven.datastructures.Part> phoenixFeaturesToRavenParts(HashSet<Feature> features) {
+    public static HashSet<org.cidarlab.raven.datastructures.Part> phoenixFeaturesToRavenParts(List<Feature> features) {
         
         HashSet<org.cidarlab.raven.datastructures.Part> ravenParts = new HashSet();
         

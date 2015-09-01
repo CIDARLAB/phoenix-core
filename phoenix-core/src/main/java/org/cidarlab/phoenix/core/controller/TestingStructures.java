@@ -698,7 +698,7 @@ public class TestingStructures {
         
         Map polyNucQuery = new HashMap();
         polyNucQuery.put("schema", "org.cidarlab.phoenix.core.dom.Polynucleotide");
-        HashSet<Polynucleotide> polyNucs = ClothoAdaptor.queryPolynucleotides(polyNucQuery,clothoObject);
+        List<Polynucleotide> polyNucs = ClothoAdaptor.queryPolynucleotides(polyNucQuery,clothoObject);
         HashMap<String, Polynucleotide> pnNameHash = new HashMap<>(); //key: clothoID, value: polynucleotide with that clothoID
         for (Polynucleotide pn : polyNucs) {
             pnNameHash.put(pn.getClothoID(), pn);
@@ -757,12 +757,12 @@ public class TestingStructures {
         Map GFPm = new HashMap();
         GFPm.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
         GFPm.put("name", "EGFPm.ref");
-        testCDS1 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("c"), "cTEST1"), ClothoAdaptor.convertJSONArrayToFluorophores((JSONArray) clothoObject.query(GFPm)).iterator().next());
+        testCDS1 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("c"), "cTEST1"), ClothoAdaptor.queryFluorophores(GFPm, clothoObject).iterator().next());
         
         Map EBFP2 = new HashMap();
         EBFP2.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
         EBFP2.put("name", "EBFP2.ref");
-        testCDS2 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("c"), "cTEST2"), ClothoAdaptor.convertJSONArrayToFluorophores((JSONArray) clothoObject.query(EBFP2)).iterator().next());
+        testCDS2 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("c"), "cTEST2"), ClothoAdaptor.queryFluorophores(EBFP2, clothoObject).iterator().next());
         
         Map B0015 = new HashMap();
         B0015.put("schema", "org.cidarlab.phoenix.core.dom.Feature");

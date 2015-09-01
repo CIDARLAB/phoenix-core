@@ -23,6 +23,8 @@ public class Experiment {
         regulationControls = new ArrayList<>();
         expDegControls = new ArrayList<>();
         mediaConditions = new ArrayList<>();
+        times = new ArrayList<>();
+        
     }
     
     //No args constructor

@@ -565,7 +565,10 @@ public class PhoenixGrammar {
             role = FeatureRole.CDS_REPRESSOR;
         } else if (type.getName().startsWith("t")) {
             role = FeatureRole.TERMINATOR;
-        }
+        } else if (type.getName().startsWith("unk")) {
+            role = FeatureRole.CDS;
+        } 
+        
         return role;
     }
     

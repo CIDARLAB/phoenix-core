@@ -30,7 +30,7 @@ import org.sbml.jsbml.text.parser.ParseException;
  *
  * @author evanappleton
  */
-public class iBioSimAdaptor {
+public class COPASIAdaptor {
     
     //Run simulation on modules with k-values to predict best matches in next unassigned stage
     public static List<Module> runSimulations (List<Module> modules) {

@@ -38,6 +38,10 @@ public class Module {
 //        this.experiments = new ArrayList<>();
     }
 
+    public Module() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     //Get all neighbors i.e. parents and children
     public List<Module> getAllNeighbors() {
         List<Module> neigh = new ArrayList<>();

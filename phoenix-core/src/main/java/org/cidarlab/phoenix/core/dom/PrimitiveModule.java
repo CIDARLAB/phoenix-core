@@ -43,7 +43,7 @@ public class PrimitiveModule extends Module {
         super("");
         this.primitiveRole = role;
         this.primitive = primitive;
-        this.moduleFeature = moduleFeature;
+        this.moduleFeature = moduleFeature.clone();
         //this.getModuleFeatures().add(moduleFeature);
     }
     

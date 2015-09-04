@@ -106,7 +106,7 @@ public class EugeneAdaptor {
                 ComponentType ctype = new ComponentType(type);
                 
                 Feature f = Feature.generateFeature(c.getName(), "", new Person(), isCDS);
-                f.setRole(PhoenixGrammar.findRole(ctype));
+                f.setRole(findRole(ctype));
                 moduleFeatures.add(f);
                 
                 
@@ -121,7 +121,7 @@ public class EugeneAdaptor {
                     primitive.setOrientation(Orientation.REVERSE);
                 }
                 
-                PrimitiveModule pm = new PrimitiveModule(PhoenixGrammar.findRole(ctype),primitive,f);
+                PrimitiveModule pm = new PrimitiveModule(findRole(ctype),primitive,f);
                 pm.setForward(c.isForward());
                 primitiveModules.add(pm);
             }
@@ -135,4 +135,44 @@ public class EugeneAdaptor {
         
         return phoenixModules;
     }
+
+    
+    //Determine primitive role from Eugene component types
+    public static Feature.FeatureRole findRole(ComponentType type) {
+        
+        Feature.FeatureRole role = Feature.FeatureRole.WILDCARD;
+        if (type.getName().startsWith("p")) {
+            role = Feature.FeatureRole.PROMOTER;
+        } else if (type.getName().startsWith("ip")) {
+            role = Feature.FeatureRole.PROMOTER_INDUCIBLE;
+        } else if (type.getName().startsWith("rp")) {
+            role = Feature.FeatureRole.PROMOTER_REPRESSIBLE;
+        } else if (type.getName().startsWith("cp")) {
+            role = Feature.FeatureRole.PROMOTER_CONSTITUTIVE;
+        } else if (type.getName().startsWith("rc")) {
+            role = Feature.FeatureRole.CDS_REPRESSIBLE_REPRESSOR;
+        } else if (type.getName().startsWith("fc")) {
+            role = Feature.FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR;
+        } else if (type.getName().startsWith("r")) {
+            role = Feature.FeatureRole.RBS;
+        } else if (type.getName().startsWith("c")) {
+            role = Feature.FeatureRole.CDS_ACTIVATOR;
+        } else if (type.getName().startsWith("g")) {
+            role = Feature.FeatureRole.CDS_REPRESSOR;
+        } else if (type.getName().startsWith("t")) {
+            role = Feature.FeatureRole.TERMINATOR;
+        } else if (type.getName().startsWith("unk")) {
+            role = Feature.FeatureRole.CDS;
+        } else if (type.getName().startsWith("fl")) {
+            role = Feature.FeatureRole.CDS_FLUORESCENT;
+        } else if (type.getName().startsWith("l")) {
+            role = Feature.FeatureRole.CDS_LINKER;
+        } 
+         
+        
+        return role;
+    }
+    
+    
+
 }

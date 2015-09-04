@@ -7,6 +7,7 @@ package org.cidarlab.phoenix.core.grammars;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.cidarlab.phoenix.core.adaptors.EugeneAdaptor;
 import org.cidarlab.phoenix.core.dom.Component.Orientation;
 import org.cidarlab.phoenix.core.dom.ComponentType;
 import org.cidarlab.phoenix.core.dom.Module;
@@ -368,14 +369,14 @@ public class PhoenixGrammar {
                             child.setRoot(false);                 //Wont be the root.     
                             child.setForward(true);               //These are all Forward oriented. 
                             child.setRole(ModuleRole.TRANSCRIPTIONAL_UNIT);         //Set Child as a TU
-                            moduleFeatures.add(subnodes.getModuleFeature());
-                            submoduleStack.add(subnodes);
+                            moduleFeatures.add(subnodes.getModuleFeature().clone());
+                            submoduleStack.add(subnodes.clone());
                         }
 
                     } else if (stack == 1) {
 
-                        moduleFeatures.add(subnodes.getModuleFeature());
-                        submoduleStack.add(subnodes);
+                        moduleFeatures.add(subnodes.getModuleFeature().clone());
+                        submoduleStack.add(subnodes.clone());
                         
                         //Termintors pop the stack
                         if (subnodes.getPrimitiveRole().equals(FeatureRole.TERMINATOR)) {
@@ -485,7 +486,7 @@ public class PhoenixGrammar {
                 forModule.setPrimitive(pm.getPrimitive().clone());
                 forModule.setPrimitiveRole(pm.getPrimitiveRole());
                 forModule.setModuleFeature(pm.getModuleFeature());
-                forModule.setPrimitiveRole(findRole(forModule.getPrimitive().getType()));
+                forModule.setPrimitiveRole(EugeneAdaptor.findRole(forModule.getPrimitive().getType()));
                 primModules.add(forModule);
                 moduleFeature.add(pm.getModuleFeature());
             }
@@ -530,7 +531,7 @@ public class PhoenixGrammar {
                 revModule.setPrimitiveRole(pm.getPrimitiveRole());
                 revModule.getPrimitive().setOrientation(Orientation.FORWARD); // Again needed?
                 revModule.setModuleFeature(pm.getModuleFeature());
-                revModule.setPrimitiveRole(findRole(revModule.getPrimitive().getType()));
+                revModule.setPrimitiveRole(EugeneAdaptor.findRole(revModule.getPrimitive().getType()));
                 primModules.add(revModule);
                 moduleFeature.add(pm.getModuleFeature()); //Does anything change here?? (Due to the flip in the orientation?)
             }
@@ -541,37 +542,6 @@ public class PhoenixGrammar {
         return reverseModule;
     }
 
-    //Determine primitive role from Eugene component types
-    public static FeatureRole findRole(ComponentType type) {
-        
-        FeatureRole role = FeatureRole.WILDCARD;
-        if (type.getName().startsWith("p")) {
-            role = FeatureRole.PROMOTER;
-        } else if (type.getName().startsWith("ip")) {
-            role = FeatureRole.PROMOTER_INDUCIBLE;
-        } else if (type.getName().startsWith("rp")) {
-            role = FeatureRole.PROMOTER_REPRESSIBLE;
-        } else if (type.getName().startsWith("cp")) {
-            role = FeatureRole.PROMOTER_CONSTITUTIVE;
-        } else if (type.getName().startsWith("rc")) {
-            role = FeatureRole.CDS_REPRESSIBLE_REPRESSOR;
-        } else if (type.getName().startsWith("fc")) {
-            role = FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR;
-        } else if (type.getName().startsWith("r")) {
-            role = FeatureRole.RBS;
-        } else if (type.getName().startsWith("c")) {
-            role = FeatureRole.CDS_ACTIVATOR;
-        } else if (type.getName().startsWith("g")) {
-            role = FeatureRole.CDS_REPRESSOR;
-        } else if (type.getName().startsWith("t")) {
-            role = FeatureRole.TERMINATOR;
-        } else if (type.getName().startsWith("unk")) {
-            role = FeatureRole.CDS;
-        } 
-        
-        return role;
-    }
-    
     //Create a new EXPRESSEE
     private static Module getExpresseeModule(PrimitiveModule node, Module expressee) {
         

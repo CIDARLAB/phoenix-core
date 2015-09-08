@@ -10,47 +10,76 @@ library(stringr)
 library(FD)
 
 #Function for processing meansMedia and standard deviations with filtering and compensating
-process.samples <- function(experimentFlowSet, comp.mat, colorControlsFlowSet, dataFiles) {		
+process.samples <- function(experimentFlowSet, comp.mat, colorControlsFlowSet, autofluorescence, dataFiles) {		
 	
 	if (!is.null(comp.mat)) {
-		compensatedData <- compensate(experimentFlowSet, comp.mat)
+		compensatedFlowSet <- compensate(experimentFlowSet, comp.mat)
 	} else {
-		compensatedData <- experimentFlowSet
+		compensatedFlowSet <- experimentFlowSet
 	}
 				
 	#Apply cell size filter -- we only want cells clustered in the middle of FSC and SSC range
 	cellSizeFilter <- norm2Filter(x = c("SSC-A", "FSC-A"), scale.factor = 2, filterId = "cellSize")
-	cellSizeFilter.results <- filter (compensatedData, cellSizeFilter)			
-	compensatedData <- Subset(compensatedData, cellSizeFilter.results)					
+	cellSizeFilter.results <- filter (compensatedFlowSet, cellSizeFilter)			
+	compensatedFlowSet <- Subset(compensatedFlowSet, cellSizeFilter.results)					
 				
 	#Remove negative and fringe values
-	for (q in 1:length(compensatedData)) {
+	for (q in 1:length(compensatedFlowSet)) {
 				
 		#Logicle Transform
-		# lgcl <- estimateLogicle(compensatedData[[q]], colnames(compensatedData))
-		# compensatedData[[q]] <- transform(compensatedData[[q]], lgcl)	
+		# lgcl <- estimateLogicle(compensatedFlowSet[[q]], colnames(compensatedFlowSet))
+		# compensatedFlowSet[[q]] <- transform(compensatedFlowSet[[q]], lgcl)	
 		
-		compensatedData[[q]] <- nmRemove(compensatedData[[q]], colnames(compensatedData), neg=TRUE)
+		compensatedFlowSet[[q]] <- nmRemove(compensatedFlowSet[[q]], colnames(compensatedFlowSet), neg=TRUE)
 	}							
 				
 	#Processing for row and column names
-	colnames(compensatedData) <- gsub("-",".", colnames(compensatedData))
-	analyzedExpts <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=length(compensatedData)))
+	colnames(compensatedFlowSet) <- gsub("-",".", colnames(compensatedFlowSet))
+	analyzedExpts <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=length(compensatedFlowSet)))
 	colnames(analyzedExpts) <- gsub("-",".", colnames(colorControlsFlowSet))
 	rownames(analyzedExpts) <- dataFiles
 				
-	for (p in 1:length(colnames(compensatedData))) {
+	#Apply a curve1 filter
+	for (p in 1:length(colnames(compensatedFlowSet))) {
 					
-		c1f <- curv1Filter(x=list(colnames(compensatedData)[p]), bwFac=4)
-		fres <- filter(compensatedData[,p], c1f)
-		s <- split(compensatedData[,p], fres, population=list(keep=c("peak 1")))
+		c1f <- curv1Filter(x=list(colnames(compensatedFlowSet)[p]), bwFac=4)
+		fres <- filter(compensatedFlowSet[,p], c1f)
+		s <- split(compensatedFlowSet[,p], fres, population=list(keep=c("peak 1")))
 		analyzedExpts[,p] <- fsApply(s$`keep`,each_col,mean)
 	}
 		
+	#Subtract autofluorescence
+	# analyzedExpts <- sweep(analyzedExpts,2,autofluorescence)
+		
 	analyzedExpts[is.na(analyzedExpts)] <- 0
-	analyzedExptsMediaEval <- data.matrix(analyzedExpts)
+	analyzedExptsMatrix <- data.matrix(analyzedExpts)
 			
-	return(analyzedExptsMediaEval)
+	return(analyzedExptsMatrix)
+}
+
+#Function for getting autoflouresnce values
+getAutofluorescence <- function(negativeControlFlowSet) {
+	
+	autofluorescence <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=1))
+	colnames(autofluorescence) <- gsub("-",".", colnames(colorControlsFlowSet))	
+	
+	#Apply cell size filter -- we only want cells clustered in the middle of FSC and SSC range
+	cellSizeFilter <- norm2Filter(x = c("SSC-A", "FSC-A"), scale.factor = 2, filterId = "cellSize")
+	cellSizeFilter.results <- filter (negativeControlFlowSet, cellSizeFilter)			
+	negativeControlFlowSet <- Subset(negativeControlFlowSet, cellSizeFilter.results)
+	
+	#Apply a curve1 filter
+	for (p in 1:length(colnames(negativeControlFlowSet))) {					
+ 		c1f <- curv1Filter(x=list(colnames(negativeControlFlowSet)[p]), bwFac=4)
+ 		fres <- filter(negativeControlFlowSet[,p], c1f)
+ 		s <- split(negativeControlFlowSet[,p], fres, population=list(keep=c("peak 1")))
+ 		autofluorescence[,p] <- fsApply(s$`keep`,each_col,mean)
+ 	}
+	
+	autofluorescence[1,] <- fsApply(negativeControlFlowSet,each_col,mean)
+	autofluorescence <- as.matrix(autofluorescence)
+	
+	return(autofluorescence)
 }
 
 #Function for calculating functional diversity
@@ -99,13 +128,16 @@ colorControlsFlowSet <- colorControlsFlowSet[,columnIndexes]
 negativeControlFlowSet <- negativeControlFlowSet[,columnIndexes]
 
 #Specify minimum number of events to be considered
-# minEvents <- 500
+# minEvents <- 1000
 
 #Determine the spillover matrix
 comp.mat <- NULL
 if (length(columnIndexes) > 3) {
 	comp.mat <- spillover(x=colorControlsFlowSet,unstained=sampleNames(negativeControlFlowSet),fsc="FSC-A",ssc="SSC-A",method="mean", stain_match = c("regexpr"))
 }
+
+#Get autofluorescence
+autofluorescence <- getAutofluorescence(negativeControlFlowSet)
 
 #Group files by part name
 #Determine unique parts
@@ -119,7 +151,7 @@ allPartTimeMediaUniqueRows <- partsRows[!duplicated(interaction(partsRows$MEDIA,
 multiplexRows <- key[which(!(key$MULTIPLEX =="")),]
 multiplexVals <- unique(multiplexRows$MULTIPLEX)
 
-#Make multiplex dataframes
+#Make multiplex dataframes if there is any multiplexing to analyze
 if (length(multiplexVals) > 1) {
 	for (m in 1:length(multiplexVals)) {		
 		MmeansMedia <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=0))
@@ -231,15 +263,17 @@ for (i in 1:length(uniquePartNames)) {
 							finalFiles <- c(finalFiles, files[nFile])
 						}
 					}
-				
-					#Analyze this flowset
-					experimentFlowSet <- read.flowSet(path = "data", finalFiles, phenoData=list(Filename="$FIL"))
-					experimentFlowSet <- experimentFlowSet[,columnIndexes]				
-									
-					#Process experiments for this flowSet
-					analyzedExptsMediaTimeEval <- process.samples(experimentFlowSet, comp.mat, colorControlsFlowSet, finalFiles)
-					meansMediaTime[t,] <- colMeans(analyzedExptsMediaTimeEval)
-					standardDevsMediaTime[t,] <- colSds(analyzedExptsMediaTimeEval)
+								
+					#Analyze this flowset if there are any files left after the filter for minimal events
+					if (!is.null(finalFiles)) {
+						experimentFlowSet <- read.flowSet(path = "data", finalFiles, phenoData=list(Filename="$FIL"))
+						experimentFlowSet <- experimentFlowSet[,columnIndexes]				
+										
+						#Process experiments for this flowSet
+						analyzedExptsMediaTimeEval <- process.samples(experimentFlowSet, comp.mat, colorControlsFlowSet, autofluorescence, finalFiles)
+						meansMediaTime[t,] <- colMeans(analyzedExptsMediaTimeEval)
+						standardDevsMediaTime[t,] <- colSds(analyzedExptsMediaTimeEval)
+					}
 				}	
 			}
 			
@@ -251,7 +285,7 @@ for (i in 1:length(uniquePartNames)) {
 			}
 			
 			#Make a time v. media plot if more than one media time
-			if (length(uniqueMediaTimes) > 1) {
+			if (nrow(meansMediaTime) > 1) {
 				
 				### PLOTTING OF PART MEDIA CONDITIONS ###
 				#Get rid of FSC and SSC
@@ -264,6 +298,7 @@ for (i in 1:length(uniquePartNames)) {
 				standardDevsMediaTime <- cbind(standardDevsMediaTime[,3:length(standardDevsMediaTime)])
 				standardDevsMediaTime[is.na(standardDevsMediaTime)] <- 0
 				
+				#Column name correction
 				if (length(colnames(meansMediaTime)) == 0) {
 					colnames(meansMediaTime) <- storedColName
 					colnames(standardDevsMediaTime) <- storedColName
@@ -298,9 +333,10 @@ for (i in 1:length(uniquePartNames)) {
 					name <- as.character(paste(uniquePartNames[i],"_",as.character(uniqueMediaTypeConcentrations[k]),"_",colnames(meansMediaTime)[u],".png"))
 					name <- str_replace_all(name, fixed(" "), "")
 					name <- sub("/","",name)
-					File <- as.character(paste("./multiple_times/", name))
+					File <- as.character(paste("./multiple_times/", uniquePartNames[i], "/", name))
    					File <- str_replace_all(File, fixed(" "), "")
 					# if (file.exists(File)) stop(File, " already exists")
+					dir.create("multiple_times")
 					dir.create(dirname(File), showWarnings = FALSE)
 					png(File, width=960, height=960, res=120)
 	    			
@@ -308,9 +344,9 @@ for (i in 1:length(uniquePartNames)) {
 	    			pt <- ggplot(data = plotMat, aes(x = xaxis, y = yaxis)) +
 	    			geom_errorbar(aes(ymin=yaxis-error, ymax=yaxis+error)) +
 					geom_line() +
-					scale_y_log10(limits = c(1,1e6)) +
+					scale_y_log10(limits = c(1e-1,1e6)) +
 	    			geom_point(size = 4, shape=21, fill="white") +
-	    			ylim(0,max(ymax)) +
+	    			# ylim(0,max(ymax)) +
 	    			# #theme_bw() +
 	    			ggtitle(as.character(paste(uniquePartNames[i],as.character(uniqueMediaTypeConcentrations[k]),colnames(meansMediaTime)[u], sep = "_"))) +    	
 	    			xlab(as.character("TIME")) +
@@ -320,7 +356,7 @@ for (i in 1:length(uniquePartNames)) {
 	    		}
 			}			
 	
-			#Do not evaluate files with less than 1000 events
+			#Do not evaluate files with less than minEvents
 			finalFilesMediaConcentration <- c()
 			for (nFile in 1:length(filesMediaConcentration)) {
 				frame <- read.flowSet(path = "data", filesMediaConcentration[nFile])
@@ -329,25 +365,27 @@ for (i in 1:length(uniquePartNames)) {
 				}
 			}
 	
-			#Analyze this flowset for all times of this media condition
-			experimentFlowSetMedia <- read.flowSet(path = "data", finalFilesMediaConcentration, phenoData=list(Filename="$FIL"))
-			experimentFlowSetMedia <- experimentFlowSetMedia[,columnIndexes]				
-							
-			#Process experiments for this flowSet
-			analyzedExptsMediaEval <- process.samples(experimentFlowSetMedia, comp.mat, colorControlsFlowSet, finalFilesMediaConcentration)		
-			meansMedia[k,] <- colMeans(analyzedExptsMediaEval)
-			standardDevsMedia[k,] <- colSds(analyzedExptsMediaEval)
-			
-			#Edge case where there is only one type of media for this part - throw it into a separate data frame for a bar graph
-			if (length(uniqueMediaTypeConcentrations) == 1) {				
-				oneMediaParts <- c(oneMediaParts, paste(part, uniqueMediaTypeConcentrations[k], sep = "_"))				
-				meansOneMedia <- rbind(meansOneMedia, meansMedia[k,])
-				standardDevsOneMedia <- rbind(standardDevsOneMedia, standardDevsMedia[k,])				
-			}				
+			#Analyze this flowset if there are any files left after the filter for minimal events
+			if (!is.null(finalFilesMediaConcentration)) {
+				experimentFlowSetMedia <- read.flowSet(path = "data", finalFilesMediaConcentration, phenoData=list(Filename="$FIL"))
+				experimentFlowSetMedia <- experimentFlowSetMedia[,columnIndexes]				
+								
+				#Process experiments for this flowSet
+				analyzedExptsMediaEval <- process.samples(experimentFlowSetMedia, comp.mat, colorControlsFlowSet, autofluorescence, finalFilesMediaConcentration)
+				meansMedia[k,] <- colMeans(analyzedExptsMediaEval)
+				standardDevsMedia[k,] <- colSds(analyzedExptsMediaEval)
+				
+				#Edge case where there is only one type of media for this part - throw it into a separate data frame for a bar graph
+				if (length(uniqueMediaTypeConcentrations) == 1) {				
+					oneMediaParts <- c(oneMediaParts, paste(part, uniqueMediaTypeConcentrations[k], sep = "_"))				
+					meansOneMedia <- rbind(meansOneMedia, meansMedia[k,])
+					standardDevsOneMedia <- rbind(standardDevsOneMedia, standardDevsMedia[k,])				
+				}				
+			}
 		}
 		
 		#Only do this loop if a media type is entered
-		if (length(uniqueMediaTypeConcentrations) > 1) {
+		if (nrow(meansMedia) > 1) {
 		
 			### PLOTTING OF PART MEDIA CONDITIONS ###
 			#Get rid of FSC and SSC
@@ -385,9 +423,10 @@ for (i in 1:length(uniquePartNames)) {
 				name <- as.character(paste(uniquePartNames[i],"_",as.character(uniqueMediaTypes[j]),"_",colnames(meansMedia)[l],".png"))
 				name <- str_replace_all(name, fixed(" "), "")
 				name <- sub("/","",name)
-				File <- as.character(paste("./multiple_media/", name))
+				File <- as.character(paste("./multiple_media/", uniquePartNames[i], "/", name))
    				File <- str_replace_all(File, fixed(" "), "")
 				# if (file.exists(File)) stop(File, " already exists")
+				dir.create("multiple_media")
 				dir.create(dirname(File), showWarnings = FALSE)
 				png(File, width=960, height=960, res=120)
 				
@@ -395,9 +434,9 @@ for (i in 1:length(uniquePartNames)) {
     			p <- ggplot(plotMat, aes(x = xaxis, y = yaxis)) +
     			geom_errorbar(aes(ymin=yaxis-error, ymax=yaxis+error)) +
 				geom_line() +
-				scale_y_log10(limits = c(1,1e6)) +
+				scale_y_log10(limits = c(1e-1,1e6)) +
     			geom_point(size = 4, shape=21, fill="white") +
-    			ylim(0,max(ymax)) +
+    			# ylim(0,max(ymax)) +
     			#theme_bw() +
     			ggtitle(as.character(part)) +    			
     			xlab(as.character(uniqueMediaTypes[j])) +
@@ -421,6 +460,7 @@ for (i in 1:length(uniquePartNames)) {
 	}
 }
 
+#If a part has only one media, make bar plots for that part in its media
 if (length(oneMediaParts) > 1) {
 	
 	### PLOTTING OF PART MEDIA CONDITIONS ###
@@ -433,6 +473,7 @@ if (length(oneMediaParts) > 1) {
 	standardDevsOneMedia <- cbind(standardDevsOneMedia[,3:length(standardDevsOneMedia)])
 	standardDevsOneMedia[is.na(standardDevsOneMedia)] <- 0
 	
+	#Column name correction
 	if (length(colnames(meansOneMedia)) == 0) {
 		colnames(meansOneMedia) <- storedColName
 		colnames(standardDevsOneMedia) <- storedColName
@@ -465,7 +506,7 @@ if (length(oneMediaParts) > 1) {
    		limits <- aes(ymin=yaxis-error, ymax=yaxis+error)		
 
 		#File naming and placement in a subdirectory
-		name <- as.character(paste("Mean_Population_Averages_Parts_One_Medium",as.character(title),".png"))
+		name <- as.character(paste("Mean_Population_Averages_One_Media_",as.character(title),".png"))
 		name <- str_replace_all(name, fixed(" "), "")
 		name <- sub("/","",name)		   		
    		File <- as.character(paste("./one_media/", name))
@@ -478,7 +519,7 @@ if (length(oneMediaParts) > 1) {
    		po <- ggplot(plotMat, aes(x = xaxis, y = yaxis)) +
    		geom_bar(colour="black", fill="#DD8888", width=.8, stat="identity") + 
     	guides(fill=FALSE) +
-    	scale_y_log10(limits = c(1,1e6)) +
+    	scale_y_log10(limits = c(1e-1,1e6)) +
    		geom_errorbar(aes(ymin=yaxis-error, ymax=yaxis+error)) +
   		ggtitle(as.character("Mean Population Averages")) +    			
    		xlab(as.character("PARTS")) +
@@ -519,9 +560,10 @@ if (length(multiplexVals) > 1) {
 		#File naming and placement in a subdirectory
 		name <- as.character(paste(colnames(multiplexDataFrame)[o],".png"))
 		name <- str_replace_all(name, fixed(" "), "")
-		File <- as.character(paste("./functional_richness/", name))
+		File <- as.character(paste("./functional_richness/", uniquePartNames[i], "/", name))
    		File <- str_replace_all(File, fixed(" "), "")
 		# if (file.exists(File)) stop(File, " already exists")
+		dir.create("functional_richness")
 		dir.create(dirname(File), showWarnings = FALSE)		
 		png(File, width=960, height=960, res=120)
 
@@ -531,7 +573,7 @@ if (length(multiplexVals) > 1) {
     	geom_line() +
     	geom_point(size = 4, shape=21, fill="white") +
     	theme_bw() +
-    	ylim(0,max(yaxis)) +
+    	scale_y_log10(limits = c(1e-1,1e6)) +
     	ggtitle("Functional Richness of Triplicate Population Averages") +    			
     	xlab("Number of Parts Multiplexed") +
     	ylab(paste(as.character(colnames(multiplexDataFrame)[o])," (RFU)"))

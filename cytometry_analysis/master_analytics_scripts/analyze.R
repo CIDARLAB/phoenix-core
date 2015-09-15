@@ -144,6 +144,7 @@ autofluorescence <- getAutofluorescence(negativeControlFlowSet)
 partsRows <- key[which((key$CONTROL =="")),]
 uniquePartNames <- unique(unlist(partsRows$PART))
 
+#Separate unique rows and duplicate rows by PART, MEDIA and TIME
 allPartTimeMediaDuplicateRows <- partsRows[duplicated(interaction(partsRows$MEDIA, partsRows$TIME, partsRows$PART)),]
 allPartTimeMediaUniqueRows <- partsRows[!duplicated(interaction(partsRows$MEDIA, partsRows$TIME, partsRows$PART)),]
 
@@ -176,287 +177,349 @@ colnames(output) <- c("PART", "MEDIA", "TIME", gsub("-",".", colnames(colorContr
 
 #Loop through all unique parts to make plots
 for (i in 1:length(uniquePartNames)) {
-
+	
 	part <- as.character(uniquePartNames[i])
 	uniqueTimeMediaRows <- allPartTimeMediaUniqueRows[which(TRUE == grepl(part, allPartTimeMediaUniqueRows$PART)),]
-		
-	#Find unique media types, ignoring numeric values in any entry
-	mediaTypes <- sub("\\(?[0-9,.]+\\)?","", allPartTimeMediaUniqueRows$MEDIA)
-	uniqueMediaTypes <- unique(sub("^\\s+|\\s+$","",mediaTypes))		
+	
+	#Initialize media-SM data frame
+	mediaSMMap <- data.frame(matrix(ncol = 3, nrow=0))
+	colnames(mediaSMMap) <- c("BASE", "SM", "CONCENTRATION")
+	
+	#New way to find unique media types with regular media type and a plus sign to indicate inducers
+	uniqueMediaTypes <- c()
+	mediaTypes <- uniqueTimeMediaRows$MEDIA	
+
+	#Build matrix of base medias, inducers and concentrations for analysis
+	for (x in 1:length(mediaTypes)) {
+		mediaTypeAndSM <- trimws(strsplit(as.character(mediaTypes[x]), "\\+")[[1]])
+		uniqueMediaTypes <- c(uniqueMediaTypes, as.character(mediaTypeAndSM[1]))
+
+		#This contains some fancy regex from the internet, but separates the concentration values from the type of inducer if one exists
+		if (length(mediaTypeAndSM) > 1) {
+			SMConc <- trimws(gsub(".*\\((.*)\\).*", "\\1", mediaTypeAndSM[2]))
+			SM <- trimws(gsub("\\(?[0-9,.]+\\)?","", SMConc))
+			concentration <- unique(unlist(regmatches(SMConc, gregexpr("[0-9]+", SMConc))))
+			mediaSMMap[x,] <- c(mediaTypeAndSM[1], SM, concentration)
+		} else {
+			mediaSMMap[x,] <- c(mediaTypeAndSM[1], "", "")
+		}		
+	}
+
+	uniqueMediaTypes <- as.character(unique(mediaSMMap$BASE))
 
 	#Loop through each unique media type, ignoring numeric values in any entry
 	for (j in 1:length(uniqueMediaTypes)) {
 
-		media <- c()
-		
-		#Initialize data structures for meansMedia and standardDevsMedia
-		meansMedia <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=0))
-		colnames(meansMedia) <- gsub("-",".", colnames(colorControlsFlowSet))
-		standardDevsMedia <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=0))
-		colnames(standardDevsMedia) <- gsub("-",".", colnames(colorControlsFlowSet))
-		
-		#Get this media type with string formatting substitutions
+		#Get list of small molecule additives
 		mediaType <- as.character(uniqueMediaTypes[j])
-		mediaType <- gsub("\\(","\\\\(",mediaType)
-		mediaType <- gsub("\\)","\\\\)",mediaType)				
-		
+		MediaTypeSMs <- mediaSMMap[which(TRUE == grepl(mediaType, mediaSMMap$BASE)),]
+		uniqueMediaSMs <- as.character(unique(MediaTypeSMs$SM))			 
+				
 		#Get unique media rows with this media type				
-		# blankMediaTimeRow <- uniqueTimeMediaRows[which(allPartTimeMediaUniqueRows$MEDIA == ""),]
 		uniqueMediaRows <- uniqueTimeMediaRows[which(TRUE == grepl(mediaType, uniqueTimeMediaRows$MEDIA)),]
-		# uniqueMediaRows <- rbind(blankMediaTimeRow,uniqueMediaRows)			
 		
-		uniqueMediaTypeConcentrations <- as.character(unique(uniqueMediaRows$MEDIA))
-	
-		#Loop through all unique media concentrations for this part
-		for (k in 1:length(uniqueMediaTypeConcentrations)) {				
+		#Loop through all small molecule additions for this mediaType
+		for (y in 1:length(uniqueMediaSMs)) {
 			
-			time <- c()
-			media <- c(media, as.character(uniqueMediaTypeConcentrations[k]))
-			
-			#Initialize data structures for meansMediaTime and standardDevsMediaTime
-			meansMediaTime <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=0))
-			colnames(meansMediaTime) <- gsub("-",".", colnames(colorControlsFlowSet))
-			standardDevsMediaTime <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=0))
-			colnames(standardDevsMediaTime) <- gsub("-",".", colnames(colorControlsFlowSet))
-			
-			#Get this media concentration with string formatting substitutions
-			uniqueMediaTypeConcentration <- uniqueMediaTypeConcentrations[k]
-			uniqueMediaTypeConcentration <- gsub("\\(","\\\\(",uniqueMediaTypeConcentration)
-			uniqueMediaTypeConcentration <- gsub("\\)","\\\\)",uniqueMediaTypeConcentration)
-			uniqueMediaTypeConcentration <- paste("^", uniqueMediaTypeConcentration, "$", sep = '')
-			
-			#Get all unique times per one media condition
-			uniqueMediaRowsAllTimes <- uniqueMediaRows[which(TRUE == grepl(uniqueMediaTypeConcentration, uniqueMediaRows$MEDIA)),]				
-			uniqueMediaTimes <- as.character(unique(uniqueMediaRowsAllTimes$TIME))
-			
-			#Hold replicates across all times per media concentration for media graphs
-			filesMediaConcentration <- c()
-			
-			#Loop through all times for this unique media and part combination table
-			for (t in 1:length(uniqueMediaTimes)) {
-				
-				uniqueMediaTime <- uniqueMediaTimes[t]
-				uniqueMediaTime <- paste("^", uniqueMediaTime, "$", sep = '')
-				uniqueMediaTimeRow <- uniqueMediaRowsAllTimes[which(TRUE == grepl(uniqueMediaTime, uniqueMediaRowsAllTimes$TIME)),]
-				
-				time <- c(time, as.character(uniqueMediaTimes[t]))
-				file <- as.character(uniqueMediaTimeRow$FILENAME)
-				
-				#Search duplicate media matrix for duplicate files
-				partMediaKey <- c("MEDIA", "PART", "TIME")
-				uniqueRowsThisExactMedia <- data.table(uniqueMediaTimeRow, key=partMediaKey)
-				duplicateRowsThisExactMedia <- data.table(allPartTimeMediaDuplicateRows, key=partMediaKey)
-				replicateFiles <- as.character(merge(uniqueRowsThisExactMedia, duplicateRowsThisExactMedia)$FILENAME.y)
-				
-				#Summarize files for times in this media condition in addition to files for all times in this media condition
-				files <- c(file, replicateFiles)
-				filesMediaConcentration <- c(filesMediaConcentration, files)				
-				
-				#Only process this data if there is more than one media time
-				if (length(uniqueMediaTimes) > 1) {
-				
-					#Do not evaluate files with less than 1000 events
-					finalFiles <- c()
-					for (nFile in 1:length(files)) {
-						frame <- read.flowSet(path = "data", files[nFile])
-						if (length(frame[[1]]) > minEvents) {
-							finalFiles <- c(finalFiles, files[nFile])
-						}
-					}
-								
-					#Analyze this flowset if there are any files left after the filter for minimal events
-					if (!is.null(finalFiles)) {
-						experimentFlowSet <- read.flowSet(path = "data", finalFiles, phenoData=list(Filename="$FIL"))
-						experimentFlowSet <- experimentFlowSet[,columnIndexes]				
+			SM <- as.character(uniqueMediaSMs[y])
 										
-						#Process experiments for this flowSet
-						analyzedExptsMediaTimeEval <- process.samples(experimentFlowSet, comp.mat, colorControlsFlowSet, autofluorescence, finalFiles)
-						meansMediaTime[t,] <- colMeans(analyzedExptsMediaTimeEval)
-						standardDevsMediaTime[t,] <- colSds(analyzedExptsMediaTimeEval)
-					}
-				}	
-			}
-			
-			#Add data to output file
-			for (w in 1:length(uniqueMediaTimes)) {
-				outputDataRow <- as.data.frame(rbind(c(part, uniqueMediaTypeConcentrations[k], uniqueMediaTimes[w], as.character(meansMediaTime[w,3:length(meansMediaTime)]))))
-				colnames(outputDataRow) <- colnames(output)
-				output <- rbind(output, outputDataRow)
-			}
-			
-			#Make a time v. media plot if more than one media time
-			if (nrow(meansMediaTime) > 1) {
+			media <- c()
+		
+			#Initialize data structures for meansMedia and standardDevsMedia
+			meansMedia <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=0))
+			colnames(meansMedia) <- gsub("-",".", colnames(colorControlsFlowSet))
+			standardDevsMedia <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=0))
+			colnames(standardDevsMedia) <- gsub("-",".", colnames(colorControlsFlowSet))
+											
+			#Process data for files with no small molecule additions
+			if (nchar(SM) == 0) {
 				
+				#Change the SM variable to an exact match on the media
+				noSM <- paste("^", mediaType, "$", sep = '')
+				uniqueMediaSMRowsAllTimes <- uniqueMediaRows[which(TRUE == grepl(noSM, uniqueMediaRows$MEDIA)),]			
+				
+				allSMConcs <- noSM
+			
+			} else {
+				
+				#Get the list of concentrations of this media with this small molecule additive			
+				uniqueMediaSMRowsAllTimes <- uniqueMediaRows[which(TRUE == grepl(SM, uniqueMediaRows$MEDIA)),]			
+				allSMConcs <- MediaTypeSMs[which(TRUE == grepl(SM, MediaTypeSMs$SM)),]$CONCENTRATION
+				
+				#If there is a media with no small molecule included in this set
+				if ("" %in% uniqueMediaSMs) {
+					noSM <- paste("^", mediaType, "$", sep = '')
+					noSMRows <- uniqueMediaRows[which(TRUE == grepl(noSM, uniqueMediaRows$MEDIA)),]
+					uniqueMediaSMRowsAllTimes <- rbind(noSMRows, uniqueMediaSMRowsAllTimes)	
+					allSMConcs <- c(noSM, allSMConcs)
+				}
+			}
+	
+			#Loop through all unique media concentrations for this part
+			for (k in 1:length(allSMConcs)) {				
+				
+				time <- c()		
+				conc <- allSMConcs[k]
+				
+				#Name this media with some extra formatting 
+				if (allSMConcs[k] == noSM && length(allSMConcs) == 1) {
+					mediaName <- as.character(mediaType)
+				} else if (allSMConcs[k] == noSM && length(allSMConcs) > 1) {
+					mediaName <- as.character(paste(mediaType, "0", SM,  sep = '_'))
+					media <- c(media, "0")
+				} else {
+					mediaName <- as.character(paste(mediaType, conc, SM,  sep = '_'))
+					media <- c(media, conc)
+				}						
+								
+				#Initialize data structures for meansMediaTime and standardDevsMediaTime
+				meansMediaTime <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=0))
+				colnames(meansMediaTime) <- gsub("-",".", colnames(colorControlsFlowSet))
+				standardDevsMediaTime <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=0))
+				colnames(standardDevsMediaTime) <- gsub("-",".", colnames(colorControlsFlowSet))
+				
+				#Get all unique times per one media condition
+				uniqueMediaRowsAllTimes <- uniqueMediaSMRowsAllTimes[which(TRUE == grepl(conc, uniqueMediaSMRowsAllTimes$MEDIA)),]		
+				uniqueMediaTimes <- as.character(unique(uniqueMediaRowsAllTimes$TIME))
+				
+				#Hold replicates across all times per media concentration for media graphs
+				filesMediaConcentration <- c()
+				files <- c()
+				
+				#Loop through all times for this media and small molecule concentration for time series analysis
+				for (t in 1:length(uniqueMediaTimes)) {
+					
+					uniqueMediaTime <- uniqueMediaTimes[t]
+					uniqueMediaTime <- paste("^", uniqueMediaTime, "$", sep = '')
+					uniqueMediaTimeRow <- uniqueMediaRowsAllTimes[which(TRUE == grepl(uniqueMediaTime, uniqueMediaRowsAllTimes$TIME)),]
+					
+					time <- c(time, as.character(uniqueMediaTimes[t]))
+					Afile <- as.character(uniqueMediaTimeRow$FILENAME)
+					
+					#Search duplicate media matrix for duplicate files
+					partMediaKey <- c("MEDIA", "PART", "TIME")
+					uniqueRowsThisExactMedia <- data.table(uniqueMediaTimeRow, key=partMediaKey)
+					duplicateRowsThisExactMedia <- data.table(allPartTimeMediaDuplicateRows, key=partMediaKey)
+					replicateFiles <- as.character(merge(uniqueRowsThisExactMedia, duplicateRowsThisExactMedia)$FILENAME.y)
+					
+					#Summarize files for times in this media condition in addition to files for all times in this media condition
+					files <- c(Afile, replicateFiles)
+					filesMediaConcentration <- c(filesMediaConcentration, files)				
+					
+					#Only process this data if there is more than one time for this media and small molecule
+					if (length(uniqueMediaTimes) > 1) {
+						
+						#Do not do a time series for the blank media in combination with supplemented media
+						if (allSMConcs[k] != noSM | length(allSMConcs) == 1) {
+					
+							#Do not evaluate files with less than 1000 events
+							finalFiles <- c()
+							for (nFile in 1:length(files)) {
+								frame <- read.flowSet(path = "data", files[nFile])
+								if (length(frame[[1]]) > minEvents) {
+									finalFiles <- c(finalFiles, files[nFile])
+								}
+							}
+										
+							#Analyze this flowset if there are any files left after the filter for minimal events
+							if (!is.null(finalFiles)) {
+								experimentFlowSet <- read.flowSet(path = "data", finalFiles, phenoData=list(Filename="$FIL"))
+								experimentFlowSet <- experimentFlowSet[,columnIndexes]				
+												
+								#Process experiments for this flowSet
+								analyzedExptsMediaTimeEval <- process.samples(experimentFlowSet, comp.mat, colorControlsFlowSet, autofluorescence, finalFiles)
+								meansMediaTime[t,] <- colMeans(analyzedExptsMediaTimeEval)
+								standardDevsMediaTime[t,] <- colSds(analyzedExptsMediaTimeEval)
+							}
+						}
+					}	
+				}
+				
+				#Add time series data to output file
+				for (w in 1:length(uniqueMediaTimes)) {
+					outputDataRow <- as.data.frame(rbind(c(part, conc, uniqueMediaTimes[w], as.character(meansMediaTime[w,3:length(meansMediaTime)]))))
+					colnames(outputDataRow) <- colnames(output)
+					output <- rbind(output, outputDataRow)
+				}
+				
+				#Make a fluorescence v. time plot if more than one time entered to this media at this concentration
+				if (nrow(meansMediaTime) > 1) {
+					
+					### PLOTTING OF PART MEDIA CONDITIONS ###
+					#Get rid of FSC and SSC
+					
+					#Edge case of only one color aside from FSC and SSC
+					storedColName <- colnames(meansMediaTime)[3]
+					
+					meansMediaTime <- cbind(meansMediaTime[,3:length(meansMediaTime)])
+					meansMediaTime[is.na(meansMediaTime)] <- 0				
+					standardDevsMediaTime <- cbind(standardDevsMediaTime[,3:length(standardDevsMediaTime)])
+					standardDevsMediaTime[is.na(standardDevsMediaTime)] <- 0
+					
+					#Column name correction
+					if (length(colnames(meansMediaTime)) == 0) {
+						colnames(meansMediaTime) <- storedColName
+						colnames(standardDevsMediaTime) <- storedColName
+					}			
+					
+					#Make plots				
+		    		colnames(meansMediaTime) <- paste("MEAN", colnames(meansMediaTime), sep = "_")
+		    		colnames(standardDevsMediaTime) <- paste("STD", colnames(standardDevsMediaTime), sep = "_")
+		    		xaxis <- as.numeric(str_extract_all(sub("","0",time),"\\(?[0-9,.]+\\)?"))
+		    		xaxis <- cbind(xaxis)
+		    		
+		    		plotMat <- cbind(meansMediaTime, standardDevsMediaTime)
+		    		plotMat <- cbind(xaxis, plotMat)
+		    		plotMat <- as.data.frame(plotMat)
+		    		
+		    		#Plot each color
+		    		for (u in 1:length(colnames(meansMediaTime))) {
+		    			title <- colnames(meansMediaTime)[u]
+		    			
+		    			#Define y values
+		    			yaxis <- cbind(meansMediaTime[,colnames(meansMediaTime)[u]])
+		    			yaxis <- as.numeric(yaxis)
+		    			
+		    			#Get standard error values for y values
+		    			error <- standardDevsMediaTime[,colnames(standardDevsMediaTime)[u]]
+		    			error <- as.numeric(error)	    			
+		    			ymin <- yaxis-error
+		    			ymax <- yaxis+error
+		    			limits <- aes(ymin=yaxis-error, ymax=yaxis+error)
+		
+						#File naming and placement in a subdirectory
+						name <- as.character(paste(part,"_",mediaName,"_",colnames(meansMediaTime)[u],".png"), sep='')
+						name <- str_replace_all(name, fixed(" "), "")
+						name <- sub("/","",name)
+						File <- as.character(paste("./time_series/", part, "/", name))
+	   					File <- str_replace_all(File, fixed(" "), "")
+						# if (file.exists(File)) stop(File, " already exists")
+						dir.create("time_series")
+						dir.create(dirname(File), showWarnings = FALSE)
+						png(File, width=960, height=960, res=120)
+		    			
+		    			#Plotting
+		    			pt <- ggplot(data = plotMat, aes(x = xaxis, y = yaxis)) +
+		    			geom_errorbar(aes(ymin=yaxis-error, ymax=yaxis+error)) +
+						geom_line() +
+						scale_y_log10(limits = c(1e-1,1e6)) +
+		    			geom_point(size = 4, shape=21, fill="white") +
+		    			# ylim(0,max(ymax)) +
+		    			# #theme_bw() +
+		    			ggtitle(as.character(paste(part,mediaName,colnames(meansMediaTime)[u], sep = "_"))) +    	
+		    			xlab(as.character("TIME")) +
+						ylab(as.character(paste(colnames(meansMediaTime)[u]," (RFU)")))
+		    			print(pt)
+		    			dev.off()
+		    		}
+				}			
+		
+				#Remove files with less than minEvents
+				finalFilesMediaConcentration <- c()
+				for (nFile in 1:length(filesMediaConcentration)) {
+					frame <- read.flowSet(path = "data", filesMediaConcentration[nFile])
+					if (length(frame[[1]]) > minEvents) {
+						finalFilesMediaConcentration <- c(finalFilesMediaConcentration, filesMediaConcentration[nFile])
+					}
+				}
+		
+				#Analyze this flowset if there are any files left after the filter for minimal events
+				if (!is.null(finalFilesMediaConcentration)) {
+					experimentFlowSetMedia <- read.flowSet(path = "data", finalFilesMediaConcentration, phenoData=list(Filename="$FIL"))
+					experimentFlowSetMedia <- experimentFlowSetMedia[,columnIndexes]				
+									
+					#Process experiments for this flowSet
+					analyzedExptsMediaEval <- process.samples(experimentFlowSetMedia, comp.mat, colorControlsFlowSet, autofluorescence, finalFilesMediaConcentration)
+					meansMedia[k,] <- colMeans(analyzedExptsMediaEval)
+					standardDevsMedia[k,] <- colSds(analyzedExptsMediaEval)
+					
+					#Edge case where there is only one type of media for this part - throw it into a separate data frame for a bar graph
+					# if (length(uniqueMediaTypeConcentrations) == 1) {				
+						# oneMediaParts <- c(oneMediaParts, paste(part, uniqueMediaTypeConcentrations[k], sep = "_"))				
+						# meansOneMedia <- rbind(meansOneMedia, meansMedia[k,])
+						# standardDevsOneMedia <- rbind(standardDevsOneMedia, standardDevsMedia[k,])				
+					# }				
+				}
+			}
+			
+			#Make a fluorescence v. media plot if more than one time entered to this media at this concentration
+			if (nrow(meansMedia) > 1) {
+			
 				### PLOTTING OF PART MEDIA CONDITIONS ###
 				#Get rid of FSC and SSC
+				meansMedia <- meansMedia[,3:length(meansMedia)]
+				meansMedia[is.na(meansMedia)] <- 0
+				standardDevsMedia <- standardDevsMedia[,3:length(standardDevsMedia)]
+				standardDevsMedia[is.na(standardDevsMedia)] <- 0
 				
-				#Edge case of only one color aside from FSC and SSC
-				storedColName <- colnames(meansMediaTime)[3]
-				
-				meansMediaTime <- cbind(meansMediaTime[,3:length(meansMediaTime)])
-				meansMediaTime[is.na(meansMediaTime)] <- 0				
-				standardDevsMediaTime <- cbind(standardDevsMediaTime[,3:length(standardDevsMediaTime)])
-				standardDevsMediaTime[is.na(standardDevsMediaTime)] <- 0
-				
-				#Column name correction
-				if (length(colnames(meansMediaTime)) == 0) {
-					colnames(meansMediaTime) <- storedColName
-					colnames(standardDevsMediaTime) <- storedColName
-				}			
-				
-				#Make plots				
-	    		colnames(meansMediaTime) <- paste("MEAN", colnames(meansMediaTime), sep = "_")
-	    		colnames(standardDevsMediaTime) <- paste("STD", colnames(standardDevsMediaTime), sep = "_")
-	    		xaxis <- as.numeric(str_extract_all(sub("","0",time),"\\(?[0-9,.]+\\)?"))
+				#Make plots
+	    		colnames(meansMedia) <- paste("MEAN", colnames(meansMedia), sep = "_")
+	    		colnames(standardDevsMedia) <- paste("STD", colnames(standardDevsMedia), sep = "_")
+	    		xaxis <- as.numeric(str_extract_all(sub("","0",media),"\\(?[0-9,.]+\\)?"))
 	    		xaxis <- cbind(xaxis)
 	    		
-	    		plotMat <- cbind(meansMediaTime, standardDevsMediaTime)
+	    		plotMat <- cbind(meansMedia, standardDevsMedia)
 	    		plotMat <- cbind(xaxis, plotMat)
-	    		plotMat <- as.data.frame(plotMat)
 	    		
 	    		#Plot each color
-	    		for (u in 1:length(colnames(meansMediaTime))) {
-	    			title <- colnames(meansMediaTime)[u]
+	    		for (l in 1:length(colnames(meansMedia))) {
+	    			
+	    			title <- colnames(meansMedia)[l]
 	    			
 	    			#Define y values
-	    			yaxis <- cbind(meansMediaTime[,colnames(meansMediaTime)[u]])
+	    			yaxis <- cbind(meansMedia[,colnames(meansMedia)[l]])
 	    			yaxis <- as.numeric(yaxis)
 	    			
 	    			#Get standard error values for y values
-	    			error <- standardDevsMediaTime[,colnames(standardDevsMediaTime)[u]]
-	    			error <- as.numeric(error)	    			
+	    			error <- standardDevsMedia[,colnames(standardDevsMedia)[l]]
+	    			error <- as.numeric(error)    			
 	    			ymin <- yaxis-error
 	    			ymax <- yaxis+error
 	    			limits <- aes(ymin=yaxis-error, ymax=yaxis+error)
 	
 					#File naming and placement in a subdirectory
-					name <- as.character(paste(uniquePartNames[i],"_",as.character(uniqueMediaTypeConcentrations[k]),"_",colnames(meansMediaTime)[u],".png"))
+					name <- as.character(paste(part,"_",mediaType,"_", SM, "_",colnames(meansMedia)[l],".png"))
 					name <- str_replace_all(name, fixed(" "), "")
 					name <- sub("/","",name)
-					File <- as.character(paste("./multiple_times/", uniquePartNames[i], "/", name))
-   					File <- str_replace_all(File, fixed(" "), "")
+					File <- as.character(paste("./media_induction/", part, "/", name))
+		   			File <- str_replace_all(File, fixed(" "), "")
 					# if (file.exists(File)) stop(File, " already exists")
-					dir.create("multiple_times")
+					dir.create("media_induction")
 					dir.create(dirname(File), showWarnings = FALSE)
 					png(File, width=960, height=960, res=120)
-	    			
-	    			#Plotting
-	    			pt <- ggplot(data = plotMat, aes(x = xaxis, y = yaxis)) +
+					
+					#Plotting
+	    			p <- ggplot(plotMat, aes(x = xaxis, y = yaxis)) +
 	    			geom_errorbar(aes(ymin=yaxis-error, ymax=yaxis+error)) +
 					geom_line() +
 					scale_y_log10(limits = c(1e-1,1e6)) +
 	    			geom_point(size = 4, shape=21, fill="white") +
 	    			# ylim(0,max(ymax)) +
-	    			# #theme_bw() +
-	    			ggtitle(as.character(paste(uniquePartNames[i],as.character(uniqueMediaTypeConcentrations[k]),colnames(meansMediaTime)[u], sep = "_"))) +    	
-	    			xlab(as.character("TIME")) +
-					ylab(as.character(paste(colnames(meansMediaTime)[u]," (RFU)")))
-	    			print(pt)
+	    			#theme_bw() +
+	    			ggtitle(as.character(part)) +    			
+	    			xlab(as.character(paste(mediaType, SM, sep ='+'))) +
+	    			ylab(as.character(paste(colnames(meansMedia)[l]," (RFU)")))
+	    			print(p)
 	    			dev.off()
-	    		}
-			}			
-	
-			#Do not evaluate files with less than minEvents
-			finalFilesMediaConcentration <- c()
-			for (nFile in 1:length(filesMediaConcentration)) {
-				frame <- read.flowSet(path = "data", filesMediaConcentration[nFile])
-				if (length(frame[[1]]) > minEvents) {
-					finalFilesMediaConcentration <- c(finalFilesMediaConcentration, filesMediaConcentration[nFile])
+	    		}    	
+		    	
+		    	#If there is no media curve, we still want to take averages of duplicateTimeMediaRows
+			} else {
+				
+				oneMediaParts <- c(oneMediaParts, paste(part, mediaType, sep = "_"))				
+				meansOneMedia <- rbind(meansOneMedia, meansMedia[k,])
+				standardDevsOneMedia <- rbind(standardDevsOneMedia, standardDevsMedia[k,])
+				
+				if ("MULTIPLEX" %in% colnames(key)) {
+					if (!(uniqueMediaRows$MULTIPLEX == "")) {
+						x <- rbind(get(paste("MMeans",uniqueMediaRows$MULTIPLEX,sep="")),meansMedia)
+						assign(paste("MMeans",uniqueMediaRows$MULTIPLEX,sep=""), x)
+						y <- rbind(get(paste("MStds",uniqueMediaRows$MULTIPLEX,sep="")),standardDevsMedia)
+						assign(paste("MStds",uniqueMediaRows$MULTIPLEX,sep=""), y)
+					}
 				}
 			}
-	
-			#Analyze this flowset if there are any files left after the filter for minimal events
-			if (!is.null(finalFilesMediaConcentration)) {
-				experimentFlowSetMedia <- read.flowSet(path = "data", finalFilesMediaConcentration, phenoData=list(Filename="$FIL"))
-				experimentFlowSetMedia <- experimentFlowSetMedia[,columnIndexes]				
-								
-				#Process experiments for this flowSet
-				analyzedExptsMediaEval <- process.samples(experimentFlowSetMedia, comp.mat, colorControlsFlowSet, autofluorescence, finalFilesMediaConcentration)
-				meansMedia[k,] <- colMeans(analyzedExptsMediaEval)
-				standardDevsMedia[k,] <- colSds(analyzedExptsMediaEval)
-				
-				#Edge case where there is only one type of media for this part - throw it into a separate data frame for a bar graph
-				if (length(uniqueMediaTypeConcentrations) == 1) {				
-					oneMediaParts <- c(oneMediaParts, paste(part, uniqueMediaTypeConcentrations[k], sep = "_"))				
-					meansOneMedia <- rbind(meansOneMedia, meansMedia[k,])
-					standardDevsOneMedia <- rbind(standardDevsOneMedia, standardDevsMedia[k,])				
-				}				
-			}
-		}
-		
-		#Only do this loop if a media type is entered
-		if (nrow(meansMedia) > 1) {
-		
-			### PLOTTING OF PART MEDIA CONDITIONS ###
-			#Get rid of FSC and SSC
-			meansMedia <- meansMedia[,3:length(meansMedia)]
-			meansMedia[is.na(meansMedia)] <- 0
-			standardDevsMedia <- standardDevsMedia[,3:length(standardDevsMedia)]
-			standardDevsMedia[is.na(standardDevsMedia)] <- 0
-			
-			#Make plots
-    		colnames(meansMedia) <- paste("MEAN", colnames(meansMedia), sep = "_")
-    		colnames(standardDevsMedia) <- paste("STD", colnames(standardDevsMedia), sep = "_")
-    		xaxis <- as.numeric(str_extract_all(sub("","0",media),"\\(?[0-9,.]+\\)?"))
-    		xaxis <- cbind(xaxis)
-    		
-    		plotMat <- cbind(meansMedia, standardDevsMedia)
-    		plotMat <- cbind(xaxis, plotMat)
-    		
-    		#Plot each color
-    		for (l in 1:length(colnames(meansMedia))) {
-    			
-    			title <- colnames(meansMedia)[l]
-    			
-    			#Define y values
-    			yaxis <- cbind(meansMedia[,colnames(meansMedia)[l]])
-    			yaxis <- as.numeric(yaxis)
-    			
-    			#Get standard error values for y values
-    			error <- standardDevsMedia[,colnames(standardDevsMedia)[l]]
-    			error <- as.numeric(error)    			
-    			ymin <- yaxis-error
-    			ymax <- yaxis+error
-    			limits <- aes(ymin=yaxis-error, ymax=yaxis+error)
-
-				#File naming and placement in a subdirectory
-				name <- as.character(paste(uniquePartNames[i],"_",as.character(uniqueMediaTypes[j]),"_",colnames(meansMedia)[l],".png"))
-				name <- str_replace_all(name, fixed(" "), "")
-				name <- sub("/","",name)
-				File <- as.character(paste("./multiple_media/", uniquePartNames[i], "/", name))
-   				File <- str_replace_all(File, fixed(" "), "")
-				# if (file.exists(File)) stop(File, " already exists")
-				dir.create("multiple_media")
-				dir.create(dirname(File), showWarnings = FALSE)
-				png(File, width=960, height=960, res=120)
-				
-				#Plotting
-    			p <- ggplot(plotMat, aes(x = xaxis, y = yaxis)) +
-    			geom_errorbar(aes(ymin=yaxis-error, ymax=yaxis+error)) +
-				geom_line() +
-				scale_y_log10(limits = c(1e-1,1e6)) +
-    			geom_point(size = 4, shape=21, fill="white") +
-    			# ylim(0,max(ymax)) +
-    			#theme_bw() +
-    			ggtitle(as.character(part)) +    			
-    			xlab(as.character(uniqueMediaTypes[j])) +
-    			ylab(as.character(paste(colnames(meansMedia)[l]," (RFU)")))
-    			print(p)
-    			dev.off()
-    		}    	
-    	
-    	#If there is no media curve, we still want to take averages of duplicateTimeMediaRows
-		} else {
-			
-			if ("MULTIPLEX" %in% colnames(key)) {
-				if (!(uniqueMediaRows$MULTIPLEX == "")) {
-					x <- rbind(get(paste("MMeans",uniqueMediaRows$MULTIPLEX,sep="")),meansMedia)
-					assign(paste("MMeans",uniqueMediaRows$MULTIPLEX,sep=""), x)
-					y <- rbind(get(paste("MStds",uniqueMediaRows$MULTIPLEX,sep="")),standardDevsMedia)
-					assign(paste("MStds",uniqueMediaRows$MULTIPLEX,sep=""), y)
-				}
-			}
-		}
+		}				
 	}
 }
 

@@ -21,6 +21,8 @@ public class AssignedModule extends Module {
     public AssignedModule (String name) {
         super(name);
         this.experiments = new ArrayList<>();
+        this.SBMLDocument = new SBMLDocument();
+        this.regulationDocument = new ArrayList<>();
     }    
     
     //Constructor for module to assignedModule
@@ -28,6 +30,8 @@ public class AssignedModule extends Module {
 //        AssignedModule aM = new AssignedModule(m.getName());
         super(m.getName());
         this.experiments = new ArrayList<>();
+        this.regulationDocument = new ArrayList<>();
+        this.SBMLDocument = new SBMLDocument();
         List<Feature> fList = new ArrayList<>();
         for (Feature f : m.getModuleFeatures()) {
             fList.add(f.clone());
@@ -38,7 +42,7 @@ public class AssignedModule extends Module {
             pmList.add(pm.clone());
         }
         this.setSubmodules(pmList);
-
+        
         this.setFunction(m.getFunction());
         this.setForward(m.isForward());
         this.setRole(m.getRole());
@@ -70,6 +74,7 @@ public class AssignedModule extends Module {
         clone.setStage(this.getStage());
         
         clone.SBMLDocument = this.SBMLDocument;
+        clone.regulationDocument = this.regulationDocument;
         
         return clone;
     }
@@ -84,6 +89,11 @@ public class AssignedModule extends Module {
     @Getter
     @Setter
     private SBMLDocument SBMLDocument;
+    
+    @Getter
+    @Setter
+    private List<SBMLDocument> regulationDocument;
+    
         
     //Experiment associated with this module
     @Getter

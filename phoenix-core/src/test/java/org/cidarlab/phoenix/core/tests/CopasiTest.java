@@ -5,6 +5,7 @@
  */
 package org.cidarlab.phoenix.core.tests;
 
+import static org.cidarlab.phoenix.core.adaptors.COPASIAdaptor.parseFormula;
 import org.cidarlab.phoenix.core.dom.Arc;
 import org.cidarlab.phoenix.core.dom.Arc.ArcRole;
 import org.cidarlab.phoenix.core.dom.AssignedModule;
@@ -18,7 +19,13 @@ import org.cidarlab.phoenix.core.dom.Primitive;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
 import org.cidarlab.phoenix.core.dom.Sequence;
 import org.cidarlab.phoenix.core.grammars.PhoenixGrammar;
+import org.sbml.jsbml.KineticLaw;
+import org.sbml.jsbml.LocalParameter;
+import org.sbml.jsbml.Model;
+import org.sbml.jsbml.Reaction;
 import org.sbml.jsbml.SBMLDocument;
+import org.sbml.jsbml.Species;
+import org.sbml.jsbml.SpeciesReference;
 
 /**
  *
@@ -180,6 +187,71 @@ public class CopasiTest {
         
         exp2.getParents().add(tu2);
         exe1.getParents().add(tu2);
+        
+        //Create Assigned Modules
+        AssignedModule aexp1_1 = new AssignedModule(exp1);
+        AssignedModule aexe1_1 = new AssignedModule(exe1);
+        
+        AssignedModule aexp2_1 = new AssignedModule(exp2);
+        AssignedModule aexe2_1 = new AssignedModule(exe2);
+        
+        SBMLDocument docexp1_1 = new SBMLDocument();
+        SBMLDocument docexe1_1 = new SBMLDocument();
+        
+        SBMLDocument docexp2_1 = new SBMLDocument();
+        SBMLDocument docexe2_1 = new SBMLDocument();
+        
+        //SBML Document for C1
+        Reaction proteinExpression1 = new Reaction(aexp1_1.getName() + "_pEXP");
+        Species product1 = new Species("p1");                                               
+        
+        //Expression kinetic law
+        KineticLaw expressionKL1 = new KineticLaw(proteinExpression1);
+        LocalParameter k1 = new LocalParameter("k_" + aexp1_1.getName());
+        k1.setValue(1.0);
+        expressionKL1.addLocalParameter(k1);
+        expressionKL1.setMath(parseFormula(k1.getId()));
+        
+        Model model1 = new Model();
+        model1.addReaction(proteinExpression1);
+        
+        docexp1_1.setModel(model1);
+        aexp1_1.setSBMLDocument(docexp1_1);
+        
+        //SBML Document for C2
+        Reaction proteinExpression2 = new Reaction(aexp2_1.getName() + "_pEXP");
+        Species product2 = new Species("p2");
+        
+        //Expression kinetic law
+        KineticLaw expressionKL2 = new KineticLaw(proteinExpression2);
+        LocalParameter k2 = new LocalParameter("k_" + aexp2_1.getName());
+        k2.setValue(1.0);
+        expressionKL2.addLocalParameter(k2);
+        expressionKL2.setMath(parseFormula(k2.getId()));
+        
+        Model model2 = new Model();
+        model1.addReaction(proteinExpression2);
+        
+        docexp2_1.setModel(model1);
+        aexp2_1.setSBMLDocument(docexp2_1);
+        
+        
+        /*
+        Reaction proteinDegradation = new Reaction(aexp1_1.getName() + "_pDEG");          
+        SpeciesReference productSpecRef = proteinExpression1.createProduct(product1);
+        proteinDegradation.addReactant(productSpecRef);
+        KineticLaw degradationKL = new KineticLaw(proteinDegradation);
+        LocalParameter gamma = new LocalParameter("gamma");
+        gamma.setValue(1.0);
+        LocalParameter kD = new LocalParameter("kD_" + productSpecRef.getId());
+        kD.setValue(1.0);
+        degradationKL.addLocalParameter(gamma);
+        degradationKL.addLocalParameter(kD);
+        degradationKL.setMath(parseFormula("(" + gamma.getId() + "*" + productSpecRef.getId() + "/" + kD.getId() + ")/(1+(" + productSpecRef.getId() + "/" + kD.getId() + "))"));
+        */
+        //model.addReaction(proteinDegradation);
+        
+        
         
         return root;
         

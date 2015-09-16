@@ -164,22 +164,43 @@ if (length(multiplexVals) > 1) {
 	}
 }
 
-#Initialize data structures for meansMedia and standardDevsMedia
+#Initialize data structures for meansOneMedia and standardDevsOneMedia
 meansOneMedia <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=0))
 colnames(meansOneMedia) <- gsub("-",".", colnames(colorControlsFlowSet))
 standardDevsOneMedia <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=0))
 colnames(standardDevsOneMedia) <- gsub("-",".", colnames(colorControlsFlowSet))
 oneMediaParts <- c()
 
+#Initialize data structures for meansMediaReg and standardDevsMedia
+meansReg <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=0))
+colnames(meansReg) <- gsub("-",".", colnames(colorControlsFlowSet))
+standardDevsReg <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=0))
+colnames(standardDevsReg) <- gsub("-",".", colnames(colorControlsFlowSet))
+regParts <- c()
+regMedia <- c()
+
 #Initialize output file
 output <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)) + 1, nrow=0))
 colnames(output) <- c("PART", "MEDIA", "TIME", gsub("-",".", colnames(colorControlsFlowSet))[3:length(colnames(colorControlsFlowSet))])
+
+#Look at REGULATION row to find regulation controls, process those first and store the values in a data frame
+regControlRows <- key[which(!(key$REGULATION =="")),]
+regControlsAndChannels <- regControlRows$REGULATION
+regControls <- c()
+for (control in 1:length(regControlsAndChannels)) {
+	aRegControl <- trimws(strsplit(as.character(regControlsAndChannels[control]), "\\(")[[1]])
+	regControls <- c(regControls, aRegControl[1])
+}
+regControlParts <- unique(regControls)
+
+uniquePartNames <- uniquePartNames [! uniquePartNames %in% regControlParts]
+uniquePartNames <- c(as.character(regControlParts), as.character(uniquePartNames))
 
 #Loop through all unique parts to make plots
 for (i in 1:length(uniquePartNames)) {
 	
 	part <- as.character(uniquePartNames[i])
-	uniqueTimeMediaRows <- allPartTimeMediaUniqueRows[which(TRUE == grepl(part, allPartTimeMediaUniqueRows$PART)),]
+	uniqueTimeMediaRows <- allPartTimeMediaUniqueRows[which(TRUE == grepl(paste("^", part, "$", sep = ''), allPartTimeMediaUniqueRows$PART)),]
 	
 	#Initialize media-SM data frame
 	mediaSMMap <- data.frame(matrix(ncol = 3, nrow=0))
@@ -345,7 +366,7 @@ for (i in 1:length(uniquePartNames)) {
 				#Make a fluorescence v. time plot if more than one time entered to this media at this concentration
 				if (nrow(meansMediaTime) > 1) {
 					
-					### PLOTTING OF PART MEDIA CONDITIONS ###
+					### PLOTTING OF PART MEDIA TIMES ###
 					#Get rid of FSC and SSC
 					
 					#Edge case of only one color aside from FSC and SSC
@@ -440,6 +461,106 @@ for (i in 1:length(uniquePartNames)) {
 						# standardDevsOneMedia <- rbind(standardDevsOneMedia, standardDevsMedia[k,])				
 					# }				
 				}
+			}			
+			
+			#If part has a regulation control, make a channel v. channel plot
+			if (!(uniqueMediaRows$REGULATION[1] == "")) {
+				
+				#Initialize data structures for meansMedia and standardDevsMedia
+				meansRegAndPart <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=0))
+				colnames(meansRegAndPart) <- gsub("-",".", colnames(colorControlsFlowSet))
+				standardDevsRegAndPart <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=0))
+				colnames(standardDevsRegAndPart) <- gsub("-",".", colnames(colorControlsFlowSet))
+				
+				#Split regulation control channels and regulation plot channels
+				regControlPartAndChannels <- trimws(strsplit(as.character(uniqueMediaRows$REGULATION[1]), "\\(")[[1]])
+				regControlPartAndChannels <- gsub("\\)","", regControlPartAndChannels)
+				
+				#Search the regulation part means and stds based on this media
+				regControlPart <- trimws(as.character(regControlPartAndChannels[1]))
+				partMatchIndexes <- regControlPart %in% regParts
+				for (match in 1:length(partMatchIndexes)) {
+					if (partMatchIndexes[match]) {
+						if (regMedia[match] == mediaType) {
+							
+							#Only the first rows of meansMedia and standardDevsMedia are used currently... this is hacky and could use some fixes
+							meansRegAndPart[1,] <- meansReg[match,]
+							meansRegAndPart <- rbind(meansRegAndPart, meansMedia[1,]) 
+							standardDevsRegAndPart[1,] <- standardDevsReg[match,]
+							standardDevsRegAndPart <- rbind(standardDevsRegAndPart, standardDevsMedia[1,])
+						}
+					}
+				}				
+				
+				### PLOTTING OF PART MEDIA TIMES ###
+				#Get rid of FSC and SSC
+				
+				#Edge case of only one color aside from FSC and SSC
+				storedColName <- colnames(meansRegAndPart)[3]
+				
+				meansRegAndPart <- cbind(meansRegAndPart[,3:length(meansRegAndPart)])
+				meansRegAndPart[is.na(meansRegAndPart)] <- 0				
+				standardDevsRegAndPart <- cbind(standardDevsRegAndPart[,3:length(standardDevsRegAndPart)])
+				standardDevsRegAndPart[is.na(standardDevsRegAndPart)] <- 0
+				
+				#Column name correction
+				if (length(colnames(meansRegAndPart)) == 0) {
+					colnames(meansRegAndPart) <- storedColName
+					colnames(standardDevsRegAndPart) <- storedColName
+				}			
+				
+				#Make plots				
+	    		colnames(meansRegAndPart) <- paste("MEAN", colnames(meansRegAndPart), sep = "_")
+	    		colnames(standardDevsRegAndPart) <- paste("STD", colnames(standardDevsRegAndPart), sep = "_")
+	    			    		
+				#Determine regulation control channels for plotting			
+				regControlChannels <- trimws(strsplit(as.character(trimws(gsub(".*\\((.*)\\).*", "\\1", regControlPartAndChannels[2]))), "\\|")[[1]])
+				if (length(regControlChannels) == 1) {
+					ychannel <- gsub("-",".", regControlChannels[1])
+					yaxis <- cbind(meansRegAndPart[,which(TRUE == grepl(ychannel, colnames(meansRegAndPart)))])
+					yaxis <- as.numeric(yaxis)
+					yaxis <- cbind(yaxis)
+					ylabel <- as.character(paste(ychannel, " (RFU)", sep=""))
+					xlabel <- "PART"
+					xaxis <- c(regControlPart, part)
+    				xaxis <- cbind(xaxis)
+				} else {
+					ychannel <- gsub("-",".", regControlChannels[1])
+					yaxis <- meansRegAndPart[,which(TRUE == grepl(ychannel, colnames(meansRegAndPart)))]
+					yaxis <- as.numeric(yaxis)
+					xchannel <- gsub("-",".", regControlChannels[2])
+					xaxis <- meansRegAndPart[,which(TRUE == grepl(xchannel, colnames(meansRegAndPart)))]
+					xaxis <- as.numeric(xaxis)
+					ylabel <- as.character(paste(ychannel, " (RFU)", sep=""))
+					xlabel <- as.character(paste(xchannel, " (RFU)", sep=""))
+				}
+				
+	    		plotMat <- cbind(xaxis, as.numeric(yaxis))
+	    		plotMat <- as.data.frame(plotMat)
+	    		
+	    		title <- paste("Regulation of ", regControlPart, sep='')
+
+				#File naming and placement in a subdirectory
+				name <- as.character(paste(part,"_",mediaType,"_REGULATION_",ychannel,".png"), sep='')
+				name <- str_replace_all(name, fixed(" "), "")
+				name <- sub("/","",name)
+				File <- as.character(paste("./regulation/", part, "/", name))
+   				File <- str_replace_all(File, fixed(" "), "")
+				# if (file.exists(File)) stop(File, " already exists")
+				dir.create("regulation")
+				dir.create(dirname(File), showWarnings = FALSE)
+				png(File, width=960, height=960, res=120)
+    			
+    			#Plotting
+    			pt <- ggplot(data = plotMat, aes(x = xaxis, y = as.numeric(yaxis))) +
+				geom_line() +
+				scale_y_log10(limits = c(1e-1,1e6)) +
+    			geom_point(size = 4, shape=21, fill="white") +
+    			ggtitle(as.character(title)) +    	
+    			xlab(xlabel) +
+				ylab(ylabel)
+    			print(pt)
+    			dev.off()
 			}
 			
 			#Make a fluorescence v. media plot if more than one time entered to this media at this concentration
@@ -491,7 +612,7 @@ for (i in 1:length(uniquePartNames)) {
 					#Plotting
 	    			p <- ggplot(plotMat, aes(x = xaxis, y = yaxis)) +
 	    			geom_errorbar(aes(ymin=yaxis-error, ymax=yaxis+error)) +
-					geom_line() +
+					# geom_line() +
 					scale_y_log10(limits = c(1e-1,1e6)) +
 	    			geom_point(size = 4, shape=21, fill="white") +
 	    			# ylim(0,max(ymax)) +
@@ -503,12 +624,12 @@ for (i in 1:length(uniquePartNames)) {
 	    			dev.off()
 	    		}    	
 		    	
-		    	#If there is no media curve, we still want to take averages of duplicateTimeMediaRows
+		    #If there is no media curve, we still want to take averages of duplicateTimeMediaRows
 			} else {
 				
 				oneMediaParts <- c(oneMediaParts, paste(part, mediaType, sep = "_"))				
-				meansOneMedia <- rbind(meansOneMedia, meansMedia[k,])
-				standardDevsOneMedia <- rbind(standardDevsOneMedia, standardDevsMedia[k,])
+				meansOneMedia <- rbind(meansOneMedia, meansMedia[1,])
+				standardDevsOneMedia <- rbind(standardDevsOneMedia, standardDevsMedia[1,])
 				
 				if ("MULTIPLEX" %in% colnames(key)) {
 					if (!(uniqueMediaRows$MULTIPLEX == "")) {
@@ -519,7 +640,18 @@ for (i in 1:length(uniquePartNames)) {
 					}
 				}
 			}
-		}				
+			
+			#Add regulation control values to the regulation control data frame
+			if (part %in% regControlParts) {
+				
+				regParts <- c(regParts, part)
+				regMedia <- c(regMedia, mediaType)				
+				meansReg <- rbind(meansReg, meansMedia[1,])
+				standardDevsReg <- rbind(standardDevsReg, standardDevsMedia[1,])
+			}
+			
+			
+		}		
 	}
 }
 

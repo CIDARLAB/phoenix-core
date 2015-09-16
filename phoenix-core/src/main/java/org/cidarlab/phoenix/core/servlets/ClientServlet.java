@@ -119,7 +119,7 @@ public class ClientServlet extends HttpServlet {
                 // Pass files to correct method
                 preliminaryDataUpload (featureLib, plasmidLib, fluorophoreSpectra, cytometer);
                 // If we made it here then everything was successful
-                System.out.println("\n\nINFO: SUCCESS\n\n");
+                System.out.println("\n\nINFO: SUCCESS\n\n" + getFilepath());
                 holdingData = true;
                 PrintWriter out = response.getWriter();
                 out.write("Done!");

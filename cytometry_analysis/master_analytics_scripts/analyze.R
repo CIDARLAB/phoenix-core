@@ -8,102 +8,17 @@ library(matrixStats)
 library(ggplot2)
 library(stringr)
 library(FD)
+library(flowCore)
+library(flowClust)
 
-#Function for processing meansMedia and standard deviations with filtering and compensating
-process.samples <- function(experimentFlowSet, comp.mat, colorControlsFlowSet, autofluorescence, dataFiles) {		
-	
-	if (!is.null(comp.mat)) {
-		compensatedFlowSet <- compensate(experimentFlowSet, comp.mat)
-	} else {
-		compensatedFlowSet <- experimentFlowSet
-	}
-				
-	#Apply cell size filter -- we only want cells clustered in the middle of FSC and SSC range
-	cellSizeFilter <- norm2Filter(x = c("SSC-A", "FSC-A"), scale.factor = 2, filterId = "cellSize")
-	cellSizeFilter.results <- filter (compensatedFlowSet, cellSizeFilter)			
-	compensatedFlowSet <- Subset(compensatedFlowSet, cellSizeFilter.results)					
-				
-	#Remove negative and fringe values
-	for (q in 1:length(compensatedFlowSet)) {
-				
-		#Logicle Transform
-		# lgcl <- estimateLogicle(compensatedFlowSet[[q]], colnames(compensatedFlowSet))
-		# compensatedFlowSet[[q]] <- transform(compensatedFlowSet[[q]], lgcl)	
-		
-		compensatedFlowSet[[q]] <- nmRemove(compensatedFlowSet[[q]], colnames(compensatedFlowSet), neg=TRUE)
-	}							
-				
-	#Processing for row and column names
-	colnames(compensatedFlowSet) <- gsub("-",".", colnames(compensatedFlowSet))
-	analyzedExpts <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=length(compensatedFlowSet)))
-	colnames(analyzedExpts) <- gsub("-",".", colnames(colorControlsFlowSet))
-	rownames(analyzedExpts) <- dataFiles
-				
-	#Apply a curve1 filter
-	for (p in 1:length(colnames(compensatedFlowSet))) {
-					
-		c1f <- curv1Filter(x=list(colnames(compensatedFlowSet)[p]), bwFac=4)
-		fres <- filter(compensatedFlowSet[,p], c1f)
-		s <- split(compensatedFlowSet[,p], fres, population=list(keep=c("peak 1")))
-		analyzedExpts[,p] <- fsApply(s$`keep`,each_col,mean)
-	}
-		
-	#Subtract autofluorescence
-	# analyzedExpts <- sweep(analyzedExpts,2,autofluorescence)
-		
-	analyzedExpts[is.na(analyzedExpts)] <- 0
-	analyzedExptsMatrix <- data.matrix(analyzedExpts)
-			
-	return(analyzedExptsMatrix)
-}
-
-#Function for getting autoflouresnce values
-getAutofluorescence <- function(negativeControlFlowSet) {
-	
-	autofluorescence <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=1))
-	colnames(autofluorescence) <- gsub("-",".", colnames(colorControlsFlowSet))	
-	
-	#Apply cell size filter -- we only want cells clustered in the middle of FSC and SSC range
-	cellSizeFilter <- norm2Filter(x = c("SSC-A", "FSC-A"), scale.factor = 2, filterId = "cellSize")
-	cellSizeFilter.results <- filter (negativeControlFlowSet, cellSizeFilter)			
-	negativeControlFlowSet <- Subset(negativeControlFlowSet, cellSizeFilter.results)
-	
-	#Apply a curve1 filter
-	for (p in 1:length(colnames(negativeControlFlowSet))) {					
- 		c1f <- curv1Filter(x=list(colnames(negativeControlFlowSet)[p]), bwFac=4)
- 		fres <- filter(negativeControlFlowSet[,p], c1f)
- 		s <- split(negativeControlFlowSet[,p], fres, population=list(keep=c("peak 1")))
- 		autofluorescence[,p] <- fsApply(s$`keep`,each_col,mean)
- 	}
-	
-	autofluorescence[1,] <- fsApply(negativeControlFlowSet,each_col,mean)
-	autofluorescence <- as.matrix(autofluorescence)
-	
-	return(autofluorescence)
-}
-
-#Function for calculating functional diversity
-functionalDiversity <- function(multiplexMeansDataSet) {
-	
-	fdRaoQ <- data.frame(matrix(ncol = length(colnames(multiplexMeansDataSet)), nrow=0))
-	colnames(fdRaoQ) <- gsub("-",".", colnames(multiplexMeansDataSet))
-	
-	if (nrow(multiplexMeansDataSet) > 1)  {
-		for (s in 1:length(colnames(multiplexMeansDataSet))) {
-		
-			channelFDdf <- as.data.frame(multiplexMeansDataSet[,s])
-			colnames(channelFDdf) <- colnames(multiplexMeansDataSet)[s]
-			fd <- dbFD(channelFDdf)
-			
-			fdRaoQ[1,s] <- fd$FRic
-		}
-	} else {
-		for (s in 1:length(colnames(multiplexMeansDataSet))) {
-			fdRaoQ[1,s] <- 0
-		}
-	}	
-	return(fdRaoQ)
-}
+#Import function libraries
+source("functionLibs/source_https.R")
+source("functionLibs/functionalDiversity.R")
+source("functionLibs/getAutoFluorescence.R")
+source("functionLibs/normalizeToBeads.R")
+source("functionLibs/top_sliding_window_peaks.R")
+source("functionLibs/process_samples.R")
+setwd(wd)
 
 #Import key file
 # key <- read.csv("key_EXPRESSEE_DEGRADATION_81215.csv", header = TRUE)
@@ -187,9 +102,11 @@ colnames(output) <- c("PART", "MEDIA", "TIME", gsub("-",".", colnames(colorContr
 regControlRows <- key[which(!(key$REGULATION =="")),]
 regControlsAndChannels <- regControlRows$REGULATION
 regControls <- c()
-for (control in 1:length(regControlsAndChannels)) {
-	aRegControl <- trimws(strsplit(as.character(regControlsAndChannels[control]), "\\(")[[1]])
-	regControls <- c(regControls, aRegControl[1])
+if (length(regControlsAndChannels) > 1)  {
+	for (control in 1:length(regControlsAndChannels)) {
+		aRegControl <- trimws(strsplit(as.character(regControlsAndChannels[control]), "\\(")[[1]])
+		regControls <- c(regControls, aRegControl[1])
+	}
 }
 regControlParts <- unique(regControls)
 
@@ -464,6 +381,7 @@ for (i in 1:length(uniquePartNames)) {
 			}			
 			
 			#If part has a regulation control, make a channel v. channel plot
+			if (!is.null(uniqueMediaRows$REGULATION)) {
 			if (!(uniqueMediaRows$REGULATION[1] == "")) {
 				
 				#Initialize data structures for meansMedia and standardDevsMedia
@@ -562,6 +480,7 @@ for (i in 1:length(uniquePartNames)) {
     			print(pt)
     			dev.off()
 			}
+			}
 			
 			#Make a fluorescence v. media plot if more than one time entered to this media at this concentration
 			if (nrow(meansMedia) > 1) {
@@ -612,7 +531,7 @@ for (i in 1:length(uniquePartNames)) {
 					#Plotting
 	    			p <- ggplot(plotMat, aes(x = xaxis, y = yaxis)) +
 	    			geom_errorbar(aes(ymin=yaxis-error, ymax=yaxis+error)) +
-					# geom_line() +
+					geom_line() +
 					scale_y_log10(limits = c(1e-1,1e6)) +
 	    			geom_point(size = 4, shape=21, fill="white") +
 	    			# ylim(0,max(ymax)) +

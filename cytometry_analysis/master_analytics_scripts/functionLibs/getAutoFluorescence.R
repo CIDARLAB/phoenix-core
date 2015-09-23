@@ -1,13 +1,17 @@
 #Function for getting autoflouresnce values
-getAutofluorescence <- function(negativeControlFlowSet) {
+getAutofluorescence <- function(negativeControlFlowSet, beadFlowFrame) {
 	
-	autofluorescence <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=1))
-	colnames(autofluorescence) <- gsub("-",".", colnames(colorControlsFlowSet))	
+	colnames(negativeControlFlowSet) <- gsub("-",".", colnames(negativeControlFlowSet))
+	autofluorescence <- data.frame(matrix(ncol = length(colnames(negativeControlFlowSet)), nrow=1))
+	colnames(autofluorescence) <- gsub("-",".", colnames(negativeControlFlowSet))	
 	
 	#Apply cell size filter -- we only want cells clustered in the middle of FSC and SSC range
-	cellSizeFilter <- norm2Filter(x = c("SSC-A", "FSC-A"), scale.factor = 2, filterId = "cellSize")
+	cellSizeFilter <- norm2Filter(x = c("SSC.A", "FSC.A"), scale.factor = 2, filterId = "cellSize")
 	cellSizeFilter.results <- filter (negativeControlFlowSet, cellSizeFilter)			
 	negativeControlFlowSet <- Subset(negativeControlFlowSet, cellSizeFilter.results)
+	
+	#Convert this to MEFL
+	negativeControlFlowSet <- normalizeToBeads(negativeControlFlowSet, beadFlowFrame)
 	
 	#Apply a curve1 filter
 	for (p in 1:length(colnames(negativeControlFlowSet))) {					

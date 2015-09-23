@@ -1,5 +1,5 @@
 #Function for processing meansMedia and standard deviations with filtering and compensating
-process.samples <- function(experimentFlowSet, comp.mat, colorControlsFlowSet, autofluorescence, dataFiles) {		
+process.samples <- function(experimentFlowSet, colorControlsFlowSet, beadFlowFrame, comp.mat, autofluorescence, dataFiles) {		
 	
 	if (!is.null(comp.mat)) {
 		compensatedFlowSet <- compensate(experimentFlowSet, comp.mat)
@@ -10,23 +10,25 @@ process.samples <- function(experimentFlowSet, comp.mat, colorControlsFlowSet, a
 	#Apply cell size filter -- we only want cells clustered in the middle of FSC and SSC range
 	cellSizeFilter <- norm2Filter(x = c("SSC-A", "FSC-A"), scale.factor = 2, filterId = "cellSize")
 	cellSizeFilter.results <- filter (compensatedFlowSet, cellSizeFilter)			
-	compensatedFlowSet <- Subset(compensatedFlowSet, cellSizeFilter.results)					
-				
-	#Remove negative and fringe values
-	for (q in 1:length(compensatedFlowSet)) {
-				
-		#Logicle Transform
-		# lgcl <- estimateLogicle(compensatedFlowSet[[q]], colnames(compensatedFlowSet))
-		# compensatedFlowSet[[q]] <- transform(compensatedFlowSet[[q]], lgcl)	
-		
-		compensatedFlowSet[[q]] <- nmRemove(compensatedFlowSet[[q]], colnames(compensatedFlowSet), neg=TRUE)
-	}							
+	compensatedFlowSet <- Subset(compensatedFlowSet, cellSizeFilter.results)										
 				
 	#Processing for row and column names
 	colnames(compensatedFlowSet) <- gsub("-",".", colnames(compensatedFlowSet))
 	analyzedExpts <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=length(compensatedFlowSet)))
 	colnames(analyzedExpts) <- gsub("-",".", colnames(colorControlsFlowSet))
 	rownames(analyzedExpts) <- dataFiles
+				
+	#Normalize the flow set to 8-peak bead controls
+	compensatedFlowSet <- normalizeToBeads(compensatedFlowSet, beadFlowFrame)
+	
+	#Remove negative and fringe values
+	for (q in 1:length(compensatedFlowSet)) {
+		compensatedFlowSet[[q]] <- nmRemove(compensatedFlowSet[[q]], colnames(compensatedFlowSet), neg=TRUE)
+				
+		#Logicle Transform
+		# lgcl <- estimateLogicle(compensatedFlowSet[[q]], colnames(compensatedFlowSet))
+		# compensatedFlowSet[[q]] <- transform(compensatedFlowSet[[q]], lgcl)					
+	}
 				
 	#Apply a curve1 filter
 	for (p in 1:length(colnames(compensatedFlowSet))) {
@@ -38,7 +40,7 @@ process.samples <- function(experimentFlowSet, comp.mat, colorControlsFlowSet, a
 	}
 		
 	#Subtract autofluorescence
-	# analyzedExpts <- sweep(analyzedExpts,2,autofluorescence)
+	analyzedExpts <- sweep(analyzedExpts,2,autofluorescence)
 		
 	analyzedExpts[is.na(analyzedExpts)] <- 0
 	analyzedExptsMatrix <- data.matrix(analyzedExpts)

@@ -201,7 +201,7 @@ public class CopasiTest {
         SBMLDocument docexp2_1 = new SBMLDocument();
         SBMLDocument docexe2_1 = new SBMLDocument();
         
-        //SBML Document for C1
+        //<editor-fold desc="SBML Document for C1">
         Reaction proteinExpression1 = new Reaction(aexp1_1.getName() + "_pEXP");
         Species product1 = new Species("p1");                                               
         
@@ -217,8 +217,9 @@ public class CopasiTest {
         
         docexp1_1.setModel(model1);
         aexp1_1.setSBMLDocument(docexp1_1);
+        //</editor-fold>
         
-        //SBML Document for C2
+        //<editor-fold desc="SBML Document for C2">
         Reaction proteinExpression2 = new Reaction(aexp2_1.getName() + "_pEXP");
         Species product2 = new Species("p2");
         
@@ -234,6 +235,8 @@ public class CopasiTest {
         
         docexp2_1.setModel(model1);
         aexp2_1.setSBMLDocument(docexp2_1);
+        //</editor-fold>
+        
         
         
         /*

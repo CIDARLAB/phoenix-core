@@ -42,7 +42,7 @@ MEFL <- cbind(c(NA,692,2192,6028,17493,35674,126907,290983))
 MEFLDataFrame <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=8))
 colnames(MEFLDataFrame) <- gsub("-A","", colnames(colorControlsFlowSet))
 rownames(MEFLDataFrame) <- c(1:8)
-MEFLDataFrame <- MEFLDataFrame[,3:length(colnames(MEFLDataFrame))]
+# MEFLDataFrame <- MEFLDataFrame[,3:length(colnames(MEFLDataFrame))]
 for (channel in 1:length(colnames(MEFLDataFrame))) {
 	MEFLDataFrame[,channel] <- MEFL  
 }

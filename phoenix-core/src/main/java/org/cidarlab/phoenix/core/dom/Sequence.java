@@ -32,7 +32,7 @@ public abstract class Sequence extends ObjBase {
 	protected Sequence(String name, String sequence) {
 		super(name);
 		this.sequence = sequence;
-		annotations = new HashSet<Annotation>();
+		annotations = new HashSet<>();
 	}
 	
 	protected Sequence(String name, String sequence, Set<Annotation> annotations) {

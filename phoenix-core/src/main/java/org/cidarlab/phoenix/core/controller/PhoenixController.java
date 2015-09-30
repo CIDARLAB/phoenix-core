@@ -145,7 +145,7 @@ public class PhoenixController {
         currentExperiments.clear();
 
         //Run simulations to produce candidate part/feature matches
-        List<Module> bestCombinedModules = iBioSimAdaptor.runSimulations(modules);
+        List<Module> bestCombinedModules = COPASIAdaptor.runSimulations(modules);
 
         //Update module graphs based upon simulations
         HashSet<Module> modulesToTest = FeatureAssignment.completeAssignmentSim(bestCombinedModules, modules);

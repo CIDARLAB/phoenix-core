@@ -161,19 +161,19 @@ public class TestingStructures {
                 String type = pm.getPrimitive().getType().getName();
                 if (type.equals("p") || type.equals("ip") || type.equals("rp") || type.equals("cp")) {
                     pm.setPrimitive(testPromoter.getPrimitive().clone());
-                    pm.setModuleFeatures(testPromoter.getModuleFeatures());
+                    pm.setModuleFeature(testPromoter.getModuleFeature());
                     pm.getPrimitive().setOrientation(Component.Orientation.REVERSE);
                 } else if (type.equals("r")) {
                     pm.setPrimitive(testRBS.getPrimitive().clone());
-                    pm.setModuleFeatures(testRBS.getModuleFeatures());
+                    pm.setModuleFeature(testRBS.getModuleFeature());
                     pm.getPrimitive().setOrientation(Component.Orientation.REVERSE);
                 } else if (type.equals("c") || type.equals("rc") || type.equals("fc")) {
                     pm.setPrimitive(testCDS2.getPrimitive().clone());
-                    pm.setModuleFeatures(testCDS2.getModuleFeatures());
+                    pm.setModuleFeature(testCDS2.getModuleFeature());
                     pm.getPrimitive().setOrientation(Component.Orientation.REVERSE);
                 } else if (type.equals("t")) {
                     pm.setPrimitive(testTerminator.getPrimitive().clone());
-                    pm.setModuleFeatures(testTerminator.getModuleFeatures());
+                    pm.setModuleFeature(testTerminator.getModuleFeature());
                     pm.getPrimitive().setOrientation(Component.Orientation.REVERSE);
                 } 
             }            
@@ -284,25 +284,25 @@ public class TestingStructures {
     }
     
     //Add controls and samples
-    private static void addSamples(List<Experiment> experiments, ArrayList<Module> controlModulesAll, HashMap<String, Sample> sampleHash, Module m, boolean regControls) {
+    private static void addSamples(List<Experiment> experiments, ArrayList<Module> controlModulesAll, HashMap<String, Sample> sampleHash, AssignedModule aM, boolean regControls) {
 
         //Add control constructs 
         ArrayList<Module> controlsThisModule = new ArrayList<>();
         controlsThisModule.add(createExpDegControl());
-        controlsThisModule.addAll(createColorControls(controlsThisModule, m));
+        controlsThisModule.addAll(createColorControls(controlsThisModule, aM));
         if (regControls) {
-            controlsThisModule.addAll(createRegControls(m));
+            controlsThisModule.addAll(createRegControls(aM));
         }
         
-        removeDuplicateModules(controlsThisModule, controlModulesAll, m);
+        removeDuplicateModules(controlsThisModule, controlModulesAll, aM);
 
         //Add samples
         for (Experiment e : experiments) {            
-            createControlSamples(e, controlsThisModule, m, sampleHash, 3);
-            createExperimentSamples(e, m, sampleHash, 3);
+            createControlSamples(e, controlsThisModule, aM, sampleHash, 3);
+            createExperimentSamples(e, aM, sampleHash, 3);
         }
         
-        m.setControlModules(controlsThisModule);
+        aM.setControlModules(controlsThisModule);
     }
     
     //Make a standard expression/degradation control for EXPRESSORs and all types of EXPRESSEEs
@@ -335,8 +335,8 @@ public class TestingStructures {
             FeatureRole pR = pm.getPrimitiveRole();
             if (pR.equals(FeatureRole.CDS_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSOR) || pR.equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR)) {
                 
-                Feature f = pm.getModuleFeatures().get(0);
-                for (Arc a : f.getArcs()) {
+                //Feature f = pm.getModuleFeatures().get(0);
+                for (Arc a : pm.getModuleFeature().getArcs()) {
 
                     Feature regulatee = a.getRegulatee();
                     PrimitiveModule regPromoter = new PrimitiveModule(regulatee.getRole(), new Primitive(new ComponentType("p"), regulatee.getName()), regulatee);
@@ -376,7 +376,7 @@ public class TestingStructures {
                 if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
 
                     //Expression control
-                    Module colorControl = new Module(pm.getModuleFeatures().get(0).getName().replaceAll(".ref", "") + "_COLOR_CONTROL");
+                    Module colorControl = new Module(pm.getModuleFeature().getName().replaceAll(".ref", "") + "_COLOR_CONTROL");
                     List<PrimitiveModule> testSubmodules = new ArrayList<>();
                     testSubmodules.add(testPromoter);
                     testSubmodules.add(testRBS);
@@ -396,7 +396,7 @@ public class TestingStructures {
     }
     
     //Remove duplicate modules based on PrimitiveModules
-    private static void removeDuplicateModules(ArrayList<Module> controlsThisModule, ArrayList<Module> controlModulesAll, Module m) {
+    private static void removeDuplicateModules(ArrayList<Module> controlsThisModule, ArrayList<Module> controlModulesAll, AssignedModule m) {
         
         for (Module cM : controlsThisModule) {
             for (Module cMA : controlModulesAll) {
@@ -698,7 +698,7 @@ public class TestingStructures {
         
         Map polyNucQuery = new HashMap();
         polyNucQuery.put("schema", "org.cidarlab.phoenix.core.dom.Polynucleotide");
-        HashSet<Polynucleotide> polyNucs = ClothoAdaptor.queryPolynucleotides(polyNucQuery,clothoObject);
+        List<Polynucleotide> polyNucs = ClothoAdaptor.queryPolynucleotides(polyNucQuery,clothoObject);
         HashMap<String, Polynucleotide> pnNameHash = new HashMap<>(); //key: clothoID, value: polynucleotide with that clothoID
         for (Polynucleotide pn : polyNucs) {
             pnNameHash.put(pn.getClothoID(), pn);
@@ -752,17 +752,17 @@ public class TestingStructures {
         Map HelicalLinker = new HashMap();
         HelicalLinker.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
         HelicalLinker.put("name", "HelicalLinker.ref");
-        testLinker = new PrimitiveModule(FeatureRole.CDS_LINKER, new Primitive(new ComponentType("c"), "linkerTEST"), ClothoAdaptor.convertJSONArrayToFeatures((JSONArray) clothoObject.query(HelicalLinker)).iterator().next());
+        testLinker = new PrimitiveModule(FeatureRole.CDS_LINKER, new Primitive(new ComponentType("l"), "linkerTEST"), ClothoAdaptor.convertJSONArrayToFeatures((JSONArray) clothoObject.query(HelicalLinker)).iterator().next());
         
         Map GFPm = new HashMap();
         GFPm.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
         GFPm.put("name", "EGFPm.ref");
-        testCDS1 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("c"), "cTEST1"), ClothoAdaptor.convertJSONArrayToFluorophores((JSONArray) clothoObject.query(GFPm)).iterator().next());
+        testCDS1 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("fl"), "cTEST1"), ClothoAdaptor.queryFluorophores(GFPm, clothoObject).iterator().next());
         
         Map EBFP2 = new HashMap();
         EBFP2.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
         EBFP2.put("name", "EBFP2.ref");
-        testCDS2 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("c"), "cTEST2"), ClothoAdaptor.convertJSONArrayToFluorophores((JSONArray) clothoObject.query(EBFP2)).iterator().next());
+        testCDS2 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("fl"), "cTEST2"), ClothoAdaptor.queryFluorophores(EBFP2, clothoObject).iterator().next());
         
         Map B0015 = new HashMap();
         B0015.put("schema", "org.cidarlab.phoenix.core.dom.Feature");

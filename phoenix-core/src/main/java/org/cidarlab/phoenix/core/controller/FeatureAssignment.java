@@ -46,10 +46,10 @@ public class FeatureAssignment {
         //Query promoters and regulator features, assign to abstract spots for EXPRESSORS and EXPRESSEES
         Map featureQuery = new HashMap();
         featureQuery.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
-        HashSet<Feature> features = ClothoAdaptor.queryFeatures(featureQuery,clothoObject); 
+        List<Feature> features = ClothoAdaptor.queryFeatures(featureQuery,clothoObject); 
         ArrayList<Module> exp = getExpressorsExpressees(testingModules);
         featureMatchAssign(exp, features);
-        HashSet<Feature> assignedRegulators = new HashSet();
+        List<Feature> assignedRegulators = new ArrayList<>();
         
         for (Module m : exp) {
             
@@ -68,10 +68,8 @@ public class FeatureAssignment {
                 //Check the features to remove any duplicate assignments
                 List<Feature> assignedFeatureList = new ArrayList<>();
                 for (PrimitiveModule pm : assignedM.getSubmodules()) {
-                    for (Feature f : pm.getModuleFeatures()) {
-                        if (!f.getSequence().getSequence().isEmpty()) {
-                            assignedFeatureList.add(f);
-                        }
+                    if(!pm.getModuleFeature().getSequence().getSequence().isEmpty()){
+                        assignedFeatureList.add(pm.getModuleFeature());
                     }
                 }
                 
@@ -96,7 +94,7 @@ public class FeatureAssignment {
     private static void addFPs(List<Module> testingModules,Clotho clothoObject) {
                 
         //Recieve data from Clotho
-        HashSet<Fluorophore> FPs = new HashSet<Fluorophore>();
+        List<Fluorophore> FPs = new ArrayList<Fluorophore>();
         Map fluorophoreQuery = new HashMap();
         fluorophoreQuery.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
         FPs = ClothoAdaptor.queryFluorophores(fluorophoreQuery,clothoObject);
@@ -104,7 +102,7 @@ public class FeatureAssignment {
         Cytometer cytometer = new Cytometer();
         Map cytometerQuery = new HashMap();
         cytometerQuery.put("schema", "org.cidarlab.phoenix.core.dom.Cytometer");
-        HashSet<Cytometer> allCytometers = ClothoAdaptor.queryCytometers(cytometerQuery,clothoObject);
+        List<Cytometer> allCytometers = ClothoAdaptor.queryCytometers(cytometerQuery,clothoObject);
         for (Cytometer c : allCytometers) {
             if (c.getName().startsWith("BU")) {
                 cytometer = c;
@@ -150,16 +148,19 @@ public class FeatureAssignment {
                 if (p.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
                     
                     //If the parent has FPs already assigned, pull those down
-                    if (parentFluorescentFusions.size() > 0) {                        
-                        List<Feature> pFeatures = new ArrayList<>();
-                        pFeatures.add(parentFluorescentFusions.get(count));
-                        p.setModuleFeatures(pFeatures);         
+                    if (parentFluorescentFusions.size() > 0) {
+                        p.setModuleFeature(parentFluorescentFusions.get(count));
+                        //List<Feature> pFeatures = new ArrayList<>();
+                        //pFeatures.add(parentFluorescentFusions.get(count));
+                        //p.setModuleFeatures(pFeatures);         
                         count++;
                     } else {
-                        List<Feature> pFeatures = new ArrayList<>();
-                        pFeatures.add(FPs.get(count));
                         
-                        p.setModuleFeatures(pFeatures);
+                        p.setModuleFeature(FPs.get(count));
+                        //List<Feature> pFeatures = new ArrayList<>();
+                        //pFeatures.add(FPs.get(count));
+                        //p.setModuleFeatures(pFeatures);
+                        
                         count++;
                     }                    
                 
@@ -180,13 +181,21 @@ public class FeatureAssignment {
     }
     
     //If the structural design has any Feature names that match exactly to the Feature library, assign these
-    private static void featureMatchAssign(ArrayList<Module> modules, HashSet<Feature> features) {
+    private static void featureMatchAssign(ArrayList<Module> modules, List<Feature> features) {
   
         for (Module m : modules) {
             
             //Look for regulators that are abstract
             for (int i = 0; i < m.getSubmodules().size(); i++) {
                 PrimitiveModule pm = m.getSubmodules().get(i);
+                if(pm.getModuleFeature()!= null){
+                    for(Feature libF : getAllFeaturesOfRole(features,pm.getModuleFeature().getRole())){
+                        if(pm.getModuleFeature().getName().equalsIgnoreCase(libF.getName())){
+                            pm.setModuleFeature(libF);
+                        }
+                    }
+                }
+                /*
                 if (!pm.getModuleFeatures().isEmpty()) {
                     for (Feature f : pm.getModuleFeatures()) {
                         for (Feature libF : getAllFeaturesOfRole(features, f.getRole())) {
@@ -197,7 +206,7 @@ public class FeatureAssignment {
                             }
                         }
                     }
-                }
+                }*/
             }
             
             m.updateModuleFeatures();
@@ -205,21 +214,21 @@ public class FeatureAssignment {
     }
     
     //Clone module, assign regulators from feature library
-    private static HashSet<Feature> regulatorAssign(Module m, HashSet<Feature> features) {
+    private static List<Feature> regulatorAssign(Module m, List<Feature> features) {
 
-        HashSet<Feature> assignedRegulators = new HashSet();
+        List<Feature> assignedRegulators = new ArrayList<>();
         ArrayList<AssignedModule> assignedModules = m.getAssignedModules();
         int count = 0;
 
         //Look for regulators that are abstract
         for (int i = 0; i < m.getSubmodules().size(); i++) {
             PrimitiveModule pm = m.getSubmodules().get(i);
-            for (Feature f : pm.getModuleFeatures()) {
+            //for (Feature f : pm.getModuleFeatures()) {
                 if (pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS) || pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_ACTIVATOR) || pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_REPRESSOR) || pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_REPRESSIBLE_REPRESSOR)) {
-                    if (f.getSequence().getSequence().isEmpty()) {
+                    if (pm.getModuleFeature().getSequence().getSequence().isEmpty()) {
 
                         //Assign a regulator from the feature library
-                        HashSet<Feature> featuresOfRole = getAllFeaturesOfRole(features, pm.getPrimitiveRole());
+                        List<Feature> featuresOfRole = getAllFeaturesOfRole(features, pm.getPrimitiveRole());
                         for (Feature fR : featuresOfRole) {
                             assignedRegulators.add(fR);
 
@@ -237,13 +246,13 @@ public class FeatureAssignment {
                         }
                     }
                 }
-            }
+            //}
         }
         return assignedRegulators;
     }
     
     //Clone module, assign promoters from feature library
-    private static void promoterAssign(Module m, HashSet<Feature> features, HashSet<Feature> assignedRegulators) {
+    private static void promoterAssign(Module m, List<Feature> features, List<Feature> assignedRegulators) {
         
         //Keep track of already assigned promoters in the case of multiple promoters... no duplicates
         //This needs a more robust long-term solution - Double-dutch??
@@ -254,16 +263,16 @@ public class FeatureAssignment {
         //Look for promoters that are abstract
         for (int i = 0; i < m.getSubmodules().size(); i++) {
             PrimitiveModule pm = m.getSubmodules().get(i);
-            for (Feature f : pm.getModuleFeatures()) {
+            //for (Feature f : pm.getModuleFeatures()) {
                 if (pm.getPrimitiveRole().equals(Feature.FeatureRole.PROMOTER) || pm.getPrimitiveRole().equals(Feature.FeatureRole.PROMOTER_CONSTITUTIVE) || pm.getPrimitiveRole().equals(Feature.FeatureRole.PROMOTER_REPRESSIBLE) || pm.getPrimitiveRole().equals(Feature.FeatureRole.PROMOTER_INDUCIBLE)) {
 
-                    if (f.getSequence().getSequence().isEmpty()) {
+                    if (pm.getModuleFeature().getSequence().getSequence().isEmpty()) {
 
                         //If there are already clones with a promoter that was assigned
                         if (clonesThisModule.isEmpty()) {
 
                             //Assign a promoter from the feature library
-                            HashSet<Feature> featuresOfRole = getAllFeaturesOfRole(features, pm.getPrimitiveRole());
+                            List<Feature> featuresOfRole = getAllFeaturesOfRole(features, pm.getPrimitiveRole());
                             count = makeAssignedClones(featuresOfRole, assignedRegulators, m, pm, clonesThisModule, count, i);
 
                             //Assign additional promoters
@@ -298,7 +307,7 @@ public class FeatureAssignment {
                                     for (int index : promoterIndicies) {
                                         usedPromoters.addAll(clone.getSubmodules().get(index).getModuleFeatures());
                                     }
-                                    HashSet<Feature> featuresOfRole = new HashSet<>();
+                                    List<Feature> featuresOfRole = new ArrayList<>();
                                     featuresOfRole.addAll(getAllFeaturesOfRole(features, pm.getPrimitiveRole()));
                                     featuresOfRole.removeAll(usedPromoters);
 
@@ -314,11 +323,11 @@ public class FeatureAssignment {
                 }
 
                 m.setAssignedModules(clonesThisModule);
-            }
+            //}
         }
     }
     
-    private static Integer makeAssignedClones(HashSet<Feature> featuresOfRole, HashSet<Feature> assignedRegulators, Module m, PrimitiveModule pm, ArrayList<AssignedModule> clonesThisModule, int count, int i) {
+    private static Integer makeAssignedClones(List<Feature> featuresOfRole, List<Feature> assignedRegulators, Module m, PrimitiveModule pm, ArrayList<AssignedModule> clonesThisModule, int count, int i) {
         
         for (Feature fR : featuresOfRole) {
 
@@ -373,7 +382,7 @@ public class FeatureAssignment {
         List<Feature> FPList = new ArrayList<>();
         for (PrimitiveModule pm : m.getSubmodules()) {
             if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
-                FPList.addAll(pm.getModuleFeatures());
+                FPList.add(pm.getModuleFeature());
             }
         }
         
@@ -432,20 +441,20 @@ public class FeatureAssignment {
     }
     
     //Gets a list of experiments and for all modules in the each experiment, it converts features to parts
-    public static HashSet<Part> getExperimentParts(List<Experiment> experiments) {
+    public static List<Part> getExperimentParts(List<Experiment> experiments) {
         ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
         Clotho clothoObject = new Clotho(conn);
         
         Map partQuery = new HashMap();
         partQuery.put("schema", "org.cidarlab.phoenix.core.dom.Part");
-        HashSet<Part> parts = ClothoAdaptor.queryParts(partQuery,clothoObject);
+        List<Part> parts = ClothoAdaptor.queryParts(partQuery,clothoObject);
         
         conn.closeConnection();
         return parts;
     }
     
     //Based upon the desired percentage of the module space returned make clones of assigned modules
-    private static HashSet<AssignedModule> addMultiplexModules(AssignedModule aM, double percentage, HashSet<Feature> features) {
+    private static HashSet<AssignedModule> addMultiplexModules(AssignedModule aM, double percentage, List<Feature> features) {
         
         HashSet<AssignedModule> multiplexedAM = new HashSet(); 
         
@@ -476,21 +485,21 @@ public class FeatureAssignment {
     }
     
     //Method for converting a module to a part
-    private static Integer getNumVariants(Module m, HashSet<Feature> features) {
+    private static Integer getNumVariants(Module m, List<Feature> features) {
         
         int numVariants = 1;
         
         //Look for regulators that are abstract
         for (int i = 0; i < m.getSubmodules().size(); i++) {
             PrimitiveModule pm = m.getSubmodules().get(i);
-            for (Feature f : pm.getModuleFeatures()) {
-                if (f.getSequence().getSequence().isEmpty() && !pm.getPrimitiveRole().equals(FeatureRole.WILDCARD)) {
+            //for (Feature f : pm.getModuleFeatures()) {
+                if (pm.getModuleFeature().getSequence().getSequence().isEmpty() && !pm.getPrimitiveRole().equals(FeatureRole.WILDCARD)) {
 
                     //Assign a regulator from the feature library
-                    HashSet<Feature> featuresOfRole = getAllFeaturesOfRole(features, pm.getPrimitiveRole());
+                    List<Feature> featuresOfRole = getAllFeaturesOfRole(features, pm.getPrimitiveRole());
                     numVariants = numVariants * featuresOfRole.size();
                 }
-            }
+            //}
         }
         
         return numVariants;
@@ -506,19 +515,19 @@ public class FeatureAssignment {
         
         //If a null sequence for a feature is found, not fully assigned
         for (PrimitiveModule pm : module.getSubmodules()) {
-            for (Feature f : pm.getModuleFeatures()) {
-                if (f.getSequence().getSequence().isEmpty()) {
+            //for (Feature f : pm.getModuleFeatures()) {
+                if (pm.getModuleFeature().getSequence().getSequence().isEmpty()) {
                     return false;
                 }
-            }
+            //}
         }        
         return true;
     }
     
     //Get all features of a particular FeatureRole
-    private static HashSet<Feature> getAllFeaturesOfRole (HashSet<Feature> allFeatures, FeatureRole role) {
+    private static List<Feature> getAllFeaturesOfRole (List<Feature> allFeatures, FeatureRole role) {
 
-        HashSet<Feature> featuresOfRole = new HashSet<>();
+        List<Feature> featuresOfRole = new ArrayList<>();
         for (Feature f : allFeatures) {
             if (f.getRole().equals(role) && !f.getSequence().getSequence().isEmpty()) {
                 featuresOfRole.add(f);

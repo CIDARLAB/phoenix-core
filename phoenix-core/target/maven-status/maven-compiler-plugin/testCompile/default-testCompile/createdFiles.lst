@@ -1,0 +1,10 @@
+org/cidarlab/phoenix/core/tests/FluorescentProteinSelectorTest.class
+org/cidarlab/phoenix/adaptors/tests/AnalyticsTest.class
+org/cidarlab/phoenix/core/tests/PhoenixGrammarTest.class
+org/cidarlab/phoenix/adaptors/tests/BenchlingTest.class
+org/cidarlab/phoenix/adaptors/tests/RavenTest.class
+org/cidarlab/phoenix/adaptors/tests/miniEugeneTest.class
+org/cidarlab/phoenix/core/tests/CoreTest.class
+org/cidarlab/phoenix/core/tests/GrammarTest.class
+org/cidarlab/phoenix/adaptors/tests/ClothoTest.class
+org/cidarlab/phoenix/demo/GrammarDemo.class

@@ -1,0 +1,76 @@
+{
+                "name": "Operon",
+                "summary": "Basic operon made for demo purposes",
+                "deviceImage": "images/operon.png",
+                "contactInformation": {
+                    "authors": "Devina",
+                    "team": "Boston University",
+                    "dataCollection": "Devina",
+                    "affiliation": "Boston University",
+                    "relatedParts": [{"name": "promoter",
+                            "link": "#"},
+                        {"name": "gfp",
+                            "link": "#"},
+                        {"name": "rbs",
+                            "link": "#"},
+                        {"name": "terminator",
+                            "link": "#"}],
+                    "contact": "someemail@yahoo.com",
+                    "date": "8-17-2013"
+                },
+                "designInformation": {
+                    "chassis": {"name": "E. Coli",
+                        "strain": "Bioline Alpha Gold"},
+                    "deviceName": "operon",
+                    "deviceType": "level 1",
+                    "safetyLevel": "0",
+                    "components": [{"name": "promoter",
+                            "link": "#"},
+                        {"name": "gfp",
+                            "link": "#"},
+                        {"name": "rbs",
+                            "link": "#"},
+                        {"name": "terminator",
+                            "link": "#"}],
+                    "assembly": "BioBricks",
+                    "protocol": "BU BioBricks protocol",
+                    "scars": "Biobrick fusion sites",
+                    "insertion": "plasmid",
+                    "vector": "someVector",
+                    "comments": "demo data"
+                },
+                "standardAssays": [{
+                        "Name": "Restriction Digest and Gel Electrophoresis",
+                        "Purpose": "Verifiying Restriction Mapping",
+                        "dataType": "DNA size bands",
+                        "location": "Boston University Center for Advanced Biotechnology",
+                        "dataFormat": "Gel Image(link)",
+                        "enzymes": "XbaI,PstI",
+                        "ladder": "NEB 2Kb ladder",
+                        "details": "1% TAE gel; Sybr Safe dye used for staining(link)"
+                    }],
+                "functionalityAssays": [{
+                        "name": "Flow Cytometry",
+                        "purpose": "Measures fluorescence for induction curve data",
+                        "dataType": "Single-cell fluorescence",
+                        "location": "Boston University Center for Advanced Biotechnology",
+                        "machineName": "SORP 4B-2YG-1BV, ACDU (FACSAriaII)",
+                        "dataFormat": "FCS 3.0 data files",
+                        "protocolDetails": "link to protocol",
+                        "lasers": "445nm, 40mW:(515/20nm); 488nm, 50mW: (488/10, 515/20, 545/35, 610/20, 710/50nm); 561nm, 40mW:(610/20, 660/20nm);",
+                        "preInductionGrowthConditions": {
+                            "media": "Luria Broth (LB)",
+                            "vessel": "5 mL tubesss",
+                            "volume": "2 mL",
+                            "incubation": "37 C, 300 rpm",
+                            "time": "420"
+                        },
+                        "inductionGrowthConditions": {
+                            "media": "Luria Broth (LB)",
+                            "vessel": "500 uL tubes",
+                            "volume": "200 uL",
+                            "incubation": "37 C, 300 rpm",
+                            "time": "870"
+                        }
+                    }]
+            };

@@ -1,0 +1,141 @@
+// Size=33
+
+// *** 6
+// DARK BLUE
+// COUNTING
+r1 exactly 1
+c1 exactly 1
+t1 exactly 1
+
+// POSITIONING
+r1 before c1
+r1 nextto c1
+c1 before t1 
+c1 nextto t1
+
+// LIGHT BLUE
+// COUNTING
+r2 exactly 1
+c2 exactly 1
+t2 exactly 1
+
+// POSITIONING
+r2 before c2
+r2 nextto c2
+c2 before t2 
+c2 nextto t2
+
+// 6 REPORTER
+// COUNTING
+r6 exactly 1
+c6 exactly 1
+t6 exactly 1
+
+// POSITIONING
+r6 before c6
+r6 nextto c6
+c6 before t6 
+c6 nextto t6
+
+p02 exactly 1
+in2 induces p02
+p02 nextto p01
+p01 exactly 1
+in1 induces p01
+p01 nextto r1
+p02 before p01
+
+p12 exactly 1         
+c1 represses p12      
+p12 nextto p0
+p0 exactly 1
+0 induces p0
+p0 nextto r2
+p12 before p0
+
+p2 exactly 1
+c2 represses p2
+p2 nextto r6
+
+r3 exactly 1
+c3 exactly 1
+t3 exactly 1
+
+// POSITIONING
+r3 before c3
+r3 nextto c3
+c3 before t3 
+c3 nextto t3
+
+// LIGHT GREEN
+// COUNTING
+r4 exactly 1
+c4 exactly 1
+t4 exactly 1
+
+// POSITIONING
+r4 before c4
+r4 nextto c4
+c4 before t4 
+c4 nextto t4
+			
+// ORIENTATION
+all_forward
+
+// DARK GREEN
+// COUNTING
+r5 exactly 1
+c5 exactly 1
+t5 exactly 1
+
+// POSITIONING
+r5 before c5
+r5 nextto c5
+c5 before t5 
+c5 nextto t5
+
+// 7 REPORTER
+// COUNTING
+r7 exactly 1
+c7 exactly 1
+t7 exactly 1
+
+// POSITIONING
+r7 before c7
+r7 nextto c7
+c7 before t7 
+c7 nextto t7
+
+// NOTE:
+// we have two p02 promoters in the design
+// i.e. we need to name them differently
+
+in2 induces p023
+p023 exactly 1
+p023 nextto r3 
+p13 exactly 1          
+p13 nextto p023
+p13 before p023
+
+in2 induces p024
+p024 exactly 1
+p024 nextto p00
+in0 induces p00
+p00 exactly 1
+p00 nextto r4
+p024 before p00
+
+c3 represses p3
+p3 exactly 1
+p3 nextto p4
+c4 represses p4
+p4 exactly 1
+p4 nextto r5
+p3 before p4
+
+c5 represses p5
+p5 exactly 1
+p5 nextto r7
+
+// WIRING 6 AND 7 DEVICES
+c1 represses p13

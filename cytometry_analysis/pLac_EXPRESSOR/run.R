@@ -6,4 +6,5 @@ key [is.na(key)] <- ""
 minEvents <- 1000
 
 #Call master script
-source("~/phoenix/phoenix-core/cytometry_analysis/master_analytics_scripts/analyze.R")
+wd <- getwd()
+source("~/cidar/phoenix-core/cytometry_analysis/master_analytics_scripts/analyze.R",chdir=T)

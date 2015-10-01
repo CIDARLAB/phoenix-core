@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
@@ -28,7 +29,7 @@ public class FluorescentProteinSelector {
     //This algorithm is heuristic, mapping to a constraint solver would get the optimal solution
     //The hueristic soltion will probably give near-optimal solutions since the protein sets considered here are small
     //This alrogithm is on the basis of maximum emission and excitation spectrums, it would be better to do this for the whole range
-    public static ArrayList<Fluorophore> solve(HashSet<Fluorophore> FPs, Cytometer cytometer, Integer n){
+    public static ArrayList<Fluorophore> solve(List<Fluorophore> FPs, Cytometer cytometer, Integer n){
         
         //Initialize return variable
         ArrayList<Fluorophore> solnList = new ArrayList<>();

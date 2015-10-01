@@ -8,6 +8,7 @@ package org.cidarlab.phoenix.core.dom;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.sbml.jsbml.SBMLDocument;
@@ -28,7 +29,6 @@ public class Module {
         this.children = new ArrayList<>();
         this.parents = new ArrayList<>();
         this.assignedModules = new ArrayList<>();
-        this.controlModules = new ArrayList<>();
         this.submodules = new ArrayList<>();
         this.moduleFeatures = new ArrayList<>();
         this.isForward = true;
@@ -36,6 +36,10 @@ public class Module {
         this.clothoID = name;
         this.color = Color.white;
 //        this.experiments = new ArrayList<>();
+    }
+
+    public Module() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     //Get all neighbors i.e. parents and children
@@ -65,7 +69,7 @@ public class Module {
 //        List<Experiment> exList = new ArrayList<>();
 //        exList.addAll(this.experiments);
 //        clone.experiments = exList;
-
+        clone.SBMLDocument = this.SBMLDocument;
         clone.function = this.function;
         clone.isForward = this.isForward;
         clone.role = this.role;
@@ -89,18 +93,22 @@ public class Module {
     @Setter
     private ModuleRole role;
 
+    
     //Repression or Activation Arcs. This will be used to indentify structures that can realize an Inverter, Oscillator or Switches
     //Arcs created by this module
+    /*
     @Getter
     @Setter
     private List<Arc> arcs;
-
+    */
+    
+    
     //Module features
     @Getter
     @Setter
     private List<Feature> moduleFeatures;
 
-    //LTL function associated with this module
+    //STL function associated with this module
     @Getter
     @Setter
     private STLFunction function;
@@ -120,10 +128,8 @@ public class Module {
     @Setter
     private List<Module> children;
 
-    //Child module(s)
-    @Getter
-    @Setter
-    private List<Module> controlModules;
+   
+    
 
     //Assigned module(s)
     @Getter
@@ -182,7 +188,8 @@ public class Module {
     public void updateModuleFeatures() {
         List<Feature> updatedFeatures = new ArrayList<>();
         for (PrimitiveModule pm : this.submodules) {
-            updatedFeatures.addAll(pm.getModuleFeatures());
+            updatedFeatures.add(pm.getModuleFeature());
+            //updatedFeatures.addAll(pm.getModuleFeatures());
         }
         this.setModuleFeatures(updatedFeatures);
     }

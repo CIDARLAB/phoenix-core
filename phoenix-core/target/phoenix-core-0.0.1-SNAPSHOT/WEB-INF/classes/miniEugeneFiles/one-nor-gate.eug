@@ -1,0 +1,57 @@
+// Size=9
+// 64 Solutions
+
+// COUNTING
+rp1 exactly 1
+rp3 exactly 1
+rp2 exactly 1
+g2 exactly 1
+g3 exactly 1
+r2 exactly 1
+r3 exactly 1
+t2 exactly 1
+t3 exactly 1
+
+// INTERACTIONS
+//B represses rp3
+//A represses rp1
+g2 represses rp2
+rp1 drives g2
+not rp1 drives g3 
+rp3 drives g2
+not rp3 drives g3
+rp2 drives g3
+not rp2 drives g2
+
+//POSITIONING
+r2 nextto g2
+r2 SAME_ORIENTATION g2
+r2 before g2 or r2 after g2
+r2 before g2 or reverse r2
+forward r2 or r2 after g2
+forward r2 or reverse r2
+
+r3 nextto g3
+r3 SAME_ORIENTATION g3
+r3 before g3 or r3 after g3
+r3 before g3 or reverse r3
+forward r3 or r3 after g3
+forward r3 or reverse r3
+
+t3 after g3 or t3 before g3
+t3 after g3 or reverse g3
+forward g3 or t3 before g3
+forward g3 or reverse g3
+
+t2 after g2 or t2 before g2
+t2 after g2 or reverse g2
+forward g2 or t2 before g2
+forward g2 or reverse g2
+
+//ORIENTATION=
+rp3 SAME_ORIENTATION r2
+rp3 SAME_ORIENTATION t2
+rp1 SAME_ORIENTATION r2
+rp1 SAME_ORIENTATION t2
+rp2 SAME_ORIENTATION r3
+rp2 SAME_ORIENTATION t3

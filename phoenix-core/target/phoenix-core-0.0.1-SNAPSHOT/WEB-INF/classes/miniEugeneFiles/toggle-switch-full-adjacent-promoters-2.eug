@@ -1,0 +1,56 @@
+// Size=8
+// 2 Solutions
+
+// COUNTING CONSTRAINTS
+rp1 exactly 1
+r1 exactly 1
+rc1 exactly 1
+t1 exactly 1
+rp2 exactly 1
+r2 exactly 1
+rc2 exactly 1
+t2 exactly 1
+
+// POSITIONING CONSTRAINTS
+r2 nextto rc1
+r2 before rc1 or r2 after rc1
+r2 before rc1 or reverse r2
+forward r2 or r2 after rc1
+forward r2 or reverse r2
+
+r1 nextto rc2
+r1 before rc2 or r1 after rc2
+r1 before rc2 or reverse r1
+forward r1 or r1 after rc2
+forward r1 or reverse r1
+
+t1 after rc2 or t1 before rc2
+t1 after rc2 or reverse rc2
+forward rc2 or t1 before rc2
+forward rc2 or reverse rc2
+
+t2 after rc1 or t2 before rc1
+t2 after rc1 or reverse rc1
+forward rc1 or t2 before rc1
+forward rc1 or reverse rc1
+
+//INTERACTIONS
+rp1 DRIVES rc2
+not rp2 DRIVES rc2
+rp2 DRIVES rc1
+not rp1 DRIVES rc1
+
+//ORIENTATIONS
+rp1 SAME_ORIENTATION r1
+rp1 SAME_ORIENTATION t1
+rp2 SAME_ORIENTATION r2
+rp2 SAME_ORIENTATION t2
+
+// SPECIFICATION OF INTERACTIONS
+rc1 REPRESSES rp1
+rc2 REPRESSES rp2
+
+//Alternating TUs
+not rp1 SAME_ORIENTATION rp2
+rp1 NEXTTO rp2
+not rp1 NEXTTO r1

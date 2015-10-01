@@ -7,6 +7,7 @@ package org.cidarlab.phoenix.core.tests;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
 import org.cidarlab.phoenix.core.controller.Args;
@@ -101,11 +102,11 @@ public class FluorescentProteinSelectorTest {
         
         Map fluorophoreQuery = new HashMap();
         fluorophoreQuery.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
-        HashSet<Fluorophore> FPs = ClothoAdaptor.queryFluorophores(fluorophoreQuery,clothoObject);
+        List<Fluorophore> FPs = ClothoAdaptor.queryFluorophores(fluorophoreQuery,clothoObject);
         
         Map cytometerQuery = new HashMap();
         cytometerQuery.put("schema", "org.cidarlab.phoenix.core.dom.Cytometer");
-        HashSet<Cytometer> cytometers = ClothoAdaptor.queryCytometers(cytometerQuery,clothoObject);
+        List<Cytometer> cytometers = ClothoAdaptor.queryCytometers(cytometerQuery,clothoObject);
         for (Cytometer c : cytometers) {
             FluorescentProteinSelector.solve(FPs, c, 1); 
         }
@@ -122,11 +123,11 @@ public class FluorescentProteinSelectorTest {
         
         Map fluorophoreQuery = new HashMap();
         fluorophoreQuery.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
-        HashSet<Fluorophore> FPs = ClothoAdaptor.queryFluorophores(fluorophoreQuery,clothoObject);
+        List<Fluorophore> FPs = ClothoAdaptor.queryFluorophores(fluorophoreQuery,clothoObject);
         
         Map cytometerQuery = new HashMap();
         cytometerQuery.put("schema", "org.cidarlab.phoenix.core.dom.Cytometer");
-        HashSet<Cytometer> cytometers = ClothoAdaptor.queryCytometers(cytometerQuery,clothoObject);
+        List<Cytometer> cytometers = ClothoAdaptor.queryCytometers(cytometerQuery,clothoObject);
         for (Cytometer c : cytometers) {
             FluorescentProteinSelector.solve(FPs, c, 5); 
         }

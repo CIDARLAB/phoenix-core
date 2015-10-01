@@ -8,8 +8,10 @@ package org.cidarlab.phoenix.core.dom;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.sbml.jsbml.SBMLDocument;
 
 /**
  *
@@ -26,14 +28,18 @@ public class Module {
         this.isRoot = false;
         this.children = new ArrayList<>();
         this.parents = new ArrayList<>();
-        this.assignedModules = new HashSet<>();
+        this.assignedModules = new ArrayList<>();
         this.submodules = new ArrayList<>();
         this.moduleFeatures = new ArrayList<>();
         this.isForward = true;
         this.name = name;
         this.clothoID = name;
         this.color = Color.white;
-        this.experiments = new ArrayList<>();
+//        this.experiments = new ArrayList<>();
+    }
+
+    public Module() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     //Get all neighbors i.e. parents and children
@@ -60,10 +66,10 @@ public class Module {
         }
         clone.submodules = pmList;
 
-        List<Experiment> exList = new ArrayList<>();
-        exList.addAll(this.experiments);
-        clone.experiments = exList;
-
+//        List<Experiment> exList = new ArrayList<>();
+//        exList.addAll(this.experiments);
+//        clone.experiments = exList;
+        clone.SBMLDocument = this.SBMLDocument;
         clone.function = this.function;
         clone.isForward = this.isForward;
         clone.role = this.role;
@@ -87,18 +93,22 @@ public class Module {
     @Setter
     private ModuleRole role;
 
+    
     //Repression or Activation Arcs. This will be used to indentify structures that can realize an Inverter, Oscillator or Switches
     //Arcs created by this module
+    /*
     @Getter
     @Setter
     private List<Arc> arcs;
-
+    */
+    
+    
     //Module features
     @Getter
     @Setter
     private List<Feature> moduleFeatures;
 
-    //LTL function associated with this module
+    //STL function associated with this module
     @Getter
     @Setter
     private STLFunction function;
@@ -118,15 +128,18 @@ public class Module {
     @Setter
     private List<Module> children;
 
-    //Child module(s)
-    @Getter
-    @Setter
-    private HashSet<Module> controlModules;
+   
+    
 
     //Assigned module(s)
     @Getter
     @Setter
-    private HashSet<Module> assignedModules;
+    private ArrayList<AssignedModule> assignedModules;
+    
+    //SBML Model
+    @Getter
+    @Setter
+    private SBMLDocument SBMLDocument;
 
     // Sub-Module(s)
     @Getter
@@ -147,11 +160,6 @@ public class Module {
     @Setter
     private Color color;
 
-    //Experiment associated with this module
-    @Getter
-    @Setter
-    private List<Experiment> experiments;
-
     //Graph Traversal
     public enum Color {
 
@@ -170,7 +178,6 @@ public class Module {
         EXPRESSEE_ACTIVATOR,
         EXPRESSEE_ACTIVATIBLE_ACTIVATOR,
         TRANSCRIPTIONAL_UNIT,
-        //        TESTING_CONTROL,
         EXPRESSION_DEGRATATION_CONTROL,
         REGULATION_CONTROL,
         COLOR_CONTROL,
@@ -181,7 +188,8 @@ public class Module {
     public void updateModuleFeatures() {
         List<Feature> updatedFeatures = new ArrayList<>();
         for (PrimitiveModule pm : this.submodules) {
-            updatedFeatures.addAll(pm.getModuleFeatures());
+            updatedFeatures.add(pm.getModuleFeature());
+            //updatedFeatures.addAll(pm.getModuleFeatures());
         }
         this.setModuleFeatures(updatedFeatures);
     }

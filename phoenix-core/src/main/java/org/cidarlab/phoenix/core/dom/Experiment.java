@@ -23,11 +23,14 @@ public class Experiment {
         regulationControls = new ArrayList<>();
         expDegControls = new ArrayList<>();
         mediaConditions = new ArrayList<>();
+        times = new ArrayList<>();
+        
     }
     
     //No args constructor
     public Experiment(ExperimentType exptType, String _name, List<Medium> _media, List<String> _times) {
         exType = exptType;
+        results = new ExperimentResults(exptType);
         name = _name;
         clothoID = _name;
         mediaConditions = _media;
@@ -63,10 +66,15 @@ public class Experiment {
     private String clothoID;
     
     //Experiment type
-    @Setter
     @Getter
     private ExperimentType exType;
         
+    //Set experiment type and create an experiment results object
+    public void setExType(ExperimentType _exType) {
+        exType = _exType;
+        results = new ExperimentResults(_exType);
+    }
+    
     //Experiment testing samples
     @Setter
     @Getter
@@ -106,6 +114,11 @@ public class Experiment {
     @Setter
     @Getter
     private List<Medium> mediaConditions;
+    
+    //Experiment results object
+    @Setter
+    @Getter
+    private ExperimentResults results;
     
     //Experiment types
     public enum ExperimentType {

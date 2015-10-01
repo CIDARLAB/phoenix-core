@@ -1,0 +1,93 @@
+// Size=10
+// 208 Solutions
+
+// COUNTING
+rpA exactly 1
+rpB exactly 1
+rpC exactly 1
+//p1 exactly 1
+rp2 exactly 1
+g1 exactly 1
+g2 exactly 1
+//c3 exactly 1
+r1 exactly 1
+r2 exactly 1
+//r3 exactly 1
+t1 exactly 1
+t2 exactly 1
+//t3 exactly 1
+
+// INTERACTIONS
+//A induces rpA
+//B induces rpB
+//C induces rpC
+//g1 represses p1
+g2 represses rp2
+
+rpA drives g2
+//not rpA drives c3
+not rpA drives g1
+
+rpB drives g2
+//not rpB drives c3
+not rpB drives g1
+
+rpC drives g1
+not rpC drives g2
+//not rpC drives c3
+
+rp2 drives g1
+not rp2 drives g2
+//not rp2 drives c3
+
+//p1 drives c3
+//p1 not drives g2
+//p1 not drives g1
+
+//POSITIONING
+r1 nextto g1
+r1 SAME_ORIENTATION g1
+r1 before g1 or r1 after g1
+r1 before g1 or reverse r1
+forward r1 or r1 after g1
+forward r1 or reverse r1
+
+r2 nextto g2
+r2 SAME_ORIENTATION g2
+r2 before g2 or r2 after g2
+r2 before g2 or reverse r2
+forward r2 or r2 after g2
+forward r2 or reverse r2
+
+//r3 nextto c3
+//r3 before c3 or r3 after c3
+//r3 before c3 or reverse r3
+//forward r3 or r3 after c3
+//forward r3 or reverse r3
+
+t1 after g1 or t1 before g1
+t1 after g1 or reverse g1
+forward g1 or t1 before g1
+forward g1 or reverse g1
+
+t2 after g2 or t2 before g2
+t2 after g2 or reverse g2
+forward g2 or t2 before g2
+forward g2 or reverse g2
+
+//t3 after c3 or t3 before c3
+//t3 after c3 or reverse c3
+//forward c3 or t3 before c3
+//forward c3 or reverse c3
+
+//ORIENTATION=
+rpB SAME_ORIENTATION r2
+rpB SAME_ORIENTATION t2
+rpA SAME_ORIENTATION r2
+rpA SAME_ORIENTATION t2
+rp2 SAME_ORIENTATION r1
+rp2 SAME_ORIENTATION t1
+rpC SAME_ORIENTATION r1
+rpC SAME_ORIENTATION t1
+//p1 SAME_ORIENTATION r3
+//p1 SAME_ORIENTATION t3

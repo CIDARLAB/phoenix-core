@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<!Client side communication code>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Communication Example</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+    </head>
+    <body>
+        <button id="sendButton">Send JSON to Server</button>
+        <button id="getButton">Get JSON from Sever</button>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script> 
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+        <script>
+            $('#sendButton').click(function() {
+                $.post("CommunicationExampleServlet", {"data": "data sent from the client"});
+            });
+            $('#getButton').click(function() {
+                $.get("CommunicationExampleServlet", function(data){
+                    alert(JSON.stringify(data));
+                });
+            });
+        </script>
+    </body>
+
+</html>
+
+
+// DHD communication for datasheet
+<button id="Autofill">Autofill from Parts Registry</button>
+        <script>
+            $('#Autofill').click(function() {
+                $.post("XMLParser.java", {"partinfoJSON": "data sent from the client"});
+            });
+                $.get("XMLParser.java", function(data){
+                    alert(JSON.stringify(data));
+                });
+        </script>

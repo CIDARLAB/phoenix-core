@@ -16,6 +16,7 @@ import net.sf.json.JSONObject;
 import org.cidarlab.phoenix.core.controller.Args;
 import org.cidarlab.phoenix.core.controller.Utilities;
 import org.cidarlab.phoenix.core.dom.Annotation;
+import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.Component;
 import org.cidarlab.phoenix.core.dom.Feature;
 import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
@@ -39,19 +40,19 @@ import org.clothoapi.clotho3javaapi.ClothoConnection;
 public class RavenAdaptor {
     
     //Create assembly plans for given parts and return instructions file
-    public static File generateAssemblyPlan(HashSet<Module> modulesToTest, String filePath) throws Exception {
+    public static File generateAssemblyPlan(HashSet<AssignedModule> modulesToTest, String filePath) throws Exception {
         
         //Add testing modules to target modules
         HashSet<Module> allModules = new HashSet<>();
         HashSet<List<Feature>> moduleFeatureHash = new HashSet<>();
         
-        for (Module targetModule : modulesToTest) {
+        for (AssignedModule targetModule : modulesToTest) {
             if (!moduleFeatureHash.contains(targetModule.getModuleFeatures())) {
                 allModules.add(targetModule);
                 moduleFeatureHash.add(targetModule.getModuleFeatures());
             }
 
-            HashSet<Module> controlModules = targetModule.getControlModules();
+            List<Module> controlModules = targetModule.getControlModules();
             for (Module controlModule : controlModules) {
                 if (!moduleFeatureHash.contains(controlModule.getModuleFeatures())) {
                     allModules.add(controlModule);
@@ -69,11 +70,11 @@ public class RavenAdaptor {
         
         Map polyNucQuery = new HashMap();
         polyNucQuery.put("schema", "org.cidarlab.phoenix.core.dom.Polynucleotide");
-        HashSet<Polynucleotide> polyNucs = ClothoAdaptor.queryPolynucleotides(polyNucQuery,clothoObject);
+        HashSet<Polynucleotide> polyNucs = new HashSet<>(ClothoAdaptor.queryPolynucleotides(polyNucQuery,clothoObject));
         
         Map featureQuery = new HashMap();
         featureQuery.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
-        HashSet<Feature> allFeatures = ClothoAdaptor.queryFeatures(featureQuery,clothoObject);
+        List<Feature> allFeatures = ClothoAdaptor.queryFeatures(featureQuery,clothoObject);
         
         Map fluorophoreQuery = new HashMap();
         fluorophoreQuery.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
@@ -395,10 +396,10 @@ public class RavenAdaptor {
                 }
                 
                 //Regular parts with sequences
-                if (!pm.getModuleFeatures().get(0).getSequence().getSequence().isEmpty() && pm.getPrimitiveRole() != FeatureRole.VECTOR) {
+                if (!pm.getModuleFeature().getSequence().getSequence().isEmpty() && pm.getPrimitiveRole() != FeatureRole.VECTOR) {
                     
                     if (pm.getPrimitiveRole() == FeatureRole.CDS_LINKER) {
-                        String fName = pm.getModuleFeatures().get(0).getName().replaceAll(".ref", "");
+                        String fName = pm.getModuleFeature().getName().replaceAll(".ref", "");
                         
                         //Consecutive linkers edge case
                         if (!linkers.get(linkers.size()-1).equals("_")) {
@@ -424,8 +425,8 @@ public class RavenAdaptor {
                             scars.add(scar);
                         }
                         
-                        for (Feature f : pm.getModuleFeatures()) {
-                            String fName = f.getName().replaceAll(".ref", "");
+                        //for (Feature f : pm.getModuleFeatures()) {
+                            String fName = pm.getModuleFeature().getName().replaceAll(".ref", "");
 
                             //Find Raven basic part for this composition
                             for (org.cidarlab.raven.datastructures.Part p : libParts) {
@@ -436,7 +437,7 @@ public class RavenAdaptor {
                                     }
                                 }
                             }
-                        }
+                        //}
                     }
                     
                 //Vector edge case
@@ -493,7 +494,7 @@ public class RavenAdaptor {
     }
     
     //Convert Phoenix modules to Raven parts
-    public static HashSet<org.cidarlab.raven.datastructures.Part> phoenixFeaturesToRavenParts(HashSet<Feature> features) {
+    public static HashSet<org.cidarlab.raven.datastructures.Part> phoenixFeaturesToRavenParts(List<Feature> features) {
         
         HashSet<org.cidarlab.raven.datastructures.Part> ravenParts = new HashSet();
         

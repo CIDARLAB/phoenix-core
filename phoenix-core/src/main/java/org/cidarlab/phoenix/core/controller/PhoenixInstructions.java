@@ -157,6 +157,7 @@ public class PhoenixInstructions {
     
     
     //Method for reading results file from R
+    //This method needs to be fixed to assign results to the experiment, not the samples
     public static void parseTestingResults(File resultsFile, Experiment e) throws FileNotFoundException, IOException {
         
         BufferedReader reader = new BufferedReader(new FileReader(resultsFile.getAbsolutePath()));
@@ -221,19 +222,19 @@ public class PhoenixInstructions {
                     sConcentration = s.getMedia().getSmallmolecule().getConcentration().toString();
                 }
                 
-                if (sPnNames.equals(pnNames) && sMediaName.equalsIgnoreCase(mediaName) && sSmallMoleculeName.equalsIgnoreCase(smallMoleculeName) && sConcentration.equalsIgnoreCase(concentration)) {
-                    
-                    if (s.getResults() == null) {
-                        s.setResults(new HashMap());
-                    }
-                                        
-                    //Assign values to the detectors in the results file
-                    for (int j = 3; j < sampleVals.length; j++) {
-                        double parseDouble = Double.parseDouble(sampleVals[j]);
-                        Detector d = detectors.get(j - 3);
-                        s.getResults().put(d, parseDouble);
-                    }
-                }
+//                if (sPnNames.equals(pnNames) && sMediaName.equalsIgnoreCase(mediaName) && sSmallMoleculeName.equalsIgnoreCase(smallMoleculeName) && sConcentration.equalsIgnoreCase(concentration)) {
+//                    
+//                    if (s.getResults() == null) {
+//                        s.setResults(new HashMap());
+//                    }
+//                                        
+//                    //Assign values to the detectors in the results file
+//                    for (int j = 3; j < sampleVals.length; j++) {
+//                        double parseDouble = Double.parseDouble(sampleVals[j]);
+//                        Detector d = detectors.get(j - 3);
+//                        s.getResults().put(d, parseDouble);
+//                    }
+//                }
             }
                        
             line = reader.readLine();

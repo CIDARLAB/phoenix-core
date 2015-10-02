@@ -1,2 +1,7 @@
+**/.DS_Store
+phoenix_core/target
+**/.RData
+**/.Rhistory
+*/.RData
+*/.Rhistory
 /phoenix-core/target/
-.DS_Store

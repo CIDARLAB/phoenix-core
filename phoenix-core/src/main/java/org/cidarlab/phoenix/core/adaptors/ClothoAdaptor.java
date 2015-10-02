@@ -775,7 +775,7 @@ public class ClothoAdaptor {
         Map createPart = new HashMap();
         createPart.put("schema", "org.cidarlab.phoenix.core.dom.Part");
         createPart.put("name", p.getName());
-        createPart.put("isVector", p.isVector());
+//        createPart.put("isVector", p.isVector());
         createPart.put("sequence", createNucSeqMap(p.getSequence()));
         
         if(p.getDescription() != null){
@@ -905,7 +905,7 @@ public class ClothoAdaptor {
             description = (String)map.get("description");
         }
         Part p = Part.generateBasic(name, description, mapToNucSeq((Map)map.get("sequence")), null, null);
-        p.setVector(Boolean.parseBoolean(map.get("isVector").toString()));
+//        p.setVector(Boolean.parseBoolean(map.get("isVector").toString()));
         p.setClothoID((String)map.get("id"));
         
         return p;
@@ -1608,14 +1608,14 @@ public class ClothoAdaptor {
 
                 if (sequencePartMap.containsKey(partSeq)) {
                     Part existing = sequencePartMap.get(partSeq);
-                    if (!existing.isVector()) {
+                    if (existing.getClass() != org.cidarlab.phoenix.core.dom.Vector.class) {
                         pn.setPart(existing);
 //                    } else {
 //                        sequencePartMap.put(partSeq, part);
                     }
                 } else if (sequencePartMap.containsKey(revPartSeq)) {
                     Part existing = sequencePartMap.get(revPartSeq);
-                    if (!existing.isVector()) {
+                    if (existing.getClass() != org.cidarlab.phoenix.core.dom.Vector.class) {
                         pn.setPart(existing);
 //                    } else {
 //                        sequencePartMap.put(revPartSeq, part);
@@ -1631,14 +1631,14 @@ public class ClothoAdaptor {
 
                 if (sequencePartMap.containsKey(vecSeq)) {
                     Part existing = sequencePartMap.get(vecSeq);
-                    if (existing.isVector()) {
+                    if (existing.getClass() == org.cidarlab.phoenix.core.dom.Vector.class) {
                         pn.setVector(existing);
 //                    } else {
 //                        sequencePartMap.put(vecSeq, vector);
                     }
                 } else if (sequencePartMap.containsKey(vecSeq)) {
                     Part existing = sequencePartMap.get(revVecSeq);
-                    if (existing.isVector()) {
+                    if (existing.getClass() == org.cidarlab.phoenix.core.dom.Vector.class) {
                         pn.setVector(existing);
 //                    } else {
 //                        sequencePartMap.put(revVecSeq, vector);
@@ -1657,6 +1657,7 @@ public class ClothoAdaptor {
             if (pn.getPart() != null && pn.getVector() != null) {
                 annotate(features, pn.getPart().getSequence());
                 annotate(features, pn.getVector().getSequence());
+                pn.getVector().findOriRes(pn.getVector().getSequence());
             }
         }
     }

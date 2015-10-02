@@ -60,9 +60,9 @@ public abstract class Part extends SharableObjBase {
     private short riskGroup;
     
     //In Phoenix for the time being, every part is either a vector or an insert
-    @Getter
-    @Setter
-    private boolean isVector;
+//    @Getter
+//    @Setter
+//    private boolean isVector;
 
     protected Part(String name, String description, NucSeq ns, Format format, Person author) {
         super(name, author, description);

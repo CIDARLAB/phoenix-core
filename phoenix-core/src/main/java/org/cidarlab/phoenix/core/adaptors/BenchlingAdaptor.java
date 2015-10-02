@@ -35,6 +35,7 @@ import org.cidarlab.phoenix.core.dom.Arc.ArcRole;
 import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
 import org.cidarlab.phoenix.core.dom.SmallMolecule;
 import org.cidarlab.phoenix.core.dom.SmallMolecule.SmallMoleculeRole;
+import org.cidarlab.phoenix.core.dom.Vector;
 
 /**
  *
@@ -79,7 +80,7 @@ public class BenchlingAdaptor {
             }
             
             //Determine if this is a regular plasmid with a part or a desination vector
-            String vectorName = null;
+//            String vectorName = null;
             if (seq.getAnnotation().containsProperty("KEYWORDS")) {
                 String k = seq.getAnnotation().getProperty("KEYWORDS").toString();
                 String[] tokens = k.split("\"");
@@ -87,11 +88,11 @@ public class BenchlingAdaptor {
                     
                     //Get backbone vector name
                     String[] keywords = token.split(":");
-                    if (token.contains("backbone")) {
-                        if (keywords.length == 2) {
-                            vectorName = keywords[1];
-                        }
-                    }
+//                    if (token.contains("backbone")) {
+//                        if (keywords.length == 2) {
+//                            vectorName = keywords[1];
+//                        }
+//                    }
                     
                     //Flag this polynudleotide as a destination vector
                     for (String key : keywords) {
@@ -106,7 +107,8 @@ public class BenchlingAdaptor {
             polyNuc.setSequence(getNucSeq(seq));
             
             //Get part and vector
-            getMoCloParts(polyNuc, seq, vectorName);
+//            getMoCloParts(polyNuc, seq, vectorName);
+            getMoCloParts(polyNuc, seq);
             
             polyNuc.setAccession(seq.getName() + "_Polynucleotide");
             
@@ -127,7 +129,7 @@ public class BenchlingAdaptor {
      * Creates a Part set from a Biojava sequence object
      * This will create basic parts out of all incoming plasmids
      */
-    public static HashSet<Part> getMoCloParts(Polynucleotide pn, Sequence seq, String vectorName) throws FileNotFoundException, NoSuchElementException, BioException {        
+    public static HashSet<Part> getMoCloParts(Polynucleotide pn, Sequence seq) throws FileNotFoundException, NoSuchElementException, BioException {        
         
         HashSet<Part> partSet = new HashSet<>();
 
@@ -149,7 +151,6 @@ public class BenchlingAdaptor {
         //This also assumes there are either exactly two of each site, not both or a mix
         boolean containsBBsI = searchSeq.contains(_BbsIfwd) && searchSeq.contains(_BbsIrev);
         boolean containsBsaI = searchSeq.contains(_BsaIfwd) && searchSeq.contains(_BsaIrev);
-        boolean fwd = true;
 
         if (containsBBsI && !containsBsaI) {
 
@@ -236,17 +237,18 @@ public class BenchlingAdaptor {
         }
         RO = RO.replaceAll("\\*", "#");
         LO = LO.replaceAll("\\*","#");
+        
         //Make a new Part and Vector
         Part part;
-        Part vector;
+        Vector vector;
         
         //If there is a supplied vector name, that becomes the vector name
-        String vecName;
-        if (vectorName != null) {
-            vecName = vectorName + "_" + LO + "_" + RO;
-        } else {
-            vecName = seq.getName() + "_vector_" + LO + "_" + RO;
-        }
+//        String vecName;
+//        if (vectorName != null) {
+//            vecName = vectorName + "_" + LO + "_" + RO;
+//        } else {
+//            vecName = seq.getName() + "_vector_" + LO + "_" + RO;
+//        }
         
         //Get rid of these tags and add a field to part with two features that constitute the vector
         //There will be some assumptions about MoClo format here as well
@@ -254,13 +256,15 @@ public class BenchlingAdaptor {
         //Generate parts and vector parts
         if (seq.getAnnotation().containsProperty("COMMENT")) {
             part = Part.generateBasic(seq.getName() + "_part_" + LO + "_" + RO, seq.getAnnotation().getProperty("COMMENT").toString(), new NucSeq(partSeq), null, null);
-            vector = Part.generateBasic(vecName, "", new NucSeq(vecSeq), null, null);
+            vector = Vector.generateVector(seq.getName() + "_vector_" + LO + "_" + RO, "", new NucSeq(vecSeq), null, null, null, null);
+//            vector = Part.generateBasic(vecName, "", new NucSeq(vecSeq), null, null);
         } else {
             part = Part.generateBasic(seq.getName() + "_part_" + LO + "_" + RO, "", new NucSeq(partSeq), null, null);
-            vector = Part.generateBasic(vecName, "", new NucSeq(vecSeq), null, null);
+            vector = Vector.generateVector(seq.getName() + "_vector_" + LO + "_" + RO, "", new NucSeq(vecSeq), null, null, null, null);
+//            vector = Part.generateBasic(vecName, "", new NucSeq(vecSeq), null, null);
         }
 
-        vector.setVector(true);
+//        vector.setVector(true);
 
         partSet.add(part);
         partSet.add(vector);

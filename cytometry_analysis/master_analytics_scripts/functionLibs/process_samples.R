@@ -23,7 +23,7 @@ process.samples <- function(experimentFlowSet, colorControlsFlowSet, beadFlowFra
 	
 	#Remove negative and fringe values
 	for (q in 1:length(compensatedFlowSet)) {
-		# compensatedFlowSet[[q]] <- nmRemove(compensatedFlowSet[[q]], colnames(compensatedFlowSet), neg=TRUE)				
+		compensatedFlowSet[[q]] <- nmRemove(compensatedFlowSet[[q]], colnames(compensatedFlowSet), neg=TRUE)				
 		#Logicle Transform
 		# lgcl <- estimateLogicle(compensatedFlowSet[[q]], colnames(compensatedFlowSet))
 		# compensatedFlowSet[[q]] <- transform(compensatedFlowSet[[q]], lgcl)					

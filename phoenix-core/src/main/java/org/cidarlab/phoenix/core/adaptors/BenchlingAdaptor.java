@@ -81,13 +81,13 @@ public class BenchlingAdaptor {
             
             //Determine if this is a regular plasmid with a part or a desination vector
 //            String vectorName = null;
-            if (seq.getAnnotation().containsProperty("KEYWORDS")) {
-                String k = seq.getAnnotation().getProperty("KEYWORDS").toString();
-                String[] tokens = k.split("\"");
-                for (String token : tokens) {
+//            if (seq.getAnnotation().containsProperty("KEYWORDS")) {
+//                String k = seq.getAnnotation().getProperty("KEYWORDS").toString();
+//                String[] tokens = k.split("\"");
+//                for (String token : tokens) {
                     
                     //Get backbone vector name
-                    String[] keywords = token.split(":");
+//                    String[] keywords = token.split(":");
 //                    if (token.contains("backbone")) {
 //                        if (keywords.length == 2) {
 //                            vectorName = keywords[1];
@@ -95,14 +95,18 @@ public class BenchlingAdaptor {
 //                    }
                     
                     //Flag this polynudleotide as a destination vector
-                    for (String key : keywords) {
-                        if (key.equalsIgnoreCase("vector") || key.equalsIgnoreCase("destination vector")) {
-                            polyNuc.setDV(true);
-                        }
-                    }
-                }
-            }
+//                    for (String key : keywords) {
+//                        if (key.equalsIgnoreCase("vector") || key.equalsIgnoreCase("destination vector")) {
+//                            polyNuc.setDV(true);
+//                        }
+//                    }
+//                }
+//            }
 
+            if (seq.seqString().contains(_lacZalphaL0) || seq.seqString().contains(Utilities.reverseComplement(_lacZalphaL0)) || seq.seqString().contains(_lacZalphaL1) || seq.seqString().contains(Utilities.reverseComplement(_lacZalphaL1))) {
+                polyNuc.setDV(true);
+            }
+            
             //Get sequence
             polyNuc.setSequence(getNucSeq(seq));
             

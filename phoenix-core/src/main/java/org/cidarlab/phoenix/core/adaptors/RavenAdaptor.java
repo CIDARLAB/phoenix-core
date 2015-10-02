@@ -23,11 +23,11 @@ import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
 import org.cidarlab.phoenix.core.dom.Part;
+import org.cidarlab.phoenix.core.dom.Vector;
 import org.cidarlab.phoenix.core.dom.Polynucleotide;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
 import org.cidarlab.raven.accessibility.ClothoWriter;
 import org.cidarlab.raven.algorithms.core.PrimerDesign;
-import org.cidarlab.raven.datastructures.Vector;
 import org.cidarlab.raven.javaapi.Raven;
 import org.clothoapi.clotho3javaapi.Clotho;
 import org.clothoapi.clotho3javaapi.ClothoConnection;
@@ -82,13 +82,13 @@ public class RavenAdaptor {
         
         //Determine parts library
         HashSet<org.cidarlab.raven.datastructures.Part> partsLibR = new HashSet();
-        HashSet<Vector> vectorsLibR = new HashSet();
+        HashSet<org.cidarlab.raven.datastructures.Vector> vectorsLibR = new HashSet();
         
         //Convert Phoenix Features to Raven Parts
         partsLibR.addAll(phoenixFeaturesToRavenParts(allFeatures));
                         
         //Convert Phoenix Polynucleotides to Raven Parts, Vectors and Plasmids
-        HashMap<org.cidarlab.raven.datastructures.Part, Vector> libPairs = ravenPartVectorPairs(polyNucs, partsLibR, vectorsLibR);
+        HashMap<org.cidarlab.raven.datastructures.Part, org.cidarlab.raven.datastructures.Vector> libPairs = ravenPartVectorPairs(polyNucs, partsLibR, vectorsLibR);
         vectorsLibR.addAll(libPairs.values());
         partsLibR.addAll(libPairs.keySet());
         
@@ -119,22 +119,22 @@ public class RavenAdaptor {
     }
     
     //Convert Phoenix polynuclotides into their pairs
-    public static HashMap<org.cidarlab.raven.datastructures.Part, Vector> ravenPartVectorPairs(HashSet<Polynucleotide> polyNucs, HashSet<org.cidarlab.raven.datastructures.Part> libParts, HashSet<Vector> vectorsLib) {
+    public static HashMap<org.cidarlab.raven.datastructures.Part, org.cidarlab.raven.datastructures.Vector> ravenPartVectorPairs(HashSet<Polynucleotide> polyNucs, HashSet<org.cidarlab.raven.datastructures.Part> libParts, HashSet<org.cidarlab.raven.datastructures.Vector> vectorsLib) {
         
-        HashMap<org.cidarlab.raven.datastructures.Part, Vector> plasmidPairs = new HashMap();
+        HashMap<org.cidarlab.raven.datastructures.Part, org.cidarlab.raven.datastructures.Vector> plasmidPairs = new HashMap();
         
         //For each module, make a Raven part
         for (Polynucleotide pn : polyNucs) {
         
             //Special case for destination vector
-            Vector vector;
+            org.cidarlab.raven.datastructures.Vector vector;
             int level = pn.getLevel();
             if (pn.isDV()) {
-                vector = phoenixPartToRavenVector(pn.getVector(), Integer.toString(level));
+                vector = phoenixVectorToRavenVector(pn.getVector(), Integer.toString(level));
                 vectorsLib.add(vector);
             } else {
                 org.cidarlab.raven.datastructures.Part part = phoenixPartToRavenPart(pn.getPart(), libParts);
-                vector = phoenixPartToRavenVector(pn.getVector(), Integer.toString(level));
+                vector = phoenixVectorToRavenVector(pn.getVector(), Integer.toString(level));
                 vectorsLib.add(vector);
                 plasmidPairs.put(part, vector);
             }            
@@ -330,33 +330,33 @@ public class RavenAdaptor {
     }
     
     //Convert Phoenix Parts to Raven Vectors
-    public static Vector phoenixPartToRavenVector(Part pPart, String level) {
+    public static org.cidarlab.raven.datastructures.Vector phoenixVectorToRavenVector(Vector pVector, String level) {
         
         //Get parameters for Raven
-        String vecSeq = pPart.getSequence().getSeq();
+        String vecSeq = pVector.getSequence().getSeq();
         HashMap<String, String> moCloOHs = reverseKeysVals(PrimerDesign.getMoCloOHseqs());
-        String moCloLO = "";
-        String moCloRO = "";
-        String resistance = "";
+        String moCloLO;
+        String moCloRO;
+        String resistance;
        
         //If both ends match MoClo overhangs, add them as overhangs
         moCloLO = moCloOHs.get(vecSeq.substring(vecSeq.length() - 4).toLowerCase());
         moCloRO = moCloOHs.get(vecSeq.substring(0, 4).toLowerCase());     
         
         //Get the resistance
-        Set<Annotation> annotations = pPart.getSequence().getAnnotations();
-        for (Annotation a : annotations) {
-            if (a.getFeature().getRole().equals(Feature.FeatureRole.CDS_RESISTANCE)) {
-                resistance = a.getFeature().getName().replaceAll(".ref", "");
-            }
-        }
+//        Set<Annotation> annotations = pVector.getSequence().getAnnotations();
+//        for (Annotation a : annotations) {
+//            if (a.getFeature().getRole().equals(Feature.FeatureRole.CDS_RESISTANCE)) {
+                resistance = pVector.getResistance().getName().replaceAll(".ref", "");
+//            }
+//        }
          
-        Vector newVector;
+        org.cidarlab.raven.datastructures.Vector newVector;
         if (level == null) {
-            newVector = Vector.generateVector(pPart.getName(), pPart.getSequence().getSeq(), "", "", "vector", "", "", resistance, -1);
+            newVector = org.cidarlab.raven.datastructures.Vector.generateVector(pVector.getName(), pVector.getSequence().getSeq(), "", "", "vector", "", "", resistance, -1);
             newVector.setTransientStatus(false);
         } else {
-            newVector = Vector.generateVector(pPart.getName(), pPart.getSequence().getSeq(), moCloLO, moCloRO, "destination vector", pPart.getName(), "lacZ|" + moCloLO + "|" + moCloRO + "|+", resistance, Integer.valueOf(level));
+            newVector = org.cidarlab.raven.datastructures.Vector.generateVector(pVector.getName(), pVector.getSequence().getSeq(), moCloLO, moCloRO, "destination vector", pVector.getName(), "lacZ|" + moCloLO + "|" + moCloRO + "|+", resistance, Integer.valueOf(level));
             newVector.setTransientStatus(false);
         }
 

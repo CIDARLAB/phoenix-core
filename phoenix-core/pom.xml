@@ -300,6 +300,12 @@
             <artifactId>RavenCAD</artifactId>
             <version>1.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.owl</groupId>
+            <artifactId>Datasheet_Generator</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        
     </dependencies>
     
     

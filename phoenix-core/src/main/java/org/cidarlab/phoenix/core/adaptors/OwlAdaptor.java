@@ -4,7 +4,12 @@
  */
 package org.cidarlab.phoenix.core.adaptors;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.cidarlab.javaapi.Owl;
+import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.Experiment;
 
 /**
@@ -15,7 +20,8 @@ import org.cidarlab.phoenix.core.dom.Experiment;
 public class OwlAdaptor {
     
     //Make datasheets for all the experiment parts from a set of experiments
-    public static void makeDatasheets (List<Experiment> experiments) {
+    public static void createOwlJSON (AssignedModule aModule) {
         
-    }    
+    }
+    
 }

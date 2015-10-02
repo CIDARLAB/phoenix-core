@@ -141,7 +141,7 @@ public class PhoenixController {
         AnalyticsAdaptor.runAnalytics(currentExperiments);
 
         //Make owl data sheets
-        OwlAdaptor.makeDatasheets(currentExperiments);
+        //OwlAdaptor.makeDatasheets(currentExperiments);
         currentExperiments.clear();
 
         //Run simulations to produce candidate part/feature matches

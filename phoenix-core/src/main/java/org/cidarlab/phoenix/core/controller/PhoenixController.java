@@ -40,13 +40,38 @@ public class PhoenixController {
      
         //Import data from Benchling multi-part Genbank files to Clotho
         ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
-        Clotho clothoObject = new Clotho(conn);
-        
+        Clotho clothoObject = new Clotho(conn);        
         
         ClothoAdaptor.uploadSequences(featureLib, true,clothoObject);
         ClothoAdaptor.uploadFluorescenceSpectrums(fluorophoreSpectra,clothoObject);
         ClothoAdaptor.uploadSequences(plasmidLib, false,clothoObject);
         ClothoAdaptor.uploadCytometer(cytometer,clothoObject);
+        
+        conn.closeConnection();
+    }
+    
+    //Add additional plasminds only, no further processing
+    //FILE IN, NOTHING OUT
+    public static void addPlasmids (File plasmidLib) throws Exception {
+        
+        //Import data from Benchling multi-part Genbank files to Clotho
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
+        Clotho clothoObject = new Clotho(conn);
+        
+        ClothoAdaptor.uploadSequences(plasmidLib, false,clothoObject);
+        
+        conn.closeConnection();
+    }
+    
+        //Add additional plasminds only, no further processing
+    //FILE IN, NOTHING OUT
+    public static void addFeatures (File featureLib) throws Exception {
+        
+        //Import data from Benchling multi-part Genbank files to Clotho
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
+        Clotho clothoObject = new Clotho(conn);
+        
+        ClothoAdaptor.uploadSequences(featureLib, true,clothoObject);
         
         conn.closeConnection();
     }

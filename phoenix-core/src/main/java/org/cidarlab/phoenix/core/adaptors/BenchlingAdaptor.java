@@ -248,6 +248,9 @@ public class BenchlingAdaptor {
             vecName = seq.getName() + "_vector_" + LO + "_" + RO;
         }
         
+        //Get rid of these tags and add a field to part with two features that constitute the vector
+        //There will be some assumptions about MoClo format here as well
+        
         //Generate parts and vector parts
         if (seq.getAnnotation().containsProperty("COMMENT")) {
             part = Part.generateBasic(seq.getName() + "_part_" + LO + "_" + RO, seq.getAnnotation().getProperty("COMMENT").toString(), new NucSeq(partSeq), null, null);

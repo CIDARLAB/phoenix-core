@@ -56,7 +56,7 @@ public class Feature extends SharableObjBase {
 
     @Setter
     private Color forwardColor, reverseColor;
-
+    
     @Setter
     @Getter
     private String genbankId, swissProtId, PDBId;

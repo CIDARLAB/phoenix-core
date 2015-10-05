@@ -260,11 +260,11 @@ public class BenchlingAdaptor {
         //Generate parts and vector parts
         if (seq.getAnnotation().containsProperty("COMMENT")) {
             part = Part.generateBasic(seq.getName() + "_part_" + LO + "_" + RO, seq.getAnnotation().getProperty("COMMENT").toString(), new NucSeq(partSeq), null, null);
-            vector = Vector.generateVector(seq.getName() + "_vector_" + LO + "_" + RO, "", new NucSeq(vecSeq), null, null, null, null);
+            vector = new Vector(seq.getName() + "_vector_" + LO + "_" + RO, "", new NucSeq(vecSeq), null, null, null, null);
 //            vector = Part.generateBasic(vecName, "", new NucSeq(vecSeq), null, null);
         } else {
             part = Part.generateBasic(seq.getName() + "_part_" + LO + "_" + RO, "", new NucSeq(partSeq), null, null);
-            vector = Vector.generateVector(seq.getName() + "_vector_" + LO + "_" + RO, "", new NucSeq(vecSeq), null, null, null, null);
+            vector = new Vector(seq.getName() + "_vector_" + LO + "_" + RO, "", new NucSeq(vecSeq), null, null, null, null);
 //            vector = Part.generateBasic(vecName, "", new NucSeq(vecSeq), null, null);
         }
 

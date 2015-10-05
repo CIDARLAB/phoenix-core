@@ -46,8 +46,10 @@ import org.cidarlab.phoenix.core.dom.Primitive;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
 import org.cidarlab.phoenix.core.dom.Sample;
 import org.cidarlab.phoenix.core.dom.Sample.SampleType;
+import org.cidarlab.phoenix.core.dom.Sequence;
 import org.cidarlab.phoenix.core.dom.SmallMolecule;
 import org.cidarlab.phoenix.core.dom.Strain;
+import org.cidarlab.phoenix.core.dom.Vector;
 
 /**
  * This class has all methods for sending and receiving information to Clotho
@@ -369,7 +371,7 @@ public class ClothoAdaptor {
         map.put("name", strain.getName());
         return map;
     }
-
+    
     public static Map createMediumMap(Medium medium) {
         String id = "";
         Map map = new HashMap();
@@ -412,7 +414,7 @@ public class ClothoAdaptor {
         //Change this. Make it point to a Clotho Id instead.
         //Part and vector
         String partId = createPart(pn.getPart(), clothoObject);
-        String vectorId = createPart(pn.getVector(), clothoObject);
+        String vectorId = createVector(pn.getVector(), clothoObject);
         //Map createPart = createPart(pn.getPart(), clothoObject);
         //Map createVec = createPart(pn.getVector(), clothoObject);
 
@@ -447,8 +449,8 @@ public class ClothoAdaptor {
         Map map = new HashMap();
         map.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
         map.put("name", f.getName());
-        map.put("forwardColor", f.getForwardColor().toString());
-        map.put("reverseColor", f.getReverseColor().toString());
+        map.put("forwardColor", f.getForwardColor().getRGB());
+        map.put("reverseColor", f.getReverseColor().getRGB());
         
         if (f.getClothoID() != null) {
             if (!f.isFP()) {
@@ -466,10 +468,8 @@ public class ClothoAdaptor {
 
         List<Map> arcList = new ArrayList<>();
         for (Arc a : f.getArcs()) {
-            //This assignment in particular assumes feature name and clothoID are the same
             arcList.add(createArcMap(a));
         }
-
         map.put("arcs", arcList);
 
         return map;
@@ -767,6 +767,7 @@ public class ClothoAdaptor {
         return id;
     }
     
+    
     //Add parts to Clotho via Clotho Server API
     public static String createPart(Part p, Clotho clothoObject) {
 
@@ -791,6 +792,39 @@ public class ClothoAdaptor {
 
         id = (String) clothoObject.set(createPart);
         p.setClothoID(id);
+        return id;
+    }
+    
+    
+    //Add parts to Clotho via Clotho Server API
+    public static String createVector(Vector vector, Clotho clothoObject) {
+
+        //Part schema
+        String id = "";
+        Map createVector = new HashMap();
+        createVector.put("schema", "org.cidarlab.phoenix.core.dom.Part");
+        createVector.put("name", vector.getName());
+//        createPart.put("isVector", p.isVector());
+        createVector.put("sequence", createNucSeqMap(vector.getSequence()));
+        
+        if(vector.getDescription() != null){
+            createVector.put("description", vector.getDescription());
+        }
+        String originId = createFeature(vector.getOrigin(),clothoObject);
+        createVector.put("origin", originId);
+        
+        String resistanceId = createFeature(vector.getResistance(),clothoObject);
+        createVector.put("resistance", resistanceId);
+        
+        //Clotho ID
+        if (vector.getClothoID() != null) {
+            createVector.put("id", vector.getClothoID());
+        } else {
+            createVector.put("id", vector.getName());
+        }
+
+        id = (String) clothoObject.set(createVector);
+        vector.setClothoID(id);
         return id;
     }
     
@@ -910,6 +944,48 @@ public class ClothoAdaptor {
         
         return p;
     }
+    
+    public static Arc mapToArc(Map map){
+        Arc arc = new Arc();
+        arc.setRole(ArcRole.valueOf(map.get("role").toString()));
+        return arc;
+    }
+    
+    public static Feature mapToFeature(Map map){
+        Feature feature = new Feature();
+        feature.setName((String)map.get("name"));
+        feature.setForwardColor(new Color((int)map.get("forwardColor")));
+        feature.setReverseColor(new Color((int)map.get("reverseColor")));
+        feature.setClothoID((String)map.get("id"));
+        feature.setSequence(mapToSequence((Map)map.get("sequence")));
+        feature.setRole(FeatureRole.valueOf((String)map.get("role")));
+        
+        //Something for ARCS???
+        
+        return feature;
+    }
+    
+    public static Sequence mapToSequence(Map map){
+        Sequence sequence = new NucSeq((String)map.get("sequence"));
+        
+        return sequence;
+    }
+    
+    public static Vector mapToVector(Map map){
+        
+        String name = (String)map.get("name");
+        String description = "";
+        if(map.containsKey("description")){
+            description = (String)map.get("description");
+        }
+        Feature origin = mapToFeature((Map)map.get("origin"));
+        Feature resistance = mapToFeature((Map)map.get("resistance"));
+        Vector vector = new Vector(name, description, mapToNucSeq((Map)map.get("sequence")), null, null,origin,resistance);
+        vector.setClothoID((String)map.get("id"));
+        
+        return vector;
+    }
+    
     
     public static NucSeq mapToNucSeq(Map map){
         
@@ -1109,23 +1185,29 @@ public class ClothoAdaptor {
 
             //Get feature fields
             JSONObject jsonFeature = array.getJSONObject(i);
-            String fwdColorSt = jsonFeature.get("forwardColor").toString();
+            
+            /*String fwdColorSt = jsonFeature.get("forwardColor").toString();
             String[] rgbfwd = fwdColorSt.substring(15, fwdColorSt.length() - 1).split(",");
             Color fwdColor = new Color(Integer.valueOf(rgbfwd[0].substring(2)), Integer.valueOf(rgbfwd[1].substring(2)), Integer.valueOf(rgbfwd[2].substring(2)));
             String revColorSt = jsonFeature.get("reverseColor").toString();
             String[] rgbrev = revColorSt.substring(15, revColorSt.length() - 1).split(",");
             Color revColor = new Color(Integer.valueOf(rgbrev[0].substring(2)), Integer.valueOf(rgbrev[1].substring(2)), Integer.valueOf(rgbrev[2].substring(2)));
+            */
+            
             String name = jsonFeature.get("name").toString();
-
             //Get sequence object and fields
             JSONObject jsonSequence = (JSONObject) jsonFeature.get("sequence");
             String seq = jsonSequence.get("sequence").toString();
             NucSeq sequence = new NucSeq(seq);
 
             feature.setRole(Feature.FeatureRole.valueOf((String)jsonFeature.get("role")));
-
-            feature.setForwardColor(fwdColor);
-            feature.setReverseColor(revColor);
+            
+            //feature.setForwardColor(fwdColor);
+            //feature.setReverseColor(revColor);
+            
+            feature.setForwardColor(new Color((int)jsonFeature.get("forwardColor")));
+            feature.setReverseColor(new Color((int)jsonFeature.get("reverseColor")));
+                        
             feature.setName(name);
             feature.setSequence(sequence);
             feature.setClothoID(jsonFeature.get("id").toString());
@@ -1201,7 +1283,8 @@ public class ClothoAdaptor {
 
         return features;
     }
-
+    
+    //Over-ride with module? Maybe get Module parameters and then clone?
     public static AssignedModule getAssignedModule(String assignedModuleId, Clotho clothoObject) {
 
         JSONObject amObj = new JSONObject();
@@ -1211,7 +1294,7 @@ public class ClothoAdaptor {
         for (Object expId : (JSONArray) amObj.get("experiments")) {
             amodule.getExperiments().add(getExperiment((String) expId, clothoObject));
         }
-
+        amodule.setClothoID(assignedModuleId);
         return amodule;
 
     }
@@ -1345,7 +1428,7 @@ public class ClothoAdaptor {
         pn.setPart(mapToPart(jsonPart));
         Map jsonVec = new HashMap();
         jsonVec = (Map) clothoObject.get((String) jsonPolynuc.get("vector"));
-        pn.setVector(mapToPart(jsonVec));
+        pn.setVector(mapToVector(jsonVec));
 
         pn.setClothoID(jsonPolynuc.get("id").toString());
         pn.setDV(Boolean.parseBoolean(jsonPolynuc.get("isDV").toString()));
@@ -1388,7 +1471,7 @@ public class ClothoAdaptor {
             pn.setPart(mapToPart(jsonPart));
             Map jsonVec = new HashMap();
             jsonVec = (Map) clothoObject.get((String) jsonPolynuc.get("vector"));
-            pn.setVector(mapToPart(jsonVec));
+            pn.setVector(mapToVector(jsonVec));
             
             pn.setClothoID(jsonPolynuc.get("id").toString());
             pn.setDV(Boolean.parseBoolean(jsonPolynuc.get("isDV").toString()));
@@ -1630,14 +1713,14 @@ public class ClothoAdaptor {
                 String revVecSeq = vector.getSequence().getSeq();
 
                 if (sequencePartMap.containsKey(vecSeq)) {
-                    Part existing = sequencePartMap.get(vecSeq);
+                    Vector existing = (Vector) sequencePartMap.get(vecSeq); //Check this. Where is Origin and Resistance?
                     if (existing.getClass() == org.cidarlab.phoenix.core.dom.Vector.class) {
                         pn.setVector(existing);
 //                    } else {
 //                        sequencePartMap.put(vecSeq, vector);
                     }
                 } else if (sequencePartMap.containsKey(vecSeq)) {
-                    Part existing = sequencePartMap.get(revVecSeq);
+                    Vector existing = (Vector) sequencePartMap.get(revVecSeq); //Check this. Where is Origin and Resistance?
                     if (existing.getClass() == org.cidarlab.phoenix.core.dom.Vector.class) {
                         pn.setVector(existing);
 //                    } else {

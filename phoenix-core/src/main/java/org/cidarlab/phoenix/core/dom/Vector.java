@@ -16,14 +16,12 @@ import lombok.Setter;
 public class Vector extends Part {
     
     /*
-    * Method for creating a vector - vectors are just a part with origin of replication and resistance features noted
+    * Modified this to be a Constructor instead of a create method
     */
-    public static Vector generateVector(String name, String description, NucSeq sequence, Format format, Person author, Feature origin, Feature resistance) {
-        
-        Vector v = (Vector) Part.generateBasic(name, description, sequence, format, author);
-        v.origin = origin;
-        v.resistance = resistance;        
-        return v;
+    public Vector (String name, String description, NucSeq sequence, Format format, Person author, Feature origin, Feature resistance) {
+        super(name, description, sequence, format, author);
+        this.origin = origin;
+        this.resistance = resistance;        
     }
     
     //Method for finding which origin is in an input vector sequence

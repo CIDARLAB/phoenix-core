@@ -299,10 +299,7 @@ public class ClothoAdaptor {
 
             //FeatureRole sub-schema
             if (f.getRole() != null) {
-                Map createFeatureRole = new HashMap();
-                createFeatureRole.put("schema", "org.cidarlab.phoenix.core.dom.FeatureRole");
-                createFeatureRole.put("FeatureRole", f.getRole().toString());
-                createFeature.put("role", createFeatureRole);
+                createFeature.put("role", f.getRole().toString());
             }
 
             //NucSeq sub-schema
@@ -340,7 +337,7 @@ public class ClothoAdaptor {
         Map map = new HashMap();
         map.put("name", smolecule.getName());
         map.put("schema", "org.cidarlab.phoenix.core.dom.SmallMolecule");
-        map.put("role", smolecule.getRole());
+        map.put("role", smolecule.getRole().toString());
         if(smolecule.getConcentration()!=null){
             map.put("concentration", smolecule.getConcentration());
         }
@@ -810,6 +807,7 @@ public class ClothoAdaptor {
         if(vector.getDescription() != null){
             createVector.put("description", vector.getDescription());
         }
+        
         String originId = createFeature(vector.getOrigin(),clothoObject);
         createVector.put("origin", originId);
         
@@ -1033,11 +1031,8 @@ public class ClothoAdaptor {
 
             //Get FeatureRole
             if (jsonFeature.has("role")) {
-                JSONObject jsonFeatureRole = (JSONObject) jsonFeature.get("role");
-                String roleString = jsonFeatureRole.get("FeatureRole").toString();
-                feature.setRole(Feature.FeatureRole.valueOf(roleString));
+                feature.setRole(Feature.FeatureRole.valueOf((String)jsonFeature.get("role")));
             }
-
             feature.setForwardColor(fwdColor);
             feature.setReverseColor(revColor);
             feature.setName(fname);

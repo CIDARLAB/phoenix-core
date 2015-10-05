@@ -19,6 +19,7 @@ public class Args {
         return filepath;
     }
     
+    public static final long maxTimeOut = 60;
     public static final String clothoLocation = "wss://localhost:8443/websocket";
     //public static final String flareJSONfilepath = "/C:/Users/zchap_000/Documents/BU_Spring_2015/phoenix-core/phoenix-core/src/main/webapp/flare.json";
     public static final String flareJSONfilepath = getFilepath() + "/src/main/webapp/flare.json";

@@ -61,7 +61,7 @@ public class RavenAdaptor {
             }
         }
         
-        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
         Clotho clothoObject = new Clotho(conn);        
         
         //Get Phoenix data from Clotho

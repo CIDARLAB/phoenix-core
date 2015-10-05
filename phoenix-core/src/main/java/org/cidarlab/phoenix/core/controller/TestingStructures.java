@@ -692,7 +692,7 @@ public class TestingStructures {
         
         //Initiate hashes for existing polynucleotides
         
-        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
         Clotho clothoObject = new Clotho(conn);
         
         
@@ -736,7 +736,7 @@ public class TestingStructures {
 
         //Initiate hashes for existing polynucleotides
         
-        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
         Clotho clothoObject = new Clotho(conn);        
                 
         Map J23104 = new HashMap();

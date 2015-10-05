@@ -97,7 +97,7 @@ public class FluorescentProteinSelectorTest {
     //Runs test on FP Selector algorithm to get 1 FP with configured cytometer
 //    @Test
     public void getOneFPTest() {        
-        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
         Clotho clothoObject = new Clotho(conn);
         
         Map fluorophoreQuery = new HashMap();
@@ -118,7 +118,7 @@ public class FluorescentProteinSelectorTest {
 //    @Test
     public void getMultiFPTest() {        
         
-        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
         Clotho clothoObject = new Clotho(conn);
         
         Map fluorophoreQuery = new HashMap();

@@ -18,6 +18,7 @@ import org.cidarlab.phoenix.core.grammars.PhoenixGrammar;
 import org.clothoapi.clotho3javaapi.Clotho;
 import org.clothoapi.clotho3javaapi.ClothoConnection;
 
+
 /**
  * This is the primary class for managing the workflow of tools within Phoenix
  * 
@@ -37,9 +38,9 @@ public class PhoenixController {
     //Data upload method
     //FILE IN, NOTHING OUT
     public static void preliminaryDataUpload (File featureLib, File plasmidLib, File fluorophoreSpectra, File cytometer) throws FileNotFoundException, Exception {
-     
+        
         //Import data from Benchling multi-part Genbank files to Clotho
-        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
         Clotho clothoObject = new Clotho(conn);        
         
         ClothoAdaptor.uploadSequences(featureLib, true,clothoObject);
@@ -55,7 +56,7 @@ public class PhoenixController {
     public static void addPlasmids (File plasmidLib) throws Exception {
         
         //Import data from Benchling multi-part Genbank files to Clotho
-        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
         Clotho clothoObject = new Clotho(conn);
         
         ClothoAdaptor.uploadSequences(plasmidLib, false,clothoObject);
@@ -68,7 +69,7 @@ public class PhoenixController {
     public static void addFeatures (File featureLib) throws Exception {
         
         //Import data from Benchling multi-part Genbank files to Clotho
-        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
         Clotho clothoObject = new Clotho(conn);
         
         ClothoAdaptor.uploadSequences(featureLib, true,clothoObject);
@@ -108,7 +109,7 @@ public class PhoenixController {
         HashSet<AssignedModule> modulesToTest = new HashSet<AssignedModule>(FeatureAssignment.partialAssignment(modules, 0.5));        
         TestingStructures.createExperiments(modulesToTest);
         
-        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
         Clotho clothoObject = new Clotho(conn);
 //        String moduleId = ClothoAdaptor.createModule(modules.get(0), clothoObject);        
         
@@ -152,7 +153,7 @@ public class PhoenixController {
     //FILES IN, NOTHING OUT
     public static void interpretData (List<File> fcsFiles, File plasmidsCreated, List<Module> modules) throws Exception {
         
-        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
         Clotho clothoObject = new Clotho(conn);        
         
         List<Experiment> currentExperiments = new ArrayList<>();

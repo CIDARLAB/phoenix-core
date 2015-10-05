@@ -34,7 +34,7 @@ public class FeatureAssignment {
     //This method will be hacky until we have a real part assignment algorithm based on simulation
     public static HashSet<AssignedModule> partialAssignment(List<Module> testingModules, Double percentage) {
                 
-        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
         Clotho clothoObject = new Clotho(conn);        
         
         HashSet<AssignedModule> modulesToTest = new HashSet<>();
@@ -442,7 +442,7 @@ public class FeatureAssignment {
     
     //Gets a list of experiments and for all modules in the each experiment, it converts features to parts
     public static List<Part> getExperimentParts(List<Experiment> experiments) {
-        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
         Clotho clothoObject = new Clotho(conn);
         
         Map partQuery = new HashMap();

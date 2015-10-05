@@ -155,6 +155,46 @@ public class PhoenixInstructions {
         return testingInstructions;
     }
     
+    //This is the method for generating a file that maps the phoenix short names to custom user names
+    public static File generateNameMapFile (File keyFile, String filePath) throws IOException {
+
+        //First, read a keyfile and find all unique names in the PART column
+        BufferedReader reader = new BufferedReader(new FileReader(keyFile.getAbsolutePath()));
+        String line = reader.readLine();
+        
+        //Read each line of the input file to parse parts
+        ArrayList<String> uniquePartNames = new ArrayList();
+        while (line != null) {
+            while (line.matches("^[\\s,]+")) {
+                line = reader.readLine();
+            }
+            
+            //Obtain information to find relevant samples in an experiment
+            String[] sampleVals = line.split(",");
+            
+            if (sampleVals.length >= 2) {
+                String partName = sampleVals[1].trim();
+                if (!uniquePartNames.contains(partName)) {
+                    uniquePartNames.add(partName);
+                }
+            }
+        }
+        
+        //Create a new file for the map for custom names
+        File nameMapFile = new File(filePath + "/nameMapFileTest.csv");
+        FileWriter nameMapFileWriter = new FileWriter(nameMapFile);
+        
+        try (BufferedWriter nameMapBufferedWriter = new BufferedWriter(nameMapFileWriter)) {
+            nameMapBufferedWriter.write("PHOENIX_SHORTNAME,CUSTOM_NAME");
+            
+            //For each unique part name, create a line in the map file
+            for (String part : uniquePartNames) {
+                nameMapBufferedWriter.write("\n,," + part + ",");
+            }
+        }
+        
+        return nameMapFile;
+    }
     
     //Method for reading results file from R
     //This method needs to be fixed to assign results to the experiment, not the samples

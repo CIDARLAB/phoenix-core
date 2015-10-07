@@ -128,7 +128,10 @@ uniquePartNames <- c(as.character(regControlParts), as.character(uniquePartNames
 #Loop through all unique parts to make plots
 for (i in 1:length(uniquePartNames)) {
 	
+	#Create a directory for this part
 	part <- as.character(uniquePartNames[i])
+	dir.create(part, showWarnings = FALSE)
+	
 	uniqueTimeMediaRows <- allPartTimeMediaUniqueRows[which(TRUE == grepl(paste("^", part, "$", sep = ''), allPartTimeMediaUniqueRows$PART)),]
 	
 	#Initialize media-SM data frame
@@ -161,7 +164,11 @@ for (i in 1:length(uniquePartNames)) {
 	for (j in 1:length(uniqueMediaTypes)) {
 
 		#Get list of small molecule additives
+		#Create a directory for this mediaType
 		mediaType <- as.character(uniqueMediaTypes[j])
+		mediaTypePath <- paste(part, "/", mediaType, sep = '')		
+		dir.create(mediaTypePath, showWarnings = FALSE)
+		
 		MediaTypeSMs <- mediaSMMap[which(TRUE == grepl(mediaType, mediaSMMap$BASE)),]
 		uniqueMediaSMs <- as.character(unique(MediaTypeSMs$SM))			 
 				
@@ -170,10 +177,9 @@ for (i in 1:length(uniquePartNames)) {
 		
 		#Loop through all small molecule additions for this mediaType
 		for (y in 1:length(uniqueMediaSMs)) {
-			
-			SM <- as.character(uniqueMediaSMs[y])
-			noSM <- c()
-										
+						
+			SM <- as.character(uniqueMediaSMs[y])						
+			noSM <- c()										
 			media <- c()
 		
 			#Initialize data structures for meansMedia and standardDevsMedia
@@ -190,7 +196,9 @@ for (i in 1:length(uniquePartNames)) {
 				uniqueMediaSMRowsAllTimes <- uniqueMediaRows[which(TRUE == grepl(noSM, uniqueMediaRows$MEDIA)),]			
 				
 				allSMConcs <- noSM
-			
+				
+				currentMediaTypePath <- mediaTypePath
+									
 			} else {
 				
 				#Get the list of concentrations of this media with this small molecule additive			
@@ -204,6 +212,10 @@ for (i in 1:length(uniquePartNames)) {
 					uniqueMediaSMRowsAllTimes <- rbind(noSMRows, uniqueMediaSMRowsAllTimes)	
 					allSMConcs <- c(noSM, allSMConcs)
 				}
+				
+				#Create a directory for this small molecule
+				currentMediaTypePath <- paste(mediaTypePath, "/", SM, sep = '')
+				dir.create(currentMediaTypePath, showWarnings = FALSE)				
 			}
 	
 			#Loop through all unique media concentrations for this part
@@ -281,7 +293,7 @@ for (i in 1:length(uniquePartNames)) {
 								analyzedExptsMediaTimeEval <- process.samples(experimentFlowSet, colorControlsFlowSet, gatedBeadControlFlowFrame, comp.mat, autofluorescence, finalFiles)
 								meansMediaTime[t,] <- colMeans(analyzedExptsMediaTimeEval)
 								standardDevsMediaTime[t,] <- colSds(analyzedExptsMediaTimeEval)
-							}
+							}	
 						}
 					}	
 				}
@@ -294,7 +306,16 @@ for (i in 1:length(uniquePartNames)) {
 				# }
 				
 				#Make a fluorescence v. time plot if more than one time entered to this media at this concentration
-				if (nrow(meansMediaTime) > 1) {
+				if (nrow(meansMediaTime) > 1) {					
+									
+					#Create a directory if there are multiple 
+					if (grepl(mediaType, conc) == TRUE) {
+						# currentMediaTypeConcPath <- paste(currentMediaTypePath, "/", "plain", sep='')
+						currentMediaTypeConcPath <- currentMediaTypePath
+					} else {
+						currentMediaTypeConcPath <- paste(currentMediaTypePath, "/", conc, sep='')
+					}
+					dir.create(currentMediaTypeConcPath, showWarnings = FALSE)
 					
 					### PLOTTING OF PART MEDIA TIMES ###
 					#Get rid of FSC and SSC
@@ -339,13 +360,12 @@ for (i in 1:length(uniquePartNames)) {
 		    			limits <- aes(ymin=yaxis-error, ymax=yaxis+error)
 		
 						#File naming and placement in a subdirectory
-						name <- as.character(paste(part,"_",mediaName,"_",colnames(meansMediaTime)[u],".png"), sep='')
+						name <- as.character(paste(part, "_", colnames(meansMediaTime)[u],".png"), sep='')
 						name <- str_replace_all(name, fixed(" "), "")
 						name <- sub("/","",name)
-						File <- as.character(paste("./time_series/", part, "/", name))
+						File <- as.character(paste(currentMediaTypeConcPath, "/plots/", name), sep='')
 	   					File <- str_replace_all(File, fixed(" "), "")
-						# if (file.exists(File)) stop(File, " already exists")
-						dir.create("time_series")
+	   					dir.create(as.character(paste(currentMediaTypeConcPath, "/plots"), sep=''))
 						dir.create(dirname(File), showWarnings = FALSE)
 						png(File, width=960, height=960, res=120)
 		    			
@@ -467,15 +487,25 @@ for (i in 1:length(uniquePartNames)) {
 		    		title <- paste("Regulation of ", regControlPart, sep='')
 	
 					#File naming and placement in a subdirectory
-					name <- as.character(paste(part,"_",mediaType,"_REGULATION_",ychannel,".png"), sep='')
+					name <- as.character(paste(part, "_REGULATION_",ychannel,".png"), sep='')
 					name <- str_replace_all(name, fixed(" "), "")
 					name <- sub("/","",name)
-					File <- as.character(paste("./regulation/", part, "/", name))
-	   				File <- str_replace_all(File, fixed(" "), "")
-					# if (file.exists(File)) stop(File, " already exists")
-					dir.create("regulation")
+					File <- as.character(paste(currentMediaTypePath, "/regulation/plots/", name), sep='')
+   					File <- str_replace_all(File, fixed(" "), "")
+   					dir.create(as.character(paste(currentMediaTypePath, "/regulation"), sep=''))
 					dir.create(dirname(File), showWarnings = FALSE)
 					png(File, width=960, height=960, res=120)
+	
+					#File naming and placement in a subdirectory
+					# name <- as.character(paste(part,"_",mediaType,"_REGULATION_",ychannel,".png"), sep='')
+					# name <- str_replace_all(name, fixed(" "), "")
+					# name <- sub("/","",name)
+					# File <- as.character(paste("./regulation/", part, "/", name))
+	   				# File <- str_replace_all(File, fixed(" "), "")
+					# # if (file.exists(File)) stop(File, " already exists")
+					# dir.create("regulation")
+					# dir.create(dirname(File), showWarnings = FALSE)
+					# png(File, width=960, height=960, res=120)
 	    			
 	    			#Plotting
 	    			pt <- ggplot(data = plotMat, aes(x = xaxis, y = as.numeric(yaxis))) +
@@ -528,15 +558,25 @@ for (i in 1:length(uniquePartNames)) {
 	    			limits <- aes(ymin=yaxis-error, ymax=yaxis+error)
 	
 					#File naming and placement in a subdirectory
-					name <- as.character(paste(part,"_",mediaType,"_", SM, "_",colnames(meansMedia)[l],".png"))
+					name <- as.character(paste(part, "_",colnames(meansMedia)[l],".png"), sep='')
 					name <- str_replace_all(name, fixed(" "), "")
 					name <- sub("/","",name)
-					File <- as.character(paste("./media_induction/", part, "/", name))
-		   			File <- str_replace_all(File, fixed(" "), "")
-					# if (file.exists(File)) stop(File, " already exists")
-					dir.create("media_induction")
+					File <- as.character(paste(currentMediaTypePath, "/plots/", name), sep='')
+   					File <- str_replace_all(File, fixed(" "), "")
+   					dir.create(as.character(paste(currentMediaTypePath, "/plots"), sep=''))
 					dir.create(dirname(File), showWarnings = FALSE)
 					png(File, width=960, height=960, res=120)
+	
+					#File naming and placement in a subdirectory
+					# name <- as.character(paste(part,"_",mediaType,"_", SM, "_",colnames(meansMedia)[l],".png"))
+					# name <- str_replace_all(name, fixed(" "), "")
+					# name <- sub("/","",name)
+					# File <- as.character(paste("./media_induction/", part, "/", name))
+		   			# File <- str_replace_all(File, fixed(" "), "")
+					# # if (file.exists(File)) stop(File, " already exists")
+					# dir.create("media_induction")
+					# dir.create(dirname(File), showWarnings = FALSE)
+					# png(File, width=960, height=960, res=120)
 					
 					#Plotting
 	    			p <- ggplot(plotMat, aes(x = xaxis, y = yaxis)) +

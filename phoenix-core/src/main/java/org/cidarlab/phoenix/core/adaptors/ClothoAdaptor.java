@@ -670,7 +670,8 @@ public class ClothoAdaptor {
             controlModuleIds.add(createModule(cmodule, clothoObject));
         }
         map.put("controlModules", controlModuleIds);
-
+        map.put("shortName", amodule.getShortName());
+        
         id = (String) clothoObject.set(map);
         amodule.setClothoID(id);
         return id;
@@ -947,6 +948,34 @@ public class ClothoAdaptor {
         Arc arc = new Arc();
         arc.setRole(ArcRole.valueOf(map.get("role").toString()));
         return arc;
+    }
+    
+    public static Module mapToModule(Map map,Clotho clothoObject){
+        Module module = new Module(map.get("name").toString());
+        module.setClothoID(map.get("id").toString());
+        module.setRole(Module.ModuleRole.valueOf(map.get("role").toString()));
+        module.setStage((int) map.get("stage"));
+        module.setForward((boolean) map.get("isForward"));
+        module.setRoot((boolean) map.get("isRoot"));
+
+        JSONArray featureIds = new JSONArray();
+        featureIds = (JSONArray) map.get("moduleFeatures");
+        JSONArray featureJSONArray = new JSONArray();
+        for (Object obj : featureIds) {
+            String featureId = (String) obj;
+
+            featureJSONArray.add(clothoObject.get(featureId));
+        }
+        List<Feature> featureSet = new ArrayList<Feature>();
+        featureSet = convertJSONArrayToFeatures(featureJSONArray);
+
+        List<Feature> features = new ArrayList<Feature>();
+        for (Feature f : featureSet) {
+            features.add(f);
+        }
+        
+        
+        return module;
     }
     
     public static Feature mapToFeature(Map map){
@@ -1284,10 +1313,14 @@ public class ClothoAdaptor {
 
         JSONObject amObj = new JSONObject();
         amObj = (JSONObject) clothoObject.get(assignedModuleId);
-
-        AssignedModule amodule = new AssignedModule((String) amObj.get("name"));
+        
+        
+        AssignedModule amodule = new AssignedModule(mapToModule(amObj,clothoObject));
         for (Object expId : (JSONArray) amObj.get("experiments")) {
             amodule.getExperiments().add(getExperiment((String) expId, clothoObject));
+        }
+        if(amObj.containsKey("shortName")){
+            amodule.setShortName((String)amObj.get("shortName"));
         }
         amodule.setClothoID(assignedModuleId);
         return amodule;

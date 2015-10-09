@@ -17,14 +17,7 @@ import org.sbml.jsbml.SBMLDocument;
  */
 public class AssignedModule extends Module {
 
-    //Name only constructor
-    public AssignedModule (String name) {
-        super(name);
-        this.experiments = new ArrayList<>();
-        this.SBMLDocument = new SBMLDocument();
-        this.regulationDocument = new ArrayList<>();
-    }    
-    
+      
     //Constructor for module to assignedModule
     public AssignedModule (Module m) {
 //        AssignedModule aM = new AssignedModule(m.getName());
@@ -51,8 +44,8 @@ public class AssignedModule extends Module {
     
     @Override
     public AssignedModule clone(String name) {
-        AssignedModule clone = new AssignedModule(name);
-        
+        //AssignedModule clone = new AssignedModule(name);
+        AssignedModule clone = new AssignedModule(new Module(name));
         List<Feature> fList = new ArrayList<>();
         for (Feature f : this.getModuleFeatures()) {
             fList.add(f.clone());
@@ -79,6 +72,9 @@ public class AssignedModule extends Module {
         return clone;
     }
     
+    @Getter
+    @Setter
+    private String shortName;
     
     //Control Modules as a property of Assigned Modules.
     @Getter

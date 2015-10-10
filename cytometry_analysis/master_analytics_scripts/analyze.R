@@ -495,17 +495,6 @@ for (i in 1:length(uniquePartNames)) {
    					dir.create(as.character(paste(currentMediaTypePath, "/regulation"), sep=''))
 					dir.create(dirname(File), showWarnings = FALSE)
 					png(File, width=960, height=960, res=120)
-	
-					#File naming and placement in a subdirectory
-					# name <- as.character(paste(part,"_",mediaType,"_REGULATION_",ychannel,".png"), sep='')
-					# name <- str_replace_all(name, fixed(" "), "")
-					# name <- sub("/","",name)
-					# File <- as.character(paste("./regulation/", part, "/", name))
-	   				# File <- str_replace_all(File, fixed(" "), "")
-					# # if (file.exists(File)) stop(File, " already exists")
-					# dir.create("regulation")
-					# dir.create(dirname(File), showWarnings = FALSE)
-					# png(File, width=960, height=960, res=120)
 	    			
 	    			#Plotting
 	    			pt <- ggplot(data = plotMat, aes(x = xaxis, y = as.numeric(yaxis))) +
@@ -566,17 +555,6 @@ for (i in 1:length(uniquePartNames)) {
    					dir.create(as.character(paste(currentMediaTypePath, "/plots"), sep=''))
 					dir.create(dirname(File), showWarnings = FALSE)
 					png(File, width=960, height=960, res=120)
-	
-					#File naming and placement in a subdirectory
-					# name <- as.character(paste(part,"_",mediaType,"_", SM, "_",colnames(meansMedia)[l],".png"))
-					# name <- str_replace_all(name, fixed(" "), "")
-					# name <- sub("/","",name)
-					# File <- as.character(paste("./media_induction/", part, "/", name))
-		   			# File <- str_replace_all(File, fixed(" "), "")
-					# # if (file.exists(File)) stop(File, " already exists")
-					# dir.create("media_induction")
-					# dir.create(dirname(File), showWarnings = FALSE)
-					# png(File, width=960, height=960, res=120)
 					
 					#Plotting
 	    			p <- ggplot(plotMat, aes(x = xaxis, y = yaxis)) +
@@ -619,9 +597,7 @@ for (i in 1:length(uniquePartNames)) {
 				regMedia <- c(regMedia, mediaType)				
 				meansReg <- rbind(meansReg, meansMedia[1,])
 				standardDevsReg <- rbind(standardDevsReg, standardDevsMedia[1,])
-			}
-			
-			
+			}			
 		}		
 	}
 }

@@ -1702,9 +1702,15 @@ public class ClothoAdaptor {
         //Put all existing parts in the Map
         Map partQuery = new HashMap();
         partQuery.put("schema", "org.cidarlab.phoenix.core.dom.Part");
+        Map vectorQuery = new HashMap();
+        vectorQuery.put("schema", "org.cidarlab.phoenix.core.dom.Vector");
         List<Part> queryParts = queryParts(partQuery, clothoObject);
+        List<Vector> queryVectors = queryVectors(vectorQuery, clothoObject);
         for (Part p : queryParts) {
             sequencePartMap.put(p.getSequence().getSeq(), p);
+        }
+        for (Vector v : queryVectors) {
+            
         }
 
         //Only add parts with new sequence to the output
@@ -1741,18 +1747,10 @@ public class ClothoAdaptor {
                 String revVecSeq = vector.getSequence().getSeq();
 
                 if (sequencePartMap.containsKey(vecSeq)) {
+//                    Part existing = sequencePartMap.get(vecSeq);
                     Vector existing = (Vector) sequencePartMap.get(vecSeq); //Check this. Where is Origin and Resistance?
                     if (existing.getClass() == org.cidarlab.phoenix.core.dom.Vector.class) {
                         pn.setVector(existing);
-//                    } else {
-//                        sequencePartMap.put(vecSeq, vector);
-                    }
-                } else if (sequencePartMap.containsKey(vecSeq)) {
-                    Vector existing = (Vector) sequencePartMap.get(revVecSeq); //Check this. Where is Origin and Resistance?
-                    if (existing.getClass() == org.cidarlab.phoenix.core.dom.Vector.class) {
-                        pn.setVector(existing);
-//                    } else {
-//                        sequencePartMap.put(revVecSeq, vector);
                     }
                 } else {
                     sequencePartMap.put(vecSeq, vector);

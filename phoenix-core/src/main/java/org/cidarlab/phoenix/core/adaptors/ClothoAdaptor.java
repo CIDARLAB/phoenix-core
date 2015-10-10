@@ -1154,6 +1154,17 @@ public class ClothoAdaptor {
         return fluorophores;
     }
     
+    public static List<Vector> queryVectors(Map map, Clotho clothoObject){
+        List<Vector> vectors = new ArrayList<>();
+        Object query = clothoObject.query(map);
+        JSONArray array = new JSONArray();
+        array = (JSONArray) query;
+        for(Object object:array){
+            vectors.add(mapToVector((Map)object));
+        }
+        return vectors;
+    }
+    
     public static List<Part> queryParts(Map map, Clotho clothoObject) {
 
         List<Part> parts = new ArrayList<>();

@@ -299,10 +299,7 @@ public class ClothoAdaptor {
 
             //FeatureRole sub-schema
             if (f.getRole() != null) {
-                Map createFeatureRole = new HashMap();
-                createFeatureRole.put("schema", "org.cidarlab.phoenix.core.dom.FeatureRole");
-                createFeatureRole.put("FeatureRole", f.getRole().toString());
-                createFeature.put("role", createFeatureRole);
+                createFeature.put("role", f.getRole().toString());
             }
 
             //NucSeq sub-schema
@@ -340,7 +337,7 @@ public class ClothoAdaptor {
         Map map = new HashMap();
         map.put("name", smolecule.getName());
         map.put("schema", "org.cidarlab.phoenix.core.dom.SmallMolecule");
-        map.put("role", smolecule.getRole());
+        map.put("role", smolecule.getRole().toString());
         if(smolecule.getConcentration()!=null){
             map.put("concentration", smolecule.getConcentration());
         }
@@ -673,7 +670,8 @@ public class ClothoAdaptor {
             controlModuleIds.add(createModule(cmodule, clothoObject));
         }
         map.put("controlModules", controlModuleIds);
-
+        map.put("shortName", amodule.getShortName());
+        
         id = (String) clothoObject.set(map);
         amodule.setClothoID(id);
         return id;
@@ -810,6 +808,7 @@ public class ClothoAdaptor {
         if(vector.getDescription() != null){
             createVector.put("description", vector.getDescription());
         }
+        
         String originId = createFeature(vector.getOrigin(),clothoObject);
         createVector.put("origin", originId);
         
@@ -951,6 +950,34 @@ public class ClothoAdaptor {
         return arc;
     }
     
+    public static Module mapToModule(Map map,Clotho clothoObject){
+        Module module = new Module(map.get("name").toString());
+        module.setClothoID(map.get("id").toString());
+        module.setRole(Module.ModuleRole.valueOf(map.get("role").toString()));
+        module.setStage((int) map.get("stage"));
+        module.setForward((boolean) map.get("isForward"));
+        module.setRoot((boolean) map.get("isRoot"));
+
+        JSONArray featureIds = new JSONArray();
+        featureIds = (JSONArray) map.get("moduleFeatures");
+        JSONArray featureJSONArray = new JSONArray();
+        for (Object obj : featureIds) {
+            String featureId = (String) obj;
+
+            featureJSONArray.add(clothoObject.get(featureId));
+        }
+        List<Feature> featureSet = new ArrayList<Feature>();
+        featureSet = convertJSONArrayToFeatures(featureJSONArray);
+
+        List<Feature> features = new ArrayList<Feature>();
+        for (Feature f : featureSet) {
+            features.add(f);
+        }
+        
+        
+        return module;
+    }
+    
     public static Feature mapToFeature(Map map){
         Feature feature = new Feature();
         feature.setName((String)map.get("name"));
@@ -1033,11 +1060,8 @@ public class ClothoAdaptor {
 
             //Get FeatureRole
             if (jsonFeature.has("role")) {
-                JSONObject jsonFeatureRole = (JSONObject) jsonFeature.get("role");
-                String roleString = jsonFeatureRole.get("FeatureRole").toString();
-                feature.setRole(Feature.FeatureRole.valueOf(roleString));
+                feature.setRole(Feature.FeatureRole.valueOf((String)jsonFeature.get("role")));
             }
-
             feature.setForwardColor(fwdColor);
             feature.setReverseColor(revColor);
             feature.setName(fname);
@@ -1289,10 +1313,14 @@ public class ClothoAdaptor {
 
         JSONObject amObj = new JSONObject();
         amObj = (JSONObject) clothoObject.get(assignedModuleId);
-
-        AssignedModule amodule = new AssignedModule((String) amObj.get("name"));
+        
+        
+        AssignedModule amodule = new AssignedModule(mapToModule(amObj,clothoObject));
         for (Object expId : (JSONArray) amObj.get("experiments")) {
             amodule.getExperiments().add(getExperiment((String) expId, clothoObject));
+        }
+        if(amObj.containsKey("shortName")){
+            amodule.setShortName((String)amObj.get("shortName"));
         }
         amodule.setClothoID(assignedModuleId);
         return amodule;

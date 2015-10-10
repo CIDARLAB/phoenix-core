@@ -55,7 +55,7 @@ public class RavenTest {
     @Test
     public void testParameterUpload() {
         
-        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
         Clotho clothoObject = new Clotho(conn);
         
         

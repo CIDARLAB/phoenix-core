@@ -1187,6 +1187,11 @@ public class ClothoAdaptor {
         return mapToFluorophore((Map)object);
     }
     
+    public static Vector getVector(String vectorId, Clotho clothoObject){
+        Object object = clothoObject.get(vectorId);
+        return mapToVector((Map)object);    
+    }
+    
     public static Part getPart(String partId, Clotho clothoObject){
         Object object = clothoObject.get(partId);
         //Do some check for map?

@@ -344,19 +344,14 @@ public class RavenAdaptor {
         moCloRO = moCloOHs.get(vecSeq.substring(0, 4).toLowerCase());     
         
         //Get the resistance
-//        Set<Annotation> annotations = pVector.getSequence().getAnnotations();
-//        for (Annotation a : annotations) {
-//            if (a.getFeature().getRole().equals(Feature.FeatureRole.CDS_RESISTANCE)) {
-                resistance = pVector.getResistance().getName().replaceAll(".ref", "");
-//            }
-//        }
+        resistance = pVector.getResistance().getName().replaceAll(".ref", "");
          
         org.cidarlab.raven.datastructures.Vector newVector;
         if (level == null) {
-            newVector = org.cidarlab.raven.datastructures.Vector.generateVector(pVector.getName(), pVector.getSequence().getSeq(), "", "", "vector", "", "", resistance, -1);
+            newVector = org.cidarlab.raven.datastructures.Vector.generateVector(pVector.getName().substring(0, pVector.getName().indexOf("vector")-1), pVector.getSequence().getSeq(), "", "", "vector", "", "", resistance, -1);
             newVector.setTransientStatus(false);
         } else {
-            newVector = org.cidarlab.raven.datastructures.Vector.generateVector(pVector.getName(), pVector.getSequence().getSeq(), moCloLO, moCloRO, "destination vector", pVector.getName(), "lacZ|" + moCloLO + "|" + moCloRO + "|+", resistance, Integer.valueOf(level));
+            newVector = org.cidarlab.raven.datastructures.Vector.generateVector(pVector.getName().substring(0, pVector.getName().indexOf("vector")-1), pVector.getSequence().getSeq(), moCloLO, moCloRO, "destination vector", pVector.getName(), "lacZ|" + moCloLO + "|" + moCloRO + "|+", resistance, Integer.valueOf(level));
             newVector.setTransientStatus(false);
         }
 

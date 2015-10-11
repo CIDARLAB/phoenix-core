@@ -77,32 +77,9 @@ public class BenchlingAdaptor {
                 }
             } else {
                 polyNuc.setSingleStranded(true);
-            }
-            
-            //Determine if this is a regular plasmid with a part or a desination vector
-//            String vectorName = null;
-//            if (seq.getAnnotation().containsProperty("KEYWORDS")) {
-//                String k = seq.getAnnotation().getProperty("KEYWORDS").toString();
-//                String[] tokens = k.split("\"");
-//                for (String token : tokens) {
-                    
-                    //Get backbone vector name
-//                    String[] keywords = token.split(":");
-//                    if (token.contains("backbone")) {
-//                        if (keywords.length == 2) {
-//                            vectorName = keywords[1];
-//                        }
-//                    }
-                    
-                    //Flag this polynudleotide as a destination vector
-//                    for (String key : keywords) {
-//                        if (key.equalsIgnoreCase("vector") || key.equalsIgnoreCase("destination vector")) {
-//                            polyNuc.setDV(true);
-//                        }
-//                    }
-//                }
-//            }
+            }            
 
+            //
             if (seq.seqString().contains(_lacZalphaL0) || seq.seqString().contains(Utilities.reverseComplement(_lacZalphaL0)) || seq.seqString().contains(_lacZalphaL1) || seq.seqString().contains(Utilities.reverseComplement(_lacZalphaL1))) {
                 polyNuc.setDV(true);
             }
@@ -246,14 +223,6 @@ public class BenchlingAdaptor {
         Part part;
         Vector vector;
         
-        //If there is a supplied vector name, that becomes the vector name
-//        String vecName;
-//        if (vectorName != null) {
-//            vecName = vectorName + "_" + LO + "_" + RO;
-//        } else {
-//            vecName = seq.getName() + "_vector_" + LO + "_" + RO;
-//        }
-        
         //Get rid of these tags and add a field to part with two features that constitute the vector
         //There will be some assumptions about MoClo format here as well
         
@@ -261,14 +230,10 @@ public class BenchlingAdaptor {
         if (seq.getAnnotation().containsProperty("COMMENT")) {
             part = Part.generateBasic(seq.getName() + "_part_" + LO + "_" + RO, seq.getAnnotation().getProperty("COMMENT").toString(), new NucSeq(partSeq), null, null);
             vector = new Vector(seq.getName() + "_vector_" + LO + "_" + RO, "", new NucSeq(vecSeq), null, null, null, null);
-//            vector = Part.generateBasic(vecName, "", new NucSeq(vecSeq), null, null);
         } else {
             part = Part.generateBasic(seq.getName() + "_part_" + LO + "_" + RO, "", new NucSeq(partSeq), null, null);
             vector = new Vector(seq.getName() + "_vector_" + LO + "_" + RO, "", new NucSeq(vecSeq), null, null, null, null);
-//            vector = Part.generateBasic(vecName, "", new NucSeq(vecSeq), null, null);
         }
-
-//        vector.setVector(true);
 
         partSet.add(part);
         partSet.add(vector);

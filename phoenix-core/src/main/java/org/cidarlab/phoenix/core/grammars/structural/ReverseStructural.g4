@@ -1,4 +1,4 @@
-grammar Structural;
+grammar ReverseStructural;
 
 @lexer::header{
     package org.cidarlab.phoenix.core.grammars.structural;
@@ -12,9 +12,9 @@ root
     ;
 
 module
-    : (module_wildcard_start)* (forward_tu)+ (module_wildcard_end)*
+    : ((module_wildcard_start)* (reverse_tu)+ (module_wildcard_end)*)*
     ;  
-forward_tu
+reverse_tu
     : (FORWARD_PROMOTER)+ (wildcard_fp)* (FORWARD_RBS FORWARD_CDS)+ (wildcard_fc)* FORWARD_TERMINATOR
     ;
 
@@ -41,27 +41,27 @@ wildcard_rc
     ;
 
 REVERSE_PROMOTER
-    : '<p'+
+    : 'p>'+
     ;
 FORWARD_PROMOTER
     : 'p'+
     ;
 REVERSE_RBS
-    : '<r'
+    : 'r>'
     ;
 FORWARD_RBS
     : 'r'
     ;
 REVERSE_CDS
-    : '<c'+
-    | '<f'+
+    : 'c>'+
+    | 'f>'+
     ;
 FORWARD_CDS
     : 'c'+
     | 'f'+
     ;
 REVERSE_TERMINATOR
-    : '<t'
+    : 't>'
     ;
 FORWARD_TERMINATOR
     : 't'

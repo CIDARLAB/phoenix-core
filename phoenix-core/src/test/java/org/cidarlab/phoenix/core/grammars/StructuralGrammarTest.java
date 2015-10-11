@@ -46,31 +46,37 @@ public class StructuralGrammarTest {
         AtomicInteger count = new AtomicInteger();
         
         System.out.println(count.getAndIncrement());
-        StructuralGrammar.getAST("p r c t");
+        StructuralGrammar.getForwardParseTree("p r c t");
         
         System.out.println(count.getAndIncrement());
-        StructuralGrammar.getAST("<t <c <r <p");
+        StructuralGrammar.getForwardParseTree("<t <c <r <p");
         
         System.out.println(count.getAndIncrement());
-        StructuralGrammar.getAST("p p p r c t");
+        StructuralGrammar.getForwardParseTree("p p p r c t");
         
         System.out.println(count.getAndIncrement());
-        StructuralGrammar.getAST("p r c t p r c t");
+        StructuralGrammar.getForwardParseTree("p c t p r c t");
         
         System.out.println(count.getAndIncrement());
-        StructuralGrammar.getAST("<t <c <r <p p r c t");
+        StructuralGrammar.getForwardParseTree("p r c t p r c t");
         
         System.out.println(count.getAndIncrement());
-        StructuralGrammar.getAST("<t <c <r p <p r c t");
+        StructuralGrammar.getForwardParseTree("<t <c <r <p p r c t");
         
         System.out.println(count.getAndIncrement());
-        StructuralGrammar.getAST("<t p r c <c <r <p t");
+        StructuralGrammar.getForwardParseTree("<t <c <r p <p r c t");
         
         System.out.println(count.getAndIncrement());
-        StructuralGrammar.getAST("p r c t <t <c <r <p");
+        StructuralGrammar.getForwardParseTree("<t p r c <c <r <p t");
         
         System.out.println(count.getAndIncrement());
-        StructuralGrammar.getAST("p <t r c t <c <r <p");
+        StructuralGrammar.getForwardParseTree("p r c t <t <c <r <p");
+        
+        System.out.println(count.getAndIncrement());
+        StructuralGrammar.getForwardParseTree("p <t r c t <c <r <p");
+        
+        System.out.println(count.getAndIncrement());
+        StructuralGrammar.getForwardParseTree("");
     }
 
 }

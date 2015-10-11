@@ -75,10 +75,10 @@
         <!--ANTLR 4.0 Dependency-->
         <dependency>
             <groupId>org.antlr</groupId>
-            <artifactId>antlr4-maven-plugin</artifactId>
-            <version>4.3</version>
-            <type>maven-plugin</type>
+            <artifactId>antlr4</artifactId>
+            <version>4.5</version>
         </dependency>
+
       
         <!-- Clotho dependencies -->
         <dependency>

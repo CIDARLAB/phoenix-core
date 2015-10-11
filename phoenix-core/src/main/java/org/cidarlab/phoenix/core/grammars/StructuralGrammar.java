@@ -9,9 +9,9 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.cidarlab.phoenix.core.grammars.structural.ForwardStructuralBaseListener;
-import org.cidarlab.phoenix.core.grammars.structural.ForwardStructuralLexer;
-import org.cidarlab.phoenix.core.grammars.structural.ForwardStructuralParser;
+import org.cidarlab.phoenix.core.grammars.structural.StructuralBaseListener;
+import org.cidarlab.phoenix.core.grammars.structural.StructuralLexer;
+import org.cidarlab.phoenix.core.grammars.structural.StructuralParser;
 
 /**
  *
@@ -20,12 +20,12 @@ import org.cidarlab.phoenix.core.grammars.structural.ForwardStructuralParser;
 public class StructuralGrammar {
     public static ParseTree getForwardParseTree(String pigeonString){
         ANTLRInputStream input = new ANTLRInputStream(pigeonString);
-        ForwardStructuralLexer lexer = new ForwardStructuralLexer(input);
+        StructuralLexer lexer = new StructuralLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        ForwardStructuralParser parser = new ForwardStructuralParser(tokens);
+        StructuralParser parser = new StructuralParser(tokens);
         ParseTree tree = parser.root();
         
-        ParseTreeWalker.DEFAULT.walk(new ForwardStructuralBaseListener(), tree);
+        ParseTreeWalker.DEFAULT.walk(new StructuralBaseListener(), tree);
         /*
         System.out.println("Rule Names");
         for(int i=0;i<parser.getRuleNames().length;i++){

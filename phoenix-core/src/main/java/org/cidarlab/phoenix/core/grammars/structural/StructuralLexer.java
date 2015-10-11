@@ -1,4 +1,4 @@
-// Generated from ForwardStructural.g4 by ANTLR 4.5.1
+// Generated from Structural.g4 by ANTLR 4.5.1
 
     package org.cidarlab.phoenix.core.grammars.structural;
 
@@ -12,7 +12,7 @@ import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
-public class ForwardStructuralLexer extends Lexer {
+public class StructuralLexer extends Lexer {
 	static { RuntimeMetaData.checkVersion("4.5.1", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
@@ -74,13 +74,13 @@ public class ForwardStructuralLexer extends Lexer {
 	}
 
 
-	public ForwardStructuralLexer(CharStream input) {
+	public StructuralLexer(CharStream input) {
 		super(input);
 		_interp = new LexerATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
 	@Override
-	public String getGrammarFileName() { return "ForwardStructural.g4"; }
+	public String getGrammarFileName() { return "Structural.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }

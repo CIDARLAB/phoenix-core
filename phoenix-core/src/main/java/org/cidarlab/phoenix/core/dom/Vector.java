@@ -38,7 +38,7 @@ public class Vector extends Part {
         
         //Re-name this vector to it's characterizing features - origin of replication and resistance marker
         if (this.origin != null && this.resistance != null) {
-            this.setName(this.origin.getName() + "_" + this.resistance.getName());
+            this.setName(this.origin.getName().replaceAll(".ref", "") + "_" + this.resistance.getName().replaceAll(".ref", "") + "_vector_" + this.getName().substring(this.getName().indexOf("vector")+7));
         }
     }
     

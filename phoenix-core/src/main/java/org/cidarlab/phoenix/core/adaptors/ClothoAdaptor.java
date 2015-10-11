@@ -1714,8 +1714,9 @@ public class ClothoAdaptor {
     public static void removeDuplicateParts(HashSet<Polynucleotide> polyNucs, Clotho clothoObject) {
 
         HashMap<String, Part> sequencePartMap = new HashMap();
+        HashMap<String, Vector> sequenceVectorMap = new HashMap();
 
-        //Put all existing parts in the Map
+        //Put all existing parts and vectors into their maps
         Map partQuery = new HashMap();
         partQuery.put("schema", "org.cidarlab.phoenix.core.dom.Part");
         Map vectorQuery = new HashMap();
@@ -1726,7 +1727,7 @@ public class ClothoAdaptor {
             sequencePartMap.put(p.getSequence().getSeq(), p);
         }
         for (Vector v : queryVectors) {
-            
+            sequenceVectorMap.put(v.getSequence().getSeq(), v);
         }
 
         //Only add parts with new sequence to the output
@@ -1734,42 +1735,34 @@ public class ClothoAdaptor {
 
             if (pn.getPart() != null && pn.getVector() != null) {
 
-                //Replace parts if necessary
+                //Replace parts with an existing part if applicable
                 Part part = pn.getPart();
                 String partSeq = part.getSequence().getSeq();
                 String revPartSeq = Utilities.reverseComplement(partSeq);
 
                 if (sequencePartMap.containsKey(partSeq)) {
                     Part existing = sequencePartMap.get(partSeq);
-                    if (existing.getClass() != org.cidarlab.phoenix.core.dom.Vector.class) {
                         pn.setPart(existing);
-//                    } else {
-//                        sequencePartMap.put(partSeq, part);
-                    }
                 } else if (sequencePartMap.containsKey(revPartSeq)) {
                     Part existing = sequencePartMap.get(revPartSeq);
-                    if (existing.getClass() != org.cidarlab.phoenix.core.dom.Vector.class) {
                         pn.setPart(existing);
-//                    } else {
-//                        sequencePartMap.put(revPartSeq, part);
-                    }
                 } else {
                     sequencePartMap.put(partSeq, part);
                 }
 
-                //Replace vectors if necessary
-                Part vector = pn.getVector();
+                //Replace vectors with an existing vector if applicable
+                Vector vector = pn.getVector();
                 String vecSeq = vector.getSequence().getSeq();
                 String revVecSeq = vector.getSequence().getSeq();
 
-                if (sequencePartMap.containsKey(vecSeq)) {
-//                    Part existing = sequencePartMap.get(vecSeq);
-                    Vector existing = (Vector) sequencePartMap.get(vecSeq); //Check this. Where is Origin and Resistance?
-                    if (existing.getClass() == org.cidarlab.phoenix.core.dom.Vector.class) {
-                        pn.setVector(existing);
-                    }
+                if (sequenceVectorMap.containsKey(vecSeq)) {
+                    Vector existing = sequenceVectorMap.get(vecSeq);
+                    pn.setVector(existing);
+                } else if (sequenceVectorMap.containsKey(revVecSeq)) {
+                    Vector existing = sequenceVectorMap.get(revVecSeq);
+                    pn.setVector(existing);
                 } else {
-                    sequencePartMap.put(vecSeq, vector);
+                    sequenceVectorMap.put(vecSeq, vector);
                 }
             }
         }

@@ -23,28 +23,34 @@ public class PigeonAdaptor {
         return pigeonLines;
     }
     
-    public static String generatePigeonString(Module module){
+    public static String generatePigeonString(Module module,boolean forwardMode){
         String pigeonString = "";
-        
-        for(PrimitiveModule pmodule:module.getSubmodules()){
-            pigeonString += getPigeonFeatureString(pmodule);
+        if (forwardMode) {
+            for (PrimitiveModule pmodule : module.getSubmodules()) {
+                pigeonString += getPigeonFeatureString(pmodule, forwardMode);
+            }
+        }
+        else{
+            for(int i=(module.getSubmodules().size()-1);i>=0;i++){
+                pigeonString += getPigeonFeatureString(module.getSubmodules().get(i),forwardMode);
+            }
         }
         return pigeonString;
     }
     
-    public static String getPigeonFeatureString(PrimitiveModule pmodule){
+    public static String getPigeonFeatureString(PrimitiveModule pmodule,boolean forwardMode){
         String featureString = "";
-        if(!pmodule.isForward())
+        if(((!pmodule.isForward())&&(forwardMode)) || ((pmodule.isForward()) && (!forwardMode)))
             featureString += "<";
         switch(pmodule.getModuleFeature().getRole()){
             case PROMOTER:
             case PROMOTER_REPRESSIBLE:
             case PROMOTER_INDUCIBLE:
             case PROMOTER_CONSTITUTIVE:
-                featureString += "p";
+                featureString += "p ";
                 break;
             case RBS:
-                featureString += "r";
+                featureString += "r ";
                 break;
             case CDS:
             case CDS_REPRESSOR:
@@ -55,16 +61,17 @@ public class PigeonAdaptor {
             case CDS_TAG:
             case CDS_RESISTANCE:
             case CDS_FLUORESCENT:
-                featureString += "c";
+                featureString += "c ";
                 break;
             case CDS_FLUORESCENT_FUSION:
-                featureString += "f";
+                featureString += "f ";
                 break;
             case TERMINATOR:
-                featureString += "t";
+                featureString += "t ";
                 break;
         }
         return featureString;
     }
+    
     
 }

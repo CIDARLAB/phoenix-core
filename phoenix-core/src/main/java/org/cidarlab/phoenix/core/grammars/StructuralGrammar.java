@@ -9,6 +9,8 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.cidarlab.phoenix.core.adaptors.PigeonAdaptor;
+import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.grammars.structural.StructuralBaseListener;
 import org.cidarlab.phoenix.core.grammars.structural.StructuralLexer;
 import org.cidarlab.phoenix.core.grammars.structural.StructuralParser;
@@ -51,8 +53,28 @@ public class StructuralGrammar {
         
     }
     
+    
+    public static int getErrorCount(String pigeonString){
+        ANTLRInputStream input = new ANTLRInputStream(pigeonString);
+        StructuralLexer lexer = new StructuralLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        StructuralParser parser = new StructuralParser(tokens);
+        return parser.getNumberOfSyntaxErrors();
+    }
+    
+    public static boolean validateStructure(Module module){
+        boolean result = false;
+        String forwardString = PigeonAdaptor.generatePigeonString(module, true);
+        String reverseString = PigeonAdaptor.generatePigeonString(module, false);
+        if(getErrorCount(forwardString) == 0){
+            if(getErrorCount(reverseString) == 0){
+                return true;
+            }
+        }
+        return result;
+    }
+    
     public static void traverseTree(ParseTree tree){
-        
         
         System.out.println("Node :: "+tree.getText());
         System.out.println("Payload ::"+tree.getPayload());

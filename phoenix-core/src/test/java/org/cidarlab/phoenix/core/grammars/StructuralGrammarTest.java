@@ -46,7 +46,7 @@ public class StructuralGrammarTest {
         AtomicInteger count = new AtomicInteger();
         
         System.out.println(count.getAndIncrement());
-        StructuralGrammar.getForwardParseTree("p r c t");
+        StructuralGrammar.getForwardParseTree("p r c t ");
         
         System.out.println(count.getAndIncrement());
         StructuralGrammar.getForwardParseTree("<t <c <r <p");

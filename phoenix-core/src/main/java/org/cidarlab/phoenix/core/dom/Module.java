@@ -129,7 +129,9 @@ public class Module {
     private List<Module> children;
 
    
-    
+    @Getter
+    @Setter
+    private String index;
 
     //Assigned module(s)
     @Getter

@@ -12,7 +12,7 @@ root
     ;
 
 module 
-    : ((wildcard)* (super_coiling)+ (wildcard)*)
+    : ((wildcard)* ((super_coiling)+ (wildcard)*)+)
     ;
 
 super_coiling

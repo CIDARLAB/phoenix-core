@@ -176,40 +176,54 @@ public class SuperCoilingParser extends Parser {
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,0,_ctx);
 			}
-			setState(17); 
-			_errHandler.sync(this);
-			_alt = 1;
-			do {
-				switch (_alt) {
-				case 1:
-					{
-					{
-					setState(16);
-					super_coiling();
-					}
-					}
-					break;
-				default:
-					throw new NoViableAltException(this);
-				}
-				setState(19); 
-				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,1,_ctx);
-			} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-			setState(24);
+			setState(27); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_PROMOTER) | (1L << FORWARD_PROMOTER) | (1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0)) {
+			do {
 				{
 				{
-				setState(21);
-				wildcard();
+				setState(17); 
+				_errHandler.sync(this);
+				_alt = 1;
+				do {
+					switch (_alt) {
+					case 1:
+						{
+						{
+						setState(16);
+						super_coiling();
+						}
+						}
+						break;
+					default:
+						throw new NoViableAltException(this);
+					}
+					setState(19); 
+					_errHandler.sync(this);
+					_alt = getInterpreter().adaptivePredict(_input,1,_ctx);
+				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+				setState(24);
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,2,_ctx);
+				while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
+					if ( _alt==1 ) {
+						{
+						{
+						setState(21);
+						wildcard();
+						}
+						} 
+					}
+					setState(26);
+					_errHandler.sync(this);
+					_alt = getInterpreter().adaptivePredict(_input,2,_ctx);
 				}
 				}
-				setState(26);
+				}
+				setState(29); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			}
+			} while ( _la==REVERSE_PROMOTER || _la==FORWARD_PROMOTER );
 			}
 			}
 		}
@@ -252,12 +266,12 @@ public class SuperCoilingParser extends Parser {
 		enterRule(_localctx, 4, RULE_super_coiling);
 		try {
 			int _alt;
-			setState(53);
-			switch ( getInterpreter().adaptivePredict(_input,7,_ctx) ) {
+			setState(57);
+			switch ( getInterpreter().adaptivePredict(_input,8,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(30); 
+				setState(34); 
 				_errHandler.sync(this);
 				_alt = 1;
 				do {
@@ -266,15 +280,15 @@ public class SuperCoilingParser extends Parser {
 						{
 						{
 						{
-						setState(27);
+						setState(31);
 						match(REVERSE_PROMOTER);
 						}
 						{
-						setState(28);
+						setState(32);
 						match(FORWARD_PROMOTER);
 						}
 						{
-						setState(29);
+						setState(33);
 						match(REVERSE_PROMOTER);
 						}
 						}
@@ -283,16 +297,16 @@ public class SuperCoilingParser extends Parser {
 					default:
 						throw new NoViableAltException(this);
 					}
-					setState(32); 
+					setState(36); 
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,3,_ctx);
+					_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
 				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(37); 
+				setState(41); 
 				_errHandler.sync(this);
 				_alt = 1;
 				do {
@@ -301,15 +315,15 @@ public class SuperCoilingParser extends Parser {
 						{
 						{
 						{
-						setState(34);
+						setState(38);
 						match(FORWARD_PROMOTER);
 						}
 						{
-						setState(35);
+						setState(39);
 						match(REVERSE_PROMOTER);
 						}
 						{
-						setState(36);
+						setState(40);
 						match(FORWARD_PROMOTER);
 						}
 						}
@@ -318,16 +332,16 @@ public class SuperCoilingParser extends Parser {
 					default:
 						throw new NoViableAltException(this);
 					}
-					setState(39); 
+					setState(43); 
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
+					_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
 				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(43); 
+				setState(47); 
 				_errHandler.sync(this);
 				_alt = 1;
 				do {
@@ -336,11 +350,11 @@ public class SuperCoilingParser extends Parser {
 						{
 						{
 						{
-						setState(41);
+						setState(45);
 						match(FORWARD_PROMOTER);
 						}
 						{
-						setState(42);
+						setState(46);
 						match(REVERSE_PROMOTER);
 						}
 						}
@@ -349,16 +363,16 @@ public class SuperCoilingParser extends Parser {
 					default:
 						throw new NoViableAltException(this);
 					}
-					setState(45); 
+					setState(49); 
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
+					_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
 				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(49); 
+				setState(53); 
 				_errHandler.sync(this);
 				_alt = 1;
 				do {
@@ -367,11 +381,11 @@ public class SuperCoilingParser extends Parser {
 						{
 						{
 						{
-						setState(47);
+						setState(51);
 						match(REVERSE_PROMOTER);
 						}
 						{
-						setState(48);
+						setState(52);
 						match(FORWARD_PROMOTER);
 						}
 						}
@@ -380,9 +394,9 @@ public class SuperCoilingParser extends Parser {
 					default:
 						throw new NoViableAltException(this);
 					}
-					setState(51); 
+					setState(55); 
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
+					_alt = getInterpreter().adaptivePredict(_input,7,_ctx);
 				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 				}
 				break;
@@ -452,12 +466,12 @@ public class SuperCoilingParser extends Parser {
 		int _la;
 		try {
 			int _alt;
-			setState(154);
-			switch ( getInterpreter().adaptivePredict(_input,29,_ctx) ) {
+			setState(158);
+			switch ( getInterpreter().adaptivePredict(_input,30,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(56); 
+				setState(60); 
 				_errHandler.sync(this);
 				_alt = 1;
 				do {
@@ -465,7 +479,7 @@ public class SuperCoilingParser extends Parser {
 					case 1:
 						{
 						{
-						setState(55);
+						setState(59);
 						_la = _input.LA(1);
 						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0)) ) {
 						_errHandler.recoverInline(this);
@@ -478,16 +492,16 @@ public class SuperCoilingParser extends Parser {
 					default:
 						throw new NoViableAltException(this);
 					}
-					setState(58); 
+					setState(62); 
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,8,_ctx);
+					_alt = getInterpreter().adaptivePredict(_input,9,_ctx);
 				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(70); 
+				setState(74); 
 				_errHandler.sync(this);
 				_alt = 1;
 				do {
@@ -495,13 +509,13 @@ public class SuperCoilingParser extends Parser {
 					case 1:
 						{
 						{
-						setState(61); 
+						setState(65); 
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 						do {
 							{
 							{
-							setState(60);
+							setState(64);
 							_la = _input.LA(1);
 							if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0)) ) {
 							_errHandler.recoverInline(this);
@@ -510,12 +524,12 @@ public class SuperCoilingParser extends Parser {
 							}
 							}
 							}
-							setState(63); 
+							setState(67); 
 							_errHandler.sync(this);
 							_la = _input.LA(1);
 						} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0) );
 						{
-						setState(66); 
+						setState(70); 
 						_errHandler.sync(this);
 						_alt = 1;
 						do {
@@ -523,7 +537,7 @@ public class SuperCoilingParser extends Parser {
 							case 1:
 								{
 								{
-								setState(65);
+								setState(69);
 								match(FORWARD_PROMOTER);
 								}
 								}
@@ -531,9 +545,9 @@ public class SuperCoilingParser extends Parser {
 							default:
 								throw new NoViableAltException(this);
 							}
-							setState(68); 
+							setState(72); 
 							_errHandler.sync(this);
-							_alt = getInterpreter().adaptivePredict(_input,10,_ctx);
+							_alt = getInterpreter().adaptivePredict(_input,11,_ctx);
 						} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 						}
 						}
@@ -542,16 +556,16 @@ public class SuperCoilingParser extends Parser {
 					default:
 						throw new NoViableAltException(this);
 					}
-					setState(72); 
+					setState(76); 
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,11,_ctx);
+					_alt = getInterpreter().adaptivePredict(_input,12,_ctx);
 				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(84); 
+				setState(88); 
 				_errHandler.sync(this);
 				_alt = 1;
 				do {
@@ -560,22 +574,22 @@ public class SuperCoilingParser extends Parser {
 						{
 						{
 						{
-						setState(75); 
+						setState(79); 
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 						do {
 							{
 							{
-							setState(74);
+							setState(78);
 							match(FORWARD_PROMOTER);
 							}
 							}
-							setState(77); 
+							setState(81); 
 							_errHandler.sync(this);
 							_la = _input.LA(1);
 						} while ( _la==FORWARD_PROMOTER );
 						}
-						setState(80); 
+						setState(84); 
 						_errHandler.sync(this);
 						_alt = 1;
 						do {
@@ -583,7 +597,7 @@ public class SuperCoilingParser extends Parser {
 							case 1:
 								{
 								{
-								setState(79);
+								setState(83);
 								_la = _input.LA(1);
 								if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0)) ) {
 								_errHandler.recoverInline(this);
@@ -596,9 +610,9 @@ public class SuperCoilingParser extends Parser {
 							default:
 								throw new NoViableAltException(this);
 							}
-							setState(82); 
+							setState(86); 
 							_errHandler.sync(this);
-							_alt = getInterpreter().adaptivePredict(_input,13,_ctx);
+							_alt = getInterpreter().adaptivePredict(_input,14,_ctx);
 						} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 						}
 						}
@@ -606,16 +620,16 @@ public class SuperCoilingParser extends Parser {
 					default:
 						throw new NoViableAltException(this);
 					}
-					setState(86); 
+					setState(90); 
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,14,_ctx);
+					_alt = getInterpreter().adaptivePredict(_input,15,_ctx);
 				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(103); 
+				setState(107); 
 				_errHandler.sync(this);
 				_alt = 1;
 				do {
@@ -624,28 +638,28 @@ public class SuperCoilingParser extends Parser {
 						{
 						{
 						{
-						setState(89); 
+						setState(93); 
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 						do {
 							{
 							{
-							setState(88);
+							setState(92);
 							match(FORWARD_PROMOTER);
 							}
 							}
-							setState(91); 
+							setState(95); 
 							_errHandler.sync(this);
 							_la = _input.LA(1);
 						} while ( _la==FORWARD_PROMOTER );
 						}
-						setState(94); 
+						setState(98); 
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 						do {
 							{
 							{
-							setState(93);
+							setState(97);
 							_la = _input.LA(1);
 							if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0)) ) {
 							_errHandler.recoverInline(this);
@@ -654,12 +668,12 @@ public class SuperCoilingParser extends Parser {
 							}
 							}
 							}
-							setState(96); 
+							setState(100); 
 							_errHandler.sync(this);
 							_la = _input.LA(1);
 						} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0) );
 						{
-						setState(99); 
+						setState(103); 
 						_errHandler.sync(this);
 						_alt = 1;
 						do {
@@ -667,7 +681,7 @@ public class SuperCoilingParser extends Parser {
 							case 1:
 								{
 								{
-								setState(98);
+								setState(102);
 								match(FORWARD_PROMOTER);
 								}
 								}
@@ -675,9 +689,9 @@ public class SuperCoilingParser extends Parser {
 							default:
 								throw new NoViableAltException(this);
 							}
-							setState(101); 
+							setState(105); 
 							_errHandler.sync(this);
-							_alt = getInterpreter().adaptivePredict(_input,17,_ctx);
+							_alt = getInterpreter().adaptivePredict(_input,18,_ctx);
 						} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 						}
 						}
@@ -686,16 +700,16 @@ public class SuperCoilingParser extends Parser {
 					default:
 						throw new NoViableAltException(this);
 					}
-					setState(105); 
+					setState(109); 
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,18,_ctx);
+					_alt = getInterpreter().adaptivePredict(_input,19,_ctx);
 				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 				}
 				break;
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(117); 
+				setState(121); 
 				_errHandler.sync(this);
 				_alt = 1;
 				do {
@@ -703,13 +717,13 @@ public class SuperCoilingParser extends Parser {
 					case 1:
 						{
 						{
-						setState(108); 
+						setState(112); 
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 						do {
 							{
 							{
-							setState(107);
+							setState(111);
 							_la = _input.LA(1);
 							if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0)) ) {
 							_errHandler.recoverInline(this);
@@ -718,12 +732,12 @@ public class SuperCoilingParser extends Parser {
 							}
 							}
 							}
-							setState(110); 
+							setState(114); 
 							_errHandler.sync(this);
 							_la = _input.LA(1);
 						} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0) );
 						{
-						setState(113); 
+						setState(117); 
 						_errHandler.sync(this);
 						_alt = 1;
 						do {
@@ -731,7 +745,7 @@ public class SuperCoilingParser extends Parser {
 							case 1:
 								{
 								{
-								setState(112);
+								setState(116);
 								match(REVERSE_PROMOTER);
 								}
 								}
@@ -739,9 +753,9 @@ public class SuperCoilingParser extends Parser {
 							default:
 								throw new NoViableAltException(this);
 							}
-							setState(115); 
+							setState(119); 
 							_errHandler.sync(this);
-							_alt = getInterpreter().adaptivePredict(_input,20,_ctx);
+							_alt = getInterpreter().adaptivePredict(_input,21,_ctx);
 						} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 						}
 						}
@@ -750,16 +764,16 @@ public class SuperCoilingParser extends Parser {
 					default:
 						throw new NoViableAltException(this);
 					}
-					setState(119); 
+					setState(123); 
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,21,_ctx);
+					_alt = getInterpreter().adaptivePredict(_input,22,_ctx);
 				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 				}
 				break;
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(131); 
+				setState(135); 
 				_errHandler.sync(this);
 				_alt = 1;
 				do {
@@ -768,22 +782,22 @@ public class SuperCoilingParser extends Parser {
 						{
 						{
 						{
-						setState(122); 
+						setState(126); 
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 						do {
 							{
 							{
-							setState(121);
+							setState(125);
 							match(REVERSE_PROMOTER);
 							}
 							}
-							setState(124); 
+							setState(128); 
 							_errHandler.sync(this);
 							_la = _input.LA(1);
 						} while ( _la==REVERSE_PROMOTER );
 						}
-						setState(127); 
+						setState(131); 
 						_errHandler.sync(this);
 						_alt = 1;
 						do {
@@ -791,7 +805,7 @@ public class SuperCoilingParser extends Parser {
 							case 1:
 								{
 								{
-								setState(126);
+								setState(130);
 								_la = _input.LA(1);
 								if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0)) ) {
 								_errHandler.recoverInline(this);
@@ -804,9 +818,9 @@ public class SuperCoilingParser extends Parser {
 							default:
 								throw new NoViableAltException(this);
 							}
-							setState(129); 
+							setState(133); 
 							_errHandler.sync(this);
-							_alt = getInterpreter().adaptivePredict(_input,23,_ctx);
+							_alt = getInterpreter().adaptivePredict(_input,24,_ctx);
 						} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 						}
 						}
@@ -814,16 +828,16 @@ public class SuperCoilingParser extends Parser {
 					default:
 						throw new NoViableAltException(this);
 					}
-					setState(133); 
+					setState(137); 
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,24,_ctx);
+					_alt = getInterpreter().adaptivePredict(_input,25,_ctx);
 				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 				}
 				break;
 			case 7:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(150); 
+				setState(154); 
 				_errHandler.sync(this);
 				_alt = 1;
 				do {
@@ -832,28 +846,28 @@ public class SuperCoilingParser extends Parser {
 						{
 						{
 						{
-						setState(136); 
+						setState(140); 
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 						do {
 							{
 							{
-							setState(135);
+							setState(139);
 							match(REVERSE_PROMOTER);
 							}
 							}
-							setState(138); 
+							setState(142); 
 							_errHandler.sync(this);
 							_la = _input.LA(1);
 						} while ( _la==REVERSE_PROMOTER );
 						}
-						setState(141); 
+						setState(145); 
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 						do {
 							{
 							{
-							setState(140);
+							setState(144);
 							_la = _input.LA(1);
 							if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0)) ) {
 							_errHandler.recoverInline(this);
@@ -862,12 +876,12 @@ public class SuperCoilingParser extends Parser {
 							}
 							}
 							}
-							setState(143); 
+							setState(147); 
 							_errHandler.sync(this);
 							_la = _input.LA(1);
 						} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0) );
 						{
-						setState(146); 
+						setState(150); 
 						_errHandler.sync(this);
 						_alt = 1;
 						do {
@@ -875,7 +889,7 @@ public class SuperCoilingParser extends Parser {
 							case 1:
 								{
 								{
-								setState(145);
+								setState(149);
 								match(REVERSE_PROMOTER);
 								}
 								}
@@ -883,9 +897,9 @@ public class SuperCoilingParser extends Parser {
 							default:
 								throw new NoViableAltException(this);
 							}
-							setState(148); 
+							setState(152); 
 							_errHandler.sync(this);
-							_alt = getInterpreter().adaptivePredict(_input,27,_ctx);
+							_alt = getInterpreter().adaptivePredict(_input,28,_ctx);
 						} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 						}
 						}
@@ -894,9 +908,9 @@ public class SuperCoilingParser extends Parser {
 					default:
 						throw new NoViableAltException(this);
 					}
-					setState(152); 
+					setState(156); 
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,28,_ctx);
+					_alt = getInterpreter().adaptivePredict(_input,29,_ctx);
 				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 				}
 				break;
@@ -914,56 +928,58 @@ public class SuperCoilingParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\13\u009f\4\2\t\2"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\13\u00a3\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\3\2\3\2\3\3\7\3\16\n\3\f\3\16\3\21\13\3\3\3\6"+
-		"\3\24\n\3\r\3\16\3\25\3\3\7\3\31\n\3\f\3\16\3\34\13\3\3\4\3\4\3\4\6\4"+
-		"!\n\4\r\4\16\4\"\3\4\3\4\3\4\6\4(\n\4\r\4\16\4)\3\4\3\4\6\4.\n\4\r\4\16"+
-		"\4/\3\4\3\4\6\4\64\n\4\r\4\16\4\65\5\48\n\4\3\5\6\5;\n\5\r\5\16\5<\3\5"+
-		"\6\5@\n\5\r\5\16\5A\3\5\6\5E\n\5\r\5\16\5F\6\5I\n\5\r\5\16\5J\3\5\6\5"+
-		"N\n\5\r\5\16\5O\3\5\6\5S\n\5\r\5\16\5T\6\5W\n\5\r\5\16\5X\3\5\6\5\\\n"+
-		"\5\r\5\16\5]\3\5\6\5a\n\5\r\5\16\5b\3\5\6\5f\n\5\r\5\16\5g\6\5j\n\5\r"+
-		"\5\16\5k\3\5\6\5o\n\5\r\5\16\5p\3\5\6\5t\n\5\r\5\16\5u\6\5x\n\5\r\5\16"+
-		"\5y\3\5\6\5}\n\5\r\5\16\5~\3\5\6\5\u0082\n\5\r\5\16\5\u0083\6\5\u0086"+
-		"\n\5\r\5\16\5\u0087\3\5\6\5\u008b\n\5\r\5\16\5\u008c\3\5\6\5\u0090\n\5"+
-		"\r\5\16\5\u0091\3\5\6\5\u0095\n\5\r\5\16\5\u0096\6\5\u0099\n\5\r\5\16"+
-		"\5\u009a\5\5\u009d\n\5\3\5\2\2\6\2\4\6\b\2\3\3\2\5\n\u00bf\2\n\3\2\2\2"+
-		"\4\17\3\2\2\2\6\67\3\2\2\2\b\u009c\3\2\2\2\n\13\5\4\3\2\13\3\3\2\2\2\f"+
-		"\16\5\b\5\2\r\f\3\2\2\2\16\21\3\2\2\2\17\r\3\2\2\2\17\20\3\2\2\2\20\23"+
-		"\3\2\2\2\21\17\3\2\2\2\22\24\5\6\4\2\23\22\3\2\2\2\24\25\3\2\2\2\25\23"+
-		"\3\2\2\2\25\26\3\2\2\2\26\32\3\2\2\2\27\31\5\b\5\2\30\27\3\2\2\2\31\34"+
-		"\3\2\2\2\32\30\3\2\2\2\32\33\3\2\2\2\33\5\3\2\2\2\34\32\3\2\2\2\35\36"+
-		"\7\3\2\2\36\37\7\4\2\2\37!\7\3\2\2 \35\3\2\2\2!\"\3\2\2\2\" \3\2\2\2\""+
-		"#\3\2\2\2#8\3\2\2\2$%\7\4\2\2%&\7\3\2\2&(\7\4\2\2\'$\3\2\2\2()\3\2\2\2"+
-		")\'\3\2\2\2)*\3\2\2\2*8\3\2\2\2+,\7\4\2\2,.\7\3\2\2-+\3\2\2\2./\3\2\2"+
-		"\2/-\3\2\2\2/\60\3\2\2\2\608\3\2\2\2\61\62\7\3\2\2\62\64\7\4\2\2\63\61"+
-		"\3\2\2\2\64\65\3\2\2\2\65\63\3\2\2\2\65\66\3\2\2\2\668\3\2\2\2\67 \3\2"+
-		"\2\2\67\'\3\2\2\2\67-\3\2\2\2\67\63\3\2\2\28\7\3\2\2\29;\t\2\2\2:9\3\2"+
-		"\2\2;<\3\2\2\2<:\3\2\2\2<=\3\2\2\2=\u009d\3\2\2\2>@\t\2\2\2?>\3\2\2\2"+
-		"@A\3\2\2\2A?\3\2\2\2AB\3\2\2\2BD\3\2\2\2CE\7\4\2\2DC\3\2\2\2EF\3\2\2\2"+
-		"FD\3\2\2\2FG\3\2\2\2GI\3\2\2\2H?\3\2\2\2IJ\3\2\2\2JH\3\2\2\2JK\3\2\2\2"+
-		"K\u009d\3\2\2\2LN\7\4\2\2ML\3\2\2\2NO\3\2\2\2OM\3\2\2\2OP\3\2\2\2PR\3"+
-		"\2\2\2QS\t\2\2\2RQ\3\2\2\2ST\3\2\2\2TR\3\2\2\2TU\3\2\2\2UW\3\2\2\2VM\3"+
-		"\2\2\2WX\3\2\2\2XV\3\2\2\2XY\3\2\2\2Y\u009d\3\2\2\2Z\\\7\4\2\2[Z\3\2\2"+
-		"\2\\]\3\2\2\2][\3\2\2\2]^\3\2\2\2^`\3\2\2\2_a\t\2\2\2`_\3\2\2\2ab\3\2"+
-		"\2\2b`\3\2\2\2bc\3\2\2\2ce\3\2\2\2df\7\4\2\2ed\3\2\2\2fg\3\2\2\2ge\3\2"+
-		"\2\2gh\3\2\2\2hj\3\2\2\2i[\3\2\2\2jk\3\2\2\2ki\3\2\2\2kl\3\2\2\2l\u009d"+
-		"\3\2\2\2mo\t\2\2\2nm\3\2\2\2op\3\2\2\2pn\3\2\2\2pq\3\2\2\2qs\3\2\2\2r"+
-		"t\7\3\2\2sr\3\2\2\2tu\3\2\2\2us\3\2\2\2uv\3\2\2\2vx\3\2\2\2wn\3\2\2\2"+
-		"xy\3\2\2\2yw\3\2\2\2yz\3\2\2\2z\u009d\3\2\2\2{}\7\3\2\2|{\3\2\2\2}~\3"+
-		"\2\2\2~|\3\2\2\2~\177\3\2\2\2\177\u0081\3\2\2\2\u0080\u0082\t\2\2\2\u0081"+
-		"\u0080\3\2\2\2\u0082\u0083\3\2\2\2\u0083\u0081\3\2\2\2\u0083\u0084\3\2"+
-		"\2\2\u0084\u0086\3\2\2\2\u0085|\3\2\2\2\u0086\u0087\3\2\2\2\u0087\u0085"+
-		"\3\2\2\2\u0087\u0088\3\2\2\2\u0088\u009d\3\2\2\2\u0089\u008b\7\3\2\2\u008a"+
-		"\u0089\3\2\2\2\u008b\u008c\3\2\2\2\u008c\u008a\3\2\2\2\u008c\u008d\3\2"+
-		"\2\2\u008d\u008f\3\2\2\2\u008e\u0090\t\2\2\2\u008f\u008e\3\2\2\2\u0090"+
-		"\u0091\3\2\2\2\u0091\u008f\3\2\2\2\u0091\u0092\3\2\2\2\u0092\u0094\3\2"+
-		"\2\2\u0093\u0095\7\3\2\2\u0094\u0093\3\2\2\2\u0095\u0096\3\2\2\2\u0096"+
-		"\u0094\3\2\2\2\u0096\u0097\3\2\2\2\u0097\u0099\3\2\2\2\u0098\u008a\3\2"+
-		"\2\2\u0099\u009a\3\2\2\2\u009a\u0098\3\2\2\2\u009a\u009b\3\2\2\2\u009b"+
-		"\u009d\3\2\2\2\u009c:\3\2\2\2\u009cH\3\2\2\2\u009cV\3\2\2\2\u009ci\3\2"+
-		"\2\2\u009cw\3\2\2\2\u009c\u0085\3\2\2\2\u009c\u0098\3\2\2\2\u009d\t\3"+
-		"\2\2\2 \17\25\32\")/\65\67<AFJOTX]bgkpuy~\u0083\u0087\u008c\u0091\u0096"+
-		"\u009a\u009c";
+		"\3\24\n\3\r\3\16\3\25\3\3\7\3\31\n\3\f\3\16\3\34\13\3\6\3\36\n\3\r\3\16"+
+		"\3\37\3\4\3\4\3\4\6\4%\n\4\r\4\16\4&\3\4\3\4\3\4\6\4,\n\4\r\4\16\4-\3"+
+		"\4\3\4\6\4\62\n\4\r\4\16\4\63\3\4\3\4\6\48\n\4\r\4\16\49\5\4<\n\4\3\5"+
+		"\6\5?\n\5\r\5\16\5@\3\5\6\5D\n\5\r\5\16\5E\3\5\6\5I\n\5\r\5\16\5J\6\5"+
+		"M\n\5\r\5\16\5N\3\5\6\5R\n\5\r\5\16\5S\3\5\6\5W\n\5\r\5\16\5X\6\5[\n\5"+
+		"\r\5\16\5\\\3\5\6\5`\n\5\r\5\16\5a\3\5\6\5e\n\5\r\5\16\5f\3\5\6\5j\n\5"+
+		"\r\5\16\5k\6\5n\n\5\r\5\16\5o\3\5\6\5s\n\5\r\5\16\5t\3\5\6\5x\n\5\r\5"+
+		"\16\5y\6\5|\n\5\r\5\16\5}\3\5\6\5\u0081\n\5\r\5\16\5\u0082\3\5\6\5\u0086"+
+		"\n\5\r\5\16\5\u0087\6\5\u008a\n\5\r\5\16\5\u008b\3\5\6\5\u008f\n\5\r\5"+
+		"\16\5\u0090\3\5\6\5\u0094\n\5\r\5\16\5\u0095\3\5\6\5\u0099\n\5\r\5\16"+
+		"\5\u009a\6\5\u009d\n\5\r\5\16\5\u009e\5\5\u00a1\n\5\3\5\2\2\6\2\4\6\b"+
+		"\2\3\3\2\5\n\u00c4\2\n\3\2\2\2\4\17\3\2\2\2\6;\3\2\2\2\b\u00a0\3\2\2\2"+
+		"\n\13\5\4\3\2\13\3\3\2\2\2\f\16\5\b\5\2\r\f\3\2\2\2\16\21\3\2\2\2\17\r"+
+		"\3\2\2\2\17\20\3\2\2\2\20\35\3\2\2\2\21\17\3\2\2\2\22\24\5\6\4\2\23\22"+
+		"\3\2\2\2\24\25\3\2\2\2\25\23\3\2\2\2\25\26\3\2\2\2\26\32\3\2\2\2\27\31"+
+		"\5\b\5\2\30\27\3\2\2\2\31\34\3\2\2\2\32\30\3\2\2\2\32\33\3\2\2\2\33\36"+
+		"\3\2\2\2\34\32\3\2\2\2\35\23\3\2\2\2\36\37\3\2\2\2\37\35\3\2\2\2\37 \3"+
+		"\2\2\2 \5\3\2\2\2!\"\7\3\2\2\"#\7\4\2\2#%\7\3\2\2$!\3\2\2\2%&\3\2\2\2"+
+		"&$\3\2\2\2&\'\3\2\2\2\'<\3\2\2\2()\7\4\2\2)*\7\3\2\2*,\7\4\2\2+(\3\2\2"+
+		"\2,-\3\2\2\2-+\3\2\2\2-.\3\2\2\2.<\3\2\2\2/\60\7\4\2\2\60\62\7\3\2\2\61"+
+		"/\3\2\2\2\62\63\3\2\2\2\63\61\3\2\2\2\63\64\3\2\2\2\64<\3\2\2\2\65\66"+
+		"\7\3\2\2\668\7\4\2\2\67\65\3\2\2\289\3\2\2\29\67\3\2\2\29:\3\2\2\2:<\3"+
+		"\2\2\2;$\3\2\2\2;+\3\2\2\2;\61\3\2\2\2;\67\3\2\2\2<\7\3\2\2\2=?\t\2\2"+
+		"\2>=\3\2\2\2?@\3\2\2\2@>\3\2\2\2@A\3\2\2\2A\u00a1\3\2\2\2BD\t\2\2\2CB"+
+		"\3\2\2\2DE\3\2\2\2EC\3\2\2\2EF\3\2\2\2FH\3\2\2\2GI\7\4\2\2HG\3\2\2\2I"+
+		"J\3\2\2\2JH\3\2\2\2JK\3\2\2\2KM\3\2\2\2LC\3\2\2\2MN\3\2\2\2NL\3\2\2\2"+
+		"NO\3\2\2\2O\u00a1\3\2\2\2PR\7\4\2\2QP\3\2\2\2RS\3\2\2\2SQ\3\2\2\2ST\3"+
+		"\2\2\2TV\3\2\2\2UW\t\2\2\2VU\3\2\2\2WX\3\2\2\2XV\3\2\2\2XY\3\2\2\2Y[\3"+
+		"\2\2\2ZQ\3\2\2\2[\\\3\2\2\2\\Z\3\2\2\2\\]\3\2\2\2]\u00a1\3\2\2\2^`\7\4"+
+		"\2\2_^\3\2\2\2`a\3\2\2\2a_\3\2\2\2ab\3\2\2\2bd\3\2\2\2ce\t\2\2\2dc\3\2"+
+		"\2\2ef\3\2\2\2fd\3\2\2\2fg\3\2\2\2gi\3\2\2\2hj\7\4\2\2ih\3\2\2\2jk\3\2"+
+		"\2\2ki\3\2\2\2kl\3\2\2\2ln\3\2\2\2m_\3\2\2\2no\3\2\2\2om\3\2\2\2op\3\2"+
+		"\2\2p\u00a1\3\2\2\2qs\t\2\2\2rq\3\2\2\2st\3\2\2\2tr\3\2\2\2tu\3\2\2\2"+
+		"uw\3\2\2\2vx\7\3\2\2wv\3\2\2\2xy\3\2\2\2yw\3\2\2\2yz\3\2\2\2z|\3\2\2\2"+
+		"{r\3\2\2\2|}\3\2\2\2}{\3\2\2\2}~\3\2\2\2~\u00a1\3\2\2\2\177\u0081\7\3"+
+		"\2\2\u0080\177\3\2\2\2\u0081\u0082\3\2\2\2\u0082\u0080\3\2\2\2\u0082\u0083"+
+		"\3\2\2\2\u0083\u0085\3\2\2\2\u0084\u0086\t\2\2\2\u0085\u0084\3\2\2\2\u0086"+
+		"\u0087\3\2\2\2\u0087\u0085\3\2\2\2\u0087\u0088\3\2\2\2\u0088\u008a\3\2"+
+		"\2\2\u0089\u0080\3\2\2\2\u008a\u008b\3\2\2\2\u008b\u0089\3\2\2\2\u008b"+
+		"\u008c\3\2\2\2\u008c\u00a1\3\2\2\2\u008d\u008f\7\3\2\2\u008e\u008d\3\2"+
+		"\2\2\u008f\u0090\3\2\2\2\u0090\u008e\3\2\2\2\u0090\u0091\3\2\2\2\u0091"+
+		"\u0093\3\2\2\2\u0092\u0094\t\2\2\2\u0093\u0092\3\2\2\2\u0094\u0095\3\2"+
+		"\2\2\u0095\u0093\3\2\2\2\u0095\u0096\3\2\2\2\u0096\u0098\3\2\2\2\u0097"+
+		"\u0099\7\3\2\2\u0098\u0097\3\2\2\2\u0099\u009a\3\2\2\2\u009a\u0098\3\2"+
+		"\2\2\u009a\u009b\3\2\2\2\u009b\u009d\3\2\2\2\u009c\u008e\3\2\2\2\u009d"+
+		"\u009e\3\2\2\2\u009e\u009c\3\2\2\2\u009e\u009f\3\2\2\2\u009f\u00a1\3\2"+
+		"\2\2\u00a0>\3\2\2\2\u00a0L\3\2\2\2\u00a0Z\3\2\2\2\u00a0m\3\2\2\2\u00a0"+
+		"{\3\2\2\2\u00a0\u0089\3\2\2\2\u00a0\u009c\3\2\2\2\u00a1\t\3\2\2\2!\17"+
+		"\25\32\37&-\639;@EJNSX\\afkoty}\u0082\u0087\u008b\u0090\u0095\u009a\u009e"+
+		"\u00a0";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

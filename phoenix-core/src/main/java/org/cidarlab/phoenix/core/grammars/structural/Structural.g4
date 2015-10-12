@@ -40,12 +40,12 @@ FORWARD_RBS
     : 'r'
     ;
 REVERSE_CDS
-    : '<c'+
-    | '<f'+
+    : '<c'
+    | '<f'
     ;
 FORWARD_CDS
-    : 'c'+
-    | 'f'+
+    : 'c'
+    | 'f'
     ;
 REVERSE_TERMINATOR
     : '<t'

@@ -12,12 +12,14 @@ root
     ;
 
 module 
-    : ((wildcard)* (super_coiling) (wildcard)*)
+    : ((wildcard)* (super_coiling)+ (wildcard)*)
     ;
 
 super_coiling
-    : (FORWARD_PROMOTER) (REVERSE_PROMOTER)
-    | (REVERSE_PROMOTER) (FORWARD_PROMOTER)
+    : ((REVERSE_PROMOTER) (FORWARD_PROMOTER) (REVERSE_PROMOTER))+
+    | ((FORWARD_PROMOTER) (REVERSE_PROMOTER) (FORWARD_PROMOTER))+
+    | ((FORWARD_PROMOTER) (REVERSE_PROMOTER))+
+    | ((REVERSE_PROMOTER) (FORWARD_PROMOTER))+
     ;
 
 wildcard

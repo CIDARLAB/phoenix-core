@@ -114,6 +114,11 @@ public class FailureModeGrammarTest {
         System.out.println(count.getAndIncrement());
         FailureModeGrammar.getSuperCoilingTree("<t <c <r <p <p <p <p p p r c t");
         
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getSuperCoilingTree("<p p <p p <p");
+        
+        
     }
     
     

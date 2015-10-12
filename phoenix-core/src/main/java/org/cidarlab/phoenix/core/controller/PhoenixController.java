@@ -14,6 +14,7 @@ import org.cidarlab.phoenix.core.adaptors.*;
 import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Module;
+import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
 import org.cidarlab.phoenix.core.grammars.PhoenixGrammar;
 import org.clothoapi.clotho3javaapi.Clotho;
 import org.clothoapi.clotho3javaapi.ClothoConnection;
@@ -178,5 +179,52 @@ public class PhoenixController {
 //        createExperimentInstructions (modulesToTest);
         
         conn.closeConnection();
-    }    
+    }
+    
+    public static void assignShortName(Module module){
+        if(module.isRoot()){
+            module.setIndex("0");
+        }
+        int mod_count =0;
+        for(Module child:module.getChildren()){
+            child.setIndex(module.getIndex() + "_"+mod_count);
+            mod_count++;
+            int amod_count=0;
+            for(AssignedModule amod:child.getAssignedModules()){
+                amod.setIndex(module.getIndex() +"_"+amod_count);
+                amod_count++;
+                amod.setShortName(shortModuleRole(amod.getRole())+"_"+amod.getIndex());
+            }
+        }
+    }
+    public static String shortModuleRole(ModuleRole role) {
+        switch (role) {
+            case EXPRESSOR:
+                return "exp";
+
+            case EXPRESSEE:
+                return "exe";
+            case EXPRESSEE_REPRESSOR:
+                return "exr";
+            case EXPRESSEE_REPRESSIBLE_REPRESSOR:
+                return "err";
+            case EXPRESSEE_ACTIVATOR:
+                return "exa";
+            case EXPRESSEE_ACTIVATIBLE_ACTIVATOR:
+                return "eaa";
+            case TRANSCRIPTIONAL_UNIT:
+                return "tu";
+            case EXPRESSION_DEGRATATION_CONTROL:
+                return "edc";
+            case REGULATION_CONTROL:
+                return "rc";
+            case COLOR_CONTROL:
+                return "cc";
+            case HIGHER_FUNCTION:
+                return "hf";
+            default:
+                return "";
+        }
+    }
+    
 }

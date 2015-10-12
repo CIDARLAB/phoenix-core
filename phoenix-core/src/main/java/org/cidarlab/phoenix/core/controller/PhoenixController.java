@@ -195,13 +195,13 @@ public class PhoenixController {
                 amod_count++;
                 amod.setShortName(shortModuleRole(amod.getRole())+"_"+amod.getIndex());
             }
+            assignShortName(child);
         }
     }
     public static String shortModuleRole(ModuleRole role) {
         switch (role) {
             case EXPRESSOR:
                 return "exp";
-
             case EXPRESSEE:
                 return "exe";
             case EXPRESSEE_REPRESSOR:

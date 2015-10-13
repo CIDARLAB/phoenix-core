@@ -391,7 +391,7 @@ public class RavenAdaptor {
                 }
                 
                 //Regular parts with sequences
-                if (!pm.getModuleFeature().getSequence().getSequence().isEmpty() && pm.getPrimitiveRole() != FeatureRole.VECTOR) {
+                if (!(pm.getModuleFeature().getSequence()==null) && pm.getPrimitiveRole() != FeatureRole.VECTOR) {
                     
                     if (pm.getPrimitiveRole() == FeatureRole.CDS_LINKER) {
                         String fName = pm.getModuleFeature().getName().replaceAll(".ref", "");

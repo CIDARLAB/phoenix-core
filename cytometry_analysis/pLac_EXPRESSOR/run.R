@@ -7,4 +7,5 @@ minEvents <- 1000
 
 #Call master script
 wd <- getwd()
-source("~/cidar/phoenix-core/cytometry_analysis/master_analytics_scripts/analyze.R",chdir=T)
+source("~/phoenix/phoenix-core/cytometry_analysis/master_analytics_scripts/analyze.R",chdir=T)
+# analyzeKey(key,minEvents)

@@ -351,8 +351,7 @@ public class BenchlingAdaptor {
                             //Only in the case of a fluorescent protein do we make a special feature
                             if (subtype.contains("Fluorescent") && type.equalsIgnoreCase("CDS")) {
                                 
-                                Fluorophore fp = new Fluorophore();
-                                fp.setName(seq.getName());
+                                Fluorophore fp = new Fluorophore(seq.getName());
                                 fp.setSequence(nucSeq);
                                 fp.setForwardColor(fwd);
                                 fp.setReverseColor(rev);
@@ -369,8 +368,7 @@ public class BenchlingAdaptor {
                                 
                             } else {
                                 
-                                org.cidarlab.phoenix.core.dom.Feature clothoFeature = new Feature();
-                                clothoFeature.setName(seq.getName());
+                                Feature clothoFeature = new Feature(seq.getName());
                                 clothoFeature.setSequence(nucSeq);
                                 clothoFeature.setForwardColor(fwd);
                                 clothoFeature.setReverseColor(rev);
@@ -493,8 +491,7 @@ public class BenchlingAdaptor {
                     
                 } else {
                     
-                    org.cidarlab.phoenix.core.dom.Feature clothoFeature = new Feature();
-                    clothoFeature.setName(name);
+                    Feature clothoFeature = new Feature(name);
                     clothoFeature.setSequence(nucSeq);
                     clothoFeature.setForwardColor(fwd);
                     clothoFeature.setReverseColor(rev);
@@ -752,8 +749,7 @@ public class BenchlingAdaptor {
                 name = feature.getAnnotation().getProperty("label").toString();
             }
                         
-            org.cidarlab.phoenix.core.dom.Feature clothoFeature = new Feature();
-            clothoFeature.setName(name);
+            Feature clothoFeature = new Feature(name);
             clothoFeature.setSequence(nucSeq);
             clothoFeature.setForwardColor(fwd);
             clothoFeature.setReverseColor(rev);

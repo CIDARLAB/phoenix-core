@@ -91,16 +91,13 @@ public class Feature extends SharableObjBase {
     @Getter
     private String clothoID;
 
-    /**
-     * No Args constructor
-     */
-    public Feature() {
-        this.arcs = new ArrayList<>();
+    public Feature(String name) {
+        super(name);
         this.forwardColor = new Color(0);
         this.reverseColor = new Color(0);
-        this.isFP = false;
+        isCDS = (role == FeatureRole.CDS);
+        this.arcs = new ArrayList<>();
     }
-
     /**
      * Constructor of a new Feature
      *
@@ -263,16 +260,14 @@ public class Feature extends SharableObjBase {
 
     @Override
     public Feature clone() {
-        Feature clone = new Feature();
+        Feature clone = new Feature(this.getName(),this.sequence,this.author,this.isCDS);
         clone.PDBId = this.PDBId;
         clone.clothoID = this.clothoID;
         clone.forwardColor = this.forwardColor;
         clone.reverseColor = this.reverseColor;
         clone.genbankId = this.genbankId;
-        clone.isCDS = this.isCDS;
         clone.riskGroup = this.riskGroup;
         clone.role = this.role;
-        clone.sequence = this.sequence;
         clone.swissProtId = this.swissProtId;
         clone.arcs.addAll(this.arcs); //Copy?
         return clone;

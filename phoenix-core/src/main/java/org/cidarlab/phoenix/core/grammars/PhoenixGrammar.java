@@ -425,10 +425,7 @@ public class PhoenixGrammar {
 
                     //Add a new TESTING primitve to the expressor composition
                     //This piece will get replaced in the next step (adding testing pieces)
-                    PrimitiveModule testing = new PrimitiveModule();
-                    testing.setModuleFeature(primitive.getModuleFeature());
-                    testing.setPrimitive(primitive.getPrimitive());
-                    testing.setPrimitiveRole(FeatureRole.TESTING);
+                    PrimitiveModule testing = new PrimitiveModule(FeatureRole.TESTING,primitive.getPrimitive(),primitive.getModuleFeature());
                     submoduleStack.add(testing);
                     
                 //Else, continue adding features to EXPRESSOR    
@@ -482,10 +479,7 @@ public class PhoenixGrammar {
             //If not, copy components
             } else {
                 
-                PrimitiveModule forModule = new PrimitiveModule();
-                forModule.setPrimitive(pm.getPrimitive().clone());
-                forModule.setPrimitiveRole(pm.getPrimitiveRole());
-                forModule.setModuleFeature(pm.getModuleFeature());
+                PrimitiveModule forModule = new PrimitiveModule(pm.getPrimitiveRole(),pm.getPrimitive().clone(),pm.getModuleFeature());
                 forModule.setPrimitiveRole(EugeneAdaptor.findRole(forModule.getPrimitive().getType()));
                 primModules.add(forModule);
                 moduleFeature.add(pm.getModuleFeature());
@@ -526,11 +520,8 @@ public class PhoenixGrammar {
             //If not, copy components
             } else {
                 
-                PrimitiveModule revModule = new PrimitiveModule();
-                revModule.setPrimitive(pm.getPrimitive().clone());
-                revModule.setPrimitiveRole(pm.getPrimitiveRole());
+                PrimitiveModule revModule = new PrimitiveModule(pm.getPrimitiveRole(),pm.getPrimitive().clone(),pm.getModuleFeature());
                 revModule.getPrimitive().setOrientation(Orientation.FORWARD); // Again needed?
-                revModule.setModuleFeature(pm.getModuleFeature());
                 revModule.setPrimitiveRole(EugeneAdaptor.findRole(revModule.getPrimitive().getType()));
                 primModules.add(revModule);
                 moduleFeature.add(pm.getModuleFeature()); //Does anything change here?? (Due to the flip in the orientation?)

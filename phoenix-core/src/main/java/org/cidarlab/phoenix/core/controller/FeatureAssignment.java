@@ -68,7 +68,7 @@ public class FeatureAssignment {
                 //Check the features to remove any duplicate assignments
                 List<Feature> assignedFeatureList = new ArrayList<>();
                 for (PrimitiveModule pm : assignedM.getSubmodules()) {
-                    if(!pm.getModuleFeature().getSequence().getSequence().isEmpty()){
+                    if(!(pm.getModuleFeature().getSequence() == null)){
                         assignedFeatureList.add(pm.getModuleFeature());
                     }
                 }
@@ -188,13 +188,12 @@ public class FeatureAssignment {
             //Look for regulators that are abstract
             for (int i = 0; i < m.getSubmodules().size(); i++) {
                 PrimitiveModule pm = m.getSubmodules().get(i);
-                if(pm.getModuleFeature()!= null){
-                    for(Feature libF : getAllFeaturesOfRole(features,pm.getModuleFeature().getRole())){
-                        if(pm.getModuleFeature().getName().equalsIgnoreCase(libF.getName())){
-                            pm.setModuleFeature(libF);
-                        }
+                for (Feature libF : getAllFeaturesOfRole(features, pm.getModuleFeature().getRole())) {
+                    if (pm.getModuleFeature().getName().equalsIgnoreCase(libF.getName())) {
+                        pm.setModuleFeature(libF);
                     }
                 }
+
                 /*
                 if (!pm.getModuleFeatures().isEmpty()) {
                     for (Feature f : pm.getModuleFeatures()) {
@@ -493,7 +492,7 @@ public class FeatureAssignment {
         for (int i = 0; i < m.getSubmodules().size(); i++) {
             PrimitiveModule pm = m.getSubmodules().get(i);
             //for (Feature f : pm.getModuleFeatures()) {
-                if (pm.getModuleFeature().getSequence().getSequence().isEmpty() && !pm.getPrimitiveRole().equals(FeatureRole.WILDCARD)) {
+                if ((pm.getModuleFeature().getSequence() == null) && !pm.getPrimitiveRole().equals(FeatureRole.WILDCARD)) {
 
                     //Assign a regulator from the feature library
                     List<Feature> featuresOfRole = getAllFeaturesOfRole(features, pm.getPrimitiveRole());

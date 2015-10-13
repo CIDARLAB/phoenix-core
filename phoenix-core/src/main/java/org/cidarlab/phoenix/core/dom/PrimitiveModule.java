@@ -34,11 +34,6 @@ public class PrimitiveModule extends Module {
     @Setter
     private FeatureRole primitiveRole;
     
-    //Blank constructor
-    public PrimitiveModule() {
-        super("");
-    }
-    
     public PrimitiveModule(FeatureRole role, Primitive primitive, Feature moduleFeature) {
         super("");
         this.primitiveRole = role;
@@ -50,10 +45,7 @@ public class PrimitiveModule extends Module {
     @Override
     public PrimitiveModule clone() {
         
-        PrimitiveModule clone = new PrimitiveModule();
-        clone.primitive = this.primitive;
-        clone.primitiveRole = this.primitiveRole;
-        clone.moduleFeature = this.moduleFeature;
+        PrimitiveModule clone = new PrimitiveModule(this.primitiveRole,this.primitive,this.moduleFeature);
         //List<Feature> mFeatures = new ArrayList<>();
         //mFeatures.addAll(this.getModuleFeatures());
         //clone.setModuleFeatures(mFeatures);

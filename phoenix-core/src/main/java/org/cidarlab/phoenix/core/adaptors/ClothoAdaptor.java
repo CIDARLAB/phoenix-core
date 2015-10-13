@@ -285,16 +285,16 @@ public class ClothoAdaptor {
             createAnnotation.put("schema", "org.cidarlab.phoenix.core.dom.Annotation");
             createAnnotation.put("start", annotation.getStart());
             createAnnotation.put("end", annotation.getEnd());
-            createAnnotation.put("forwardColor", annotation.getForwardColor().toString());
-            createAnnotation.put("reverseColor", annotation.getReverseColor().toString());
+            createAnnotation.put("forwardColor", annotation.getForwardColor().getRGB());
+            createAnnotation.put("reverseColor", annotation.getReverseColor().getRGB());
             createAnnotation.put("isForwardStrand", annotation.isForwardStrand());
 
             //Feature schema - assumed one feature per annotation
             Feature f = annotation.getFeature();
             Map createFeature = new HashMap();
             createFeature.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
-            createFeature.put("forwardColor", f.getForwardColor().toString());
-            createFeature.put("reverseColor", f.getReverseColor().toString());
+            createFeature.put("forwardColor", f.getForwardColor().getRGB());
+            createFeature.put("reverseColor", f.getReverseColor().getRGB());
             createFeature.put("name", f.getName().replaceAll(".ref", ""));
 
             //FeatureRole sub-schema
@@ -708,8 +708,8 @@ public class ClothoAdaptor {
         Map createFluorophore = new HashMap();
         createFluorophore.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
         createFluorophore.put("name", f.getName());
-        createFluorophore.put("forwardColor", f.getForwardColor().toString());
-        createFluorophore.put("reverseColor", f.getReverseColor().toString());
+        createFluorophore.put("forwardColor", f.getForwardColor().getRGB());
+        createFluorophore.put("reverseColor", f.getReverseColor().getRGB());
         createFluorophore.put("brightness", f.getBrightness());
         createFluorophore.put("emission_max", f.getEmission_max());
         createFluorophore.put("excitation_max", f.getExcitation_max());
@@ -979,8 +979,7 @@ public class ClothoAdaptor {
     }
     
     public static Feature mapToFeature(Map map){
-        Feature feature = new Feature();
-        feature.setName((String)map.get("name"));
+        Feature feature = new Feature((String)map.get("name"));
         feature.setForwardColor(new Color((int)map.get("forwardColor")));
         feature.setReverseColor(new Color((int)map.get("reverseColor")));
         feature.setClothoID((String)map.get("id"));
@@ -998,15 +997,15 @@ public class ClothoAdaptor {
         return sequence;
     }
     
-    public static Vector mapToVector(Map map){
+    public static Vector mapToVector(Map map,Clotho clothoObject){
         
         String name = (String)map.get("name");
         String description = "";
         if(map.containsKey("description")){
             description = (String)map.get("description");
         }
-        Feature origin = mapToFeature((Map)map.get("origin"));
-        Feature resistance = mapToFeature((Map)map.get("resistance"));
+        Feature origin = (Feature)getFeature((String)map.get("origin"),clothoObject);
+        Feature resistance = (Feature)getFeature((String)map.get("origin"),clothoObject);
         Vector vector = new Vector(name, description, mapToNucSeq((Map)map.get("sequence")), null, null,origin,resistance);
         vector.setClothoID((String)map.get("id"));
         
@@ -1034,25 +1033,28 @@ public class ClothoAdaptor {
             int startAn = Integer.valueOf(annotationMap.get("start").toString());
             int endAn = Integer.valueOf(annotationMap.get("end").toString());
             boolean fwdStAn = Boolean.parseBoolean(annotationMap.get("isForwardStrand").toString());
-
+            
+            /*
             String fwdColorStAn = annotationMap.get("forwardColor").toString();
             String[] rgbfwdAn = fwdColorStAn.substring(15, fwdColorStAn.length() - 1).split(",");
             Color fwdColorAn = new Color(Integer.valueOf(rgbfwdAn[0].substring(2)), Integer.valueOf(rgbfwdAn[1].substring(2)), Integer.valueOf(rgbfwdAn[2].substring(2)));
             String revColorStAn = annotationMap.get("reverseColor").toString();
             String[] rgbrevAn = revColorStAn.substring(15, revColorStAn.length() - 1).split(",");
             Color revColorAn = new Color(Integer.valueOf(rgbrevAn[0].substring(2)), Integer.valueOf(rgbrevAn[1].substring(2)), Integer.valueOf(rgbrevAn[2].substring(2)));
-
+            */
+            
             //Get feature fields
-            Feature feature = new Feature();
             JSONObject jsonFeature = (JSONObject) annotationMap.get("feature");
+            Feature feature = new Feature((String)jsonFeature.get("name"));
+            
+            /*
             String fwdColorSt = jsonFeature.get("forwardColor").toString();
             String[] rgbfwd = fwdColorSt.substring(15, fwdColorSt.length() - 1).split(",");
             Color fwdColor = new Color(Integer.valueOf(rgbfwd[0].substring(2)), Integer.valueOf(rgbfwd[1].substring(2)), Integer.valueOf(rgbfwd[2].substring(2)));
             String revColorSt = jsonFeature.get("reverseColor").toString();
             String[] rgbrev = revColorSt.substring(15, revColorSt.length() - 1).split(",");
             Color revColor = new Color(Integer.valueOf(rgbrev[0].substring(2)), Integer.valueOf(rgbrev[1].substring(2)), Integer.valueOf(rgbrev[2].substring(2)));
-            String fname = jsonFeature.get("name").toString();
-
+            */
             //Get sequence object and fields
             JSONObject jsonSequence = (JSONObject) jsonFeature.get("sequence");
             String fseq = jsonSequence.get("sequence").toString();
@@ -1060,11 +1062,12 @@ public class ClothoAdaptor {
 
             //Get FeatureRole
             if (jsonFeature.has("role")) {
-                feature.setRole(Feature.FeatureRole.valueOf((String)jsonFeature.get("role")));
+                feature.setRole(FeatureRole.valueOf((String)jsonFeature.get("role")));
             }
-            feature.setForwardColor(fwdColor);
-            feature.setReverseColor(revColor);
-            feature.setName(fname);
+            System.out.println("Feature Name ::" + feature.getName());
+            feature.setForwardColor(new Color((int)jsonFeature.get("forwardColor")));
+            feature.setReverseColor(new Color((int)jsonFeature.get("reverseColor")));
+        
             feature.setSequence(fsequence);
 
             //Get person
@@ -1073,9 +1076,10 @@ public class ClothoAdaptor {
             author.setGivenName(jsonPerson.get("givenName").toString());
             author.setSurName(jsonPerson.get("surName").toString());
             author.setEmailAddress(jsonPerson.get("emailAddress").toString());
-
+            
+            
             //Assign all the annotation values to the object
-            Annotation annotation = new Annotation(feature, fsequence, fwdColorAn, revColorAn, startAn, endAn, author, fwdStAn, null);
+            Annotation annotation = new Annotation(feature, fsequence, new Color((int)annotationMap.get("forwardColor")), new Color((int)annotationMap.get("reverseColor")), startAn, endAn, author, fwdStAn, null);
             ns.addAnnotation(annotation);
         }
         
@@ -1086,16 +1090,21 @@ public class ClothoAdaptor {
     }
     
     public static Fluorophore mapToFluorophore(Map map){
-        Fluorophore fluorophore = new Fluorophore();
+        
+            String name = (String)map.get("name");
+            Fluorophore fluorophore = new Fluorophore(name);
 
             //Get fluorophore fields
+            /*
             String fwdColorSt = map.get("forwardColor").toString();
             String[] rgbfwd = fwdColorSt.substring(15, fwdColorSt.length() - 1).split(",");
             Color fwdColor = new Color(Integer.valueOf(rgbfwd[0].substring(2)), Integer.valueOf(rgbfwd[1].substring(2)), Integer.valueOf(rgbfwd[2].substring(2)));
             String revColorSt = map.get("reverseColor").toString();
             String[] rgbrev = revColorSt.substring(15, revColorSt.length() - 1).split(",");
             Color revColor = new Color(Integer.valueOf(rgbrev[0].substring(2)), Integer.valueOf(rgbrev[1].substring(2)), Integer.valueOf(rgbrev[2].substring(2)));
-            String name = map.get("name").toString();
+            */
+            
+            
             Integer oligo = Integer.valueOf(map.get("oligomerization").toString());
             Double brightness = Double.valueOf(map.get("brightness").toString());
             Double ex = Double.valueOf(map.get("excitation_max").toString());
@@ -1125,9 +1134,10 @@ public class ClothoAdaptor {
 
             //Get FeatureRole
             fluorophore.setRole(FeatureRole.valueOf((String)map.get("role")));
-
-            fluorophore.setForwardColor(fwdColor);
-            fluorophore.setReverseColor(revColor);
+            
+            fluorophore.setForwardColor(new Color((int)map.get("forwardColor")));
+            fluorophore.setReverseColor(new Color((int)map.get("reverseColor")));
+            
             fluorophore.setName(name);
             fluorophore.setSequence(sequence);
             fluorophore.setOligomerization(oligo);
@@ -1160,7 +1170,7 @@ public class ClothoAdaptor {
         JSONArray array = new JSONArray();
         array = (JSONArray) query;
         for(Object object:array){
-            vectors.add(mapToVector((Map)object));
+            vectors.add(mapToVector((Map)object,clothoObject));
         }
         return vectors;
     }
@@ -1187,9 +1197,14 @@ public class ClothoAdaptor {
         return mapToFluorophore((Map)object);
     }
     
+    public static Feature getFeature(String featureId,Clotho clothoObject){
+        Object object = clothoObject.get(featureId);
+        return mapToFeature((Map)object);
+    }
+    
     public static Vector getVector(String vectorId, Clotho clothoObject){
         Object object = clothoObject.get(vectorId);
-        return mapToVector((Map)object);    
+        return mapToVector((Map)object,clothoObject);    
     }
     
     public static Part getPart(String partId, Clotho clothoObject){
@@ -1221,11 +1236,12 @@ public class ClothoAdaptor {
         List<Feature> features = new ArrayList<>();
         for (int i = 0; i < array.size(); i++) {
 
-            Feature feature = new Feature();
-
+            
             //Get feature fields
             JSONObject jsonFeature = array.getJSONObject(i);
-            
+            String name = (String)jsonFeature.get("name");
+            Feature feature = new Feature(name);
+
             /*String fwdColorSt = jsonFeature.get("forwardColor").toString();
             String[] rgbfwd = fwdColorSt.substring(15, fwdColorSt.length() - 1).split(",");
             Color fwdColor = new Color(Integer.valueOf(rgbfwd[0].substring(2)), Integer.valueOf(rgbfwd[1].substring(2)), Integer.valueOf(rgbfwd[2].substring(2)));
@@ -1234,7 +1250,6 @@ public class ClothoAdaptor {
             Color revColor = new Color(Integer.valueOf(rgbrev[0].substring(2)), Integer.valueOf(rgbrev[1].substring(2)), Integer.valueOf(rgbrev[2].substring(2)));
             */
             
-            String name = jsonFeature.get("name").toString();
             //Get sequence object and fields
             JSONObject jsonSequence = (JSONObject) jsonFeature.get("sequence");
             String seq = jsonSequence.get("sequence").toString();
@@ -1242,13 +1257,10 @@ public class ClothoAdaptor {
 
             feature.setRole(Feature.FeatureRole.valueOf((String)jsonFeature.get("role")));
             
-            //feature.setForwardColor(fwdColor);
-            //feature.setReverseColor(revColor);
-            
             feature.setForwardColor(new Color((int)jsonFeature.get("forwardColor")));
             feature.setReverseColor(new Color((int)jsonFeature.get("reverseColor")));
                         
-            feature.setName(name);
+            
             feature.setSequence(sequence);
             feature.setClothoID(jsonFeature.get("id").toString());
 
@@ -1472,7 +1484,7 @@ public class ClothoAdaptor {
         pn.setPart(mapToPart(jsonPart));
         Map jsonVec = new HashMap();
         jsonVec = (Map) clothoObject.get((String) jsonPolynuc.get("vector"));
-        pn.setVector(mapToVector(jsonVec));
+        pn.setVector(mapToVector(jsonVec,clothoObject));
 
         pn.setClothoID(jsonPolynuc.get("id").toString());
         pn.setDV(Boolean.parseBoolean(jsonPolynuc.get("isDV").toString()));
@@ -1515,7 +1527,7 @@ public class ClothoAdaptor {
             pn.setPart(mapToPart(jsonPart));
             Map jsonVec = new HashMap();
             jsonVec = (Map) clothoObject.get((String) jsonPolynuc.get("vector"));
-            pn.setVector(mapToVector(jsonVec));
+            pn.setVector(mapToVector(jsonVec,clothoObject));
             
             pn.setClothoID(jsonPolynuc.get("id").toString());
             pn.setDV(Boolean.parseBoolean(jsonPolynuc.get("isDV").toString()));

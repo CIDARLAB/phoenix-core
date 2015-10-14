@@ -12,12 +12,15 @@ root
     ;
 
 module 
-    : ((wildcard)* ((transcriptional_interference)+ (wildcard)*)+)
+    : (((FORWARD_PROMOTER)+ (wildcard)+))+
+    | (((wildcard)+ (REVERSE_PROMOTER)+))+ 
+    | (((wildcard)+ (REVERSE_PROMOTER)+))+ (((FORWARD_PROMOTER)+ (wildcard)+))+  
+    | ((wildcard)* ((transcriptional_interference)+ (wildcard)*)+)
     ;
 
 transcriptional_interference
-    : ((REVERSE_PROMOTER)+ (wildcard) (FORWARD_PROMOTER)+)+
-    | ((FORWARD_PROMOTER)+ (wildcard) (REVERSE_PROMOTER)+)+
+    : ((FORWARD_PROMOTER)+ (wildcard)* (REVERSE_PROMOTER)+)+
+    //| ((REVERSE_PROMOTER)+ (wildcard)* (FORWARD_PROMOTER)+)+
     ;
 
 wildcard

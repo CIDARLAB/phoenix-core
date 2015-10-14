@@ -79,7 +79,7 @@ public class FailureModeGrammarTest {
         
     }
     
-    @Test
+    //@Test
     public void testGetSuperCoilingTree() {
         
         AtomicInteger count = new AtomicInteger();
@@ -127,4 +127,28 @@ public class FailureModeGrammarTest {
     }
     
     
+    @Test
+    public void testGetTranscriptionalInterferenceTree() {
+        
+        AtomicInteger count = new AtomicInteger();
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getTranscriptionalInterferenceTree("p r c t p r c t");
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getTranscriptionalInterferenceTree("<t <c <r <p p r c t");
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getTranscriptionalInterferenceTree("<t <c <r p <p r c t");
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getTranscriptionalInterferenceTree("<t p r c <c <r <p t");
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getTranscriptionalInterferenceTree("p r c t <t <c <r <p");
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getTranscriptionalInterferenceTree("p <t r c t <c <r <p");
+    }
+
 }

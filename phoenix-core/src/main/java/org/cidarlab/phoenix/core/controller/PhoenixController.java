@@ -194,6 +194,10 @@ public class PhoenixController {
                 amod.setIndex(module.getIndex() +"_"+amod_count);
                 amod_count++;
                 amod.setShortName(shortModuleRole(amod.getRole())+"_"+amod.getIndex());
+                for(Experiment experiment:amod.getExperiments()){
+                    experiment.setAmName(amod.getName());
+                    experiment.setAmShortName(amod.getShortName());
+                }
             }
             assignShortName(child);
         }

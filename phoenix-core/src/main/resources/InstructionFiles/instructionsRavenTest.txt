@@ -10,9 +10,9 @@ Assembly Instructions for target part: oscillator-transcriptional-interference_0
 
 PCR EBFP2 part with oligos: phoenix1 and phoenix2 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): EBFP2|2|22(HelicalLinker)|[+]
 PCR B0015 part with oligos: phoenix3 and phoenix4 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): B0015|22(HelicalLinker)|4|[+]
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|22
-PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|22|4
-PCR lacZ part with oligos: phoenix9 and phoenix10 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|22|4
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR lacZ part with oligos: phoenix9 and phoenix10 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|22
 
 **********************************************
 Assembly Instructions for target part: oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0
@@ -24,10 +24,10 @@ PCR oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE
 PCR lacZ part with oligos: phoenix13 and phoenix14 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|0|4
 
 **********************************************
-Assembly Instructions for target part: oscillator-transcriptional-interference_0_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_1_1
+Assembly Instructions for target part: oscillator-transcriptional-interference_0_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_1_5
 **********************************************
 
--> Assemble oscillator-transcriptional-interference_0_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_1_1|1*|3*|[-, -, -, -] by performing a moclo cloning reaction with: EBFP2|1*|5*|[-], BCD2|5*|4*|[-], J23104|4*|2*|[-], J23104|2*|3*|[-], pSB1K3|1*|3*
+-> Assemble oscillator-transcriptional-interference_0_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_1_5|1*|3*|[-, -, -, -] by performing a moclo cloning reaction with: EBFP2|1*|5*|[-], BCD2|5*|4*|[-], J23104|4*|2*|[-], J23104|2*|3*|[-], pSB1K3|1*|3*
 
 -> Assemble EBFP2|1*|5*|[-] by performing a moclo cloning reaction with: EBFP2|1*|5*|[-], pSB1A2|1*|5*
 
@@ -37,21 +37,21 @@ Assembly Instructions for target part: oscillator-transcriptional-interference_0
 
 -> Assemble J23104|2*|3*|[-] by performing a moclo cloning reaction with: J23104|2*|3*|[-], pSB1A2|2*|3*
 
-PCR EBFP2 part with oligos: phoenix15 and phoenix16 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): EBFP2|1*|5*|[-]
-PCR J23104 part with oligos: phoenix17 and phoenix18 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|4*|2*|[-]
-PCR J23104 part with oligos: phoenix19 and phoenix20 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|2*|3*|[-]
-PCR BCD2 part with oligos: phoenix21 and phoenix22 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): BCD2|5*|4*|[-]
+PCR J23104 part with oligos: phoenix15 and phoenix16 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|2*|3*|[-]
+PCR BCD2 part with oligos: phoenix17 and phoenix18 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): BCD2|5*|4*|[-]
+PCR J23104 part with oligos: phoenix19 and phoenix20 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|4*|2*|[-]
+PCR EBFP2 part with oligos: phoenix21 and phoenix22 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): EBFP2|1*|5*|[-]
 PCR lacZ part with oligos: phoenix23 and phoenix24 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1*|5*
 PCR lacZ part with oligos: phoenix25 and phoenix26 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|1*|3*
-PCR lacZ part with oligos: phoenix27 and phoenix28 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4*|2*
-PCR lacZ part with oligos: phoenix29 and phoenix30 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5*|4*
+PCR lacZ part with oligos: phoenix27 and phoenix28 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5*|4*
+PCR lacZ part with oligos: phoenix29 and phoenix30 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4*|2*
 PCR lacZ part with oligos: phoenix31 and phoenix32 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2*|3*
 
 **********************************************
-Assembly Instructions for target part: oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_1_5
+Assembly Instructions for target part: oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_1_3
 **********************************************
 
--> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_1_5|1*|0|[-, -, -, -, +] by performing a moclo cloning reaction with: EBFP2|1*|5*|[-], BCD2|5*|4*|[-], J23104|4*|3*|[-], J23104|3*|2*|[-], T1|2*|0|[+], pSB1K3|1*|0
+-> Assemble oscillator-transcriptional-interference_0_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_1_3|1*|0|[-, -, -, -, +] by performing a moclo cloning reaction with: EBFP2|1*|5*|[-], BCD2|5*|4*|[-], J23104|4*|3*|[-], J23104|3*|2*|[-], T1|2*|0|[+], pSB1K3|1*|0
 
 -> Assemble EBFP2|1*|5*|[-] by performing a moclo cloning reaction with: EBFP2|1*|5*|[-], pSB1A2|1*|5*
 
@@ -63,17 +63,17 @@ Assembly Instructions for target part: oscillator-transcriptional-interference_0
 
 -> Assemble T1|2*|0|[+] by performing a moclo cloning reaction with: T1|2*|0|[+], pSB1A2|2*|0
 
-PCR T1 part with oligos: phoenix33 and phoenix34 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): T1|2*|0|[+]
-PCR EBFP2 part with oligos: phoenix15 and phoenix16 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): EBFP2|1*|5*|[-]
-PCR J23104 part with oligos: phoenix35 and phoenix36 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|3*|2*|[-]
+PCR J23104 part with oligos: phoenix33 and phoenix34 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|3*|2*|[-]
+PCR BCD2 part with oligos: phoenix17 and phoenix18 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): BCD2|5*|4*|[-]
+PCR T1 part with oligos: phoenix35 and phoenix36 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): T1|2*|0|[+]
 PCR J23104 part with oligos: phoenix37 and phoenix38 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|4*|3*|[-]
-PCR BCD2 part with oligos: phoenix21 and phoenix22 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): BCD2|5*|4*|[-]
+PCR EBFP2 part with oligos: phoenix21 and phoenix22 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): EBFP2|1*|5*|[-]
 PCR lacZ part with oligos: phoenix23 and phoenix24 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1*|5*
-PCR lacZ part with oligos: phoenix39 and phoenix40 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2*|0
-PCR lacZ part with oligos: phoenix41 and phoenix42 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|1*|0
-PCR lacZ part with oligos: phoenix43 and phoenix44 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3*|2*
-PCR lacZ part with oligos: phoenix29 and phoenix30 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5*|4*
-PCR lacZ part with oligos: phoenix45 and phoenix46 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4*|3*
+PCR lacZ part with oligos: phoenix39 and phoenix40 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3*|2*
+PCR lacZ part with oligos: phoenix41 and phoenix42 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4*|3*
+PCR lacZ part with oligos: phoenix27 and phoenix28 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5*|4*
+PCR lacZ part with oligos: phoenix43 and phoenix44 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2*|0
+PCR lacZ part with oligos: phoenix45 and phoenix46 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|1*|0
 
 **********************************************
 Assembly Instructions for target part: EXPRESSEE_COLOR_CONTROL
@@ -84,8 +84,8 @@ Assembly Instructions for target part: EXPRESSEE_COLOR_CONTROL
 -> Assemble B0015|2|4|[+] by performing a moclo cloning reaction with: B0015|2|4|[+], pSB1A2|2|4
 
 PCR B0015 part with oligos: phoenix47 and phoenix48 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): B0015|2|4|[+]
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
 PCR lacZ part with oligos: phoenix49 and phoenix50 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|4
-PCR lacZ part with oligos: phoenix9 and phoenix10 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
 
 **********************************************
 Assembly Instructions for target part: EBFP2_COLOR_CONTROL
@@ -93,7 +93,7 @@ Assembly Instructions for target part: EBFP2_COLOR_CONTROL
 
 -> Assemble EBFP2_COLOR_CONTROL|0|4|[+, +, +, +] by performing a moclo cloning reaction with: J23104|0|1|[+], BCD2|1|2|[+], EBFP2|2|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
-PCR lacZ part with oligos: phoenix9 and phoenix10 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
 
 **********************************************
 Assembly Instructions for target part: EXPRESSION_DEGRADATION_CONTROL
@@ -114,17 +114,17 @@ atgaagacgtAAGAAGCTGCTGCTAAAGCTCCAGGCATCAAATAAAACGAAAGG
 >phoenix4
 acgaagacctAAGCTATAAACGCAGAAAGGCCCACCCG
 >phoenix5
-gttctttactagtgggtctcaAATGatgtcttctgcaccatatgcggtgtgaaatac
->phoenix6
-gcggccgctactagtaggtctctTCTTacgtcttccccgcgcgttggccgattcattaa
->phoenix7
 gttctttactagtgggtctcaAAGAatgtcttctgcaccatatgcggtgtgaaatac
->phoenix8
+>phoenix6
 gcggccgctactagtaggtctctAAGCacgtcttccccgcgcgttggccgattcattaa
->phoenix9
+>phoenix7
 gttctttactagtggaagacatGGAGagagacctgcaccatatgcggtgtgaaatac
->phoenix10
+>phoenix8
 gcggccgctactagtagaagacatAAGCagagacccccgcgcgttggccgattcattaa
+>phoenix9
+gttctttactagtgggtctcaAATGatgtcttctgcaccatatgcggtgtgaaatac
+>phoenix10
+gcggccgctactagtaggtctctTCTTacgtcttccccgcgcgttggccgattcattaa
 >phoenix11
 atgaagacgtGGAGTTGACAGCTAGCTCAGTCCTAGGT
 >phoenix12
@@ -134,21 +134,21 @@ gttctttactagtgggtctcaGGAGatgtcttctgcaccatatgcggtgtgaaatac
 >phoenix14
 gcggccgctactagtaggtctctAAGCacgtcttccccgcgcgttggccgattcattaa
 >phoenix15
-atgaagacgtAGTAGGCGGCGGTGCGGAACTCCAGCAG
->phoenix16
-acgaagacctCGCTATGCGGGGTTCTCATCATCATCAT
->phoenix17
-atgaagacgtAAGCGCTAGCACAATACCTAGGACTGAG
->phoenix18
-acgaagacctAATGTTGACAGCTAGCTCAGTCCTAGGT
->phoenix19
 atgaagacgtCATTGCTAGCACAATACCTAGGACTGAG
->phoenix20
+>phoenix16
 acgaagacctAGGTTTGACAGCTAGCTCAGTCCTAGGT
->phoenix21
+>phoenix17
 atgaagacgtAGCGAGAAAACCTCCTTAGCATGATTAA
->phoenix22
+>phoenix18
 acgaagacctGCTTGGGCCCAAGTTCACTTAAAAAGGA
+>phoenix19
+atgaagacgtAAGCGCTAGCACAATACCTAGGACTGAG
+>phoenix20
+acgaagacctAATGTTGACAGCTAGCTCAGTCCTAGGT
+>phoenix21
+atgaagacgtAGTAGGCGGCGGTGCGGAACTCCAGCAG
+>phoenix22
+acgaagacctCGCTATGCGGGGTTCTCATCATCATCAT
 >phoenix23
 gttctttactagtgggtctcaAGTAatgtcttctgcaccatatgcggtgtgaaatac
 >phoenix24
@@ -158,45 +158,45 @@ gttctttactagtggaagacatAGTAagagacctgcaccatatgcggtgtgaaatac
 >phoenix26
 gcggccgctactagtagaagacatAGGTagagacccccgcgcgttggccgattcattaa
 >phoenix27
-gttctttactagtgggtctcaAAGCatgtcttctgcaccatatgcggtgtgaaatac
->phoenix28
-gcggccgctactagtaggtctctAATGacgtcttccccgcgcgttggccgattcattaa
->phoenix29
 gttctttactagtgggtctcaAGCGatgtcttctgcaccatatgcggtgtgaaatac
->phoenix30
+>phoenix28
 gcggccgctactagtaggtctctGCTTacgtcttccccgcgcgttggccgattcattaa
+>phoenix29
+gttctttactagtgggtctcaAAGCatgtcttctgcaccatatgcggtgtgaaatac
+>phoenix30
+gcggccgctactagtaggtctctAATGacgtcttccccgcgcgttggccgattcattaa
 >phoenix31
 gttctttactagtgggtctcaCATTatgtcttctgcaccatatgcggtgtgaaatac
 >phoenix32
 gcggccgctactagtaggtctctAGGTacgtcttccccgcgcgttggccgattcattaa
 >phoenix33
-atgaagacgtCATTGGCATCAAATAAAACGAAAGGCTC
->phoenix34
-acgaagacctCTCCTCTAGGGCGGCGGATTTGTCCTAC
->phoenix35
 atgaagacgtACCTGCTAGCACAATACCTAGGACTGAG
->phoenix36
+>phoenix34
 acgaagacctAATGTTGACAGCTAGCTCAGTCCTAGGT
+>phoenix35
+atgaagacgtCATTGGCATCAAATAAAACGAAAGGCTC
+>phoenix36
+acgaagacctCTCCTCTAGGGCGGCGGATTTGTCCTAC
 >phoenix37
 atgaagacgtAAGCGCTAGCACAATACCTAGGACTGAG
 >phoenix38
 acgaagacctAGGTTTGACAGCTAGCTCAGTCCTAGGT
 >phoenix39
-gttctttactagtgggtctcaCATTatgtcttctgcaccatatgcggtgtgaaatac
->phoenix40
-gcggccgctactagtaggtctctCTCCacgtcttccccgcgcgttggccgattcattaa
->phoenix41
-gttctttactagtggaagacatAGTAagagacctgcaccatatgcggtgtgaaatac
->phoenix42
-gcggccgctactagtagaagacatCTCCagagacccccgcgcgttggccgattcattaa
->phoenix43
 gttctttactagtgggtctcaACCTatgtcttctgcaccatatgcggtgtgaaatac
->phoenix44
+>phoenix40
 gcggccgctactagtaggtctctAATGacgtcttccccgcgcgttggccgattcattaa
->phoenix45
+>phoenix41
 gttctttactagtgggtctcaAAGCatgtcttctgcaccatatgcggtgtgaaatac
->phoenix46
+>phoenix42
 gcggccgctactagtaggtctctAGGTacgtcttccccgcgcgttggccgattcattaa
+>phoenix43
+gttctttactagtgggtctcaCATTatgtcttctgcaccatatgcggtgtgaaatac
+>phoenix44
+gcggccgctactagtaggtctctCTCCacgtcttccccgcgcgttggccgattcattaa
+>phoenix45
+gttctttactagtggaagacatAGTAagagacctgcaccatatgcggtgtgaaatac
+>phoenix46
+gcggccgctactagtagaagacatCTCCagagacccccgcgcgttggccgattcattaa
 >phoenix47
 atgaagacgtAATGCCAGGCATCAAATAAAACGAAAGG
 >phoenix48

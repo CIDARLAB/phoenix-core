@@ -1055,6 +1055,7 @@ public class ClothoAdaptor {
             String[] rgbrev = revColorSt.substring(15, revColorSt.length() - 1).split(",");
             Color revColor = new Color(Integer.valueOf(rgbrev[0].substring(2)), Integer.valueOf(rgbrev[1].substring(2)), Integer.valueOf(rgbrev[2].substring(2)));
             */
+            
             //Get sequence object and fields
             JSONObject jsonSequence = (JSONObject) jsonFeature.get("sequence");
             String fseq = jsonSequence.get("sequence").toString();
@@ -1064,7 +1065,6 @@ public class ClothoAdaptor {
             if (jsonFeature.has("role")) {
                 feature.setRole(FeatureRole.valueOf((String)jsonFeature.get("role")));
             }
-            System.out.println("Feature Name ::" + feature.getName());
             feature.setForwardColor(new Color((int)jsonFeature.get("forwardColor")));
             feature.setReverseColor(new Color((int)jsonFeature.get("reverseColor")));
         

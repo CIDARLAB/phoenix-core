@@ -18,6 +18,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.cidarlab.phoenix.core.dom.Detector;
 import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Medium;
@@ -153,6 +155,22 @@ public class PhoenixInstructions {
         }
         
         return testingInstructions;
+    }
+    
+    public static File generateshortNameMapFile(List<Experiment> experiments, String filepath){
+        File file = new File(filepath);
+        try {
+            FileWriter writer = new FileWriter(file);
+            BufferedWriter bwriter = new BufferedWriter(writer);
+            for(Experiment experiment:experiments){
+                bwriter.write(experiment.getAmShortName()+","+experiment.getAmName()+","+experiment.getName());
+            }
+            bwriter.close();
+        } catch (IOException ex) {
+            Logger.getLogger(PhoenixInstructions.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return file;
     }
     
     //This is the method for generating a file that maps the phoenix short names to custom user names

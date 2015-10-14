@@ -60,6 +60,15 @@ public class Experiment {
     @Getter
     private String name;
     
+    @Getter
+    @Setter
+    private String amShortName;
+    
+    @Getter
+    @Setter
+    private String amName;
+    
+    
     //Experiment clothoID
     @Setter
     @Getter

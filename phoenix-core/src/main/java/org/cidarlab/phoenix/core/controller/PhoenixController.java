@@ -7,8 +7,10 @@ package org.cidarlab.phoenix.core.controller;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import net.sf.json.JSONObject;
 import org.cidarlab.phoenix.core.adaptors.*;
 import org.cidarlab.phoenix.core.dom.AssignedModule;
@@ -193,7 +195,7 @@ public class PhoenixController {
             for(AssignedModule amod:child.getAssignedModules()){
                 amod.setIndex(module.getIndex() +"_"+amod_count);
                 amod_count++;
-                amod.setShortName(shortModuleRole(amod.getRole())+"_"+amod.getIndex());
+                amod.setShortName(Module.getShortModuleRole(amod.getRole())+"_"+amod.getIndex());
                 for(Experiment experiment:amod.getExperiments()){
                     experiment.setAmName(amod.getName());
                     experiment.setAmShortName(amod.getShortName());
@@ -202,32 +204,28 @@ public class PhoenixController {
             assignShortName(child);
         }
     }
-    public static String shortModuleRole(ModuleRole role) {
-        switch (role) {
-            case EXPRESSOR:
-                return "exp";
-            case EXPRESSEE:
-                return "exe";
-            case EXPRESSEE_REPRESSOR:
-                return "exr";
-            case EXPRESSEE_REPRESSIBLE_REPRESSOR:
-                return "err";
-            case EXPRESSEE_ACTIVATOR:
-                return "exa";
-            case EXPRESSEE_ACTIVATIBLE_ACTIVATOR:
-                return "eaa";
-            case TRANSCRIPTIONAL_UNIT:
-                return "tu";
-            case EXPRESSION_DEGRATATION_CONTROL:
-                return "edc";
-            case REGULATION_CONTROL:
-                return "rc";
-            case COLOR_CONTROL:
-                return "cc";
-            case HIGHER_FUNCTION:
-                return "hf";
-            default:
-                return "";
+    
+    public static void removeDuplicateAssignedModules(Module module) {
+        removeDuplicateAssignedModules(module,new HashMap<String, List<AssignedModule>>());
+    }
+    
+    
+    public static void removeDuplicateAssignedModules(Module module, Map<String, List<AssignedModule>> amap) {
+        
+        if (module.isRoot()) {
+            amap = new HashMap<String, List<AssignedModule>>();
+        }
+        
+        String featureString = module.getFeatureShortString();
+        
+        if (amap.containsKey(featureString)) {
+            module.setAssignedModules(amap.get(featureString));
+        } else {
+            amap.put(featureString, module.getAssignedModules());
+        }
+
+        for (Module child : module.getChildren()) {
+            removeDuplicateAssignedModules(child, amap);
         }
     }
     

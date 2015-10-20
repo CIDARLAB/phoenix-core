@@ -269,7 +269,7 @@ public class ClothoAdaptor {
 
         //NucSeq schema
         Map createNucSeqMain = new HashMap();
-        createNucSeqMain.put("schema", "org.cidarlab.phoenix.core.dom.NucSeq");
+        createNucSeqMain.put("schema", NucSeq.class.getCanonicalName());
         createNucSeqMain.put("name", ns.getName());
         createNucSeqMain.put("sequence", ns.getSeq());
         createNucSeqMain.put("isCircular", ns.isCircular());
@@ -336,7 +336,7 @@ public class ClothoAdaptor {
     public static Map createSmallMoleculeMap(SmallMolecule smolecule) {
         Map map = new HashMap();
         map.put("name", smolecule.getName());
-        map.put("schema", "org.cidarlab.phoenix.core.dom.SmallMolecule");
+        map.put("schema", SmallMolecule.class.getCanonicalName());
         map.put("role", smolecule.getRole().toString());
         if(smolecule.getConcentration()!=null){
             map.put("concentration", smolecule.getConcentration());
@@ -364,7 +364,7 @@ public class ClothoAdaptor {
     public static Map createStrainMap(Strain strain) {
         String id = "";
         Map map = new HashMap();
-        map.put("schema", "org.cidarlab.phoenix.core.dom.Strain");
+        map.put("schema", Strain.class.getCanonicalName());
         map.put("name", strain.getName());
         return map;
     }
@@ -372,7 +372,7 @@ public class ClothoAdaptor {
     public static Map createMediumMap(Medium medium) {
         String id = "";
         Map map = new HashMap();
-        map.put("schema", "org.cidarlab.phoenix.core.dom.Medium");
+        map.put("schema", Medium.class.getCanonicalName());
 //        map.put("concentration", medium.getConcentration());
         map.put("name", medium.getName());
         map.put("type", medium.getType());
@@ -388,7 +388,7 @@ public class ClothoAdaptor {
     
     public static Map createPolynucleotideMap(Polynucleotide pn,Clotho clothoObject){
         Map map = new HashMap();
-        map.put("schema", "org.cidarlab.phoenix.core.dom.Polynucleotide");
+        map.put("schema", Polynucleotide.class.getCanonicalName());
         map.put("name", pn.getAccession());
         map.put("accession", pn.getAccession().substring(0, pn.getAccession().length() - 15));
         map.put("description", pn.getDescription());
@@ -427,6 +427,7 @@ public class ClothoAdaptor {
     public static Map createPrimitiveModuleMap(PrimitiveModule pmodule) {
         Map map = new HashMap();
         map.put("name", pmodule.getName());
+        map.put("schema", PrimitiveModule.class.getCanonicalName());
         map.put("moduleFeature", createFeatureMap(pmodule.getModuleFeature()));
         map.put("isForward", pmodule.isForward());
         map.put("primitiveRole", pmodule.getPrimitiveRole().toString());
@@ -444,7 +445,7 @@ public class ClothoAdaptor {
 
     public static Map createFeatureMap(Feature f) {
         Map map = new HashMap();
-        map.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
+        map.put("schema", Feature.class.getCanonicalName());
         map.put("name", f.getName());
         map.put("forwardColor", f.getForwardColor().getRGB());
         map.put("reverseColor", f.getReverseColor().getRGB());
@@ -474,7 +475,7 @@ public class ClothoAdaptor {
     
     public static Map createExperimentMap(Experiment experiment){
         Map map = new HashMap();
-        map.put("schema", "org.cidarlab.phoenix.core.dom.Experiment");
+        map.put("schema", Experiment.class.getCanonicalName());
         if (experiment.getName() != null) {
             map.put("name", experiment.getName());
         }
@@ -588,7 +589,7 @@ public class ClothoAdaptor {
         Map map = new HashMap();
 
         map.put("name", module.getName());
-        map.put("schema", "org.cidarlab.phoenix.core.dom.Module");
+        map.put("schema", Module.class.getCanonicalName());
         map.put("stage", module.getStage());
         map.put("role", module.getRole().toString());
         map.put("isForward", module.isForward());
@@ -642,6 +643,7 @@ public class ClothoAdaptor {
         String id = "";
         Map map = new HashMap();
         map.put("name", amodule.getName());
+        map.put("schema", AssignedModule.class.getCanonicalName());
         map.put("function", createSTLFunction(amodule.getFunction(), clothoObject));
         map.put("isForward", amodule.isForward());
         map.put("role", amodule.getRole().toString());
@@ -706,7 +708,7 @@ public class ClothoAdaptor {
         String id = "";
         //Fluorophore schema
         Map createFluorophore = new HashMap();
-        createFluorophore.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
+        createFluorophore.put("schema", Fluorophore.class.getCanonicalName());
         createFluorophore.put("name", f.getName());
         createFluorophore.put("forwardColor", f.getForwardColor().getRGB());
         createFluorophore.put("reverseColor", f.getReverseColor().getRGB());
@@ -761,7 +763,7 @@ public class ClothoAdaptor {
     public static String createSTLFunction(STLFunction ltl, Clotho clothoObject) {
         String id = "";
         Map map = new HashMap();
-        map.put("schema", "org.cidarlab.phoenix.core.dom.STLFunction");
+        map.put("schema", STLFunction.class.getCanonicalName());
         return id;
     }
     
@@ -772,7 +774,7 @@ public class ClothoAdaptor {
         //Part schema
         String id = "";
         Map createPart = new HashMap();
-        createPart.put("schema", "org.cidarlab.phoenix.core.dom.Part");
+        createPart.put("schema", Part.class.getCanonicalName());
         createPart.put("name", p.getName());
 //        createPart.put("isVector", p.isVector());
         createPart.put("sequence", createNucSeqMap(p.getSequence()));
@@ -800,7 +802,7 @@ public class ClothoAdaptor {
         //Part schema
         String id = "";
         Map createVector = new HashMap();
-        createVector.put("schema", "org.cidarlab.phoenix.core.dom.Part");
+        createVector.put("schema", Vector.class.getCanonicalName());
         createVector.put("name", vector.getName());
 //        createPart.put("isVector", p.isVector());
         createVector.put("sequence", createNucSeqMap(vector.getSequence()));
@@ -833,7 +835,7 @@ public class ClothoAdaptor {
 
         //Fluorophore schema
         Map createCytometer = new HashMap();
-        createCytometer.put("schema", "org.cidarlab.phoenix.core.dom.Cytometer");
+        createCytometer.put("schema", Cytometer.class.getCanonicalName());
         createCytometer.put("name", c.getName());
 
         //Filter set        
@@ -888,7 +890,7 @@ public class ClothoAdaptor {
 
         String id = "";
         Map createAssmParam = new HashMap();
-        createAssmParam.put("schema", "org.cidarlab.phoenix.core.dom.AssemblyParameters");
+        createAssmParam.put("schema", AssemblyParameters.class.getCanonicalName());
         createAssmParam.put("method", aP.getMethod());
         createAssmParam.put("name", aP.getName());
         createAssmParam.put("oligoNameRoot", aP.getOligoNameRoot());
@@ -1155,6 +1157,9 @@ public class ClothoAdaptor {
     //<editor-fold desc="Query Methods">
     
     public static List<Fluorophore> queryFluorophores(Map map, Clotho clothoObject) {
+        
+        map.put("schema", Fluorophore.class.getCanonicalName());
+        
         Object query = clothoObject.query(map);
         JSONArray array = (JSONArray) query;
         List<Fluorophore> fluorophores = new ArrayList<>();
@@ -1165,6 +1170,9 @@ public class ClothoAdaptor {
     }
     
     public static List<Vector> queryVectors(Map map, Clotho clothoObject){
+        
+        map.put("schema", Vector.class.getCanonicalName());
+        
         List<Vector> vectors = new ArrayList<>();
         Object query = clothoObject.query(map);
         JSONArray array = new JSONArray();
@@ -1177,6 +1185,8 @@ public class ClothoAdaptor {
     
     public static List<Part> queryParts(Map map, Clotho clothoObject) {
 
+        map.put("schema", Part.class.getCanonicalName());
+        
         List<Part> parts = new ArrayList<>();
         Object query = clothoObject.query(map);
         JSONArray array = (JSONArray) query;
@@ -1216,6 +1226,8 @@ public class ClothoAdaptor {
     //</editor-fold>
     
     public static List<Feature> queryFeatures(Map map, Clotho clothoObject) {
+        
+        map.put("schema", Feature.class.getCanonicalName());
         Object query = clothoObject.query(map);
         JSONArray array = (JSONArray) query;
         return convertJSONArrayToFeatures(array);
@@ -1496,6 +1508,8 @@ public class ClothoAdaptor {
     //Get all Clotho Polynucleotides.. Why man? Why do you want all the Polynucleotides???
     public static List<Polynucleotide> queryPolynucleotides(Map map, Clotho clothoObject) {
 
+        map.put("schema", Polynucleotide.class.getCanonicalName());
+        
         //Establish Clotho connection
         List<Polynucleotide> polynucs = new ArrayList<>();
 
@@ -1542,8 +1556,9 @@ public class ClothoAdaptor {
     public static List<Cytometer> queryCytometers(Map map, Clotho clothoObject) {
 
         //Establish Clotho connection
+        map.put("schema", Cytometer.class.getCanonicalName());
+        
         List<Cytometer> cytometers = new ArrayList<>();
-
         Object query = clothoObject.query(map);
         JSONArray arrayCytometer = (JSONArray) query;
 
@@ -1710,6 +1725,7 @@ public class ClothoAdaptor {
 
         //Establish Clotho connection
         List<AssemblyParameters> aPs = new ArrayList<>();
+        map.put("schema", AssemblyParameters.class.getCanonicalName());
         Object query = clothoObject.query(map);
         JSONArray arrayAP = (JSONArray) query;
 

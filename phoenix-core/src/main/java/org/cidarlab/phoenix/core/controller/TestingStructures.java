@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import net.sf.json.JSONArray;
 import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
 import org.cidarlab.phoenix.core.dom.Arc;
@@ -186,7 +187,7 @@ public class TestingStructures {
     public static List<Experiment> createExperiments(HashSet<AssignedModule> modules) {
         
         //Initialize experiment set - some types of modules require multiple experiments
-        ArrayList<Module> controlModulesAll = new ArrayList<>();
+        List<AssignedModule> controlModulesAll = new ArrayList<>();
         List<Medium> defaultMedia = new ArrayList<>();
         defaultMedia.add(new Medium("LB", Medium.MediaType.RICH));        
         List<String> defaultTime = Arrays.asList(new String[]{"0 min", "10 min", "20 min", "30 min", "40 min", "50 min", "60 min"});
@@ -284,10 +285,10 @@ public class TestingStructures {
     }
     
     //Add controls and samples
-    private static void addSamples(List<Experiment> experiments, ArrayList<Module> controlModulesAll, HashMap<String, Sample> sampleHash, AssignedModule aM, boolean regControls) {
+    private static void addSamples(List<Experiment> experiments, List<AssignedModule> controlModulesAll, HashMap<String, Sample> sampleHash, AssignedModule aM, boolean regControls) {
 
         //Add control constructs 
-        ArrayList<Module> controlsThisModule = new ArrayList<>();
+        List<AssignedModule> controlsThisModule = new ArrayList<>();
         controlsThisModule.add(createExpDegControl());
         controlsThisModule.addAll(createColorControls(controlsThisModule, aM));
         if (regControls) {
@@ -306,28 +307,28 @@ public class TestingStructures {
     }
     
     //Make a standard expression/degradation control for EXPRESSORs and all types of EXPRESSEEs
-    private static Module createExpDegControl() {
+    private static AssignedModule createExpDegControl() {
         
         //Expression control
-        Module expDegControl = new Module("EXPRESSION_DEGRADATION_CONTROL");
+        Module expDegControlModule = new Module("EXPRESSION_DEGRADATION_CONTROL");
         List<PrimitiveModule> testSubmodules = new ArrayList<>();
         testSubmodules.add(testPromoter);
         testSubmodules.add(testRBS);
         testSubmodules.add(testCDS1);
         testSubmodules.add(testTerminator);
         testSubmodules.add(testVector1);
-        expDegControl.setSubmodules(testSubmodules);
-        expDegControl.updateModuleFeatures();
-        expDegControl.setRole(ModuleRole.EXPRESSION_DEGRATATION_CONTROL);
-        
-        return expDegControl;
+        expDegControlModule.setSubmodules(testSubmodules);
+        expDegControlModule.updateModuleFeatures();
+        expDegControlModule.setRole(ModuleRole.EXPRESSION_DEGRATATION_CONTROL);
+        AssignedModule expDegContAModule = new AssignedModule(expDegControlModule);
+        return expDegContAModule;
     }
     
     //Make a standard expression/degradation control for EXPRESSORs and all types of EXPRESSEEs
-    private static HashSet<Module> createRegControls(Module expressee) {
+    private static Set<AssignedModule> createRegControls(Module expressee) {
         
         //Expression control
-        HashSet<Module> regControls = new HashSet<>();
+        Set<AssignedModule> regControls = new HashSet<>();
         int count = 0;
         
         //Find the promoters that correspond to this regulatory gene 
@@ -341,7 +342,7 @@ public class TestingStructures {
                     Feature regulatee = a.getRegulatee();
                     PrimitiveModule regPromoter = new PrimitiveModule(regulatee.getRole(), new Primitive(new ComponentType("p"), regulatee.getName()), regulatee);
 
-                    Module regControl = new Module(regulatee.getName().replaceAll(".ref", "") + "_REGULATION_CONTROL");
+                    Module regControlModule = new Module(regulatee.getName().replaceAll(".ref", "") + "_REGULATION_CONTROL");
                     count++;
                     List<PrimitiveModule> testSubmodules = new ArrayList<>();
 
@@ -350,10 +351,10 @@ public class TestingStructures {
                     testSubmodules.add(testCDS2);
                     testSubmodules.add(testTerminator);
                     testSubmodules.add(testVector2);
-                    regControl.setSubmodules(testSubmodules);
-                    regControl.updateModuleFeatures();
-                    regControl.setRole(ModuleRole.REGULATION_CONTROL);
-
+                    regControlModule.setSubmodules(testSubmodules);
+                    regControlModule.updateModuleFeatures();
+                    regControlModule.setRole(ModuleRole.REGULATION_CONTROL);
+                    AssignedModule regControl = new AssignedModule(regControlModule);
                     regControls.add(regControl);
                 }
 
@@ -363,11 +364,11 @@ public class TestingStructures {
     }
     
     //Make a standard expression/degradation control for EXPRESSORs and all types of EXPRESSEEs
-    private static ArrayList<Module> createColorControls(ArrayList<Module> controlModules, Module m) {
+    private static List<AssignedModule> createColorControls(List<AssignedModule> controlModules, Module m) {
         
-        HashSet<Module> colorControls = new HashSet<>();
+        Set<AssignedModule> colorControls = new HashSet<>();
         
-        HashSet<Module> allModulesNeedingColorControl = new HashSet<>();
+        Set<Module> allModulesNeedingColorControl = new HashSet<>();
         allModulesNeedingColorControl.add(m);
         allModulesNeedingColorControl.addAll(controlModules);
         
@@ -376,16 +377,17 @@ public class TestingStructures {
                 if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
 
                     //Expression control
-                    Module colorControl = new Module(pm.getModuleFeature().getName().replaceAll(".ref", "") + "_COLOR_CONTROL");
+                    Module colorControlModule = new Module(pm.getModuleFeature().getName().replaceAll(".ref", "") + "_COLOR_CONTROL");
                     List<PrimitiveModule> testSubmodules = new ArrayList<>();
                     testSubmodules.add(testPromoter);
                     testSubmodules.add(testRBS);
                     testSubmodules.add(pm);
                     testSubmodules.add(testTerminator);
                     testSubmodules.add(testVector2);
-                    colorControl.setSubmodules(testSubmodules);
-                    colorControl.updateModuleFeatures();
-                    colorControl.setRole(ModuleRole.COLOR_CONTROL);
+                    colorControlModule.setSubmodules(testSubmodules);
+                    colorControlModule.updateModuleFeatures();
+                    colorControlModule.setRole(ModuleRole.COLOR_CONTROL);
+                    AssignedModule colorControl = new AssignedModule(colorControlModule);
                     colorControls.add(colorControl);
                 }
             }
@@ -396,10 +398,10 @@ public class TestingStructures {
     }
     
     //Remove duplicate modules based on PrimitiveModules
-    private static void removeDuplicateModules(ArrayList<Module> controlsThisModule, ArrayList<Module> controlModulesAll, AssignedModule m) {
+    private static void removeDuplicateModules(List<AssignedModule> controlsThisModule, List<AssignedModule> controlModulesAll, AssignedModule m) {
         
-        for (Module cM : controlsThisModule) {
-            for (Module cMA : controlModulesAll) {
+        for (AssignedModule cM : controlsThisModule) {
+            for (AssignedModule cMA : controlModulesAll) {
                 if (cM.getSubmodules().equals(cMA.getSubmodules())) {
                     cM = cMA;
                 }
@@ -407,7 +409,7 @@ public class TestingStructures {
 
             controlModulesAll.add(cM);
             if (m.getControlModules() == null) {
-                ArrayList<Module> cMs = new ArrayList<>();
+                List<AssignedModule> cMs = new ArrayList<>();
                 cMs.add(cM);
                 m.setControlModules(cMs);
             } else {
@@ -540,7 +542,7 @@ public class TestingStructures {
     }
     
     //Method for forming an experiment from a module which has partial part assignment
-    private static void createControlSamples(Experiment experiment, ArrayList<Module> controlModules, Module testModule, HashMap<String, Sample> sampleHash, Integer replicates) {
+    private static void createControlSamples(Experiment experiment, List<AssignedModule> controlModules, Module testModule, HashMap<String, Sample> sampleHash, Integer replicates) {
         
         Strain defaultStrain = new Strain("E. coli DH5a");
         

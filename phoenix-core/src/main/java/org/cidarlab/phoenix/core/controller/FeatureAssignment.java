@@ -216,7 +216,7 @@ public class FeatureAssignment {
     private static List<Feature> regulatorAssign(Module m, List<Feature> features) {
 
         List<Feature> assignedRegulators = new ArrayList<>();
-        ArrayList<AssignedModule> assignedModules = m.getAssignedModules();
+        List<AssignedModule> assignedModules = m.getAssignedModules();
         int count = 0;
 
         //Look for regulators that are abstract

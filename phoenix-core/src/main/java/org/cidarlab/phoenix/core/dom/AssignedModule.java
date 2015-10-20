@@ -77,9 +77,10 @@ public class AssignedModule extends Module {
     private String shortName;
     
     //Control Modules as a property of Assigned Modules.
+    //Should be an Assigned Module
     @Getter
     @Setter
-    private List<Module> controlModules;
+    private List<AssignedModule> controlModules;
     
     //SBML Model
     @Getter

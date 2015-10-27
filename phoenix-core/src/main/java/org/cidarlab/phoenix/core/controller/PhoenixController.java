@@ -178,7 +178,7 @@ public class PhoenixController {
 
         //Update module graphs based upon simulations
         HashSet<Module> modulesToTest = FeatureAssignment.completeAssignmentSim(bestCombinedModules, modules);
-        //createExperimentInstructions (modulesToTest);
+        //ceateExperimentInstructions (modulesToTest);
         
         conn.closeConnection();
     }

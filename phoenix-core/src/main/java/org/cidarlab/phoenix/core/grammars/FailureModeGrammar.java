@@ -15,6 +15,9 @@ import org.cidarlab.phoenix.core.grammars.failuremode.RoadBlockingParser;
 import org.cidarlab.phoenix.core.grammars.failuremode.SuperCoilingBaseListener;
 import org.cidarlab.phoenix.core.grammars.failuremode.SuperCoilingLexer;
 import org.cidarlab.phoenix.core.grammars.failuremode.SuperCoilingParser;
+import org.cidarlab.phoenix.core.grammars.failuremode.TranscriptionalInterferenceBaseListener;
+import org.cidarlab.phoenix.core.grammars.failuremode.TranscriptionalInterferenceLexer;
+import org.cidarlab.phoenix.core.grammars.failuremode.TranscriptionalInterferenceParser;
 
 
 /**
@@ -38,7 +41,6 @@ public class FailureModeGrammar {
         return tree;
     }
     
-    
     public static ParseTree getSuperCoilingTree(String pigeonString) {
         ANTLRInputStream input = new ANTLRInputStream(pigeonString);
         SuperCoilingLexer lexer = new SuperCoilingLexer(input);
@@ -47,6 +49,21 @@ public class FailureModeGrammar {
         ParseTree tree = parser.root();
 
         ParseTreeWalker.DEFAULT.walk(new SuperCoilingBaseListener(), tree);
+
+        System.out.println("INPUT :: " + pigeonString);
+        System.out.println("TREE :: " + tree.toStringTree(parser));
+
+        return tree;
+    }
+    
+    public static ParseTree getTranscriptionalInterferenceTree(String pigeonString) {
+        ANTLRInputStream input = new ANTLRInputStream(pigeonString);
+        TranscriptionalInterferenceLexer lexer = new TranscriptionalInterferenceLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        TranscriptionalInterferenceParser parser = new TranscriptionalInterferenceParser(tokens);
+        ParseTree tree = parser.root();
+        
+        ParseTreeWalker.DEFAULT.walk(new TranscriptionalInterferenceBaseListener(), tree);
 
         System.out.println("INPUT :: " + pigeonString);
         System.out.println("TREE :: " + tree.toStringTree(parser));

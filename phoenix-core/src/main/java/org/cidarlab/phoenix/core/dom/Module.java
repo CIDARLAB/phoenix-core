@@ -136,7 +136,7 @@ public class Module {
     //Assigned module(s)
     @Getter
     @Setter
-    private ArrayList<AssignedModule> assignedModules;
+    private List<AssignedModule> assignedModules;
     
     //SBML Model
     @Getter
@@ -186,6 +186,37 @@ public class Module {
         HIGHER_FUNCTION;
     }
 
+    
+    public static String getShortModuleRole(ModuleRole role) {
+        switch (role) {
+            case EXPRESSOR:
+                return "exp";
+            case EXPRESSEE:
+                return "exe";
+            case EXPRESSEE_REPRESSOR:
+                return "exr";
+            case EXPRESSEE_REPRESSIBLE_REPRESSOR:
+                return "err";
+            case EXPRESSEE_ACTIVATOR:
+                return "exa";
+            case EXPRESSEE_ACTIVATIBLE_ACTIVATOR:
+                return "eaa";
+            case TRANSCRIPTIONAL_UNIT:
+                return "tu";
+            case EXPRESSION_DEGRATATION_CONTROL:
+                return "edc";
+            case REGULATION_CONTROL:
+                return "rc";
+            case COLOR_CONTROL:
+                return "cc";
+            case HIGHER_FUNCTION:
+                return "hf";
+            default:
+                return "";
+        }
+    }
+    
+    
     //Update moduleFeatures based on submodule features
     public void updateModuleFeatures() {
         List<Feature> updatedFeatures = new ArrayList<>();
@@ -195,7 +226,16 @@ public class Module {
         }
         this.setModuleFeatures(updatedFeatures);
     }
-
+    
+    public String getFeatureShortString(){
+        String featureString = "";
+        for(Feature feature:this.moduleFeatures){
+            featureString += Feature.getShortFeatureRole(feature.getRole()) + " ";
+        }
+        featureString = featureString.trim();
+        return featureString;
+    }
+    
     //Make sure that every node's color is white. Initialize the entire tree. Work on this. 
     public void initializeColor() {
 

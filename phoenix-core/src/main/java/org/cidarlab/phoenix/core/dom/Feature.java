@@ -298,4 +298,103 @@ public class Feature extends SharableObjBase {
         MARKER,
         WILDCARD;
     }
+    
+    public static String getShortFeatureRole(FeatureRole role){
+        switch(role){
+            case PROMOTER:
+                return "p";
+            case PROMOTER_REPRESSIBLE:
+                return "pr";
+            case PROMOTER_INDUCIBLE:
+                return "pi";
+            case PROMOTER_CONSTITUTIVE:
+                return "pc";
+            case RBS:
+                return "rbs";
+            case CDS:
+                return "cds";
+            case CDS_REPRESSOR:
+                return "cdr";
+            case CDS_ACTIVATOR:
+                return "cda";
+            case CDS_REPRESSIBLE_REPRESSOR:
+                return "crr";
+            case CDS_ACTIVATIBLE_ACTIVATOR:
+                return "caa";
+            case CDS_LINKER:
+                return "cdl";
+            case CDS_TAG:
+                return "cdt";
+            case CDS_RESISTANCE:
+                return "crt";
+            case CDS_FLUORESCENT:
+                return "cdf";
+            case CDS_FLUORESCENT_FUSION:
+                return "cff";
+            case TERMINATOR:
+                return "ter";
+            case ORIGIN:
+                return "ori";
+            case VECTOR:
+                return "vec";
+            case TESTING:
+                return "tes";
+            case MARKER:
+                return "mar";
+            case WILDCARD:
+                return "wc";
+            default :
+                return "";
+        }
+    }
+    
+    public static FeatureRole shortNameToRole(String sname){
+        switch(sname){
+            case "p":
+                return FeatureRole.PROMOTER;
+            case "pr":
+                return FeatureRole.PROMOTER_REPRESSIBLE;
+            case "pi":
+                return FeatureRole.PROMOTER_INDUCIBLE;
+            case "pc":
+                return FeatureRole.PROMOTER_CONSTITUTIVE;
+            case "rbs":
+                return FeatureRole.RBS;
+            case "cds":
+                return FeatureRole.CDS;
+            case "cdr":
+                return FeatureRole.CDS_REPRESSOR;
+            case "cda":
+                return FeatureRole.CDS_ACTIVATOR;
+            case "crr":
+                return FeatureRole.CDS_REPRESSIBLE_REPRESSOR;
+            case "caa":
+                return FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR;
+            case "cdl":
+                return FeatureRole.CDS_LINKER;
+            case "cdt":
+                return FeatureRole.CDS_TAG;
+            case "crt":
+                return FeatureRole.CDS_RESISTANCE;
+            case "cdf":
+                return FeatureRole.CDS_FLUORESCENT;
+            case "cff":
+                return FeatureRole.CDS_FLUORESCENT_FUSION;
+            case "ter":
+                return FeatureRole.TERMINATOR;
+            case "ori":
+                return FeatureRole.ORIGIN;
+            case "vec":
+                return FeatureRole.VECTOR;
+            case "tes":
+                return FeatureRole.TESTING;
+            case "mar":
+                return FeatureRole.MARKER;
+            case "wc":
+                return FeatureRole.WILDCARD;
+            default :
+                return FeatureRole.WILDCARD;
+        }
+    }
+    
 }

@@ -267,7 +267,5 @@ public class AssemblyParameters {
         }        
         
         return json;
-    }
-    
-    
+    }    
 }

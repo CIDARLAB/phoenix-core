@@ -496,7 +496,7 @@ setwd(wd)
 							File <- as.character(paste(currentMediaTypePath, "/regulation/plots/", name, sep=''))
 		   					File <- str_replace_all(File, fixed(" "), "")
 		   					dir.create(as.character(paste(currentMediaTypePath, "/regulation", sep='')))
-							dir.create(dirname(File), showWarnings = FALSE)
+							dir.create(dirname(File), showWarnings = FALSE)	    			
 									    			
 			    			#Plotting																		
 							png(File, width=960, height=960, res=120)

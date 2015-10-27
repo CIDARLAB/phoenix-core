@@ -28,6 +28,9 @@ import org.cidarlab.phoenix.core.dom.Polynucleotide;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
 import org.cidarlab.raven.accessibility.ClothoWriter;
 import org.cidarlab.raven.algorithms.core.PrimerDesign;
+import org.cidarlab.raven.communication.RavenController;
+import org.cidarlab.raven.communication.WeyekinPoster;
+import org.cidarlab.raven.datastructures.RGraph;
 import org.cidarlab.raven.javaapi.Raven;
 import org.clothoapi.clotho3javaapi.Clotho;
 import org.clothoapi.clotho3javaapi.ClothoConnection;
@@ -112,7 +115,10 @@ public class RavenAdaptor {
      
         //Run Raven to get assembly instructions
         Raven raven = new Raven();         
-        File assemblyInstructions = raven.assemblyInstructions(listTargetSets, partsLibR, vectorsLibR, libPairs, new HashMap(), rParameters, filePath);
+        RavenController assemblyObj = raven.assemblyObject(listTargetSets, partsLibR, vectorsLibR, libPairs, new HashMap(), rParameters, filePath);
+        File assemblyInstructions = assemblyObj.getInstructionsFile();
+//        WeyekinPoster.setDotText(RGraph.mergeWeyekinFiles(assemblyObj.getPigeonTextFiles()));
+//        WeyekinPoster.postMyVision();
         
         conn.closeConnection();
         return assemblyInstructions;

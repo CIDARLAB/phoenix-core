@@ -31,6 +31,7 @@ import org.cidarlab.raven.algorithms.core.PrimerDesign;
 import org.cidarlab.raven.communication.RavenController;
 import org.cidarlab.raven.communication.WeyekinPoster;
 import org.cidarlab.raven.datastructures.RGraph;
+import org.cidarlab.raven.datastructures.RNode;
 import org.cidarlab.raven.javaapi.Raven;
 import org.clothoapi.clotho3javaapi.Clotho;
 import org.clothoapi.clotho3javaapi.ClothoConnection;
@@ -116,7 +117,41 @@ public class RavenAdaptor {
         //Run Raven to get assembly instructions
         Raven raven = new Raven();         
         RavenController assemblyObj = raven.assemblyObject(listTargetSets, partsLibR, vectorsLibR, libPairs, new HashMap(), rParameters, filePath);
+        
+        //This is the information to be saved into Clotho and grabbed for the Owl datasheets
+        //This information applies to all polynucleotides currently made in Phoenix
+        String assemblyMethod = "MoClo (GoldenGate)"; //Right now everythig in Phoenix requires MoClo RFC 94 - can be extended in future, but this is what it is right now
+        String assemblyRFC = "BBa_94";
+        String chassis = "E. coli"; //Also always the case for Phoenix right now
+        String supplementalComments = ""; //Nothing for now, perhaps this can be searched upon plasmid re-enrty?
+        
+        //This information is specific to each Polynucleotide
+        for (HashSet<org.cidarlab.raven.datastructures.Part> partSet : listTargetSets) {
+            for (org.cidarlab.raven.datastructures.Part p : partSet) {
+                
+                ArrayList<String> neighborNames = new ArrayList<>();
+                String pigeonCode = "";
+                
+                //Assembly components should be the neighbors of the root node - the parts put together in the last cloning reaction for this polynucleotide
+                for (RGraph aG : assemblyObj.getAssemblyGraphs()) {
+                    if (aG.getRootNode().getName().equalsIgnoreCase(p.getName())) {
+                        ArrayList<RNode> neighbors = aG.getRootNode().getNeighbors();
+                        for (RNode n : neighbors) {
+                            neighborNames.add(n.getName());
+                        }
+                        if (assemblyObj.getPigeonTextFiles().containsKey(p.getName())) {
+                            pigeonCode = assemblyObj.getPigeonTextFiles().get(p.getName());
+                        }
+                    }
+                }
+            }
+        }
+        
         File assemblyInstructions = assemblyObj.getInstructionsFile();
+        
+        /*
+        THESE ARE THE METHODS FOR MAKING THE RAVEN-PIGEON IMAGES
+        */
 //        WeyekinPoster.setDotText(RGraph.mergeWeyekinFiles(assemblyObj.getPigeonTextFiles()));
 //        WeyekinPoster.postMyVision();
         
@@ -477,14 +512,6 @@ public class RavenAdaptor {
             typeP.add("plasmid");            
             
             ArrayList<String> scarSeqs = ClothoWriter.scarsToSeqs(scars, null);
-            
-            //Create blank polynucleotide as a placeholders
-            //Here is where the colony picking math should be applied
-//            HashSet<Polynucleotide> pnSet = new HashSet<>();
-//            Polynucleotide pnPlaceholder = new Polynucleotide();
-//            pnPlaceholder.setAccession(name + "_Polynucleotide");
-//            pnSet.add(pnPlaceholder);
-//            m.setPolynucleotides(pnSet);
             
             newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite(m.getName(), composition, scars, scarSeqs, linkers, directions, "", "", typeP);
             newPlasmid.setTransientStatus(false);   

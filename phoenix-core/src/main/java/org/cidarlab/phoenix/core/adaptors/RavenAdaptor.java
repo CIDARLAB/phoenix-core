@@ -131,14 +131,25 @@ public class RavenAdaptor {
                 
                 ArrayList<String> neighborNames = new ArrayList<>();
                 String pigeonCode = "";
-                
-                //Assembly components should be the neighbors of the root node - the parts put together in the last cloning reaction for this polynucleotide
+                                               
+                //This assumes part name and rootNode name are the same - I think this is true, but there might be a bug here
                 for (RGraph aG : assemblyObj.getAssemblyGraphs()) {
                     if (aG.getRootNode().getName().equalsIgnoreCase(p.getName())) {
+                        
+                        //Unclear if we want to use this information... The PrimitiveModules already have feature and direction, but these lists place the scars between those features
+                        ArrayList<String> composition = aG.getRootNode().getComposition();
+                        ArrayList<String> direction = aG.getRootNode().getDirection();
+                        ArrayList<String> linkers = aG.getRootNode().getLinkers();
+                        ArrayList<String> scars = aG.getRootNode().getScars();
+                        ArrayList<String> type = aG.getRootNode().getType();
+                        
+                        //Neighbor names - Assembly components should be the neighbors of the root node - the parts put together in the last cloning reaction for this polynucleotide
                         ArrayList<RNode> neighbors = aG.getRootNode().getNeighbors();
                         for (RNode n : neighbors) {
                             neighborNames.add(n.getName());
                         }
+                        
+                        //Pigeon code
                         if (assemblyObj.getPigeonTextFiles().containsKey(p.getName())) {
                             pigeonCode = assemblyObj.getPigeonTextFiles().get(p.getName());
                         }

@@ -1,46 +1,46 @@
 LOCUS       pBAD_BFP_REGULATION     4301 bp ds-DNA     circular     29-OCT-2015
 DEFINITION  .
 FEATURES             Location/Qualifiers
-     misc_feature    1222..1256
-                     /label="J23104"
-                     /ApEinfo_revcolor=#c6c9d1
-                     /ApEinfo_fwdcolor=#c6c9d1
      misc_feature    383..1081
                      /label="mTag-BFP"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    1089..1217
-                     /label="B0015"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    1349..1969
-                     /label="tetR"
-                     /ApEinfo_revcolor=#ffef86
-                     /ApEinfo_fwdcolor=#ffef86
-     misc_feature    complement(3168..3827)
-                     /label="ampR"
-                     /ApEinfo_revcolor=#75c6a9
-                     /ApEinfo_fwdcolor=#75c6a9
-     misc_feature    1261..1344
-                     /label="BCD8"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
-     misc_feature    295..378
-                     /label="BCD2"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
-     misc_feature    5..290
-                     /label="para-1"
-                     /ApEinfo_revcolor=#d6b295
-                     /ApEinfo_fwdcolor=#d6b295
-     misc_feature    1974..2102
-                     /label="B0015"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
      misc_feature    2316..3156
                      /label="p15A"
                      /ApEinfo_revcolor=#84b0dc
                      /ApEinfo_fwdcolor=#84b0dc
+     misc_feature    1349..1969
+                     /label="tetR"
+                     /ApEinfo_revcolor=#ffef86
+                     /ApEinfo_fwdcolor=#ffef86
+     misc_feature    1974..2102
+                     /label="B0015"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    1089..1217
+                     /label="B0015"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    1222..1256
+                     /label="J23104"
+                     /ApEinfo_revcolor=#c6c9d1
+                     /ApEinfo_fwdcolor=#c6c9d1
+     misc_feature    1261..1344
+                     /label="BCD8"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
+     misc_feature    complement(3168..3827)
+                     /label="ampR"
+                     /ApEinfo_revcolor=#75c6a9
+                     /ApEinfo_fwdcolor=#75c6a9
+     misc_feature    5..290
+                     /label="para-1"
+                     /ApEinfo_revcolor=#d6b295
+                     /ApEinfo_fwdcolor=#d6b295
+     misc_feature    295..378
+                     /label="BCD2"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
 ORIGIN
         1 GGAGaagaaa ccaattgtcc atattgcatc agacattgcc gtcactgcgt cttttactgg
        61 ctcttctcgc taaccaaacc ggtaaccccg cttattaaaa gcattctgta acaaagcggg
@@ -97,7 +97,7 @@ ORIGIN
      3121 tcaagaagat catcttatta atcagataaa atatttGGCG CGCCTTACCA ATGCTTAATC
      3181 AGTGAGGCAC CTATCTCAGC GATCTGTCTA TTTCGTTCAT CCATAGTTGC CTGACTCCCC
      3241 GTCGTGTAGA TAACTACGAT ACGGGAGGGC TTACCATCTG GCCCCAGTGC TGCAATGATA
-     3301 CCGCGAGACC CACGCTCACC GGCTCCAGAT TTATCAGCAA TAAACCAGCC AGCCGGAAGG
+     3301 CCGCGAGAAC CACGCTCACC GGCTCCAGAT TTATCAGCAA TAAACCAGCC AGCCGGAAGG
      3361 GCCGAGCGCA GAAGTGGTCC TGCAACTTTA TCCGCCTCCA TCCAGTCTAT TAATTGTTGC
      3421 CGGGAAGCTA GAGTAAGTAG TTCGCCAGTT AATAGTTTGC GCAACGTTGT TGCCATTGCT
      3481 ACAGGCATCG TGGTGTCACG CTCGTCGTTT GGTATGGCTT CATTCAGCTC CGGTTCCCAA
@@ -118,46 +118,46 @@ ORIGIN
 LOCUS       pBetI_BFP_REGULATION    4303 bp ds-DNA     circular     29-OCT-2015
 DEFINITION  .
 FEATURES             Location/Qualifiers
-     misc_feature    5..58
-                     /label="pBetI"
-                     /ApEinfo_revcolor=#85dae9
-                     /ApEinfo_fwdcolor=#85dae9
-     misc_feature    857..985
-                     /label="B0015"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    1029..1112
+                     /label="BCD8"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
+     misc_feature    2318..3158
+                     /label="p15A"
+                     /ApEinfo_revcolor=#84b0dc
+                     /ApEinfo_fwdcolor=#84b0dc
      misc_feature    990..1024
                      /label="J23104"
                      /ApEinfo_revcolor=#c6c9d1
                      /ApEinfo_fwdcolor=#c6c9d1
-     misc_feature    151..849
-                     /label="mTag-BFP"
+     misc_feature    5..58
+                     /label="pBetI"
+                     /ApEinfo_revcolor=#85dae9
+                     /ApEinfo_fwdcolor=#85dae9
+     misc_feature    1117..1992
+                     /label="araC"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
+     misc_feature    857..985
+                     /label="B0015"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
      misc_feature    63..146
                      /label="BCD2"
                      /ApEinfo_revcolor=#faac61
                      /ApEinfo_fwdcolor=#faac61
-     misc_feature    1117..1992
-                     /label="araC"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
-     misc_feature    1029..1112
-                     /label="BCD8"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
      misc_feature    2000..2104
                      /label="T1"
                      /ApEinfo_revcolor=#b4abac
                      /ApEinfo_fwdcolor=#b4abac
+     misc_feature    151..849
+                     /label="mTag-BFP"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(3170..3829)
                      /label="ampR"
                      /ApEinfo_revcolor=#75c6a9
                      /ApEinfo_fwdcolor=#75c6a9
-     misc_feature    2318..3158
-                     /label="p15A"
-                     /ApEinfo_revcolor=#84b0dc
-                     /ApEinfo_fwdcolor=#84b0dc
 ORIGIN
         1 GGAGttcatg gattcgttac caattgacaA TTgATTGGAC GTTCAATATA AtgctagcTA
        61 CTgggcccaa gttcacttaa aaaggagatc aacaatgaaa gcaattttcg tactgaaaca
@@ -214,7 +214,7 @@ ORIGIN
      3121 tctcaagaag atcatcttat taatcagata aaatatttGG CGCGCCTTAC CAATGCTTAA
      3181 TCAGTGAGGC ACCTATCTCA GCGATCTGTC TATTTCGTTC ATCCATAGTT GCCTGACTCC
      3241 CCGTCGTGTA GATAACTACG ATACGGGAGG GCTTACCATC TGGCCCCAGT GCTGCAATGA
-     3301 TACCGCGAGA CCCACGCTCA CCGGCTCCAG ATTTATCAGC AATAAACCAG CCAGCCGGAA
+     3301 TACCGCGAGA ACCACGCTCA CCGGCTCCAG ATTTATCAGC AATAAACCAG CCAGCCGGAA
      3361 GGGCCGAGCG CAGAAGTGGT CCTGCAACTT TATCCGCCTC CATCCAGTCT ATTAATTGTT
      3421 GCCGGGAAGC TAGAGTAAGT AGTTCGCCAG TTAATAGTTT GCGCAACGTT GTTGCCATTG
      3481 CTACAGGCAT CGTGGTGTCA CGCTCGTCGT TTGGTATGGC TTCATTCAGC TCCGGTTCCC
@@ -235,46 +235,46 @@ ORIGIN
 LOCUS       pBetI_GFP_REGULATION    4324 bp ds-DNA     circular     29-OCT-2015
 DEFINITION  .
 FEATURES             Location/Qualifiers
+     misc_feature    2339..3179
+                     /label="p15A"
+                     /ApEinfo_revcolor=#84b0dc
+                     /ApEinfo_fwdcolor=#84b0dc
+     misc_feature    2021..2125
+                     /label="T1"
+                     /ApEinfo_revcolor=#b4abac
+                     /ApEinfo_fwdcolor=#b4abac
+     misc_feature    151..864
+                     /label="EGFPm"
+                     /ApEinfo_revcolor=#c7b0e3
+                     /ApEinfo_fwdcolor=#c7b0e3
      misc_feature    complement(3191..3850)
                      /label="ampR"
                      /ApEinfo_revcolor=#75c6a9
                      /ApEinfo_fwdcolor=#75c6a9
-     misc_feature    1138..2013
-                     /label="araC"
+     misc_feature    5..58
+                     /label="pBetI"
+                     /ApEinfo_revcolor=#85dae9
+                     /ApEinfo_fwdcolor=#85dae9
+     misc_feature    63..146
+                     /label="BCD2"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
+     misc_feature    1050..1133
+                     /label="BCD8"
                      /ApEinfo_revcolor=#faac61
                      /ApEinfo_fwdcolor=#faac61
      misc_feature    878..1006
                      /label="B0015"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    63..146
-                     /label="BCD2"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
      misc_feature    1011..1045
                      /label="J23104"
                      /ApEinfo_revcolor=#c6c9d1
                      /ApEinfo_fwdcolor=#c6c9d1
-     misc_feature    5..58
-                     /label="pBetI"
-                     /ApEinfo_revcolor=#85dae9
-                     /ApEinfo_fwdcolor=#85dae9
-     misc_feature    1050..1133
-                     /label="BCD8"
+     misc_feature    1138..2013
+                     /label="araC"
                      /ApEinfo_revcolor=#faac61
                      /ApEinfo_fwdcolor=#faac61
-     misc_feature    2339..3179
-                     /label="p15A"
-                     /ApEinfo_revcolor=#84b0dc
-                     /ApEinfo_fwdcolor=#84b0dc
-     misc_feature    151..864
-                     /label="EGFPm"
-                     /ApEinfo_revcolor=#c7b0e3
-                     /ApEinfo_fwdcolor=#c7b0e3
-     misc_feature    2021..2125
-                     /label="T1"
-                     /ApEinfo_revcolor=#b4abac
-                     /ApEinfo_fwdcolor=#b4abac
 ORIGIN
         1 GGAGttcatg gattcgttac caattgacaA TTgATTGGAC GTTCAATATA AtgctagcTA
        61 CTgggcccaa gttcacttaa aaaggagatc aacaatgaaa gcaattttcg tactgaaaca
@@ -353,26 +353,14 @@ ORIGIN
 LOCUS       pBM3R1_BFP_REGULATION   4295 bp ds-DNA     circular     29-OCT-2015
 DEFINITION  .
 FEATURES             Location/Qualifiers
-     misc_feature    849..977
-                     /label="B0015"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    2310..3150
-                     /label="p15A"
-                     /ApEinfo_revcolor=#84b0dc
-                     /ApEinfo_fwdcolor=#84b0dc
-     misc_feature    982..1016
-                     /label="J23104"
-                     /ApEinfo_revcolor=#c6c9d1
-                     /ApEinfo_fwdcolor=#c6c9d1
      misc_feature    complement(3162..3821)
                      /label="ampR"
                      /ApEinfo_revcolor=#75c6a9
                      /ApEinfo_fwdcolor=#75c6a9
-     misc_feature    1992..2096
-                     /label="T1"
-                     /ApEinfo_revcolor=#b4abac
-                     /ApEinfo_fwdcolor=#b4abac
+     misc_feature    55..138
+                     /label="BCD2"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
      misc_feature    143..841
                      /label="mTag-BFP"
                      /ApEinfo_revcolor=#f58a5e
@@ -385,14 +373,26 @@ FEATURES             Location/Qualifiers
                      /label="BCD8"
                      /ApEinfo_revcolor=#faac61
                      /ApEinfo_fwdcolor=#faac61
-     misc_feature    55..138
-                     /label="BCD2"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
+     misc_feature    849..977
+                     /label="B0015"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    1992..2096
+                     /label="T1"
+                     /ApEinfo_revcolor=#b4abac
+                     /ApEinfo_fwdcolor=#b4abac
      misc_feature    5..50
                      /label="pBM3R1"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    982..1016
+                     /label="J23104"
+                     /ApEinfo_revcolor=#c6c9d1
+                     /ApEinfo_fwdcolor=#c6c9d1
+     misc_feature    2310..3150
+                     /label="p15A"
+                     /ApEinfo_revcolor=#84b0dc
+                     /ApEinfo_fwdcolor=#84b0dc
 ORIGIN
         1 GGAGttcgtt accaattgaC GGAATGAACG TTCATTCCGa taatgctagc TACTgggccc
        61 aagttcactt aaaaaggaga tcaacaatga aagcaatttt cgtactgaaa catcttaatc
@@ -449,7 +449,7 @@ ORIGIN
      3121 agatcatctt attaatcaga taaaatattt GGCGCGCCTT ACCAATGCTT AATCAGTGAG
      3181 GCACCTATCT CAGCGATCTG TCTATTTCGT TCATCCATAG TTGCCTGACT CCCCGTCGTG
      3241 TAGATAACTA CGATACGGGA GGGCTTACCA TCTGGCCCCA GTGCTGCAAT GATACCGCGA
-     3301 GACCCACGCT CACCGGCTCC AGATTTATCA GCAATAAACC AGCCAGCCGG AAGGGCCGAG
+     3301 GAACCACGCT CACCGGCTCC AGATTTATCA GCAATAAACC AGCCAGCCGG AAGGGCCGAG
      3361 CGCAGAAGTG GTCCTGCAAC TTTATCCGCC TCCATCCAGT CTATTAATTG TTGCCGGGAA
      3421 GCTAGAGTAA GTAGTTCGCC AGTTAATAGT TTGCGCAACG TTGTTGCCAT TGCTACAGGC
      3481 ATCGTGGTGT CACGCTCGTC GTTTGGTATG GCTTCATTCA GCTCCGGTTC CCAACGATCA
@@ -470,30 +470,22 @@ ORIGIN
 LOCUS       pBM3R1_GFP_REGULATION   4316 bp ds-DNA     circular     29-OCT-2015
 DEFINITION  .
 FEATURES             Location/Qualifiers
-     misc_feature    2331..3171
-                     /label="p15A"
-                     /ApEinfo_revcolor=#84b0dc
-                     /ApEinfo_fwdcolor=#84b0dc
-     misc_feature    1130..2005
-                     /label="araC"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
-     misc_feature    55..138
-                     /label="BCD2"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
      misc_feature    1003..1037
                      /label="J23104"
                      /ApEinfo_revcolor=#c6c9d1
                      /ApEinfo_fwdcolor=#c6c9d1
+     misc_feature    143..856
+                     /label="EGFPm"
+                     /ApEinfo_revcolor=#c7b0e3
+                     /ApEinfo_fwdcolor=#c7b0e3
+     misc_feature    1130..2005
+                     /label="araC"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
      misc_feature    870..998
                      /label="B0015"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    complement(3183..3842)
-                     /label="ampR"
-                     /ApEinfo_revcolor=#75c6a9
-                     /ApEinfo_fwdcolor=#75c6a9
      misc_feature    2013..2117
                      /label="T1"
                      /ApEinfo_revcolor=#b4abac
@@ -502,14 +494,22 @@ FEATURES             Location/Qualifiers
                      /label="BCD8"
                      /ApEinfo_revcolor=#faac61
                      /ApEinfo_fwdcolor=#faac61
-     misc_feature    143..856
-                     /label="EGFPm"
-                     /ApEinfo_revcolor=#c7b0e3
-                     /ApEinfo_fwdcolor=#c7b0e3
+     misc_feature    2331..3171
+                     /label="p15A"
+                     /ApEinfo_revcolor=#84b0dc
+                     /ApEinfo_fwdcolor=#84b0dc
      misc_feature    5..50
                      /label="pBM3R1"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
+     misc_feature    55..138
+                     /label="BCD2"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
+     misc_feature    complement(3183..3842)
+                     /label="ampR"
+                     /ApEinfo_revcolor=#75c6a9
+                     /ApEinfo_fwdcolor=#75c6a9
 ORIGIN
         1 GGAGttcgtt accaattgaC GGAATGAACG TTCATTCCGa taatgctagc TACTgggccc
        61 aagttcactt aaaaaggaga tcaacaatga aagcaatttt cgtactgaaa catcttaatc
@@ -566,7 +566,7 @@ ORIGIN
      3121 cagaccaaaa cgatctcaag aagatcatct tattaatcag ataaaatatt tGGCGCGCCT
      3181 TACCAATGCT TAATCAGTGA GGCACCTATC TCAGCGATCT GTCTATTTCG TTCATCCATA
      3241 GTTGCCTGAC TCCCCGTCGT GTAGATAACT ACGATACGGG AGGGCTTACC ATCTGGCCCC
-     3301 AGTGCTGCAA TGATACCGCG AGACCCACGC TCACCGGCTC CAGATTTATC AGCAATAAAC
+     3301 AGTGCTGCAA TGATACCGCG AGAACCACGC TCACCGGCTC CAGATTTATC AGCAATAAAC
      3361 CAGCCAGCCG GAAGGGCCGA GCGCAGAAGT GGTCCTGCAA CTTTATCCGC CTCCATCCAG
      3421 TCTATTAATT GTTGCCGGGA AGCTAGAGTA AGTAGTTCGC CAGTTAATAG TTTGCGCAAC
      3481 GTTGTTGCCA TTGCTACAGG CATCGTGGTG TCACGCTCGT CGTTTGGTAT GGCTTCATTC
@@ -591,10 +591,14 @@ FEATURES             Location/Qualifiers
                      /label="araC"
                      /ApEinfo_revcolor=#faac61
                      /ApEinfo_fwdcolor=#faac61
-     misc_feature    887..1015
-                     /label="B0015"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    93..176
+                     /label="BCD8"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
+     misc_feature    2348..3188
+                     /label="p15A"
+                     /ApEinfo_revcolor=#84b0dc
+                     /ApEinfo_fwdcolor=#84b0dc
      misc_feature    1059..1142
                      /label="BCD8"
                      /ApEinfo_revcolor=#faac61
@@ -603,30 +607,26 @@ FEATURES             Location/Qualifiers
                      /label="mTag-BFP"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    complement(3200..3859)
-                     /label="ampR"
-                     /ApEinfo_revcolor=#75c6a9
-                     /ApEinfo_fwdcolor=#75c6a9
-     misc_feature    93..176
-                     /label="BCD8"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
      misc_feature    5..88
                      /label="pA1LacO"
                      /ApEinfo_revcolor=#75c6a9
                      /ApEinfo_fwdcolor=#75c6a9
-     misc_feature    2030..2134
-                     /label="T1"
-                     /ApEinfo_revcolor=#b4abac
-                     /ApEinfo_fwdcolor=#b4abac
+     misc_feature    complement(3200..3859)
+                     /label="ampR"
+                     /ApEinfo_revcolor=#75c6a9
+                     /ApEinfo_fwdcolor=#75c6a9
      misc_feature    1020..1054
                      /label="J23104"
                      /ApEinfo_revcolor=#c6c9d1
                      /ApEinfo_fwdcolor=#c6c9d1
-     misc_feature    2348..3188
-                     /label="p15A"
-                     /ApEinfo_revcolor=#84b0dc
-                     /ApEinfo_fwdcolor=#84b0dc
+     misc_feature    2030..2134
+                     /label="T1"
+                     /ApEinfo_revcolor=#b4abac
+                     /ApEinfo_fwdcolor=#b4abac
+     misc_feature    887..1015
+                     /label="B0015"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 GGAGaaaatt tatcaaaaag agtgttgact tgtgagcgga taacaatgat acttagattc
        61 aattgtgagc ggataacaat ttcacacaTA CTgggcccaa gttcacttaa aaaggagatc
@@ -683,7 +683,7 @@ ORIGIN
      3121 gagcaagaga ttacgcgcag accaaaacga tctcaagaag atcatcttat taatcagata
      3181 aaatatttGG CGCGCCTTAC CAATGCTTAA TCAGTGAGGC ACCTATCTCA GCGATCTGTC
      3241 TATTTCGTTC ATCCATAGTT GCCTGACTCC CCGTCGTGTA GATAACTACG ATACGGGAGG
-     3301 GCTTACCATC TGGCCCCAGT GCTGCAATGA TACCGCGAGA CCCACGCTCA CCGGCTCCAG
+     3301 GCTTACCATC TGGCCCCAGT GCTGCAATGA TACCGCGAGA ACCACGCTCA CCGGCTCCAG
      3361 ATTTATCAGC AATAAACCAG CCAGCCGGAA GGGCCGAGCG CAGAAGTGGT CCTGCAACTT
      3421 TATCCGCCTC CATCCAGTCT ATTAATTGTT GCCGGGAAGC TAGAGTAAGT AGTTCGCCAG
      3481 TTAATAGTTT GCGCAACGTT GTTGCCATTG CTACAGGCAT CGTGGTGTCA CGCTCGTCGT
@@ -705,46 +705,46 @@ ORIGIN
 LOCUS       pLac_GFP_REGULATION     4354 bp ds-DNA     circular     29-OCT-2015
 DEFINITION  .
 FEATURES             Location/Qualifiers
-     misc_feature    complement(3221..3880)
-                     /label="ampR"
-                     /ApEinfo_revcolor=#75c6a9
-                     /ApEinfo_fwdcolor=#75c6a9
+     misc_feature    181..894
+                     /label="EGFPm"
+                     /ApEinfo_revcolor=#c7b0e3
+                     /ApEinfo_fwdcolor=#c7b0e3
      misc_feature    1080..1163
                      /label="BCD8"
                      /ApEinfo_revcolor=#faac61
                      /ApEinfo_fwdcolor=#faac61
+     misc_feature    5..88
+                     /label="pA1LacO"
+                     /ApEinfo_revcolor=#75c6a9
+                     /ApEinfo_fwdcolor=#75c6a9
+     misc_feature    908..1036
+                     /label="B0015"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    2369..3209
+                     /label="p15A"
+                     /ApEinfo_revcolor=#84b0dc
+                     /ApEinfo_fwdcolor=#84b0dc
      misc_feature    1168..2043
                      /label="araC"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
-     misc_feature    93..176
-                     /label="BCD8"
                      /ApEinfo_revcolor=#faac61
                      /ApEinfo_fwdcolor=#faac61
      misc_feature    1041..1075
                      /label="J23104"
                      /ApEinfo_revcolor=#c6c9d1
                      /ApEinfo_fwdcolor=#c6c9d1
+     misc_feature    93..176
+                     /label="BCD8"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
+     misc_feature    complement(3221..3880)
+                     /label="ampR"
+                     /ApEinfo_revcolor=#75c6a9
+                     /ApEinfo_fwdcolor=#75c6a9
      misc_feature    2051..2155
                      /label="T1"
                      /ApEinfo_revcolor=#b4abac
                      /ApEinfo_fwdcolor=#b4abac
-     misc_feature    2369..3209
-                     /label="p15A"
-                     /ApEinfo_revcolor=#84b0dc
-                     /ApEinfo_fwdcolor=#84b0dc
-     misc_feature    181..894
-                     /label="EGFPm"
-                     /ApEinfo_revcolor=#c7b0e3
-                     /ApEinfo_fwdcolor=#c7b0e3
-     misc_feature    908..1036
-                     /label="B0015"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    5..88
-                     /label="pA1LacO"
-                     /ApEinfo_revcolor=#75c6a9
-                     /ApEinfo_fwdcolor=#75c6a9
 ORIGIN
         1 GGAGaaaatt tatcaaaaag agtgttgact tgtgagcgga taacaatgat acttagattc
        61 aattgtgagc ggataacaat ttcacacaTA CTgggcccaa gttcacttaa aaaggagatc
@@ -802,7 +802,7 @@ ORIGIN
      3181 gatcatctta ttaatcagat aaaatatttG GCGCGCCTTA CCAATGCTTA ATCAGTGAGG
      3241 CACCTATCTC AGCGATCTGT CTATTTCGTT CATCCATAGT TGCCTGACTC CCCGTCGTGT
      3301 AGATAACTAC GATACGGGAG GGCTTACCAT CTGGCCCCAG TGCTGCAATG ATACCGCGAG
-     3361 ACCCACGCTC ACCGGCTCCA GATTTATCAG CAATAAACCA GCCAGCCGGA AGGGCCGAGC
+     3361 AACCACGCTC ACCGGCTCCA GATTTATCAG CAATAAACCA GCCAGCCGGA AGGGCCGAGC
      3421 GCAGAAGTGG TCCTGCAACT TTATCCGCCT CCATCCAGTC TATTAATTGT TGCCGGGAAG
      3481 CTAGAGTAAG TAGTTCGCCA GTTAATAGTT TGCGCAACGT TGTTGCCATT GCTACAGGCA
      3541 TCGTGGTGTC ACGCTCGTCG TTTGGTATGG CTTCATTCAG CTCCGGTTCC CAACGATCAA
@@ -823,39 +823,7 @@ ORIGIN
 LOCUS       pLmrA_BFP_REGULATION    4073 bp ds-DNA     circular     29-OCT-2015
 DEFINITION  .
 FEATURES             Location/Qualifiers
-     misc_feature    5..62
-                     /label="pLmrA"
-                     /ApEinfo_revcolor=#84b0dc
-                     /ApEinfo_fwdcolor=#84b0dc
-     misc_feature    994..1028
-                     /label="J23104"
-                     /ApEinfo_revcolor=#c6c9d1
-                     /ApEinfo_fwdcolor=#c6c9d1
-     misc_feature    1033..1116
-                     /label="BCD8"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
-     misc_feature    155..853
-                     /label="mTag-BFP"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    67..150
-                     /label="BCD2"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
-     misc_feature    1121..1741
-                     /label="tetR"
-                     /ApEinfo_revcolor=#ffef86
-                     /ApEinfo_fwdcolor=#ffef86
      misc_feature    1746..1874
-                     /label="B0015"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    complement(2940..3599)
-                     /label="ampR"
-                     /ApEinfo_revcolor=#75c6a9
-                     /ApEinfo_fwdcolor=#75c6a9
-     misc_feature    861..989
                      /label="B0015"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
@@ -863,6 +831,38 @@ FEATURES             Location/Qualifiers
                      /label="p15A"
                      /ApEinfo_revcolor=#84b0dc
                      /ApEinfo_fwdcolor=#84b0dc
+     misc_feature    155..853
+                     /label="mTag-BFP"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    994..1028
+                     /label="J23104"
+                     /ApEinfo_revcolor=#c6c9d1
+                     /ApEinfo_fwdcolor=#c6c9d1
+     misc_feature    5..62
+                     /label="pLmrA"
+                     /ApEinfo_revcolor=#84b0dc
+                     /ApEinfo_fwdcolor=#84b0dc
+     misc_feature    67..150
+                     /label="BCD2"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
+     misc_feature    1033..1116
+                     /label="BCD8"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
+     misc_feature    861..989
+                     /label="B0015"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    complement(2940..3599)
+                     /label="ampR"
+                     /ApEinfo_revcolor=#75c6a9
+                     /ApEinfo_fwdcolor=#75c6a9
+     misc_feature    1121..1741
+                     /label="tetR"
+                     /ApEinfo_revcolor=#ffef86
+                     /ApEinfo_fwdcolor=#ffef86
 ORIGIN
         1 GGAGttcgtt accaattgac aactggtggt cgaatcaaGA TAATAGACCA GTCACTATAT
        61 TTTACTgggc ccaagttcac ttaaaaagga gatcaacaat gaaagcaatt ttcgtactga
@@ -915,7 +915,7 @@ ORIGIN
      2881 accaaaacga tctcaagaag atcatcttat taatcagata aaatatttGG CGCGCCTTAC
      2941 CAATGCTTAA TCAGTGAGGC ACCTATCTCA GCGATCTGTC TATTTCGTTC ATCCATAGTT
      3001 GCCTGACTCC CCGTCGTGTA GATAACTACG ATACGGGAGG GCTTACCATC TGGCCCCAGT
-     3061 GCTGCAATGA TACCGCGAGA CCCACGCTCA CCGGCTCCAG ATTTATCAGC AATAAACCAG
+     3061 GCTGCAATGA TACCGCGAGA ACCACGCTCA CCGGCTCCAG ATTTATCAGC AATAAACCAG
      3121 CCAGCCGGAA GGGCCGAGCG CAGAAGTGGT CCTGCAACTT TATCCGCCTC CATCCAGTCT
      3181 ATTAATTGTT GCCGGGAAGC TAGAGTAAGT AGTTCGCCAG TTAATAGTTT GCGCAACGTT
      3241 GTTGCCATTG CTACAGGCAT CGTGGTGTCA CGCTCGTCGT TTGGTATGGC TTCATTCAGC
@@ -936,6 +936,22 @@ ORIGIN
 LOCUS       pPhlF_BFP_REGULATION    4295 bp ds-DNA     circular     29-OCT-2015
 DEFINITION  .
 FEATURES             Location/Qualifiers
+     misc_feature    complement(3162..3821)
+                     /label="ampR"
+                     /ApEinfo_revcolor=#75c6a9
+                     /ApEinfo_fwdcolor=#75c6a9
+     misc_feature    1109..1984
+                     /label="araC"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
+     misc_feature    1992..2096
+                     /label="T1"
+                     /ApEinfo_revcolor=#b4abac
+                     /ApEinfo_fwdcolor=#b4abac
+     misc_feature    2310..3150
+                     /label="p15A"
+                     /ApEinfo_revcolor=#84b0dc
+                     /ApEinfo_fwdcolor=#84b0dc
      misc_feature    5..50
                      /label="pPhlF"
                      /ApEinfo_revcolor=#c7b0e3
@@ -944,38 +960,22 @@ FEATURES             Location/Qualifiers
                      /label="BCD8"
                      /ApEinfo_revcolor=#faac61
                      /ApEinfo_fwdcolor=#faac61
-     misc_feature    2310..3150
-                     /label="p15A"
-                     /ApEinfo_revcolor=#84b0dc
-                     /ApEinfo_fwdcolor=#84b0dc
-     misc_feature    complement(3162..3821)
-                     /label="ampR"
-                     /ApEinfo_revcolor=#75c6a9
-                     /ApEinfo_fwdcolor=#75c6a9
+     misc_feature    143..841
+                     /label="mTag-BFP"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    982..1016
                      /label="J23104"
                      /ApEinfo_revcolor=#c6c9d1
                      /ApEinfo_fwdcolor=#c6c9d1
-     misc_feature    1109..1984
-                     /label="araC"
+     misc_feature    55..138
+                     /label="BCD2"
                      /ApEinfo_revcolor=#faac61
                      /ApEinfo_fwdcolor=#faac61
      misc_feature    849..977
                      /label="B0015"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    143..841
-                     /label="mTag-BFP"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    1992..2096
-                     /label="T1"
-                     /ApEinfo_revcolor=#b4abac
-                     /ApEinfo_fwdcolor=#b4abac
-     misc_feature    55..138
-                     /label="BCD2"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
 ORIGIN
         1 GGAGttcgtt accaattgac ATGATACGAA ACGTACCGTA TCGTTAAGGT TACTgggccc
        61 aagttcactt aaaaaggaga tcaacaatga aagcaatttt cgtactgaaa catcttaatc
@@ -1032,7 +1032,7 @@ ORIGIN
      3121 agatcatctt attaatcaga taaaatattt GGCGCGCCTT ACCAATGCTT AATCAGTGAG
      3181 GCACCTATCT CAGCGATCTG TCTATTTCGT TCATCCATAG TTGCCTGACT CCCCGTCGTG
      3241 TAGATAACTA CGATACGGGA GGGCTTACCA TCTGGCCCCA GTGCTGCAAT GATACCGCGA
-     3301 GACCCACGCT CACCGGCTCC AGATTTATCA GCAATAAACC AGCCAGCCGG AAGGGCCGAG
+     3301 GAACCACGCT CACCGGCTCC AGATTTATCA GCAATAAACC AGCCAGCCGG AAGGGCCGAG
      3361 CGCAGAAGTG GTCCTGCAAC TTTATCCGCC TCCATCCAGT CTATTAATTG TTGCCGGGAA
      3421 GCTAGAGTAA GTAGTTCGCC AGTTAATAGT TTGCGCAACG TTGTTGCCAT TGCTACAGGC
      3481 ATCGTGGTGT CACGCTCGTC GTTTGGTATG GCTTCATTCA GCTCCGGTTC CCAACGATCA
@@ -1053,38 +1053,34 @@ ORIGIN
 LOCUS       pSrpR_BFP_REGULATION    4314 bp ds-DNA     circular     29-OCT-2015
 DEFINITION  .
 FEATURES             Location/Qualifiers
-     misc_feature    1128..2003
-                     /label="araC"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
-     misc_feature    1001..1035
-                     /label="J23104"
-                     /ApEinfo_revcolor=#c6c9d1
-                     /ApEinfo_fwdcolor=#c6c9d1
-     misc_feature    2011..2115
-                     /label="T1"
-                     /ApEinfo_revcolor=#b4abac
-                     /ApEinfo_fwdcolor=#b4abac
-     misc_feature    complement(3181..3840)
-                     /label="ampR"
-                     /ApEinfo_revcolor=#75c6a9
-                     /ApEinfo_fwdcolor=#75c6a9
-     misc_feature    74..157
-                     /label="BCD2"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
-     misc_feature    868..996
-                     /label="B0015"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    162..860
-                     /label="mTag-BFP"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    5..69
                      /label="pSrpR"
                      /ApEinfo_revcolor=#ff9ccd
                      /ApEinfo_fwdcolor=#ff9ccd
+     misc_feature    162..860
+                     /label="mTag-BFP"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    2011..2115
+                     /label="T1"
+                     /ApEinfo_revcolor=#b4abac
+                     /ApEinfo_fwdcolor=#b4abac
+     misc_feature    868..996
+                     /label="B0015"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    1001..1035
+                     /label="J23104"
+                     /ApEinfo_revcolor=#c6c9d1
+                     /ApEinfo_fwdcolor=#c6c9d1
+     misc_feature    74..157
+                     /label="BCD2"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
+     misc_feature    complement(3181..3840)
+                     /label="ampR"
+                     /ApEinfo_revcolor=#75c6a9
+                     /ApEinfo_fwdcolor=#75c6a9
      misc_feature    1040..1123
                      /label="BCD8"
                      /ApEinfo_revcolor=#faac61
@@ -1093,6 +1089,10 @@ FEATURES             Location/Qualifiers
                      /label="p15A"
                      /ApEinfo_revcolor=#84b0dc
                      /ApEinfo_fwdcolor=#84b0dc
+     misc_feature    1128..2003
+                     /label="araC"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
 ORIGIN
         1 GGAGttcgtt accaattgac agctagctca gtcctaggtA TATACATACA TGCTTGTTTG
        61 TTTGTAAACT ACTgggccca agttcactta aaaaggagat caacaatgaa agcaattttc
@@ -1149,7 +1149,7 @@ ORIGIN
      3121 gaccaaaacg atctcaagaa gatcatctta ttaatcagat aaaatatttG GCGCGCCTTA
      3181 CCAATGCTTA ATCAGTGAGG CACCTATCTC AGCGATCTGT CTATTTCGTT CATCCATAGT
      3241 TGCCTGACTC CCCGTCGTGT AGATAACTAC GATACGGGAG GGCTTACCAT CTGGCCCCAG
-     3301 TGCTGCAATG ATACCGCGAG ACCCACGCTC ACCGGCTCCA GATTTATCAG CAATAAACCA
+     3301 TGCTGCAATG ATACCGCGAG AACCACGCTC ACCGGCTCCA GATTTATCAG CAATAAACCA
      3361 GCCAGCCGGA AGGGCCGAGC GCAGAAGTGG TCCTGCAACT TTATCCGCCT CCATCCAGTC
      3421 TATTAATTGT TGCCGGGAAG CTAGAGTAAG TAGTTCGCCA GTTAATAGTT TGCGCAACGT
      3481 TGTTGCCATT GCTACAGGCA TCGTGGTGTC ACGCTCGTCG TTTGGTATGG CTTCATTCAG
@@ -1170,30 +1170,14 @@ ORIGIN
 LOCUS       pSrpR_GFP_REGULATION    4335 bp ds-DNA     circular     29-OCT-2015
 DEFINITION  .
 FEATURES             Location/Qualifiers
-     misc_feature    2350..3190
-                     /label="p15A"
-                     /ApEinfo_revcolor=#84b0dc
-                     /ApEinfo_fwdcolor=#84b0dc
+     misc_feature    162..875
+                     /label="EGFPm"
+                     /ApEinfo_revcolor=#c7b0e3
+                     /ApEinfo_fwdcolor=#c7b0e3
      misc_feature    1149..2024
                      /label="araC"
                      /ApEinfo_revcolor=#faac61
                      /ApEinfo_fwdcolor=#faac61
-     misc_feature    889..1017
-                     /label="B0015"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    2032..2136
-                     /label="T1"
-                     /ApEinfo_revcolor=#b4abac
-                     /ApEinfo_fwdcolor=#b4abac
-     misc_feature    complement(3202..3861)
-                     /label="ampR"
-                     /ApEinfo_revcolor=#75c6a9
-                     /ApEinfo_fwdcolor=#75c6a9
-     misc_feature    1022..1056
-                     /label="J23104"
-                     /ApEinfo_revcolor=#c6c9d1
-                     /ApEinfo_fwdcolor=#c6c9d1
      misc_feature    1061..1144
                      /label="BCD8"
                      /ApEinfo_revcolor=#faac61
@@ -1202,14 +1186,30 @@ FEATURES             Location/Qualifiers
                      /label="pSrpR"
                      /ApEinfo_revcolor=#ff9ccd
                      /ApEinfo_fwdcolor=#ff9ccd
+     misc_feature    2350..3190
+                     /label="p15A"
+                     /ApEinfo_revcolor=#84b0dc
+                     /ApEinfo_fwdcolor=#84b0dc
+     misc_feature    complement(3202..3861)
+                     /label="ampR"
+                     /ApEinfo_revcolor=#75c6a9
+                     /ApEinfo_fwdcolor=#75c6a9
+     misc_feature    2032..2136
+                     /label="T1"
+                     /ApEinfo_revcolor=#b4abac
+                     /ApEinfo_fwdcolor=#b4abac
      misc_feature    74..157
                      /label="BCD2"
                      /ApEinfo_revcolor=#faac61
                      /ApEinfo_fwdcolor=#faac61
-     misc_feature    162..875
-                     /label="EGFPm"
-                     /ApEinfo_revcolor=#c7b0e3
-                     /ApEinfo_fwdcolor=#c7b0e3
+     misc_feature    889..1017
+                     /label="B0015"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    1022..1056
+                     /label="J23104"
+                     /ApEinfo_revcolor=#c6c9d1
+                     /ApEinfo_fwdcolor=#c6c9d1
 ORIGIN
         1 GGAGttcgtt accaattgac agctagctca gtcctaggtA TATACATACA TGCTTGTTTG
        61 TTTGTAAACT ACTgggccca agttcactta aaaaggagat caacaatgaa agcaattttc
@@ -1266,7 +1266,7 @@ ORIGIN
      3121 cagagcaaga gattacgcgc agaccaaaac gatctcaaga agatcatctt attaatcaga
      3181 taaaatattt GGCGCGCCTT ACCAATGCTT AATCAGTGAG GCACCTATCT CAGCGATCTG
      3241 TCTATTTCGT TCATCCATAG TTGCCTGACT CCCCGTCGTG TAGATAACTA CGATACGGGA
-     3301 GGGCTTACCA TCTGGCCCCA GTGCTGCAAT GATACCGCGA GACCCACGCT CACCGGCTCC
+     3301 GGGCTTACCA TCTGGCCCCA GTGCTGCAAT GATACCGCGA GAACCACGCT CACCGGCTCC
      3361 AGATTTATCA GCAATAAACC AGCCAGCCGG AAGGGCCGAG CGCAGAAGTG GTCCTGCAAC
      3421 TTTATCCGCC TCCATCCAGT CTATTAATTG TTGCCGGGAA GCTAGAGTAA GTAGTTCGCC
      3481 AGTTAATAGT TTGCGCAACG TTGTTGCCAT TGCTACAGGC ATCGTGGTGT CACGCTCGTC
@@ -1288,46 +1288,46 @@ ORIGIN
 LOCUS       pTet_BFP_REGULATION     4326 bp ds-DNA     circular     29-OCT-2015
 DEFINITION  .
 FEATURES             Location/Qualifiers
-     misc_feature    86..169
-                     /label="BCD2"
+     misc_feature    5..81
+                     /label="pLtetO-1"
+                     /ApEinfo_revcolor=#9eafd2
+                     /ApEinfo_fwdcolor=#9eafd2
+     misc_feature    1013..1047
+                     /label="J23104"
+                     /ApEinfo_revcolor=#c6c9d1
+                     /ApEinfo_fwdcolor=#c6c9d1
+     misc_feature    174..872
+                     /label="mTag-BFP"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    2023..2127
+                     /label="T1"
+                     /ApEinfo_revcolor=#b4abac
+                     /ApEinfo_fwdcolor=#b4abac
+     misc_feature    1140..2015
+                     /label="araC"
                      /ApEinfo_revcolor=#faac61
                      /ApEinfo_fwdcolor=#faac61
      misc_feature    1052..1135
                      /label="BCD8"
                      /ApEinfo_revcolor=#faac61
                      /ApEinfo_fwdcolor=#faac61
-     misc_feature    2341..3181
-                     /label="p15A"
-                     /ApEinfo_revcolor=#84b0dc
-                     /ApEinfo_fwdcolor=#84b0dc
-     misc_feature    1140..2015
-                     /label="araC"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
-     misc_feature    1013..1047
-                     /label="J23104"
-                     /ApEinfo_revcolor=#c6c9d1
-                     /ApEinfo_fwdcolor=#c6c9d1
-     misc_feature    5..81
-                     /label="pLtetO-1"
-                     /ApEinfo_revcolor=#9eafd2
-                     /ApEinfo_fwdcolor=#9eafd2
-     misc_feature    2023..2127
-                     /label="T1"
-                     /ApEinfo_revcolor=#b4abac
-                     /ApEinfo_fwdcolor=#b4abac
-     misc_feature    complement(3193..3852)
-                     /label="ampR"
-                     /ApEinfo_revcolor=#75c6a9
-                     /ApEinfo_fwdcolor=#75c6a9
      misc_feature    880..1008
                      /label="B0015"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    174..872
-                     /label="mTag-BFP"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    2341..3181
+                     /label="p15A"
+                     /ApEinfo_revcolor=#84b0dc
+                     /ApEinfo_fwdcolor=#84b0dc
+     misc_feature    86..169
+                     /label="BCD2"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
+     misc_feature    complement(3193..3852)
+                     /label="ampR"
+                     /ApEinfo_revcolor=#75c6a9
+                     /ApEinfo_fwdcolor=#75c6a9
 ORIGIN
         1 GGAGtcccta tcagtgatag agattgacat ccctatcagt gatagagata ctgagcacat
        61 cagcaggacg cactgaccga aTACTgggcc caagttcact taaaaaggag atcaacaatg
@@ -1384,7 +1384,7 @@ ORIGIN
      3121 agattacgcg cagaccaaaa cgatctcaag aagatcatct tattaatcag ataaaatatt
      3181 tGGCGCGCCT TACCAATGCT TAATCAGTGA GGCACCTATC TCAGCGATCT GTCTATTTCG
      3241 TTCATCCATA GTTGCCTGAC TCCCCGTCGT GTAGATAACT ACGATACGGG AGGGCTTACC
-     3301 ATCTGGCCCC AGTGCTGCAA TGATACCGCG AGACCCACGC TCACCGGCTC CAGATTTATC
+     3301 ATCTGGCCCC AGTGCTGCAA TGATACCGCG AGAACCACGC TCACCGGCTC CAGATTTATC
      3361 AGCAATAAAC CAGCCAGCCG GAAGGGCCGA GCGCAGAAGT GGTCCTGCAA CTTTATCCGC
      3421 CTCCATCCAG TCTATTAATT GTTGCCGGGA AGCTAGAGTA AGTAGTTCGC CAGTTAATAG
      3481 TTTGCGCAAC GTTGTTGCCA TTGCTACAGG CATCGTGGTG TCACGCTCGT CGTTTGGTAT
@@ -1406,46 +1406,46 @@ ORIGIN
 LOCUS       pTet_GFP_REGULATION     4347 bp ds-DNA     circular     29-OCT-2015
 DEFINITION  .
 FEATURES             Location/Qualifiers
+     misc_feature    2362..3202
+                     /label="p15A"
+                     /ApEinfo_revcolor=#84b0dc
+                     /ApEinfo_fwdcolor=#84b0dc
+     misc_feature    complement(3214..3873)
+                     /label="ampR"
+                     /ApEinfo_revcolor=#75c6a9
+                     /ApEinfo_fwdcolor=#75c6a9
+     misc_feature    5..81
+                     /label="pLtetO-1"
+                     /ApEinfo_revcolor=#9eafd2
+                     /ApEinfo_fwdcolor=#9eafd2
+     misc_feature    1161..2036
+                     /label="araC"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
+     misc_feature    1034..1068
+                     /label="J23104"
+                     /ApEinfo_revcolor=#c6c9d1
+                     /ApEinfo_fwdcolor=#c6c9d1
      misc_feature    1073..1156
                      /label="BCD8"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
+     misc_feature    86..169
+                     /label="BCD2"
                      /ApEinfo_revcolor=#faac61
                      /ApEinfo_fwdcolor=#faac61
      misc_feature    174..887
                      /label="EGFPm"
                      /ApEinfo_revcolor=#c7b0e3
                      /ApEinfo_fwdcolor=#c7b0e3
-     misc_feature    1034..1068
-                     /label="J23104"
-                     /ApEinfo_revcolor=#c6c9d1
-                     /ApEinfo_fwdcolor=#c6c9d1
-     misc_feature    5..81
-                     /label="pLtetO-1"
-                     /ApEinfo_revcolor=#9eafd2
-                     /ApEinfo_fwdcolor=#9eafd2
-     misc_feature    2362..3202
-                     /label="p15A"
-                     /ApEinfo_revcolor=#84b0dc
-                     /ApEinfo_fwdcolor=#84b0dc
-     misc_feature    86..169
-                     /label="BCD2"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
-     misc_feature    complement(3214..3873)
-                     /label="ampR"
-                     /ApEinfo_revcolor=#75c6a9
-                     /ApEinfo_fwdcolor=#75c6a9
-     misc_feature    1161..2036
-                     /label="araC"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
-     misc_feature    2044..2148
-                     /label="T1"
-                     /ApEinfo_revcolor=#b4abac
-                     /ApEinfo_fwdcolor=#b4abac
      misc_feature    901..1029
                      /label="B0015"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    2044..2148
+                     /label="T1"
+                     /ApEinfo_revcolor=#b4abac
+                     /ApEinfo_fwdcolor=#b4abac
 ORIGIN
         1 GGAGtcccta tcagtgatag agattgacat ccctatcagt gatagagata ctgagcacat
        61 cagcaggacg cactgaccga aTACTgggcc caagttcact taaaaaggag atcaacaatg
@@ -1502,7 +1502,7 @@ ORIGIN
      3121 ttttttcgtt ttcagagcaa gagattacgc gcagaccaaa acgatctcaa gaagatcatc
      3181 ttattaatca gataaaatat ttGGCGCGCC TTACCAATGC TTAATCAGTG AGGCACCTAT
      3241 CTCAGCGATC TGTCTATTTC GTTCATCCAT AGTTGCCTGA CTCCCCGTCG TGTAGATAAC
-     3301 TACGATACGG GAGGGCTTAC CATCTGGCCC CAGTGCTGCA ATGATACCGC GAGACCCACG
+     3301 TACGATACGG GAGGGCTTAC CATCTGGCCC CAGTGCTGCA ATGATACCGC GAGAACCACG
      3361 CTCACCGGCT CCAGATTTAT CAGCAATAAA CCAGCCAGCC GGAAGGGCCG AGCGCAGAAG
      3421 TGGTCCTGCA ACTTTATCCG CCTCCATCCA GTCTATTAAT TGTTGCCGGG AAGCTAGAGT
      3481 AAGTAGTTCG CCAGTTAATA GTTTGCGCAA CGTTGTTGCC ATTGCTACAG GCATCGTGGT

@@ -1,21 +1,21 @@
 LOCUS       DVL0_A*B                2606 bp ds-DNA     circular     28-SEP-2015
 DEFINITION  .
-KEYWORDS    "antibiotic:Ampicillin" "backbone:pSB1A2" "fusion-site:MD"         
-            "source:Phoenix" "cloned-by:EA" "seq-verify:EA" "part-subtype:Level
-            0" "part-type:Destination Vector" "glycerol:EA-1-8"
+KEYWORDS    "part-type:Destination Vector" "fusion-site:MD" "part-subtype:Level
+            0" "glycerol:EA-1-8" "backbone:pSB1A2" "antibiotic:Ampicillin"
+            "source:Phoenix" "seq-verify:EA" "cloned-by:EA"
 FEATURES             Location/Qualifiers
-     misc_feature    13..494
-                     /label="lacZalpha"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    complement(693..1375)
-                     /label="ColE1"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
      misc_feature    complement(1473..2132)
                      /label="ampR"
                      /ApEinfo_revcolor=#75c6a9
                      /ApEinfo_fwdcolor=#75c6a9
+     misc_feature    complement(693..1375)
+                     /label="ColE1"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
+     misc_feature    13..494
+                     /label="lacZalpha"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 CTCCatgtct tctgcaccat atgcggtgtg aaataccgca cagatgcgta aggagaaaat
        61 accgcatcag gcgccattcg ccattcaggc tgcgcaactg ttgggaaggg cgatcggtgc
@@ -64,11 +64,14 @@ ORIGIN
 //
 LOCUS       DVL0_A*H                2606 bp ds-DNA     circular     28-SEP-2015
 DEFINITION  .
-KEYWORDS    "fusion-site:MD" "seq-verify:EA" "backbone:pSB1A2"                 
-            "part-subtype:Level 0" "source:Phoenix" "glycerol:EA-1-8"
-            "antibiotic:Ampicillin" "part-type:Destination Vector"
-            "cloned-by:EA"
+KEYWORDS    "part-subtype:Level 0" "fusion-site:MD" "source:Phoenix"           
+            "cloned-by:EA" "backbone:pSB1A2" "antibiotic:Ampicillin"
+            "seq-verify:EA" "glycerol:EA-1-8" "part-type:Destination Vector"
 FEATURES             Location/Qualifiers
+     misc_feature    13..494
+                     /label="lacZalpha"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(693..1375)
                      /label="ColE1"
                      /ApEinfo_revcolor=#faac61
@@ -77,10 +80,6 @@ FEATURES             Location/Qualifiers
                      /label="ampR"
                      /ApEinfo_revcolor=#75c6a9
                      /ApEinfo_fwdcolor=#75c6a9
-     misc_feature    13..494
-                     /label="lacZalpha"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 CTCCatgtct tctgcaccat atgcggtgtg aaataccgca cagatgcgta aggagaaaat
        61 accgcatcag gcgccattcg ccattcaggc tgcgcaactg ttgggaaggg cgatcggtgc
@@ -129,9 +128,9 @@ ORIGIN
 //
 LOCUS       DVL0_AF*                2606 bp ds-DNA     circular     28-SEP-2015
 DEFINITION  .
-KEYWORDS    "backbone:pSB1A2" "part-subtype:Level 0" "cloned-by:EA"            
-            "source:Phoenix" "fusion-site:MD" "antibiotic:Ampicillin"
-            "seq-verify:EA" "glycerol:EA-1-8" "part-type:Destination Vector"
+KEYWORDS    "glycerol:EA-1-8" "seq-verify:EA" "part-type:Destination Vector"   
+            "antibiotic:Ampicillin" "source:Phoenix" "part-subtype:Level 0"
+            "backbone:pSB1A2" "cloned-by:EA" "fusion-site:MD"
 FEATURES             Location/Qualifiers
      misc_feature    complement(693..1375)
                      /label="ColE1"
@@ -193,18 +192,18 @@ ORIGIN
 //
 LOCUS       DVL0_BE*                2606 bp ds-DNA     circular     28-SEP-2015
 DEFINITION  .
-KEYWORDS    "part-subtype:Level 0" "seq-verify:EA" "antibiotic:Ampicillin"     
-            "cloned-by:EA" "glycerol:EA-1-8" "source:Phoenix"
-            "part-type:Destination Vector" "backbone:pSB1A2" "fusion-site:MD"
+KEYWORDS    "part-type:Destination Vector" "fusion-site:MD" "part-subtype:Level
+            0" "source:Phoenix" "antibiotic:Ampicillin" "seq-verify:EA"
+            "glycerol:EA-1-8" "cloned-by:EA" "backbone:pSB1A2"
 FEATURES             Location/Qualifiers
-     misc_feature    complement(693..1375)
-                     /label="ColE1"
-                     /ApEinfo_revcolor=#faac61
-                     /ApEinfo_fwdcolor=#faac61
      misc_feature    complement(1473..2132)
                      /label="ampR"
                      /ApEinfo_revcolor=#75c6a9
                      /ApEinfo_fwdcolor=#75c6a9
+     misc_feature    complement(693..1375)
+                     /label="ColE1"
+                     /ApEinfo_revcolor=#faac61
+                     /ApEinfo_fwdcolor=#faac61
      misc_feature    13..494
                      /label="lacZalpha"
                      /ApEinfo_revcolor=#f58a5e
@@ -257,10 +256,15 @@ ORIGIN
 //
 LOCUS       DVL0_DA*                2606 bp ds-DNA     circular     28-SEP-2015
 DEFINITION  .
-KEYWORDS    "antibiotic:Ampicillin" "glycerol:EA-1-8" "part-subtype:Level 0"   
-            "seq-verify:EA" "backbone:pSB1A2" "cloned-by:EA" "fusion-site:MD"
-            "part-type:Destination Vector" "source:Phoenix"
+KEYWORDS    "cloned-by:EA" "antibiotic:Ampicillin" "source:Phoenix"            
+            "seq-verify:EA" "fusion-site:MD" "glycerol:EA-1-8"
+            "part-subtype:Level 0" "backbone:pSB1A2" "part-type:Destination
+            Vector"
 FEATURES             Location/Qualifiers
+     misc_feature    13..494
+                     /label="lacZalpha"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(693..1375)
                      /label="ColE1"
                      /ApEinfo_revcolor=#faac61
@@ -269,10 +273,6 @@ FEATURES             Location/Qualifiers
                      /label="ampR"
                      /ApEinfo_revcolor=#75c6a9
                      /ApEinfo_fwdcolor=#75c6a9
-     misc_feature    13..494
-                     /label="lacZalpha"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 AGGTatgtct tctgcaccat atgcggtgtg aaataccgca cagatgcgta aggagaaaat
        61 accgcatcag gcgccattcg ccattcaggc tgcgcaactg ttgggaaggg cgatcggtgc
@@ -321,9 +321,9 @@ ORIGIN
 //
 LOCUS       DVL0_DK                 2606 bp ds-DNA     circular     28-SEP-2015
 DEFINITION  .
-KEYWORDS    "seq-verify:EA" "fusion-site:MD" "source:Phoenix" "glycerol:EA-1-8"
-            "part-type:Destination Vector" "part-subtype:Level 0"
-            "cloned-by:EA" "backbone:pSB1A2" "antibiotic:Ampicillin"
+KEYWORDS    "source:Phoenix" "part-subtype:Level 0" "seq-verify:EA"            
+            "backbone:pSB1A2" "fusion-site:MD" "antibiotic:Ampicillin"
+            "cloned-by:EA" "part-type:Destination Vector" "glycerol:EA-1-8"
 FEATURES             Location/Qualifiers
      misc_feature    complement(693..1375)
                      /label="ColE1"
@@ -385,24 +385,23 @@ ORIGIN
 //
 LOCUS       DVL0_E*B                2597 bp ds-DNA     circular     28-SEP-2015
 DEFINITION  .
-KEYWORDS    "cloned-by:Author" "part-type:Destination Vector"                  
-            "antibiotic:Chloramphenicol (CAM)" "fusion-site:BC"
-            "backbone:pSB1C3" "glycerol:MC-1-31 (Author)" "seq-verify:SM31"
-            "part-subtype:Level 0" "plasmid:MCP-1-I3 (SI 2/14/13)"
-            "source:CIDAR"
+KEYWORDS    "cloned-by:Author" "plasmid:MCP-1-I3 (SI 2/14/13)" "source:CIDAR"  
+            "part-type:Destination Vector" "backbone:pSB1C3" "fusion-site:BC"
+            "seq-verify:SM31" "antibiotic:Chloramphenicol (CAM)"
+            "glycerol:MC-1-31 (Author)" "part-subtype:Level 0"
 FEATURES             Location/Qualifiers
      misc_feature    773..1386
                      /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    13..494
+                     /label="lacZalpha"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(1673..2332)
                      /label="camR"
                      /ApEinfo_revcolor=#b7e6d7
                      /ApEinfo_fwdcolor=#b7e6d7
-     misc_feature    13..494
-                     /label="lacZalpha"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 AAGCatgtct tctgcaccat atgcggtgtg aaataccgca cagatgcgta aggagaaaat
        61 accgcatcag gcgccattcg ccattcaggc tgcgcaactg ttgggaaggg cgatcggtgc
@@ -451,14 +450,10 @@ ORIGIN
 //
 LOCUS       DVL0_F*B                2606 bp ds-DNA     circular     28-SEP-2015
 DEFINITION  .
-KEYWORDS    "part-subtype:Level 0" "fusion-site:MD" "seq-verify:EA"            
-            "source:Phoenix" "backbone:pSB1A2" "part-type:Destination Vector"
-            "glycerol:EA-1-8" "antibiotic:Ampicillin" "cloned-by:EA"
+KEYWORDS    "part-subtype:Level 0" "seq-verify:EA" "glycerol:EA-1-8"           
+            "part-type:Destination Vector" "source:Phoenix" "cloned-by:EA"
+            "fusion-site:MD" "backbone:pSB1A2" "antibiotic:Ampicillin"
 FEATURES             Location/Qualifiers
-     misc_feature    13..494
-                     /label="lacZalpha"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(693..1375)
                      /label="ColE1"
                      /ApEinfo_revcolor=#faac61
@@ -467,6 +462,10 @@ FEATURES             Location/Qualifiers
                      /label="ampR"
                      /ApEinfo_revcolor=#75c6a9
                      /ApEinfo_fwdcolor=#75c6a9
+     misc_feature    13..494
+                     /label="lacZalpha"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 AGCGatgtct tctgcaccat atgcggtgtg aaataccgca cagatgcgta aggagaaaat
        61 accgcatcag gcgccattcg ccattcaggc tgcgcaactg ttgggaaggg cgatcggtgc
@@ -515,9 +514,9 @@ ORIGIN
 //
 LOCUS       DVL0_K*C                2606 bp ds-DNA     circular     28-SEP-2015
 DEFINITION  .
-KEYWORDS    "fusion-site:CM" "backbone:pSB1A2" "part-subtype:Level 0"          
-            "antibiotic:Ampicillin" "glycerol:EA-1-7" "cloned-by:EA"
-            "seq-verify:EA" "source:Phoenix" "part-type:Destination Vector"
+KEYWORDS    "part-subtype:Level 0" "glycerol:EA-1-7" "part-type:Destination    
+            Vector" "seq-verify:EA" "source:Phoenix" "antibiotic:Ampicillin"
+            "fusion-site:CM" "backbone:pSB1A2" "cloned-by:EA"
 FEATURES             Location/Qualifiers
      misc_feature    complement(707..1389)
                      /label="ColE1"
@@ -579,19 +578,18 @@ ORIGIN
 //
 LOCUS       DVL0_K*D                2606 bp ds-DNA     circular     28-SEP-2015
 DEFINITION  .
-KEYWORDS    "antibiotic:Ampicillin" "seq-verify:EA" "fusion-site:MD"           
-            "source:Phoenix" "backbone:pSB1A2" "glycerol:EA-1-8"
-            "part-type:Destination Vector" "part-subtype:Level 0"
-            "cloned-by:EA"
+KEYWORDS    "glycerol:EA-1-8" "part-subtype:Level 0" "part-type:Destination    
+            Vector" "seq-verify:EA" "source:Phoenix" "cloned-by:EA"
+            "fusion-site:MD" "backbone:pSB1A2" "antibiotic:Ampicillin"
 FEATURES             Location/Qualifiers
-     misc_feature    13..494
-                     /label="lacZalpha"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(693..1375)
                      /label="ColE1"
                      /ApEinfo_revcolor=#faac61
                      /ApEinfo_fwdcolor=#faac61
+     misc_feature    13..494
+                     /label="lacZalpha"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(1473..2132)
                      /label="ampR"
                      /ApEinfo_revcolor=#75c6a9
@@ -644,22 +642,22 @@ ORIGIN
 //
 LOCUS       DVL0_K*H                2606 bp ds-DNA     circular     28-SEP-2015
 DEFINITION  .
-KEYWORDS    "cloned-by:EA" "part-subtype:Level 0" "source:Phoenix"             
-            "glycerol:EA-1-8" "fusion-site:MD" "antibiotic:Ampicillin"
-            "backbone:pSB1A2" "seq-verify:EA" "part-type:Destination Vector"
+KEYWORDS    "seq-verify:EA" "backbone:pSB1A2" "part-subtype:Level 0"           
+            "glycerol:EA-1-8" "source:Phoenix" "antibiotic:Ampicillin"
+            "part-type:Destination Vector" "cloned-by:EA" "fusion-site:MD"
 FEATURES             Location/Qualifiers
      misc_feature    complement(693..1375)
                      /label="ColE1"
                      /ApEinfo_revcolor=#faac61
                      /ApEinfo_fwdcolor=#faac61
-     misc_feature    complement(1473..2132)
-                     /label="ampR"
-                     /ApEinfo_revcolor=#75c6a9
-                     /ApEinfo_fwdcolor=#75c6a9
      misc_feature    13..494
                      /label="lacZalpha"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    complement(1473..2132)
+                     /label="ampR"
+                     /ApEinfo_revcolor=#75c6a9
+                     /ApEinfo_fwdcolor=#75c6a9
 ORIGIN
         1 GCATatgtct tctgcaccat atgcggtgtg aaataccgca cagatgcgta aggagaaaat
        61 accgcatcag gcgccattcg ccattcaggc tgcgcaactg ttgggaaggg cgatcggtgc
@@ -708,10 +706,14 @@ ORIGIN
 //
 LOCUS       DVL0_KA*                2606 bp ds-DNA     circular     28-SEP-2015
 DEFINITION  .
-KEYWORDS    "cloned-by:EA" "glycerol:EA-1-8" "part-type:Destination Vector"    
-            "fusion-site:MD" "antibiotic:Ampicillin" "source:Phoenix"
-            "seq-verify:EA" "backbone:pSB1A2" "part-subtype:Level 0"
+KEYWORDS    "part-type:Destination Vector" "fusion-site:MD" "part-subtype:Level
+            0" "cloned-by:EA" "source:Phoenix" "antibiotic:Ampicillin"
+            "glycerol:EA-1-8" "backbone:pSB1A2" "seq-verify:EA"
 FEATURES             Location/Qualifiers
+     misc_feature    complement(1473..2132)
+                     /label="ampR"
+                     /ApEinfo_revcolor=#75c6a9
+                     /ApEinfo_fwdcolor=#75c6a9
      misc_feature    complement(693..1375)
                      /label="ColE1"
                      /ApEinfo_revcolor=#faac61
@@ -720,10 +722,6 @@ FEATURES             Location/Qualifiers
                      /label="lacZalpha"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    complement(1473..2132)
-                     /label="ampR"
-                     /ApEinfo_revcolor=#75c6a9
-                     /ApEinfo_fwdcolor=#75c6a9
 ORIGIN
         1 ATGCatgtct tctgcaccat atgcggtgtg aaataccgca cagatgcgta aggagaaaat
        61 accgcatcag gcgccattcg ccattcaggc tgcgcaactg ttgggaaggg cgatcggtgc
@@ -777,14 +775,14 @@ FEATURES             Location/Qualifiers
                      /label="kanR"
                      /ApEinfo_revcolor=#85dae9
                      /ApEinfo_fwdcolor=#85dae9
-     misc_feature    774..1614
-                     /label="p15A"
-                     /ApEinfo_revcolor=#84b0dc
-                     /ApEinfo_fwdcolor=#84b0dc
      misc_feature    12..493
                      /label="lacZalpha"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    774..1614
+                     /label="p15A"
+                     /ApEinfo_revcolor=#84b0dc
+                     /ApEinfo_fwdcolor=#84b0dc
 ORIGIN
         1 GGAGagagac ctgcaccata tgcggtgtga aataccgcac agatgcgtaa ggagaaaata
        61 ccgcatcagg cgccattcgc cattcaggct gcgcaactgt tgggaagggc gatcggtgcg
@@ -836,21 +834,21 @@ ORIGIN
 //
 LOCUS       DVL1_BH                 2731 bp ds-DNA     circular     28-SEP-2015
 DEFINITION  .
-KEYWORDS    "part-subtype:Level 1" "glycerol:MC-1-35 (Author)"                 
-            "plasmid:MCP-1-B3 (JA 6/28/13)" "seq-verify:MS18" "fusion-site:AE"
-            "part-type:Destination Vector" "cloned-by:Author" "backbone:pSB1K3"
-            "source:CIDAR" "antibiotic:Kanamycin (KAN)"
+KEYWORDS    "part-type:Destination Vector" "antibiotic:Kanamycin (KAN)"        
+            "glycerol:MC-1-35 (Author)" "plasmid:MCP-1-B3 (JA 6/28/13)"
+            "backbone:pSB1K3" "fusion-site:AE" "seq-verify:MS18"
+            "cloned-by:Author" "source:CIDAR" "part-subtype:Level 1"
 FEATURES             Location/Qualifiers
-     misc_feature    12..493
-                     /label="lacZalpha"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(1610..2368)
                      /label="kanR"
                      /ApEinfo_revcolor=#85dae9
                      /ApEinfo_fwdcolor=#85dae9
      misc_feature    772..1385
                      /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    12..493
+                     /label="lacZalpha"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
@@ -903,10 +901,10 @@ ORIGIN
 //
 LOCUS       DVL1_K*B                2731 bp ds-DNA     circular     28-SEP-2015
 DEFINITION  .
-KEYWORDS    "cloned-by:Author" "part-subtype:Level 1" "glycerol:MC-1-35        
-            (Author)" "fusion-site:AE" "backbone:pSB1K3" "source:CIDAR"
-            "plasmid:MCP-1-B3 (JA 6/28/13)" "seq-verify:MS18"
-            "antibiotic:Kanamycin (KAN)" "part-type:Destination Vector"
+KEYWORDS    "seq-verify:MS18" "fusion-site:AE" "source:CIDAR"                  
+            "antibiotic:Kanamycin (KAN)" "backbone:pSB1K3" "cloned-by:Author"
+            "plasmid:MCP-1-B3 (JA 6/28/13)" "part-subtype:Level 1"
+            "part-type:Destination Vector" "glycerol:MC-1-35 (Author)"
 FEATURES             Location/Qualifiers
      misc_feature    12..493
                      /label="lacZalpha"
@@ -970,23 +968,23 @@ ORIGIN
 //
 LOCUS       DVL1_KE*                2731 bp ds-DNA     circular     28-SEP-2015
 DEFINITION  .
-KEYWORDS    "antibiotic:Kanamycin (KAN)" "backbone:pSB1K3" "seq-verify:MS18"   
-            "source:CIDAR" "plasmid:MCP-1-B3 (JA 6/28/13)" "cloned-by:Author"
-            "part-subtype:Level 1" "glycerol:MC-1-35 (Author)" "fusion-site:AE"
-            "part-type:Destination Vector"
+KEYWORDS    "antibiotic:Kanamycin (KAN)" "glycerol:MC-1-35 (Author)"           
+            "seq-verify:MS18" "part-subtype:Level 1" "fusion-site:AE"
+            "part-type:Destination Vector" "source:CIDAR" "backbone:pSB1K3"
+            "cloned-by:Author" "plasmid:MCP-1-B3 (JA 6/28/13)"
 FEATURES             Location/Qualifiers
-     misc_feature    12..493
-                     /label="lacZalpha"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
-     misc_feature    772..1385
-                     /label="pMB1"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(1610..2368)
                      /label="kanR"
                      /ApEinfo_revcolor=#85dae9
                      /ApEinfo_fwdcolor=#85dae9
+     misc_feature    772..1385
+                     /label="pMB1"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    12..493
+                     /label="lacZalpha"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 ATGCagagac ctgcaccata tgcggtgtga aataccgcac agatgcgtaa ggagaaaata
        61 ccgcatcagg cgccattcgc cattcaggct gcgcaactgt tgggaagggc gatcggtgcg
@@ -1035,21 +1033,21 @@ ORIGIN
      2641 gaggcagaat ttcagataaa aaaaatcctt agctttcgct aaggatgatt tctggaattc
      2701 gcggccgctt ctagagacta gtggaagaca t
 //
-LOCUS       DVL2_AE_p15A            2701 bp ds-DNA     circular     28-SEP-2015
+LOCUS       DVL2_AE_p15A            2701 bp ds-DNA     circular     29-OCT-2015
 DEFINITION  .
 FEATURES             Location/Qualifiers
-     misc_feature    716..1556
-                     /label="p15A"
-                     /ApEinfo_revcolor=#84b0dc
-                     /ApEinfo_fwdcolor=#84b0dc
-     misc_feature    complement(1568..2227)
-                     /label="ampR"
-                     /ApEinfo_revcolor=#75c6a9
-                     /ApEinfo_fwdcolor=#75c6a9
      misc_feature    13..494
                      /label="lacZalpha"
                      /ApEinfo_revcolor=#f58a5e
                      /ApEinfo_fwdcolor=#f58a5e
+     misc_feature    complement(1568..2227)
+                     /label="ampR"
+                     /ApEinfo_revcolor=#75c6a9
+                     /ApEinfo_fwdcolor=#75c6a9
+     misc_feature    716..1556
+                     /label="p15A"
+                     /ApEinfo_revcolor=#84b0dc
+                     /ApEinfo_fwdcolor=#84b0dc
 ORIGIN
         1 GGAGATGTCT TCTGCACCAT ATGCGGTGTG AAATACCGCA CAGATGCGTA AGGAGAAAAT
        61 ACCGCATCAG GCGCCATTCG CCATTCAGGC TGCGCAACTG TTGGGAAGGG CGATCGGTGC
@@ -1079,7 +1077,7 @@ ORIGIN
      1501 acgcgcagac caaaacgatc tcaagaagat catcttatta atcagataaa atatttGGCG
      1561 CGCCTTACCA ATGCTTAATC AGTGAGGCAC CTATCTCAGC GATCTGTCTA TTTCGTTCAT
      1621 CCATAGTTGC CTGACTCCCC GTCGTGTAGA TAACTACGAT ACGGGAGGGC TTACCATCTG
-     1681 GCCCCAGTGC TGCAATGATA CCGCGAGACC CACGCTCACC GGCTCCAGAT TTATCAGCAA
+     1681 GCCCCAGTGC TGCAATGATA CCGCGAGAAC CACGCTCACC GGCTCCAGAT TTATCAGCAA
      1741 TAAACCAGCC AGCCGGAAGG GCCGAGCGCA GAAGTGGTCC TGCAACTTTA TCCGCCTCCA
      1801 TCCAGTCTAT TAATTGTTGC CGGGAAGCTA GAGTAAGTAG TTCGCCAGTT AATAGTTTGC
      1861 GCAACGTTGT TGCCATTGCT ACAGGCATCG TGGTGTCACG CTCGTCGTTT GGTATGGCTT
@@ -1098,13 +1096,9 @@ ORIGIN
      2641 TAGCTTTCGC TAAGGATGAT TTCTGGAATT CGCGGCCGCT TCTAGAGACT AGTGGGTCTC
      2701 A
 //
-LOCUS       DVL2_AF_p15A            2701 bp ds-DNA     circular     28-SEP-2015
+LOCUS       DVL2_AF_p15A            2701 bp ds-DNA     circular     29-OCT-2015
 DEFINITION  .
 FEATURES             Location/Qualifiers
-     misc_feature    13..494
-                     /label="lacZalpha"
-                     /ApEinfo_revcolor=#f58a5e
-                     /ApEinfo_fwdcolor=#f58a5e
      misc_feature    complement(1568..2227)
                      /label="ampR"
                      /ApEinfo_revcolor=#75c6a9
@@ -1113,6 +1107,10 @@ FEATURES             Location/Qualifiers
                      /label="p15A"
                      /ApEinfo_revcolor=#84b0dc
                      /ApEinfo_fwdcolor=#84b0dc
+     misc_feature    13..494
+                     /label="lacZalpha"
+                     /ApEinfo_revcolor=#f58a5e
+                     /ApEinfo_fwdcolor=#f58a5e
 ORIGIN
         1 GGAGATGTCT TCTGCACCAT ATGCGGTGTG AAATACCGCA CAGATGCGTA AGGAGAAAAT
        61 ACCGCATCAG GCGCCATTCG CCATTCAGGC TGCGCAACTG TTGGGAAGGG CGATCGGTGC
@@ -1142,7 +1140,7 @@ ORIGIN
      1501 acgcgcagac caaaacgatc tcaagaagat catcttatta atcagataaa atatttGGCG
      1561 CGCCTTACCA ATGCTTAATC AGTGAGGCAC CTATCTCAGC GATCTGTCTA TTTCGTTCAT
      1621 CCATAGTTGC CTGACTCCCC GTCGTGTAGA TAACTACGAT ACGGGAGGGC TTACCATCTG
-     1681 GCCCCAGTGC TGCAATGATA CCGCGAGACC CACGCTCACC GGCTCCAGAT TTATCAGCAA
+     1681 GCCCCAGTGC TGCAATGATA CCGCGAGAAC CACGCTCACC GGCTCCAGAT TTATCAGCAA
      1741 TAAACCAGCC AGCCGGAAGG GCCGAGCGCA GAAGTGGTCC TGCAACTTTA TCCGCCTCCA
      1801 TCCAGTCTAT TAATTGTTGC CGGGAAGCTA GAGTAAGTAG TTCGCCAGTT AATAGTTTGC
      1861 GCAACGTTGT TGCCATTGCT ACAGGCATCG TGGTGTCACG CTCGTCGTTT GGTATGGCTT

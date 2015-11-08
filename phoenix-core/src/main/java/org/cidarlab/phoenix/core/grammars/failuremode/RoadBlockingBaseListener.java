@@ -3,6 +3,8 @@
     package org.cidarlab.phoenix.core.grammars.failuremode;
 
 
+import lombok.Getter;
+import lombok.Setter;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -13,12 +15,19 @@ import org.antlr.v4.runtime.tree.TerminalNode;
  * of the available methods.
  */
 public class RoadBlockingBaseListener implements RoadBlockingListener {
+    
+    @Getter
+    @Setter
+    private int roadBlockCount;
+        
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRoot(RoadBlockingParser.RootContext ctx) { }
+	@Override public void enterRoot(RoadBlockingParser.RootContext ctx) {
+            this.roadBlockCount = 0;
+        }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -42,7 +51,10 @@ public class RoadBlockingBaseListener implements RoadBlockingListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRoad_blocking(RoadBlockingParser.Road_blockingContext ctx) { }
+	@Override public void enterRoad_blocking(RoadBlockingParser.Road_blockingContext ctx) {
+            this.roadBlockCount++;
+            System.out.println("Rule Context :: "+ ctx.getRuleContext().getText());
+        }
 	/**
 	 * {@inheritDoc}
 	 *

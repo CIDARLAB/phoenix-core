@@ -42,23 +42,20 @@ import org.clothoapi.clotho3javaapi.ClothoConnection;
 public class TestingStructures {
 
     //Traverse module graphs and add testing primitives
-    public static void addTestingPrimitives(List<Module> modules) {
+    public static void addTestingPrimitives(Module rootModule) {
 
         //For each module, traverse graph
         initializeTestingPrimitiveModules();
-        for (Module m : modules) {
-            addTestingPrimitivesHelper(m.getChildren());
-        }
+        addTestingPrimitivesHelper(rootModule);
+       
     }
 
     //Adding testing primitive module helper
-    private static void addTestingPrimitivesHelper(List<Module> children) {
+    private static void addTestingPrimitivesHelper(Module module) {
 
         //For each of the children, add testing peices if they are stage 0+
-        for (Module child : children) {
+        for(Module child:module.getChildren()){
             if (child.getStage() >= 0) {
-
-                //Add testing peices to the root
                 if (child.getRole().equals(ModuleRole.EXPRESSEE) || child.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || child.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR) || child.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || child.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)) {
                     addTestExpressee(child);
                 } else if (child.getRole().equals(ModuleRole.EXPRESSOR)) {
@@ -68,8 +65,7 @@ public class TestingStructures {
                 } else {
                     addTestHighFunction(child);
                 }
-
-                addTestingPrimitivesHelper(child.getChildren());
+                addTestingPrimitivesHelper(child);
             }
         }
     }
@@ -294,6 +290,10 @@ public class TestingStructures {
 
         return allExperiments;
     }
+    
+    private static void addSamples(List<Experiment> experiments, Map<String, String> colorNameMap,Map<String, String> regNameMap, Map<String, AssignedModule> aModuleMap, AssignedModule amodule){
+        
+    }
 
     //Add controls and samples
     private static void addSamples(List<Experiment> experiments, List<AssignedModule> controlModulesAll, HashMap<String, Sample> sampleHash, AssignedModule aM, boolean regControls) {
@@ -318,7 +318,7 @@ public class TestingStructures {
     }
     
     
-    public static void getAllControls(Module module,Map<String, String> colorNameMap,Map<String, String> regNameMap, Map<String, AssignedModule> aModuleMap){
+    private static void getAllControls(Module module,Map<String, String> colorNameMap,Map<String, String> regNameMap, Map<String, AssignedModule> aModuleMap){
         if(module.isRoot()){
             colorNameMap = new HashMap();
             regNameMap = new HashMap();
@@ -339,7 +339,7 @@ public class TestingStructures {
         }
     }
     
-    public static void getAmoduleControlsMap(AssignedModule amodule, Map<String, String> colorNameMap,Map<String, String> regNameMap, Map<String, AssignedModule> aModuleMap,boolean regControl) {
+    private static void getAmoduleControlsMap(AssignedModule amodule, Map<String, String> colorNameMap,Map<String, String> regNameMap, Map<String, AssignedModule> aModuleMap,boolean regControl) {
 
         //Exp Deg Control
         if (!aModuleMap.containsKey("EXPRESSION_DEGRADATION_CONTROL")) {
@@ -380,7 +380,6 @@ public class TestingStructures {
                 }
             }
         }
-        
     }
 
     //Make a standard expression/degradation control for EXPRESSORs and all types of EXPRESSEEs

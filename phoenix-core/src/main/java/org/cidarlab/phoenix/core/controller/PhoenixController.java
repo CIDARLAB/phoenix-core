@@ -17,7 +17,9 @@ import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
+import org.cidarlab.phoenix.core.grammars.FailureModeGrammar;
 import org.cidarlab.phoenix.core.grammars.PhoenixGrammar;
+import org.cidarlab.phoenix.core.grammars.StructuralGrammar;
 import org.clothoapi.clotho3javaapi.Clotho;
 import org.clothoapi.clotho3javaapi.ClothoConnection;
 
@@ -100,32 +102,44 @@ public class PhoenixController {
             miniEugeneFileName = path.substring(path.lastIndexOf("\\") + 1, path.length() - 4);
         }        
         
-        List<Module> modules = EugeneAdaptor.getStructures(structuralSpecification, 1, miniEugeneFileName);
-
+        List<Module> eugeneModules = EugeneAdaptor.getStructures(structuralSpecification, 1, miniEugeneFileName);
+        
+        //Check the validity of the Module's structure
+        List<Module> rootModules = new ArrayList<Module>();
+        for(Module module:eugeneModules){
+            if(StructuralGrammar.validStructure(module)){
+                rootModules.add(module);
+            }
+        }
+        
+        //Pick Module with least number of failure modes
+        for(Module module:rootModules){
+            FailureModeGrammar.assignFailureModes(module);
+        }
+        List<Module> sortedModules = new ArrayList<Module>();
+        sortedModules = FailureModeGrammar.sortByFailureModes(rootModules);
+        
+        //Best Module :: sortedModules.get(0);
+        Module bestModule = sortedModules.get(0);
+        
+        
         //Decompose target modules with PhoenixGrammar to get module graphs
-        PhoenixGrammar.decomposeAll(modules);
-
+        PhoenixGrammar.decompose(bestModule);
+        
         //Extend the modules for testing
-        TestingStructures.addTestingPrimitives(modules);
+        TestingStructures.addTestingPrimitives(bestModule);
         
         //Perform partial part assignments given the feature library
-        HashSet<AssignedModule> modulesToTest = new HashSet<AssignedModule>(FeatureAssignment.partialAssignment(modules, 0.5));        
+        FeatureAssignment.partialAssignment(bestModule, 0.5);
+        
+        //Get only Submodules? Or create experiments for entire Tree? Maybe specific function for expressees and expressors.
+        HashSet<AssignedModule> modulesToTest = new HashSet<AssignedModule>();        
         TestingStructures.createExperiments(modulesToTest);
         
         ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
         Clotho clothoObject = new Clotho(conn);
-//        String moduleId = ClothoAdaptor.createModule(modules.get(0), clothoObject);        
         
-        JSONObject flareValue = new JSONObject();
-        //flareValue = ClientSideAdaptor.convertModuleToJSON(modules.get(0));
-//        flareValue = ClientSideAdaptor.convertModuleToJSON(ClothoAdaptor.getModule(moduleId, clothoObject));
-        
-//        String JSONFilePath = getJSONFilepath();
-        //String JSONFilePath = Args.flareJSONfilepath;
-        
-//        ClientSideAdaptor.createFlareFile(JSONFilePath,flareValue);
         conn.closeConnection();
-//        return modules;
         
         return new ArrayList<>(modulesToTest);
     }

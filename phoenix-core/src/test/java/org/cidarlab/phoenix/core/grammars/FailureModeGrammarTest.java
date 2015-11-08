@@ -42,40 +42,40 @@ public class FailureModeGrammarTest {
     /**
      * Test of getForwardParseTree method, of class FailureModeGrammar.
      */
-    //@Test
-    public void testGetForwardParseTree() {
+    @Test
+    public void testRoadBlocking() {
         
         AtomicInteger count = new AtomicInteger();
         
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getRoadBlockingTree("p r c t");
+        FailureModeGrammar.getRoadBlockingCount("p r c t");
         
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getRoadBlockingTree("p p r c t");
+        FailureModeGrammar.getRoadBlockingCount("p p r c t");
     
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getRoadBlockingTree("p p p r c t");
+        FailureModeGrammar.getRoadBlockingCount("p p p r c t");
     
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getRoadBlockingTree("<p p r c t");
+        FailureModeGrammar.getRoadBlockingCount("<p p r c t");
     
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getRoadBlockingTree("p <p r c t");
+        FailureModeGrammar.getRoadBlockingCount("p <p r c t");
     
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getRoadBlockingTree("<t <c <r <p <p p r c t");
+        FailureModeGrammar.getRoadBlockingCount("<t <c <r <p <p p r c t");
         
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getRoadBlockingTree("<t <c <r <p");
+        FailureModeGrammar.getRoadBlockingCount("<t <c <r <p");
         
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getRoadBlockingTree("<t <c <r <p <p");
+        FailureModeGrammar.getRoadBlockingCount("<t <c <r <p <p");
         
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getRoadBlockingTree("<t <c <r <p <p <p");
+        FailureModeGrammar.getRoadBlockingCount("<t <c <r <p <p <p");
         
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getRoadBlockingTree("<t <c <r <p <p <p <p p p r c t");
+        FailureModeGrammar.getRoadBlockingCount("<t <c <r <p <p <p <p p p r c t");
         
     }
     
@@ -85,70 +85,70 @@ public class FailureModeGrammarTest {
         AtomicInteger count = new AtomicInteger();
         
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getSuperCoilingTree("p r c t");
+        FailureModeGrammar.getSuperCoilingCount("p r c t");
         
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getSuperCoilingTree("p p r c t");
+        FailureModeGrammar.getSuperCoilingCount("p p r c t");
     
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getSuperCoilingTree("p p p r c t");
+        FailureModeGrammar.getSuperCoilingCount("p p p r c t");
     
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getSuperCoilingTree("<p p r c t");
+        FailureModeGrammar.getSuperCoilingCount("<p p r c t");
     
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getSuperCoilingTree("p <p r c t");
+        FailureModeGrammar.getSuperCoilingCount("p <p r c t");
     
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getSuperCoilingTree("<t <c <r <p <p p r c t");
+        FailureModeGrammar.getSuperCoilingCount("<t <c <r <p <p p r c t");
         
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getSuperCoilingTree("<t <c <r <p");
+        FailureModeGrammar.getSuperCoilingCount("<t <c <r <p");
         
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getSuperCoilingTree("<t <c <r <p <p");
+        FailureModeGrammar.getSuperCoilingCount("<t <c <r <p <p");
         
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getSuperCoilingTree("<t <c <r <p <p <p");
+        FailureModeGrammar.getSuperCoilingCount("<t <c <r <p <p <p");
         
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getSuperCoilingTree("<t <c <r <p <p <p <p p p r c t");
-        
-        
-        System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getSuperCoilingTree("<p p <p p <p");
-        
+        FailureModeGrammar.getSuperCoilingCount("<t <c <r <p <p <p <p p p r c t");
         
         
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getSuperCoilingTree("t c r <p p c t r <p p t c <p");
+        FailureModeGrammar.getSuperCoilingCount("<p p <p p <p");
+        
+        
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getSuperCoilingCount("t c r <p p c t r <p p t c <p");
         
         
     }
     
     
-    @Test
+    //@Test
     public void testGetTranscriptionalInterferenceTree() {
         
         AtomicInteger count = new AtomicInteger();
         
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getTranscriptionalInterferenceTree("p r c t p r c t");
+        FailureModeGrammar.getTranscriptionalInterferenceCount("p r c t p r c t");
         
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getTranscriptionalInterferenceTree("<t <c <r <p p r c t");
+        FailureModeGrammar.getTranscriptionalInterferenceCount("<t <c <r <p p r c t");
         
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getTranscriptionalInterferenceTree("<t <c <r p <p r c t");
+        FailureModeGrammar.getTranscriptionalInterferenceCount("<t <c <r p <p r c t");
         
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getTranscriptionalInterferenceTree("<t p r c <c <r <p t");
+        FailureModeGrammar.getTranscriptionalInterferenceCount("<t p r c <c <r <p t");
         
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getTranscriptionalInterferenceTree("p r c t <t <c <r <p");
+        FailureModeGrammar.getTranscriptionalInterferenceCount("p r c t <t <c <r <p");
         
         System.out.println(count.getAndIncrement());
-        FailureModeGrammar.getTranscriptionalInterferenceTree("p <t r c t <c <r <p");
+        FailureModeGrammar.getTranscriptionalInterferenceCount("p <t r c t <c <r <p");
     }
 
 }

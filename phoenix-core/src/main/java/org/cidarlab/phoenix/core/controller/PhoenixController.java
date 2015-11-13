@@ -11,12 +11,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import net.sf.json.JSONObject;
+import java.util.Set;
 import org.cidarlab.phoenix.core.adaptors.*;
 import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Module;
-import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
 import org.cidarlab.phoenix.core.grammars.FailureModeGrammar;
 import org.cidarlab.phoenix.core.grammars.PhoenixGrammar;
 import org.cidarlab.phoenix.core.grammars.StructuralGrammar;
@@ -85,7 +84,7 @@ public class PhoenixController {
     //Main Phoenix design decomposition method
     //Remember to start Clotho before this initializeDesign
     //FILES IN, NOTHING OUT
-    public static List<AssignedModule> initializeDesign (File structuralSpecification, File functionalSpecification) throws Exception {
+    public static Module initializeDesign (File structuralSpecification, File functionalSpecification) throws Exception {
 
         //STL function decomposition
         
@@ -122,28 +121,69 @@ public class PhoenixController {
         //Best Module :: sortedModules.get(0);
         Module bestModule = sortedModules.get(0);
         
-        
-        //Decompose target modules with PhoenixGrammar to get module graphs
+        //Decompose Best Module with PhoenixGrammar to get a module graph
         PhoenixGrammar.decompose(bestModule);
         
-        //Extend the modules for testing
+        //Adds Testing primitives to The Module Tree. 
         TestingStructures.addTestingPrimitives(bestModule);
         
         //Perform partial part assignments given the feature library
         FeatureAssignment.partialAssignment(bestModule, 0.5);
+        removeDuplicateAssignedModules(bestModule);
         
-        //Get only Submodules? Or create experiments for entire Tree? Maybe specific function for expressees and expressors.
-        HashSet<AssignedModule> modulesToTest = new HashSet<AssignedModule>();        
-        TestingStructures.createExperiments(modulesToTest);
+        //At this point, I have a Module tree, which has Assigned Modules for Expressors and Expressees  and a Many to Many relationship between modules and Assigned Modules. 
+        //I just want to create Control Modules for AssignedModules & Create Experiment Objects for AssignedModules
+        TestingStructures.createExperiments(bestModule);
+        
+        
+        
         
         ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
         Clotho clothoObject = new Clotho(conn);
         
         conn.closeConnection();
+        return bestModule;
         
-        return new ArrayList<>(modulesToTest);
     }
+    
+     
+    //Create assembly and testing instructions from a set of Modules that need to be built and tested
+    //Root MODULE IN, FILES OUT
+    public static List<File> createExperimentInstructions (Module module, String filePath) throws Exception {
+        
+        
+        
+        //Determine experiments from current module assignment state
+        //Create expreriment objects based upon the modules being tested
+        Set<AssignedModule> amodulesToTest = new HashSet<AssignedModule>();
+        getAllAssignedModules(module,amodulesToTest);
+        List<Experiment> currentExperiments = new ArrayList<>();
+        for (AssignedModule m : amodulesToTest) {
+            currentExperiments.addAll(m.getExperiments());
+        }
+        
+        //Create assembly and testing plans
+        File assemblyInstructions = RavenAdaptor.generateAssemblyPlan(amodulesToTest, filePath);
+        File testingInstructions = PhoenixInstructions.generateTestingInstructions(currentExperiments, filePath);
 
+        //Save these strings to files and return them from this method
+        List<File> assmTestFiles = new ArrayList<>();
+        assmTestFiles.add(testingInstructions);
+        assmTestFiles.add(assemblyInstructions);
+        return assmTestFiles;
+    }
+    
+    public static void getAllAssignedModules(Module module,Set<AssignedModule> modulesToTest){
+        if(module.isRoot() || modulesToTest == null){
+            modulesToTest = new HashSet<AssignedModule>();
+        }
+        modulesToTest.addAll(module.getAssignedModules());
+        for(Module child:module.getChildren()){
+            getAllAssignedModules(child,modulesToTest);
+        }
+    }
+            
+    
     //Create assembly and testing instructions from a set of Modules that need to be built and tested
     //MODULES IN, FILES OUT
     public static List<File> createExperimentInstructions (HashSet<AssignedModule> modulesToTest, String filePath) throws Exception {

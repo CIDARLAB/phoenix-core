@@ -82,6 +82,15 @@ public class AssignedModule extends Module {
     @Setter
     private List<AssignedModule> controlModules;
     
+    @Getter
+    @Setter
+    private Medium media;
+    
+    @Getter
+    @Setter
+    private String time;
+    
+    
     //SBML Model
     @Getter
     @Setter

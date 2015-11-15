@@ -31,7 +31,7 @@ public class PigeonAdaptor {
             }
         }
         else{
-            for(int i=(module.getSubmodules().size()-1);i>=0;i++){
+            for(int i=(module.getSubmodules().size()-1);i>=0;i--){
                 pigeonString += getPigeonFeatureString(module.getSubmodules().get(i),forwardMode);
             }
         }

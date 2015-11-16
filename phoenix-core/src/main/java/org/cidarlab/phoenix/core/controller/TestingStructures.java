@@ -787,7 +787,7 @@ public class TestingStructures {
         
         Map pLtetO1 = new HashMap();
         pLtetO1.put("schema", Feature.class.getCanonicalName());
-        pLtetO1.put("name", "pLtetO-1");
+        pLtetO1.put("name", "pLtetO-1.ref");
         testControllablePromoter1 = new PrimitiveModule(FeatureRole.PROMOTER_REPRESSIBLE, new Primitive(new ComponentType("p"), "pTEST"), ClothoAdaptor.queryFeatures(pLtetO1, clothoObject).get(0));
         
         Map BCD8 = new HashMap();

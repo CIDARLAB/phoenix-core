@@ -5,3 +5,6 @@ phoenix_core/target/
 */.RData
 */.Rhistory
 /phoenix-core/target/
+**/.settings
+**/.classpath
+**/.project

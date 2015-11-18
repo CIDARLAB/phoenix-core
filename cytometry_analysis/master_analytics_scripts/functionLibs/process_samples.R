@@ -36,6 +36,7 @@ process.samples <- function(experimentFlowSet, colorControlsFlowSet, beadFlowFra
 		fres <- filter(compensatedFlowSet[,p], c1f)
 		s <- split(compensatedFlowSet[,p], fres, population=list(keep=c("peak 1")))
 		analyzedExpts[,p] <- fsApply(s$`keep`,each_col,mean)
+		# analyzedExpts[,p] <- fsApply(compensatedFlowSet[,p],each_col,mean)
 	}
 		
 	#Subtract autofluorescence

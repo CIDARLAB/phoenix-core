@@ -121,10 +121,15 @@ public class FeatureAssignment {
         //Determine how many FPs are needed
         int count = 0;
         for (PrimitiveModule p : rootModule.getSubmodules()) {
+            System.out.println("PM: " + p.getName());
+            System.out.println("PM PrimitiveRole: " + p.getPrimitiveRole());
+            System.out.println("PM Role: " + p.getRole());
+            
             if (p.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
                 count++;
             }
         }
+        System.out.println("Count: " + count);
         List<Fluorophore> bestSet = FluorescentProteinSelector.solve(FPs, cytometer, count);
         addFPsHelper(rootModule, bestSet);
     }

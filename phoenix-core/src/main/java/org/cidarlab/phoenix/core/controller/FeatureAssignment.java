@@ -30,9 +30,16 @@ import org.clothoapi.clotho3javaapi.ClothoConnection;
  */
 public class FeatureAssignment {    
     
+    
+    public static void partialAssignment(List<Module> rootModules, double percentage){
+        for(Module module:rootModules){
+            partialAssignment(module,percentage);
+        }
+    }
+    
     //Method for traverisng graphs performing a partial assignment
     //This method will be hacky until we have a real part assignment algorithm based on simulation
-    public static HashSet<AssignedModule> partialAssignment(List<Module> testingModules, Double percentage) {
+    public static void partialAssignment(Module rootModule, Double percentage) {
                 
         ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
         Clotho clothoObject = new Clotho(conn);        
@@ -41,16 +48,18 @@ public class FeatureAssignment {
         HashSet<List<Feature>> assignedFeatureLists = new HashSet<>();
         
         //Add fluorescent proteins to each module
-        addFPs(testingModules,clothoObject);
+        addFPs(rootModule,clothoObject);
         
         //Query promoters and regulator features, assign to abstract spots for EXPRESSORS and EXPRESSEES
         Map featureQuery = new HashMap();
-        featureQuery.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
         List<Feature> features = ClothoAdaptor.queryFeatures(featureQuery,clothoObject); 
-        ArrayList<Module> exp = getExpressorsExpressees(testingModules);
+        
+        
+        List<Module> exp = getExpressorsExpressees(rootModule);
         featureMatchAssign(exp, features);
         List<Feature> assignedRegulators = new ArrayList<>();
         
+        //CHECK FROM THIS PART ONWARDS!!!
         for (Module m : exp) {
             
             //If the EXPRESSORS and EXPRESSEES are not fully assigned
@@ -87,11 +96,11 @@ public class FeatureAssignment {
             TestingStructures.wildcardAssign(m);
         }
         conn.closeConnection();
-        return modulesToTest;
+        //return modulesToTest;
     }
     
     //Method for traverisng graphs, adding fluorescent proteins
-    private static void addFPs(List<Module> testingModules,Clotho clothoObject) {
+    private static void addFPs(Module rootModule,Clotho clothoObject) {
                 
         //Recieve data from Clotho
         List<Fluorophore> FPs = new ArrayList<Fluorophore>();
@@ -109,38 +118,30 @@ public class FeatureAssignment {
             }
         }
         
-        //For each module, determine how many FPs are needed
-        for (Module root : testingModules) {            
-            int count = 0;
-            List<Module> children = root.getChildren();
-            
-            //Count the number of instance of CDS_FLUORESCENT_FUSION
-            for (Module child : children) {
-                List<PrimitiveModule> submodules = child.getSubmodules();                
-                for (PrimitiveModule p : submodules) {
-                    if (p.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
-                        count++;
-                    }
-                }
+        //Determine how many FPs are needed
+        int count = 0;
+        for (PrimitiveModule p : rootModule.getSubmodules()) {
+            if (p.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
+                count++;
             }
-            
-            ArrayList<Fluorophore> bestSet = FluorescentProteinSelector.solve(FPs, cytometer, count);
-            addFPsHelper(root, bestSet, children);
         }
+        List<Fluorophore> bestSet = FluorescentProteinSelector.solve(FPs, cytometer, count);
+        addFPsHelper(rootModule, bestSet);
     }
     
+    
     //Helper method for traverisng graphs, adding fluorescent proteins
-    private static void addFPsHelper(Module parent, ArrayList<Fluorophore> FPs, List<Module> children) {
+    private static void addFPsHelper(Module module, List<Fluorophore> FPs) {
 
         //Check to see if there are CDS_FLUORESCENT_FUSION in the parent
         List<Feature> parentFluorescentFusions = new ArrayList<>();
-        parentFluorescentFusions.addAll(getFluorescentFusions(parent));       
+        parentFluorescentFusions.addAll(getFluorescentFusions(module));       
         
         int count = 0;
         int cdsFlCount = 0;
         
         //Assign FPs to children
-        for (Module child : children) {
+        for (Module child : module.getChildren()) {
             
             for (PrimitiveModule p : child.getSubmodules()) {
                 
@@ -173,41 +174,24 @@ public class FeatureAssignment {
                     cdsFlCount++;
                 }
             }
-            
-            addFPsHelper(child, FPs, child.getChildren());
+            addFPsHelper(child, FPs);
         }
         
-        parent.updateModuleFeatures();
+        module.updateModuleFeatures();
     }
     
     //If the structural design has any Feature names that match exactly to the Feature library, assign these
-    private static void featureMatchAssign(ArrayList<Module> modules, List<Feature> features) {
+    private static void featureMatchAssign(List<Module> modules, List<Feature> features) {
   
         for (Module m : modules) {
-            
             //Look for regulators that are abstract
-            for (int i = 0; i < m.getSubmodules().size(); i++) {
-                PrimitiveModule pm = m.getSubmodules().get(i);
+            for(PrimitiveModule pm:m.getSubmodules()){
                 for (Feature libF : getAllFeaturesOfRole(features, pm.getModuleFeature().getRole())) {
                     if (pm.getModuleFeature().getName().equalsIgnoreCase(libF.getName())) {
                         pm.setModuleFeature(libF);
                     }
                 }
-
-                /*
-                if (!pm.getModuleFeatures().isEmpty()) {
-                    for (Feature f : pm.getModuleFeatures()) {
-                        for (Feature libF : getAllFeaturesOfRole(features, f.getRole())) {
-                            if (f.getName().equalsIgnoreCase(libF.getName())) {
-                                List<Feature> mf = new ArrayList<>();
-                                mf.add(libF);
-                                pm.setModuleFeatures(mf);
-                            }
-                        }
-                    }
-                }*/
             }
-            
             m.updateModuleFeatures();
         }
     }
@@ -216,7 +200,6 @@ public class FeatureAssignment {
     private static List<Feature> regulatorAssign(Module m, List<Feature> features) {
 
         List<Feature> assignedRegulators = new ArrayList<>();
-        List<AssignedModule> assignedModules = m.getAssignedModules();
         int count = 0;
 
         //Look for regulators that are abstract
@@ -240,7 +223,7 @@ public class FeatureAssignment {
                                 mfClone.add(fR);
                                 assignedClone.getSubmodules().get(i).setModuleFeatures(mfClone);
                                 assignedClone.updateModuleFeatures();
-                                assignedModules.add(assignedClone);
+                                m.getAssignedModules().add(assignedClone);
                             }
                         }
                     }
@@ -255,8 +238,8 @@ public class FeatureAssignment {
         
         //Keep track of already assigned promoters in the case of multiple promoters... no duplicates
         //This needs a more robust long-term solution - Double-dutch??
-        ArrayList<AssignedModule> clonesThisModule = new ArrayList<>();
-        ArrayList<Integer> promoterIndicies = new ArrayList<>();
+        List<AssignedModule> clonesThisModule = new ArrayList<>();
+        List<Integer> promoterIndicies = new ArrayList<>();
         int count = 0;
 
         //Look for promoters that are abstract
@@ -326,7 +309,7 @@ public class FeatureAssignment {
         }
     }
     
-    private static Integer makeAssignedClones(List<Feature> featuresOfRole, List<Feature> assignedRegulators, Module m, PrimitiveModule pm, ArrayList<AssignedModule> clonesThisModule, int count, int i) {
+    private static Integer makeAssignedClones(List<Feature> featuresOfRole, List<Feature> assignedRegulators, Module m, PrimitiveModule pm, List<AssignedModule> clonesThisModule, int count, int i) {
         
         for (Feature fR : featuresOfRole) {
 
@@ -388,45 +371,62 @@ public class FeatureAssignment {
         return FPList;
     }
     
+    private static List<Module> getExpressorsExpressees(Module module,List<Module> expexeList){
+        if(module.isRoot() || expexeList == null){
+            expexeList = new ArrayList<Module>();
+        }
+        //Why separate?
+        if(module.getRole().equals(Module.ModuleRole.EXPRESSEE) || module.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || module.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATOR) || module.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || module.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSOR)){
+            expexeList.add(module);
+        }
+        else if(module.getRole().equals(Module.ModuleRole.EXPRESSOR)){
+            expexeList.add(module);
+        }
+        for(Module child:module.getChildren()){
+            getExpressorsExpressees(child,expexeList);
+        }
+        return expexeList;
+    }
+    
     //Traverse a list of Module graphs to find all modules of a specific stage
-    private static ArrayList<Module> getExpressorsExpressees (List<Module> modules) {
+    private static List<Module> getExpressorsExpressees(Module m) {
         
+        return getExpressorsExpressees(m,new ArrayList<Module>());
+        /*
         ArrayList<Module> expressors = new ArrayList();
         ArrayList<Module> expressees = new ArrayList();
         ArrayList<Module> stageModules = new ArrayList();
-        
+
         //Traverse each module for modules of a particular stage
-        for (Module m : modules) {
-            
-            ArrayList<Module> queue = new ArrayList();
-            HashSet<Module> seenModules = new HashSet();
-            queue.add(m);
-            
-            //Queue traversal of module graphs to get all nodes of a certain stage
-            while (!queue.isEmpty()) {
-                Module currentModule = queue.get(0);
-                seenModules.add(currentModule);
-                queue.remove(0);
+        ArrayList<Module> queue = new ArrayList();
+        HashSet<Module> seenModules = new HashSet();
+        queue.add(m);
 
-                if (currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE) || currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATOR) || currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSOR)) {
-                    expressees.add(currentModule);
-                } else if (currentModule.getRole().equals(Module.ModuleRole.EXPRESSOR)) {
-                    expressors.add(currentModule);
-                }
+        //Queue traversal of module graphs to get all nodes of a certain stage
+        while (!queue.isEmpty()) {
+            Module currentModule = queue.get(0);
+            seenModules.add(currentModule);
+            queue.remove(0);
 
-                for (Module neighbor : currentModule.getAllNeighbors()) {
-                    if (!seenModules.contains(neighbor)) {
-                        if (!queue.contains(neighbor)) {
-                            queue.add(neighbor);
-                        }
+            if (currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE) || currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATOR) || currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSOR)) {
+                expressees.add(currentModule);
+            } else if (currentModule.getRole().equals(Module.ModuleRole.EXPRESSOR)) {
+                expressors.add(currentModule);
+            }
+
+            for (Module neighbor : currentModule.getAllNeighbors()) {
+                if (!seenModules.contains(neighbor)) {
+                    if (!queue.contains(neighbor)) {
+                        queue.add(neighbor);
                     }
                 }
             }
         }
-        
+
         stageModules.addAll(expressees);
         stageModules.addAll(expressors);
         return stageModules;
+        */
     }
     
     //Method for making a complete assignment based on best module simulations

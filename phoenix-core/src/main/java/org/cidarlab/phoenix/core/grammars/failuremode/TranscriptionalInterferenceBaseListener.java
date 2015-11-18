@@ -3,6 +3,8 @@
     package org.cidarlab.phoenix.core.grammars.failuremode;
 
 
+import lombok.Getter;
+import lombok.Setter;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -13,12 +15,18 @@ import org.antlr.v4.runtime.tree.TerminalNode;
  * of the available methods.
  */
 public class TranscriptionalInterferenceBaseListener implements TranscriptionalInterferenceListener {
+    
+    @Getter
+    @Setter
+    private int transcriptionalInterferenceCount;
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRoot(TranscriptionalInterferenceParser.RootContext ctx) { }
+	@Override public void enterRoot(TranscriptionalInterferenceParser.RootContext ctx) {
+            this.transcriptionalInterferenceCount = 0;
+        }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -42,7 +50,9 @@ public class TranscriptionalInterferenceBaseListener implements TranscriptionalI
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTranscriptional_interference(TranscriptionalInterferenceParser.Transcriptional_interferenceContext ctx) { }
+	@Override public void enterTranscriptional_interference(TranscriptionalInterferenceParser.Transcriptional_interferenceContext ctx) {
+            this.transcriptionalInterferenceCount ++;
+        }
 	/**
 	 * {@inheritDoc}
 	 *

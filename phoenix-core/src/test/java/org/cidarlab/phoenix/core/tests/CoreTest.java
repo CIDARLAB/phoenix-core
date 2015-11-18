@@ -61,9 +61,9 @@ public class CoreTest {
         
         //Run a design decomposition
         File structureFile = new File(getFilepath() + "/src/main/resources/miniEugeneFiles/oscillator-transcriptional-interference.eug");
-        List<AssignedModule> modulesToTest = PhoenixController.initializeDesign(structureFile, null);
-        HashSet<AssignedModule> modulesToTestHash = new HashSet<>(modulesToTest);
-        PhoenixController.createExperimentInstructions(modulesToTestHash, getFilepath() + "/src/main/resources/InstructionFiles");
+        Module bestModule = PhoenixController.initializeDesign(structureFile, null);
+        //HashSet<AssignedModule> modulesToTestHash = new HashSet<>(modulesToTest);
+        PhoenixController.createExperimentInstructions(bestModule, getFilepath() + "/src/main/resources/InstructionFiles");
     }
     
     //Main testing class

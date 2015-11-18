@@ -7,6 +7,8 @@ package org.cidarlab.phoenix.core.dom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -42,6 +44,10 @@ public class Cytometer {
     @Setter
     private HashSet<String> filters;
     
+    @Getter
+    @Setter
+    private Map<String,String> channelMap;
+    
     //Setting -> Key: Midpoint wavelength, Value: Width wavelength
     @Getter
     @Setter
@@ -56,4 +62,8 @@ public class Cytometer {
     @Setter
     @Getter
     private String clothoID;
+    
+    public static String getLaserFilter(String laser,String filter){
+        return (laser + ","+filter);
+    }
 }

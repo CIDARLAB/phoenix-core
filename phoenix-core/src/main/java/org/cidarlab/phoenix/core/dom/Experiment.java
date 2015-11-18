@@ -18,10 +18,10 @@ public class Experiment {
     
     //No args constructor
     public Experiment() {
-        experimentSamples = new ArrayList<>();
-        colorControls = new ArrayList<>();
-        regulationControls = new ArrayList<>();
-        expDegControls = new ArrayList<>();
+        //experimentSamples = new ArrayList<>();
+        //colorControls = new ArrayList<>();
+        //regulationControls = new ArrayList<>();
+        //expDegControls = new ArrayList<>();
         mediaConditions = new ArrayList<>();
         times = new ArrayList<>();
         
@@ -35,12 +35,13 @@ public class Experiment {
         clothoID = _name;
         mediaConditions = _media;
         times = _times;
-        experimentSamples = new ArrayList<>();
-        colorControls = new ArrayList<>();
-        regulationControls = new ArrayList<>();
-        expDegControls = new ArrayList<>();
+        //experimentSamples = new ArrayList<>();
+        //colorControls = new ArrayList<>();
+        //regulationControls = new ArrayList<>();
+        //expDegControls = new ArrayList<>();
     }   
     
+    /*
     //Get all samples in an experiment
     public List<Sample> getAllSamples() {
         
@@ -54,6 +55,7 @@ public class Experiment {
         
         return allSamples;
     }
+    */
     
     //Experiment name
     @Setter
@@ -84,6 +86,7 @@ public class Experiment {
         results = new ExperimentResults(_exType);
     }
     
+    /*
     //Experiment testing samples
     @Setter
     @Getter
@@ -113,6 +116,7 @@ public class Experiment {
     @Setter
     @Getter
     private List<Sample> expDegControls;
+    */
     
     //Time series for measurements
     @Setter

@@ -57,7 +57,8 @@ public class PhoenixInstructions {
             
             for (Experiment ex : experiments) {
                 HashSet<String> sampleIDsThisExpt = new HashSet<>();
-                List<Sample> allSamplesEx = ex.getAllSamples();
+                List<Sample> allSamplesEx = new ArrayList<>();
+                //allSamplesEx = ex.getAllSamples();
                 for (Sample s : allSamplesEx) {
                     if (s.getType().equals(SampleType.NEGATIVE) || s.getType().equals(SampleType.FLUORESCENT) || s.getType().equals(SampleType.BEADS)) {
                         if (!sampleIDs.contains(s.getClothoID())) {
@@ -231,7 +232,8 @@ public class PhoenixInstructions {
         }
         
         //Get samples from input experiment
-        List<Sample> allSamples = e.getAllSamples();
+        List<Sample> allSamples = new ArrayList<>();
+        //allSamples = e.getAllSamples();
         
         line = reader.readLine();
         

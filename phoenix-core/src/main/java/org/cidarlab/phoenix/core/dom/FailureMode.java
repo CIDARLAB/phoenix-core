@@ -10,7 +10,8 @@ package org.cidarlab.phoenix.core.dom;
  * @author prash
  */
 public enum FailureMode {
-    PROMOTER_CONTEXT,
+    ROAD_BLOCKING,
+    SUPER_COILING,
     RBS_CONTEXT,
     TRANSCRIPTIONAL_READ_THROUGH,
     MISMATCHED_PARAMETERS,

@@ -315,8 +315,8 @@ public class PhoenixGrammar {
      *---------------*/
     
     //Helper method to loop through a list of structures that need to be decomposed
-    public static void decomposeAll (List<Module> modules) {
-        for (Module structure : modules) {
+    public static void decomposeAll (List<Module> rootModules) {
+        for (Module structure : rootModules) {
             PhoenixGrammar.decompose(structure);
         }
     }
@@ -458,8 +458,8 @@ public class PhoenixGrammar {
         forwardModule.setRoot(false);
         forwardModule.setRole(ModuleRole.HIGHER_FUNCTION);
         forwardModule.setStage(node.getStage()+1);
-        ArrayList<Feature> moduleFeature = new ArrayList<>();
-        ArrayList<PrimitiveModule> primModules = new ArrayList<>();
+        List<Feature> moduleFeature = new ArrayList<>();
+        List<PrimitiveModule> primModules = new ArrayList<>();
         
         //Go through each of the modules primitives in forward order
         for (int i = 0; i < node.getSubmodules().size(); i++) {
@@ -471,8 +471,6 @@ public class PhoenixGrammar {
                 
                 PrimitiveModule wildCard = new PrimitiveModule(FeatureRole.WILDCARD, pm.getPrimitive().clone(), pm.getModuleFeature());
                 wildCard.getPrimitive().setOrientation(Orientation.REVERSE);
-                wildCard.setPrimitiveRole(FeatureRole.WILDCARD);
-                wildCard.setModuleFeature(pm.getModuleFeature());
                 primModules.add(wildCard);
                 moduleFeature.add(pm.getModuleFeature());
                 

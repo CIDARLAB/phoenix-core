@@ -44,7 +44,7 @@ import org.clothoapi.clotho3javaapi.ClothoConnection;
 public class RavenAdaptor {
     
     //Create assembly plans for given parts and return instructions file
-    public static File generateAssemblyPlan(HashSet<AssignedModule> modulesToTest, String filePath) throws Exception {
+    public static File generateAssemblyPlan(Set<AssignedModule> modulesToTest, String filePath) throws Exception {
         
         //Add testing modules to target modules
         HashSet<Module> allModules = new HashSet<>();

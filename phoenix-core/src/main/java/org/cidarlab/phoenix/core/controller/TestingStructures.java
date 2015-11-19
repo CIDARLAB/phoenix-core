@@ -54,19 +54,19 @@ public class TestingStructures {
     private static void addTestingPrimitivesHelper(Module module) {
 
         //For each of the children, add testing peices if they are stage 0+
+        //if (module.getStage() >= 0) {
+        if (module.getRole().equals(ModuleRole.EXPRESSEE) || module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR) || module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)) {
+            addTestExpressee(module);
+        } else if (module.getRole().equals(ModuleRole.EXPRESSOR)) {
+            addTestExpressor(module);
+        } else if (module.getRole().equals(ModuleRole.TRANSCRIPTIONAL_UNIT)) {
+            addTestTU(module);
+        } else {
+            addTestHighFunction(module);
+        }
+        //}
         for(Module child:module.getChildren()){
-            if (child.getStage() >= 0) {
-                if (child.getRole().equals(ModuleRole.EXPRESSEE) || child.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || child.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR) || child.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || child.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)) {
-                    addTestExpressee(child);
-                } else if (child.getRole().equals(ModuleRole.EXPRESSOR)) {
-                    addTestExpressor(child);
-                } else if (child.getRole().equals(ModuleRole.TRANSCRIPTIONAL_UNIT)) {
-                    addTestTU(child);
-                } else {
-                    addTestHighFunction(child);
-                }
-                addTestingPrimitivesHelper(child);
-            }
+            addTestingPrimitivesHelper(child);    
         }
     }
 

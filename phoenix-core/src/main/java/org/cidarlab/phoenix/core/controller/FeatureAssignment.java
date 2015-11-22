@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
+import org.cidarlab.phoenix.core.adaptors.PigeonAdaptor;
 import org.cidarlab.phoenix.core.dom.Cytometer;
 import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Fluorophore;
@@ -54,23 +55,40 @@ public class FeatureAssignment {
         Map featureQuery = new HashMap();
         List<Feature> features = ClothoAdaptor.queryFeatures(featureQuery,clothoObject); 
         
+        System.out.println("All Features");
+        for(Feature feature:features){
+            System.out.println(feature.toString());
+        }
         
-        List<Module> exp = getExpressorsExpressees(rootModule);
+        List<Module> exp = getExpressors(rootModule);
+        List<Module> exe = getExpressees(rootModule);
         featureMatchAssign(exp, features);
+        
         List<Feature> assignedRegulators = new ArrayList<>();
         
-        //CHECK FROM THIS PART ONWARDS!!!
-        for (Module m : exp) {
-            
-            //If the EXPRESSORS and EXPRESSEES are not fully assigned
-            if (!isAssigned(m)) {
-                if (m.getRole().equals(Module.ModuleRole.EXPRESSEE) || m.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || m.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATOR) || m.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || m.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSOR)) {
-                    assignedRegulators.addAll(regulatorAssign(m, features));
-                } else if (m.getRole().equals(Module.ModuleRole.EXPRESSOR)) {
-                    promoterAssign(m, features, assignedRegulators);
-                }
+        System.out.println("Number of Exp ::" + exp.size());
+        System.out.println("Number of Exe ::" + exe.size());
+        for(Module m:exe){
+            if(!isAssigned(m)){
+                assignedRegulators.addAll(regulatorAssign(m, features));
             }
-            
+        }
+        System.out.println("Assigned Regulators");
+        for(Feature f:assignedRegulators){
+            System.out.println(f.toString());
+        }
+        
+        for(Module m:exp){
+            if(!isAssigned(m)){
+                promoterAssign(m, features, assignedRegulators);
+            }
+        }
+        List<Module> expexe = new ArrayList<Module>();
+        expexe.addAll(exe);
+        expexe.addAll(exp);
+        
+        //CHECK FROM THIS PART ONWARDS!!!
+        for (Module m : expexe) {
             //Add each of the assigned modules to the `modules to test' collection
             for (AssignedModule assignedM : m.getAssignedModules()) {
                 
@@ -376,63 +394,34 @@ public class FeatureAssignment {
         return FPList;
     }
     
-    private static List<Module> getExpressorsExpressees(Module module,List<Module> expexeList){
-        if(module.isRoot() || expexeList == null){
-            expexeList = new ArrayList<Module>();
-        }
-        //Why separate?
-        if(module.getRole().equals(Module.ModuleRole.EXPRESSEE) || module.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || module.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATOR) || module.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || module.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSOR)){
-            expexeList.add(module);
-        }
-        else if(module.getRole().equals(Module.ModuleRole.EXPRESSOR)){
-            expexeList.add(module);
+    
+    
+    private static List<Module> getExpressees(Module module){
+        List<Module> expressees = new ArrayList<Module>();
+        
+        if(module.getRole().equals(ModuleRole.EXPRESSEE) || module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR) || module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)){
+            expressees.add(module);
         }
         for(Module child:module.getChildren()){
-            getExpressorsExpressees(child,expexeList);
+            expressees.addAll(getExpressees(child));
         }
-        return expexeList;
+        
+        return expressees;
     }
     
-    //Traverse a list of Module graphs to find all modules of a specific stage
-    private static List<Module> getExpressorsExpressees(Module m) {
+    private static List<Module> getExpressors(Module module){
+        List<Module> expressors = new ArrayList<Module>();
         
-        return getExpressorsExpressees(m,new ArrayList<Module>());
-        /*
-        ArrayList<Module> expressors = new ArrayList();
-        ArrayList<Module> expressees = new ArrayList();
-        ArrayList<Module> stageModules = new ArrayList();
-
-        //Traverse each module for modules of a particular stage
-        ArrayList<Module> queue = new ArrayList();
-        HashSet<Module> seenModules = new HashSet();
-        queue.add(m);
-
-        //Queue traversal of module graphs to get all nodes of a certain stage
-        while (!queue.isEmpty()) {
-            Module currentModule = queue.get(0);
-            seenModules.add(currentModule);
-            queue.remove(0);
-
-            if (currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE) || currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATOR) || currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || currentModule.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSOR)) {
-                expressees.add(currentModule);
-            } else if (currentModule.getRole().equals(Module.ModuleRole.EXPRESSOR)) {
-                expressors.add(currentModule);
-            }
-
-            for (Module neighbor : currentModule.getAllNeighbors()) {
-                if (!seenModules.contains(neighbor)) {
-                    if (!queue.contains(neighbor)) {
-                        queue.add(neighbor);
-                    }
-                }
-            }
+        if(module.getRole().equals(ModuleRole.EXPRESSOR)){
+            expressors.add(module);
         }
-
-        stageModules.addAll(expressees);
-        stageModules.addAll(expressors);
-        return stageModules;
-        */
+        for(Module child:module.getChildren()){
+            expressors.addAll(getExpressors(child));
+        }
+        
+        return expressors;
     }
+    
     
     //Method for making a complete assignment based on best module simulations
     public static HashSet<Module> completeAssignmentSim(List<Module> bestSim, List<Module> modules) {
@@ -533,6 +522,9 @@ public class FeatureAssignment {
 
         List<Feature> featuresOfRole = new ArrayList<>();
         for (Feature f : allFeatures) {
+            if(f.getName().equals("para-1.ref")){
+                System.out.println("Promoter Indicible?");
+            }
             if (f.getRole().equals(role) && !f.getSequence().getSequence().isEmpty()) {
                 featuresOfRole.add(f);
             }

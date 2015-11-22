@@ -156,7 +156,7 @@ public class PhoenixController {
         //Determine experiments from current module assignment state
         //Create expreriment objects based upon the modules being tested
         Set<AssignedModule> amodulesToTest = new HashSet<AssignedModule>();
-        getAllAssignedModules(module,amodulesToTest);
+        amodulesToTest = getAllAssignedModules(module);
         List<Experiment> currentExperiments = new ArrayList<>();
         for (AssignedModule m : amodulesToTest) {
             currentExperiments.addAll(m.getExperiments());
@@ -173,14 +173,16 @@ public class PhoenixController {
         return assmTestFiles;
     }
     
-    public static void getAllAssignedModules(Module module,Set<AssignedModule> modulesToTest){
+    public static Set<AssignedModule> getAllAssignedModules(Module module){
+        Set<AssignedModule> modulesToTest = new HashSet<AssignedModule>();
         if(module.isRoot() || modulesToTest == null){
             modulesToTest = new HashSet<AssignedModule>();
         }
         modulesToTest.addAll(module.getAssignedModules());
         for(Module child:module.getChildren()){
-            getAllAssignedModules(child,modulesToTest);
+            modulesToTest.addAll(getAllAssignedModules(child));
         }
+        return modulesToTest;
     }
             
     

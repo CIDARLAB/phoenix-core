@@ -257,6 +257,15 @@ public class Feature extends SharableObjBase {
     public ObjectId getAuthorUUID() {
         return author.getId();
     }
+    
+    @Override
+    public String toString(){
+        String _string = "";
+        _string += this.getName() +"::";
+        _string += this.role;
+        return _string;
+        
+    }
 
     @Override
     public Feature clone() {

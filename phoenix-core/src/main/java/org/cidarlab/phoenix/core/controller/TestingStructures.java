@@ -190,16 +190,24 @@ public class TestingStructures {
         m.updateModuleFeatures();
     }
     
+    private static class ControlsMap{
+        private Map<String, String> colorNameMap;
+        private Map<String, String> regNameMap;
+        private Map<String, AssignedModule> aModuleControlMap;
+        private ControlsMap(){
+            colorNameMap = new HashMap<>();
+            regNameMap = new HashMap<>();
+            aModuleControlMap = new HashMap<>();
+        }
+    }
     
     public static void createExperiments(Module rootModule){
-        Map<String, String> colorNameMap = new HashMap<>();
-        Map<String, String> regNameMap = new HashMap<>();
-        Map<String, AssignedModule> aModuleControlMap = new HashMap<>();
-        getAllControls(rootModule,colorNameMap,regNameMap,aModuleControlMap);
+        ControlsMap expMap = new ControlsMap();
+        expMap = getAllControls(rootModule);
         List<Medium> defaultMedia = new ArrayList<>();
         defaultMedia.add(new Medium("LB", Medium.MediaType.RICH));
         List<String> defaultTime = Arrays.asList(new String[]{"0 min", "10 min", "20 min", "30 min", "40 min", "50 min", "60 min"});
-        assignAllControls(rootModule,colorNameMap,regNameMap,aModuleControlMap,defaultMedia,defaultTime);
+        assignAllControls(rootModule,expMap.colorNameMap,expMap.regNameMap,expMap.aModuleControlMap,defaultMedia,defaultTime);
         
     }
     
@@ -221,7 +229,7 @@ public class TestingStructures {
                 aModule.getExperiments().addAll(experimentList);
                 for (PrimitiveModule pm : aModule.getSubmodules()) {
                     if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
-                        controlModules.add(aModuleControlMap.get(pm.getModuleFeature().getName()));
+                        controlModules.add(aModuleControlMap.get(colorNameMap.get(pm.getModuleFeature().getName())));
                     }
                 }
                 aModule.setControlModules(controlModules);
@@ -232,13 +240,13 @@ public class TestingStructures {
                     if (pR.equals(FeatureRole.CDS_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSOR) || pR.equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR)) {
                         for (Arc a : pm.getModuleFeature().getArcs()) {
                             Feature regulatee = a.getRegulatee();
-                            controlModules.add(aModuleControlMap.get(regulatee.getName()));
+                            controlModules.add(aModuleControlMap.get(regNameMap.get(regulatee.getName())));
                         }
                     }
                 }
                 for (PrimitiveModule pm : aModule.getSubmodules()) {
                     if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
-                        controlModules.add(aModuleControlMap.get(pm.getModuleFeature().getName()));
+                        controlModules.add(aModuleControlMap.get(colorNameMap.get(pm.getModuleFeature().getName())));
                     }
                 }
                 if (aModule.getRole().equals(ModuleRole.EXPRESSEE)) {
@@ -286,7 +294,9 @@ public class TestingStructures {
             }
             
         }
-        
+        for(Module child:module.getChildren()){
+            assignAllControls(child,colorNameMap,regNameMap,aModuleControlMap,defaultMedia,defaultTime);
+        }
         
             //Experiments for EXPRESSOR
             //Experiments for TRANSCRIPTIONAL_UNIT
@@ -339,25 +349,27 @@ public class TestingStructures {
     
     
     
-    private static void getAllControls(Module module,Map<String, String> colorNameMap,Map<String, String> regNameMap, Map<String, AssignedModule> aModuleMap){
-        if(module.isRoot()){
-            colorNameMap = new HashMap();
-            regNameMap = new HashMap();
-            aModuleMap = new HashMap();
-        }
+    private static ControlsMap getAllControls(Module module){
+        ControlsMap map = new ControlsMap();
         if(module.getRole().equals(ModuleRole.TRANSCRIPTIONAL_UNIT) || module.getRole().equals(ModuleRole.EXPRESSOR)){
             for(AssignedModule amodule:module.getAssignedModules()){
-                getAmoduleControlsMap(amodule,colorNameMap,regNameMap,aModuleMap,false);
+                getAmoduleControlsMap(amodule,map.colorNameMap,map.regNameMap,map.aModuleControlMap,false);
             }
         }
         else if(module.getRole().equals(ModuleRole.EXPRESSEE) || module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR) || module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)){
             for(AssignedModule amodule:module.getAssignedModules()){
-                getAmoduleControlsMap(amodule,colorNameMap,regNameMap,aModuleMap,true);
+                getAmoduleControlsMap(amodule,map.colorNameMap,map.regNameMap,map.aModuleControlMap,true);
             }
         }
+        System.out.println("Module Role ::  " +module.getRole());
         for(Module child:module.getChildren()){
-            getAllControls(child,colorNameMap,regNameMap,aModuleMap);
+            
+            ControlsMap tempMap = getAllControls(child);
+            map.aModuleControlMap.putAll(tempMap.aModuleControlMap);
+            map.colorNameMap.putAll(tempMap.colorNameMap);
+            map.regNameMap.putAll(tempMap.regNameMap);
         }
+        return map;
     }
     
     private static void getAmoduleControlsMap(AssignedModule amodule, Map<String, String> colorNameMap,Map<String, String> regNameMap, Map<String, AssignedModule> aModuleMap,boolean regControl) {

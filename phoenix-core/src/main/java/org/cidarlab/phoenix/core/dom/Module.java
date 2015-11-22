@@ -219,6 +219,24 @@ public class Module {
         }
     }
     
+    @Override
+    public String toString(){
+        String _string = "";
+        if(this.isRoot){
+            _string += ("Root Module; ");
+        }
+        //_string += ("Name:"+this.name+";");
+        _string += ("Role:"+this.role+"; ");
+        _string += ("Feature String:"+this.getFeatureShortString()+";");
+        return _string;
+    }
+    
+    public void printTree(){
+        System.out.println(this.toString());
+        for(Module child:this.children){
+            child.printTree();
+        }
+    }
     
     //Update moduleFeatures based on submodule features
     public void updateModuleFeatures() {

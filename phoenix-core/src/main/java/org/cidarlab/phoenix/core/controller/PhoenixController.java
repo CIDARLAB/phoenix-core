@@ -129,7 +129,7 @@ public class PhoenixController {
         
         //Perform partial part assignments given the feature library
         FeatureAssignment.partialAssignment(bestModule, 0.5);
-        removeDuplicateAssignedModules(bestModule);
+        //removeDuplicateAssignedModules(bestModule);
         
         //At this point, I have a Module tree, which has Assigned Modules for Expressors and Expressees  and a Many to Many relationship between modules and Assigned Modules. 
         //I just want to create Control Modules for AssignedModules & Create Experiment Objects for AssignedModules
@@ -164,7 +164,7 @@ public class PhoenixController {
         
         //Create assembly and testing plans
         File assemblyInstructions = RavenAdaptor.generateAssemblyPlan(amodulesToTest, filePath);
-        File testingInstructions = PhoenixInstructions.generateTestingInstructions(currentExperiments, filePath);
+        File testingInstructions = PhoenixInstructions.generateTestingInstructions(amodulesToTest, filePath);
 
         //Save these strings to files and return them from this method
         List<File> assmTestFiles = new ArrayList<>();
@@ -175,9 +175,6 @@ public class PhoenixController {
     
     public static Set<AssignedModule> getAllAssignedModules(Module module){
         Set<AssignedModule> modulesToTest = new HashSet<AssignedModule>();
-        if(module.isRoot() || modulesToTest == null){
-            modulesToTest = new HashSet<AssignedModule>();
-        }
         modulesToTest.addAll(module.getAssignedModules());
         for(Module child:module.getChildren()){
             modulesToTest.addAll(getAllAssignedModules(child));
@@ -185,28 +182,6 @@ public class PhoenixController {
         return modulesToTest;
     }
             
-    
-    //Create assembly and testing instructions from a set of Modules that need to be built and tested
-    //MODULES IN, FILES OUT
-    public static List<File> createExperimentInstructions (HashSet<AssignedModule> modulesToTest, String filePath) throws Exception {
-        
-        //Determine experiments from current module assignment state
-        //Create expreriment objects based upon the modules being tested
-        List<Experiment> currentExperiments = new ArrayList<>();
-        for (AssignedModule m : modulesToTest) {
-            currentExperiments.addAll(m.getExperiments());
-        }
-        
-        //Create assembly and testing plans
-        File assemblyInstructions = RavenAdaptor.generateAssemblyPlan(modulesToTest, filePath);
-        File testingInstructions = PhoenixInstructions.generateTestingInstructions(currentExperiments, filePath);
-
-        //Save these strings to files and return them from this method
-        List<File> assmTestFiles = new ArrayList<>();
-        assmTestFiles.add(testingInstructions);
-        assmTestFiles.add(assemblyInstructions);
-        return assmTestFiles;
-    }
     
     //Take a plasmid library back in, interpret data, run simulations for parents, verify, make part assignments
     //FILES IN, NOTHING OUT
@@ -261,27 +236,42 @@ public class PhoenixController {
         }
     }
     
+    
     public static void removeDuplicateAssignedModules(Module module) {
-        removeDuplicateAssignedModules(module,new HashMap<String, List<AssignedModule>>());
+    
+        Map<String, List<AssignedModule>> amap = getAssignedModulesMap(module);
+        removeDuplicateAssignedModules(module,amap);
+        
     }
     
-    public static void removeDuplicateAssignedModules(Module module, Map<String, List<AssignedModule>> amap) {
+    public static Map<String, List<AssignedModule>> getAssignedModulesMap(Module module){
+        Map<String, List<AssignedModule>> amap = new HashMap<>();
+        String featureString = PigeonAdaptor.generatePigeonString(module, true);
+        //String featureString = module.getFeatureShortString();
         
-        if (module.isRoot()) {
-            amap = new HashMap<String, List<AssignedModule>>();
+        if (!module.getAssignedModules().isEmpty()) {
+            amap.put(featureString, module.getAssignedModules());
+        }
+        for(Module child:module.getChildren()){
+            amap.putAll(getAssignedModulesMap(child));
         }
         
-        String featureString = module.getFeatureShortString();
+        return amap;
+    }
+    public static void removeDuplicateAssignedModules(Module module, Map<String, List<AssignedModule>> amap) {
         
-        if (amap.containsKey(featureString)) {
+         String featureString = PigeonAdaptor.generatePigeonString(module, true);
+        //String featureString = module.getFeatureShortString();
+        
+        if(!module.getAssignedModules().isEmpty()){
             module.setAssignedModules(amap.get(featureString));
-        } else {
-            amap.put(featureString, module.getAssignedModules());
         }
 
         for (Module child : module.getChildren()) {
             removeDuplicateAssignedModules(child, amap);
         }
+        
+        
     }
     
 }

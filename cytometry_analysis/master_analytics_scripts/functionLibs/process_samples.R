@@ -1,5 +1,5 @@
 #Function for processing meansMedia and standard deviations with filtering and compensating
-process.samples <- function(experimentFlowSet, colorControlsFlowSet, beadFlowFrame, comp.mat, autofluorescence, dataFiles) {		
+process.samples <- function(experimentFlowSet, colorControlsFlowSet, beadFlowFrame, comp.mat, autofluorescence, dataFiles, colorMultiplierVector) {		
 	
 	if (!is.null(comp.mat)) {
 		compensatedFlowSet <- compensate(experimentFlowSet, comp.mat)
@@ -24,6 +24,7 @@ process.samples <- function(experimentFlowSet, colorControlsFlowSet, beadFlowFra
 	#Remove negative and fringe values
 	for (q in 1:length(compensatedFlowSet)) {
 		compensatedFlowSet[[q]] <- nmRemove(compensatedFlowSet[[q]], colnames(compensatedFlowSet), neg=TRUE)				
+		
 		#Logicle Transform
 		# lgcl <- estimateLogicle(compensatedFlowSet[[q]], colnames(compensatedFlowSet))
 		# compensatedFlowSet[[q]] <- transform(compensatedFlowSet[[q]], lgcl)					
@@ -41,6 +42,12 @@ process.samples <- function(experimentFlowSet, colorControlsFlowSet, beadFlowFra
 		
 	#Subtract autofluorescence
 	analyzedExpts <- sweep(analyzedExpts,2,autofluorescence)
+		
+	#Color multiplication applied
+	for (r in 1:length(colnames(analyzedExpts))) {
+		m <- as.numeric(colorMultiplierVector[,which(TRUE == grepl(colnames(analyzedExpts)[r], colnames(colorMultiplierVector), ignore.case=TRUE))])
+		analyzedExpts[,r] <- m * analyzedExpts[,r]
+	}	
 		
 	analyzedExpts[is.na(analyzedExpts)] <- 0
 	analyzedExptsMatrix <- data.matrix(analyzedExpts)

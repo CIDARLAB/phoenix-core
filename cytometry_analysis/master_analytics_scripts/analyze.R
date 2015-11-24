@@ -17,6 +17,7 @@ library(xtable)
 source("functionLibs/source_https.R")
 source("functionLibs/functionalDiversity.R")
 source("functionLibs/getAutoFluorescence.R")
+source("functionLibs/getColorMultiplier.R")
 source("functionLibs/normalizeToBeads.R")
 source("functionLibs/top_sliding_window_peaks.R")
 source("functionLibs/process_samples.R")
@@ -54,7 +55,6 @@ setwd(wd)
 	#Find bead controls, apply bead normalization
 	beadsControlRow <- key[which(TRUE == grepl("beads", key$CONTROL, ignore.case=TRUE)),]
 	beadsControlFlowFrame <- BeadFlowFrame(fcs.filename = paste('data/', as.character(beadsControlRow$FILENAME), sep=''), bead.filename = "MEFLmatrix.csv")
-	#beadsControlFlowFrame <- nmRemove(beadsControlFlowFrame, colnames(beadsControlFlowFrame), neg=TRUE)
 	gatedBeadControlFlowFrame <- gateBeads(beadsControlFlowFrame)
 	
 	#Determine the spillover matrix
@@ -65,6 +65,9 @@ setwd(wd)
 	
 	#Get autofluorescence
 	autofluorescence <- getAutofluorescence(negativeControlFlowSet, gatedBeadControlFlowFrame)
+	
+	#Get color multiplier vector relative to FITC-A channel for gfp control
+	colorMultiplierVector <- getColorMultiplier(colorControlsFlowSet, gatedBeadControlFlowFrame, autofluorescence, as.character(colorControlRows$FILENAME))
 	
 	#Group files by part name
 	#Determine unique parts
@@ -255,9 +258,8 @@ setwd(wd)
 						
 						#Summarize files for times in this media condition in addition to files for all times in this media condition
 						files <- c(Afile, replicateFiles)
-						if (uniqueMediaTimes[t] == uniqueMediaTimes[which.max(uniqueMediaTimes)]) {
-						
-						filesMediaConcentration <- c(filesMediaConcentration, files)				
+						if (uniqueMediaTimes[t] == uniqueMediaTimes[which.max(uniqueMediaTimes)]) {						
+							filesMediaConcentration <- c(filesMediaConcentration, files)				
 						}
 						
 						#Only process this data if there is more than one time for this media and small molecule
@@ -281,7 +283,7 @@ setwd(wd)
 									experimentFlowSet <- experimentFlowSet[,columnIndexes]				
 													
 									#Process experiments for this flowSet
-									analyzedExptsMediaTimeEval <- process.samples(experimentFlowSet, colorControlsFlowSet, gatedBeadControlFlowFrame, comp.mat, autofluorescence, finalFiles)
+									analyzedExptsMediaTimeEval <- process.samples(experimentFlowSet, colorControlsFlowSet, gatedBeadControlFlowFrame, comp.mat, autofluorescence, finalFiles, colorMultiplierVector)
 									meansMediaTime[t,] <- colMeans(analyzedExptsMediaTimeEval)
 									standardDevsMediaTime[t,] <- colSds(analyzedExptsMediaTimeEval)
 								}	
@@ -391,7 +393,7 @@ setwd(wd)
 						experimentFlowSetMedia <- experimentFlowSetMedia[,columnIndexes]				
 										
 						#Process experiments for this flowSet
-						analyzedExptsMediaEval <- process.samples(experimentFlowSetMedia, colorControlsFlowSet, gatedBeadControlFlowFrame, comp.mat, autofluorescence, finalFilesMediaConcentration)
+						analyzedExptsMediaEval <- process.samples(experimentFlowSetMedia, colorControlsFlowSet, gatedBeadControlFlowFrame, comp.mat, autofluorescence, finalFilesMediaConcentration, colorMultiplierVector)
 						meansMedia[k,] <- colMeans(analyzedExptsMediaEval)
 						standardDevsMedia[k,] <- colSds(analyzedExptsMediaEval)							
 					}
@@ -459,6 +461,11 @@ setwd(wd)
 		    			dev.off()	    								
 		    		}    	
 		    		
+		    		#Output file
+					colnames(plotMat)[1] <- SMdirName
+					filename <- as.character(paste(currentMediaTypePath, "/", "mediaTitrationPlotPoints.csv", sep=''))
+					write.csv(file=filename, x=plotMat, row.names=FALSE)
+		    		
 		    		#New regulation plotting bassis - for only a single strain, not across strains
 		    		if (!is.null(uniqueMediaRows$REGULATION)) {
 		    			
@@ -521,11 +528,6 @@ setwd(wd)
 							}
 						}
 					}
-		    		
-		    		#Output file
-					colnames(plotMat)[1] <- SMdirName
-					filename <- as.character(paste(currentMediaTypePath, "/", "mediaTitrationPlotPoints.csv", sep=''))
-					write.csv(file=filename, x=plotMat, row.names=FALSE)
 			    	
 			    #If there is no media curve, we still want to take averages of duplicateTimeMediaRows
 				} else {

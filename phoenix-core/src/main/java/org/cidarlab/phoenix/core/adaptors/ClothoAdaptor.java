@@ -1607,7 +1607,7 @@ public class ClothoAdaptor {
             pn.setSingleStranded(Boolean.parseBoolean(jsonPolynuc.get("isSingleStranded").toString()));
             if (jsonPolynuc.containsKey("submissionDate")) {
                 if (jsonPolynuc.get("submissionDate") != null) {
-                    pn.setSubmissionDate(new Date(jsonPolynuc.get("submissionDate").toString()));
+//                    pn.setSubmissionDate(new Date(Long.parseLong(jsonPolynuc.get("submissionDate").toString())));
                 }
             }
 

@@ -47,7 +47,7 @@ public class RavenAdaptor {
     public static File generateAssemblyPlan(Set<AssignedModule> modulesToTest, String filePath) throws Exception {
         
         //Add testing modules to target modules
-        HashSet<Module> allModules = new HashSet<>();
+        HashSet<AssignedModule> allModules = new HashSet<>();
         HashSet<List<Feature>> moduleFeatureHash = new HashSet<>();
         
         for (AssignedModule targetModule : modulesToTest) {
@@ -98,9 +98,9 @@ public class RavenAdaptor {
         
         //Convert Phoenix Modules to Raven Plasmids
         ArrayList<HashSet<org.cidarlab.raven.datastructures.Part>> listTargetSets = new ArrayList();
-        HashSet<Module> expressees = new HashSet<>();
-        HashSet<Module> expressors = new HashSet<>();
-        for (Module m : allModules) {
+        HashSet<AssignedModule> expressees = new HashSet<>();
+        HashSet<AssignedModule> expressors = new HashSet<>();
+        for (AssignedModule m : allModules) {
             if (m.getRole() == ModuleRole.EXPRESSEE || m.getRole() == ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR || m.getRole() == ModuleRole.EXPRESSEE_ACTIVATOR || m.getRole() == ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR || m.getRole() == ModuleRole.EXPRESSEE_REPRESSOR) {
                 expressees.add(m);
             } else if (m.getRole() == ModuleRole.EXPRESSOR) {
@@ -411,12 +411,12 @@ public class RavenAdaptor {
     }
     
     //Convert Phoenix modules to Raven parts
-    public static HashSet<org.cidarlab.raven.datastructures.Part> phoenixModulesToRavenParts(HashSet<Module> modules, HashSet<org.cidarlab.raven.datastructures.Part> libParts) {
+    public static HashSet<org.cidarlab.raven.datastructures.Part> phoenixModulesToRavenParts(HashSet<AssignedModule> modules, HashSet<org.cidarlab.raven.datastructures.Part> libParts) {
         
         HashSet<org.cidarlab.raven.datastructures.Part> ravenParts = new HashSet();
         
         //For each module, make a Raven part
-        for (Module m : modules) {
+        for (AssignedModule m : modules) {
             org.cidarlab.raven.datastructures.Part newPlasmid;
             ArrayList<org.cidarlab.raven.datastructures.Part> composition = new ArrayList();
             ArrayList<String> directions = new ArrayList();            

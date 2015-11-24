@@ -18,8 +18,10 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.Detector;
 import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Medium;
@@ -42,6 +44,53 @@ public class PhoenixInstructions {
     }
     
     //Method for producing testing instructions from Experiments
+    public static File generateTestingInstructions(Set<AssignedModule> amodules, String filePath) throws IOException {
+        
+        File testingInstructions = new File(filePath + "/testingInstructionsTest.csv");
+        FileWriter instructionsFileWriter = new FileWriter(testingInstructions);
+//        BufferedWriter instructionsBufferedWriter;
+//        instructionsBufferedWriter = new BufferedWriter(instructionsFileWriter);
+        try (BufferedWriter instructionsBufferedWriter = new BufferedWriter(instructionsFileWriter)) {
+            instructionsBufferedWriter.write("FILENAME,PART,CONTROL,MEDIA,TIME,REGULATION");
+            instructionsBufferedWriter.newLine();
+            instructionsBufferedWriter.write(",,beads,,,");
+            instructionsBufferedWriter.newLine();
+            instructionsBufferedWriter.write(",,negative,,,");
+            instructionsBufferedWriter.newLine();
+            for(AssignedModule amodule:amodules){
+                String line = "";
+                for(Experiment experiment:amodule.getExperiments()){
+                    List<String> times = experiment.getTimes();
+                    List<Medium> media = experiment.getMediaConditions();
+                    for(Medium medium:media){
+                        if (times.isEmpty()) {
+                            line = "," + amodule.getName() + ",," + medium.getName() + "," + "" + ",";
+                            for (int i = 0; i < 3; i++) {
+                                instructionsBufferedWriter.write(line);
+                                instructionsBufferedWriter.newLine();
+                            }
+                        }
+                        else {
+                            for (String time : times) {
+                                line = "," + amodule.getName() + ",," + medium.getName() + "," + time + ",";
+                                for (int i = 0; i < 3; i++) {
+                                    instructionsBufferedWriter.write(line);
+                                    instructionsBufferedWriter.newLine();
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+            }
+        }
+        
+        return testingInstructions;
+    }
+    
+    
+    //Method for producing testing instructions from Experiments
+    /*
     public static File generateTestingInstructions(List<Experiment> experiments, String filePath) throws IOException {
         
         File testingInstructions = new File(filePath + "/testingInstructionsTest.csv");
@@ -49,7 +98,9 @@ public class PhoenixInstructions {
 //        BufferedWriter instructionsBufferedWriter;
 //        instructionsBufferedWriter = new BufferedWriter(instructionsFileWriter);
         try (BufferedWriter instructionsBufferedWriter = new BufferedWriter(instructionsFileWriter)) {
-            instructionsBufferedWriter.write("FILENAME,PART,CONTROL,MEDIA,TIME");
+            instructionsBufferedWriter.write("FILENAME,PART,CONTROL,MEDIA,TIME,REGULATION");
+            instructionsBufferedWriter.write(",,beads,,,");
+            instructionsBufferedWriter.write(",,negative,,,");
             
             //Get all the samples from all experiments under consideration
             HashSet<String> sampleIDs = new HashSet<String>();
@@ -157,7 +208,7 @@ public class PhoenixInstructions {
         
         return testingInstructions;
     }
-    
+    */
     public static File generateshortNameMapFile(List<Experiment> experiments, String filepath){
         File file = new File(filepath);
         try {

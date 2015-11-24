@@ -159,7 +159,7 @@ public class TestingStructures {
     }
 
     //Add testing Features in WILDCARD 
-    public static void wildcardAssign(Module m) {
+    public static void wildcardAssign(AssignedModule m) {
 
         //For each WILDCARD, add the appropriate testing primitive in reverse orientation 
         for (PrimitiveModule pm : m.getSubmodules()) {
@@ -200,13 +200,13 @@ public class TestingStructures {
             aModuleControlMap = new HashMap<>();
         }
     }
-    
-    public static void createExperiments(Module rootModule){
+     
+   public static void createExperiments(Module rootModule){
         ControlsMap expMap = new ControlsMap();
         expMap = getAllControls(rootModule);
         List<Medium> defaultMedia = new ArrayList<>();
         defaultMedia.add(new Medium("LB", Medium.MediaType.RICH));
-        List<String> defaultTime = Arrays.asList(new String[]{"0 min", "10 min", "20 min", "30 min", "40 min", "50 min", "60 min"});
+        List<String> defaultTime = Arrays.asList(new String[]{"0", "10", "20", "30", "40", "50", "60"});
         assignAllControls(rootModule,expMap.colorNameMap,expMap.regNameMap,expMap.aModuleControlMap,defaultMedia,defaultTime);
         
     }

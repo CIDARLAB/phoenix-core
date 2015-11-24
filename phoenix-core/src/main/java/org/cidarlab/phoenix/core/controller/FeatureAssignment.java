@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.cidarlab.phoenix.core.adaptors.ClothoAdaptor;
 import org.cidarlab.phoenix.core.adaptors.PigeonAdaptor;
 import org.cidarlab.phoenix.core.dom.Cytometer;
@@ -32,12 +33,6 @@ import org.clothoapi.clotho3javaapi.ClothoConnection;
 public class FeatureAssignment {    
     
     
-    public static void partialAssignment(List<Module> rootModules, double percentage){
-        for(Module module:rootModules){
-            partialAssignment(module,percentage);
-        }
-    }
-    
     //Method for traverisng graphs performing a partial assignment
     //This method will be hacky until we have a real part assignment algorithm based on simulation
     public static void partialAssignment(Module rootModule, Double percentage) {
@@ -54,26 +49,36 @@ public class FeatureAssignment {
         //Query promoters and regulator features, assign to abstract spots for EXPRESSORS and EXPRESSEES
         Map featureQuery = new HashMap();
         List<Feature> features = ClothoAdaptor.queryFeatures(featureQuery,clothoObject); 
-        
+        System.out.println("==========================================");
         System.out.println("All Features");
         for(Feature feature:features){
             System.out.println(feature.toString());
         }
         
-        List<Module> exp = getExpressors(rootModule);
         List<Module> exe = getExpressees(rootModule);
+        List<Module> exp = getExpressors(rootModule);
+        
+        System.out.println("==========================================");
+        System.out.println("Number of Exe ::" + exe.size());
+        System.out.println("Number of Exp ::" + exp.size());
+        
+        System.out.println("==========================================");
+        System.out.println("Feature Match Assign for Expressees");
+        featureMatchAssign(exe, features);
+        
+        System.out.println("Feature Match Assign for Expressors");
         featureMatchAssign(exp, features);
         
         List<Feature> assignedRegulators = new ArrayList<>();
         
-        System.out.println("Number of Exp ::" + exp.size());
-        System.out.println("Number of Exe ::" + exe.size());
+        
         for(Module m:exe){
             if(!isAssigned(m)){
                 assignedRegulators.addAll(regulatorAssign(m, features));
             }
         }
-        System.out.println("Assigned Regulators");
+        System.out.println("==========================================");
+        System.out.println("Assigned Regulators ::");
         for(Feature f:assignedRegulators){
             System.out.println(f.toString());
         }
@@ -89,6 +94,9 @@ public class FeatureAssignment {
         
         //CHECK FROM THIS PART ONWARDS!!!
         for (Module m : expexe) {
+            Set<AssignedModule> multiplexModules = new HashSet<>();
+            boolean multiplexed=false;
+            List<AssignedModule> multiplexedModulesList = new ArrayList<>();
             //Add each of the assigned modules to the `modules to test' collection
             for (AssignedModule assignedM : m.getAssignedModules()) {
                 
@@ -102,15 +110,24 @@ public class FeatureAssignment {
                 
                 //If this is a unique feature assignment, add assigned modules and multiplex copies to the modules to test
                 if (assignedFeatureLists.add(assignedFeatureList)) {
-                    
-                    HashSet<AssignedModule> multiplexModules = addMultiplexModules(assignedM, percentage, features);
+                    multiplexed = true;
+                    multiplexModules = addMultiplexModules(assignedM, percentage, features);
+                    for(AssignedModule amoduleMplx:multiplexModules){
+                        if(!multiplexedModulesList.contains(amoduleMplx))
+                            multiplexedModulesList.add(amoduleMplx);
+                    }
+                    //multiplexedModulesList.addAll(multiplexModules);
                     modulesToTest.addAll(multiplexModules);
                 }
+            }
+            if(multiplexed){
+                System.out.println("Set AssignedModules::Size of Multiplexed Modules List::"+multiplexedModulesList.size());
+                m.setAssignedModules(multiplexedModulesList);
             }
         }
         
         //Assign WILDCARDs for assigned modules
-        for (Module m : modulesToTest) {
+        for (AssignedModule m : modulesToTest) {
             TestingStructures.wildcardAssign(m);
         }
         conn.closeConnection();
@@ -139,10 +156,9 @@ public class FeatureAssignment {
         //Determine how many FPs are needed
         int count = 0;
         for (PrimitiveModule p : rootModule.getSubmodules()) {
-            System.out.println("PM: " + p.getName());
-            System.out.println("PM PrimitiveRole: " + p.getPrimitiveRole());
-            System.out.println("PM Role: " + p.getRole());
-            
+            //System.out.println("PM: " + p.getName());
+            //System.out.println("PM PrimitiveRole: " + p.getPrimitiveRole());
+            //System.out.println("PM Role: " + p.getRole());
             if (p.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
                 count++;
             }
@@ -206,11 +222,18 @@ public class FeatureAssignment {
     //If the structural design has any Feature names that match exactly to the Feature library, assign these
     private static void featureMatchAssign(List<Module> modules, List<Feature> features) {
   
+        int count =0;
         for (Module m : modules) {
+            
+            System.out.println("==========================================");
+            System.out.println("Module :: "+count);
+            System.out.println(m.toString());
+            count++;
             //Look for regulators that are abstract
             for(PrimitiveModule pm:m.getSubmodules()){
                 for (Feature libF : getAllFeaturesOfRole(features, pm.getModuleFeature().getRole())) {
                     if (pm.getModuleFeature().getName().equalsIgnoreCase(libF.getName())) {
+                        System.out.println("In Feature Match Assign :: Module Feature Set ::"+libF.getName());
                         pm.setModuleFeature(libF);
                     }
                 }
@@ -341,12 +364,10 @@ public class FeatureAssignment {
                 boolean regulatorAssigned = false;
 
                 //Check to see if this promoter is regulated by an assigned regulator
-                if (!fR.getArcs().isEmpty()) {
-                    for (Arc a : fR.getArcs()) {
-                        if (assignedRegulators.contains(a.getRegulator())) {
-                            regulatorAssigned = true;
-                            break;
-                        }
+                for (Arc a : fR.getArcs()) {
+                    if (assignedRegulators.contains(a.getRegulator())) {
+                        regulatorAssigned = true;
+                        break;
                     }
                 }
 
@@ -447,9 +468,9 @@ public class FeatureAssignment {
     }
     
     //Based upon the desired percentage of the module space returned make clones of assigned modules
-    private static HashSet<AssignedModule> addMultiplexModules(AssignedModule aM, double percentage, List<Feature> features) {
+    private static Set<AssignedModule> addMultiplexModules(AssignedModule aM, double percentage, List<Feature> features) {
         
-        HashSet<AssignedModule> multiplexedAM = new HashSet(); 
+        Set<AssignedModule> multiplexedAM = new HashSet(); 
         
 //        for (Module aM : m.getAssignedModules()) {
             int numVariants = getNumVariants(aM, features);
@@ -522,9 +543,6 @@ public class FeatureAssignment {
 
         List<Feature> featuresOfRole = new ArrayList<>();
         for (Feature f : allFeatures) {
-            if(f.getName().equals("para-1.ref")){
-                System.out.println("Promoter Indicible?");
-            }
             if (f.getRole().equals(role) && !f.getSequence().getSequence().isEmpty()) {
                 featuresOfRole.add(f);
             }

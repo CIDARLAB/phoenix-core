@@ -83,8 +83,11 @@ public class FeatureAssignment {
             System.out.println(f.toString());
         }
         
+        int countexp=0;
         for(Module m:exp){
             if(!isAssigned(m)){
+                System.out.println("Run "+countexp);
+                countexp++;
                 promoterAssign(m, features, assignedRegulators);
             }
         }
@@ -267,7 +270,8 @@ public class FeatureAssignment {
                                 count++;
                                 List<Feature> mfClone = new ArrayList<>();
                                 mfClone.add(fR);
-                                assignedClone.getSubmodules().get(i).setModuleFeatures(mfClone);
+                                //assignedClone.getSubmodules().get(i).setModuleFeatures(mfClone);
+                                assignedClone.getSubmodules().get(i).setModuleFeature(fR);
                                 assignedClone.updateModuleFeatures();
                                 m.getAssignedModules().add(assignedClone);
                             }
@@ -280,6 +284,91 @@ public class FeatureAssignment {
     }
     
     //Clone module, assign promoters from feature library
+    private static void promoterAssign(Module m, List<Feature> features, List<Feature> assignedRegulators) {
+        
+        //Keep track of already assigned promoters in the case of multiple promoters... no duplicates
+        //This needs a more robust long-term solution - Double-dutch??
+        List<AssignedModule> clonesThisModule = new ArrayList<>();
+        List<Integer> promoterIndicies = new ArrayList<>();
+        int count = 0;
+
+        //Look for promoters that are abstract
+        for (int i = 0; i < m.getSubmodules().size(); i++) {
+            PrimitiveModule pm = m.getSubmodules().get(i);
+            //for (Feature f : pm.getModuleFeatures()) {
+                if (pm.getPrimitiveRole().equals(Feature.FeatureRole.PROMOTER) || pm.getPrimitiveRole().equals(Feature.FeatureRole.PROMOTER_CONSTITUTIVE) || pm.getPrimitiveRole().equals(Feature.FeatureRole.PROMOTER_REPRESSIBLE) || pm.getPrimitiveRole().equals(Feature.FeatureRole.PROMOTER_INDUCIBLE)) {
+
+                    if (pm.getModuleFeature().getSequence().getSequence().isEmpty()) {
+                        System.out.println("Primitive Module ::"+pm.getName()+" Feature ::"+pm.getModuleFeature().getName() + " has empty sequence. PM Role is "+pm.getPrimitiveRole());
+                        //If there are already clones with a promoter that was assigned
+                        if (clonesThisModule.isEmpty()) {
+                            System.out.println("ClonesThisModule list is empty");
+                            //Assign a promoter from the feature library
+                            List<Feature> featuresOfRole = getAllFeaturesOfRole(features, pm.getPrimitiveRole());
+                            count = makeAssignedClones(featuresOfRole, assignedRegulators, m, pm, clonesThisModule, count, i);
+                            System.out.println("Clones Created ::");
+                            for(AssignedModule clone:clonesThisModule){
+                                System.out.println(clone.toString());
+                            }
+                            //Assign additional promoters
+                        } else {
+                            System.out.println("ClonesThisModule is not empty anymore.");
+                            //Look through the indicies where promoters have been assigned already
+                            boolean differentPromoter = true;
+                            for (int index : promoterIndicies) {
+
+                                //If the Primitive modules at both positions are the same in the abstract module, assign the same final feature
+                                if (m.getSubmodules().get(i).equals(m.getSubmodules().get(index))) {
+                                    for (Module clone : clonesThisModule) {
+                                        clone.getSubmodules().get(i).setModuleFeatures(clone.getSubmodules().get(index).getModuleFeatures());
+                                        clone.updateModuleFeatures();
+                                        differentPromoter = false;
+                                    }
+                                    break;
+                                }
+                            }
+
+                            //If a new promoter needs to be assigned, more clones will be made from the existing one
+                            if (differentPromoter) {
+                                System.out.println("Different Promoter indeed! Index is "+i+". Pm Role ::"+pm.getPrimitiveRole());
+                                List<Module> incompleteClones = new ArrayList<>();
+                                incompleteClones.addAll(clonesThisModule);
+                                for (Module clone : incompleteClones) {
+
+                                    clone.setName(clone.getName().substring(0, clone.getName().length()-2));
+                                    
+                                    //Find promoters that should not be assigned again
+                                    List<Feature> usedPromoters = new ArrayList<>();
+                                    for (int index : promoterIndicies) {
+                                        usedPromoters.addAll(clone.getSubmodules().get(index).getModuleFeatures());
+                                    }
+                                    List<Feature> featuresOfRole = new ArrayList<>();
+                                    featuresOfRole.addAll(getAllFeaturesOfRole(features, pm.getPrimitiveRole()));
+                                    featuresOfRole.removeAll(usedPromoters);
+                                    System.out.println("Remaining Roles::");
+                                    for(Feature foR:featuresOfRole){
+                                        System.out.println(foR.getName());
+                                    }
+                                    //Make new clones for all non-duplicate possibilities
+                                    count = makeAssignedClones(featuresOfRole, assignedRegulators, clone, pm, clonesThisModule, count, i);
+                                }
+                                clonesThisModule.removeAll(incompleteClones);
+                            }
+                        }
+
+                        promoterIndicies.add(i);
+                    }
+                }
+
+                m.setAssignedModules(clonesThisModule);
+            //}
+        }
+    }
+    
+    
+    
+    //Clone module, assign promoters from feature library
+    /*
     private static void promoterAssign(Module m, List<Feature> features, List<Feature> assignedRegulators) {
         
         //Keep track of already assigned promoters in the case of multiple promoters... no duplicates
@@ -354,6 +443,9 @@ public class FeatureAssignment {
             //}
         }
     }
+    */
+    
+    
     
     private static Integer makeAssignedClones(List<Feature> featuresOfRole, List<Feature> assignedRegulators, Module m, PrimitiveModule pm, List<AssignedModule> clonesThisModule, int count, int i) {
         
@@ -378,7 +470,8 @@ public class FeatureAssignment {
                     count++;
                     List<Feature> mfClone = new ArrayList<>();
                     mfClone.add(fR);
-                    assignedClone.getSubmodules().get(i).setModuleFeatures(mfClone);
+                    //assignedClone.getSubmodules().get(i).setModuleFeatures(mfClone);
+                    assignedClone.getSubmodules().get(i).setModuleFeature(fR);
                     assignedClone.updateModuleFeatures();
                     clonesThisModule.add(assignedClone);                    
                 }
@@ -392,7 +485,8 @@ public class FeatureAssignment {
                     count++;
                     List<Feature> mfClone = new ArrayList<>();
                     mfClone.add(fR);
-                    assignedClone.getSubmodules().get(i).setModuleFeatures(mfClone);
+                    //assignedClone.getSubmodules().get(i).setModuleFeatures(mfClone);
+                    assignedClone.getSubmodules().get(i).setModuleFeature(fR);
                     assignedClone.updateModuleFeatures();
                     clonesThisModule.add(assignedClone);  
                 }

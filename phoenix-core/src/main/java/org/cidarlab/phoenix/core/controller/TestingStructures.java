@@ -205,7 +205,7 @@ public class TestingStructures {
         ControlsMap expMap = new ControlsMap();
         expMap = getAllControls(rootModule);
         List<Medium> defaultMedia = new ArrayList<>();
-        defaultMedia.add(new Medium("LB", Medium.MediaType.RICH));
+        defaultMedia.add(new Medium("M9_glucose", Medium.MediaType.RICH));
         List<String> defaultTime = Arrays.asList(new String[]{"0", "10", "20", "30", "40", "50", "60"});
         assignAllControls(rootModule,expMap.colorNameMap,expMap.regNameMap,expMap.aModuleControlMap,defaultMedia,defaultTime);
         
@@ -405,7 +405,7 @@ public class TestingStructures {
                         Feature regulatee = a.getRegulatee();
                         PrimitiveModule regPromoter = new PrimitiveModule(regulatee.getRole(), new Primitive(new ComponentType("p"), regulatee.getName()), regulatee);
                         String regControlName = regulatee.getName().replaceAll(".ref", "") + "_REGULATION_CONTROL";
-                        if (regNameMap.containsKey(regulatee.getName())) {
+                        if (!regNameMap.containsKey(regulatee.getName())) {
                             regNameMap.put(regulatee.getName(), regControlName);
                             aModuleMap.put(regControlName, createRegControl(regPromoter, regControlName));
                         }
@@ -791,16 +791,19 @@ public class TestingStructures {
         J23104.put("schema", Feature.class.getCanonicalName());
         J23104.put("name", "J23104.ref");
         testConstitutivePromoter = new PrimitiveModule(FeatureRole.PROMOTER_CONSTITUTIVE, new Primitive(new ComponentType("p"), "pTEST"), ClothoAdaptor.queryFeatures(J23104, clothoObject).get(0));
-
+        //testConstitutivePromoter = new PrimitiveModule(FeatureRole.PROMOTER_CONSTITUTIVE, new Primitive(new ComponentType("p"), "pTEST"), ClothoAdaptor.querySingleFeature(J23104, clothoObject));
+        
         Map pBAD = new HashMap();
         pBAD.put("schema", Feature.class.getCanonicalName());
         pBAD.put("name", "para-1.ref");
-        testControllablePromoter1 = new PrimitiveModule(FeatureRole.PROMOTER_INDUCIBLE, new Primitive(new ComponentType("p"), "pTEST"), ClothoAdaptor.queryFeatures(pBAD, clothoObject).get(0));
+        //testControllablePromoter1 = new PrimitiveModule(FeatureRole.PROMOTER_INDUCIBLE, new Primitive(new ComponentType("p"), "pTEST"), ClothoAdaptor.queryFeatures(pBAD, clothoObject).get(0));
+        testControllablePromoter1 = new PrimitiveModule(FeatureRole.PROMOTER_INDUCIBLE, new Primitive(new ComponentType("p"), "pTEST"), ClothoAdaptor.querySingleFeature(pBAD, clothoObject));
         
         Map pLtetO1 = new HashMap();
         pLtetO1.put("schema", Feature.class.getCanonicalName());
         pLtetO1.put("name", "pLtetO-1.ref");
-        testControllablePromoter2 = new PrimitiveModule(FeatureRole.PROMOTER_REPRESSIBLE, new Primitive(new ComponentType("p"), "pTEST"), ClothoAdaptor.queryFeatures(pLtetO1, clothoObject).get(0));
+        //testControllablePromoter2 = new PrimitiveModule(FeatureRole.PROMOTER_REPRESSIBLE, new Primitive(new ComponentType("p"), "pTEST"), ClothoAdaptor.queryFeatures(pLtetO1, clothoObject).get(0));
+        testControllablePromoter2 = new PrimitiveModule(FeatureRole.PROMOTER_REPRESSIBLE, new Primitive(new ComponentType("p"), "pTEST"), ClothoAdaptor.querySingleFeature(pLtetO1, clothoObject));
         
         Map BCD8 = new HashMap();
         BCD8.put("schema", Feature.class.getCanonicalName());

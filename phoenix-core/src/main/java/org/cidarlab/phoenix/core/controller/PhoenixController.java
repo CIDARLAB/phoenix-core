@@ -161,7 +161,7 @@ public class PhoenixController {
         for (AssignedModule m : amodulesToTest) {
             currentExperiments.addAll(m.getExperiments());
         }
-        
+        System.out.println("amodulesToTest size " + amodulesToTest.size());
         //Create assembly and testing plans
         File assemblyInstructions = RavenAdaptor.generateAssemblyPlan(amodulesToTest, filePath);
         File testingInstructions = PhoenixInstructions.generateTestingInstructions(amodulesToTest, filePath);

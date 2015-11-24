@@ -60,7 +60,8 @@ public class AssignedModule extends Module {
         List<Experiment> exList = new ArrayList<>();
         exList.addAll(this.experiments);
         clone.experiments = exList;
-
+        //This part needs to change. Create deep copies of Experiments and Control Modules
+        
         clone.setFunction(this.getFunction());
         clone.setForward(this.isForward());
         clone.setRole(this.getRole());

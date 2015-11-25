@@ -44,7 +44,7 @@ public class PhoenixInstructions {
     }
     
     //Method for producing testing instructions from Experiments
-    public static File generateTestingInstructions(Set<AssignedModule> amodules, String filePath) throws IOException {
+    public static File generateTestingInstructions(List<AssignedModule> amodules, String filePath) throws IOException {
         
         File testingInstructions = new File(filePath + "/testingInstructionsTest.csv");
         FileWriter instructionsFileWriter = new FileWriter(testingInstructions);
@@ -64,7 +64,7 @@ public class PhoenixInstructions {
                     List<Medium> media = experiment.getMediaConditions();
                     for(Medium medium:media){
                         if (times.isEmpty()) {
-                            line = "," + amodule.getName() + ",," + medium.getName() + "," + "0" + ",";
+                            line = "," + amodule.getShortName() + ",," + medium.getName() + "," + "0" + ",";
                             for (int i = 0; i < 3; i++) {
                                 instructionsBufferedWriter.write(line);
                                 instructionsBufferedWriter.newLine();
@@ -72,7 +72,7 @@ public class PhoenixInstructions {
                         }
                         else {
                             for (String time : times) {
-                                line = "," + amodule.getName() + ",," + medium.getName() + "," + time + ",";
+                                line = "," + amodule.getShortName() + ",," + medium.getName() + "," + time + ",";
                                 for (int i = 0; i < 3; i++) {
                                     instructionsBufferedWriter.write(line);
                                     instructionsBufferedWriter.newLine();
@@ -86,6 +86,24 @@ public class PhoenixInstructions {
         }
         
         return testingInstructions;
+    }
+    
+    public static File generateNameMapFile(List<AssignedModule> amodules, String filePath) throws IOException{
+        File testingMap = new File(filePath + "/nameMapFileTest.csv");
+        FileWriter mapFileWriter = new FileWriter(testingMap);
+        try (BufferedWriter writer = new BufferedWriter(mapFileWriter)) {
+            writer.write("Short Name,Name");
+            writer.newLine();
+            for(AssignedModule amodule:amodules){
+                writer.write(amodule.getShortName()+","+amodule.getName());
+                writer.newLine();
+            }
+        
+        }
+        
+        
+        return testingMap;
+        
     }
     
     
@@ -226,6 +244,7 @@ public class PhoenixInstructions {
     }
     
     //This is the method for generating a file that maps the phoenix short names to custom user names
+    /*
     public static File generateNameMapFile (File keyFile, String filePath) throws IOException {
 
         //First, read a keyfile and find all unique names in the PART column
@@ -265,7 +284,7 @@ public class PhoenixInstructions {
         
         return nameMapFile;
     }
-    
+    */
     //Method for reading results file from R
     //This method needs to be fixed to assign results to the experiment, not the samples
     public static void parseTestingResults(File resultsFile, Experiment e) throws FileNotFoundException, IOException {

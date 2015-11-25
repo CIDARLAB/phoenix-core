@@ -26,6 +26,7 @@ import org.cidarlab.phoenix.core.dom.Primitive;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
 import org.cidarlab.phoenix.core.dom.Feature;
 import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
+import org.cidarlab.phoenix.core.dom.Fluorophore;
 import org.cidarlab.phoenix.core.dom.Medium;
 import org.cidarlab.phoenix.core.dom.NucSeq;
 import org.cidarlab.phoenix.core.dom.Polynucleotide;
@@ -811,32 +812,32 @@ public class TestingStructures {
         testRBS = new PrimitiveModule(FeatureRole.RBS, new Primitive(new ComponentType("r"), "rTEST"), ClothoAdaptor.convertJSONArrayToFeatures((JSONArray) clothoObject.query(BCD8)).iterator().next());
 
         Map HelicalLinker = new HashMap();
-        HelicalLinker.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
+        HelicalLinker.put("schema", Feature.class.getCanonicalName());
         HelicalLinker.put("name", "HelicalLinker.ref");
         testLinker = new PrimitiveModule(FeatureRole.CDS_LINKER, new Primitive(new ComponentType("l"), "linkerTEST"), ClothoAdaptor.convertJSONArrayToFeatures((JSONArray) clothoObject.query(HelicalLinker)).iterator().next());
 
         Map GFPm = new HashMap();
-        GFPm.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
+        GFPm.put("schema", Fluorophore.class.getCanonicalName());
         GFPm.put("name", "EGFPm.ref");
         testFP1 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("fl"), "cTEST1"), ClothoAdaptor.queryFluorophores(GFPm, clothoObject).iterator().next());
 
         Map EBFP2 = new HashMap();
-        EBFP2.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
+        EBFP2.put("schema", Fluorophore.class.getCanonicalName());
         EBFP2.put("name", "EBFP2.ref");
         testFP2 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("fl"), "cTEST2"), ClothoAdaptor.queryFluorophores(EBFP2, clothoObject).iterator().next());
 
         Map B0015 = new HashMap();
-        B0015.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
+        B0015.put("schema", Feature.class.getCanonicalName());
         B0015.put("name", "B0015.ref");
         testTerminator = new PrimitiveModule(FeatureRole.TERMINATOR, new Primitive(new ComponentType("t"), "tTEST"), ClothoAdaptor.convertJSONArrayToFeatures((JSONArray) clothoObject.query(B0015)).iterator().next());
 
         Map ColE1 = new HashMap();
-        ColE1.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
+        ColE1.put("schema", Feature.class.getCanonicalName());
         ColE1.put("name", "ColE1.ref");
         testVector1 = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST1"), ClothoAdaptor.convertJSONArrayToFeatures((JSONArray) clothoObject.query(ColE1)).iterator().next());
         
         Map p15A = new HashMap();
-        p15A.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
+        p15A.put("schema", Feature.class.getCanonicalName());
         p15A.put("name", "p15A.ref");
         testVector2 = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST2"), ClothoAdaptor.convertJSONArrayToFeatures((JSONArray) clothoObject.query(p15A)).iterator().next());
         

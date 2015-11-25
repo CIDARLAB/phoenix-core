@@ -87,11 +87,11 @@ public class ClothoAdaptor {
             HashSet<Polynucleotide> polyNucs = BenchlingAdaptor.getPolynucleotide(input);
             removeDuplicateParts(polyNucs, clothoObject);
             Map featureQuery = new HashMap();
-            featureQuery.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
+            featureQuery.put("schema", Feature.class.getCanonicalName());
             List<Feature> annotationFeatures = queryFeatures(featureQuery, clothoObject);
 
             Map fluorophoreQuery = new HashMap();
-            fluorophoreQuery.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
+            fluorophoreQuery.put("schema", Fluorophore.class.getCanonicalName());
             annotationFeatures.addAll(queryFluorophores(fluorophoreQuery, clothoObject));
             annotateParts(annotationFeatures, polyNucs);
 
@@ -133,7 +133,7 @@ public class ClothoAdaptor {
 
         //Look for each Fluorophore and see if their names match any of these spectrums
         Map fluorophoreQuery = new HashMap();
-        fluorophoreQuery.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
+        fluorophoreQuery.put("schema", Fluorophore.class.getCanonicalName());
         List<Fluorophore> queryFluorophores = queryFluorophores(fluorophoreQuery, clothoObject);
         for (String spectrum_name : spectralMaps.keySet()) {
             for (Fluorophore fl : queryFluorophores) {
@@ -282,7 +282,7 @@ public class ClothoAdaptor {
         for (Annotation annotation : annotations) {
 
             Map createAnnotation = new HashMap();
-            createAnnotation.put("schema", "org.cidarlab.phoenix.core.dom.Annotation");
+            createAnnotation.put("schema", Annotation.class.getCanonicalName());
             createAnnotation.put("start", annotation.getStart());
             createAnnotation.put("end", annotation.getEnd());
             createAnnotation.put("forwardColor", annotation.getForwardColor().getRGB());
@@ -292,7 +292,7 @@ public class ClothoAdaptor {
             //Feature schema - assumed one feature per annotation
             Feature f = annotation.getFeature();
             Map createFeature = new HashMap();
-            createFeature.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
+            createFeature.put("schema", Feature.class.getCanonicalName());
             createFeature.put("forwardColor", f.getForwardColor().getRGB());
             createFeature.put("reverseColor", f.getReverseColor().getRGB());
             createFeature.put("name", f.getName().replaceAll(".ref", ""));
@@ -304,7 +304,7 @@ public class ClothoAdaptor {
 
             //NucSeq sub-schema
             Map createNucSeqSub = new HashMap();
-            createNucSeqSub.put("schema", "org.cidarlab.phoenix.core.dom.Sequence");
+            createNucSeqSub.put("schema", Sequence.class.getCanonicalName());
             createNucSeqSub.put("sequence", f.getSequence().getSequence());
 
             createFeature.put("sequence", createNucSeqSub);
@@ -312,7 +312,7 @@ public class ClothoAdaptor {
             //Get this feature's Person
             Person author = annotation.getAuthor();
             Map createPerson = new HashMap();
-            createPerson.put("schema", "org.cidarlab.phoenix.core.dom.Person");
+            createPerson.put("schema", Person.class.getCanonicalName());
             createPerson.put("givenName", author.getGivenName());
             createPerson.put("surName", author.getSurName());
             createPerson.put("emailAddress", author.getEmailAddress());
@@ -348,7 +348,7 @@ public class ClothoAdaptor {
     public static Map createArcMap(Arc a){
         System.out.println("In Create Arc Map");
         Map map = new HashMap();
-        map.put("schema", "org.cidarlab.phoenix.core.dom.Arc");
+        map.put("schema", Arc.class.getCanonicalName());
         map.put("regulator", a.getRegulator().getName());
         map.put("regulatee", a.getRegulatee().getName());
         System.out.println("Regulator :: "+a.getRegulator().getName());
@@ -464,7 +464,7 @@ public class ClothoAdaptor {
         
         //NucSeq sub-schema
         Map createSequence = new HashMap();
-        createSequence.put("schema", "org.cidarlab.phoenix.core.dom.Sequence");
+        createSequence.put("schema", Sequence.class.getCanonicalName());
         createSequence.put("sequence", f.getSequence().getSequence());
         map.put("sequence", createSequence);
 
@@ -742,7 +742,7 @@ public class ClothoAdaptor {
 
         //NucSeq sub-schema
         Map createSequence = new HashMap();
-        createSequence.put("schema", "org.cidarlab.phoenix.core.dom.Sequence");
+        createSequence.put("schema", Sequence.class.getCanonicalName());
         createSequence.put("sequence", f.getSequence().getSequence());
         createFluorophore.put("sequence", createSequence);
 
@@ -1320,8 +1320,8 @@ public class ClothoAdaptor {
             JSONObject jsonFeature = array.getJSONObject(i);
             String name = (String)jsonFeature.get("name");
             Feature feature = new Feature(name);
-            System.out.println("IN QUERY FEATURES");
-            System.out.println("Feature Name :: "+name);
+            //System.out.println("IN QUERY FEATURES");
+            //System.out.println("Feature Name :: "+name);
             /*String fwdColorSt = jsonFeature.get("forwardColor").toString();
             String[] rgbfwd = fwdColorSt.substring(15, fwdColorSt.length() - 1).split(",");
             Color fwdColor = new Color(Integer.valueOf(rgbfwd[0].substring(2)), Integer.valueOf(rgbfwd[1].substring(2)), Integer.valueOf(rgbfwd[2].substring(2)));
@@ -1357,8 +1357,8 @@ public class ClothoAdaptor {
                     String regulator = jsonArc.get("regulator").toString();
                     String regulatee = jsonArc.get("regulatee").toString();
                     
-                    System.out.println("Arc Regulator "+regulator);
-                    System.out.println("Arc Regulatee "+regulatee);
+                    //System.out.println("Arc Regulator "+regulator);
+                    //System.out.println("Arc Regulatee "+regulatee);
                     
                     arc.setRole(ArcRole.valueOf((String)jsonArc.get("role")));
 
@@ -1412,12 +1412,12 @@ public class ClothoAdaptor {
                 Arc a = regNamesArcsHash.get(reg);
                 a.setRegulator(featureNameHash.get(reg.get("regulator")));
                 a.setRegulatee(featureNameHash.get(reg.get("regulatee")));
-                if(!reg.containsKey("regulator")){
+                /*if(!reg.containsKey("regulator")){
                     System.out.println("Regulator doesnt not contain that regulator?");
                 }
                 if(!featureNameHash.containsKey(reg.get("regulator"))){
                     System.out.println("featureNameHash does not contain key for  " + reg.get("regulator"));
-                }
+                }*/
                 
                 f.getArcs().add(a);
             }
@@ -1693,7 +1693,7 @@ public class ClothoAdaptor {
     public static AssemblyParameters getAssemblyParameters(String id, Clotho clothoObject) {
         AssemblyParameters aP = new AssemblyParameters();
         Map assmParamMap = new HashMap<String, String>();
-        assmParamMap.put("schema", "org.cidarlab.phoenix.core.dom.AssemblyParameters");
+        assmParamMap.put("schema", AssemblyParameters.class.getCanonicalName());
         assmParamMap.put("name", "default");
 
         JSONObject apObject = new JSONObject();
@@ -1824,9 +1824,9 @@ public class ClothoAdaptor {
 
         //Put all existing parts and vectors into their maps
         Map partQuery = new HashMap();
-        partQuery.put("schema", "org.cidarlab.phoenix.core.dom.Part");
+        partQuery.put("schema", Part.class.getCanonicalName());
         Map vectorQuery = new HashMap();
-        vectorQuery.put("schema", "org.cidarlab.phoenix.core.dom.Vector");
+        vectorQuery.put("schema", Vector.class.getCanonicalName());
         List<Part> queryParts = queryParts(partQuery, clothoObject);
         List<Vector> queryVectors = queryVectors(vectorQuery, clothoObject);
         for (Part p : queryParts) {

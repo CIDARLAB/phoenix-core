@@ -73,15 +73,15 @@ public class RavenAdaptor {
         org.json.JSONObject rParameters = convertJSONs(parameters);
         
         Map polyNucQuery = new HashMap();
-        polyNucQuery.put("schema", "org.cidarlab.phoenix.core.dom.Polynucleotide");
+        //polyNucQuery.put("schema", "org.cidarlab.phoenix.core.dom.Polynucleotide");
         HashSet<Polynucleotide> polyNucs = new HashSet<>(ClothoAdaptor.queryPolynucleotides(polyNucQuery,clothoObject));
         
         Map featureQuery = new HashMap();
-        featureQuery.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
+        //featureQuery.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
         List<Feature> allFeatures = ClothoAdaptor.queryFeatures(featureQuery,clothoObject);
         
         Map fluorophoreQuery = new HashMap();
-        fluorophoreQuery.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
+        //fluorophoreQuery.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
         allFeatures.addAll(ClothoAdaptor.queryFluorophores(fluorophoreQuery,clothoObject));
         
         //Determine parts library

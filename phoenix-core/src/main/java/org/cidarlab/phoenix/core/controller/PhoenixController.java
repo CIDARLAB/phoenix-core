@@ -135,6 +135,7 @@ public class PhoenixController {
         //I just want to create Control Modules for AssignedModules & Create Experiment Objects for AssignedModules
         TestingStructures.createExperiments(bestModule);
         
+        assignShortName(bestModule);
         
         
         
@@ -155,29 +156,42 @@ public class PhoenixController {
         
         //Determine experiments from current module assignment state
         //Create expreriment objects based upon the modules being tested
+        List<AssignedModule> amodulesToTestList = new ArrayList<AssignedModule>();
         Set<AssignedModule> amodulesToTest = new HashSet<AssignedModule>();
-        amodulesToTest = getAllAssignedModules(module);
+        amodulesToTestList = getAllAssignedModules(module);
+        amodulesToTest.addAll(amodulesToTestList);
         List<Experiment> currentExperiments = new ArrayList<>();
         for (AssignedModule m : amodulesToTest) {
             currentExperiments.addAll(m.getExperiments());
         }
         System.out.println("amodulesToTest size " + amodulesToTest.size());
         //Create assembly and testing plans
+        File testingInstructions = PhoenixInstructions.generateTestingInstructions(amodulesToTestList, filePath);
+        File mapFile = PhoenixInstructions.generateNameMapFile(amodulesToTestList, filePath);
+        
         File assemblyInstructions = RavenAdaptor.generateAssemblyPlan(amodulesToTest, filePath);
-        File testingInstructions = PhoenixInstructions.generateTestingInstructions(amodulesToTest, filePath);
-
+        
         //Save these strings to files and return them from this method
         List<File> assmTestFiles = new ArrayList<>();
         assmTestFiles.add(testingInstructions);
         assmTestFiles.add(assemblyInstructions);
+        assmTestFiles.add(mapFile);
         return assmTestFiles;
     }
     
-    public static Set<AssignedModule> getAllAssignedModules(Module module){
-        Set<AssignedModule> modulesToTest = new HashSet<AssignedModule>();
-        modulesToTest.addAll(module.getAssignedModules());
+    public static List<AssignedModule> getAllAssignedModules(Module module){
+        List<AssignedModule> modulesToTest = new ArrayList<AssignedModule>();
+        for (AssignedModule amodule : module.getAssignedModules()) {
+            if (!modulesToTest.contains(amodule)) {
+                modulesToTest.add(amodule);
+            }
+        }
         for(Module child:module.getChildren()){
-            modulesToTest.addAll(getAllAssignedModules(child));
+            for(AssignedModule amodule:getAllAssignedModules(child)){
+                if(!modulesToTest.contains(amodule)){
+                    modulesToTest.add(amodule);
+                }
+            }
         }
         return modulesToTest;
     }

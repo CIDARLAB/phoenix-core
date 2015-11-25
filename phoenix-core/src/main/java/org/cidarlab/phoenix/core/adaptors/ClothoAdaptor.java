@@ -1320,8 +1320,8 @@ public class ClothoAdaptor {
             JSONObject jsonFeature = array.getJSONObject(i);
             String name = (String)jsonFeature.get("name");
             Feature feature = new Feature(name);
-            System.out.println("IN QUERY FEATURES");
-            System.out.println("Feature Name :: "+name);
+//            System.out.println("IN QUERY FEATURES");
+//            System.out.println("Feature Name :: "+name);
             /*String fwdColorSt = jsonFeature.get("forwardColor").toString();
             String[] rgbfwd = fwdColorSt.substring(15, fwdColorSt.length() - 1).split(",");
             Color fwdColor = new Color(Integer.valueOf(rgbfwd[0].substring(2)), Integer.valueOf(rgbfwd[1].substring(2)), Integer.valueOf(rgbfwd[2].substring(2)));
@@ -1357,8 +1357,8 @@ public class ClothoAdaptor {
                     String regulator = jsonArc.get("regulator").toString();
                     String regulatee = jsonArc.get("regulatee").toString();
                     
-                    System.out.println("Arc Regulator "+regulator);
-                    System.out.println("Arc Regulatee "+regulatee);
+//                    System.out.println("Arc Regulator "+regulator);
+//                    System.out.println("Arc Regulatee "+regulatee);
                     
                     arc.setRole(ArcRole.valueOf((String)jsonArc.get("role")));
 
@@ -1412,12 +1412,12 @@ public class ClothoAdaptor {
                 Arc a = regNamesArcsHash.get(reg);
                 a.setRegulator(featureNameHash.get(reg.get("regulator")));
                 a.setRegulatee(featureNameHash.get(reg.get("regulatee")));
-                if(!reg.containsKey("regulator")){
-                    System.out.println("Regulator doesnt not contain that regulator?");
-                }
-                if(!featureNameHash.containsKey(reg.get("regulator"))){
-                    System.out.println("featureNameHash does not contain key for  " + reg.get("regulator"));
-                }
+//                if(!reg.containsKey("regulator")){
+//                    System.out.println("Regulator doesnt not contain that regulator?");
+//                }
+//                if(!featureNameHash.containsKey(reg.get("regulator"))){
+//                    System.out.println("featureNameHash does not contain key for  " + reg.get("regulator"));
+//                }
                 
                 f.getArcs().add(a);
             }

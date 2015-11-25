@@ -39,7 +39,7 @@ getColorMultiplier <- function(colorControlsFlowSet, gatedBeadControlFlowFrame, 
 	}
 
 	#Create multiple
-	FITC <- as.numeric(colorMultiplierVector[,which(TRUE == grepl("YFP", colnames(colorMultiplierVector), ignore.case=TRUE))])
+	FITC <- as.numeric(colorMultiplierVector[,which(TRUE == grepl("FITC", colnames(colorMultiplierVector), ignore.case=TRUE))])
 	for (s in 1:length(colorMultiplierVector)) {
 		colorMultiplierVector[s] <- FITC/colorMultiplierVector[s]
 	}

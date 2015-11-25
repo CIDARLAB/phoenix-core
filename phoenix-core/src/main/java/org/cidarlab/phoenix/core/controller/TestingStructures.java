@@ -46,15 +46,13 @@ public class TestingStructures {
 
         //For each module, traverse graph
         initializeTestingPrimitiveModules();
-        addTestingPrimitivesHelper(rootModule);
-       
+        addTestingPrimitivesHelper(rootModule);       
     }
 
     //Adding testing primitive module helper
     private static void addTestingPrimitivesHelper(Module module) {
-
-        //For each of the children, add testing peices if they are stage 0+
-        //if (module.getStage() >= 0) {
+        
+        //For each child of the imput module, add testing peices
         if (module.getRole().equals(ModuleRole.EXPRESSEE) || module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR) || module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)) {
             addTestExpressee(module);
         } else if (module.getRole().equals(ModuleRole.EXPRESSOR)) {
@@ -63,8 +61,8 @@ public class TestingStructures {
             addTestTU(module);
         } else {
             addTestHighFunction(module);
-        }
-        //}
+        }        
+        
         for(Module child:module.getChildren()){
             addTestingPrimitivesHelper(child);    
         }
@@ -147,7 +145,10 @@ public class TestingStructures {
         for (PrimitiveModule pm : m.getSubmodules()) {
             FeatureRole pR = pm.getPrimitiveRole();
             if (pR.equals(FeatureRole.CDS) || pR.equals(FeatureRole.CDS_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSOR) || pR.equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR)) {
-                testSubmodules.add(new PrimitiveModule(FeatureRole.CDS_FLUORESCENT_FUSION, new Primitive(new ComponentType("fc"), "FP"), new Feature("EXPRESSEE", new NucSeq(), null, FeatureRole.CDS_FLUORESCENT_FUSION)));
+                PrimitiveModule fpPM = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT_FUSION, new Primitive(new ComponentType("fc"), "FP"), new Feature("EXPRESSEE", new NucSeq(), null, FeatureRole.CDS_FLUORESCENT_FUSION));
+//                fpPM.setForward(true);
+                testSubmodules.add(fpPM);
+                
             } else {
                 testSubmodules.add(pm);
             }
@@ -159,7 +160,7 @@ public class TestingStructures {
     }
 
     //Add testing Features in WILDCARD 
-    public static void wildcardAssign(AssignedModule m) {
+    public static void wildcardAssign(Module m) {
 
         //For each WILDCARD, add the appropriate testing primitive in reverse orientation 
         for (PrimitiveModule pm : m.getSubmodules()) {

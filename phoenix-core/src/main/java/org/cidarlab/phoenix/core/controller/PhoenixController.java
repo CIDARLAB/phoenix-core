@@ -135,9 +135,6 @@ public class PhoenixController {
         //I just want to create Control Modules for AssignedModules & Create Experiment Objects for AssignedModules
         TestingStructures.createExperiments(bestModule);
         
-        
-        
-        
         ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
         Clotho clothoObject = new Clotho(conn);
         

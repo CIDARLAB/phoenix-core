@@ -18,7 +18,7 @@ import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
  * @author prash
  */
 @Slf4j
-public class PrimitiveModule extends Module {
+public class PrimitiveModule extends AbstractModule {
     
     @Getter
     @Setter
@@ -35,7 +35,6 @@ public class PrimitiveModule extends Module {
     private FeatureRole primitiveRole;
     
     public PrimitiveModule(FeatureRole role, Primitive primitive, Feature moduleFeature) {
-        super("");
         this.primitiveRole = role;
         this.primitive = primitive;
         this.moduleFeature = moduleFeature.clone();

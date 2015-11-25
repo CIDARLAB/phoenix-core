@@ -5,10 +5,26 @@
  */
 package org.cidarlab.phoenix.core.dom;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  *
  * @author prash
  */
 public abstract class AbstractModule {
+    //Module name
+    @Getter
+    @Setter
+    protected String name;
+
+    //Module clothoID
+    @Getter
+    @Setter
+    protected String clothoID;
     
+     //Directionality
+    @Getter
+    @Setter
+    protected boolean isForward;
 }

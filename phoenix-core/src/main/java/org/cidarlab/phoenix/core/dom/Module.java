@@ -17,7 +17,7 @@ import org.sbml.jsbml.SBMLDocument;
  *
  * @author prash
  */
-public class Module {
+public class Module extends AbstractModule {
 
     /*
      * Need to formally define these methods and constructors. But this is the basic essence of this Class. 
@@ -77,15 +77,7 @@ public class Module {
         return clone;
     }
 
-    //Module name
-    @Getter
-    @Setter
-    private String name;
-
-    //Module clothoID
-    @Getter
-    @Setter
-    private String clothoID;
+    
 
     //Module roles
     @Getter
@@ -116,10 +108,7 @@ public class Module {
     @Setter
     private STLFunction function;
 
-    //Directionality
-    @Getter
-    @Setter
-    private boolean isForward;
+   
 
     //Parent module(s)
     @Getter

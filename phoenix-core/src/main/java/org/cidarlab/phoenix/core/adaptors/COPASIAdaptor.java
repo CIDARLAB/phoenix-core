@@ -98,7 +98,7 @@ public class COPASIAdaptor {
                     if (productID.isEmpty()) {
                         productID = pm.getModuleFeature().getName().replaceAll(".ref", "");
                     } else {
-                        productID = productID + "_" + pm.getModuleFeatures().get(0).getName().replaceAll(".ref", "");
+                        productID = productID + "_" + pm.getModuleFeature().getName().replaceAll(".ref", "");
                     }
                 }
             }

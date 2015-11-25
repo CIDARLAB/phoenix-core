@@ -169,12 +169,12 @@ public class PhoenixController {
         File testingInstructions = PhoenixInstructions.generateTestingInstructions(amodulesToTestList, filePath);
         File mapFile = PhoenixInstructions.generateNameMapFile(amodulesToTestList, filePath);
         
-        File assemblyInstructions = RavenAdaptor.generateAssemblyPlan(amodulesToTest, filePath);
+        //File assemblyInstructions = RavenAdaptor.generateAssemblyPlan(amodulesToTest, filePath);
         
         //Save these strings to files and return them from this method
         List<File> assmTestFiles = new ArrayList<>();
         assmTestFiles.add(testingInstructions);
-        assmTestFiles.add(assemblyInstructions);
+        //assmTestFiles.add(assemblyInstructions);
         assmTestFiles.add(mapFile);
         return assmTestFiles;
     }

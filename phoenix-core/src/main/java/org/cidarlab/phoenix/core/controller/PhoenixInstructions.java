@@ -92,10 +92,10 @@ public class PhoenixInstructions {
         File testingMap = new File(filePath + "/nameMapFileTest.csv");
         FileWriter mapFileWriter = new FileWriter(testingMap);
         try (BufferedWriter writer = new BufferedWriter(mapFileWriter)) {
-            writer.write("Short Name,Name");
+            writer.write("Short Name,Name,Custom Name");
             writer.newLine();
             for(AssignedModule amodule:amodules){
-                writer.write(amodule.getShortName()+","+amodule.getName());
+                writer.write(amodule.getShortName()+","+amodule.getName()+",");
                 writer.newLine();
             }
         

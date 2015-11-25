@@ -73,15 +73,15 @@ public class RavenAdaptor {
         org.json.JSONObject rParameters = convertJSONs(parameters);
         
         Map polyNucQuery = new HashMap();
-        polyNucQuery.put("schema", "org.cidarlab.phoenix.core.dom.Polynucleotide");
+        //polyNucQuery.put("schema", "org.cidarlab.phoenix.core.dom.Polynucleotide");
         HashSet<Polynucleotide> polyNucs = new HashSet<>(ClothoAdaptor.queryPolynucleotides(polyNucQuery,clothoObject));
         
         Map featureQuery = new HashMap();
-        featureQuery.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
+        //featureQuery.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
         List<Feature> allFeatures = ClothoAdaptor.queryFeatures(featureQuery,clothoObject);
         
         Map fluorophoreQuery = new HashMap();
-        fluorophoreQuery.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
+        //fluorophoreQuery.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
         allFeatures.addAll(ClothoAdaptor.queryFluorophores(fluorophoreQuery,clothoObject));
         
         //Determine parts library
@@ -443,7 +443,7 @@ public class RavenAdaptor {
                 }
                 
                 //Regular parts with sequences
-                if (!(pm.getModuleFeature().getSequence()==null) && pm.getPrimitiveRole() != FeatureRole.VECTOR) {
+                if (!pm.getModuleFeature().getSequence().getSequence().isEmpty() && pm.getPrimitiveRole() != FeatureRole.VECTOR) {
                     
                     if (pm.getPrimitiveRole() == FeatureRole.CDS_LINKER) {
                         String fName = pm.getModuleFeature().getName().replaceAll(".ref", "");
@@ -524,7 +524,8 @@ public class RavenAdaptor {
             
             ArrayList<String> scarSeqs = ClothoWriter.scarsToSeqs(scars, null);
             
-            newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite(m.getName(), composition, scars, scarSeqs, linkers, directions, "", "", typeP);
+            newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite(m.getName(), composition, scarSeqs, scars, linkers, directions, "", "", typeP);
+//            newPlasmid.setScars(scars);
             newPlasmid.setTransientStatus(false);   
             
             ravenParts.add(newPlasmid);

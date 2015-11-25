@@ -124,12 +124,12 @@ public class FeatureAssignment {
         //Recieve data from Clotho
         List<Fluorophore> FPs = new ArrayList<Fluorophore>();
         Map fluorophoreQuery = new HashMap();
-        fluorophoreQuery.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
+        //fluorophoreQuery.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
         FPs = ClothoAdaptor.queryFluorophores(fluorophoreQuery,clothoObject);
         
         Cytometer cytometer = new Cytometer();
         Map cytometerQuery = new HashMap();
-        cytometerQuery.put("schema", "org.cidarlab.phoenix.core.dom.Cytometer");
+        //cytometerQuery.put("schema", "org.cidarlab.phoenix.core.dom.Cytometer");
         List<Cytometer> allCytometers = ClothoAdaptor.queryCytometers(cytometerQuery,clothoObject);
         for (Cytometer c : allCytometers) {
             if (c.getName().startsWith("BU")) {
@@ -170,7 +170,7 @@ public class FeatureAssignment {
                 if (p.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
                     
                     //If the parent has FPs already assigned, pull those down
-                    if (parentFluorescentFusions.size() > 0) {
+                    if (parentFluorescentFusions.size() > 0 && !module.isRoot()) {
                         p.setModuleFeature(parentFluorescentFusions.get(count));      
                         count++;
                     } else {                        
@@ -180,16 +180,14 @@ public class FeatureAssignment {
                 
                 //If an EXPRESSOR is encountered
                 } else if (p.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT) && !FPs.isEmpty()) {
-                    
-                    List<Feature> pFeatures = new ArrayList<>();
-                    pFeatures.add(FPs.get(cdsFlCount));
-                    p.setModuleFeatures(pFeatures);
+ 
+                    p.setModuleFeature(FPs.get(cdsFlCount));
                     cdsFlCount++;
                 }
             }
+            child.updateModuleFeatures();
             addFPsHelper(child, FPs);
-        }
-        
+        }        
         module.updateModuleFeatures();
     }
     
@@ -283,7 +281,8 @@ public class FeatureAssignment {
                                 //If the Primitive modules at both positions are the same in the abstract module, assign the same final feature
                                 if (m.getSubmodules().get(i).equals(m.getSubmodules().get(index))) {
                                     for (Module clone : clonesThisModule) {
-                                        clone.getSubmodules().get(i).setModuleFeatures(clone.getSubmodules().get(index).getModuleFeatures());
+                                        clone.getSubmodules().get(i).setModuleFeature(clone.getSubmodules().get(index).getModuleFeature());
+                                        //clone.getSubmodules().get(i).setModuleFeatures(clone.getSubmodules().get(index).getModuleFeatures());
                                         clone.updateModuleFeatures();
                                         differentPromoter = false;
                                     }
@@ -303,7 +302,7 @@ public class FeatureAssignment {
                                     //Find promoters that should not be assigned again
                                     List<Feature> usedPromoters = new ArrayList<>();
                                     for (int index : promoterIndicies) {
-                                        usedPromoters.addAll(clone.getSubmodules().get(index).getModuleFeatures());
+                                        usedPromoters.add(clone.getSubmodules().get(index).getModuleFeature());
                                     }
                                     List<Feature> featuresOfRole = new ArrayList<>();
                                     featuresOfRole.addAll(getAllFeaturesOfRole(features, pm.getPrimitiveRole()));
@@ -516,7 +515,7 @@ public class FeatureAssignment {
         Clotho clothoObject = new Clotho(conn);
         
         Map partQuery = new HashMap();
-        partQuery.put("schema", "org.cidarlab.phoenix.core.dom.Part");
+        //partQuery.put("schema", "org.cidarlab.phoenix.core.dom.Part");
         List<Part> parts = ClothoAdaptor.queryParts(partQuery,clothoObject);
         
         conn.closeConnection();

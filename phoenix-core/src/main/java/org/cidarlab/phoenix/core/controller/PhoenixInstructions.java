@@ -64,7 +64,7 @@ public class PhoenixInstructions {
                     List<Medium> media = experiment.getMediaConditions();
                     for(Medium medium:media){
                         if (times.isEmpty()) {
-                            line = "," + amodule.getShortName() + ",," + medium.getName() + "," + "0" + ",";
+                            line = "," + amodule.getShortName() + ","+experiment.getExType()+"," + medium.getName() + "," + "0" + ",";
                             for (int i = 0; i < 3; i++) {
                                 instructionsBufferedWriter.write(line);
                                 instructionsBufferedWriter.newLine();
@@ -72,7 +72,7 @@ public class PhoenixInstructions {
                         }
                         else {
                             for (String time : times) {
-                                line = "," + amodule.getShortName() + ",," + medium.getName() + "," + time + ",";
+                                line = "," + amodule.getShortName() + ","+experiment.getExType()+"," + medium.getName() + "," + time + ",";
                                 for (int i = 0; i < 3; i++) {
                                     instructionsBufferedWriter.write(line);
                                     instructionsBufferedWriter.newLine();

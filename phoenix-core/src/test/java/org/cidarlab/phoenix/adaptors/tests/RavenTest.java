@@ -59,7 +59,7 @@ public class RavenTest {
         Clotho clothoObject = new Clotho(conn);
         
         
-        String[] efficiency = new String[]{"1.0", "1.0", "1.0", "1.0", "1.0"};
+        String[] efficiency = new String[]{"1.0", "1.0", "1.0", "1.0"};
         List<String> effArray = Arrays.asList(efficiency);
         AssemblyParameters assmP = new AssemblyParameters();
         assmP.setEfficiency(effArray);

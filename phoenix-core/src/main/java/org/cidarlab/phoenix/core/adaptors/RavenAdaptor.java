@@ -546,6 +546,8 @@ public class RavenAdaptor {
                 String type = f.getRole().toString().toLowerCase();
                 if (type.contains("cds")) {
                     type = "gene";
+                } else if (type.contains("promoter")) {
+                    type = "promoter";
                 }
                 String sequence = f.getSequence().getSequence();
                 

@@ -975,7 +975,7 @@ public class ClothoAdaptor {
             featureJSONArray.add(clothoObject.get(featureId));
         }
         List<Feature> featureSet = new ArrayList<Feature>();
-        featureSet = convertJSONArrayToFeatures(featureJSONArray);
+        featureSet = convertJSONArrayToFeatures(featureJSONArray,clothoObject);
 
         List<Feature> features = new ArrayList<Feature>();
         for (Feature f : featureSet) {
@@ -1233,10 +1233,10 @@ public class ClothoAdaptor {
     
     public static Feature querySingleFeature(Map map, Clotho clothoObject){
         map.put("schema", Feature.class.getCanonicalName());
-        Map query = (Map)((JSONArray)clothoObject.query(map)).get(0);
-        HashMap<String,Feature> featureMap = new HashMap<String,Feature>();
+        Map query = (Map)((JSONObject)clothoObject.queryOne(map));
+        HashMap<String,Feature> featureListMap = new HashMap<String,Feature>();
         Feature feature = mapToFeature(query);
-        featureMap.put(feature.getName(), feature);
+        featureListMap.put(feature.getName(), feature);
         JSONArray arrayArcs = (JSONArray) query.get("arcs");
         if(arrayArcs!=null){
             for (int j = 0; j < arrayArcs.size(); j++) {
@@ -1247,20 +1247,20 @@ public class ClothoAdaptor {
                     Map queryRegulator = new HashMap();
                     queryRegulator.put("schema",Feature.class.getCanonicalName());
                     queryRegulator.put("name", regulator);
-                    Map regulatorResult = (Map)((JSONArray)clothoObject.query(queryRegulator)).get(0);
+                    Map regulatorResult = (Map)((JSONObject)clothoObject.queryOne(queryRegulator));
                     Feature regulatorFeature = mapToFeature(regulatorResult);
                     
                     
                     Map queryRegulatee = new HashMap();
                     queryRegulatee.put("schema",Feature.class.getCanonicalName());
                     queryRegulatee.put("name", regulatee);
-                    Map regulateeResult = (Map)((JSONArray)clothoObject.query(queryRegulatee)).get(0);
+                    Map regulateeResult = (Map)((JSONObject)clothoObject.queryOne(queryRegulatee));
                     Feature regulateeFeature = mapToFeature(regulateeResult);
-                    if(!featureMap.containsKey(regulatorFeature.getName())){
-                        featureMap.put(regulatorFeature.getName(), regulatorFeature);
+                    if(!featureListMap.containsKey(regulatorFeature.getName())){
+                        featureListMap.put(regulatorFeature.getName(), regulatorFeature);
                     }
-                    if(!featureMap.containsKey(regulateeFeature.getName())){
-                        featureMap.put(regulateeFeature.getName(), regulateeFeature);
+                    if(!featureListMap.containsKey(regulateeFeature.getName())){
+                        featureListMap.put(regulateeFeature.getName(), regulateeFeature);
                     }
                     
                     
@@ -1281,10 +1281,10 @@ public class ClothoAdaptor {
                         arc.getMolecules().add(sm);
 
                     }
-                    arc.setRegulatee(featureMap.get(regulatee));
-                    arc.setRegulator(featureMap.get(regulator));
-                    featureMap.get(regulatee).getArcs().add(arc);
-                    featureMap.get(regulator).getArcs().add(arc);
+                    arc.setRegulatee(featureListMap.get(regulatee));
+                    arc.setRegulator(featureListMap.get(regulator));
+                    featureListMap.get(regulatee).getArcs().add(arc);
+                    featureListMap.get(regulator).getArcs().add(arc);
                     
             }
         }
@@ -1297,13 +1297,83 @@ public class ClothoAdaptor {
         map.put("schema", Feature.class.getCanonicalName());
         Object query = clothoObject.query(map);
         JSONArray array = (JSONArray) query;
-        return convertJSONArrayToFeatures(array);
+        return convertJSONArrayToFeatures(array,clothoObject);
     }
     
     
 
     //Get all Clotho Features
+    public static List<Feature> convertJSONArrayToFeatures(JSONArray array,Clotho clothoObject) {
+
+        HashMap<String,Feature> featureListMap = new HashMap<String,Feature>();
+        
+        for(Object obj:array){
+            Map featureMap = new HashMap();
+            featureMap = (Map)obj;
+            Feature feature = mapToFeature(featureMap);
+            if(!featureListMap.containsKey(feature.getName())){
+                featureListMap.put(feature.getName(), feature);
+            }
+            JSONArray arrayArcs = (JSONArray)featureMap.get("arcs");
+            if(arrayArcs!=null){
+                for (int j = 0; j < arrayArcs.size(); j++) {
+                    JSONObject jsonArc = arrayArcs.getJSONObject(j);
+                    String regulator = jsonArc.get("regulator").toString();
+                    String regulatee = jsonArc.get("regulatee").toString();
+
+                    Map queryRegulator = new HashMap();
+                    queryRegulator.put("schema", Feature.class.getCanonicalName());
+                    queryRegulator.put("name", regulator);
+                    Map regulatorResult = (Map) ((JSONObject) clothoObject.queryOne(queryRegulator));
+                    Feature regulatorFeature = mapToFeature(regulatorResult);
+
+                    Map queryRegulatee = new HashMap();
+                    queryRegulatee.put("schema", Feature.class.getCanonicalName());
+                    queryRegulatee.put("name", regulatee);
+                    Map regulateeResult = (Map) ((JSONObject) clothoObject.queryOne(queryRegulatee));
+                    Feature regulateeFeature = mapToFeature(regulateeResult);
+                    if (!featureListMap.containsKey(regulatorFeature.getName())) {
+                        featureListMap.put(regulatorFeature.getName(), regulatorFeature);
+                    }
+                    if (!featureListMap.containsKey(regulateeFeature.getName())) {
+                        featureListMap.put(regulateeFeature.getName(), regulateeFeature);
+                    }
+
+                    Arc arc = new Arc();
+                    arc.setRole(ArcRole.valueOf((String) jsonArc.get("role")));
+                    JSONArray arraySMs = (JSONArray) jsonArc.get("molecules");
+
+                    for (int k = 0; k < arraySMs.size(); k++) {
+
+                        SmallMolecule sm = new SmallMolecule();
+
+                        //Get small molecule fields
+                        JSONObject jsonSM = arraySMs.getJSONObject(k);
+                        String smName = jsonSM.get("name").toString();
+                        sm.setName(smName);
+
+                        sm.setRole(SmallMolecule.SmallMoleculeRole.valueOf((String) jsonSM.get("role")));
+                        arc.getMolecules().add(sm);
+
+                    }
+                    arc.setRegulatee(featureListMap.get(regulatee));
+                    arc.setRegulator(featureListMap.get(regulator));
+                    featureListMap.get(regulatee).getArcs().add(arc);
+                    featureListMap.get(regulator).getArcs().add(arc);
+
+                }
+            }
+
+        }
+        List<Feature> featureList = new ArrayList<>();
+        featureList.addAll(featureListMap.values());
+        return featureList;
+    }
+    
+    
+    //Get all Clotho Features
     //The way features and arcs are handled here seems kinda fucked, but works
+    /*
     public static List<Feature> convertJSONArrayToFeatures(JSONArray array) {
 
         //Establish Clotho connection
@@ -1322,13 +1392,6 @@ public class ClothoAdaptor {
             Feature feature = new Feature(name);
 //            System.out.println("IN QUERY FEATURES");
 //            System.out.println("Feature Name :: "+name);
-            /*String fwdColorSt = jsonFeature.get("forwardColor").toString();
-            String[] rgbfwd = fwdColorSt.substring(15, fwdColorSt.length() - 1).split(",");
-            Color fwdColor = new Color(Integer.valueOf(rgbfwd[0].substring(2)), Integer.valueOf(rgbfwd[1].substring(2)), Integer.valueOf(rgbfwd[2].substring(2)));
-            String revColorSt = jsonFeature.get("reverseColor").toString();
-            String[] rgbrev = revColorSt.substring(15, revColorSt.length() - 1).split(",");
-            Color revColor = new Color(Integer.valueOf(rgbrev[0].substring(2)), Integer.valueOf(rgbrev[1].substring(2)), Integer.valueOf(rgbrev[2].substring(2)));
-            */
             
             //Get sequence object and fields
             JSONObject jsonSequence = (JSONObject) jsonFeature.get("sequence");
@@ -1424,7 +1487,9 @@ public class ClothoAdaptor {
         }
 
         return features;
-    }
+    }*/
+    
+    
     
     //Over-ride with module? Maybe get Module parameters and then clone?
     public static AssignedModule getAssignedModule(String assignedModuleId, Clotho clothoObject) {
@@ -1524,7 +1589,7 @@ public class ClothoAdaptor {
             featureJSONArray.add(clothoObject.get(featureId));
         }
         List<Feature> featureSet = new ArrayList<Feature>();
-        featureSet = convertJSONArrayToFeatures(featureJSONArray);
+        featureSet = convertJSONArrayToFeatures(featureJSONArray,clothoObject);
 
         List<Feature> features = new ArrayList<Feature>();
         for (Feature f : featureSet) {

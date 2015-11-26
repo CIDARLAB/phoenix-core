@@ -810,12 +810,12 @@ public class TestingStructures {
         Map BCD8 = new HashMap();
         BCD8.put("schema", Feature.class.getCanonicalName());
         BCD8.put("name", "BCD8.ref");
-        testRBS = new PrimitiveModule(FeatureRole.RBS, new Primitive(new ComponentType("r"), "rTEST"), ClothoAdaptor.convertJSONArrayToFeatures((JSONArray) clothoObject.query(BCD8)).iterator().next());
+        testRBS = new PrimitiveModule(FeatureRole.RBS, new Primitive(new ComponentType("r"), "rTEST"), ClothoAdaptor.querySingleFeature(BCD8,clothoObject));
 
         Map HelicalLinker = new HashMap();
         HelicalLinker.put("schema", Feature.class.getCanonicalName());
         HelicalLinker.put("name", "HelicalLinker.ref");
-        testLinker = new PrimitiveModule(FeatureRole.CDS_LINKER, new Primitive(new ComponentType("l"), "linkerTEST"), ClothoAdaptor.convertJSONArrayToFeatures((JSONArray) clothoObject.query(HelicalLinker)).iterator().next());
+        testLinker = new PrimitiveModule(FeatureRole.CDS_LINKER, new Primitive(new ComponentType("l"), "linkerTEST"), ClothoAdaptor.querySingleFeature(HelicalLinker,clothoObject));
 
         Map GFPm = new HashMap();
         GFPm.put("schema", Fluorophore.class.getCanonicalName());
@@ -830,17 +830,17 @@ public class TestingStructures {
         Map B0015 = new HashMap();
         B0015.put("schema", Feature.class.getCanonicalName());
         B0015.put("name", "B0015.ref");
-        testTerminator = new PrimitiveModule(FeatureRole.TERMINATOR, new Primitive(new ComponentType("t"), "tTEST"), ClothoAdaptor.convertJSONArrayToFeatures((JSONArray) clothoObject.query(B0015)).iterator().next());
+        testTerminator = new PrimitiveModule(FeatureRole.TERMINATOR, new Primitive(new ComponentType("t"), "tTEST"), ClothoAdaptor.querySingleFeature(B0015,clothoObject));
 
         Map ColE1 = new HashMap();
         ColE1.put("schema", Feature.class.getCanonicalName());
         ColE1.put("name", "ColE1.ref");
-        testVector1 = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST1"), ClothoAdaptor.convertJSONArrayToFeatures((JSONArray) clothoObject.query(ColE1)).iterator().next());
+        testVector1 = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST1"), ClothoAdaptor.querySingleFeature(ColE1,clothoObject));
         
         Map p15A = new HashMap();
         p15A.put("schema", Feature.class.getCanonicalName());
         p15A.put("name", "p15A.ref");
-        testVector2 = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST2"), ClothoAdaptor.convertJSONArrayToFeatures((JSONArray) clothoObject.query(p15A)).iterator().next());
+        testVector2 = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST2"), ClothoAdaptor.querySingleFeature(p15A,clothoObject));
         
         finalVector = testVector1;
 

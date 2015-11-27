@@ -25,6 +25,8 @@ public class AssignedModule extends Module {
         this.experiments = new ArrayList<>();
         this.regulationDocument = new ArrayList<>();
         this.SBMLDocument = new SBMLDocument();
+        //this.controlModules = new ArrayList<>();
+        
         List<Feature> fList = new ArrayList<>();
         for (Feature f : m.getModuleFeatures()) {
             fList.add(f.clone());
@@ -61,6 +63,7 @@ public class AssignedModule extends Module {
         exList.addAll(this.experiments);
         clone.experiments = exList;
         //This part needs to change. Create deep copies of Experiments and Control Modules
+        //clone.setControlModules(this.controlModules);
         
         clone.setFunction(this.getFunction());
         clone.setForward(this.isForward());

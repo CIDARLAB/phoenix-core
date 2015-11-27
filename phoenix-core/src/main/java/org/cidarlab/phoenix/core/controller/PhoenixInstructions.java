@@ -21,13 +21,20 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.cidarlab.phoenix.core.dom.Arc;
 import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.Detector;
 import org.cidarlab.phoenix.core.dom.Experiment;
+import org.cidarlab.phoenix.core.dom.Feature;
+import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
 import org.cidarlab.phoenix.core.dom.Medium;
+import org.cidarlab.phoenix.core.dom.Module;
+import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
 import org.cidarlab.phoenix.core.dom.Polynucleotide;
+import org.cidarlab.phoenix.core.dom.PrimitiveModule;
 import org.cidarlab.phoenix.core.dom.Sample;
 import org.cidarlab.phoenix.core.dom.Sample.SampleType;
+import org.cidarlab.phoenix.core.dom.Titration;
 
 /**
  * This class is responsible for producing and interpreting experimental instructions in Phoenix
@@ -57,29 +64,171 @@ public class PhoenixInstructions {
             instructionsBufferedWriter.newLine();
             instructionsBufferedWriter.write(",,negative,,,");
             instructionsBufferedWriter.newLine();
+            
+            
+            //Search for Color Controls
+            Set<AssignedModule> colorControlSet = new HashSet<>();
+            Set<String> color = new HashSet<>();
+            System.out.println("Color Controls!!");
+            for(AssignedModule amodule:amodules){
+                for(AssignedModule control:amodule.getControlModules()){
+                    if(control.getRole().equals(ModuleRole.COLOR_CONTROL)){
+                        if (!colorControlSet.contains(control)) {
+                            colorControlSet.add(control);
+                            for (PrimitiveModule pm : control.getSubmodules()) {
+                                if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
+                                    String channelColor = Utilities.getChannelsMap().get(pm.getModuleFeature().getName());
+                                    if(!color.contains(channelColor)){
+                                        color.add(channelColor);
+                                        String line = ",,"+channelColor+",,,";
+                                        instructionsBufferedWriter.write(line);
+                                        instructionsBufferedWriter.newLine();
+                                        
+                                        System.out.println(channelColor);
+                                        
+                                    }
+                                    
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+            }
+            
             for(AssignedModule amodule:amodules){
                 String line = "";
                 for(Experiment experiment:amodule.getExperiments()){
                     List<String> times = experiment.getTimes();
                     List<Medium> media = experiment.getMediaConditions();
-                    for(Medium medium:media){
-                        if (times.isEmpty()) {
-                            line = "," + amodule.getShortName() + ","+experiment.getExType()+"," + medium.getName() + "," + "0" + ",";
-                            for (int i = 0; i < 3; i++) {
-                                instructionsBufferedWriter.write(line);
-                                instructionsBufferedWriter.newLine();
-                            }
-                        }
-                        else {
-                            for (String time : times) {
-                                line = "," + amodule.getShortName() + ","+experiment.getExType()+"," + medium.getName() + "," + time + ",";
-                                for (int i = 0; i < 3; i++) {
-                                    instructionsBufferedWriter.write(line);
-                                    instructionsBufferedWriter.newLine();
+                    
+                    switch(experiment.getExType()){
+                        case EXPRESSION:
+                            for (Medium medium : media) {
+                                for (String time : times) {
+                                    line = "," + amodule.getShortName() + ",," + medium.getName() + "," + time + ",";
+                                    for (int i = 0; i < 3; i++) {
+                                        instructionsBufferedWriter.write(line);
+                                        instructionsBufferedWriter.newLine();
+                                    }
                                 }
                             }
-                        }
-                        
+                            break;
+                        case DEGRADATION:
+                            //System.out.println("Degradation::");
+                            for(PrimitiveModule pm:amodule.getSubmodules()){
+                                if(pm.getModuleFeature().getRole().equals(FeatureRole.PROMOTER_INDUCIBLE) || pm.getModuleFeature().getRole().equals(FeatureRole.PROMOTER_REPRESSIBLE)){
+                                    List<Arc> arcs = new ArrayList<Arc>();
+                                    arcs = pm.getModuleFeature().getArcs();
+                                    for(Arc arc:arcs){
+                                        Feature regulator = arc.getRegulator();
+                                        String regulatorName = regulator.getName();
+                                        Titration titration = Utilities.getSmallMoleculeTitration().get(regulatorName);
+                                        for(Medium medium:media){
+                                            Double titreVal = titration.getTitrationValues().get(titration.getTitrationValues().size()-1);
+                                            int titreInt = titreVal.intValue();
+                                            String mediumVal = medium.getName() +" + ("+ titreInt + " "+titration.getUnits()+" "+titration.getSmallMolecule()+")";
+                                            for (String time : times) {
+                                                line = "," + amodule.getShortName() + ",," + mediumVal + "," + time + ",";
+                                                for (int i = 0; i < 3; i++) {
+                                                    instructionsBufferedWriter.write(line);
+                                                    instructionsBufferedWriter.newLine();
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                        case REGULATION:
+                            
+                            System.out.println("Regulation ::");
+                            //Find regulation Control Channel
+                            String regChannel= "";
+                            for(AssignedModule controlModule:amodule.getControlModules()){
+                                if(controlModule.getRole().equals(ModuleRole.REGULATION_CONTROL)){
+                                    System.out.println("Regulation Control Found");
+                                    for(PrimitiveModule pm:controlModule.getSubmodules()){
+                                        if(pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT)){
+                                            regChannel = Utilities.getChannelsMap().get(pm.getModuleFeature().getName());
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            //Find Expressee Channel
+                            String expFPChannel = "";
+                            for(PrimitiveModule pm:amodule.getSubmodules()){
+                                if(pm.getModuleFeature().getRole().equals(FeatureRole.CDS_FLUORESCENT)){
+                                    expFPChannel = Utilities.getChannelsMap().get(pm.getModuleFeature().getName());
+                                }
+                            }
+                            String regulationVal = expFPChannel+"| "+regChannel;
+                            for(PrimitiveModule pm:amodule.getSubmodules()){
+                                if(pm.getModuleFeature().getRole().equals(FeatureRole.PROMOTER_INDUCIBLE) || pm.getModuleFeature().getRole().equals(FeatureRole.PROMOTER_REPRESSIBLE)){
+                                    List<Arc> arcs = new ArrayList<Arc>();
+                                    arcs = pm.getModuleFeature().getArcs();
+                                    for(Arc arc:arcs){
+                                        Feature regulator = arc.getRegulator();
+                                        String regulatorName = regulator.getName();
+                                        Titration titration = Utilities.getSmallMoleculeTitration().get(regulatorName);
+                                        for(Medium medium:media){
+                                            for (Double titreVal : titration.getTitrationValues()) {
+                                                int titreInt = titreVal.intValue();
+                                                String mediumVal = medium.getName() + " + (" + titreInt + " " + titration.getUnits() + " " + titration.getSmallMolecule() + ")";
+                                                for (String time : times) {
+                                                    line = "," + amodule.getShortName() + ",," + mediumVal + "," + time + ","+regulationVal;
+                                                    for (int i = 0; i < 3; i++) {
+                                                        instructionsBufferedWriter.write(line);
+                                                        instructionsBufferedWriter.newLine();
+                                                    }
+                                                }
+                                            }
+                                            
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            
+                            break;
+                        case SMALL_MOLECULE:
+                            System.out.println("Small Molecule");
+                            //Find the Expressee Titration
+                            Titration expresseeTitre = new Titration();
+                            for(PrimitiveModule pm:amodule.getSubmodules()){
+                                if(pm.getModuleFeature().getRole().equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pm.getModuleFeature().getRole().equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR)){
+                                    System.out.println("Expressee Titre Module Feature " + pm.getModuleFeature().getName());
+                                    expresseeTitre = Utilities.getSmallMoleculeTitration().get(pm.getModuleFeature().getName());
+                                }
+                            }
+                            
+                            for(PrimitiveModule pm:amodule.getSubmodules()){
+                                if(pm.getModuleFeature().getRole().equals(FeatureRole.PROMOTER_INDUCIBLE) || pm.getModuleFeature().getRole().equals(FeatureRole.PROMOTER_REPRESSIBLE)){
+                                    for(Arc arc:pm.getModuleFeature().getArcs()){
+                                        Titration promExpresseeTitre = new Titration();
+                                        promExpresseeTitre = Utilities.getSmallMoleculeTitration().get(arc.getRegulator().getName());
+                                        for (Medium medium : media) {
+                                            
+                                            for (Double titreVal : expresseeTitre.getTitrationValues()) {
+                                                String mediumVal = medium.getName() + "_"+promExpresseeTitre.getTitrationValues().get(promExpresseeTitre.getTitrationValues().size()-1).intValue()+"_"+promExpresseeTitre.getUnits()+"_"+promExpresseeTitre.getSmallMolecule();
+                                                mediumVal += " + ("+titreVal.intValue()+" "+expresseeTitre.getUnits()+" "+expresseeTitre.getSmallMolecule()+")";
+                                                for (String time : times) {
+                                                    line = "," + amodule.getShortName() + ",," + mediumVal + "," + time + ",";
+                                                    for (int i = 0; i < 3; i++) {
+                                                        instructionsBufferedWriter.write(line);
+                                                        instructionsBufferedWriter.newLine();
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            break;
+                        default:
+                            break;
                     }
                 }
             }

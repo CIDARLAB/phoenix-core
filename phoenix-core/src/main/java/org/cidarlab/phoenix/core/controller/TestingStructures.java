@@ -47,12 +47,12 @@ public class TestingStructures {
 
         //For each module, traverse graph
         initializeTestingPrimitiveModules();
-        addTestingPrimitivesHelper(rootModule);       
+        addTestingPrimitivesHelper(rootModule);
     }
 
     //Adding testing primitive module helper
     private static void addTestingPrimitivesHelper(Module module) {
-        
+
         //For each child of the imput module, add testing peices
         if (module.getRole().equals(ModuleRole.EXPRESSEE) || module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR) || module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)) {
             addTestExpressee(module);
@@ -62,10 +62,10 @@ public class TestingStructures {
             addTestTU(module);
         } else {
             addTestHighFunction(module);
-        }        
-        
-        for(Module child:module.getChildren()){
-            addTestingPrimitivesHelper(child);    
+        }
+
+        for (Module child : module.getChildren()) {
+            addTestingPrimitivesHelper(child);
         }
     }
 
@@ -77,7 +77,7 @@ public class TestingStructures {
         if (m.getSubmodules().size() == 1) {
             FeatureRole pR = m.getSubmodules().get(0).getPrimitiveRole();
             if (pR.equals(FeatureRole.CDS) || pR.equals(FeatureRole.CDS_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSOR) || pR.equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR)) {
-                
+
                 //Check to see if this regulator is the regulator of the first testing promoter
                 //If true, use the second controllable testing promoter
                 PrimitiveModule testControlPromoter;
@@ -86,7 +86,7 @@ public class TestingStructures {
                 } else {
                     testControlPromoter = testControllablePromoter1;
                 }
-                
+
                 List<PrimitiveModule> testSubmodules = new ArrayList<>();
                 testSubmodules.add(testControlPromoter);
                 testSubmodules.add(testRBS);
@@ -149,7 +149,7 @@ public class TestingStructures {
                 PrimitiveModule fpPM = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT_FUSION, new Primitive(new ComponentType("fc"), "FP"), new Feature("EXPRESSEE", new NucSeq(), null, FeatureRole.CDS_FLUORESCENT_FUSION));
 //                fpPM.setForward(true);
                 testSubmodules.add(fpPM);
-                
+
             } else {
                 testSubmodules.add(pm);
             }
@@ -191,43 +191,46 @@ public class TestingStructures {
 
         m.updateModuleFeatures();
     }
-    
-    private static class ControlsMap{
+
+    private static class ControlsMap {
+
         private Map<String, String> colorNameMap;
         private Map<String, String> regNameMap;
         private Map<String, AssignedModule> aModuleControlMap;
-        private ControlsMap(){
+
+        private ControlsMap() {
             colorNameMap = new HashMap<>();
             regNameMap = new HashMap<>();
             aModuleControlMap = new HashMap<>();
         }
     }
-     
-   public static void createExperiments(Module rootModule){
+
+    public static void createExperiments(Module rootModule) {
         ControlsMap expMap = new ControlsMap();
         expMap = getAllControls(rootModule);
         List<Medium> defaultMedia = new ArrayList<>();
         defaultMedia.add(new Medium("M9_glucose", Medium.MediaType.RICH));
-        List<String> defaultTime = Arrays.asList(new String[]{"0", "10", "20", "30", "40", "50", "60"});
-        assignAllControls(rootModule,expMap.colorNameMap,expMap.regNameMap,expMap.aModuleControlMap,defaultMedia,defaultTime);
         
+        //List<String> defaultTime = Arrays.asList(new String[]{"0", "10", "20", "30", "40", "50", "60"});
+        
+        assignAllControls(rootModule, expMap.colorNameMap, expMap.regNameMap, expMap.aModuleControlMap, defaultMedia, Utilities.getDefaultTimeMap());
+
     }
-    
-    public static void assignAllControls(Module module,Map<String, String> colorNameMap, Map<String, String> regNameMap,Map<String, AssignedModule> aModuleControlMap,List<Medium> defaultMedia,List<String> defaultTime){
-        
-        for(AssignedModule aModule:module.getAssignedModules()){
+
+    public static void assignAllControls(Module module, Map<String, String> colorNameMap, Map<String, String> regNameMap, Map<String, AssignedModule> aModuleControlMap, List<Medium> defaultMedia, Map<ExperimentType,List<String>> defaultTimeMaps) {
+
+        for (AssignedModule aModule : module.getAssignedModules()) {
             List<Experiment> experimentList = new ArrayList<>();
             List<AssignedModule> controlModules = new ArrayList<>();
-            
+
             controlModules.add(aModuleControlMap.get("EXPRESSION_DEGRADATION_CONTROL"));
             controlModules.add(aModuleControlMap.get("EXPRESSION_DEGRADATION_CONTROL_COLOR_CONTROL"));
-                
-            
+
             //Experiments for EXPRESSEE
             if (aModule.getRole().equals(ModuleRole.EXPRESSOR)) {
 
                 //Add these experiments to the returned experiment set
-                experimentList.add(new Experiment(ExperimentType.EXPRESSION, "EXPRESSION_" + aModule.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<String>()));
+                experimentList.add(new Experiment(ExperimentType.EXPRESSION, "EXPRESSION_" + aModule.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTimeMaps.get(ExperimentType.EXPRESSION)));
                 aModule.getExperiments().addAll(experimentList);
                 for (PrimitiveModule pm : aModule.getSubmodules()) {
                     if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
@@ -235,51 +238,59 @@ public class TestingStructures {
                     }
                 }
                 aModule.setControlModules(controlModules);
-                
+
             } else {
-                for (PrimitiveModule pm : aModule.getSubmodules()) {
-                    FeatureRole pR = pm.getPrimitiveRole();
-                    if (pR.equals(FeatureRole.CDS_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSOR) || pR.equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR)) {
-                        for (Arc a : pm.getModuleFeature().getArcs()) {
-                            Feature regulatee = a.getRegulatee();
-                            controlModules.add(aModuleControlMap.get(regNameMap.get(regulatee.getName())));
+                
+                if (aModule.getRole().equals(ModuleRole.EXPRESSEE) || aModule.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || aModule.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR) || aModule.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || aModule.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)) {
+                    System.out.println("Assign Regulation Control");
+                    for (PrimitiveModule pm : aModule.getSubmodules()) {
+                        FeatureRole pR = pm.getPrimitiveRole();
+                        if (pR.equals(FeatureRole.CDS_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSOR) || pR.equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR)) {
+                            for (Arc a : pm.getModuleFeature().getArcs()) {
+                                Feature regulatee = a.getRegulatee();
+                                System.out.println("Regulatee Name :: "+regulatee.getName());
+                                controlModules.add(aModuleControlMap.get(regNameMap.get(regulatee.getName())));
+                            }
+                        }
+                    }
+                    System.out.println("Assign Color Control");
+                    for (PrimitiveModule pm : aModule.getSubmodules()) {
+                        if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
+                            System.out.println("pm Module Feature Name :: " + pm.getModuleFeature().getName());
+                            controlModules.add(aModuleControlMap.get(colorNameMap.get(pm.getModuleFeature().getName())));
                         }
                     }
                 }
-                for (PrimitiveModule pm : aModule.getSubmodules()) {
-                    if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
-                        controlModules.add(aModuleControlMap.get(colorNameMap.get(pm.getModuleFeature().getName())));
-                    }
-                }
+                
                 if (aModule.getRole().equals(ModuleRole.EXPRESSEE)) {
 
                     //Add these experiments to the returned experiment set
-                    experimentList.add(new Experiment(ExperimentType.DEGRADATION, "DEGRADATION_" + aModule.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));
+                    experimentList.add(new Experiment(ExperimentType.DEGRADATION, "DEGRADATION_" + aModule.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTimeMaps.get(ExperimentType.DEGRADATION)));
                     aModule.getExperiments().addAll(experimentList);
                 } //Experiments for EXPRESSEE_ACTIVATIBLE_ACTIVATOR
                 else if (aModule.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR)) {
 
                     //Add these experiments to the returned experiment set
-                    experimentList.add(new Experiment(ExperimentType.DEGRADATION, "DEGRADATION_" + aModule.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));
-                    experimentList.add(new Experiment(ExperimentType.REGULATION, "REGULATION_" + aModule.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<String>()));
-                    experimentList.add(new Experiment(ExperimentType.SMALL_MOLECULE, "SMALL_MOLECULE_" + aModule.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<String>()));
+                    experimentList.add(new Experiment(ExperimentType.DEGRADATION, "DEGRADATION_" + aModule.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTimeMaps.get(ExperimentType.DEGRADATION)));
+                    experimentList.add(new Experiment(ExperimentType.REGULATION, "REGULATION_" + aModule.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTimeMaps.get(ExperimentType.REGULATION)));
+                    experimentList.add(new Experiment(ExperimentType.SMALL_MOLECULE, "SMALL_MOLECULE_" + aModule.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTimeMaps.get(ExperimentType.SMALL_MOLECULE)));
 
                     aModule.getExperiments().addAll(experimentList);
                 } //Experiments for EXPRESSEE_ACTIVATOR
                 else if (aModule.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR)) {
 
                     //Add these experiments to the returned experiment set
-                    experimentList.add(new Experiment(ExperimentType.DEGRADATION, "DEGRADATION_" + aModule.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));
-                    experimentList.add(new Experiment(ExperimentType.REGULATION, "REGULATION_" + aModule.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<String>()));
+                    experimentList.add(new Experiment(ExperimentType.DEGRADATION, "DEGRADATION_" + aModule.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTimeMaps.get(ExperimentType.DEGRADATION)));
+                    experimentList.add(new Experiment(ExperimentType.REGULATION, "REGULATION_" + aModule.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTimeMaps.get(ExperimentType.REGULATION)));
 
                     aModule.getExperiments().addAll(experimentList);
                 } //Experiments for EXPRESSEE_REPRESSIBLE_REPRESSOR
                 else if (aModule.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR)) {
 
                     //Add these experiments to the returned experiment set
-                    experimentList.add(new Experiment(ExperimentType.DEGRADATION, "DEGRADATION_" + aModule.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));
-                    experimentList.add(new Experiment(ExperimentType.REGULATION, "REGULATION_" + aModule.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<String>()));
-                    experimentList.add(new Experiment(ExperimentType.SMALL_MOLECULE, "SMALL_MOLECULE_" + aModule.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<String>()));
+                    experimentList.add(new Experiment(ExperimentType.DEGRADATION, "DEGRADATION_" + aModule.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTimeMaps.get(ExperimentType.DEGRADATION)));
+                    experimentList.add(new Experiment(ExperimentType.REGULATION, "REGULATION_" + aModule.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTimeMaps.get(ExperimentType.REGULATION)));
+                    experimentList.add(new Experiment(ExperimentType.SMALL_MOLECULE, "SMALL_MOLECULE_" + aModule.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTimeMaps.get(ExperimentType.SMALL_MOLECULE)));
 
                     aModule.getExperiments().addAll(experimentList);
 
@@ -287,85 +298,72 @@ public class TestingStructures {
                 else if (aModule.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)) {
 
                     //Add these experiments to the returned experiment set
-                    experimentList.add(new Experiment(ExperimentType.DEGRADATION, "DEGRADATION_" + aModule.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));
-                    experimentList.add(new Experiment(ExperimentType.REGULATION, "REGULATION_" + aModule.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, new ArrayList<String>()));
+                    experimentList.add(new Experiment(ExperimentType.DEGRADATION, "DEGRADATION_" + aModule.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTimeMaps.get(ExperimentType.DEGRADATION)));
+                    experimentList.add(new Experiment(ExperimentType.REGULATION, "REGULATION_" + aModule.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTimeMaps.get(ExperimentType.REGULATION)));
 
                     aModule.getExperiments().addAll(experimentList);
                 }
                 aModule.setControlModules(controlModules);
             }
-            
+
         }
-        for(Module child:module.getChildren()){
-            assignAllControls(child,colorNameMap,regNameMap,aModuleControlMap,defaultMedia,defaultTime);
+        for (Module child : module.getChildren()) {
+            assignAllControls(child, colorNameMap, regNameMap, aModuleControlMap, defaultMedia, defaultTimeMaps);
         }
-        
+
             //Experiments for EXPRESSOR
-            //Experiments for TRANSCRIPTIONAL_UNIT
+        //Experiments for TRANSCRIPTIONAL_UNIT
             /*
-            else if (m.getRole().equals(ModuleRole.TRANSCRIPTIONAL_UNIT)) {
-                //Add these experiments to the returned experiment set
-                experimentList.add(new Experiment(ExperimentType.RBS_CONTEXT, "RBS_CONTEXT_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));                
-                aModule.getExperiments().addAll(experimentList);
+         else if (m.getRole().equals(ModuleRole.TRANSCRIPTIONAL_UNIT)) {
+         //Add these experiments to the returned experiment set
+         experimentList.add(new Experiment(ExperimentType.RBS_CONTEXT, "RBS_CONTEXT_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));                
+         aModule.getExperiments().addAll(experimentList);
 
-                //Experiments for HIGHER_FUNCTION
-            } else if (m.getRole().equals(ModuleRole.HIGHER_FUNCTION)) {
-                //Initialize experiment object
-                experimentList.add(new Experiment(ExperimentType.SPECIFICATION, "SPECIFICATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));
-            }
-            */
-        
-        
-        
+         //Experiments for HIGHER_FUNCTION
+         } else if (m.getRole().equals(ModuleRole.HIGHER_FUNCTION)) {
+         //Initialize experiment object
+         experimentList.add(new Experiment(ExperimentType.SPECIFICATION, "SPECIFICATION_" + m.getName() + "_" + new Date().toString().replaceAll(" ", "_"), defaultMedia, defaultTime));
+         }
+         */
     }
-    
-    
-    
-    
-    
-    
-    
+
     /*
-    //Add controls and samples
-    private static void addSamples(List<Experiment> experiments, List<AssignedModule> controlModulesAll, HashMap<String, Sample> sampleHash, AssignedModule aM, boolean regControls) {
+     //Add controls and samples
+     private static void addSamples(List<Experiment> experiments, List<AssignedModule> controlModulesAll, HashMap<String, Sample> sampleHash, AssignedModule aM, boolean regControls) {
 
-        //Add control constructs 
-        List<AssignedModule> controlsThisModule = new ArrayList<>();
-        controlsThisModule.add(createExpDegControl());
-        //controlsThisModule.addAll(createColorControls(controlsThisModule, aM));
-        if (regControls) {
-            //controlsThisModule.addAll(createRegControls(aM));
-        }
+     //Add control constructs 
+     List<AssignedModule> controlsThisModule = new ArrayList<>();
+     controlsThisModule.add(createExpDegControl());
+     //controlsThisModule.addAll(createColorControls(controlsThisModule, aM));
+     if (regControls) {
+     //controlsThisModule.addAll(createRegControls(aM));
+     }
 
-        removeDuplicateModules(controlsThisModule, controlModulesAll, aM);
+     removeDuplicateModules(controlsThisModule, controlModulesAll, aM);
 
-        //Add samples
-        for (Experiment e : experiments) {
-            createControlSamples(e, controlsThisModule, aM, sampleHash, 3);
-            createExperimentSamples(e, aM, sampleHash, 3);
-        }
+     //Add samples
+     for (Experiment e : experiments) {
+     createControlSamples(e, controlsThisModule, aM, sampleHash, 3);
+     createExperimentSamples(e, aM, sampleHash, 3);
+     }
 
-        aM.setControlModules(controlsThisModule);
-    }
-    */
-    
-    
-    
-    private static ControlsMap getAllControls(Module module){
+     aM.setControlModules(controlsThisModule);
+     }
+     */
+    private static ControlsMap getAllControls(Module module) {
         ControlsMap map = new ControlsMap();
-        if(module.getRole().equals(ModuleRole.TRANSCRIPTIONAL_UNIT) || module.getRole().equals(ModuleRole.EXPRESSOR)){
-            for(AssignedModule amodule:module.getAssignedModules()){
-                getAmoduleControlsMap(amodule,map.colorNameMap,map.regNameMap,map.aModuleControlMap,false);
+        if (module.getRole().equals(ModuleRole.TRANSCRIPTIONAL_UNIT) || module.getRole().equals(ModuleRole.EXPRESSOR)) {
+            for (AssignedModule amodule : module.getAssignedModules()) {
+                getAmoduleControlsMap(amodule, map.colorNameMap, map.regNameMap, map.aModuleControlMap, false);
+            }
+        } else if (module.getRole().equals(ModuleRole.EXPRESSEE) || module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR) || module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)) {
+            for (AssignedModule amodule : module.getAssignedModules()) {
+                getAmoduleControlsMap(amodule, map.colorNameMap, map.regNameMap, map.aModuleControlMap, true);
             }
         }
-        else if(module.getRole().equals(ModuleRole.EXPRESSEE) || module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR) || module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)){
-            for(AssignedModule amodule:module.getAssignedModules()){
-                getAmoduleControlsMap(amodule,map.colorNameMap,map.regNameMap,map.aModuleControlMap,true);
-            }
-        }
-        System.out.println("Module Role ::  " +module.getRole());
-        for(Module child:module.getChildren()){
-            
+        System.out.println("Module Role ::  " + module.getRole());
+        for (Module child : module.getChildren()) {
+
             ControlsMap tempMap = getAllControls(child);
             map.aModuleControlMap.putAll(tempMap.aModuleControlMap);
             map.colorNameMap.putAll(tempMap.colorNameMap);
@@ -373,18 +371,18 @@ public class TestingStructures {
         }
         return map;
     }
-    
-    private static void getAmoduleControlsMap(AssignedModule amodule, Map<String, String> colorNameMap,Map<String, String> regNameMap, Map<String, AssignedModule> aModuleMap,boolean regControl) {
+
+    private static void getAmoduleControlsMap(AssignedModule amodule, Map<String, String> colorNameMap, Map<String, String> regNameMap, Map<String, AssignedModule> aModuleMap, boolean regControl) {
 
         //Exp Deg Control
         if (!aModuleMap.containsKey("EXPRESSION_DEGRADATION_CONTROL")) {
             aModuleMap.put("EXPRESSION_DEGRADATION_CONTROL", createExpDegControl());
         }
-        
-        if(!aModuleMap.containsKey("EXPRESSION_DEGRADATION_CONTROL_COLOR_CONTROL")){
-            aModuleMap.put("EXPRESSION_DEGRADATION_CONTROL_COLOR_CONTROL", createColorControl(testFP1,"EXPRESSION_DEGRADATION_CONTROL_COLOR_CONTROL"));
+
+        if (!aModuleMap.containsKey("EXPRESSION_DEGRADATION_CONTROL_COLOR_CONTROL")) {
+            aModuleMap.put("EXPRESSION_DEGRADATION_CONTROL_COLOR_CONTROL", createColorControl(testFP1, "EXPRESSION_DEGRADATION_CONTROL_COLOR_CONTROL"));
         }
-        
+
         //Color Control
         for (PrimitiveModule pm : amodule.getSubmodules()) {
             if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
@@ -395,9 +393,15 @@ public class TestingStructures {
                 }
             }
         }
-     
+
         //Reg Control
         if (regControl) {
+            PrimitiveModule fpModule = null;
+            for(PrimitiveModule pm: amodule.getSubmodules()){
+                if(pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)){
+                    fpModule = pm;
+                }
+            }
             for (PrimitiveModule pm : amodule.getSubmodules()) {
                 FeatureRole pR = pm.getPrimitiveRole();
                 if (pR.equals(FeatureRole.CDS_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSOR) || pR.equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR)) {
@@ -409,7 +413,7 @@ public class TestingStructures {
                         String regControlName = regulatee.getName().replaceAll(".ref", "") + "_REGULATION_CONTROL";
                         if (!regNameMap.containsKey(regulatee.getName())) {
                             regNameMap.put(regulatee.getName(), regControlName);
-                            aModuleMap.put(regControlName, createRegControl(regPromoter, regControlName));
+                            aModuleMap.put(regControlName, createRegControl(regPromoter, fpModule, regControlName));
                         }
                     }
                 }
@@ -436,7 +440,7 @@ public class TestingStructures {
     }
 
     private static AssignedModule createColorControl(PrimitiveModule pm, String controlName) {
-        
+
         Module colorControlModule = new Module(controlName);
         List<PrimitiveModule> testSubmodules = new ArrayList<>();
         testSubmodules.add(testConstitutivePromoter);
@@ -449,16 +453,16 @@ public class TestingStructures {
         colorControlModule.setRole(ModuleRole.COLOR_CONTROL);
         return new AssignedModule(colorControlModule);
     }
-    
-    private static AssignedModule createRegControl(PrimitiveModule regPromoter, String controlName) {
+
+    private static AssignedModule createRegControl(PrimitiveModule regPromoter, PrimitiveModule fpModule, String controlName) {
         Module regControlModule = new Module(controlName);
         List<PrimitiveModule> testSubmodules = new ArrayList<>();
-        
+
         PrimitiveModule testControlPromoter;
         FeatureRole testRegulatorRole;
         ComponentType cT;
         String primitiveName;
-        
+
         //If this promoter is the same as the first testing controllable promoter, pick the second testing promoter
         if (regPromoter.getModuleFeature().equals(testControllablePromoter1.getModuleFeature())) {
             testControlPromoter = testControllablePromoter2;
@@ -471,10 +475,20 @@ public class TestingStructures {
             cT = new ComponentType("fc");
             primitiveName = "fcTEST";
         }
-        
+
         testSubmodules.add(regPromoter);
         testSubmodules.add(testRBS);
-        testSubmodules.add(testFP2);
+        if(fpModule!= null){
+            if(testFP2.getModuleFeature().getName().equals(fpModule.getModuleFeature().getName())){
+                testSubmodules.add(testFP1);
+            }
+            else{
+                testSubmodules.add(testFP2);
+            }
+        }
+        else{
+            testSubmodules.add(testFP2);
+        }
         testSubmodules.add(testTerminator);
         testSubmodules.add(testConstitutivePromoter);
         testSubmodules.add(testRBS);
@@ -487,7 +501,7 @@ public class TestingStructures {
         AssignedModule regControl = new AssignedModule(regControlModule);
         return regControl;
     }
-    
+
     //Remove duplicate modules based on PrimitiveModules
     private static void removeDuplicateModules(List<AssignedModule> controlsThisModule, List<AssignedModule> controlModulesAll, AssignedModule m) {
 
@@ -650,9 +664,9 @@ public class TestingStructures {
 
         if (sampleHash.get(negativeControl.getClothoID()) == null) {
             sampleHash.put(negativeControl.getClothoID(), negativeControl);
-        //    experiment.setNegativeControl(negativeControl);
+            //    experiment.setNegativeControl(negativeControl);
         } else {
-        //    experiment.setNegativeControl(sampleHash.get(negativeControl.getClothoID()));
+            //    experiment.setNegativeControl(sampleHash.get(negativeControl.getClothoID()));
         }
 
         //Loop through modules to create samples
@@ -699,12 +713,11 @@ public class TestingStructures {
                 }
 
                 //experiment.setRegulationControls(replicateControlSamples);
-
                 //Color controls
             } else if (m.getRole().equals(ModuleRole.COLOR_CONTROL)) {
 
                 //Get existing color controls if they exist
-                List<Sample> colorControls = new ArrayList<>(); 
+                List<Sample> colorControls = new ArrayList<>();
                 //colorControls = experiment.getColorControls();
 
                 //Create color control sample for each media condition
@@ -779,9 +792,7 @@ public class TestingStructures {
         Polynucleotide pn = new Polynucleotide(m.getName() + "_Polynucleotide");
         return pn;
     }
-    
-    
-    
+
     //Initialize testing primitive modules
     private static void initializeTestingPrimitiveModules() {
 
@@ -794,28 +805,28 @@ public class TestingStructures {
         J23104.put("name", "J23104.ref");
         testConstitutivePromoter = new PrimitiveModule(FeatureRole.PROMOTER_CONSTITUTIVE, new Primitive(new ComponentType("p"), "pTEST"), ClothoAdaptor.queryFeatures(J23104, clothoObject).get(0));
         //testConstitutivePromoter = new PrimitiveModule(FeatureRole.PROMOTER_CONSTITUTIVE, new Primitive(new ComponentType("p"), "pTEST"), ClothoAdaptor.querySingleFeature(J23104, clothoObject));
-        
+
         Map pBAD = new HashMap();
         pBAD.put("schema", Feature.class.getCanonicalName());
         pBAD.put("name", "para-1.ref");
         //testControllablePromoter1 = new PrimitiveModule(FeatureRole.PROMOTER_INDUCIBLE, new Primitive(new ComponentType("p"), "pTEST"), ClothoAdaptor.queryFeatures(pBAD, clothoObject).get(0));
         testControllablePromoter1 = new PrimitiveModule(FeatureRole.PROMOTER_INDUCIBLE, new Primitive(new ComponentType("p"), "pTEST"), ClothoAdaptor.querySingleFeature(pBAD, clothoObject));
-        
+
         Map pLtetO1 = new HashMap();
         pLtetO1.put("schema", Feature.class.getCanonicalName());
         pLtetO1.put("name", "pLtetO-1.ref");
         //testControllablePromoter2 = new PrimitiveModule(FeatureRole.PROMOTER_REPRESSIBLE, new Primitive(new ComponentType("p"), "pTEST"), ClothoAdaptor.queryFeatures(pLtetO1, clothoObject).get(0));
         testControllablePromoter2 = new PrimitiveModule(FeatureRole.PROMOTER_REPRESSIBLE, new Primitive(new ComponentType("p"), "pTEST"), ClothoAdaptor.querySingleFeature(pLtetO1, clothoObject));
-        
+
         Map BCD8 = new HashMap();
         BCD8.put("schema", Feature.class.getCanonicalName());
         BCD8.put("name", "BCD8.ref");
-        testRBS = new PrimitiveModule(FeatureRole.RBS, new Primitive(new ComponentType("r"), "rTEST"), ClothoAdaptor.querySingleFeature(BCD8,clothoObject));
+        testRBS = new PrimitiveModule(FeatureRole.RBS, new Primitive(new ComponentType("r"), "rTEST"), ClothoAdaptor.querySingleFeature(BCD8, clothoObject));
 
         Map HelicalLinker = new HashMap();
         HelicalLinker.put("schema", Feature.class.getCanonicalName());
         HelicalLinker.put("name", "HelicalLinker.ref");
-        testLinker = new PrimitiveModule(FeatureRole.CDS_LINKER, new Primitive(new ComponentType("l"), "linkerTEST"), ClothoAdaptor.querySingleFeature(HelicalLinker,clothoObject));
+        testLinker = new PrimitiveModule(FeatureRole.CDS_LINKER, new Primitive(new ComponentType("l"), "linkerTEST"), ClothoAdaptor.querySingleFeature(HelicalLinker, clothoObject));
 
         Map GFPm = new HashMap();
         GFPm.put("schema", Fluorophore.class.getCanonicalName());
@@ -830,18 +841,18 @@ public class TestingStructures {
         Map B0015 = new HashMap();
         B0015.put("schema", Feature.class.getCanonicalName());
         B0015.put("name", "B0015.ref");
-        testTerminator = new PrimitiveModule(FeatureRole.TERMINATOR, new Primitive(new ComponentType("t"), "tTEST"), ClothoAdaptor.querySingleFeature(B0015,clothoObject));
+        testTerminator = new PrimitiveModule(FeatureRole.TERMINATOR, new Primitive(new ComponentType("t"), "tTEST"), ClothoAdaptor.querySingleFeature(B0015, clothoObject));
 
         Map ColE1 = new HashMap();
         ColE1.put("schema", Feature.class.getCanonicalName());
         ColE1.put("name", "ColE1.ref");
-        testVector1 = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST1"), ClothoAdaptor.querySingleFeature(ColE1,clothoObject));
-        
+        testVector1 = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST1"), ClothoAdaptor.querySingleFeature(ColE1, clothoObject));
+
         Map p15A = new HashMap();
         p15A.put("schema", Feature.class.getCanonicalName());
         p15A.put("name", "p15A.ref");
-        testVector2 = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST2"), ClothoAdaptor.querySingleFeature(p15A,clothoObject));
-        
+        testVector2 = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST2"), ClothoAdaptor.querySingleFeature(p15A, clothoObject));
+
         finalVector = testVector1;
 
         conn.closeConnection();

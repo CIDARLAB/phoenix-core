@@ -5,3 +5,5 @@ phoenix_core/target/
 */.RData
 */.Rhistory
 /phoenix-core/target/
+/phoenix-core/src/main/resources/RTest/
+phoenix-core/src/main/resources/RTest/

@@ -41,9 +41,10 @@ public class RAdaptorTest {
         String dataFilepath = resourceFilepath + "data";
 
         String cytometryFilepath = Utilities.getCytometryFilepath();
-        
+        String resultsFilepath = resourceFilepath + "results";
         cytometryFilepath += "/cytometry_analysis/master_analytics_scripts/analyze.R";
-        RAdaptor.createRunRScript(filepathR, keyfilepath, cytometryFilepath, dataFilepath,resourceFilepath,1000);
+        
+        RAdaptor.createRunRScript(filepathR, keyfilepath, cytometryFilepath, dataFilepath,resultsFilepath,1000);
         System.out.println("End of Run Script");
         RAdaptor.runR(filepathR);
     }

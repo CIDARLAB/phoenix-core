@@ -97,11 +97,12 @@ public class RAdaptor {
         System.out.println("Starting Run R");
         System.out.println("Filepath :: "+filepath);
         StringBuilder commandBuilder = null;
-        commandBuilder = new StringBuilder("R CMD BATCH " +filepath);
+        
+        //commandBuilder = new StringBuilder("R CMD BATCH " +filepath);
         //commandBuilder = new StringBuilder("Rscript "+filepath);
         //commandBuilder = new StringBuilder("R < " +filepath+ " --no-save");
+        commandBuilder = new StringBuilder(filepath);
         
-        //commandBuilder = new StringBuilder(filepath);
         String command = commandBuilder.toString();
         String resourceFilepath = Utilities.getFilepath() + "/src/main/resources/RTest/";
         Runtime runtime = Runtime.getRuntime();

@@ -101,7 +101,7 @@ public class PhoenixController {
             miniEugeneFileName = path.substring(path.lastIndexOf("\\") + 1, path.length() - 4);
         }        
         
-        List<Module> eugeneModules = EugeneAdaptor.getStructures(structuralSpecification, 1, miniEugeneFileName);
+        List<Module> eugeneModules = EugeneAdaptor.getStructures(structuralSpecification, null, miniEugeneFileName);
         
         //Check the validity of the Module's structure
         List<Module> rootModules = new ArrayList<Module>();

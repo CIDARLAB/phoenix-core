@@ -31,7 +31,7 @@ public class RAdaptorTest {
         RAdaptor.runR(filepathR);
     }
     
-    @Test
+    //@Test
     public void createRunRTest(){
         String resourceFilepath = Utilities.getFilepath() + "/src/main/resources/RTest/";
         String filepathR = resourceFilepath + "run.R";

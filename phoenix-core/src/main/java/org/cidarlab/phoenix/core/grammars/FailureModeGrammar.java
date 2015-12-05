@@ -26,6 +26,9 @@ import org.cidarlab.phoenix.core.grammars.failuremode.SuperCoilingParser;
 import org.cidarlab.phoenix.core.grammars.failuremode.TranscriptionalInterferenceBaseListener;
 import org.cidarlab.phoenix.core.grammars.failuremode.TranscriptionalInterferenceLexer;
 import org.cidarlab.phoenix.core.grammars.failuremode.TranscriptionalInterferenceParser;
+import org.cidarlab.phoenix.core.grammars.failuremode.TranscriptionalReadThroughBaseListener;
+import org.cidarlab.phoenix.core.grammars.failuremode.TranscriptionalReadThroughLexer;
+import org.cidarlab.phoenix.core.grammars.failuremode.TranscriptionalReadThroughParser;
 
 
 /**
@@ -79,6 +82,21 @@ public class FailureModeGrammar {
         System.out.println("TREE :: " + tree.toStringTree(parser));
 
         return tiListener.getTranscriptionalInterferenceCount();
+    }
+    
+    public static int getTranscriptionalReadThroughCount(String pigeonString) {
+        ANTLRInputStream input = new ANTLRInputStream(pigeonString);
+        TranscriptionalReadThroughLexer lexer = new TranscriptionalReadThroughLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        TranscriptionalReadThroughParser parser = new TranscriptionalReadThroughParser(tokens);
+        ParseTree tree = parser.root();
+        TranscriptionalReadThroughBaseListener trListener = new TranscriptionalReadThroughBaseListener();
+        ParseTreeWalker.DEFAULT.walk(trListener, tree);
+
+        System.out.println("INPUT :: " + pigeonString);
+        System.out.println("TREE :: " + tree.toStringTree(parser));
+
+        return trListener.getTranscriptionalReadThroughCount();
     }
     
     

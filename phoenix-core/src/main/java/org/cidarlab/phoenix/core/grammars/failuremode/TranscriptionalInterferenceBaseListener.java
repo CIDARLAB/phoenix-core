@@ -15,7 +15,6 @@ import org.antlr.v4.runtime.tree.TerminalNode;
  * of the available methods.
  */
 public class TranscriptionalInterferenceBaseListener implements TranscriptionalInterferenceListener {
-    
     @Getter
     @Setter
     private int transcriptionalInterferenceCount;
@@ -51,7 +50,7 @@ public class TranscriptionalInterferenceBaseListener implements TranscriptionalI
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void enterTranscriptional_interference(TranscriptionalInterferenceParser.Transcriptional_interferenceContext ctx) {
-            this.transcriptionalInterferenceCount ++;
+            this.transcriptionalInterferenceCount++;
         }
 	/**
 	 * {@inheritDoc}
@@ -64,13 +63,49 @@ public class TranscriptionalInterferenceBaseListener implements TranscriptionalI
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterWildcard(TranscriptionalInterferenceParser.WildcardContext ctx) { }
+	@Override public void enterWildcard_rbs_cds_term(TranscriptionalInterferenceParser.Wildcard_rbs_cds_termContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitWildcard(TranscriptionalInterferenceParser.WildcardContext ctx) { }
+	@Override public void exitWildcard_rbs_cds_term(TranscriptionalInterferenceParser.Wildcard_rbs_cds_termContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterWildcard_rbs_cds(TranscriptionalInterferenceParser.Wildcard_rbs_cdsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitWildcard_rbs_cds(TranscriptionalInterferenceParser.Wildcard_rbs_cdsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterWildcard_rbs_cds_ft(TranscriptionalInterferenceParser.Wildcard_rbs_cds_ftContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitWildcard_rbs_cds_ft(TranscriptionalInterferenceParser.Wildcard_rbs_cds_ftContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterWildcard_rbs_cds_rt(TranscriptionalInterferenceParser.Wildcard_rbs_cds_rtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitWildcard_rbs_cds_rt(TranscriptionalInterferenceParser.Wildcard_rbs_cds_rtContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

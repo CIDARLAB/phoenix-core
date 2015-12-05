@@ -17,11 +17,7 @@ import org.cidarlab.phoenix.core.dom.PrimitiveModule;
  */
 public class PigeonAdaptor {
     
-    public static List<String> generatePigeonCode(Module module){
-        List<String> pigeonLines = new ArrayList<String>();
-        
-        return pigeonLines;
-    }
+    
     
     public static String generatePigeonString(Module module,boolean forwardMode){
         String pigeonString = "";

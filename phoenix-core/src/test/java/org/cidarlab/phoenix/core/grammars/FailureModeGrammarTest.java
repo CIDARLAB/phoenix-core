@@ -7,6 +7,7 @@ package org.cidarlab.phoenix.core.grammars;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.cidarlab.phoenix.core.controller.Utilities;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -42,9 +43,10 @@ public class FailureModeGrammarTest {
     /**
      * Test of getForwardParseTree method, of class FailureModeGrammar.
      */
-    @Test
+    //@Test
     public void testRoadBlocking() {
         
+        Utilities.printDebugStatement("RoadBlocking");
         AtomicInteger count = new AtomicInteger();
         
         System.out.println(count.getAndIncrement());
@@ -82,6 +84,7 @@ public class FailureModeGrammarTest {
     //@Test
     public void testGetSuperCoilingTree() {
         
+        Utilities.printDebugStatement("Super Coiling");
         AtomicInteger count = new AtomicInteger();
         
         System.out.println(count.getAndIncrement());
@@ -127,9 +130,35 @@ public class FailureModeGrammarTest {
     }
     
     
+    @Test
+    public void testGetTranscriptionalReadThroughTree() {
+        
+        Utilities.printDebugStatement("Transcriptional ReadThrough");
+        AtomicInteger count = new AtomicInteger();
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getTranscriptionalReadThroughCount("p r c t p r c t");
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getTranscriptionalReadThroughCount("<t <c <r <p p r c t");
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getTranscriptionalReadThroughCount("<t <c <r p <p r c t");
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getTranscriptionalReadThroughCount("<t p r c <c <r <p t");
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getTranscriptionalReadThroughCount("p r c t <t <c <r <p");
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getTranscriptionalReadThroughCount("p <t r c t <c <r <p");
+    }
+    
     //@Test
     public void testGetTranscriptionalInterferenceTree() {
         
+        Utilities.printDebugStatement("Transcriptional Interference");
         AtomicInteger count = new AtomicInteger();
         
         System.out.println(count.getAndIncrement());
@@ -146,6 +175,9 @@ public class FailureModeGrammarTest {
         
         System.out.println(count.getAndIncrement());
         FailureModeGrammar.getTranscriptionalInterferenceCount("p r c t <t <c <r <p");
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getTranscriptionalInterferenceCount("p r c <t t <c <r <p");
         
         System.out.println(count.getAndIncrement());
         FailureModeGrammar.getTranscriptionalInterferenceCount("p <t r c t <c <r <p");

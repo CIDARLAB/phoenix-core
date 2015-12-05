@@ -1,4 +1,4 @@
-// Generated from TranscriptionalReadThrough.g4 by ANTLR 4.3
+// Generated from TranscriptionalReadThrough.g4 by ANTLR 4.5.1
 
     package org.cidarlab.phoenix.core.grammars.failuremode;
 
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class TranscriptionalReadThroughParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.3", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.5.1", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -22,22 +22,58 @@ public class TranscriptionalReadThroughParser extends Parser {
 		REVERSE_PROMOTER=1, FORWARD_PROMOTER=2, REVERSE_RBS=3, FORWARD_RBS=4, 
 		REVERSE_CDS=5, FORWARD_CDS=6, REVERSE_TERMINATOR=7, FORWARD_TERMINATOR=8, 
 		WS=9;
-	public static final String[] tokenNames = {
-		"<INVALID>", "'<p'", "'p'", "'<r'", "'r'", "REVERSE_CDS", "FORWARD_CDS", 
-		"'<t'", "'t'", "WS"
-	};
 	public static final int
 		RULE_root = 0, RULE_module = 1, RULE_transcriptional_readthrough = 2, 
-		RULE_wildcard = 3;
+		RULE_reverse_strand = 3, RULE_forward_strand = 4, RULE_wildcard = 5, RULE_wildcard_type1 = 6, 
+		RULE_wildcard_type2 = 7, RULE_wildcard_type3 = 8;
 	public static final String[] ruleNames = {
-		"root", "module", "transcriptional_readthrough", "wildcard"
+		"root", "module", "transcriptional_readthrough", "reverse_strand", "forward_strand", 
+		"wildcard", "wildcard_type1", "wildcard_type2", "wildcard_type3"
 	};
+
+	private static final String[] _LITERAL_NAMES = {
+		null, "'<p'", "'p'", "'<r'", "'r'", null, null, "'<t'", "'t'"
+	};
+	private static final String[] _SYMBOLIC_NAMES = {
+		null, "REVERSE_PROMOTER", "FORWARD_PROMOTER", "REVERSE_RBS", "FORWARD_RBS", 
+		"REVERSE_CDS", "FORWARD_CDS", "REVERSE_TERMINATOR", "FORWARD_TERMINATOR", 
+		"WS"
+	};
+	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
+
+	/**
+	 * @deprecated Use {@link #VOCABULARY} instead.
+	 */
+	@Deprecated
+	public static final String[] tokenNames;
+	static {
+		tokenNames = new String[_SYMBOLIC_NAMES.length];
+		for (int i = 0; i < tokenNames.length; i++) {
+			tokenNames[i] = VOCABULARY.getLiteralName(i);
+			if (tokenNames[i] == null) {
+				tokenNames[i] = VOCABULARY.getSymbolicName(i);
+			}
+
+			if (tokenNames[i] == null) {
+				tokenNames[i] = "<INVALID>";
+			}
+		}
+	}
+
+	@Override
+	@Deprecated
+	public String[] getTokenNames() {
+		return tokenNames;
+	}
+
+	@Override
+
+	public Vocabulary getVocabulary() {
+		return VOCABULARY;
+	}
 
 	@Override
 	public String getGrammarFileName() { return "TranscriptionalReadThrough.g4"; }
-
-	@Override
-	public String[] getTokenNames() { return tokenNames; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -76,7 +112,8 @@ public class TranscriptionalReadThroughParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(8); module();
+			setState(18);
+			module();
 			}
 		}
 		catch (RecognitionException re) {
@@ -91,25 +128,29 @@ public class TranscriptionalReadThroughParser extends Parser {
 	}
 
 	public static class ModuleContext extends ParserRuleContext {
-		public WildcardContext wildcard(int i) {
-			return getRuleContext(WildcardContext.class,i);
-		}
-		public List<TerminalNode> REVERSE_PROMOTER() { return getTokens(TranscriptionalReadThroughParser.REVERSE_PROMOTER); }
-		public List<TerminalNode> FORWARD_PROMOTER() { return getTokens(TranscriptionalReadThroughParser.FORWARD_PROMOTER); }
-		public TerminalNode REVERSE_PROMOTER(int i) {
-			return getToken(TranscriptionalReadThroughParser.REVERSE_PROMOTER, i);
-		}
-		public TerminalNode FORWARD_PROMOTER(int i) {
-			return getToken(TranscriptionalReadThroughParser.FORWARD_PROMOTER, i);
-		}
-		public List<WildcardContext> wildcard() {
-			return getRuleContexts(WildcardContext.class);
-		}
 		public List<Transcriptional_readthroughContext> transcriptional_readthrough() {
 			return getRuleContexts(Transcriptional_readthroughContext.class);
 		}
 		public Transcriptional_readthroughContext transcriptional_readthrough(int i) {
 			return getRuleContext(Transcriptional_readthroughContext.class,i);
+		}
+		public List<WildcardContext> wildcard() {
+			return getRuleContexts(WildcardContext.class);
+		}
+		public WildcardContext wildcard(int i) {
+			return getRuleContext(WildcardContext.class,i);
+		}
+		public List<Reverse_strandContext> reverse_strand() {
+			return getRuleContexts(Reverse_strandContext.class);
+		}
+		public Reverse_strandContext reverse_strand(int i) {
+			return getRuleContext(Reverse_strandContext.class,i);
+		}
+		public List<Forward_strandContext> forward_strand() {
+			return getRuleContexts(Forward_strandContext.class);
+		}
+		public Forward_strandContext forward_strand(int i) {
+			return getRuleContext(Forward_strandContext.class,i);
 		}
 		public ModuleContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -131,212 +172,18 @@ public class TranscriptionalReadThroughParser extends Parser {
 		int _la;
 		try {
 			int _alt;
-			setState(87);
-			switch ( getInterpreter().adaptivePredict(_input,16,_ctx) ) {
+			setState(102);
+			switch ( getInterpreter().adaptivePredict(_input,17,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(20); 
+				setState(30); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				do {
 					{
 					{
-					{
-					setState(11); 
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-					do {
-						{
-						{
-						setState(10); match(FORWARD_PROMOTER);
-						}
-						}
-						setState(13); 
-						_errHandler.sync(this);
-						_la = _input.LA(1);
-					} while ( _la==FORWARD_PROMOTER );
-					setState(16); 
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-					do {
-						{
-						{
-						setState(15); wildcard();
-						}
-						}
-						setState(18); 
-						_errHandler.sync(this);
-						_la = _input.LA(1);
-					} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0) );
-					}
-					}
-					}
-					setState(22); 
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-				} while ( _la==FORWARD_PROMOTER );
-				}
-				break;
-
-			case 2:
-				enterOuterAlt(_localctx, 2);
-				{
-				setState(34); 
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				do {
-					{
-					{
-					{
-					setState(25); 
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-					do {
-						{
-						{
-						setState(24); wildcard();
-						}
-						}
-						setState(27); 
-						_errHandler.sync(this);
-						_la = _input.LA(1);
-					} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0) );
-					setState(30); 
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-					do {
-						{
-						{
-						setState(29); match(REVERSE_PROMOTER);
-						}
-						}
-						setState(32); 
-						_errHandler.sync(this);
-						_la = _input.LA(1);
-					} while ( _la==REVERSE_PROMOTER );
-					}
-					}
-					}
-					setState(36); 
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0) );
-				}
-				break;
-
-			case 3:
-				enterOuterAlt(_localctx, 3);
-				{
-				setState(48); 
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				do {
-					{
-					{
-					{
-					setState(39); 
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-					do {
-						{
-						{
-						setState(38); wildcard();
-						}
-						}
-						setState(41); 
-						_errHandler.sync(this);
-						_la = _input.LA(1);
-					} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0) );
-					setState(44); 
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-					do {
-						{
-						{
-						setState(43); match(REVERSE_PROMOTER);
-						}
-						}
-						setState(46); 
-						_errHandler.sync(this);
-						_la = _input.LA(1);
-					} while ( _la==REVERSE_PROMOTER );
-					}
-					}
-					}
-					setState(50); 
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0) );
-				setState(62); 
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				do {
-					{
-					{
-					{
-					setState(53); 
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-					do {
-						{
-						{
-						setState(52); match(FORWARD_PROMOTER);
-						}
-						}
-						setState(55); 
-						_errHandler.sync(this);
-						_la = _input.LA(1);
-					} while ( _la==FORWARD_PROMOTER );
-					setState(58); 
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-					do {
-						{
-						{
-						setState(57); wildcard();
-						}
-						}
-						setState(60); 
-						_errHandler.sync(this);
-						_la = _input.LA(1);
-					} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0) );
-					}
-					}
-					}
-					setState(64); 
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-				} while ( _la==FORWARD_PROMOTER );
-				}
-				break;
-
-			case 4:
-				enterOuterAlt(_localctx, 4);
-				{
-				{
-				setState(69);
-				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,12,_ctx);
-				while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
-					if ( _alt==1 ) {
-						{
-						{
-						setState(66); wildcard();
-						}
-						} 
-					}
-					setState(71);
-					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,12,_ctx);
-				}
-				setState(83); 
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				do {
-					{
-					{
-					setState(73); 
+					setState(21); 
 					_errHandler.sync(this);
 					_alt = 1;
 					do {
@@ -344,38 +191,304 @@ public class TranscriptionalReadThroughParser extends Parser {
 						case 1:
 							{
 							{
-							setState(72); transcriptional_readthrough();
+							setState(20);
+							transcriptional_readthrough();
 							}
 							}
 							break;
 						default:
 							throw new NoViableAltException(this);
 						}
-						setState(75); 
+						setState(23); 
+						_errHandler.sync(this);
+						_alt = getInterpreter().adaptivePredict(_input,0,_ctx);
+					} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+					setState(26); 
+					_errHandler.sync(this);
+					_alt = 1;
+					do {
+						switch (_alt) {
+						case 1:
+							{
+							{
+							setState(25);
+							wildcard();
+							}
+							}
+							break;
+						default:
+							throw new NoViableAltException(this);
+						}
+						setState(28); 
+						_errHandler.sync(this);
+						_alt = getInterpreter().adaptivePredict(_input,1,_ctx);
+					} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+					}
+					}
+					setState(32); 
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+				} while ( _la==REVERSE_PROMOTER || _la==FORWARD_PROMOTER );
+				}
+				break;
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(44); 
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				do {
+					{
+					{
+					setState(35); 
+					_errHandler.sync(this);
+					_alt = 1;
+					do {
+						switch (_alt) {
+						case 1:
+							{
+							{
+							setState(34);
+							wildcard();
+							}
+							}
+							break;
+						default:
+							throw new NoViableAltException(this);
+						}
+						setState(37); 
+						_errHandler.sync(this);
+						_alt = getInterpreter().adaptivePredict(_input,3,_ctx);
+					} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+					setState(40); 
+					_errHandler.sync(this);
+					_alt = 1;
+					do {
+						switch (_alt) {
+						case 1:
+							{
+							{
+							setState(39);
+							transcriptional_readthrough();
+							}
+							}
+							break;
+						default:
+							throw new NoViableAltException(this);
+						}
+						setState(42); 
+						_errHandler.sync(this);
+						_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
+					} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+					}
+					}
+					setState(46); 
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_PROMOTER) | (1L << FORWARD_PROMOTER) | (1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0) );
+				}
+				break;
+			case 3:
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(63); 
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				do {
+					{
+					{
+					setState(49); 
+					_errHandler.sync(this);
+					_alt = 1;
+					do {
+						switch (_alt) {
+						case 1:
+							{
+							{
+							setState(48);
+							wildcard();
+							}
+							}
+							break;
+						default:
+							throw new NoViableAltException(this);
+						}
+						setState(51); 
+						_errHandler.sync(this);
+						_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
+					} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+					setState(54); 
+					_errHandler.sync(this);
+					_alt = 1;
+					do {
+						switch (_alt) {
+						case 1:
+							{
+							{
+							setState(53);
+							transcriptional_readthrough();
+							}
+							}
+							break;
+						default:
+							throw new NoViableAltException(this);
+						}
+						setState(56); 
+						_errHandler.sync(this);
+						_alt = getInterpreter().adaptivePredict(_input,7,_ctx);
+					} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+					setState(59); 
+					_errHandler.sync(this);
+					_alt = 1;
+					do {
+						switch (_alt) {
+						case 1:
+							{
+							{
+							setState(58);
+							wildcard();
+							}
+							}
+							break;
+						default:
+							throw new NoViableAltException(this);
+						}
+						setState(61); 
+						_errHandler.sync(this);
+						_alt = getInterpreter().adaptivePredict(_input,8,_ctx);
+					} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+					}
+					}
+					setState(65); 
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_PROMOTER) | (1L << FORWARD_PROMOTER) | (1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0) );
+				}
+				break;
+			case 4:
+				enterOuterAlt(_localctx, 4);
+				{
+				setState(78); 
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				do {
+					{
+					{
+					{
+					setState(70);
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+					while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_PROMOTER) | (1L << REVERSE_RBS) | (1L << REVERSE_CDS) | (1L << REVERSE_TERMINATOR))) != 0)) {
+						{
+						{
+						setState(67);
+						reverse_strand();
+						}
+						}
+						setState(72);
+						_errHandler.sync(this);
+						_la = _input.LA(1);
+					}
+					setState(74); 
+					_errHandler.sync(this);
+					_alt = 1;
+					do {
+						switch (_alt) {
+						case 1:
+							{
+							{
+							setState(73);
+							forward_strand();
+							}
+							}
+							break;
+						default:
+							throw new NoViableAltException(this);
+						}
+						setState(76); 
+						_errHandler.sync(this);
+						_alt = getInterpreter().adaptivePredict(_input,11,_ctx);
+					} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+					}
+					}
+					}
+					setState(80); 
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_PROMOTER) | (1L << FORWARD_PROMOTER) | (1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0) );
+				}
+				break;
+			case 5:
+				enterOuterAlt(_localctx, 5);
+				{
+				setState(93); 
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				do {
+					{
+					{
+					{
+					setState(83); 
+					_errHandler.sync(this);
+					_alt = 1;
+					do {
+						switch (_alt) {
+						case 1:
+							{
+							{
+							setState(82);
+							reverse_strand();
+							}
+							}
+							break;
+						default:
+							throw new NoViableAltException(this);
+						}
+						setState(85); 
 						_errHandler.sync(this);
 						_alt = getInterpreter().adaptivePredict(_input,13,_ctx);
 					} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-					setState(80);
-					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,14,_ctx);
-					while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
-						if ( _alt==1 ) {
-							{
-							{
-							setState(77); wildcard();
-							}
-							} 
-						}
-						setState(82);
-						_errHandler.sync(this);
-						_alt = getInterpreter().adaptivePredict(_input,14,_ctx);
-					}
-					}
-					}
-					setState(85); 
+					setState(90);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
-				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_PROMOTER) | (1L << FORWARD_PROMOTER) | (1L << FORWARD_TERMINATOR))) != 0) );
+					while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << FORWARD_PROMOTER) | (1L << FORWARD_RBS) | (1L << FORWARD_CDS) | (1L << FORWARD_TERMINATOR))) != 0)) {
+						{
+						{
+						setState(87);
+						forward_strand();
+						}
+						}
+						setState(92);
+						_errHandler.sync(this);
+						_la = _input.LA(1);
+					}
+					}
+					}
+					}
+					setState(95); 
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_PROMOTER) | (1L << REVERSE_RBS) | (1L << REVERSE_CDS) | (1L << REVERSE_TERMINATOR))) != 0) );
+				}
+				break;
+			case 6:
+				enterOuterAlt(_localctx, 6);
+				{
+				{
+				setState(98); 
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				do {
+					{
+					{
+					setState(97);
+					wildcard();
+					}
+					}
+					setState(100); 
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_PROMOTER) | (1L << FORWARD_PROMOTER) | (1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0) );
 				}
 				}
 				break;
@@ -393,27 +506,19 @@ public class TranscriptionalReadThroughParser extends Parser {
 	}
 
 	public static class Transcriptional_readthroughContext extends ParserRuleContext {
-		public List<TerminalNode> FORWARD_TERMINATOR() { return getTokens(TranscriptionalReadThroughParser.FORWARD_TERMINATOR); }
-		public TerminalNode REVERSE_TERMINATOR(int i) {
-			return getToken(TranscriptionalReadThroughParser.REVERSE_TERMINATOR, i);
-		}
-		public WildcardContext wildcard(int i) {
-			return getRuleContext(WildcardContext.class,i);
-		}
-		public List<TerminalNode> REVERSE_PROMOTER() { return getTokens(TranscriptionalReadThroughParser.REVERSE_PROMOTER); }
-		public List<TerminalNode> REVERSE_TERMINATOR() { return getTokens(TranscriptionalReadThroughParser.REVERSE_TERMINATOR); }
 		public List<TerminalNode> FORWARD_PROMOTER() { return getTokens(TranscriptionalReadThroughParser.FORWARD_PROMOTER); }
-		public TerminalNode REVERSE_PROMOTER(int i) {
-			return getToken(TranscriptionalReadThroughParser.REVERSE_PROMOTER, i);
-		}
-		public TerminalNode FORWARD_TERMINATOR(int i) {
-			return getToken(TranscriptionalReadThroughParser.FORWARD_TERMINATOR, i);
-		}
 		public TerminalNode FORWARD_PROMOTER(int i) {
 			return getToken(TranscriptionalReadThroughParser.FORWARD_PROMOTER, i);
 		}
-		public List<WildcardContext> wildcard() {
-			return getRuleContexts(WildcardContext.class);
+		public List<Wildcard_type1Context> wildcard_type1() {
+			return getRuleContexts(Wildcard_type1Context.class);
+		}
+		public Wildcard_type1Context wildcard_type1(int i) {
+			return getRuleContext(Wildcard_type1Context.class,i);
+		}
+		public List<TerminalNode> REVERSE_PROMOTER() { return getTokens(TranscriptionalReadThroughParser.REVERSE_PROMOTER); }
+		public TerminalNode REVERSE_PROMOTER(int i) {
+			return getToken(TranscriptionalReadThroughParser.REVERSE_PROMOTER, i);
 		}
 		public Transcriptional_readthroughContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -435,12 +540,41 @@ public class TranscriptionalReadThroughParser extends Parser {
 		int _la;
 		try {
 			int _alt;
-			setState(169);
-			switch ( getInterpreter().adaptivePredict(_input,33,_ctx) ) {
-			case 1:
+			setState(134);
+			switch (_input.LA(1)) {
+			case FORWARD_PROMOTER:
 				enterOuterAlt(_localctx, 1);
 				{
+				{
 				setState(105); 
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				do {
+					{
+					{
+					setState(104);
+					match(FORWARD_PROMOTER);
+					}
+					}
+					setState(107); 
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+				} while ( _la==FORWARD_PROMOTER );
+				setState(110); 
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				do {
+					{
+					{
+					setState(109);
+					wildcard_type1();
+					}
+					}
+					setState(112); 
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0) );
+				setState(115); 
 				_errHandler.sync(this);
 				_alt = 1;
 				do {
@@ -448,149 +582,54 @@ public class TranscriptionalReadThroughParser extends Parser {
 					case 1:
 						{
 						{
-						setState(90); 
-						_errHandler.sync(this);
-						_alt = 1;
-						do {
-							switch (_alt) {
-							case 1:
-								{
-								{
-								setState(89); match(FORWARD_PROMOTER);
-								}
-								}
-								break;
-							default:
-								throw new NoViableAltException(this);
-							}
-							setState(92); 
-							_errHandler.sync(this);
-							_alt = getInterpreter().adaptivePredict(_input,17,_ctx);
-						} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-						setState(97);
-						_errHandler.sync(this);
-						_la = _input.LA(1);
-						while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0)) {
-							{
-							{
-							setState(94); wildcard();
-							}
-							}
-							setState(99);
-							_errHandler.sync(this);
-							_la = _input.LA(1);
-						}
-						setState(101); 
-						_errHandler.sync(this);
-						_alt = 1;
-						do {
-							switch (_alt) {
-							case 1:
-								{
-								{
-								setState(100); match(FORWARD_PROMOTER);
-								}
-								}
-								break;
-							default:
-								throw new NoViableAltException(this);
-							}
-							setState(103); 
-							_errHandler.sync(this);
-							_alt = getInterpreter().adaptivePredict(_input,19,_ctx);
-						} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+						setState(114);
+						match(FORWARD_PROMOTER);
 						}
 						}
 						break;
 					default:
 						throw new NoViableAltException(this);
 					}
-					setState(107); 
+					setState(117); 
 					_errHandler.sync(this);
 					_alt = getInterpreter().adaptivePredict(_input,20,_ctx);
 				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 				}
+				}
 				break;
-
-			case 2:
+			case REVERSE_PROMOTER:
 				enterOuterAlt(_localctx, 2);
 				{
+				{
+				setState(120); 
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				do {
+					{
+					{
+					setState(119);
+					match(REVERSE_PROMOTER);
+					}
+					}
+					setState(122); 
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+				} while ( _la==REVERSE_PROMOTER );
 				setState(125); 
 				_errHandler.sync(this);
-				_alt = 1;
+				_la = _input.LA(1);
 				do {
-					switch (_alt) {
-					case 1:
-						{
-						{
-						setState(110); 
-						_errHandler.sync(this);
-						_alt = 1;
-						do {
-							switch (_alt) {
-							case 1:
-								{
-								{
-								setState(109); match(REVERSE_PROMOTER);
-								}
-								}
-								break;
-							default:
-								throw new NoViableAltException(this);
-							}
-							setState(112); 
-							_errHandler.sync(this);
-							_alt = getInterpreter().adaptivePredict(_input,21,_ctx);
-						} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-						setState(117);
-						_errHandler.sync(this);
-						_la = _input.LA(1);
-						while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0)) {
-							{
-							{
-							setState(114); wildcard();
-							}
-							}
-							setState(119);
-							_errHandler.sync(this);
-							_la = _input.LA(1);
-						}
-						setState(121); 
-						_errHandler.sync(this);
-						_alt = 1;
-						do {
-							switch (_alt) {
-							case 1:
-								{
-								{
-								setState(120); match(REVERSE_PROMOTER);
-								}
-								}
-								break;
-							default:
-								throw new NoViableAltException(this);
-							}
-							setState(123); 
-							_errHandler.sync(this);
-							_alt = getInterpreter().adaptivePredict(_input,23,_ctx);
-						} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-						}
-						}
-						break;
-					default:
-						throw new NoViableAltException(this);
+					{
+					{
+					setState(124);
+					wildcard_type1();
+					}
 					}
 					setState(127); 
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,24,_ctx);
-				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-				}
-				break;
-
-			case 3:
-				enterOuterAlt(_localctx, 3);
-				{
-				setState(145); 
+					_la = _input.LA(1);
+				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0) );
+				setState(130); 
 				_errHandler.sync(this);
 				_alt = 1;
 				do {
@@ -598,140 +637,177 @@ public class TranscriptionalReadThroughParser extends Parser {
 					case 1:
 						{
 						{
-						setState(130); 
-						_errHandler.sync(this);
-						_la = _input.LA(1);
-						do {
-							{
-							{
-							setState(129); match(FORWARD_PROMOTER);
-							}
-							}
-							setState(132); 
-							_errHandler.sync(this);
-							_la = _input.LA(1);
-						} while ( _la==FORWARD_PROMOTER );
-						setState(137);
-						_errHandler.sync(this);
-						_alt = getInterpreter().adaptivePredict(_input,26,_ctx);
-						while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
-							if ( _alt==1 ) {
-								{
-								{
-								setState(134); wildcard();
-								}
-								} 
-							}
-							setState(139);
-							_errHandler.sync(this);
-							_alt = getInterpreter().adaptivePredict(_input,26,_ctx);
-						}
-						setState(141); 
-						_errHandler.sync(this);
-						_alt = 1;
-						do {
-							switch (_alt) {
-							case 1:
-								{
-								{
-								setState(140); match(REVERSE_TERMINATOR);
-								}
-								}
-								break;
-							default:
-								throw new NoViableAltException(this);
-							}
-							setState(143); 
-							_errHandler.sync(this);
-							_alt = getInterpreter().adaptivePredict(_input,27,_ctx);
-						} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+						setState(129);
+						match(REVERSE_PROMOTER);
 						}
 						}
 						break;
 					default:
 						throw new NoViableAltException(this);
 					}
-					setState(147); 
+					setState(132); 
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,28,_ctx);
+					_alt = getInterpreter().adaptivePredict(_input,23,_ctx);
 				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 				}
+				}
 				break;
+			default:
+				throw new NoViableAltException(this);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
 
-			case 4:
-				enterOuterAlt(_localctx, 4);
-				{
-				setState(165); 
-				_errHandler.sync(this);
-				_alt = 1;
-				do {
-					switch (_alt) {
-					case 1:
-						{
-						{
-						setState(150); 
-						_errHandler.sync(this);
-						_alt = 1;
-						do {
-							switch (_alt) {
-							case 1:
-								{
-								{
-								setState(149); match(FORWARD_TERMINATOR);
-								}
-								}
-								break;
-							default:
-								throw new NoViableAltException(this);
-							}
-							setState(152); 
-							_errHandler.sync(this);
-							_alt = getInterpreter().adaptivePredict(_input,29,_ctx);
-						} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-						setState(157);
-						_errHandler.sync(this);
-						_la = _input.LA(1);
-						while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0)) {
-							{
-							{
-							setState(154); wildcard();
-							}
-							}
-							setState(159);
-							_errHandler.sync(this);
-							_la = _input.LA(1);
-						}
-						setState(161); 
-						_errHandler.sync(this);
-						_alt = 1;
-						do {
-							switch (_alt) {
-							case 1:
-								{
-								{
-								setState(160); match(REVERSE_PROMOTER);
-								}
-								}
-								break;
-							default:
-								throw new NoViableAltException(this);
-							}
-							setState(163); 
-							_errHandler.sync(this);
-							_alt = getInterpreter().adaptivePredict(_input,31,_ctx);
-						} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-						}
-						}
-						break;
-					default:
-						throw new NoViableAltException(this);
+	public static class Reverse_strandContext extends ParserRuleContext {
+		public List<TerminalNode> REVERSE_PROMOTER() { return getTokens(TranscriptionalReadThroughParser.REVERSE_PROMOTER); }
+		public TerminalNode REVERSE_PROMOTER(int i) {
+			return getToken(TranscriptionalReadThroughParser.REVERSE_PROMOTER, i);
+		}
+		public List<TerminalNode> REVERSE_RBS() { return getTokens(TranscriptionalReadThroughParser.REVERSE_RBS); }
+		public TerminalNode REVERSE_RBS(int i) {
+			return getToken(TranscriptionalReadThroughParser.REVERSE_RBS, i);
+		}
+		public List<TerminalNode> REVERSE_CDS() { return getTokens(TranscriptionalReadThroughParser.REVERSE_CDS); }
+		public TerminalNode REVERSE_CDS(int i) {
+			return getToken(TranscriptionalReadThroughParser.REVERSE_CDS, i);
+		}
+		public List<TerminalNode> REVERSE_TERMINATOR() { return getTokens(TranscriptionalReadThroughParser.REVERSE_TERMINATOR); }
+		public TerminalNode REVERSE_TERMINATOR(int i) {
+			return getToken(TranscriptionalReadThroughParser.REVERSE_TERMINATOR, i);
+		}
+		public Reverse_strandContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_reverse_strand; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TranscriptionalReadThroughListener ) ((TranscriptionalReadThroughListener)listener).enterReverse_strand(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TranscriptionalReadThroughListener ) ((TranscriptionalReadThroughListener)listener).exitReverse_strand(this);
+		}
+	}
+
+	public final Reverse_strandContext reverse_strand() throws RecognitionException {
+		Reverse_strandContext _localctx = new Reverse_strandContext(_ctx, getState());
+		enterRule(_localctx, 6, RULE_reverse_strand);
+		int _la;
+		try {
+			int _alt;
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(137); 
+			_errHandler.sync(this);
+			_alt = 1;
+			do {
+				switch (_alt) {
+				case 1:
+					{
+					{
+					setState(136);
+					_la = _input.LA(1);
+					if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_PROMOTER) | (1L << REVERSE_RBS) | (1L << REVERSE_CDS) | (1L << REVERSE_TERMINATOR))) != 0)) ) {
+					_errHandler.recoverInline(this);
+					} else {
+						consume();
 					}
-					setState(167); 
-					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,32,_ctx);
-				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+					}
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
 				}
-				break;
+				setState(139); 
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,25,_ctx);
+			} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class Forward_strandContext extends ParserRuleContext {
+		public List<TerminalNode> FORWARD_PROMOTER() { return getTokens(TranscriptionalReadThroughParser.FORWARD_PROMOTER); }
+		public TerminalNode FORWARD_PROMOTER(int i) {
+			return getToken(TranscriptionalReadThroughParser.FORWARD_PROMOTER, i);
+		}
+		public List<TerminalNode> FORWARD_RBS() { return getTokens(TranscriptionalReadThroughParser.FORWARD_RBS); }
+		public TerminalNode FORWARD_RBS(int i) {
+			return getToken(TranscriptionalReadThroughParser.FORWARD_RBS, i);
+		}
+		public List<TerminalNode> FORWARD_CDS() { return getTokens(TranscriptionalReadThroughParser.FORWARD_CDS); }
+		public TerminalNode FORWARD_CDS(int i) {
+			return getToken(TranscriptionalReadThroughParser.FORWARD_CDS, i);
+		}
+		public List<TerminalNode> FORWARD_TERMINATOR() { return getTokens(TranscriptionalReadThroughParser.FORWARD_TERMINATOR); }
+		public TerminalNode FORWARD_TERMINATOR(int i) {
+			return getToken(TranscriptionalReadThroughParser.FORWARD_TERMINATOR, i);
+		}
+		public Forward_strandContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_forward_strand; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TranscriptionalReadThroughListener ) ((TranscriptionalReadThroughListener)listener).enterForward_strand(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TranscriptionalReadThroughListener ) ((TranscriptionalReadThroughListener)listener).exitForward_strand(this);
+		}
+	}
+
+	public final Forward_strandContext forward_strand() throws RecognitionException {
+		Forward_strandContext _localctx = new Forward_strandContext(_ctx, getState());
+		enterRule(_localctx, 8, RULE_forward_strand);
+		int _la;
+		try {
+			int _alt;
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(142); 
+			_errHandler.sync(this);
+			_alt = 1;
+			do {
+				switch (_alt) {
+				case 1:
+					{
+					{
+					setState(141);
+					_la = _input.LA(1);
+					if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << FORWARD_PROMOTER) | (1L << FORWARD_RBS) | (1L << FORWARD_CDS) | (1L << FORWARD_TERMINATOR))) != 0)) ) {
+					_errHandler.recoverInline(this);
+					} else {
+						consume();
+					}
+					}
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
+				}
+				setState(144); 
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,26,_ctx);
+			} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 			}
 		}
 		catch (RecognitionException re) {
@@ -746,30 +822,38 @@ public class TranscriptionalReadThroughParser extends Parser {
 	}
 
 	public static class WildcardContext extends ParserRuleContext {
-		public List<TerminalNode> FORWARD_TERMINATOR() { return getTokens(TranscriptionalReadThroughParser.FORWARD_TERMINATOR); }
+		public List<TerminalNode> REVERSE_PROMOTER() { return getTokens(TranscriptionalReadThroughParser.REVERSE_PROMOTER); }
+		public TerminalNode REVERSE_PROMOTER(int i) {
+			return getToken(TranscriptionalReadThroughParser.REVERSE_PROMOTER, i);
+		}
 		public List<TerminalNode> REVERSE_RBS() { return getTokens(TranscriptionalReadThroughParser.REVERSE_RBS); }
-		public TerminalNode REVERSE_CDS(int i) {
-			return getToken(TranscriptionalReadThroughParser.REVERSE_CDS, i);
-		}
-		public List<TerminalNode> REVERSE_CDS() { return getTokens(TranscriptionalReadThroughParser.REVERSE_CDS); }
-		public TerminalNode REVERSE_TERMINATOR(int i) {
-			return getToken(TranscriptionalReadThroughParser.REVERSE_TERMINATOR, i);
-		}
-		public List<TerminalNode> FORWARD_CDS() { return getTokens(TranscriptionalReadThroughParser.FORWARD_CDS); }
 		public TerminalNode REVERSE_RBS(int i) {
 			return getToken(TranscriptionalReadThroughParser.REVERSE_RBS, i);
 		}
+		public List<TerminalNode> REVERSE_CDS() { return getTokens(TranscriptionalReadThroughParser.REVERSE_CDS); }
+		public TerminalNode REVERSE_CDS(int i) {
+			return getToken(TranscriptionalReadThroughParser.REVERSE_CDS, i);
+		}
 		public List<TerminalNode> REVERSE_TERMINATOR() { return getTokens(TranscriptionalReadThroughParser.REVERSE_TERMINATOR); }
+		public TerminalNode REVERSE_TERMINATOR(int i) {
+			return getToken(TranscriptionalReadThroughParser.REVERSE_TERMINATOR, i);
+		}
+		public List<TerminalNode> FORWARD_PROMOTER() { return getTokens(TranscriptionalReadThroughParser.FORWARD_PROMOTER); }
+		public TerminalNode FORWARD_PROMOTER(int i) {
+			return getToken(TranscriptionalReadThroughParser.FORWARD_PROMOTER, i);
+		}
+		public List<TerminalNode> FORWARD_RBS() { return getTokens(TranscriptionalReadThroughParser.FORWARD_RBS); }
 		public TerminalNode FORWARD_RBS(int i) {
 			return getToken(TranscriptionalReadThroughParser.FORWARD_RBS, i);
 		}
+		public List<TerminalNode> FORWARD_CDS() { return getTokens(TranscriptionalReadThroughParser.FORWARD_CDS); }
 		public TerminalNode FORWARD_CDS(int i) {
 			return getToken(TranscriptionalReadThroughParser.FORWARD_CDS, i);
 		}
+		public List<TerminalNode> FORWARD_TERMINATOR() { return getTokens(TranscriptionalReadThroughParser.FORWARD_TERMINATOR); }
 		public TerminalNode FORWARD_TERMINATOR(int i) {
 			return getToken(TranscriptionalReadThroughParser.FORWARD_TERMINATOR, i);
 		}
-		public List<TerminalNode> FORWARD_RBS() { return getTokens(TranscriptionalReadThroughParser.FORWARD_RBS); }
 		public WildcardContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -786,13 +870,13 @@ public class TranscriptionalReadThroughParser extends Parser {
 
 	public final WildcardContext wildcard() throws RecognitionException {
 		WildcardContext _localctx = new WildcardContext(_ctx, getState());
-		enterRule(_localctx, 6, RULE_wildcard);
+		enterRule(_localctx, 10, RULE_wildcard);
 		int _la;
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(172); 
+			setState(147); 
 			_errHandler.sync(this);
 			_alt = 1;
 			do {
@@ -800,21 +884,22 @@ public class TranscriptionalReadThroughParser extends Parser {
 				case 1:
 					{
 					{
-					setState(171);
+					setState(146);
 					_la = _input.LA(1);
-					if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0)) ) {
+					if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_PROMOTER) | (1L << FORWARD_PROMOTER) | (1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0)) ) {
 					_errHandler.recoverInline(this);
+					} else {
+						consume();
 					}
-					consume();
 					}
 					}
 					break;
 				default:
 					throw new NoViableAltException(this);
 				}
-				setState(174); 
+				setState(149); 
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,34,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,27,_ctx);
 			} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 			}
 		}
@@ -829,65 +914,301 @@ public class TranscriptionalReadThroughParser extends Parser {
 		return _localctx;
 	}
 
+	public static class Wildcard_type1Context extends ParserRuleContext {
+		public List<TerminalNode> FORWARD_RBS() { return getTokens(TranscriptionalReadThroughParser.FORWARD_RBS); }
+		public TerminalNode FORWARD_RBS(int i) {
+			return getToken(TranscriptionalReadThroughParser.FORWARD_RBS, i);
+		}
+		public List<TerminalNode> REVERSE_RBS() { return getTokens(TranscriptionalReadThroughParser.REVERSE_RBS); }
+		public TerminalNode REVERSE_RBS(int i) {
+			return getToken(TranscriptionalReadThroughParser.REVERSE_RBS, i);
+		}
+		public List<TerminalNode> FORWARD_CDS() { return getTokens(TranscriptionalReadThroughParser.FORWARD_CDS); }
+		public TerminalNode FORWARD_CDS(int i) {
+			return getToken(TranscriptionalReadThroughParser.FORWARD_CDS, i);
+		}
+		public List<TerminalNode> REVERSE_CDS() { return getTokens(TranscriptionalReadThroughParser.REVERSE_CDS); }
+		public TerminalNode REVERSE_CDS(int i) {
+			return getToken(TranscriptionalReadThroughParser.REVERSE_CDS, i);
+		}
+		public List<TerminalNode> FORWARD_TERMINATOR() { return getTokens(TranscriptionalReadThroughParser.FORWARD_TERMINATOR); }
+		public TerminalNode FORWARD_TERMINATOR(int i) {
+			return getToken(TranscriptionalReadThroughParser.FORWARD_TERMINATOR, i);
+		}
+		public List<TerminalNode> REVERSE_TERMINATOR() { return getTokens(TranscriptionalReadThroughParser.REVERSE_TERMINATOR); }
+		public TerminalNode REVERSE_TERMINATOR(int i) {
+			return getToken(TranscriptionalReadThroughParser.REVERSE_TERMINATOR, i);
+		}
+		public Wildcard_type1Context(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_wildcard_type1; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TranscriptionalReadThroughListener ) ((TranscriptionalReadThroughListener)listener).enterWildcard_type1(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TranscriptionalReadThroughListener ) ((TranscriptionalReadThroughListener)listener).exitWildcard_type1(this);
+		}
+	}
+
+	public final Wildcard_type1Context wildcard_type1() throws RecognitionException {
+		Wildcard_type1Context _localctx = new Wildcard_type1Context(_ctx, getState());
+		enterRule(_localctx, 12, RULE_wildcard_type1);
+		int _la;
+		try {
+			int _alt;
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(152); 
+			_errHandler.sync(this);
+			_alt = 1;
+			do {
+				switch (_alt) {
+				case 1:
+					{
+					{
+					setState(151);
+					_la = _input.LA(1);
+					if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR) | (1L << FORWARD_TERMINATOR))) != 0)) ) {
+					_errHandler.recoverInline(this);
+					} else {
+						consume();
+					}
+					}
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
+				}
+				setState(154); 
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,28,_ctx);
+			} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class Wildcard_type2Context extends ParserRuleContext {
+		public List<TerminalNode> FORWARD_RBS() { return getTokens(TranscriptionalReadThroughParser.FORWARD_RBS); }
+		public TerminalNode FORWARD_RBS(int i) {
+			return getToken(TranscriptionalReadThroughParser.FORWARD_RBS, i);
+		}
+		public List<TerminalNode> REVERSE_RBS() { return getTokens(TranscriptionalReadThroughParser.REVERSE_RBS); }
+		public TerminalNode REVERSE_RBS(int i) {
+			return getToken(TranscriptionalReadThroughParser.REVERSE_RBS, i);
+		}
+		public List<TerminalNode> FORWARD_CDS() { return getTokens(TranscriptionalReadThroughParser.FORWARD_CDS); }
+		public TerminalNode FORWARD_CDS(int i) {
+			return getToken(TranscriptionalReadThroughParser.FORWARD_CDS, i);
+		}
+		public List<TerminalNode> REVERSE_CDS() { return getTokens(TranscriptionalReadThroughParser.REVERSE_CDS); }
+		public TerminalNode REVERSE_CDS(int i) {
+			return getToken(TranscriptionalReadThroughParser.REVERSE_CDS, i);
+		}
+		public List<TerminalNode> FORWARD_TERMINATOR() { return getTokens(TranscriptionalReadThroughParser.FORWARD_TERMINATOR); }
+		public TerminalNode FORWARD_TERMINATOR(int i) {
+			return getToken(TranscriptionalReadThroughParser.FORWARD_TERMINATOR, i);
+		}
+		public List<TerminalNode> REVERSE_PROMOTER() { return getTokens(TranscriptionalReadThroughParser.REVERSE_PROMOTER); }
+		public TerminalNode REVERSE_PROMOTER(int i) {
+			return getToken(TranscriptionalReadThroughParser.REVERSE_PROMOTER, i);
+		}
+		public Wildcard_type2Context(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_wildcard_type2; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TranscriptionalReadThroughListener ) ((TranscriptionalReadThroughListener)listener).enterWildcard_type2(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TranscriptionalReadThroughListener ) ((TranscriptionalReadThroughListener)listener).exitWildcard_type2(this);
+		}
+	}
+
+	public final Wildcard_type2Context wildcard_type2() throws RecognitionException {
+		Wildcard_type2Context _localctx = new Wildcard_type2Context(_ctx, getState());
+		enterRule(_localctx, 14, RULE_wildcard_type2);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(157); 
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			do {
+				{
+				{
+				setState(156);
+				_la = _input.LA(1);
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_PROMOTER) | (1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << FORWARD_TERMINATOR))) != 0)) ) {
+				_errHandler.recoverInline(this);
+				} else {
+					consume();
+				}
+				}
+				}
+				setState(159); 
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << REVERSE_PROMOTER) | (1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << FORWARD_TERMINATOR))) != 0) );
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class Wildcard_type3Context extends ParserRuleContext {
+		public List<TerminalNode> FORWARD_RBS() { return getTokens(TranscriptionalReadThroughParser.FORWARD_RBS); }
+		public TerminalNode FORWARD_RBS(int i) {
+			return getToken(TranscriptionalReadThroughParser.FORWARD_RBS, i);
+		}
+		public List<TerminalNode> REVERSE_RBS() { return getTokens(TranscriptionalReadThroughParser.REVERSE_RBS); }
+		public TerminalNode REVERSE_RBS(int i) {
+			return getToken(TranscriptionalReadThroughParser.REVERSE_RBS, i);
+		}
+		public List<TerminalNode> FORWARD_CDS() { return getTokens(TranscriptionalReadThroughParser.FORWARD_CDS); }
+		public TerminalNode FORWARD_CDS(int i) {
+			return getToken(TranscriptionalReadThroughParser.FORWARD_CDS, i);
+		}
+		public List<TerminalNode> REVERSE_CDS() { return getTokens(TranscriptionalReadThroughParser.REVERSE_CDS); }
+		public TerminalNode REVERSE_CDS(int i) {
+			return getToken(TranscriptionalReadThroughParser.REVERSE_CDS, i);
+		}
+		public List<TerminalNode> REVERSE_TERMINATOR() { return getTokens(TranscriptionalReadThroughParser.REVERSE_TERMINATOR); }
+		public TerminalNode REVERSE_TERMINATOR(int i) {
+			return getToken(TranscriptionalReadThroughParser.REVERSE_TERMINATOR, i);
+		}
+		public List<TerminalNode> FORWARD_PROMOTER() { return getTokens(TranscriptionalReadThroughParser.FORWARD_PROMOTER); }
+		public TerminalNode FORWARD_PROMOTER(int i) {
+			return getToken(TranscriptionalReadThroughParser.FORWARD_PROMOTER, i);
+		}
+		public Wildcard_type3Context(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_wildcard_type3; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TranscriptionalReadThroughListener ) ((TranscriptionalReadThroughListener)listener).enterWildcard_type3(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TranscriptionalReadThroughListener ) ((TranscriptionalReadThroughListener)listener).exitWildcard_type3(this);
+		}
+	}
+
+	public final Wildcard_type3Context wildcard_type3() throws RecognitionException {
+		Wildcard_type3Context _localctx = new Wildcard_type3Context(_ctx, getState());
+		enterRule(_localctx, 16, RULE_wildcard_type3);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(162); 
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			do {
+				{
+				{
+				setState(161);
+				_la = _input.LA(1);
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << FORWARD_PROMOTER) | (1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR))) != 0)) ) {
+				_errHandler.recoverInline(this);
+				} else {
+					consume();
+				}
+				}
+				}
+				setState(164); 
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << FORWARD_PROMOTER) | (1L << REVERSE_RBS) | (1L << FORWARD_RBS) | (1L << REVERSE_CDS) | (1L << FORWARD_CDS) | (1L << REVERSE_TERMINATOR))) != 0) );
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\13\u00b3\4\2\t\2"+
-		"\4\3\t\3\4\4\t\4\4\5\t\5\3\2\3\2\3\3\6\3\16\n\3\r\3\16\3\17\3\3\6\3\23"+
-		"\n\3\r\3\16\3\24\6\3\27\n\3\r\3\16\3\30\3\3\6\3\34\n\3\r\3\16\3\35\3\3"+
-		"\6\3!\n\3\r\3\16\3\"\6\3%\n\3\r\3\16\3&\3\3\6\3*\n\3\r\3\16\3+\3\3\6\3"+
-		"/\n\3\r\3\16\3\60\6\3\63\n\3\r\3\16\3\64\3\3\6\38\n\3\r\3\16\39\3\3\6"+
-		"\3=\n\3\r\3\16\3>\6\3A\n\3\r\3\16\3B\3\3\7\3F\n\3\f\3\16\3I\13\3\3\3\6"+
-		"\3L\n\3\r\3\16\3M\3\3\7\3Q\n\3\f\3\16\3T\13\3\6\3V\n\3\r\3\16\3W\5\3Z"+
-		"\n\3\3\4\6\4]\n\4\r\4\16\4^\3\4\7\4b\n\4\f\4\16\4e\13\4\3\4\6\4h\n\4\r"+
-		"\4\16\4i\6\4l\n\4\r\4\16\4m\3\4\6\4q\n\4\r\4\16\4r\3\4\7\4v\n\4\f\4\16"+
-		"\4y\13\4\3\4\6\4|\n\4\r\4\16\4}\6\4\u0080\n\4\r\4\16\4\u0081\3\4\6\4\u0085"+
-		"\n\4\r\4\16\4\u0086\3\4\7\4\u008a\n\4\f\4\16\4\u008d\13\4\3\4\6\4\u0090"+
-		"\n\4\r\4\16\4\u0091\6\4\u0094\n\4\r\4\16\4\u0095\3\4\6\4\u0099\n\4\r\4"+
-		"\16\4\u009a\3\4\7\4\u009e\n\4\f\4\16\4\u00a1\13\4\3\4\6\4\u00a4\n\4\r"+
-		"\4\16\4\u00a5\6\4\u00a8\n\4\r\4\16\4\u00a9\5\4\u00ac\n\4\3\5\6\5\u00af"+
-		"\n\5\r\5\16\5\u00b0\3\5\2\2\6\2\4\6\b\2\3\3\2\5\n\u00d5\2\n\3\2\2\2\4"+
-		"Y\3\2\2\2\6\u00ab\3\2\2\2\b\u00ae\3\2\2\2\n\13\5\4\3\2\13\3\3\2\2\2\f"+
-		"\16\7\4\2\2\r\f\3\2\2\2\16\17\3\2\2\2\17\r\3\2\2\2\17\20\3\2\2\2\20\22"+
-		"\3\2\2\2\21\23\5\b\5\2\22\21\3\2\2\2\23\24\3\2\2\2\24\22\3\2\2\2\24\25"+
-		"\3\2\2\2\25\27\3\2\2\2\26\r\3\2\2\2\27\30\3\2\2\2\30\26\3\2\2\2\30\31"+
-		"\3\2\2\2\31Z\3\2\2\2\32\34\5\b\5\2\33\32\3\2\2\2\34\35\3\2\2\2\35\33\3"+
-		"\2\2\2\35\36\3\2\2\2\36 \3\2\2\2\37!\7\3\2\2 \37\3\2\2\2!\"\3\2\2\2\""+
-		" \3\2\2\2\"#\3\2\2\2#%\3\2\2\2$\33\3\2\2\2%&\3\2\2\2&$\3\2\2\2&\'\3\2"+
-		"\2\2\'Z\3\2\2\2(*\5\b\5\2)(\3\2\2\2*+\3\2\2\2+)\3\2\2\2+,\3\2\2\2,.\3"+
-		"\2\2\2-/\7\3\2\2.-\3\2\2\2/\60\3\2\2\2\60.\3\2\2\2\60\61\3\2\2\2\61\63"+
-		"\3\2\2\2\62)\3\2\2\2\63\64\3\2\2\2\64\62\3\2\2\2\64\65\3\2\2\2\65@\3\2"+
-		"\2\2\668\7\4\2\2\67\66\3\2\2\289\3\2\2\29\67\3\2\2\29:\3\2\2\2:<\3\2\2"+
-		"\2;=\5\b\5\2<;\3\2\2\2=>\3\2\2\2><\3\2\2\2>?\3\2\2\2?A\3\2\2\2@\67\3\2"+
-		"\2\2AB\3\2\2\2B@\3\2\2\2BC\3\2\2\2CZ\3\2\2\2DF\5\b\5\2ED\3\2\2\2FI\3\2"+
-		"\2\2GE\3\2\2\2GH\3\2\2\2HU\3\2\2\2IG\3\2\2\2JL\5\6\4\2KJ\3\2\2\2LM\3\2"+
-		"\2\2MK\3\2\2\2MN\3\2\2\2NR\3\2\2\2OQ\5\b\5\2PO\3\2\2\2QT\3\2\2\2RP\3\2"+
-		"\2\2RS\3\2\2\2SV\3\2\2\2TR\3\2\2\2UK\3\2\2\2VW\3\2\2\2WU\3\2\2\2WX\3\2"+
-		"\2\2XZ\3\2\2\2Y\26\3\2\2\2Y$\3\2\2\2Y\62\3\2\2\2YG\3\2\2\2Z\5\3\2\2\2"+
-		"[]\7\4\2\2\\[\3\2\2\2]^\3\2\2\2^\\\3\2\2\2^_\3\2\2\2_c\3\2\2\2`b\5\b\5"+
-		"\2a`\3\2\2\2be\3\2\2\2ca\3\2\2\2cd\3\2\2\2dg\3\2\2\2ec\3\2\2\2fh\7\4\2"+
-		"\2gf\3\2\2\2hi\3\2\2\2ig\3\2\2\2ij\3\2\2\2jl\3\2\2\2k\\\3\2\2\2lm\3\2"+
-		"\2\2mk\3\2\2\2mn\3\2\2\2n\u00ac\3\2\2\2oq\7\3\2\2po\3\2\2\2qr\3\2\2\2"+
-		"rp\3\2\2\2rs\3\2\2\2sw\3\2\2\2tv\5\b\5\2ut\3\2\2\2vy\3\2\2\2wu\3\2\2\2"+
-		"wx\3\2\2\2x{\3\2\2\2yw\3\2\2\2z|\7\3\2\2{z\3\2\2\2|}\3\2\2\2}{\3\2\2\2"+
-		"}~\3\2\2\2~\u0080\3\2\2\2\177p\3\2\2\2\u0080\u0081\3\2\2\2\u0081\177\3"+
-		"\2\2\2\u0081\u0082\3\2\2\2\u0082\u00ac\3\2\2\2\u0083\u0085\7\4\2\2\u0084"+
-		"\u0083\3\2\2\2\u0085\u0086\3\2\2\2\u0086\u0084\3\2\2\2\u0086\u0087\3\2"+
-		"\2\2\u0087\u008b\3\2\2\2\u0088\u008a\5\b\5\2\u0089\u0088\3\2\2\2\u008a"+
-		"\u008d\3\2\2\2\u008b\u0089\3\2\2\2\u008b\u008c\3\2\2\2\u008c\u008f\3\2"+
-		"\2\2\u008d\u008b\3\2\2\2\u008e\u0090\7\t\2\2\u008f\u008e\3\2\2\2\u0090"+
-		"\u0091\3\2\2\2\u0091\u008f\3\2\2\2\u0091\u0092\3\2\2\2\u0092\u0094\3\2"+
-		"\2\2\u0093\u0084\3\2\2\2\u0094\u0095\3\2\2\2\u0095\u0093\3\2\2\2\u0095"+
-		"\u0096\3\2\2\2\u0096\u00ac\3\2\2\2\u0097\u0099\7\n\2\2\u0098\u0097\3\2"+
-		"\2\2\u0099\u009a\3\2\2\2\u009a\u0098\3\2\2\2\u009a\u009b\3\2\2\2\u009b"+
-		"\u009f\3\2\2\2\u009c\u009e\5\b\5\2\u009d\u009c\3\2\2\2\u009e\u00a1\3\2"+
-		"\2\2\u009f\u009d\3\2\2\2\u009f\u00a0\3\2\2\2\u00a0\u00a3\3\2\2\2\u00a1"+
-		"\u009f\3\2\2\2\u00a2\u00a4\7\3\2\2\u00a3\u00a2\3\2\2\2\u00a4\u00a5\3\2"+
-		"\2\2\u00a5\u00a3\3\2\2\2\u00a5\u00a6\3\2\2\2\u00a6\u00a8\3\2\2\2\u00a7"+
-		"\u0098\3\2\2\2\u00a8\u00a9\3\2\2\2\u00a9\u00a7\3\2\2\2\u00a9\u00aa\3\2"+
-		"\2\2\u00aa\u00ac\3\2\2\2\u00abk\3\2\2\2\u00ab\177\3\2\2\2\u00ab\u0093"+
-		"\3\2\2\2\u00ab\u00a7\3\2\2\2\u00ac\7\3\2\2\2\u00ad\u00af\t\2\2\2\u00ae"+
-		"\u00ad\3\2\2\2\u00af\u00b0\3\2\2\2\u00b0\u00ae\3\2\2\2\u00b0\u00b1\3\2"+
-		"\2\2\u00b1\t\3\2\2\2%\17\24\30\35\"&+\60\649>BGMRWY^cimrw}\u0081\u0086"+
-		"\u008b\u0091\u0095\u009a\u009f\u00a5\u00a9\u00ab\u00b0";
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\13\u00a9\4\2\t\2"+
+		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\3\2\3"+
+		"\2\3\3\6\3\30\n\3\r\3\16\3\31\3\3\6\3\35\n\3\r\3\16\3\36\6\3!\n\3\r\3"+
+		"\16\3\"\3\3\6\3&\n\3\r\3\16\3\'\3\3\6\3+\n\3\r\3\16\3,\6\3/\n\3\r\3\16"+
+		"\3\60\3\3\6\3\64\n\3\r\3\16\3\65\3\3\6\39\n\3\r\3\16\3:\3\3\6\3>\n\3\r"+
+		"\3\16\3?\6\3B\n\3\r\3\16\3C\3\3\7\3G\n\3\f\3\16\3J\13\3\3\3\6\3M\n\3\r"+
+		"\3\16\3N\6\3Q\n\3\r\3\16\3R\3\3\6\3V\n\3\r\3\16\3W\3\3\7\3[\n\3\f\3\16"+
+		"\3^\13\3\6\3`\n\3\r\3\16\3a\3\3\6\3e\n\3\r\3\16\3f\5\3i\n\3\3\4\6\4l\n"+
+		"\4\r\4\16\4m\3\4\6\4q\n\4\r\4\16\4r\3\4\6\4v\n\4\r\4\16\4w\3\4\6\4{\n"+
+		"\4\r\4\16\4|\3\4\6\4\u0080\n\4\r\4\16\4\u0081\3\4\6\4\u0085\n\4\r\4\16"+
+		"\4\u0086\5\4\u0089\n\4\3\5\6\5\u008c\n\5\r\5\16\5\u008d\3\6\6\6\u0091"+
+		"\n\6\r\6\16\6\u0092\3\7\6\7\u0096\n\7\r\7\16\7\u0097\3\b\6\b\u009b\n\b"+
+		"\r\b\16\b\u009c\3\t\6\t\u00a0\n\t\r\t\16\t\u00a1\3\n\6\n\u00a5\n\n\r\n"+
+		"\16\n\u00a6\3\n\2\2\13\2\4\6\b\n\f\16\20\22\2\b\6\2\3\3\5\5\7\7\t\t\6"+
+		"\2\4\4\6\6\b\b\n\n\3\2\3\n\3\2\5\n\5\2\3\3\5\b\n\n\3\2\4\t\u00c2\2\24"+
+		"\3\2\2\2\4h\3\2\2\2\6\u0088\3\2\2\2\b\u008b\3\2\2\2\n\u0090\3\2\2\2\f"+
+		"\u0095\3\2\2\2\16\u009a\3\2\2\2\20\u009f\3\2\2\2\22\u00a4\3\2\2\2\24\25"+
+		"\5\4\3\2\25\3\3\2\2\2\26\30\5\6\4\2\27\26\3\2\2\2\30\31\3\2\2\2\31\27"+
+		"\3\2\2\2\31\32\3\2\2\2\32\34\3\2\2\2\33\35\5\f\7\2\34\33\3\2\2\2\35\36"+
+		"\3\2\2\2\36\34\3\2\2\2\36\37\3\2\2\2\37!\3\2\2\2 \27\3\2\2\2!\"\3\2\2"+
+		"\2\" \3\2\2\2\"#\3\2\2\2#i\3\2\2\2$&\5\f\7\2%$\3\2\2\2&\'\3\2\2\2\'%\3"+
+		"\2\2\2\'(\3\2\2\2(*\3\2\2\2)+\5\6\4\2*)\3\2\2\2+,\3\2\2\2,*\3\2\2\2,-"+
+		"\3\2\2\2-/\3\2\2\2.%\3\2\2\2/\60\3\2\2\2\60.\3\2\2\2\60\61\3\2\2\2\61"+
+		"i\3\2\2\2\62\64\5\f\7\2\63\62\3\2\2\2\64\65\3\2\2\2\65\63\3\2\2\2\65\66"+
+		"\3\2\2\2\668\3\2\2\2\679\5\6\4\28\67\3\2\2\29:\3\2\2\2:8\3\2\2\2:;\3\2"+
+		"\2\2;=\3\2\2\2<>\5\f\7\2=<\3\2\2\2>?\3\2\2\2?=\3\2\2\2?@\3\2\2\2@B\3\2"+
+		"\2\2A\63\3\2\2\2BC\3\2\2\2CA\3\2\2\2CD\3\2\2\2Di\3\2\2\2EG\5\b\5\2FE\3"+
+		"\2\2\2GJ\3\2\2\2HF\3\2\2\2HI\3\2\2\2IL\3\2\2\2JH\3\2\2\2KM\5\n\6\2LK\3"+
+		"\2\2\2MN\3\2\2\2NL\3\2\2\2NO\3\2\2\2OQ\3\2\2\2PH\3\2\2\2QR\3\2\2\2RP\3"+
+		"\2\2\2RS\3\2\2\2Si\3\2\2\2TV\5\b\5\2UT\3\2\2\2VW\3\2\2\2WU\3\2\2\2WX\3"+
+		"\2\2\2X\\\3\2\2\2Y[\5\n\6\2ZY\3\2\2\2[^\3\2\2\2\\Z\3\2\2\2\\]\3\2\2\2"+
+		"]`\3\2\2\2^\\\3\2\2\2_U\3\2\2\2`a\3\2\2\2a_\3\2\2\2ab\3\2\2\2bi\3\2\2"+
+		"\2ce\5\f\7\2dc\3\2\2\2ef\3\2\2\2fd\3\2\2\2fg\3\2\2\2gi\3\2\2\2h \3\2\2"+
+		"\2h.\3\2\2\2hA\3\2\2\2hP\3\2\2\2h_\3\2\2\2hd\3\2\2\2i\5\3\2\2\2jl\7\4"+
+		"\2\2kj\3\2\2\2lm\3\2\2\2mk\3\2\2\2mn\3\2\2\2np\3\2\2\2oq\5\16\b\2po\3"+
+		"\2\2\2qr\3\2\2\2rp\3\2\2\2rs\3\2\2\2su\3\2\2\2tv\7\4\2\2ut\3\2\2\2vw\3"+
+		"\2\2\2wu\3\2\2\2wx\3\2\2\2x\u0089\3\2\2\2y{\7\3\2\2zy\3\2\2\2{|\3\2\2"+
+		"\2|z\3\2\2\2|}\3\2\2\2}\177\3\2\2\2~\u0080\5\16\b\2\177~\3\2\2\2\u0080"+
+		"\u0081\3\2\2\2\u0081\177\3\2\2\2\u0081\u0082\3\2\2\2\u0082\u0084\3\2\2"+
+		"\2\u0083\u0085\7\3\2\2\u0084\u0083\3\2\2\2\u0085\u0086\3\2\2\2\u0086\u0084"+
+		"\3\2\2\2\u0086\u0087\3\2\2\2\u0087\u0089\3\2\2\2\u0088k\3\2\2\2\u0088"+
+		"z\3\2\2\2\u0089\7\3\2\2\2\u008a\u008c\t\2\2\2\u008b\u008a\3\2\2\2\u008c"+
+		"\u008d\3\2\2\2\u008d\u008b\3\2\2\2\u008d\u008e\3\2\2\2\u008e\t\3\2\2\2"+
+		"\u008f\u0091\t\3\2\2\u0090\u008f\3\2\2\2\u0091\u0092\3\2\2\2\u0092\u0090"+
+		"\3\2\2\2\u0092\u0093\3\2\2\2\u0093\13\3\2\2\2\u0094\u0096\t\4\2\2\u0095"+
+		"\u0094\3\2\2\2\u0096\u0097\3\2\2\2\u0097\u0095\3\2\2\2\u0097\u0098\3\2"+
+		"\2\2\u0098\r\3\2\2\2\u0099\u009b\t\5\2\2\u009a\u0099\3\2\2\2\u009b\u009c"+
+		"\3\2\2\2\u009c\u009a\3\2\2\2\u009c\u009d\3\2\2\2\u009d\17\3\2\2\2\u009e"+
+		"\u00a0\t\6\2\2\u009f\u009e\3\2\2\2\u00a0\u00a1\3\2\2\2\u00a1\u009f\3\2"+
+		"\2\2\u00a1\u00a2\3\2\2\2\u00a2\21\3\2\2\2\u00a3\u00a5\t\7\2\2\u00a4\u00a3"+
+		"\3\2\2\2\u00a5\u00a6\3\2\2\2\u00a6\u00a4\3\2\2\2\u00a6\u00a7\3\2\2\2\u00a7"+
+		"\23\3\2\2\2!\31\36\"\',\60\65:?CHNRW\\afhmrw|\u0081\u0086\u0088\u008d"+
+		"\u0092\u0097\u009c\u00a1\u00a6";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

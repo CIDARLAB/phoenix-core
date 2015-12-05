@@ -40,13 +40,43 @@ public interface TranscriptionalInterferenceListener extends ParseTreeListener {
 	 */
 	void exitTranscriptional_interference(TranscriptionalInterferenceParser.Transcriptional_interferenceContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TranscriptionalInterferenceParser#wildcard}.
+	 * Enter a parse tree produced by {@link TranscriptionalInterferenceParser#wildcard_rbs_cds_term}.
 	 * @param ctx the parse tree
 	 */
-	void enterWildcard(TranscriptionalInterferenceParser.WildcardContext ctx);
+	void enterWildcard_rbs_cds_term(TranscriptionalInterferenceParser.Wildcard_rbs_cds_termContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TranscriptionalInterferenceParser#wildcard}.
+	 * Exit a parse tree produced by {@link TranscriptionalInterferenceParser#wildcard_rbs_cds_term}.
 	 * @param ctx the parse tree
 	 */
-	void exitWildcard(TranscriptionalInterferenceParser.WildcardContext ctx);
+	void exitWildcard_rbs_cds_term(TranscriptionalInterferenceParser.Wildcard_rbs_cds_termContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TranscriptionalInterferenceParser#wildcard_rbs_cds}.
+	 * @param ctx the parse tree
+	 */
+	void enterWildcard_rbs_cds(TranscriptionalInterferenceParser.Wildcard_rbs_cdsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TranscriptionalInterferenceParser#wildcard_rbs_cds}.
+	 * @param ctx the parse tree
+	 */
+	void exitWildcard_rbs_cds(TranscriptionalInterferenceParser.Wildcard_rbs_cdsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TranscriptionalInterferenceParser#wildcard_rbs_cds_ft}.
+	 * @param ctx the parse tree
+	 */
+	void enterWildcard_rbs_cds_ft(TranscriptionalInterferenceParser.Wildcard_rbs_cds_ftContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TranscriptionalInterferenceParser#wildcard_rbs_cds_ft}.
+	 * @param ctx the parse tree
+	 */
+	void exitWildcard_rbs_cds_ft(TranscriptionalInterferenceParser.Wildcard_rbs_cds_ftContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TranscriptionalInterferenceParser#wildcard_rbs_cds_rt}.
+	 * @param ctx the parse tree
+	 */
+	void enterWildcard_rbs_cds_rt(TranscriptionalInterferenceParser.Wildcard_rbs_cds_rtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TranscriptionalInterferenceParser#wildcard_rbs_cds_rt}.
+	 * @param ctx the parse tree
+	 */
+	void exitWildcard_rbs_cds_rt(TranscriptionalInterferenceParser.Wildcard_rbs_cds_rtContext ctx);
 }

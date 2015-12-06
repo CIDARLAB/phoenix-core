@@ -128,6 +128,12 @@ public class FailureModeGrammar {
         if(getTranscriptionalInterferenceCount(featureString)>0){
             module.getFailureModes().add(FailureMode.TRANSCRIPTIONAL_INTERFERENCE);
         }
+        if(getTranscriptionalReadThroughCount(featureString)>0){
+            module.getFailureModes().add(FailureMode.TRANSCRIPTIONAL_READ_THROUGH);
+        }
+        if(getReverseStrandTerminatorsCount(featureString)>0){
+            module.getFailureModes().add(FailureMode.REVERSE_STRAND_TERMINATORS);
+        }
     }
     
     

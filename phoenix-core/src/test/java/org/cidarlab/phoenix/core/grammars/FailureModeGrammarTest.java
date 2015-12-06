@@ -130,7 +130,7 @@ public class FailureModeGrammarTest {
     }
     
     
-    @Test
+    //@Test
     public void testGetTranscriptionalReadThroughTree() {
         
         Utilities.printDebugStatement("Transcriptional ReadThrough");
@@ -183,4 +183,49 @@ public class FailureModeGrammarTest {
         FailureModeGrammar.getTranscriptionalInterferenceCount("p <t r c t <c <r <p");
     }
 
+    
+     @Test
+    public void testReverseStrandTerminatorsTree() {
+        
+        Utilities.printDebugStatement("Transcriptional Interference");
+        AtomicInteger count = new AtomicInteger();
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getReverseStrandTerminatorsCount("<t <c <r p <p r c t");
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getReverseStrandTerminatorsCount("<t <c <r p r c <p t");
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getReverseStrandTerminatorsCount("<t <c <r <p <t <c <r <p");
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getReverseStrandTerminatorsCount("<t <c <r <p p r c t");
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getReverseStrandTerminatorsCount("<t p <c <r r c <p t");
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getReverseStrandTerminatorsCount("<t p <c <r <p r c t");
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getReverseStrandTerminatorsCount("<t p r c <c <r <p t");
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getReverseStrandTerminatorsCount("<t p r c t <c <r <p");
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getReverseStrandTerminatorsCount("p r c t p r c t");
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getReverseStrandTerminatorsCount("p r c t <t <c <r <p");
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getReverseStrandTerminatorsCount("p r c <t <c <r <p t");
+        
+        System.out.println(count.getAndIncrement());
+        FailureModeGrammar.getReverseStrandTerminatorsCount("p r c <t t <c <r <p");
+        
+    }
+    
 }

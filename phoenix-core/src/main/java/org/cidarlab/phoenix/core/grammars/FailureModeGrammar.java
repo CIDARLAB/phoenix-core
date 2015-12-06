@@ -16,6 +16,9 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.cidarlab.phoenix.core.adaptors.PigeonAdaptor;
 import org.cidarlab.phoenix.core.dom.FailureMode;
 import org.cidarlab.phoenix.core.dom.Module;
+import org.cidarlab.phoenix.core.grammars.failuremode.ReverseStrandTerminatorsBaseListener;
+import org.cidarlab.phoenix.core.grammars.failuremode.ReverseStrandTerminatorsLexer;
+import org.cidarlab.phoenix.core.grammars.failuremode.ReverseStrandTerminatorsParser;
 
 import org.cidarlab.phoenix.core.grammars.failuremode.RoadBlockingBaseListener;
 import org.cidarlab.phoenix.core.grammars.failuremode.RoadBlockingLexer;
@@ -99,7 +102,20 @@ public class FailureModeGrammar {
         return trListener.getTranscriptionalReadThroughCount();
     }
     
-    
+    public static int getReverseStrandTerminatorsCount(String pigeonString) {
+        ANTLRInputStream input = new ANTLRInputStream(pigeonString);
+        ReverseStrandTerminatorsLexer lexer = new ReverseStrandTerminatorsLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        ReverseStrandTerminatorsParser parser = new ReverseStrandTerminatorsParser(tokens);
+        ParseTree tree = parser.root();
+        ReverseStrandTerminatorsBaseListener trListener = new ReverseStrandTerminatorsBaseListener();
+        ParseTreeWalker.DEFAULT.walk(trListener, tree);
+
+        System.out.println("INPUT :: " + pigeonString);
+        System.out.println("TREE :: " + tree.toStringTree(parser));
+        
+        return trListener.getReverseStrandTerminatorCount();
+    }
     
     public static void assignFailureModes(Module module){
         String featureString = PigeonAdaptor.generatePigeonString(module, true);

@@ -23,7 +23,7 @@ import org.cidarlab.phoenix.core.controller.Utilities;
 public class RAdaptor {
     
     
-    public static void walk(String path) throws IOException{
+    public static void walk(String path, String resultsRoot) throws IOException{
         File root = new File( path );
         File[] list = root.listFiles();
 
@@ -31,18 +31,23 @@ public class RAdaptor {
 
         for ( File f : list ) {
             if ( f.isDirectory() ) {
-                walk( f.getAbsolutePath() );
+                walk(f.getAbsolutePath(),resultsRoot);
                 //System.out.println( "Dir:" + f.getAbsoluteFile() );
             }
             else {
                 if(f.getName().equals("timeSeriesPlotPoints.csv")){
-                    System.out.println( "File:" + f.getAbsoluteFile() );
+                    String pieces[] = filepathPieces(f.getAbsolutePath(),resultsRoot);
+                    for (String piece : pieces) {
+                        System.out.println(piece);
+                    }
+                    //String relFilepath = f.getAbsolutePath().substring(f.getAbsolutePath().lastIndexOf(resultsRoot) + resultsRoot.length());
+                    //System.out.println( "File:" + relFilepath);
                 }
                 else if(f.getName().equals("mediaTitrationPlotPoints.csv")){
-                    System.out.println( "File:" + f.getAbsoluteFile() );
+                    //System.out.println( "File:" + f.getAbsoluteFile() );
                 }
                 else if(f.getName().equals("regulationPlotPoints.csv")){
-                    System.out.println( "File:" + f.getAbsoluteFile() );
+                    //System.out.println( "File:" + f.getAbsoluteFile() );
                 }
                 
                 
@@ -50,25 +55,12 @@ public class RAdaptor {
         }
     }
     
-    /*public static String findTimeSeriesPlotPointsCSV(String directoryPath) throws IOException{
-        File node = new File(directoryPath);
-        String filePath = "";
-        File[] fileList = node.listFiles();
-        
-        for(int i=0;i<fileList.length;i++){
-            //System.out.println("FLiFTSPP :: " + fileList[i].isDirectory()+ " :: " + fileList[i].getName());
-            if(fileList[i].getName().equals("timeSeriesPlotPoints.csv")){
-                //System.out.println("Found it :: " + fileList[i].getCanonicalPath());
-                return fileList[i].getCanonicalPath();
-            }
-            else{
-                if(fileList[i].isDirectory()){
-                    return findTimeSeriesPlotPointsCSV(fileList[i].getAbsolutePath());
-                }
-            }           
-        }
-        return "";
-    }*/
+    public static String[] filepathPieces(String filepath, String rootFilepath){
+        String relativeFilepath = filepath.substring(filepath.lastIndexOf(rootFilepath) + rootFilepath.length());
+        return relativeFilepath.split("/");
+    }
+    
+    
     
     public static void createRunRScript(String runRFilepath, String keyFilepath, String AnalyzeRFilepath, String dataFilepath, String wd, int minEvents){
         

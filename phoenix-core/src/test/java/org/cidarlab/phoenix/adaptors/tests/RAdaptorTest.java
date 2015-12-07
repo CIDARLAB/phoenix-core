@@ -19,10 +19,10 @@ public class RAdaptorTest {
     @Test
     public void getAllDirectories() throws IOException{
         String resourceFilepath = Utilities.getFilepath() + "/src/main/resources/RTest/";
-        String directory = resourceFilepath + "results";
+        String directory = resourceFilepath + "results/";
         
         //String blank = "";
-        RAdaptor.walk(directory);
+        RAdaptor.walk(directory,directory);
     }
     
     //@Test

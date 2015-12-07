@@ -7,6 +7,8 @@ package org.cidarlab.phoenix.core.adaptors;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import org.sbml.jsbml.ASTNode;
@@ -34,7 +36,7 @@ import org.sbml.jsbml.text.parser.ParseException;
  */
 public class COPASIAdaptor {
 	
-//	private static void createTestModels() {
+//	private static void testAdaptor() {
 //		SBMLDocument degradationDoc = createDegradationModel("GFP");
 //		
 //		SBMLDocument expressionDoc = createExpressionModel("GFP");
@@ -59,17 +61,38 @@ public class COPASIAdaptor {
 //		toggleFeedbacks.put("LacI", "TetR");
 //		addFeedbackToModel(toggleDoc.getModel(), toggleFeedbacks);
 //		
-//		SBMLDocument inverterDoc1 = createRepressionModel("LacI", "TetR");
-//		SBMLDocument inverterDoc2 = createRepressionModel("TetR", "cI");
-//		SBMLDocument inverterDoc3 = createRepressionModel("cI", "LacI");
-//		SBMLDocument doubleInverterDoc = composeExpressionModels(inverterDoc1.getModel(), inverterDoc2.getModel());
-//		SBMLDocument repressilatorDoc = composeExpressionModels(doubleInverterDoc.getModel(), inverterDoc3.getModel());
+//		List<Model> inverterMods = new LinkedList<Model>();
+//		inverterMods.add(createRepressionModel("LacI", "TetR").getModel());
+//		inverterMods.add(createRepressionModel("TetR", "cI").getModel());
+//		inverterMods.add(createRepressionModel("cI", "LacI").getModel());
+//		SBMLDocument repressilatorDoc = composeExpressionModels(inverterMods);
 //		addFeedbackToModel(repressilatorDoc.getModel());
 //	}
 	
 	/*
      * Methods for SBML composition
      */  
+	
+	private static SBMLDocument composeExpressionModels(List<Model> mods) {
+		List<HashMap<String, String>> connections = new LinkedList<HashMap<String, String>>();
+		for (int i = 0; i < mods.size() - 1; i++) {
+			connections.add(new HashMap<String, String>());
+		}
+		return composeExpressionModels(mods, connections);
+	}
+	
+	private static SBMLDocument composeExpressionModels(List<Model> mods, List<HashMap<String, String>> connections) {
+		SBMLDocument composedDoc;
+		if (mods.size() > 1 && mods.size() - 1 == connections.size()) {
+			composedDoc = composeExpressionModels(mods.get(0), mods.get(1), connections.get(0));
+			for (int i = 2; i < mods.size(); i++) {
+				composeExpressionModels(composedDoc.getModel(), mods.get(i), connections.get(i - 1));
+			}
+			return composedDoc;
+		} else {
+			return null;
+		}
+	}
 	
 	private static SBMLDocument composeExpressionModels(Model mod1, Model mod2) {
 		return composeExpressionModels(mod1, mod2, new HashMap<String, String>());

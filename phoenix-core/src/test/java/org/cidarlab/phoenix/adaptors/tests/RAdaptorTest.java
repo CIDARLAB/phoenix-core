@@ -16,11 +16,13 @@ import org.junit.Test;
  */
 public class RAdaptorTest {
     
-    //@Test
+    @Test
     public void getAllDirectories() throws IOException{
-        String directory = "/home/prash/cidar/phoenixData/data/degradation/Degradation_102215";
+        String resourceFilepath = Utilities.getFilepath() + "/src/main/resources/RTest/";
+        String directory = resourceFilepath + "results";
+        
         //String blank = "";
-        RAdaptor.getAllData(directory);
+        RAdaptor.walk(directory);
     }
     
     //@Test

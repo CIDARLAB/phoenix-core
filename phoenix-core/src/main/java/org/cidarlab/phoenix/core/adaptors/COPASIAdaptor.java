@@ -17,6 +17,7 @@ import org.sbml.jsbml.KineticLaw;
 import org.sbml.jsbml.LocalParameter;
 import org.sbml.jsbml.Model;
 import org.sbml.jsbml.ModifierSpeciesReference;
+import org.sbml.jsbml.NamedSBase;
 import org.sbml.jsbml.Reaction;
 import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.SBMLException;
@@ -36,146 +37,160 @@ import org.sbml.jsbml.text.parser.ParseException;
  */
 public class COPASIAdaptor {
 	
-//	private static void testAdaptor() {
-//		SBMLDocument degradationDoc = createDegradationModel("GFP");
-//		
-//		SBMLDocument expressionDoc = createExpressionModel("GFP");
-//		
-//		SBMLDocument repressionDoc = createRepressionModel("LacI", "GFP");
-//		
-//		SBMLDocument activationDoc = createActivationModel("GAL4VP16", "GFP");
-//		
-//		SBMLDocument inductionRepressionDoc = createInductionRepressionModel("IPTG", "LacI", "GFP");
-//		
-//		SBMLDocument inductionActivationDoc = createInductionActivationModel("Arabinose", "AraC", "GFP");
-//		
-//		SBMLDocument selfRepressionDoc = createRepressionModel("LacI", "GFP");
-//		addFeedbackToModel(selfRepressionDoc.getModel());
-//		
-//		SBMLDocument inductionInverterDoc1 = createInductionRepressionModel("IPTG", "LacI", "TetR");
-//		SBMLDocument inductionInverterDoc2 = createInductionRepressionModel("aTc", "TetR", "LacI");
-//		HashMap<String, String> toggleConnections = new HashMap<String, String>();
-//		toggleConnections.put("TetR", "LacI");
-//		SBMLDocument toggleDoc = composeExpressionModels(inductionInverterDoc1.getModel(), inductionInverterDoc2.getModel());
-//		HashMap<String, String> toggleFeedbacks = new HashMap<String, String>();
-//		toggleFeedbacks.put("LacI", "TetR");
-//		addFeedbackToModel(toggleDoc.getModel(), toggleFeedbacks);
-//		
-//		List<Model> inverterMods = new LinkedList<Model>();
-//		inverterMods.add(createRepressionModel("LacI", "TetR").getModel());
-//		inverterMods.add(createRepressionModel("TetR", "cI").getModel());
-//		inverterMods.add(createRepressionModel("cI", "LacI").getModel());
-//		SBMLDocument repressilatorDoc = composeExpressionModels(inverterMods);
-//		addFeedbackToModel(repressilatorDoc.getModel());
-//	}
+	private static void testAdaptor() {
+		SBMLDocument degradationDoc = createDegradationModel("GFP");
+
+		SBMLDocument expressionDoc = createExpressionModel("GFP");
+
+		SBMLDocument repressionDoc = createRepressionModel("LacI", "GFP");
+
+		SBMLDocument activationDoc = createActivationModel("GAL4VP16", "GFP");
+
+		SBMLDocument inductionRepressionDoc = createInductionRepressionModel("IPTG", "LacI", "GFP");
+
+		SBMLDocument inductionActivationDoc = createInductionActivationModel("Arabinose", "AraC", "GFP");
+
+		SBMLDocument selfRepressionDoc = createRepressionModel("LacI", "GFP");
+		HashMap<String, String> substitutions = new HashMap<String, String>();
+		substitutions.put("GFP", "LacI");
+		substituteSpecies(substitutions, selfRepressionDoc.getModel());
+
+		SBMLDocument inductionInverterDoc1 = createInductionRepressionModel("IPTG", "LacI", "TetR");
+		SBMLDocument inductionInverterDoc2 = createInductionRepressionModel("aTc", "TetR", "LacI");
+		SBMLDocument toggleDoc = composeExpressionModels(inductionInverterDoc1.getModel(), inductionInverterDoc2.getModel());
+
+		List<Model> inverterMods = new LinkedList<Model>();
+		inverterMods.add(createRepressionModel("LacI", "TetR").getModel());
+		inverterMods.add(createRepressionModel("TetR", "cI").getModel());
+		inverterMods.add(createRepressionModel("cI", "LacI").getModel());
+		SBMLDocument repressilatorDoc = composeExpressionModels(inverterMods);
+	}
 	
 	/*
-     * Methods for SBML composition
+     * Methods for composing SBML models of gene expression
      */  
-	
-	private static SBMLDocument composeExpressionModels(List<Model> mods) {
-		List<HashMap<String, String>> connections = new LinkedList<HashMap<String, String>>();
-		for (int i = 0; i < mods.size() - 1; i++) {
-			connections.add(new HashMap<String, String>());
-		}
-		return composeExpressionModels(mods, connections);
-	}
-	
-	private static SBMLDocument composeExpressionModels(List<Model> mods, List<HashMap<String, String>> connections) {
-		SBMLDocument composedDoc;
-		if (mods.size() > 1 && mods.size() - 1 == connections.size()) {
-			composedDoc = composeExpressionModels(mods.get(0), mods.get(1), connections.get(0));
-			for (int i = 2; i < mods.size(); i++) {
-				composeExpressionModels(composedDoc.getModel(), mods.get(i), connections.get(i - 1));
-			}
-			return composedDoc;
-		} else {
-			return null;
-		}
-	}
 	
 	private static SBMLDocument composeExpressionModels(Model mod1, Model mod2) {
 		return composeExpressionModels(mod1, mod2, new HashMap<String, String>());
 	}
 	
-	private static SBMLDocument composeExpressionModels(Model mod1, Model mod2, HashMap<String, String> connections) {
-		Set<Species> inputs1 = getModelInputs(mod1);
-		Set<Species> outputs1 = getModelOutputs(mod1);
-		Set<Species> inputs2 = getModelInputs(mod2);
-		Set<Species> outputs2 = getModelOutputs(mod2);
-		Set<Reaction> degradations1 = getModelDegradations(mod1);
-		Set<Reaction> expressions1 = getModelExpressions(mod1);
-		Set<Reaction> degradations2 = getModelDegradations(mod2);
-		Set<Reaction> expressions2 = getModelExpressions(mod2);
-		if (connections.isEmpty()) {
-			connections.putAll(inferModelConnection(mod1, mod2));
-		}
+	private static SBMLDocument composeExpressionModels(Model mod1, Model mod2, HashMap<String, String> substitutions) {
+		List<Model> mods = new LinkedList<Model>();
+		mods.add(mod1);
+		mods.add(mod2);
+		return composeExpressionModels(mods, substitutions);
+	}
+	
+	private static SBMLDocument composeExpressionModels(List<Model> mods) {
+		return composeExpressionModels(mods, new HashMap<String, String>());
+	}
+	
+	private static SBMLDocument composeExpressionModels(List<Model> mods, HashMap<String, String> substitutions) {
 		SBMLDocument composedDoc = createCompartmentModel("cell", "cell");
 		Model composedMod = composedDoc.getModel();
-		Compartment cell = composedMod.getCompartment(0);
-		for (Species input1 : inputs1) {
-			Species input = input1.clone();
-			input.setCompartment(cell);
-			composedMod.addSpecies(input);
-		}
-		for (Species output1 : outputs1) {
-			Species output = output1.clone();
-			if (connections.containsValue(output.getId())) {
-				output.unsetSBOTerm();
+		for (Model mod : mods) {
+			for (Species spec : mod.getListOfSpecies()) {
+				Species composedSpec = spec.clone();
+				if (versionSBase(composedSpec, composedMod)) {
+					substitutions.put(composedSpec.getId(), spec.getId());
+				}
+				composedSpec.setCompartment(composedMod.getCompartment(0));
+				composedMod.addSpecies(composedSpec);
 			}
-			output.setCompartment(cell);
-			composedMod.addSpecies(output);
-		}
-		for (Species input2 : inputs2) {
-			Species input = input2.clone();
-			if (!connections.containsKey(input.getId())) {
-				input.setCompartment(cell);
-				composedMod.addSpecies(input);
+			for (Reaction rxn : mod.getListOfReactions()) {
+				Reaction composedRxn = rxn.clone();
+				if (composedRxn.getSBOTermID().equals(SBOTerm.EXPRESSION.getID())) {
+					versionSBase(composedRxn, composedMod);
+					composedMod.addReaction(composedRxn);
+				} else if (composedRxn.getSBOTermID().equals(SBOTerm.DEGRADATION.getID()) && !composedMod.containsReaction(composedRxn.getId())) {
+					composedMod.addReaction(composedRxn);
+				}
 			}
 		}
-		for (Species output2 : outputs2) {
-			Species output = output2.clone();
-			output.setCompartment(cell);
-			composedMod.addSpecies(output);
+		if (substitutions.isEmpty()) {
+			for (int i = 1; i < mods.size(); i++) {
+				substitutions.putAll(inferIOSubstitutions(mods.get(i - 1), mods.get(i)));
+			}
 		}
-		for (Reaction degradation1 : degradations1) {
-			composedMod.addReaction(degradation1.clone());
-		}
-		for (Reaction degradation2 : degradations2) {
-			composedMod.addReaction(degradation2.clone());
-		}
-		for (Reaction expression1 : expressions1) {
-			composedMod.addReaction(expression1.clone());
-		}
-		for (Reaction expression2 : expressions2) {
-			Reaction expression = expression2.clone();
-			substituteReactionSpeciesReferences(connections, expression);
-			composedMod.addReaction(expression);
+		if (!substitutions.isEmpty()) {
+			substituteSpecies(substitutions, composedMod);
 		}
 		return composedDoc;
 	}
 	
-	private static void addFeedbackToModel(Model mod) {
-		addFeedbackToModel(mod, new HashMap<String, String>());
-	}
-	
-	private static void addFeedbackToModel(Model mod, HashMap<String, String> feedbacks) {
-		if (feedbacks.isEmpty()) {
-			feedbacks.putAll(inferModelConnection(mod, mod));
+	private static boolean versionSBase(NamedSBase sb, Model mod) {
+		String versionedID = sb.getId();
+		int version = 0;
+		while (mod.containsUniqueNamedSBase(versionedID)) {
+			version++;
+			versionedID = sb.getId() + version;
 		}
-		substituteModelSpecies(feedbacks, mod);
+		if (version > 0) {
+			sb.setId(versionedID);
+			 return true;
+		} else {
+			return false;
+		}
 	}
 	
-	private static void substituteModelSpecies(HashMap<String, String> substitutions, Model mod) {
+	private static void substituteSpecies(HashMap<String, String> substitutions, Model mod) {
+		for (String substitutedID : substitutions.keySet()) {
+			Species substitutedSpec = mod.getSpecies(substitutedID);
+			Species substituteSpec = mod.getSpecies(substitutions.get(substitutedID));
+			if (substituteSpec.isSetSBOTerm()) {
+				if (substituteSpec.getSBOTermID().equals(SBOTerm.INPUT.getID())) {
+					if (substitutedSpec.isSetSBOTerm()) {
+						if (substitutedSpec.getSBOTermID().equals(SBOTerm.INPUT.getID())) {
+							mod.removeSpecies(substitutedSpec);
+						} else if (substitutedSpec.getSBOTermID().equals(SBOTerm.OUTPUT.getID())) {
+							mod.removeSpecies(substituteSpec);
+							substitutedSpec.setId(substituteSpec.getId());
+							substitutedSpec.unsetSBOTerm();
+						} else {
+							mod.removeSpecies(substituteSpec);
+							substitutedSpec.setId(substituteSpec.getId());
+						}
+					} else {
+						mod.removeSpecies(substituteSpec);
+						substitutedSpec.setId(substituteSpec.getId());
+					}
+				} else if (substituteSpec.getSBOTermID().equals(SBOTerm.OUTPUT.getID())) {
+					mod.removeSpecies(substitutedSpec);
+					if (substitutedSpec.isSetSBOTerm()) {
+						if (substitutedSpec.getSBOTermID().equals(SBOTerm.INPUT.getID())) {
+							substituteSpec.unsetSBOTerm();
+						} else if (!substitutedSpec.getSBOTermID().equals(SBOTerm.OUTPUT.getID())) {
+							substituteSpec.setSBOTerm(substitutedSpec.getSBOTerm());
+						}
+					}
+				} else if (substitutedSpec.isSetSBOTerm() && substitutedSpec.getSBOTermID().equals(SBOTerm.OUTPUT.getID())) {
+					mod.removeSpecies(substituteSpec);
+					substitutedSpec.setId(substituteSpec.getId());
+					substitutedSpec.setSBOTerm(substituteSpec.getSBOTerm());
+				} else {
+					mod.removeSpecies(substitutedSpec);
+				}
+			} else if (substitutedSpec.isSetSBOTerm()) {
+				if (substitutedSpec.getSBOTermID().equals(SBOTerm.INPUT.getID())) {
+					mod.removeSpecies(substitutedSpec);
+				} else if (substitutedSpec.getSBOTermID().equals(SBOTerm.OUTPUT.getID())) {
+					mod.removeSpecies(substituteSpec);
+					substitutedSpec.setId(substituteSpec.getId());
+					substitutedSpec.unsetSBOTerm();
+				} else {
+					mod.removeSpecies(substitutedSpec);
+					substituteSpec.setSBOTerm(substitutedSpec.getSBOTerm());
+				}
+			} else {
+				mod.removeSpecies(substitutedSpec);
+			}
+		}
 		for (Reaction rxn : mod.getListOfReactions()) {
-			substituteReactionSpeciesReferences(substitutions, rxn);
-		}
-		for (String substituted : substitutions.keySet()) {
-			mod.removeSpecies(substituted);
+			substituteSpeciesReferences(substitutions, rxn);
 		}
 	}
 	
-	private static void substituteReactionSpeciesReferences(HashMap<String, String> substitutions, Reaction rxn) {
+	private static void substituteSpeciesReferences(HashMap<String, String> substitutions, Reaction rxn) {
 		String formula = compileFormula(rxn.getKineticLaw().getMath());
 		Set<SimpleSpeciesReference> specRefs = new HashSet<SimpleSpeciesReference>();
 		specRefs.addAll(rxn.getListOfModifiers());
@@ -183,36 +198,36 @@ public class COPASIAdaptor {
 		specRefs.addAll(rxn.getListOfProducts());
 		for (SimpleSpeciesReference specRef : specRefs) {
 			if (substitutions.containsKey(specRef.getSpecies())) {
-				specRef.setSpecies(substitutions.get(specRef.getSpecies()));
 				formula.replaceAll(specRef.getSpecies(), substitutions.get(specRef.getSpecies()));
+				specRef.setSpecies(substitutions.get(specRef.getSpecies()));
 			}
 		}
 		rxn.getKineticLaw().setMath(parseFormula(formula));
 	}
 	
-	private static HashMap<String, String> inferModelConnection(Model mod1, Model mod2) {
-		Set<Species> outputs = getModelInputs(mod1);
-		Set<Species> inputs = getModelInputs(mod2);
-		HashMap<String, String> connections = new HashMap<String, String>();
-		if (connections.isEmpty() && !inputs.isEmpty() && !outputs.isEmpty()) {
-			connections.put(inputs.iterator().next().getId(), outputs.iterator().next().getId());
+	private static HashMap<String, String> inferIOSubstitutions(Model mod1, Model mod2) {
+		Set<Species> outputs = getOutputs(mod1);
+		Set<Species> inputs = getInputs(mod2);
+		HashMap<String, String> substitutions = new HashMap<String, String>();
+		if (!inputs.isEmpty() && !outputs.isEmpty()) {
+			substitutions.put(inputs.iterator().next().getId(), outputs.iterator().next().getId());
 		}
-		return connections;
+		return substitutions;
 	}
 	
 	/*
-     * Methods for SBML creation
+     * Methods for creating SBML models of gene expression
      */
 	
-	private static SBMLDocument createCompartmentModel(String compartmentID) {
-    	return createCompartmentModel(compartmentID, compartmentID);
+	private static SBMLDocument createCompartmentModel(String compID) {
+    	return createCompartmentModel(compID, compID);
 	}
 	
-	private static SBMLDocument createCompartmentModel(String compartmentID, String compartmentName) {
+	private static SBMLDocument createCompartmentModel(String compID, String compName) {
 		SBMLDocument compartmentDoc = new SBMLDocument(3, 1);
     	Model compartmentMod = compartmentDoc.createModel();
-    	Compartment cell = compartmentMod.createCompartment(compartmentID);
-    	cell.setName(compartmentName);
+    	Compartment cell = compartmentMod.createCompartment(compID);
+    	cell.setName(compName);
     	cell.setConstant(false);
     	return compartmentDoc;
 	}
@@ -264,7 +279,7 @@ public class COPASIAdaptor {
     }
     
     private static SBMLDocument createInductionRepressionModel(String inducerID, String repressorID, String expressedID) {
-    	return createInductionRepressionModel(expressedID, repressorID, inducerID, expressedID, repressorID, inducerID);
+    	return createInductionRepressionModel(inducerID, repressorID, expressedID, inducerID, repressorID, expressedID);
     }
     
     private static SBMLDocument createInductionRepressionModel(String inducerID, String repressorID, String expressedID,   
@@ -295,22 +310,22 @@ public class COPASIAdaptor {
     	return inductionActivationDoc;
     }
     
-    private static Species createSpecies(String speciesID, Model mod) {
-    	return createSpecies(speciesID, speciesID, mod);
+    private static Species createSpecies(String specID, Model mod) {
+    	return createSpecies(specID, specID, mod);
     }
     
-    private static Species createSpecies(String speciesID, String speciesName, Model mod) {
-    	Species s;
+    private static Species createSpecies(String specID, String specName, Model mod) {
+    	Species spec;
     	if (mod.getNumCompartments() > 0) {
-    		s = mod.createSpecies(speciesID, mod.getCompartment(0));
+    		spec = mod.createSpecies(specID, mod.getCompartment(0));
     	} else {
-    		s = mod.createSpecies(speciesID);
+    		spec = mod.createSpecies(specID);
     	}
-    	s.setName(speciesName);
-    	s.setHasOnlySubstanceUnits(true);
-    	s.setBoundaryCondition(false);
-    	s.setConstant(false);
-    	return s;
+    	spec.setName(specName);
+    	spec.setHasOnlySubstanceUnits(true);
+    	spec.setBoundaryCondition(false);
+    	spec.setConstant(false);
+    	return spec;
     }
     
     private static Reaction createDegradationReaction(Species degraded, Model mod) {
@@ -336,7 +351,7 @@ public class COPASIAdaptor {
     }
     
     private static Reaction createExpressionReaction(Species expressed, Model mod) {
-    	Reaction expression = createQualitativeExpressionReaction(expressed, mod);
+    	Reaction expression = createRatelessExpressionReaction(expressed, mod);
     	KineticLaw expressionLaw = expression.createKineticLaw();
 		LocalParameter expressionRate = expressionLaw.createLocalParameter("k_EXE");
 		expressionRate.setName("k_EXE");
@@ -345,7 +360,7 @@ public class COPASIAdaptor {
     	return expression;
     }
     
-    private static Reaction createQualitativeExpressionReaction(Species expressed, Model mod) {
+    private static Reaction createRatelessExpressionReaction(Species expressed, Model mod) {
     	Reaction expression = mod.createReaction(expressed.getId() + "_expression");
     	expression.setName(expressed.getName() + "_expression");
     	expression.setFast(false);
@@ -358,7 +373,7 @@ public class COPASIAdaptor {
     }
     
     private static Reaction createRepressibleExpressionReaction(Species repressor, Species expressed, Model mod) {
-    	Reaction repressibleExpression = createQualitativeRepressibleExpressionReaction(repressor, expressed, mod);
+    	Reaction repressibleExpression = createRatelessRepressibleExpressionReaction(repressor, expressed, mod);
     	KineticLaw repressibleExpressionLaw = repressibleExpression.createKineticLaw();
 		LocalParameter maxExpressionRate = repressibleExpressionLaw.createLocalParameter("k_EXR");
 		maxExpressionRate.setName("k_EXR");
@@ -371,15 +386,15 @@ public class COPASIAdaptor {
     	return repressibleExpression;
     }
     
-    private static Reaction createQualitativeRepressibleExpressionReaction(Species repressor, Species expressed, Model mod) {
-    	Reaction repressibleExpression = createQualitativeExpressionReaction(expressed, mod);
+    private static Reaction createRatelessRepressibleExpressionReaction(Species repressor, Species expressed, Model mod) {
+    	Reaction repressibleExpression = createRatelessExpressionReaction(expressed, mod);
     	ModifierSpeciesReference modifier = repressibleExpression.createModifier(repressor);
     	modifier.setSBOTerm(SBOTerm.REPRESSOR.getID());
     	return repressibleExpression;
     }
     
     private static Reaction createActivatableExpressionReaction(Species activator, Species expressed, Model mod) {
-    	Reaction activatableExpression = createQualitativeActivatableExpressionReaction(activator, expressed, mod);
+    	Reaction activatableExpression = createRatelessActivatableExpressionReaction(activator, expressed, mod);
     	KineticLaw activatableExpressionLaw = activatableExpression.createKineticLaw();
 		LocalParameter maxExpressionRate = activatableExpressionLaw.createLocalParameter("k_EXA");
 		maxExpressionRate.setName("k_EXA");
@@ -393,15 +408,15 @@ public class COPASIAdaptor {
     	return activatableExpression;
     }
     
-    private static Reaction createQualitativeActivatableExpressionReaction(Species activator, Species expressed, Model mod) {
-    	Reaction activatableExpression = createQualitativeExpressionReaction(expressed, mod);
+    private static Reaction createRatelessActivatableExpressionReaction(Species activator, Species expressed, Model mod) {
+    	Reaction activatableExpression = createRatelessExpressionReaction(expressed, mod);
     	ModifierSpeciesReference modifier = activatableExpression.createModifier(activator);
     	modifier.setSBOTerm(SBOTerm.ACTIVATOR.getID());
     	return activatableExpression;
     }
     
     private static Reaction createInducibleRepressibleExpressionReaction(Species inducer, Species repressor, Species expressed, Model mod) {
-    	Reaction inducibleRepressibleExpression = createQualitativeInducibleRepressibleExpressionReaction(inducer, repressor, expressed, mod);
+    	Reaction inducibleRepressibleExpression = createRatelessInducibleRepressibleExpressionReaction(inducer, repressor, expressed, mod);
     	KineticLaw inducibleRepressibleExpressionLaw = inducibleRepressibleExpression.createKineticLaw();
     	LocalParameter maxExpressionRate = inducibleRepressibleExpressionLaw.createLocalParameter("k_EXR");
     	maxExpressionRate.setName("k_EXR");
@@ -418,15 +433,15 @@ public class COPASIAdaptor {
     	return inducibleRepressibleExpression;
     }
     
-    private static Reaction createQualitativeInducibleRepressibleExpressionReaction(Species inducer, Species repressor, Species expressed, Model mod) {
-    	Reaction inducibleRepressibleExpression = createQualitativeRepressibleExpressionReaction(repressor, expressed, mod);
+    private static Reaction createRatelessInducibleRepressibleExpressionReaction(Species inducer, Species repressor, Species expressed, Model mod) {
+    	Reaction inducibleRepressibleExpression = createRatelessRepressibleExpressionReaction(repressor, expressed, mod);
     	ModifierSpeciesReference modifier = inducibleRepressibleExpression.createModifier(inducer);
     	modifier.setSBOTerm(SBOTerm.ACTIVATOR.getID());
     	return inducibleRepressibleExpression;
     }
     
     private static Reaction createInducibleActivatableExpressionReaction(Species inducer, Species activator, Species expressed, Model mod) {
-    	Reaction inducibleActivatableExpression = createQualitativeInducibleActivatableExpressionReaction(inducer, activator, expressed, mod);
+    	Reaction inducibleActivatableExpression = createRatelessInducibleActivatableExpressionReaction(inducer, activator, expressed, mod);
     	KineticLaw inducibleActivatableExpressionLaw = inducibleActivatableExpression.createKineticLaw();
     	LocalParameter maxExpressionRate = inducibleActivatableExpressionLaw.createLocalParameter("k_EXA");
     	maxExpressionRate.setName("k_EXA");
@@ -445,15 +460,15 @@ public class COPASIAdaptor {
     	return inducibleActivatableExpression;
     }
     
-    private static Reaction createQualitativeInducibleActivatableExpressionReaction(Species inducer, Species activator, Species expressed, Model mod) {
-    	Reaction inducibleActivatableExpression = createQualitativeActivatableExpressionReaction(activator, expressed, mod);
+    private static Reaction createRatelessInducibleActivatableExpressionReaction(Species inducer, Species activator, Species expressed, Model mod) {
+    	Reaction inducibleActivatableExpression = createRatelessActivatableExpressionReaction(activator, expressed, mod);
     	ModifierSpeciesReference modifier = inducibleActivatableExpression.createModifier(inducer);
     	modifier.setSBOTerm(SBOTerm.ACTIVATOR.getID());
     	return inducibleActivatableExpression;
     }
 	
 	/*
-     * Methods for SBML math
+     * Methods for parsing and compiling mathematical formulas
      */
     
     //Parse a string fomula to make an ASTNode for a KineticLaw object
@@ -481,10 +496,10 @@ public class COPASIAdaptor {
     }
     
     /*
-     * Methods for SBO annotation of SBML
+     * Methods for getting SBML elements annotated with SBO terms
      */
 	
-    private static Set<Species> getModelInputs(Model mod) {
+    private static Set<Species> getInputs(Model mod) {
 		Set<Species> inputs = new HashSet<Species>();
 		for (Species spec : mod.getListOfSpecies()) {
 			if (spec.isSetSBOTerm() && spec.getSBOTermID().equals(SBOTerm.INPUT.getID())) {
@@ -494,7 +509,7 @@ public class COPASIAdaptor {
 		return inputs;
 	}
 	
-	private static Set<Species> getModelOutputs(Model mod) {
+	private static Set<Species> getOutputs(Model mod) {
 		Set<Species> outputs = new HashSet<Species>();
 		for (Species spec : mod.getListOfSpecies()) {
 			if (spec.isSetSBOTerm() && spec.getSBOTermID().equals(SBOTerm.OUTPUT.getID())) {
@@ -502,26 +517,6 @@ public class COPASIAdaptor {
 			}
 		}
 		return outputs;
-	}
-	
-	private static Set<Reaction> getModelDegradations(Model mod) {
-		Set<Reaction> degradations = new HashSet<Reaction>();
-		for (Reaction rxn : mod.getListOfReactions()) {
-			if (rxn.isSetSBOTerm() && rxn.getSBOTermID().equals(SBOTerm.DEGRADATION.getID())) {
-				degradations.add(rxn);
-			}
-		}
-		return degradations;
-	}
-	
-	private static Set<Reaction> getModelExpressions(Model mod) {
-		Set<Reaction> expressions = new HashSet<Reaction>();
-		for (Reaction rxn : mod.getListOfReactions()) {
-			if (rxn.isSetSBOTerm() && rxn.getSBOTermID().equals(SBOTerm.EXPRESSION.getID())) {
-				expressions.add(rxn);
-			}
-		}
-		return expressions;
 	}
 	
 	public enum SBOTerm {

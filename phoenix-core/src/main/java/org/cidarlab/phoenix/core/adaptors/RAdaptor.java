@@ -8,10 +8,16 @@ package org.cidarlab.phoenix.core.adaptors;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.cidarlab.phoenix.core.controller.Utilities;
@@ -23,22 +29,23 @@ import org.cidarlab.phoenix.core.controller.Utilities;
 public class RAdaptor {
     
     
-    public static void walk(String path, String resultsRoot) throws IOException{
+    public static void walk(String path, String resultsRoot,Map<String,String> nameMap) throws IOException{
         File root = new File( path );
         File[] list = root.listFiles();
-
+        
         if (list == null) return;
-
+        
         for ( File f : list ) {
             if ( f.isDirectory() ) {
-                walk(f.getAbsolutePath(),resultsRoot);
+                walk(f.getAbsolutePath(),resultsRoot,nameMap);
                 //System.out.println( "Dir:" + f.getAbsoluteFile() );
             }
             else {
                 if(f.getName().equals("timeSeriesPlotPoints.csv")){
                     String pieces[] = filepathPieces(f.getAbsolutePath(),resultsRoot);
-                    for (String piece : pieces) {
-                        System.out.println(piece);
+                    if(nameMap.containsKey(pieces[0])){
+                        String amoduleShortName = nameMap.get(pieces[0]);
+                        
                     }
                     //String relFilepath = f.getAbsolutePath().substring(f.getAbsolutePath().lastIndexOf(resultsRoot) + resultsRoot.length());
                     //System.out.println( "File:" + relFilepath);
@@ -60,7 +67,54 @@ public class RAdaptor {
         return relativeFilepath.split("/");
     }
     
-    
+    public static Map<String,String> parseKeyMapFiles(String keyFile, String mapFile){
+        Map<String,String> nameMap = new HashMap<>();
+        
+        Map<String,String> customNameMap = new HashMap<>();
+        Set<String> shortNames = new HashSet<>();
+        File key = new File(keyFile);
+        File map = new File(mapFile);
+        try {
+            BufferedReader keyReader = new BufferedReader(new FileReader(key));
+            BufferedReader mapReader = new BufferedReader(new FileReader(map));
+            
+            String mapLine;
+            while((mapLine = mapReader.readLine())!=null){
+                if(mapLine.equals("Short Name,Name,Custom Name"))
+                    continue;
+                String names[] = mapLine.split(",");
+                shortNames.add(names[0]);
+                if(names.length == 3){
+                    if(!names[2].trim().equals(""))
+                        customNameMap.put(names[2], names[0]);
+                }
+            }
+            
+            String keyLine;
+            while((keyLine = keyReader.readLine())!=null){
+                if(keyLine.equals("FILENAME,PART,CONTROL,MEDIA,TIME,REGULATION"))   
+                    continue;
+                String pieces[] = keyLine.split(",");
+                if(!pieces[0].trim().equals("")){
+                    if(shortNames.contains(pieces[1])){
+                        nameMap.put(pieces[0], pieces[1]);
+                    }
+                    else{
+                        if(customNameMap.containsKey(pieces[1])){
+                            nameMap.put(pieces[0], customNameMap.get(pieces[1]));
+                        }
+                    }
+                }
+            }
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(RAdaptor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(RAdaptor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return nameMap;
+    }
     
     public static void createRunRScript(String runRFilepath, String keyFilepath, String AnalyzeRFilepath, String dataFilepath, String wd, int minEvents){
         

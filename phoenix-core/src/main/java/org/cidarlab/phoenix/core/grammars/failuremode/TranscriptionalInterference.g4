@@ -12,35 +12,31 @@ root
     ;
 
 module 
-    : (((FORWARD_PROMOTER)+ (wildcard)+))+
-    | (((wildcard)+ (REVERSE_PROMOTER)+))+ 
-    | (((wildcard)+ (REVERSE_PROMOTER)+))+ (((FORWARD_PROMOTER)+ (wildcard)+))+  
-    | ((wildcard)* ((transcriptional_interference)+ (wildcard)*)+)
+    : (((FORWARD_PROMOTER)+ (wildcard_rbs_cds_term)+))+
+    | (((wildcard_rbs_cds_term)+ (REVERSE_PROMOTER)+))+ 
+    | (((wildcard_rbs_cds_term)+ (REVERSE_PROMOTER)+))+ (((FORWARD_PROMOTER)+ (wildcard_rbs_cds_term)+))+  
+    | ((wildcard_rbs_cds_term)* ((transcriptional_interference)+ (wildcard_rbs_cds_term)*)+)
     ;
 
 transcriptional_interference
-    : ((FORWARD_PROMOTER)+ (wildcard)* (REVERSE_PROMOTER)+)+
+    : ((FORWARD_PROMOTER)+ (wildcard_rbs_cds)* (REVERSE_PROMOTER)+)+
+    | ((FORWARD_PROMOTER)+ (wildcard_rbs_cds_ft)* (REVERSE_PROMOTER)+)+
+    | ((FORWARD_PROMOTER)+ (wildcard_rbs_cds_rt)* (REVERSE_PROMOTER)+)+
     //| ((REVERSE_PROMOTER)+ (wildcard)* (FORWARD_PROMOTER)+)+
     ;
 
-wildcard
+wildcard_rbs_cds_term
     : (FORWARD_RBS|REVERSE_RBS|FORWARD_CDS|REVERSE_CDS|FORWARD_TERMINATOR|REVERSE_TERMINATOR)+
     ;
-
-/*
-transcriptionl_readthrough
-    :
+wildcard_rbs_cds
+    : (FORWARD_RBS|REVERSE_RBS|FORWARD_CDS|REVERSE_CDS)+
     ;
-
-transcriptional_interference
-    :
-    ;
-
-reverse_strand_terminator
-    :
-    ;
-*/
-
+wildcard_rbs_cds_ft
+    : (FORWARD_RBS|REVERSE_RBS|FORWARD_CDS|REVERSE_CDS|FORWARD_TERMINATOR)+
+    ; 
+wildcard_rbs_cds_rt
+    : (FORWARD_RBS|REVERSE_RBS|FORWARD_CDS|REVERSE_CDS|REVERSE_TERMINATOR)+
+    ; 
 REVERSE_PROMOTER
     : '<p'
     ;

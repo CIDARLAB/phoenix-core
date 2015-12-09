@@ -72,6 +72,9 @@ public class EugeneAdaptor {
             mE.solve(rules, size);
             List<Component[]> solutions = mE.getSolutions();
             phoenixModules = componentToModule(solutions, nameRoot);
+            for(Module root:phoenixModules){
+                System.out.println(PigeonAdaptor.generatePigeonString(root, true));
+            }
         }
         
         return phoenixModules;

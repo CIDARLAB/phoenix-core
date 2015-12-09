@@ -210,9 +210,6 @@ public class TestingStructures {
         expMap = getAllControls(rootModule);
         List<Medium> defaultMedia = new ArrayList<>();
         defaultMedia.add(new Medium("M9_glucose", Medium.MediaType.RICH));
-        
-        //List<String> defaultTime = Arrays.asList(new String[]{"0", "10", "20", "30", "40", "50", "60"});
-        
         assignAllControls(rootModule, expMap.colorNameMap, expMap.regNameMap, expMap.aModuleControlMap, defaultMedia, Utilities.getDefaultTimeMap());
 
     }
@@ -311,7 +308,7 @@ public class TestingStructures {
             assignAllControls(child, colorNameMap, regNameMap, aModuleControlMap, defaultMedia, defaultTimeMaps);
         }
 
-            //Experiments for EXPRESSOR
+        //Experiments for EXPRESSOR
         //Experiments for TRANSCRIPTIONAL_UNIT
             /*
          else if (m.getRole().equals(ModuleRole.TRANSCRIPTIONAL_UNIT)) {
@@ -328,7 +325,7 @@ public class TestingStructures {
     }
 
     /*
-     //Add controls and samples
+    //Add controls and samples
      private static void addSamples(List<Experiment> experiments, List<AssignedModule> controlModulesAll, HashMap<String, Sample> sampleHash, AssignedModule aM, boolean regControls) {
 
      //Add control constructs 
@@ -338,16 +335,6 @@ public class TestingStructures {
      if (regControls) {
      //controlsThisModule.addAll(createRegControls(aM));
      }
-
-     removeDuplicateModules(controlsThisModule, controlModulesAll, aM);
-
-     //Add samples
-     for (Experiment e : experiments) {
-     createControlSamples(e, controlsThisModule, aM, sampleHash, 3);
-     createExperimentSamples(e, aM, sampleHash, 3);
-     }
-
-     aM.setControlModules(controlsThisModule);
      }
      */
     private static ControlsMap getAllControls(Module module) {
@@ -502,297 +489,6 @@ public class TestingStructures {
         return regControl;
     }
 
-    //Remove duplicate modules based on PrimitiveModules
-    private static void removeDuplicateModules(List<AssignedModule> controlsThisModule, List<AssignedModule> controlModulesAll, AssignedModule m) {
-
-        for (AssignedModule cM : controlsThisModule) {
-            for (AssignedModule cMA : controlModulesAll) {
-                if (cM.getSubmodules().equals(cMA.getSubmodules())) {
-                    cM = cMA;
-                }
-            }
-
-            controlModulesAll.add(cM);
-            if (m.getControlModules() == null) {
-                List<AssignedModule> cMs = new ArrayList<>();
-                cMs.add(cM);
-                m.setControlModules(cMs);
-            } else {
-                m.getControlModules().add(cM);
-            }
-        }
-    }
-
-    //Method for forming an experiment from a module which has partial part assignment
-    private static void createExperimentSamples(Experiment experiment, Module m, HashMap<String, Sample> sampleHash, Integer replicates) {
-
-        Strain defaultStrain = new Strain("E. coli DH5a");
-
-        //Create regulation control sample with test sample for each media condition
-        List<Polynucleotide> pNs = new ArrayList<>();
-        pNs.add(makePolynucleotide(m));
-        List<Sample> experimentSamples = new ArrayList<>();
-//        experimentSamples.addAll(experiment.getExpDegControls());
-
-        //EXPRESSION EXPERIMENT
-        if (experiment.getExType().equals(ExperimentType.EXPRESSION)) {
-
-            //Add time series of samples for each media condition
-            for (Medium media : experiment.getMediaConditions()) {
-                List<String> times = experiment.getTimes();
-                if (times.isEmpty()) {
-                    Sample expTest = new Sample(SampleType.EXPERIMENT, defaultStrain, pNs, media, "0 min");
-                    if (sampleHash.get(expTest.getClothoID()) == null) {
-                        sampleHash.put(expTest.getClothoID(), expTest);
-                        experimentSamples.add(expTest);
-                    } else {
-                        experimentSamples.add(sampleHash.get(expTest.getClothoID()));
-                    }
-                }
-            }
-
-            //DEGRADATION EXPERIMENT
-        } else if (experiment.getExType().equals(ExperimentType.DEGRADATION)) {
-
-            //Add time series of samples for each media condition
-            for (Medium media : experiment.getMediaConditions()) {
-                List<String> times = experiment.getTimes();
-                if (!times.isEmpty()) {
-                    for (String i : times) {
-                        Sample degTest = new Sample(SampleType.EXPERIMENT, defaultStrain, pNs, media, i);
-                        if (sampleHash.get(degTest.getClothoID()) == null) {
-                            sampleHash.put(degTest.getClothoID(), degTest);
-                            experimentSamples.add(degTest);
-                        } else {
-                            experimentSamples.add(sampleHash.get(degTest.getClothoID()));
-                        }
-                    }
-                }
-            }
-
-            //REGULATION EXPERIMENT
-        } else if (experiment.getExType().equals(ExperimentType.REGULATION)) {
-
-            //Add time series of samples for each media condition
-            for (Medium media : experiment.getMediaConditions()) {
-                List<String> times = experiment.getTimes();
-                if (!times.isEmpty()) {
-                    Sample regTest = new Sample(SampleType.EXPERIMENT, defaultStrain, pNs, media, "0 min");
-                    if (sampleHash.get(regTest.getClothoID()) == null) {
-                        sampleHash.put(regTest.getClothoID(), regTest);
-                        experimentSamples.add(regTest);
-                    } else {
-                        experimentSamples.add(sampleHash.get(regTest.getClothoID()));
-                    }
-                }
-            }
-
-            //SMALL MOLECULE EXPERIMENT    
-        } else if (experiment.getExType().equals(ExperimentType.SMALL_MOLECULE)) {
-
-            //Add time series of samples for each media condition
-            for (Medium media : experiment.getMediaConditions()) {
-                List<String> times = experiment.getTimes();
-                if (!times.isEmpty()) {
-                    Sample smTest = new Sample(SampleType.EXPERIMENT, defaultStrain, pNs, media, "0 min");
-                    if (sampleHash.get(smTest.getClothoID()) == null) {
-                        sampleHash.put(smTest.getClothoID(), smTest);
-                        experimentSamples.add(smTest);
-                    } else {
-                        experimentSamples.add(sampleHash.get(smTest.getClothoID()));
-                    }
-                }
-            }
-
-            //RBS CONTEXT     
-        } else if (experiment.getExType().equals(ExperimentType.RBS_CONTEXT)) {
-
-            //Add time series of samples for each media condition
-            for (Medium media : experiment.getMediaConditions()) {
-                List<String> times = experiment.getTimes();
-                if (!times.isEmpty()) {
-                    Sample rbsContextTest = new Sample(SampleType.EXPERIMENT, defaultStrain, pNs, media, "0 min");
-                    if (sampleHash.get(rbsContextTest.getClothoID()) == null) {
-                        sampleHash.put(rbsContextTest.getClothoID(), rbsContextTest);
-                        experimentSamples.add(rbsContextTest);
-                    } else {
-                        experimentSamples.add(sampleHash.get(rbsContextTest.getClothoID()));
-                    }
-                }
-            }
-
-            //SPECIFICATION
-        } else if (experiment.getExType().equals(ExperimentType.SPECIFICATION)) {
-
-            //Add time series of samples for each media condition
-            for (Medium media : experiment.getMediaConditions()) {
-                List<String> times = experiment.getTimes();
-                if (!times.isEmpty()) {
-                    Sample degControl = new Sample(SampleType.EXPERIMENT, defaultStrain, pNs, media, "0 min");
-                    experimentSamples.add(degControl);
-                }
-            }
-
-        }
-
-        //Add sample replicates
-        List<Sample> replicateExperimentSamples = new ArrayList();
-        for (Sample s : experimentSamples) {
-            List<Sample> createReplicates = createReplicates(s, replicates);
-            replicateExperimentSamples.addAll(createReplicates);
-        }
-
-        //experiment.setExperimentSamples(experimentSamples);
-        //experiment.setExperimentSamples(replicateExperimentSamples);
-    }
-
-    //Method for forming an experiment from a module which has partial part assignment
-    private static void createControlSamples(Experiment experiment, List<AssignedModule> controlModules, Module testModule, HashMap<String, Sample> sampleHash, Integer replicates) {
-
-        Strain defaultStrain = new Strain("E. coli DH5a");
-
-        //Initialize control samples
-        Sample beadControl = new Sample(SampleType.BEADS, null, null, null, "0 min");
-        Sample negativeControl = new Sample(SampleType.NEGATIVE, defaultStrain, null, experiment.getMediaConditions().get(0), "0 min");
-
-        if (sampleHash.get(beadControl.getClothoID()) == null) {
-            sampleHash.put(beadControl.getClothoID(), beadControl);
-            //experiment.setBeadControl(beadControl);
-        } else {
-            //experiment.setBeadControl(sampleHash.get(beadControl.getClothoID()));
-        }
-
-        if (sampleHash.get(negativeControl.getClothoID()) == null) {
-            sampleHash.put(negativeControl.getClothoID(), negativeControl);
-            //    experiment.setNegativeControl(negativeControl);
-        } else {
-            //    experiment.setNegativeControl(sampleHash.get(negativeControl.getClothoID()));
-        }
-
-        //Loop through modules to create samples
-        for (Module m : controlModules) {
-
-            //Regulation controls
-            if (m.getRole().equals(ModuleRole.REGULATION_CONTROL)) {
-
-                //Get exisiting regulation controls if they exist
-                List<Sample> regulationControls = new ArrayList();
-
-                //Create regulation control sample with test sample for each media condition
-                List<Polynucleotide> pNs = new ArrayList<>();
-                pNs.add(makePolynucleotide(testModule));
-                pNs.add(makePolynucleotide(m));
-                for (Medium media : experiment.getMediaConditions()) {
-                    Sample regulationControl = new Sample(SampleType.REGULATION, defaultStrain, pNs, media, "0 min");
-                    if (sampleHash.get(regulationControl.getClothoID()) == null) {
-                        sampleHash.put(regulationControl.getClothoID(), regulationControl);
-                        regulationControls.add(regulationControl);
-                    } else {
-                        regulationControls.add(sampleHash.get(regulationControl.getClothoID()));
-                    }
-                }
-
-                //Create regulation control sample in the absence of the test sample for each media condition
-                List<Polynucleotide> pNsUR = new ArrayList<>();
-                pNsUR.add(makePolynucleotide(m));
-                for (Medium media : experiment.getMediaConditions()) {
-                    Sample regulationControl = new Sample(SampleType.REGULATION, defaultStrain, pNsUR, media, "0 min");
-                    if (sampleHash.get(regulationControl.getClothoID()) == null) {
-                        sampleHash.put(regulationControl.getClothoID(), regulationControl);
-                        regulationControls.add(regulationControl);
-                    } else {
-                        regulationControls.add(sampleHash.get(regulationControl.getClothoID()));
-                    }
-                }
-
-                //Add sample replicates
-                List<Sample> replicateControlSamples = new ArrayList();
-                for (Sample s : regulationControls) {
-                    List<Sample> createReplicates = createReplicates(s, replicates);
-                    replicateControlSamples.addAll(createReplicates);
-                }
-
-                //experiment.setRegulationControls(replicateControlSamples);
-                //Color controls
-            } else if (m.getRole().equals(ModuleRole.COLOR_CONTROL)) {
-
-                //Get existing color controls if they exist
-                List<Sample> colorControls = new ArrayList<>();
-                //colorControls = experiment.getColorControls();
-
-                //Create color control sample for each media condition
-                List<Polynucleotide> pNs = new ArrayList<>();
-                pNs.add(makePolynucleotide(m));
-                for (Medium media : experiment.getMediaConditions()) {
-                    Sample colorControl = new Sample(SampleType.FLUORESCENT, defaultStrain, pNs, media, "0 min");
-                    if (sampleHash.get(colorControl.getClothoID()) == null) {
-                        sampleHash.put(colorControl.getClothoID(), colorControl);
-                        colorControls.add(colorControl);
-                    } else {
-                        colorControls.add(sampleHash.get(colorControl.getClothoID()));
-                    }
-                    colorControls.add(colorControl);
-                }
-
-                //Expression and degration control
-            } else if (m.getRole().equals(ModuleRole.EXPRESSION_DEGRATATION_CONTROL)) {
-
-                List<Sample> expDegControls = new ArrayList();
-
-                List<Polynucleotide> pNs = new ArrayList<>();
-                pNs.add(makePolynucleotide(m));
-
-                //Add degradation control samples if this experiment is a degradation experiment
-                if (experiment.getExType().equals(ExperimentType.DEGRADATION)) {
-
-                    //Add time series of samples for each media condition
-                    for (Medium media : experiment.getMediaConditions()) {
-                        List<String> times = experiment.getTimes();
-                        if (!times.isEmpty()) {
-                            for (String i : times) {
-                                Sample degControl = new Sample(SampleType.EXPRESSION_DEGRATATION, defaultStrain, pNs, media, i);
-                                if (sampleHash.get(degControl.getClothoID()) == null) {
-                                    sampleHash.put(degControl.getClothoID(), degControl);
-                                    expDegControls.add(degControl);
-                                } else {
-                                    expDegControls.add(sampleHash.get(degControl.getClothoID()));
-                                }
-                            }
-                        }
-                    }
-
-                    //Add expression control if this is an expression experiment    
-                } else if (experiment.getExType().equals(ExperimentType.EXPRESSION)) {
-
-                    for (Medium media : experiment.getMediaConditions()) {
-                        Sample expControl = new Sample(SampleType.EXPRESSION_DEGRATATION, defaultStrain, pNs, media, "0 min");
-                        if (sampleHash.get(expControl.getClothoID()) == null) {
-                            sampleHash.put(expControl.getClothoID(), expControl);
-                            expDegControls.add(expControl);
-                        } else {
-                            expDegControls.add(sampleHash.get(expControl.getClothoID()));
-                        }
-                    }
-                }
-
-                //Add sample replicates
-                List<Sample> replicateControlSamples = new ArrayList();
-                for (Sample s : expDegControls) {
-                    List<Sample> createReplicates = createReplicates(s, replicates);
-                    replicateControlSamples.addAll(createReplicates);
-                }
-
-                //experiment.setExpDegControls(replicateControlSamples);
-            }
-        }
-    }
-
-    //Make a new polynucleotide with the same name as the module, but no other information
-    private static Polynucleotide makePolynucleotide(Module m) {
-        Polynucleotide pn = new Polynucleotide(m.getName() + "_Polynucleotide");
-        return pn;
-    }
-
     //Initialize testing primitive modules
     private static void initializeTestingPrimitiveModules() {
 
@@ -856,18 +552,6 @@ public class TestingStructures {
         finalVector = testVector1;
 
         conn.closeConnection();
-    }
-
-    //Method for creating replicate samples
-    private static List<Sample> createReplicates(Sample s, int n) {
-
-        List<Sample> replicates = new ArrayList();
-        for (int i = 0; i < n; i++) {
-            Sample clone = s.clone();
-            replicates.add(clone);
-        }
-
-        return replicates;
     }
 
     //FIELDS

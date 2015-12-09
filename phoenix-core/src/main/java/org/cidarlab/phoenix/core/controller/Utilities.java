@@ -457,5 +457,18 @@ public class Utilities {
         System.out.println("######################" + message);
         System.out.println("#########################################");
     }
+
+    public static String getFilepath() {
+        String filepath = PhoenixController.class.getClassLoader().getResource(".").getPath();
+        filepath = filepath.substring(0, filepath.indexOf("/target/"));
+        //System.out.println("\n\nTHIS IS THE FILEPATH: " + filepath + "\n\n");
+        return filepath;
+    }
+    public static String getCytometryFilepath(){
+        String filepath = getFilepath();
+        filepath = filepath.substring(0,filepath.lastIndexOf("/phoenix-core"));
+        
+        return filepath;
+    }
     
 }

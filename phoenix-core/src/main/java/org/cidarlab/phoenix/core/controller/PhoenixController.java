@@ -101,7 +101,7 @@ public class PhoenixController {
             miniEugeneFileName = path.substring(path.lastIndexOf("\\") + 1, path.length() - 4);
         }        
         
-        List<Module> eugeneModules = EugeneAdaptor.getStructures(structuralSpecification, 1, miniEugeneFileName);
+        List<Module> eugeneModules = EugeneAdaptor.getStructures(structuralSpecification, null, miniEugeneFileName);
         
         //Check the validity of the Module's structure
         List<Module> rootModules = new ArrayList<Module>();
@@ -220,10 +220,10 @@ public class PhoenixController {
         currentExperiments.clear();
 
         //Run simulations to produce candidate part/feature matches
-        List<Module> bestCombinedModules = COPASIAdaptor.runSimulations(modules);
+        //List<Module> bestCombinedModules = COPASIAdaptor.runSimulations(modules);
 
         //Update module graphs based upon simulations
-        HashSet<Module> modulesToTest = FeatureAssignment.completeAssignmentSim(bestCombinedModules, modules);
+        //HashSet<Module> modulesToTest = FeatureAssignment.completeAssignmentSim(bestCombinedModules, modules);
         //ceateExperimentInstructions (modulesToTest);
         
         conn.closeConnection();

@@ -16,6 +16,9 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.cidarlab.phoenix.core.adaptors.PigeonAdaptor;
 import org.cidarlab.phoenix.core.dom.FailureMode;
 import org.cidarlab.phoenix.core.dom.Module;
+import org.cidarlab.phoenix.core.grammars.failuremode.ReverseStrandTerminatorsBaseListener;
+import org.cidarlab.phoenix.core.grammars.failuremode.ReverseStrandTerminatorsLexer;
+import org.cidarlab.phoenix.core.grammars.failuremode.ReverseStrandTerminatorsParser;
 
 import org.cidarlab.phoenix.core.grammars.failuremode.RoadBlockingBaseListener;
 import org.cidarlab.phoenix.core.grammars.failuremode.RoadBlockingLexer;
@@ -26,6 +29,9 @@ import org.cidarlab.phoenix.core.grammars.failuremode.SuperCoilingParser;
 import org.cidarlab.phoenix.core.grammars.failuremode.TranscriptionalInterferenceBaseListener;
 import org.cidarlab.phoenix.core.grammars.failuremode.TranscriptionalInterferenceLexer;
 import org.cidarlab.phoenix.core.grammars.failuremode.TranscriptionalInterferenceParser;
+import org.cidarlab.phoenix.core.grammars.failuremode.TranscriptionalReadThroughBaseListener;
+import org.cidarlab.phoenix.core.grammars.failuremode.TranscriptionalReadThroughLexer;
+import org.cidarlab.phoenix.core.grammars.failuremode.TranscriptionalReadThroughParser;
 
 
 /**
@@ -81,7 +87,35 @@ public class FailureModeGrammar {
         return tiListener.getTranscriptionalInterferenceCount();
     }
     
+    public static int getTranscriptionalReadThroughCount(String pigeonString) {
+        ANTLRInputStream input = new ANTLRInputStream(pigeonString);
+        TranscriptionalReadThroughLexer lexer = new TranscriptionalReadThroughLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        TranscriptionalReadThroughParser parser = new TranscriptionalReadThroughParser(tokens);
+        ParseTree tree = parser.root();
+        TranscriptionalReadThroughBaseListener trListener = new TranscriptionalReadThroughBaseListener();
+        ParseTreeWalker.DEFAULT.walk(trListener, tree);
+
+        System.out.println("INPUT :: " + pigeonString);
+        System.out.println("TREE :: " + tree.toStringTree(parser));
+
+        return trListener.getTranscriptionalReadThroughCount();
+    }
     
+    public static int getReverseStrandTerminatorsCount(String pigeonString) {
+        ANTLRInputStream input = new ANTLRInputStream(pigeonString);
+        ReverseStrandTerminatorsLexer lexer = new ReverseStrandTerminatorsLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        ReverseStrandTerminatorsParser parser = new ReverseStrandTerminatorsParser(tokens);
+        ParseTree tree = parser.root();
+        ReverseStrandTerminatorsBaseListener trListener = new ReverseStrandTerminatorsBaseListener();
+        ParseTreeWalker.DEFAULT.walk(trListener, tree);
+
+        System.out.println("INPUT :: " + pigeonString);
+        System.out.println("TREE :: " + tree.toStringTree(parser));
+        
+        return trListener.getReverseStrandTerminatorCount();
+    }
     
     public static void assignFailureModes(Module module){
         String featureString = PigeonAdaptor.generatePigeonString(module, true);
@@ -93,6 +127,12 @@ public class FailureModeGrammar {
         }
         if(getTranscriptionalInterferenceCount(featureString)>0){
             module.getFailureModes().add(FailureMode.TRANSCRIPTIONAL_INTERFERENCE);
+        }
+        if(getTranscriptionalReadThroughCount(featureString)>0){
+            module.getFailureModes().add(FailureMode.TRANSCRIPTIONAL_READ_THROUGH);
+        }
+        if(getReverseStrandTerminatorsCount(featureString)>0){
+            module.getFailureModes().add(FailureMode.REVERSE_STRAND_TERMINATORS);
         }
     }
     

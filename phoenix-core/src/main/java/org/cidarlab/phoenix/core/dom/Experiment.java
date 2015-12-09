@@ -18,10 +18,6 @@ public class Experiment {
     
     //No args constructor
     public Experiment() {
-        //experimentSamples = new ArrayList<>();
-        //colorControls = new ArrayList<>();
-        //regulationControls = new ArrayList<>();
-        //expDegControls = new ArrayList<>();
         mediaConditions = new ArrayList<>();
         times = new ArrayList<>();
         
@@ -35,27 +31,7 @@ public class Experiment {
         clothoID = _name;
         mediaConditions = _media;
         times = _times;
-        //experimentSamples = new ArrayList<>();
-        //colorControls = new ArrayList<>();
-        //regulationControls = new ArrayList<>();
-        //expDegControls = new ArrayList<>();
     }   
-    
-    /*
-    //Get all samples in an experiment
-    public List<Sample> getAllSamples() {
-        
-        List<Sample> allSamples = new ArrayList<>();
-        allSamples.add(this.beadControl);
-        allSamples.add(this.negativeControl);
-        allSamples.addAll(this.colorControls);
-        allSamples.addAll(this.expDegControls);
-        allSamples.addAll(this.regulationControls);
-        allSamples.addAll(this.experimentSamples);
-        
-        return allSamples;
-    }
-    */
     
     //Experiment name
     @Setter
@@ -85,38 +61,6 @@ public class Experiment {
         exType = _exType;
         results = new ExperimentResults(_exType);
     }
-    
-    /*
-    //Experiment testing samples
-    @Setter
-    @Getter
-    private List<Sample> experimentSamples;
-    
-    //Bead control sample
-    @Setter
-    @Getter
-    private Sample beadControl;
-    
-    //Negative control sample
-    @Setter
-    @Getter
-    private Sample negativeControl;
-    
-    //Color control samples
-    @Setter
-    @Getter
-    private List<Sample> colorControls;
-    
-    //Regulation control samples
-    @Setter
-    @Getter
-    private List<Sample> regulationControls;
-    
-    //Regulation control samples
-    @Setter
-    @Getter
-    private List<Sample> expDegControls;
-    */
     
     //Time series for measurements
     @Setter

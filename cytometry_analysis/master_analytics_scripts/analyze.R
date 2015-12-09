@@ -64,10 +64,16 @@ setwd(wd)
 	}
 	
 	#Get autofluorescence
-	autofluorescence <- getAutofluorescence(negativeControlFlowSet, gatedBeadControlFlowFrame)
+	autofluorescence <- getAutofluorescence(negativeControlFlowSet, gatedBeadControlFlowFrame)		
 	
 	#Get color multiplier vector relative to FITC-A channel for gfp control
 	colorMultiplierVector <- getColorMultiplier(colorControlsFlowSet, gatedBeadControlFlowFrame, autofluorescence, as.character(colorControlRows$FILENAME))
+	
+	# #Correct autofluorescence with color multiplier
+	# for (r in 1:length(colnames(autofluorescence))) {
+		# m <- as.numeric(colorMultiplierVector[,which(TRUE == grepl(colnames(autofluorescence)[r], colnames(colorMultiplierVector), ignore.case=TRUE))])
+		# autofluorescence[,r] <- m * autofluorescence[,r]
+	# }
 	
 	#Group files by part name
 	#Determine unique parts

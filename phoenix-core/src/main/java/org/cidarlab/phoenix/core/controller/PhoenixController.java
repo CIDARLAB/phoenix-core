@@ -16,6 +16,7 @@ import org.cidarlab.phoenix.core.adaptors.*;
 import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Module;
+import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
 import org.cidarlab.phoenix.core.grammars.FailureModeGrammar;
 import org.cidarlab.phoenix.core.grammars.PhoenixGrammar;
 import org.cidarlab.phoenix.core.grammars.StructuralGrammar;
@@ -177,6 +178,41 @@ public class PhoenixController {
         assmTestFiles.add(assemblyInstructions);
         assmTestFiles.add(mapFile);
         return assmTestFiles;
+    }
+    
+    public static void assignSBMLDocuments(Module module){
+        
+        //COPASIAdaptor sbmlfunctions = new COPASIAdaptor();
+        if(module.getRole().equals(ModuleRole.EXPRESSEE)){
+            module.getSBMLDocument().add(COPASIAdaptor.createDegradationModel(module.getClothoID(), module.getName())); //name and id of expressee
+        }
+        else if(module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR)){
+            module.getSBMLDocument().add(COPASIAdaptor.createDegradationModel(null, null)); //name and id of expressee
+            module.getSBMLDocument().add(COPASIAdaptor.createActivationModel(null, null,null,null)); //id of the expressee and id of the FP, name of the expressee (cds), name of the FP
+        }
+        else if(module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR)){
+            module.getSBMLDocument().add(COPASIAdaptor.createDegradationModel(module.getClothoID(), module.getName())); //name and id of expressee
+            module.getSBMLDocument().add(COPASIAdaptor.createActivationModel(null, null,null,null)); //id of the expressee and id of the FP, name of the expressee (cds), name of the FP
+            module.getSBMLDocument().add(COPASIAdaptor.createInductionActivationModel(null, null, null,null, null, null)); //id of inducer (small molecule), id of the expressee and id of the FP, name of the inducer, name of the expressee (cds), name of the FP
+        }
+        else if(module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)){
+            module.getSBMLDocument().add(COPASIAdaptor.createDegradationModel(null, null)); //name and id of expressee
+            module.getSBMLDocument().add(COPASIAdaptor.createRepressionModel(null, null,null,null)); //id of the expressee and id of the FP, name of the expressee (cds), name of the FP
+        }
+        else if(module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR)){
+            module.getSBMLDocument().add(COPASIAdaptor.createDegradationModel(module.getClothoID(), module.getName())); //name and id of expressee
+            module.getSBMLDocument().add(COPASIAdaptor.createRepressionModel(null, null,null,null)); //id of the expressee and id of the FP, name of the expressee (cds), name of the FP
+            module.getSBMLDocument().add(COPASIAdaptor.createInductionRepressionModel(null, null, null)); //id of inducer (small molecule), id of the expressee and id of the FP, name of the inducer, name of the expressee (cds), name of the FP
+        }
+        else if(module.getRole().equals(ModuleRole.EXPRESSOR)){
+             module.getSBMLDocument().add(COPASIAdaptor.createExpressionModel(null, null)); //
+             module.getSBMLDocument().add(COPASIAdaptor.createDegradationModel(null, null)); //name and id of expressee
+        }
+        
+        for(Module child:module.getChildren()){
+            assignSBMLDocuments(child);
+        }
+        
     }
     
     public static List<AssignedModule> getAllAssignedModules(Module module){

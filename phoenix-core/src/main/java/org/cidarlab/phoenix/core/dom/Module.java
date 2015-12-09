@@ -32,6 +32,7 @@ public class Module extends AbstractModule {
         this.submodules = new ArrayList<>();
         this.moduleFeatures = new ArrayList<>();
         this.failureModes = new ArrayList<>();
+        this.SBMLDocument = new ArrayList<>();
         this.isForward = true;
         this.name = name;
         this.clothoID = name;
@@ -133,7 +134,7 @@ public class Module extends AbstractModule {
     //SBML Model
     @Getter
     @Setter
-    private SBMLDocument SBMLDocument;
+    private List<SBMLDocument> SBMLDocument;
 
     // Sub-Module(s)
     @Getter

@@ -70,22 +70,22 @@ public class COPASIAdaptor {
      * Methods for composing SBML models of gene expression
      */  
 	
-	private static SBMLDocument composeExpressionModels(Model mod1, Model mod2) {
+	public static SBMLDocument composeExpressionModels(Model mod1, Model mod2) {
 		return composeExpressionModels(mod1, mod2, new HashMap<String, String>());
 	}
 	
-	private static SBMLDocument composeExpressionModels(Model mod1, Model mod2, HashMap<String, String> substitutions) {
+	public static SBMLDocument composeExpressionModels(Model mod1, Model mod2, HashMap<String, String> substitutions) {
 		List<Model> mods = new LinkedList<Model>();
 		mods.add(mod1);
 		mods.add(mod2);
 		return composeExpressionModels(mods, substitutions);
 	}
 	
-	private static SBMLDocument composeExpressionModels(List<Model> mods) {
+	public static SBMLDocument composeExpressionModels(List<Model> mods) {
 		return composeExpressionModels(mods, new HashMap<String, String>());
 	}
 	
-	private static SBMLDocument composeExpressionModels(List<Model> mods, HashMap<String, String> substitutions) {
+	public static SBMLDocument composeExpressionModels(List<Model> mods, HashMap<String, String> substitutions) {
 		SBMLDocument composedDoc = createCompartmentModel("cell", "cell");
 		Model composedMod = composedDoc.getModel();
 		for (Model mod : mods) {
@@ -133,7 +133,7 @@ public class COPASIAdaptor {
 		}
 	}
 	
-	private static void substituteSpecies(HashMap<String, String> substitutions, Model mod) {
+	public static void substituteSpecies(HashMap<String, String> substitutions, Model mod) {
 		for (String substitutedID : substitutions.keySet()) {
 			Species substitutedSpec = mod.getSpecies(substitutedID);
 			Species substituteSpec = mod.getSpecies(substitutions.get(substitutedID));
@@ -219,11 +219,11 @@ public class COPASIAdaptor {
      * Methods for creating SBML models of gene expression
      */
 	
-	private static SBMLDocument createCompartmentModel(String compID) {
+	public static SBMLDocument createCompartmentModel(String compID) {
     	return createCompartmentModel(compID, compID);
 	}
 	
-	private static SBMLDocument createCompartmentModel(String compID, String compName) {
+	public static SBMLDocument createCompartmentModel(String compID, String compName) {
 		SBMLDocument compartmentDoc = new SBMLDocument(3, 1);
     	Model compartmentMod = compartmentDoc.createModel();
     	Compartment cell = compartmentMod.createCompartment(compID);
@@ -232,11 +232,11 @@ public class COPASIAdaptor {
     	return compartmentDoc;
 	}
 	
-	private static SBMLDocument createDegradationModel(String degradedID) {
+	public static SBMLDocument createDegradationModel(String degradedID) {
     	return createDegradationModel(degradedID, degradedID);
     }
     
-    private static SBMLDocument createDegradationModel(String degradedID, String degradedName) {
+    public static SBMLDocument createDegradationModel(String degradedID, String degradedName) {
     	SBMLDocument degradationDoc = createCompartmentModel("cell", "cell");
     	Species degraded = createSpecies(degradedID, degradedName, degradationDoc.getModel());
     	degraded.setSBOTerm(SBOTerm.OUTPUT.getID());
@@ -245,21 +245,21 @@ public class COPASIAdaptor {
     }
     
 
-    private static SBMLDocument createExpressionModel(String expressedID) {
+    public static SBMLDocument createExpressionModel(String expressedID) {
     	return createExpressionModel(expressedID, expressedID);
     }
     
-    private static SBMLDocument createExpressionModel(String expressedID, String expressedName) {
+    public static SBMLDocument createExpressionModel(String expressedID, String expressedName) {
     	SBMLDocument expressionDoc = createDegradationModel(expressedID, expressedName);
     	createExpressionReaction(expressionDoc.getModel().getSpecies(expressedID), expressionDoc.getModel());
     	return expressionDoc;
     }
     
-    private static SBMLDocument createRepressionModel(String repressorID, String expressedID) {
+    public static SBMLDocument createRepressionModel(String repressorID, String expressedID) {
     	return createRepressionModel(repressorID, expressedID, repressorID, expressedID);
     }
     
-    private static SBMLDocument createRepressionModel(String repressorID, String expressedID, String repressorName, String expressedName) {
+    public static SBMLDocument createRepressionModel(String repressorID, String expressedID, String repressorName, String expressedName) {
     	SBMLDocument repressionDoc = createDegradationModel(expressedID, expressedName);
     	Species repressor = createSpecies(repressorID, repressorName, repressionDoc.getModel());
     	repressor.setSBOTerm(SBOTerm.INPUT.getID());
@@ -267,11 +267,11 @@ public class COPASIAdaptor {
     	return repressionDoc;
     }
     
-    private static SBMLDocument createActivationModel(String activatorID, String expressedID) {
+    public static SBMLDocument createActivationModel(String activatorID, String expressedID) {
     	return createActivationModel(activatorID, expressedID, activatorID, expressedID);
     }
     
-    private static SBMLDocument createActivationModel(String activatorID, String expressedID, String activatorName, String expressedName) {
+    public static SBMLDocument createActivationModel(String activatorID, String expressedID, String activatorName, String expressedName) {
     	SBMLDocument activationDoc = createDegradationModel(expressedID, expressedName);
     	Species activator = createSpecies(activatorID, activatorName, activationDoc.getModel());
     	activator.setSBOTerm(SBOTerm.INPUT.getID());
@@ -279,11 +279,11 @@ public class COPASIAdaptor {
     	return activationDoc;
     }
     
-    private static SBMLDocument createInductionRepressionModel(String inducerID, String repressorID, String expressedID) {
+    public static SBMLDocument createInductionRepressionModel(String inducerID, String repressorID, String expressedID) {
     	return createInductionRepressionModel(inducerID, repressorID, expressedID, inducerID, repressorID, expressedID);
     }
     
-    private static SBMLDocument createInductionRepressionModel(String inducerID, String repressorID, String expressedID,   
+    public static SBMLDocument createInductionRepressionModel(String inducerID, String repressorID, String expressedID,   
     		String inducerName, String repressorName, String expressedName) {
     	SBMLDocument inductionRepressionDoc = createDegradationModel(expressedID, expressedName);
     	Species repressor = createSpecies(repressorID, repressorName, inductionRepressionDoc.getModel());
@@ -295,11 +295,11 @@ public class COPASIAdaptor {
     	return inductionRepressionDoc;
     }
     
-    private static SBMLDocument createInductionActivationModel(String inducerID, String activatorID, String expressedID) {
+    public static SBMLDocument createInductionActivationModel(String inducerID, String activatorID, String expressedID) {
     	return createInductionActivationModel(inducerID, activatorID, expressedID, inducerID, activatorID, expressedID);
     }
     
-    private static SBMLDocument createInductionActivationModel(String inducerID, String activatorID, String expressedID, 
+    public static SBMLDocument createInductionActivationModel(String inducerID, String activatorID, String expressedID, 
     		String inducerName, String activatorName, String expressedName) {
     	SBMLDocument inductionActivationDoc = createDegradationModel(expressedID, expressedName);
     	Species activator = createSpecies(activatorID, activatorName, inductionActivationDoc.getModel());

@@ -611,9 +611,9 @@ public class ClothoAdaptor {
         }
         map.put("assignedModules", assignedModuleIds);
 
-        if (module.getSBMLDocument() != null) {
-            map.put("SBMLDocument", module.getSBMLDocument().getSBMLDocumentAttributes());
-        }
+        //if (module.getSBMLDocument() != null) {
+        //    map.put("SBMLDocument", module.getSBMLDocument().getSBMLDocumentAttributes());
+        //}
 
         //Primitive Modules (Sub Modules)
         JSONArray submodules = new JSONArray();
@@ -663,9 +663,9 @@ public class ClothoAdaptor {
         }
         map.put("experiments", exptIds);
 
-        if (amodule.getSBMLDocument() != null) {
-            map.put("SBMLDocument", amodule.getSBMLDocument().getSBMLDocumentAttributes());
-        }
+        //if (amodule.getSBMLDocument() != null) {
+        //    map.put("SBMLDocument", amodule.getSBMLDocument().getSBMLDocumentAttributes());
+        //}
 
         JSONArray featureIds = new JSONArray();
         for (Feature f : amodule.getModuleFeatures()) {

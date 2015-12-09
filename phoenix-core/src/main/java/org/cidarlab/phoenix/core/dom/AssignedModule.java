@@ -24,7 +24,6 @@ public class AssignedModule extends Module {
         super(m.getName());
         this.experiments = new ArrayList<>();
         this.regulationDocument = new ArrayList<>();
-        this.SBMLDocument = new SBMLDocument();
         //this.controlModules = new ArrayList<>();
         
         List<Feature> fList = new ArrayList<>();
@@ -70,7 +69,7 @@ public class AssignedModule extends Module {
         clone.setRole(this.getRole());
         clone.setStage(this.getStage());
         
-        clone.SBMLDocument = this.SBMLDocument;
+        clone.setSBMLDocument(this.getSBMLDocument());
         clone.regulationDocument = this.regulationDocument;
         
         return clone;
@@ -85,11 +84,6 @@ public class AssignedModule extends Module {
     @Getter
     @Setter
     private List<AssignedModule> controlModules;
-    
-    //SBML Model
-    @Getter
-    @Setter
-    private SBMLDocument SBMLDocument;
     
     @Getter
     @Setter

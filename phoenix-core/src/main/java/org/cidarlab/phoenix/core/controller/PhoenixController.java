@@ -7,15 +7,21 @@ package org.cidarlab.phoenix.core.controller;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import net.sf.json.JSONObject;
+import java.util.Map;
+import java.util.Set;
 import org.cidarlab.phoenix.core.adaptors.*;
+import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Module;
+import org.cidarlab.phoenix.core.grammars.FailureModeGrammar;
 import org.cidarlab.phoenix.core.grammars.PhoenixGrammar;
+import org.cidarlab.phoenix.core.grammars.StructuralGrammar;
 import org.clothoapi.clotho3javaapi.Clotho;
 import org.clothoapi.clotho3javaapi.ClothoConnection;
+
 
 /**
  * This is the primary class for managing the workflow of tools within Phoenix
@@ -36,11 +42,10 @@ public class PhoenixController {
     //Data upload method
     //FILE IN, NOTHING OUT
     public static void preliminaryDataUpload (File featureLib, File plasmidLib, File fluorophoreSpectra, File cytometer) throws FileNotFoundException, Exception {
-     
-        //Import data from Benchling multi-part Genbank files to Clotho
-        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
-        Clotho clothoObject = new Clotho(conn);
         
+        //Import data from Benchling multi-part Genbank files to Clotho
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
+        Clotho clothoObject = new Clotho(conn);        
         
         ClothoAdaptor.uploadSequences(featureLib, true,clothoObject);
         ClothoAdaptor.uploadFluorescenceSpectrums(fluorophoreSpectra,clothoObject);
@@ -50,10 +55,36 @@ public class PhoenixController {
         conn.closeConnection();
     }
     
+    //Add additional plasminds only, no further processing
+    //FILE IN, NOTHING OUT
+    public static void addPlasmids (File plasmidLib) throws Exception {
+        
+        //Import data from Benchling multi-part Genbank files to Clotho
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
+        Clotho clothoObject = new Clotho(conn);
+        
+        ClothoAdaptor.uploadSequences(plasmidLib, false,clothoObject);
+        
+        conn.closeConnection();
+    }
+    
+        //Add additional plasminds only, no further processing
+    //FILE IN, NOTHING OUT
+    public static void addFeatures (File featureLib) throws Exception {
+        
+        //Import data from Benchling multi-part Genbank files to Clotho
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
+        Clotho clothoObject = new Clotho(conn);
+        
+        ClothoAdaptor.uploadSequences(featureLib, true,clothoObject);
+        
+        conn.closeConnection();
+    }
+    
     //Main Phoenix design decomposition method
     //Remember to start Clotho before this initializeDesign
     //FILES IN, NOTHING OUT
-    public static List<Module> initializeDesign (File structuralSpecification, File functionalSpecification) throws Exception {
+    public static Module initializeDesign (File structuralSpecification, File functionalSpecification) throws Exception {
 
         //STL function decomposition
         
@@ -70,63 +101,108 @@ public class PhoenixController {
             miniEugeneFileName = path.substring(path.lastIndexOf("\\") + 1, path.length() - 4);
         }        
         
-        List<Module> modules = EugeneAdaptor.getStructures(structuralSpecification, 1, miniEugeneFileName);
-
-        //Decompose target modules with PhoenixGrammar to get module graphs
-        PhoenixGrammar.decomposeAll(modules);
-
-        //Extend the modules for testing
-        TestingStructures.addTestingPrimitives(modules);
+        List<Module> eugeneModules = EugeneAdaptor.getStructures(structuralSpecification, null, miniEugeneFileName);
+        
+        //Check the validity of the Module's structure
+        List<Module> rootModules = new ArrayList<Module>();
+        for(Module module:eugeneModules){
+            if(StructuralGrammar.validStructure(module)){
+                rootModules.add(module);
+            }
+        }
+        
+        //Pick Module with least number of failure modes
+        for(Module module:rootModules){
+            FailureModeGrammar.assignFailureModes(module);
+        }
+        List<Module> sortedModules = new ArrayList<Module>();
+        sortedModules = FailureModeGrammar.sortByFailureModes(rootModules);
+        
+        //Best Module :: sortedModules.get(0);
+        Module bestModule = sortedModules.get(0);
+        
+        //Decompose Best Module with PhoenixGrammar to get a module graph
+        PhoenixGrammar.decompose(bestModule);
+        
+        //Adds Testing primitives to The Module Tree. 
+        TestingStructures.addTestingPrimitives(bestModule);
         
         //Perform partial part assignments given the feature library
-        HashSet<Module> modulesToTest = new HashSet<Module>(FeatureAssignment.partialAssignment(modules));        
-        TestingStructures.createExperiments(modulesToTest);
+        FeatureAssignment.partialAssignment(bestModule, 0.5);
+        //removeDuplicateAssignedModules(bestModule);
         
-        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
+        //At this point, I have a Module tree, which has Assigned Modules for Expressors and Expressees  and a Many to Many relationship between modules and Assigned Modules. 
+        //I just want to create Control Modules for AssignedModules & Create Experiment Objects for AssignedModules
+        TestingStructures.createExperiments(bestModule);
+        
+        assignShortName(bestModule);
+        
+        
+        
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
         Clotho clothoObject = new Clotho(conn);
-        String moduleId = ClothoAdaptor.createModule(modules.get(0), clothoObject);        
         
-        JSONObject flareValue = new JSONObject();
-        //flareValue = ClientSideAdaptor.convertModuleToJSON(modules.get(0));
-        flareValue = ClientSideAdaptor.convertModuleToJSON(ClothoAdaptor.getModule(moduleId, clothoObject));
-        
-        String JSONFilePath = getJSONFilepath();
-        //String JSONFilePath = Args.flareJSONfilepath;
-        
-        ClientSideAdaptor.createFlareFile(JSONFilePath,flareValue);
         conn.closeConnection();
-//        return modules;
+        return bestModule;
         
-        return new ArrayList<>(modulesToTest);
     }
-
+    
+     
     //Create assembly and testing instructions from a set of Modules that need to be built and tested
-    //MODULES IN, FILES OUT
-    public static List<File> createExperimentInstructions (HashSet<Module> modulesToTest, String filePath) throws Exception {
+    //Root MODULE IN, FILES OUT
+    public static List<File> createExperimentInstructions (Module module, String filePath) throws Exception {
+        
+        
         
         //Determine experiments from current module assignment state
         //Create expreriment objects based upon the modules being tested
+        List<AssignedModule> amodulesToTestList = new ArrayList<AssignedModule>();
+        Set<AssignedModule> amodulesToTest = new HashSet<AssignedModule>();
+        amodulesToTestList = getAllAssignedModules(module);
+        amodulesToTest.addAll(amodulesToTestList);
         List<Experiment> currentExperiments = new ArrayList<>();
-        for (Module m : modulesToTest) {
+        for (AssignedModule m : amodulesToTest) {
             currentExperiments.addAll(m.getExperiments());
         }
-        
+        System.out.println("amodulesToTest size " + amodulesToTest.size());
         //Create assembly and testing plans
-        File assemblyInstructions = RavenAdaptor.generateAssemblyPlan(modulesToTest, filePath);
-        File testingInstructions = PhoenixInstructions.generateTestingInstructions(currentExperiments, filePath);
-
+        File testingInstructions = PhoenixInstructions.generateTestingInstructions(amodulesToTestList, filePath);
+        File mapFile = PhoenixInstructions.generateNameMapFile(amodulesToTestList, filePath);
+        
+        File assemblyInstructions = RavenAdaptor.generateAssemblyPlan(amodulesToTest, filePath);
+        
         //Save these strings to files and return them from this method
         List<File> assmTestFiles = new ArrayList<>();
         assmTestFiles.add(testingInstructions);
         assmTestFiles.add(assemblyInstructions);
+        assmTestFiles.add(mapFile);
         return assmTestFiles;
     }
+    
+    public static List<AssignedModule> getAllAssignedModules(Module module){
+        List<AssignedModule> modulesToTest = new ArrayList<AssignedModule>();
+        for (AssignedModule amodule : module.getAssignedModules()) {
+            if (!modulesToTest.contains(amodule)) {
+                modulesToTest.add(amodule);
+            }
+        }
+        for(Module child:module.getChildren()){
+            for(AssignedModule amodule:getAllAssignedModules(child)){
+                if(!modulesToTest.contains(amodule)){
+                    modulesToTest.add(amodule);
+                }
+            }
+        }
+        return modulesToTest;
+    }
+    
+            
     
     //Take a plasmid library back in, interpret data, run simulations for parents, verify, make part assignments
     //FILES IN, NOTHING OUT
     public static void interpretData (List<File> fcsFiles, File plasmidsCreated, List<Module> modules) throws Exception {
         
-        ClothoConnection conn = new ClothoConnection(Args.clothoLocation);
+        ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
         Clotho clothoObject = new Clotho(conn);        
         
         List<Experiment> currentExperiments = new ArrayList<>();
@@ -140,16 +216,77 @@ public class PhoenixController {
         AnalyticsAdaptor.runAnalytics(currentExperiments);
 
         //Make owl data sheets
-        OwlAdaptor.makeDatasheets(currentExperiments);
+        //OwlAdaptor.makeDatasheets(currentExperiments);
         currentExperiments.clear();
 
         //Run simulations to produce candidate part/feature matches
-        List<Module> bestCombinedModules = iBioSimAdaptor.runSimulations(modules);
+        List<Module> bestCombinedModules = COPASIAdaptor.runSimulations(modules);
 
         //Update module graphs based upon simulations
         HashSet<Module> modulesToTest = FeatureAssignment.completeAssignmentSim(bestCombinedModules, modules);
-//        createExperimentInstructions (modulesToTest);
+        //ceateExperimentInstructions (modulesToTest);
         
         conn.closeConnection();
-    }    
+    }
+    
+    public static void assignShortName(Module module){
+        if(module.isRoot()){
+            module.setIndex("0");
+        }
+        int mod_count =0;
+        for(Module child:module.getChildren()){
+            child.setIndex(module.getIndex() + "_"+mod_count);
+            mod_count++;
+            int amod_count=0;
+            for(AssignedModule amod:child.getAssignedModules()){
+                amod.setIndex(module.getIndex() +"_"+amod_count);
+                amod_count++;
+                amod.setShortName(Module.getShortModuleRole(amod.getRole())+"_"+amod.getIndex());
+                for(Experiment experiment:amod.getExperiments()){
+                    experiment.setAmName(amod.getName());
+                    experiment.setAmShortName(amod.getShortName());
+                }
+            }
+            assignShortName(child);
+        }
+    }
+    
+    
+    public static void removeDuplicateAssignedModules(Module module) {
+    
+        Map<String, List<AssignedModule>> amap = getAssignedModulesMap(module);
+        removeDuplicateAssignedModules(module,amap);
+        
+    }
+    
+    public static Map<String, List<AssignedModule>> getAssignedModulesMap(Module module){
+        Map<String, List<AssignedModule>> amap = new HashMap<>();
+        String featureString = PigeonAdaptor.generatePigeonString(module, true);
+        //String featureString = module.getFeatureShortString();
+        
+        if (!module.getAssignedModules().isEmpty()) {
+            amap.put(featureString, module.getAssignedModules());
+        }
+        for(Module child:module.getChildren()){
+            amap.putAll(getAssignedModulesMap(child));
+        }
+        
+        return amap;
+    }
+    public static void removeDuplicateAssignedModules(Module module, Map<String, List<AssignedModule>> amap) {
+        
+         String featureString = PigeonAdaptor.generatePigeonString(module, true);
+        //String featureString = module.getFeatureShortString();
+        
+        if(!module.getAssignedModules().isEmpty()){
+            module.setAssignedModules(amap.get(featureString));
+        }
+
+        for (Module child : module.getChildren()) {
+            removeDuplicateAssignedModules(child, amap);
+        }
+        
+        
+    }
+    
 }

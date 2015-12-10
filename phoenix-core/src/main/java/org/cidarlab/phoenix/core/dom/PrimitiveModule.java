@@ -7,6 +7,7 @@ package org.cidarlab.phoenix.core.dom;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,11 @@ import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
  * @author prash
  */
 @Slf4j
-public class PrimitiveModule extends Module {
+public class PrimitiveModule extends AbstractModule {
+    
+    @Getter
+    @Setter
+    private Feature moduleFeature;
     
     //Set primitive
     @Getter
@@ -29,27 +34,20 @@ public class PrimitiveModule extends Module {
     @Setter
     private FeatureRole primitiveRole;
     
-    //Blank constructor
-    public PrimitiveModule() {
-        super("");
-    }
-    
     public PrimitiveModule(FeatureRole role, Primitive primitive, Feature moduleFeature) {
-        super("");
         this.primitiveRole = role;
         this.primitive = primitive;
-        this.getModuleFeatures().add(moduleFeature);
+        this.moduleFeature = moduleFeature.clone();
+        //this.getModuleFeatures().add(moduleFeature);
     }
     
     @Override
     public PrimitiveModule clone() {
         
-        PrimitiveModule clone = new PrimitiveModule();
-        clone.primitive = this.primitive;
-        clone.primitiveRole = this.primitiveRole;
-        List<Feature> mFeatures = new ArrayList<>();
-        mFeatures.addAll(this.getModuleFeatures());
-        clone.setModuleFeatures(mFeatures);
+        PrimitiveModule clone = new PrimitiveModule(this.primitiveRole,this.primitive,this.moduleFeature);
+        //List<Feature> mFeatures = new ArrayList<>();
+        //mFeatures.addAll(this.getModuleFeatures());
+        //clone.setModuleFeatures(mFeatures);
         
         return clone;
     }

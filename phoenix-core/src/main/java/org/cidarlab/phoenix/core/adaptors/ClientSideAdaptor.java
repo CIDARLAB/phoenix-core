@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.Writer;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.Module;
 
@@ -29,7 +30,7 @@ public class ClientSideAdaptor {
         for (Module child : module.getChildren()) {
             children.add(convertModuleToJSON(child));
         }
-        for (Module aModule : module.getAssignedModules()) {
+        for (AssignedModule aModule : module.getAssignedModules()) {
             JSONObject assignedModuleObj = new JSONObject();
             assignedModuleObj.put("name", aModule.getName());
             JSONArray exptChildren = new JSONArray();

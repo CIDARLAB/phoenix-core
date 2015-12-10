@@ -6,7 +6,13 @@ package org.cidarlab.phoenix.core.controller;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.cidarlab.phoenix.core.dom.Experiment;
+import org.cidarlab.phoenix.core.dom.Experiment.ExperimentType;
+import org.cidarlab.phoenix.core.dom.Titration;
 
 /**
  *
@@ -356,10 +362,113 @@ public class Utilities {
         return overhangVariableSequenceHash;
     }
     
+    public static Map<String,String> getChannelsMap(){
+        
+        Map<String,String> channelMap = new HashMap<>();
+        channelMap.put("T-Sapphire.ref", "Pacific_Orange-A");
+        channelMap.put("mCitrine.ref", "");
+        channelMap.put("iRFP.ref", "PE-Texas_Red-A");
+        channelMap.put("mOrange.ref", "");
+        channelMap.put("EYFP.ref", "");
+        channelMap.put("EBFP2.ref", "Pacific_Blue-A");
+        channelMap.put("mRFP1.4m.ref", "");
+        channelMap.put("mAmetrine.ref", "");
+        channelMap.put("DsRed.ref", "");
+        channelMap.put("LSS-mOrange.ref", "");
+        channelMap.put("E2-Crimson.ref", "");
+        channelMap.put("CyPet.ref", "");
+        channelMap.put("mNeptune.ref", "");
+        channelMap.put("EGFPm.ref", "FITC-A");
+        
+        return channelMap;
+    }
+    
+    public static Map<String,Titration> getSmallMoleculeTitration(){
+        
+        Map<String,Titration> regTitreMap = new HashMap();
+        Titration ara = new Titration();
+        ara.getTitrationValues().add(0.0);
+        ara.getTitrationValues().add(100.0);
+        ara.getTitrationValues().add(1000.0);
+        ara.getTitrationValues().add(10000.0);
+        ara.setSmallMolecule("ara");
+        ara.setUnits("nM");
+        
+        
+        Titration atc = new Titration();
+        atc.getTitrationValues().add(0.0);
+        atc.getTitrationValues().add(1.0);
+        atc.getTitrationValues().add(10.0);
+        atc.getTitrationValues().add(100.0);
+        atc.setSmallMolecule("aTc");
+        atc.setUnits("ng/mL");
+        
+        Titration dapg = new Titration();
+        dapg.getTitrationValues().add(0.0);
+        dapg.getTitrationValues().add(1.0);
+        dapg.getTitrationValues().add(10.0);
+        dapg.getTitrationValues().add(100.0);
+        dapg.setSmallMolecule("DAPG");
+        dapg.setUnits("nM");
+        
+        Titration iptg = new Titration();
+        iptg.getTitrationValues().add(0.0);
+        iptg.getTitrationValues().add(10.0);
+        iptg.getTitrationValues().add(100.0);
+        iptg.getTitrationValues().add(1000.0);
+        iptg.setSmallMolecule("IPTG");
+        iptg.setUnits("nM");
+        
+        
+        regTitreMap.put("araC.ref", ara);
+        regTitreMap.put("tetR.ref", atc);
+        regTitreMap.put("phlF.ref", dapg);
+        regTitreMap.put("lacIm.ref", iptg);
+        
+        return regTitreMap;
+    }
+    
+    public static Map<Experiment.ExperimentType,List<String>> getDefaultTimeMap(){
+        Map<ExperimentType,List<String>> defaultTimeMap = new HashMap<>();
+        
+        List<String> expreg = new ArrayList<>();
+        expreg.add("0");
+        List<String> deg = new ArrayList<>();
+        deg.add("0");
+        deg.add("30");
+        deg.add("60");
+        List<String> smallMol = new ArrayList<>();
+        smallMol.add("0");
+        smallMol.add("120");
+        smallMol.add("240");
+        smallMol.add("360");
+        smallMol.add("480");
+        
+        defaultTimeMap.put(ExperimentType.EXPRESSION, expreg);
+        defaultTimeMap.put(ExperimentType.REGULATION, expreg);
+        defaultTimeMap.put(ExperimentType.DEGRADATION, deg);
+        defaultTimeMap.put(ExperimentType.SMALL_MOLECULE, smallMol);
+        
+        return defaultTimeMap;
+    }
+    
     public static void printDebugStatement(String message){
         System.out.println("#########################################");
         System.out.println("######################" + message);
         System.out.println("#########################################");
+    }
+
+    public static String getFilepath() {
+        String filepath = PhoenixController.class.getClassLoader().getResource(".").getPath();
+        filepath = filepath.substring(0, filepath.indexOf("/target/"));
+        //System.out.println("\n\nTHIS IS THE FILEPATH: " + filepath + "\n\n");
+        return filepath;
+    }
+    public static String getCytometryFilepath(){
+        String filepath = getFilepath();
+        filepath = filepath.substring(0,filepath.lastIndexOf("/phoenix-core"));
+        
+        return filepath;
     }
     
 }

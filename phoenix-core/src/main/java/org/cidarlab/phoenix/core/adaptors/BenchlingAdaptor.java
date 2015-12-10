@@ -35,6 +35,7 @@ import org.cidarlab.phoenix.core.dom.Arc.ArcRole;
 import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
 import org.cidarlab.phoenix.core.dom.SmallMolecule;
 import org.cidarlab.phoenix.core.dom.SmallMolecule.SmallMoleculeRole;
+import org.cidarlab.phoenix.core.dom.Vector;
 
 /**
  *
@@ -76,37 +77,19 @@ public class BenchlingAdaptor {
                 }
             } else {
                 polyNuc.setSingleStranded(true);
+            }            
+
+            //
+            if (seq.seqString().contains(_lacZalphaL0) || seq.seqString().contains(Utilities.reverseComplement(_lacZalphaL0)) || seq.seqString().contains(_lacZalphaL1) || seq.seqString().contains(Utilities.reverseComplement(_lacZalphaL1))) {
+                polyNuc.setDV(true);
             }
             
-            //Determine if this is a regular plasmid with a part or a desination vector
-            String vectorName = null;
-            if (seq.getAnnotation().containsProperty("KEYWORDS")) {
-                String k = seq.getAnnotation().getProperty("KEYWORDS").toString();
-                String[] tokens = k.split("\"");
-                for (String token : tokens) {
-                    
-                    //Get backbone vector name
-                    String[] keywords = token.split(":");
-                    if (token.contains("backbone")) {
-                        if (keywords.length == 2) {
-                            vectorName = keywords[1];
-                        }
-                    }
-                    
-                    //Flag this polynudleotide as a destination vector
-                    for (String key : keywords) {
-                        if (key.equalsIgnoreCase("vector") || key.equalsIgnoreCase("destination vector")) {
-                            polyNuc.setDV(true);
-                        }
-                    }
-                }
-            }
-
             //Get sequence
             polyNuc.setSequence(getNucSeq(seq));
             
             //Get part and vector
-            getMoCloParts(polyNuc, seq, vectorName);
+//            getMoCloParts(polyNuc, seq, vectorName);
+            getMoCloParts(polyNuc, seq);
             
             polyNuc.setAccession(seq.getName() + "_Polynucleotide");
             
@@ -127,7 +110,7 @@ public class BenchlingAdaptor {
      * Creates a Part set from a Biojava sequence object
      * This will create basic parts out of all incoming plasmids
      */
-    public static HashSet<Part> getMoCloParts(Polynucleotide pn, Sequence seq, String vectorName) throws FileNotFoundException, NoSuchElementException, BioException {        
+    public static HashSet<Part> getMoCloParts(Polynucleotide pn, Sequence seq) throws FileNotFoundException, NoSuchElementException, BioException {        
         
         HashSet<Part> partSet = new HashSet<>();
 
@@ -149,7 +132,6 @@ public class BenchlingAdaptor {
         //This also assumes there are either exactly two of each site, not both or a mix
         boolean containsBBsI = searchSeq.contains(_BbsIfwd) && searchSeq.contains(_BbsIrev);
         boolean containsBsaI = searchSeq.contains(_BsaIfwd) && searchSeq.contains(_BsaIrev);
-        boolean fwd = true;
 
         if (containsBBsI && !containsBsaI) {
 
@@ -236,28 +218,22 @@ public class BenchlingAdaptor {
         }
         RO = RO.replaceAll("\\*", "#");
         LO = LO.replaceAll("\\*","#");
+        
         //Make a new Part and Vector
         Part part;
-        Part vector;
+        Vector vector;
         
-        //If there is a supplied vector name, that becomes the vector name
-        String vecName;
-        if (vectorName != null) {
-            vecName = vectorName + "_" + LO + "_" + RO;
-        } else {
-            vecName = seq.getName() + "_vector_" + LO + "_" + RO;
-        }
+        //Get rid of these tags and add a field to part with two features that constitute the vector
+        //There will be some assumptions about MoClo format here as well
         
         //Generate parts and vector parts
         if (seq.getAnnotation().containsProperty("COMMENT")) {
             part = Part.generateBasic(seq.getName() + "_part_" + LO + "_" + RO, seq.getAnnotation().getProperty("COMMENT").toString(), new NucSeq(partSeq), null, null);
-            vector = Part.generateBasic(vecName, "", new NucSeq(vecSeq), null, null);
+            vector = new Vector(seq.getName() + "_vector_" + LO + "_" + RO, "", new NucSeq(vecSeq), null, null, null, null);
         } else {
             part = Part.generateBasic(seq.getName() + "_part_" + LO + "_" + RO, "", new NucSeq(partSeq), null, null);
-            vector = Part.generateBasic(vecName, "", new NucSeq(vecSeq), null, null);
+            vector = new Vector(seq.getName() + "_vector_" + LO + "_" + RO, "", new NucSeq(vecSeq), null, null, null, null);
         }
-
-        vector.setVector(true);
 
         partSet.add(part);
         partSet.add(vector);
@@ -375,8 +351,7 @@ public class BenchlingAdaptor {
                             //Only in the case of a fluorescent protein do we make a special feature
                             if (subtype.contains("Fluorescent") && type.equalsIgnoreCase("CDS")) {
                                 
-                                Fluorophore fp = new Fluorophore();
-                                fp.setName(seq.getName());
+                                Fluorophore fp = new Fluorophore(seq.getName());
                                 fp.setSequence(nucSeq);
                                 fp.setForwardColor(fwd);
                                 fp.setReverseColor(rev);
@@ -393,8 +368,7 @@ public class BenchlingAdaptor {
                                 
                             } else {
                                 
-                                org.cidarlab.phoenix.core.dom.Feature clothoFeature = new Feature();
-                                clothoFeature.setName(seq.getName());
+                                Feature clothoFeature = new Feature(seq.getName());
                                 clothoFeature.setSequence(nucSeq);
                                 clothoFeature.setForwardColor(fwd);
                                 clothoFeature.setReverseColor(rev);
@@ -517,8 +491,7 @@ public class BenchlingAdaptor {
                     
                 } else {
                     
-                    org.cidarlab.phoenix.core.dom.Feature clothoFeature = new Feature();
-                    clothoFeature.setName(name);
+                    Feature clothoFeature = new Feature(name);
                     clothoFeature.setSequence(nucSeq);
                     clothoFeature.setForwardColor(fwd);
                     clothoFeature.setReverseColor(rev);
@@ -776,8 +749,7 @@ public class BenchlingAdaptor {
                 name = feature.getAnnotation().getProperty("label").toString();
             }
                         
-            org.cidarlab.phoenix.core.dom.Feature clothoFeature = new Feature();
-            clothoFeature.setName(name);
+            Feature clothoFeature = new Feature(name);
             clothoFeature.setSequence(nucSeq);
             clothoFeature.setForwardColor(fwd);
             clothoFeature.setReverseColor(rev);
@@ -829,10 +801,10 @@ public class BenchlingAdaptor {
         return nucSeq;
     }
     
-    private static String _BbsIfwd = "gaagac";
-    private static String _BbsIrev = "gtcttc";
-    private static String _BsaIfwd = "ggtctc";
-    private static String _BsaIrev = "gagacc";
-    private static String _lacZalphaL0 = "atgtcttctgcaccatatgcggtgtgaaataccgcacagatgcgtaaggagaaaataccgcatcaggcgccattcgccattcaggctgcgcaactgttgggaagggcgatcggtgcgggcctcttcgctattacgccagctggcgaaagggggatgtgctgcaaggcgattaagttgggtaacgccagggttttcccagtcacgacgttgtaaaacgacggccagtgaattcgagctcggtacccggggatcctctagagtcgacctgcaggcatgcaagcttggcgtaatcatggtcatagctgtttcctgtgtgaaattgttatccgctcacaattccacacaacatacgagccggaagcataaagtgtaaagcctggggtgcctaatgagtgagctaactcacattaattgcgttgcgctcactgcccgctttccagtcgggaaacctgtcgtgccagctgcattaatgaatcggccaacgcgcggggaagacgt";
-    private static String _lacZalphaL1 = "agagacctgcaccatatgcggtgtgaaataccgcacagatgcgtaaggagaaaataccgcatcaggcgccattcgccattcaggctgcgcaactgttgggaagggcgatcggtgcgggcctcttcgctattacgccagctggcgaaagggggatgtgctgcaaggcgattaagttgggtaacgccagggttttcccagtcacgacgttgtaaaacgacggccagtgaattcgagctcggtacccggggatcctctagagtcgacctgcaggcatgcaagcttggcgtaatcatggtcatagctgtttcctgtgtgaaattgttatccgctcacaattccacacaacatacgagccggaagcataaagtgtaaagcctggggtgcctaatgagtgagctaactcacattaattgcgttgcgctcactgcccgctttccagtcgggaaacctgtcgtgccagctgcattaatgaatcggccaacgcgcgggggtctct";
+    private static final String _BbsIfwd = "gaagac";
+    private static final String _BbsIrev = "gtcttc";
+    private static final String _BsaIfwd = "ggtctc";
+    private static final String _BsaIrev = "gagacc";
+    private static final String _lacZalphaL0 = "atgtcttctgcaccatatgcggtgtgaaataccgcacagatgcgtaaggagaaaataccgcatcaggcgccattcgccattcaggctgcgcaactgttgggaagggcgatcggtgcgggcctcttcgctattacgccagctggcgaaagggggatgtgctgcaaggcgattaagttgggtaacgccagggttttcccagtcacgacgttgtaaaacgacggccagtgaattcgagctcggtacccggggatcctctagagtcgacctgcaggcatgcaagcttggcgtaatcatggtcatagctgtttcctgtgtgaaattgttatccgctcacaattccacacaacatacgagccggaagcataaagtgtaaagcctggggtgcctaatgagtgagctaactcacattaattgcgttgcgctcactgcccgctttccagtcgggaaacctgtcgtgccagctgcattaatgaatcggccaacgcgcggggaagacgt";
+    private static final String _lacZalphaL1 = "agagacctgcaccatatgcggtgtgaaataccgcacagatgcgtaaggagaaaataccgcatcaggcgccattcgccattcaggctgcgcaactgttgggaagggcgatcggtgcgggcctcttcgctattacgccagctggcgaaagggggatgtgctgcaaggcgattaagttgggtaacgccagggttttcccagtcacgacgttgtaaaacgacggccagtgaattcgagctcggtacccggggatcctctagagtcgacctgcaggcatgcaagcttggcgtaatcatggtcatagctgtttcctgtgtgaaattgttatccgctcacaattccacacaacatacgagccggaagcataaagtgtaaagcctggggtgcctaatgagtgagctaactcacattaattgcgttgcgctcactgcccgctttccagtcgggaaacctgtcgtgccagctgcattaatgaatcggccaacgcgcgggggtctct";
 }

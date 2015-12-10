@@ -48,7 +48,7 @@
             </plugin>-->
         </plugins>
     </build>
-  
+    
     <dependencies>
     
         <!-- JUnit -->
@@ -75,10 +75,10 @@
         <!--ANTLR 4.0 Dependency-->
         <dependency>
             <groupId>org.antlr</groupId>
-            <artifactId>antlr4-maven-plugin</artifactId>
-            <version>4.3</version>
-            <type>maven-plugin</type>
+            <artifactId>antlr4</artifactId>
+            <version>4.5</version>
         </dependency>
+
       
         <!-- Clotho dependencies -->
         <dependency>
@@ -260,36 +260,24 @@
             <version>1.7</version>
             <type>jar</type>
         </dependency>
+        
         <dependency>
             <groupId>net.sf.json-lib</groupId>
             <artifactId>json-lib</artifactId>
             <version>2.4</version>
-            <type>jar</type>
             <classifier>jdk15</classifier>
-        </dependency>
-        <dependency>
-            <groupId>com.googlecode.json-simple</groupId>
-            <artifactId>json-simple</artifactId>
-            <version>1.1</version>
-            <type>jar</type>
-        </dependency>
-    
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20140107</version>
-            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.cidarlab</groupId>
             <artifactId>miniEugene</artifactId>
             <version>1.0</version>
         </dependency>
-<!--        <dependency>
-            <groupId>Raven</groupId>
-            <artifactId>RavenCAD</artifactId>
-            <version>1.1-SNAPSHOT</version>
-        </dependency>-->
+        <dependency>
+            <groupId>org.clothocad</groupId>
+            <artifactId>Clotho3JavaAPI</artifactId>
+            <version>3.0-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
         <dependency>
             <groupId>org.sbml</groupId>
             <artifactId>jsbml</artifactId>
@@ -300,8 +288,14 @@
             <artifactId>RavenCAD</artifactId>
             <version>1.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.owl</groupId>
+            <artifactId>Datasheet_Generator</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        
     </dependencies>
-  
+    
     
     <repositories>
         <repository>

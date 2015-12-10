@@ -8,14 +8,16 @@ package org.cidarlab.phoenix.core.dom;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.sbml.jsbml.SBMLDocument;
 
 /**
  *
  * @author prash
  */
-public class Module {
+public class Module extends AbstractModule {
 
     /*
      * Need to formally define these methods and constructors. But this is the basic essence of this Class. 
@@ -26,15 +28,17 @@ public class Module {
         this.isRoot = false;
         this.children = new ArrayList<>();
         this.parents = new ArrayList<>();
-        this.assignedModules = new HashSet<>();
+        this.assignedModules = new ArrayList<>();
         this.submodules = new ArrayList<>();
         this.moduleFeatures = new ArrayList<>();
+        this.failureModes = new ArrayList<>();
         this.isForward = true;
         this.name = name;
         this.clothoID = name;
         this.color = Color.white;
-        this.experiments = new ArrayList<>();
+//        this.experiments = new ArrayList<>();
     }
+
 
     //Get all neighbors i.e. parents and children
     public List<Module> getAllNeighbors() {
@@ -60,10 +64,11 @@ public class Module {
         }
         clone.submodules = pmList;
 
-        List<Experiment> exList = new ArrayList<>();
-        exList.addAll(this.experiments);
-        clone.experiments = exList;
-
+//        List<Experiment> exList = new ArrayList<>();
+//        exList.addAll(this.experiments);
+//        clone.experiments = exList;
+        clone.failureModes = this.failureModes;
+        clone.SBMLDocument = this.SBMLDocument;
         clone.function = this.function;
         clone.isForward = this.isForward;
         clone.role = this.role;
@@ -72,41 +77,38 @@ public class Module {
         return clone;
     }
 
-    //Module name
-    @Getter
-    @Setter
-    private String name;
-
-    //Module clothoID
-    @Getter
-    @Setter
-    private String clothoID;
+    
 
     //Module roles
     @Getter
     @Setter
     private ModuleRole role;
 
+    
     //Repression or Activation Arcs. This will be used to indentify structures that can realize an Inverter, Oscillator or Switches
     //Arcs created by this module
+    /*
     @Getter
     @Setter
     private List<Arc> arcs;
-
+    */
+    
+    //
+    @Getter
+    @Setter
+    private List<FailureMode> failureModes;
+    
     //Module features
     @Getter
     @Setter
     private List<Feature> moduleFeatures;
 
-    //LTL function associated with this module
+    //STL function associated with this module
     @Getter
     @Setter
     private STLFunction function;
 
-    //Directionality
-    @Getter
-    @Setter
-    private boolean isForward;
+   
 
     //Parent module(s)
     @Getter
@@ -118,15 +120,20 @@ public class Module {
     @Setter
     private List<Module> children;
 
-    //Child module(s)
+   
     @Getter
     @Setter
-    private HashSet<Module> controlModules;
+    private String index;
 
     //Assigned module(s)
     @Getter
     @Setter
-    private HashSet<Module> assignedModules;
+    private List<AssignedModule> assignedModules;
+    
+    //SBML Model
+    @Getter
+    @Setter
+    private SBMLDocument SBMLDocument;
 
     // Sub-Module(s)
     @Getter
@@ -147,11 +154,6 @@ public class Module {
     @Setter
     private Color color;
 
-    //Experiment associated with this module
-    @Getter
-    @Setter
-    private List<Experiment> experiments;
-
     //Graph Traversal
     public enum Color {
 
@@ -170,22 +172,80 @@ public class Module {
         EXPRESSEE_ACTIVATOR,
         EXPRESSEE_ACTIVATIBLE_ACTIVATOR,
         TRANSCRIPTIONAL_UNIT,
-        //        TESTING_CONTROL,
         EXPRESSION_DEGRATATION_CONTROL,
         REGULATION_CONTROL,
         COLOR_CONTROL,
         HIGHER_FUNCTION;
     }
 
+    
+    public static String getShortModuleRole(ModuleRole role) {
+        switch (role) {
+            case EXPRESSOR:
+                return "exp";
+            case EXPRESSEE:
+                return "exe";
+            case EXPRESSEE_REPRESSOR:
+                return "exr";
+            case EXPRESSEE_REPRESSIBLE_REPRESSOR:
+                return "err";
+            case EXPRESSEE_ACTIVATOR:
+                return "exa";
+            case EXPRESSEE_ACTIVATIBLE_ACTIVATOR:
+                return "eaa";
+            case TRANSCRIPTIONAL_UNIT:
+                return "tu";
+            case EXPRESSION_DEGRATATION_CONTROL:
+                return "edc";
+            case REGULATION_CONTROL:
+                return "rc";
+            case COLOR_CONTROL:
+                return "cc";
+            case HIGHER_FUNCTION:
+                return "hf";
+            default:
+                return "";
+        }
+    }
+    
+    @Override
+    public String toString(){
+        String _string = "";
+        if(this.isRoot){
+            _string += ("Root Module; ");
+        }
+        //_string += ("Name:"+this.name+";");
+        _string += ("Role:"+this.role+"; ");
+        _string += ("Feature String:"+this.getFeatureShortString()+";");
+        return _string;
+    }
+    
+    public void printTree(){
+        System.out.println(this.toString());
+        for(Module child:this.children){
+            child.printTree();
+        }
+    }
+    
     //Update moduleFeatures based on submodule features
     public void updateModuleFeatures() {
         List<Feature> updatedFeatures = new ArrayList<>();
         for (PrimitiveModule pm : this.submodules) {
-            updatedFeatures.addAll(pm.getModuleFeatures());
+            updatedFeatures.add(pm.getModuleFeature());
+            //updatedFeatures.addAll(pm.getModuleFeatures());
         }
         this.setModuleFeatures(updatedFeatures);
     }
-
+    
+    public String getFeatureShortString(){
+        String featureString = "";
+        for(Feature feature:this.moduleFeatures){
+            featureString += Feature.getShortFeatureRole(feature.getRole()) + " ";
+        }
+        featureString = featureString.trim();
+        return featureString;
+    }
+    
     //Make sure that every node's color is white. Initialize the entire tree. Work on this. 
     public void initializeColor() {
 

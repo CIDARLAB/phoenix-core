@@ -16,6 +16,10 @@ import org.cidarlab.phoenix.core.dom.Person;
 @NoArgsConstructor
 public abstract class SharableObjBase extends ObjBase implements Sharable {
     
+    public SharableObjBase(String name){
+        setName(name);
+    }
+    
     public SharableObjBase(String name, Person author){
         setName(name);
         this.author = author;

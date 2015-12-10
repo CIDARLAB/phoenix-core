@@ -19,8 +19,8 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
     var root;
 
     // size of the diagram
-    var viewerWidth = $("#tree-container").width();
-    var viewerHeight = $("#tree-container").height();
+    var viewerWidth = $(document).width();
+    var viewerHeight = $(document).height();
 
     var tree = d3.layout.tree()
         .size([viewerHeight, viewerWidth]);
@@ -357,7 +357,6 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
                 });
             }
         };
-
         childCount(0, root);
         var newHeight = d3.max(levelWidth) * 25; // 25 pixels per line  
         tree = tree.size([newHeight, viewerWidth]);
@@ -536,143 +535,6 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
             d.x0 = d.x;
             d.y0 = d.y;
         });
-
-        // new stuff here
-
-        // hard-coded parents and children for testing
-        var couplingParent1 = tree.nodes(root).filter(function(d) {
-                return d['name'] === 'TU_0_EXPRESSEE_0';
-            })[0];
-        var couplingChild1 = tree.nodes(root).filter(function(d) {
-                return d['name'] === 'EXPRESSION';
-            })[0];
-
-        var couplingParent2 = tree.nodes(root).filter(function(d) {
-                return d['name'] === 'TU_1_EXPRESSEE_0';
-            })[0];
-        var couplingChild2 = tree.nodes(root).filter(function(d) {
-                return d['name'] === 'TU_1_EXPRESSOR_0_0';
-            })[0];
-
-        // make sure each node is valid
-        if(typeof couplingParent1 == undefined){
-            couplingParent1 = null;
-        }
-        if(typeof couplingChild1 == undefined){
-            couplingChild1 = null;
-        }
-        if(typeof couplingParent2 == undefined){
-            couplingParent2 = null;
-        }
-        if(typeof couplingChild2 == undefined){
-            couplingChild2 = null;
-        }
-
-        // sanity check
-        // console.log("TU_0_EXPRESSEE_0 id = " + couplingParent1.id);
-        // console.log("EXPRESSION id = " + couplingChild1.id);
-        // console.log("TU_1_EXPRESSEE_0 id = " + couplingParent2.id);
-        // console.log("TU_1_EXPRESSOR_0_0 id = " + couplingChild2.id);
-        // console.log("source id: " + source.id);
-
-        // group multi-nodes together for easy manipulation
-        multiParents = [{parent: couplingParent2,
-                        child: couplingChild2},
-
-                        {parent: couplingParent1,
-                        child: couplingChild1}
-                        ];
-
-                    ///
-                    ///d._children ? d.hex : "#fff";
-                    ///
-
-        // select individual links to remove
-        // console.log(svgGroup);
-        // svgGroup.selectAll('path.additionalParentLink').filter(function() {
-        //     // console.log("multiPair.parent.id: " + multiPair.parent.id);
-        //     // console.log("idCheck1: " + idCheck1);
-        //     if (1) { //idCheck1 == blah.id
-        //         console.log("removing one element...");
-        //         return true;
-        //     }
-        //     return false;
-        // }).remove();
-        // //var oTarget = null;
-
-        // wipe all links
-        svgGroup.selectAll('path.additionalParentLink').remove();
-        // var oTarget = null;
-        // var oSource = null;
-
-        // draw each valid link
-        multiParents.forEach(function(multiPair) {
-                svgGroup.append("path", "g")
-                .attr("class", "additionalParentLink")
-                    .attr("d", function() {
-                        // var idCheck1 = multiPair.parent.id;
-                        // var idCheck2 = multiPair.child.id;
-                        // console.log("idCheck1: " + idCheck1);
-                        // console.log("idCheck2: " + idCheck2);
-
-                        if (multiPair.parent.children){
-                            var oTarget = {
-                            x: multiPair.parent.x0,
-                            y: multiPair.parent.y0
-                            };
-                        } 
-                        // else {
-                        //     console.log(svgGroup);
-                        //     svgGroup.selectAll('path.additionalParentLink').filter(function() {
-                        //         console.log("multiPair.parent.id: " + multiPair.parent.id);
-                        //         console.log("idCheck1: " + idCheck1);
-                        //         if (1) { //idCheck1 == blah.id
-                        //             console.log("removing one element...");
-                        //             return true;
-                        //         }
-                        //         return false;
-                        //     }).remove();
-                        //     var oTarget = null;
-                        // }
-
-                        //if(multiPair.child){
-                            var oSource = {
-                            x: multiPair.child.x0,
-                            y: multiPair.child.y0
-                            };
-                        //} 
-                        // else {
-                        //     svgGroup.selectAll('path.additionalParentLink').filter(function(blah) {
-                        //         console.log("multiPair.child.id: " + multiPair.child.id);
-                        //         console.log("blah.id: " + blah.id);
-                        //         if (idCheck2 == blah.id) {
-                        //             console.log("removing one element...");
-                        //             return true;
-                        //         }
-                        //         return false;
-                        //     }).remove();
-                        //     var oSource = null;
-                        // }
-                        
-                        /*if (multiPair.child.depth === multiPair.couplingParent1.depth) {
-                            return "M" + oSource.y + " " + oSource.x + " L" + (oTarget.y + ((Math.abs((oTarget.x - oSource.x))) * 0.25)) + " " + oTarget.x + " " + oTarget.y + " " + oTarget.x;
-                        }*/
-                        return diagonal({
-                            source: oSource,
-                            target: oTarget
-                        });
-                    });
-            });
-
-            //svgGroup.selectAll('path.additionalParentLink').remove();
-
-        // svgGroup.selectAll('path.additionalParentLink').filter(function(multiPair) {
-        //     if (!multiPair.parent.children) { //d.id == draggingNode.id
-        //         return true;
-        //     }
-        //     return false;
-        // }).remove();
-
     }
 
     // Append a group which holds all nodes and which the zoom Listener can act upon.
@@ -686,7 +548,40 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
     // Layout the tree initially and center on the root node.
     update(root);
     centerNode(root);
- 
+	
+	var couplingParent1 = tree.nodes(root).filter(function(d) {
+            return d['name'] === 'TU_0_EXPRESSEE_0'; // can use unique clotho id
+        })[0];
+	var couplingChild1 = tree.nodes(root).filter(function(d) {
+            return d['name'] === 'EXPRESSION';      // can use unique clotho id
+        })[0];
+	
+	multiParents = [{
+                    parent: couplingParent1,
+                    child: couplingChild1
+                }];
+	
+	multiParents.forEach(function(multiPair) {
+            svgGroup.append("path", "g")
+            .attr("class", "additionalParentLink")
+                .attr("d", function() {
+                    var oTarget = {
+                        x: multiPair.parent.x0,
+                        y: multiPair.parent.y0
+                    };
+                    var oSource = {
+                        x: multiPair.child.x0,
+                        y: multiPair.child.y0
+                    };
+                    /*if (multiPair.child.depth === multiPair.couplingParent1.depth) {
+                        return "M" + oSource.y + " " + oSource.x + " L" + (oTarget.y + ((Math.abs((oTarget.x - oSource.x))) * 0.25)) + " " + oTarget.x + " " + oTarget.y + " " + oTarget.x;
+                    }*/
+                    return diagonal({
+                        source: oSource,
+                        target: oTarget
+                    });
+                });
+        });	
 });
 
 function JSONupdate(){

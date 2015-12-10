@@ -37,12 +37,6 @@
           stroke-width: 1.5px;
         }
 
-        .additionalParentLink {
-          fill: none;
-          stroke: #ccc;
-          stroke-width: 1.5px;
-        }
-
         .templink {
           fill: none;
           stroke: red;
@@ -65,7 +59,7 @@
 
         <div class="navbar navbar-fixed-top">
             <div class="navbar-inner"> 
-                <div class="container">
+                <div class="container" style="margin-bottom:-15px">
                     <a class="brand" href="index.html">Phoenix</a>
                     <ul class="nav">
                         <li><a href="upload.html">Upload</a></li>
@@ -84,11 +78,11 @@
             </div>
         </div>
 
-        <div class="page-header" style="margin-top:60px">
-            <h1><img style="height: 40px; margin-bottom:5px" src="images/phoenix_cropped.jpg"> <small>Interact with the Tree</small></h1>
+        <div style="margin-top:50px; margin-bottom:15px;">
+            <h1><img style="height: 40px; margin-bottom:-5px;" src="images/phoenix_cropped.jpg"> <small>Interact with the Tree</small></h1>
         </div>
 
-        <div id="tree-container" style="width:1100px;height:630px;margin-top:33px"></div>
+        <div id="tree-container" style="width:1100px;height:630px;margin-top:1px"></div>
 
         <div style="margin-top:20px">
             <div><button style="margin-top:5px" class="btn btn-primary" onclick="JSONupdate()" id="updateButton">Update</button>

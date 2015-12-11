@@ -541,7 +541,7 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
 
         // hard-coded parents and children for testing
         var couplingParent1 = tree.nodes(root).filter(function(d) {
-                return d['name'] === 'TU_0_EXPRESSEE_0';
+                return d['name'] === 'TU_0_EXPRESSEE_0';    // in the future can't use name parameter because nodes can share names; identification must be unique
             })[0];
         var couplingChild1 = tree.nodes(root).filter(function(d) {
                 return d['name'] === 'EXPRESSION';
@@ -576,10 +576,10 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
         // console.log("source id: " + source.id);
 
         // group multi-nodes together for easy manipulation
-        multiParents = [{parent: couplingParent2,
+        multiParents = [{adult: couplingParent2,
                         child: couplingChild2},
 
-                        {parent: couplingParent1,
+                        {adult: couplingParent1,
                         child: couplingChild1}
                         ];
 
@@ -590,7 +590,7 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
         // select individual links to remove
         // console.log(svgGroup);
         // svgGroup.selectAll('path.additionalParentLink').filter(function() {
-        //     // console.log("multiPair.parent.id: " + multiPair.parent.id);
+        //     // console.log("element.parent.id: " + element.parent.id);
         //     // console.log("idCheck1: " + idCheck1);
         //     if (1) { //idCheck1 == blah.id
         //         console.log("removing one element...");
@@ -606,25 +606,52 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
         // var oSource = null;
 
         // draw each valid link
-        multiParents.forEach(function(multiPair) {
+        multiParents.forEach(function(element) {
                 svgGroup.append("path", "g")
                 .attr("class", "additionalParentLink")
                     .attr("d", function() {
-                        // var idCheck1 = multiPair.parent.id;
-                        // var idCheck2 = multiPair.child.id;
-                        // console.log("idCheck1: " + idCheck1);
-                        // console.log("idCheck2: " + idCheck2);
+                        // if(!(typeof element.adult === "undefined")){
+                        //     var idCheck1 = element.adult.id;
+                        //     console.log("id " + idCheck1 + " is valid");
+                        // }
 
-                        if (multiPair.parent.children){
-                            var oTarget = {
-                            x: multiPair.parent.x0,
-                            y: multiPair.parent.y0
-                            };
-                        } 
+                        // if(!(typeof element.child === "undefined")){
+                        //     var idCheck2 = element.child.id;
+                        //     console.log("id " + idCheck2 + " is valid");
+                        //     console.log("1");
+                        // }
+
+                        //typeof element.adult.children !== 'undefined'
+                        //element.adult.children.length > 0
+                        // var flag = 1;
+                        // var blah = null;
+                        // console.log("blah type = " + typeof blah);
+                        // if(typeof element.adult !== 'undefined'){
+                        //     if(typeof element.adult.children === 'undefined'){
+                        //     console.log("flag = 0")
+                        //     flag = 0;
+                        //     }
+                        // }
+                        
+                        
+                        if (null != element.adult){
+                            if(null != element.adult.children){
+                                // var idCheck3 = element.adult.id;
+                                // var idCheck4 = element.child.id;
+                                // console.log("idCheck1: " + idCheck1);
+                                // console.log("idCheck2: " + idCheck2);
+                                //console.log("2");
+                                var oTarget = {
+                                x: element.adult.x0,
+                                y: element.adult.y0
+                                };
+                                //console.log("3");
+                            } else {return;}                            
+                        } else {return;}
                         // else {
                         //     console.log(svgGroup);
                         //     svgGroup.selectAll('path.additionalParentLink').filter(function() {
-                        //         console.log("multiPair.parent.id: " + multiPair.parent.id);
+                        //         console.log("element.parent.id: " + element.parent.id);
                         //         console.log("idCheck1: " + idCheck1);
                         //         if (1) { //idCheck1 == blah.id
                         //             console.log("removing one element...");
@@ -633,17 +660,27 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
                         //         return false;
                         //     }).remove();
                         //     var oTarget = null;
-                        // }
+                        // 
 
-                        //if(multiPair.child){
+                        
+
+                        if(null != element.child){
+                            // var idCheck5 = element.adult.id;
+                            // var idCheck6 = element.child.id;
+                            // console.log("idCheck1: " + idCheck1);
+                            // console.log("idCheck2: " + idCheck2);
+                            //console.log("4");
                             var oSource = {
-                            x: multiPair.child.x0,
-                            y: multiPair.child.y0
+                            x: element.child.x0,
+                            y: element.child.y0
                             };
-                        //} 
+                            //console.log("5");
+                        } else {return;}
+                        
+                        
                         // else {
                         //     svgGroup.selectAll('path.additionalParentLink').filter(function(blah) {
-                        //         console.log("multiPair.child.id: " + multiPair.child.id);
+                        //         console.log("element.child.id: " + element.child.id);
                         //         console.log("blah.id: " + blah.id);
                         //         if (idCheck2 == blah.id) {
                         //             console.log("removing one element...");
@@ -654,7 +691,7 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
                         //     var oSource = null;
                         // }
                         
-                        /*if (multiPair.child.depth === multiPair.couplingParent1.depth) {
+                        /*if (element.child.depth === element.couplingParent1.depth) {
                             return "M" + oSource.y + " " + oSource.x + " L" + (oTarget.y + ((Math.abs((oTarget.x - oSource.x))) * 0.25)) + " " + oTarget.x + " " + oTarget.y + " " + oTarget.x;
                         }*/
                         return diagonal({
@@ -666,8 +703,8 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
 
             //svgGroup.selectAll('path.additionalParentLink').remove();
 
-        // svgGroup.selectAll('path.additionalParentLink').filter(function(multiPair) {
-        //     if (!multiPair.parent.children) { //d.id == draggingNode.id
+        // svgGroup.selectAll('path.additionalParentLink').filter(function(element) {
+        //     if (!element.parent.children) { //d.id == draggingNode.id
         //         return true;
         //     }
         //     return false;

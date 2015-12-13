@@ -452,6 +452,16 @@ public class Utilities {
         return defaultTimeMap;
     }
     
+    
+    public static Double getCooperativity(String regulator){
+        
+        if(regulator.equals("lacIm.ref")){
+            return 4.0;
+        }
+        return 2.0;
+    }
+    
+    
     public static void printDebugStatement(String message){
         System.out.println("#########################################");
         System.out.println("######################" + message);

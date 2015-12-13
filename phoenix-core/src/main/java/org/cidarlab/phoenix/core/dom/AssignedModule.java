@@ -75,6 +75,33 @@ public class AssignedModule extends Module {
         return clone;
     }
     
+    public String getFeatureString(){
+        String features="";
+        
+        for(int i=0;i<this.getSubmodules().size()-1;i++){
+            PrimitiveModule pm = this.getSubmodules().get(i);
+            Feature f = pm.getModuleFeature();
+            if(f.getName() == null){
+                features += (pm.getPrimitiveRole() + "|");
+            } else if(f.getName().equals("")){
+                features += (pm.getPrimitiveRole() + "|");
+            } else{
+                features += (f.getName() + "|");
+            }
+        }
+        PrimitiveModule pm = this.getSubmodules().get(this.getSubmodules().size()-1);
+        Feature f = pm.getModuleFeature();
+        if (f.getName() == null) {
+            features += (pm.getPrimitiveRole());
+        } else if (f.getName().equals("")) {
+            features += (pm.getPrimitiveRole());
+        } else {
+            features += (f.getName());
+        }
+        
+        return features;
+    } 
+    
     @Getter
     @Setter
     private String shortName;

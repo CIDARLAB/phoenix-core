@@ -62,7 +62,7 @@ public class StructuralGrammar {
         return parser.getNumberOfSyntaxErrors();
     }
     
-    public static boolean validateStructure(Module module){
+    public static boolean validStructure(Module module){
         boolean result = false;
         String forwardString = PigeonAdaptor.generatePigeonString(module, true);
         String reverseString = PigeonAdaptor.generatePigeonString(module, false);

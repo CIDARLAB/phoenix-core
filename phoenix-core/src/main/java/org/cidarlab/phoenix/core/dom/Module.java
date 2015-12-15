@@ -17,7 +17,7 @@ import org.sbml.jsbml.SBMLDocument;
  *
  * @author prash
  */
-public class Module {
+public class Module extends AbstractModule {
 
     /*
      * Need to formally define these methods and constructors. But this is the basic essence of this Class. 
@@ -31,6 +31,7 @@ public class Module {
         this.assignedModules = new ArrayList<>();
         this.submodules = new ArrayList<>();
         this.moduleFeatures = new ArrayList<>();
+        this.failureModes = new ArrayList<>();
         this.isForward = true;
         this.name = name;
         this.clothoID = name;
@@ -38,9 +39,6 @@ public class Module {
 //        this.experiments = new ArrayList<>();
     }
 
-    public Module() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     //Get all neighbors i.e. parents and children
     public List<Module> getAllNeighbors() {
@@ -69,6 +67,7 @@ public class Module {
 //        List<Experiment> exList = new ArrayList<>();
 //        exList.addAll(this.experiments);
 //        clone.experiments = exList;
+        clone.failureModes = this.failureModes;
         clone.SBMLDocument = this.SBMLDocument;
         clone.function = this.function;
         clone.isForward = this.isForward;
@@ -78,15 +77,7 @@ public class Module {
         return clone;
     }
 
-    //Module name
-    @Getter
-    @Setter
-    private String name;
-
-    //Module clothoID
-    @Getter
-    @Setter
-    private String clothoID;
+    
 
     //Module roles
     @Getter
@@ -102,6 +93,10 @@ public class Module {
     private List<Arc> arcs;
     */
     
+    //
+    @Getter
+    @Setter
+    private List<FailureMode> failureModes;
     
     //Module features
     @Getter
@@ -113,10 +108,7 @@ public class Module {
     @Setter
     private STLFunction function;
 
-    //Directionality
-    @Getter
-    @Setter
-    private boolean isForward;
+   
 
     //Parent module(s)
     @Getter
@@ -216,6 +208,24 @@ public class Module {
         }
     }
     
+    @Override
+    public String toString(){
+        String _string = "";
+        if(this.isRoot){
+            _string += ("Root Module; ");
+        }
+        //_string += ("Name:"+this.name+";");
+        _string += ("Role:"+this.role+"; ");
+        _string += ("Feature String:"+this.getFeatureShortString()+";");
+        return _string;
+    }
+    
+    public void printTree(){
+        System.out.println(this.toString());
+        for(Module child:this.children){
+            child.printTree();
+        }
+    }
     
     //Update moduleFeatures based on submodule features
     public void updateModuleFeatures() {

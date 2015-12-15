@@ -17,6 +17,7 @@ library(xtable)
 source("functionLibs/source_https.R")
 source("functionLibs/functionalDiversity.R")
 source("functionLibs/getAutoFluorescence.R")
+source("functionLibs/getColorMultiplier.R")
 source("functionLibs/normalizeToBeads.R")
 source("functionLibs/top_sliding_window_peaks.R")
 source("functionLibs/process_samples.R")
@@ -54,7 +55,6 @@ setwd(wd)
 	#Find bead controls, apply bead normalization
 	beadsControlRow <- key[which(TRUE == grepl("beads", key$CONTROL, ignore.case=TRUE)),]
 	beadsControlFlowFrame <- BeadFlowFrame(fcs.filename = paste('data/', as.character(beadsControlRow$FILENAME), sep=''), bead.filename = "MEFLmatrix.csv")
-	#beadsControlFlowFrame <- nmRemove(beadsControlFlowFrame, colnames(beadsControlFlowFrame), neg=TRUE)
 	gatedBeadControlFlowFrame <- gateBeads(beadsControlFlowFrame)
 	
 	#Determine the spillover matrix
@@ -65,6 +65,9 @@ setwd(wd)
 	
 	#Get autofluorescence
 	autofluorescence <- getAutofluorescence(negativeControlFlowSet, gatedBeadControlFlowFrame)
+	
+	#Get color multiplier vector relative to FITC-A channel for gfp control
+	colorMultiplierVector <- getColorMultiplier(colorControlsFlowSet, gatedBeadControlFlowFrame, autofluorescence, as.character(colorControlRows$FILENAME))
 	
 	#Group files by part name
 	#Determine unique parts
@@ -106,25 +109,6 @@ setwd(wd)
 	regParts <- c()
 	regMedia <- c()
 	
-	#Initialize output file
-	output <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)) + 1, nrow=0))
-	colnames(output) <- c("PART", "MEDIA", "TIME", gsub("-",".", colnames(colorControlsFlowSet))[3:length(colnames(colorControlsFlowSet))])
-	
-	#Look at REGULATION row to find regulation controls, process those first and store the values in a data frame
-	regControlRows <- key[which(!(key$REGULATION =="")),]
-	regControlsAndChannels <- regControlRows$REGULATION
-	regControls <- c()
-	if (length(regControlsAndChannels) > 1)  {
-		for (control in 1:length(regControlsAndChannels)) {
-			aRegControl <- trimws(strsplit(as.character(regControlsAndChannels[control]), "\\(")[[1]])
-			regControls <- c(regControls, aRegControl[1])
-		}
-	}
-	regControlParts <- unique(regControls)
-	
-	uniquePartNames <- uniquePartNames [! uniquePartNames %in% regControlParts]
-	uniquePartNames <- c(as.character(regControlParts), as.character(uniquePartNames))
-	
 	#Loop through all unique parts to make plots
 	for (i in 1:length(uniquePartNames)) {
 		
@@ -140,7 +124,7 @@ setwd(wd)
 		
 		#New way to find unique media types with regular media type and a plus sign to indicate inducers
 		uniqueMediaTypes <- c()
-		mediaTypes <- uniqueTimeMediaRows$MEDIA	
+		mediaTypes <- unique(uniqueTimeMediaRows$MEDIA)	
 	
 		#Build matrix of base medias, inducers and concentrations for analysis
 		for (x in 1:length(mediaTypes)) {
@@ -169,7 +153,7 @@ setwd(wd)
 			mediaTypePath <- paste(part, "/", mediaType, sep = '')		
 			dir.create(mediaTypePath, showWarnings = FALSE)
 			
-			MediaTypeSMs <- mediaSMMap[which(TRUE == grepl(mediaType, mediaSMMap$BASE)),]
+			MediaTypeSMs <- mediaSMMap[which(TRUE == grepl(paste("^", mediaType, "$", sep = ''), mediaSMMap$BASE)),]
 			uniqueMediaSMs <- as.character(unique(MediaTypeSMs$SM))			 
 					
 			#Get unique media rows with this media type				
@@ -244,7 +228,12 @@ setwd(wd)
 					colnames(standardDevsMediaTime) <- gsub("-",".", colnames(colorControlsFlowSet))
 					
 					#Get all unique times per one media condition
-					uniqueMediaRowsAllTimes <- uniqueMediaSMRowsAllTimes[which(TRUE == grepl(conc, uniqueMediaSMRowsAllTimes$MEDIA)),]		
+					if (!is.na(as.numeric(conc)))  {
+						uniqueMediaRowsAllTimes <- uniqueMediaSMRowsAllTimes[which(TRUE == grepl(paste(conc, SM, sep = ' '), uniqueMediaSMRowsAllTimes$MEDIA)),]
+					} else {
+						uniqueMediaRowsAllTimes <- uniqueMediaSMRowsAllTimes[which(TRUE == grepl(conc, uniqueMediaSMRowsAllTimes$MEDIA)),]
+					}
+							
 					uniqueMediaTimes <- as.character(unique(uniqueMediaRowsAllTimes$TIME))
 					
 					#Hold replicates across all times per media concentration for media graphs
@@ -269,7 +258,9 @@ setwd(wd)
 						
 						#Summarize files for times in this media condition in addition to files for all times in this media condition
 						files <- c(Afile, replicateFiles)
-						filesMediaConcentration <- c(filesMediaConcentration, files)				
+						if (uniqueMediaTimes[t] == uniqueMediaTimes[which.max(uniqueMediaTimes)]) {						
+							filesMediaConcentration <- c(filesMediaConcentration, files)				
+						}
 						
 						#Only process this data if there is more than one time for this media and small molecule
 						if (length(uniqueMediaTimes) > 1) {
@@ -292,7 +283,7 @@ setwd(wd)
 									experimentFlowSet <- experimentFlowSet[,columnIndexes]				
 													
 									#Process experiments for this flowSet
-									analyzedExptsMediaTimeEval <- process.samples(experimentFlowSet, colorControlsFlowSet, gatedBeadControlFlowFrame, comp.mat, autofluorescence, finalFiles)
+									analyzedExptsMediaTimeEval <- process.samples(experimentFlowSet, colorControlsFlowSet, gatedBeadControlFlowFrame, comp.mat, autofluorescence, finalFiles, colorMultiplierVector)
 									meansMediaTime[t,] <- colMeans(analyzedExptsMediaTimeEval)
 									standardDevsMediaTime[t,] <- colSds(analyzedExptsMediaTimeEval)
 								}	
@@ -402,123 +393,11 @@ setwd(wd)
 						experimentFlowSetMedia <- experimentFlowSetMedia[,columnIndexes]				
 										
 						#Process experiments for this flowSet
-						analyzedExptsMediaEval <- process.samples(experimentFlowSetMedia, colorControlsFlowSet, gatedBeadControlFlowFrame, comp.mat, autofluorescence, finalFilesMediaConcentration)
+						analyzedExptsMediaEval <- process.samples(experimentFlowSetMedia, colorControlsFlowSet, gatedBeadControlFlowFrame, comp.mat, autofluorescence, finalFilesMediaConcentration, colorMultiplierVector)
 						meansMedia[k,] <- colMeans(analyzedExptsMediaEval)
 						standardDevsMedia[k,] <- colSds(analyzedExptsMediaEval)							
 					}
-				}			
-				
-				#If part has a regulation control, make a channel v. channel plot
-				if (nchar(SM) == 0) {
-					if (!is.null(uniqueMediaRows$REGULATION)) {
-						if (!(uniqueMediaRows$REGULATION[1] == "")) {
-							
-							#Initialize data structures for meansMedia and standardDevsMedia
-							meansRegAndPart <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=0))
-							colnames(meansRegAndPart) <- gsub("-",".", colnames(colorControlsFlowSet))
-							standardDevsRegAndPart <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=0))
-							colnames(standardDevsRegAndPart) <- gsub("-",".", colnames(colorControlsFlowSet))
-							
-							#Split regulation control channels and regulation plot channels
-							regControlPartAndChannels <- trimws(strsplit(as.character(uniqueMediaRows$REGULATION[1]), "\\(")[[1]])
-							regControlPartAndChannels <- gsub("\\)","", regControlPartAndChannels)
-							
-							#Search the regulation part means and stds based on this media
-							regControlPart <- trimws(as.character(regControlPartAndChannels[1]))
-							partMatchIndexes <- regControlPart %in% regParts
-							for (match in 1:length(partMatchIndexes)) {
-								if (partMatchIndexes[match]) {
-									if (regMedia[match] == mediaType) {
-										
-										#Only the first rows of meansMedia and standardDevsMedia are used currently... this is hacky and could use some fixes
-										meansRegAndPart[1,] <- meansReg[match,]
-										meansRegAndPart <- rbind(meansRegAndPart, meansMedia[1,]) 
-										standardDevsRegAndPart[1,] <- standardDevsReg[match,]
-										standardDevsRegAndPart <- rbind(standardDevsRegAndPart, standardDevsMedia[1,])
-									}
-								}
-							}				
-							
-							### PLOTTING OF PART MEDIA TIMES ###
-							#Get rid of FSC and SSC
-							
-							#Edge case of only one color aside from FSC and SSC
-							storedColName <- colnames(meansRegAndPart)[3]
-							
-							meansRegAndPart <- cbind(meansRegAndPart[,3:length(meansRegAndPart)])
-							meansRegAndPart[is.na(meansRegAndPart)] <- 0				
-							standardDevsRegAndPart <- cbind(standardDevsRegAndPart[,3:length(standardDevsRegAndPart)])
-							standardDevsRegAndPart[is.na(standardDevsRegAndPart)] <- 0
-							
-							#Column name correction
-							if (length(colnames(meansRegAndPart)) == 0) {
-								colnames(meansRegAndPart) <- storedColName
-								colnames(standardDevsRegAndPart) <- storedColName
-							}			
-							
-							#Make plots				
-				    		colnames(meansRegAndPart) <- paste("MEAN", colnames(meansRegAndPart), sep = "_")
-				    		colnames(standardDevsRegAndPart) <- paste("STD", colnames(standardDevsRegAndPart), sep = "_")
-				    			    		
-							#Determine regulation control channels for plotting			
-							regControlChannels <- trimws(strsplit(as.character(trimws(gsub(".*\\((.*)\\).*", "\\1", regControlPartAndChannels[2]))), "\\|")[[1]])
-							if (length(regControlChannels) == 1) {
-								ychannel <- gsub("-",".", regControlChannels[1])
-								yaxis <- cbind(meansRegAndPart[,which(TRUE == grepl(ychannel, colnames(meansRegAndPart)))])
-								yaxis <- as.numeric(yaxis)
-								yaxis <- cbind(yaxis)
-								ylabel <- as.character(paste(ychannel, " (RFU)", sep=""))
-								xlabel <- "PART"
-								xaxis <- c(regControlPart, part)
-			    				xaxis <- cbind(xaxis)
-			    				plotMatColNames <- c("Part",ychannel)
-							} else {
-								ychannel <- gsub("-",".", regControlChannels[1])
-								yaxis <- meansRegAndPart[,which(TRUE == grepl(ychannel, colnames(meansRegAndPart)))]
-								yaxis <- as.numeric(yaxis)
-								xchannel <- gsub("-",".", regControlChannels[2])
-								xaxis <- meansRegAndPart[,which(TRUE == grepl(xchannel, colnames(meansRegAndPart)))]
-								xaxis <- as.numeric(xaxis)
-								ylabel <- as.character(paste(ychannel, " (MEFL)", sep=""))
-								xlabel <- as.character(paste(xchannel, " (MEFL)", sep=""))
-								plotMatColNames <- c(xchannel, ychannel)
-							}
-							
-				    		plotMat <- cbind(xaxis, as.numeric(yaxis))
-				    		plotMat <- as.data.frame(plotMat)
-				    		
-				    		title <- paste("Regulation of ", regControlPart, sep='')
-			
-							#File naming and placement in a subdirectory
-							name <- as.character(paste(part, "_REGULATION_",ychannel,".png", sep=''))
-							name <- str_replace_all(name, fixed(" "), "")
-							name <- sub("/","",name)
-							File <- as.character(paste(currentMediaTypePath, "/regulation/plots/", name, sep=''))
-		   					File <- str_replace_all(File, fixed(" "), "")
-		   					dir.create(as.character(paste(currentMediaTypePath, "/regulation", sep='')))
-							dir.create(dirname(File), showWarnings = FALSE)
-									    			
-			    			#Plotting																		
-							png(File, width=960, height=960, res=120)
-			    			pt <- ggplot(data = plotMat, aes(x = xaxis, y = as.numeric(yaxis))) +
-							geom_line() +
-							scale_y_log10(limits = c(1e-1,1e6)) +
-			    			geom_point(size = 4, shape=21, fill="white") +
-			    			ggtitle(as.character(title)) +    	
-			    			xlab(xlabel) +
-							ylab(ylabel) +
-		    				theme(axis.text.y  = element_text(colour="black")) +
-					    	theme(axis.text.x  = element_text(colour="black")) 
-			    			print(pt)
-			    			dev.off()
-			    			
-			    			#Output file
-							colnames(plotMat) <- plotMatColNames
-							filename <- as.character(paste(currentMediaTypePath, "/regulation/", "regulationPlotPoints.csv", sep=''))
-							write.csv(file=filename, x=plotMat, row.names=FALSE)
-						}
-					}
-				}
+				}		
 				
 				#Make a fluorescence v. media plot if more than one time entered to this media at this concentration
 				if (nrow(meansMedia) > 1) {
@@ -586,16 +465,77 @@ setwd(wd)
 					colnames(plotMat)[1] <- SMdirName
 					filename <- as.character(paste(currentMediaTypePath, "/", "mediaTitrationPlotPoints.csv", sep=''))
 					write.csv(file=filename, x=plotMat, row.names=FALSE)
+		    		
+		    		#New regulation plotting bassis - for only a single strain, not across strains
+		    		if (!is.null(uniqueMediaRows$REGULATION)) {
+		    			
+		    			#This check needs to be extended to look for all rows that have regulation and only use those, but will not do that for the time being
+						if (!(uniqueMediaRows$REGULATION[1] == "")) {
+							
+							#Determine regulation control channels for plotting
+							regControlPartAndChannels <- trimws(strsplit(as.character(uniqueMediaRows$REGULATION[1]), "\\(")[[1]])
+							regControlPartAndChannels <- gsub("\\)","", regControlPartAndChannels)							
+							regControlChannels <- trimws(strsplit(as.character(trimws(gsub(".*\\((.*)\\).*", "\\1", regControlPartAndChannels[1]))), "\\|")[[1]])
+
+							#Check how many channels are in this split - right now this is only going ot handle two, but could be extended to do more
+							if (length(regControlChannels) == 2) {
+								
+								ychannel <- gsub("-",".", regControlChannels[2])
+								yaxis <- meansMedia[,which(TRUE == grepl(ychannel, colnames(meansMedia)))]
+								yaxis <- as.numeric(yaxis)
+								xchannel <- gsub("-",".", regControlChannels[1])
+								xaxis <- meansMedia[,which(TRUE == grepl(xchannel, colnames(meansMedia)))]
+								xaxis <- as.numeric(xaxis)
+								ylabel <- as.character(paste(ychannel, " (MEFL)", sep=""))
+								xlabel <- as.character(paste(xchannel, " (MEFL)", sep=""))
+								plotMatColNames <- c(xchannel, ychannel)
+								
+								plotMat <- cbind(xaxis, as.numeric(yaxis))
+					    		plotMat <- as.data.frame(plotMat)
+					    		
+					    		title <- paste("Regulation of ", xlabel, " ON ", ylabel, sep='')
+				
+								#File naming and placement in a subdirectory
+								name <- as.character(paste(ychannel, "_v_", xchannel,".png", sep=''))
+								name <- str_replace_all(name, fixed(" "), "")
+								name <- sub("/","",name)
+								File <- as.character(paste(currentMediaTypePath, "/regulation/plots/", name, sep=''))
+			   					File <- str_replace_all(File, fixed(" "), "")
+			   					dir.create(as.character(paste(currentMediaTypePath, "/regulation", sep='')))
+								dir.create(dirname(File), showWarnings = FALSE)	    			
+										    			
+				    			#Plotting																		
+								png(File, width=960, height=960, res=120)
+				    			pt <- ggplot(data = plotMat, aes(x = xaxis, y = as.numeric(yaxis))) +
+								#geom_line() +
+								# scale_y_log10(limits = c(1e-1,1e6)) +								
+								# scale_x_log10(limits = c(1e-1,1e6)) +
+								theme_bw() +
+				    			# geom_point(size = 4, shape=21, fill="white") +
+				    			geom_point(size = 4, shape=21, fill="red") +
+				    			ggtitle(as.character(title)) +    	
+				    			xlab(xlabel) +
+								ylab(ylabel) +
+			    				theme(axis.text.y  = element_text(colour="black")) +
+						    	theme(axis.text.x  = element_text(colour="black")) 
+				    			print(pt)
+				    			dev.off()
+				    			
+				    			#Output file
+								colnames(plotMat) <- plotMatColNames
+								filename <- as.character(paste(currentMediaTypePath, "/regulation/", "regulationPlotPoints.csv", sep=''))
+								write.csv(file=filename, x=plotMat, row.names=FALSE)
+							}
+						}
+					}
 			    	
 			    #If there is no media curve, we still want to take averages of duplicateTimeMediaRows
 				} else {
 					
 					#Remove extra directories if there are no time series, inducer titration or regulation
 					if(nrow(meansMediaTime) < 2) {
-					if (is.null(uniqueMediaRows$REGULATION) || (uniqueMediaRows$REGULATION[1] == "")) {
-						unlink(part, recursive = TRUE)
-					
-						
+						if (is.null(uniqueMediaRows$REGULATION) || (uniqueMediaRows$REGULATION[1] == "")) {
+							unlink(part, recursive = TRUE)
 						}
 					}				
 					
@@ -611,16 +551,7 @@ setwd(wd)
 							assign(paste("MStds",uniqueMediaRows$MULTIPLEX,sep=""), y)
 						}
 					}
-				}
-				
-				#Add regulation control values to the regulation control data frame
-				if (part %in% regControlParts) {
-					
-					regParts <- c(regParts, part)
-					regMedia <- c(regMedia, mediaType)				
-					meansReg <- rbind(meansReg, meansMedia[1,])
-					standardDevsReg <- rbind(standardDevsReg, standardDevsMedia[1,])
-				}			
+				}		
 			}		
 		}
 	}
@@ -753,6 +684,11 @@ setwd(wd)
 	    	theme(axis.text.x  = element_text(colour="black")) 
 	    	print(p)
 	    	dev.off()
-	    }   
+	    }
+	    
+	    #Output file
+		colnames(plotMat)[1] <- "Multiplex"
+		filename <- as.character(paste("./functional_richness/", "fnRichnessPlotPoints.csv", sep=''))
+		write.csv(file=filename, x=multiplexDataFrame, row.names=FALSE)   
 	}
 # }

@@ -28,6 +28,10 @@ import org.cidarlab.phoenix.core.dom.Polynucleotide;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
 import org.cidarlab.raven.accessibility.ClothoWriter;
 import org.cidarlab.raven.algorithms.core.PrimerDesign;
+import org.cidarlab.raven.communication.RavenController;
+import org.cidarlab.raven.communication.WeyekinPoster;
+import org.cidarlab.raven.datastructures.RGraph;
+import org.cidarlab.raven.datastructures.RNode;
 import org.cidarlab.raven.javaapi.Raven;
 import org.clothoapi.clotho3javaapi.Clotho;
 import org.clothoapi.clotho3javaapi.ClothoConnection;
@@ -40,10 +44,10 @@ import org.clothoapi.clotho3javaapi.ClothoConnection;
 public class RavenAdaptor {
     
     //Create assembly plans for given parts and return instructions file
-    public static File generateAssemblyPlan(HashSet<AssignedModule> modulesToTest, String filePath) throws Exception {
+    public static File generateAssemblyPlan(Set<AssignedModule> modulesToTest, String filePath) throws Exception {
         
         //Add testing modules to target modules
-        HashSet<Module> allModules = new HashSet<>();
+        HashSet<AssignedModule> allModules = new HashSet<>();
         HashSet<List<Feature>> moduleFeatureHash = new HashSet<>();
         
         for (AssignedModule targetModule : modulesToTest) {
@@ -69,15 +73,15 @@ public class RavenAdaptor {
         org.json.JSONObject rParameters = convertJSONs(parameters);
         
         Map polyNucQuery = new HashMap();
-        polyNucQuery.put("schema", "org.cidarlab.phoenix.core.dom.Polynucleotide");
+        //polyNucQuery.put("schema", "org.cidarlab.phoenix.core.dom.Polynucleotide");
         HashSet<Polynucleotide> polyNucs = new HashSet<>(ClothoAdaptor.queryPolynucleotides(polyNucQuery,clothoObject));
         
         Map featureQuery = new HashMap();
-        featureQuery.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
+        //featureQuery.put("schema", "org.cidarlab.phoenix.core.dom.Feature");
         List<Feature> allFeatures = ClothoAdaptor.queryFeatures(featureQuery,clothoObject);
         
         Map fluorophoreQuery = new HashMap();
-        fluorophoreQuery.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
+        //fluorophoreQuery.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
         allFeatures.addAll(ClothoAdaptor.queryFluorophores(fluorophoreQuery,clothoObject));
         
         //Determine parts library
@@ -94,9 +98,9 @@ public class RavenAdaptor {
         
         //Convert Phoenix Modules to Raven Plasmids
         ArrayList<HashSet<org.cidarlab.raven.datastructures.Part>> listTargetSets = new ArrayList();
-        HashSet<Module> expressees = new HashSet<>();
-        HashSet<Module> expressors = new HashSet<>();
-        for (Module m : allModules) {
+        HashSet<AssignedModule> expressees = new HashSet<>();
+        HashSet<AssignedModule> expressors = new HashSet<>();
+        for (AssignedModule m : allModules) {
             if (m.getRole() == ModuleRole.EXPRESSEE || m.getRole() == ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR || m.getRole() == ModuleRole.EXPRESSEE_ACTIVATOR || m.getRole() == ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR || m.getRole() == ModuleRole.EXPRESSEE_REPRESSOR) {
                 expressees.add(m);
             } else if (m.getRole() == ModuleRole.EXPRESSOR) {
@@ -112,7 +116,55 @@ public class RavenAdaptor {
      
         //Run Raven to get assembly instructions
         Raven raven = new Raven();         
-        File assemblyInstructions = raven.assemblyInstructions(listTargetSets, partsLibR, vectorsLibR, libPairs, new HashMap(), rParameters, filePath);
+        RavenController assemblyObj = raven.assemblyObject(listTargetSets, partsLibR, vectorsLibR, libPairs, new HashMap(), rParameters, filePath);
+        
+        //This is the information to be saved into Clotho and grabbed for the Owl datasheets
+        //This information applies to all polynucleotides currently made in Phoenix
+        String assemblyMethod = "MoClo (GoldenGate)"; //Right now everythig in Phoenix requires MoClo RFC 94 - can be extended in future, but this is what it is right now
+        String assemblyRFC = "BBa_94";
+        String chassis = "E. coli"; //Also always the case for Phoenix right now
+        String supplementalComments = ""; //Nothing for now, perhaps this can be searched upon plasmid re-enrty?
+        
+        //This information is specific to each Polynucleotide
+        for (HashSet<org.cidarlab.raven.datastructures.Part> partSet : listTargetSets) {
+            for (org.cidarlab.raven.datastructures.Part p : partSet) {
+                
+                ArrayList<String> neighborNames = new ArrayList<>();
+                String pigeonCode = "";
+                                               
+                //This assumes part name and rootNode name are the same - I think this is true, but there might be a bug here
+                for (RGraph aG : assemblyObj.getAssemblyGraphs()) {
+                    if (aG.getRootNode().getName().equalsIgnoreCase(p.getName())) {
+                        
+                        //Unclear if we want to use this information... The PrimitiveModules already have feature and direction, but these lists place the scars between those features
+                        ArrayList<String> composition = aG.getRootNode().getComposition();
+                        ArrayList<String> direction = aG.getRootNode().getDirection();
+                        ArrayList<String> linkers = aG.getRootNode().getLinkers();
+                        ArrayList<String> scars = aG.getRootNode().getScars();
+                        ArrayList<String> type = aG.getRootNode().getType();
+                        
+                        //Neighbor names - Assembly components should be the neighbors of the root node - the parts put together in the last cloning reaction for this polynucleotide
+                        ArrayList<RNode> neighbors = aG.getRootNode().getNeighbors();
+                        for (RNode n : neighbors) {
+                            neighborNames.add(n.getName());
+                        }
+                        
+                        //Pigeon code
+                        if (assemblyObj.getPigeonTextFiles().containsKey(p.getName())) {
+                            pigeonCode = assemblyObj.getPigeonTextFiles().get(p.getName());
+                        }
+                    }
+                }
+            }
+        }
+        
+        File assemblyInstructions = assemblyObj.getInstructionsFile();
+        
+        /*
+        THESE ARE THE METHODS FOR MAKING THE RAVEN-PIGEON IMAGES
+        */
+//        WeyekinPoster.setDotText(RGraph.mergeWeyekinFiles(assemblyObj.getPigeonTextFiles()));
+//        WeyekinPoster.postMyVision();
         
         conn.closeConnection();
         return assemblyInstructions;
@@ -359,12 +411,12 @@ public class RavenAdaptor {
     }
     
     //Convert Phoenix modules to Raven parts
-    public static HashSet<org.cidarlab.raven.datastructures.Part> phoenixModulesToRavenParts(HashSet<Module> modules, HashSet<org.cidarlab.raven.datastructures.Part> libParts) {
+    public static HashSet<org.cidarlab.raven.datastructures.Part> phoenixModulesToRavenParts(HashSet<AssignedModule> modules, HashSet<org.cidarlab.raven.datastructures.Part> libParts) {
         
         HashSet<org.cidarlab.raven.datastructures.Part> ravenParts = new HashSet();
         
         //For each module, make a Raven part
-        for (Module m : modules) {
+        for (AssignedModule m : modules) {
             org.cidarlab.raven.datastructures.Part newPlasmid;
             ArrayList<org.cidarlab.raven.datastructures.Part> composition = new ArrayList();
             ArrayList<String> directions = new ArrayList();            
@@ -391,7 +443,7 @@ public class RavenAdaptor {
                 }
                 
                 //Regular parts with sequences
-                if (!(pm.getModuleFeature().getSequence()==null) && pm.getPrimitiveRole() != FeatureRole.VECTOR) {
+                if (!pm.getModuleFeature().getSequence().getSequence().isEmpty() && pm.getPrimitiveRole() != FeatureRole.VECTOR) {
                     
                     if (pm.getPrimitiveRole() == FeatureRole.CDS_LINKER) {
                         String fName = pm.getModuleFeature().getName().replaceAll(".ref", "");
@@ -472,15 +524,8 @@ public class RavenAdaptor {
             
             ArrayList<String> scarSeqs = ClothoWriter.scarsToSeqs(scars, null);
             
-            //Create blank polynucleotide as a placeholders
-            //Here is where the colony picking math should be applied
-//            HashSet<Polynucleotide> pnSet = new HashSet<>();
-//            Polynucleotide pnPlaceholder = new Polynucleotide();
-//            pnPlaceholder.setAccession(name + "_Polynucleotide");
-//            pnSet.add(pnPlaceholder);
-//            m.setPolynucleotides(pnSet);
-            
-            newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite(m.getName(), composition, scars, scarSeqs, linkers, directions, "", "", typeP);
+            newPlasmid = org.cidarlab.raven.datastructures.Part.generateComposite(m.getName(), composition, scarSeqs, scars, linkers, directions, "", "", typeP);
+//            newPlasmid.setScars(scars);
             newPlasmid.setTransientStatus(false);   
             
             ravenParts.add(newPlasmid);
@@ -501,6 +546,8 @@ public class RavenAdaptor {
                 String type = f.getRole().toString().toLowerCase();
                 if (type.contains("cds")) {
                     type = "gene";
+                } else if (type.contains("promoter")) {
+                    type = "promoter";
                 }
                 String sequence = f.getSequence().getSequence();
                 

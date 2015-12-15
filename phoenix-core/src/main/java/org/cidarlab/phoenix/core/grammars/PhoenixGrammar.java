@@ -315,8 +315,8 @@ public class PhoenixGrammar {
      *---------------*/
     
     //Helper method to loop through a list of structures that need to be decomposed
-    public static void decomposeAll (List<Module> modules) {
-        for (Module structure : modules) {
+    public static void decomposeAll (List<Module> rootModules) {
+        for (Module structure : rootModules) {
             PhoenixGrammar.decompose(structure);
         }
     }
@@ -396,11 +396,8 @@ public class PhoenixGrammar {
             
             //Initialize EXPRESSEEs and EXPRESSOR
             List<Module> expresseeList = new ArrayList<>();
-            int expressorCount = 0;
-            int expresseeCount = 0; 
             
             Module expressor = new Module(node.getName() + "_" + ModuleRole.EXPRESSOR.toString());
-            expressorCount++;
             expressor.setStage(node.getStage() + 1);
             expressor.setRole(ModuleRole.EXPRESSOR);
             expressor.setRoot(false);
@@ -415,7 +412,6 @@ public class PhoenixGrammar {
                 if (pR.equals(FeatureRole.CDS) || pR.equals(FeatureRole.CDS_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSOR) || pR.equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pR.equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR)) {
                                                            
                     Module expressee = new Module(node.getName() + "_" + ModuleRole.EXPRESSEE.toString());
-                    expresseeCount++;
                     
                     //Create a new EXPRESSEE from this CDS primitive and copy the feature
                     moduleFeatures.add(primitive.getModuleFeature());
@@ -458,8 +454,8 @@ public class PhoenixGrammar {
         forwardModule.setRoot(false);
         forwardModule.setRole(ModuleRole.HIGHER_FUNCTION);
         forwardModule.setStage(node.getStage()+1);
-        ArrayList<Feature> moduleFeature = new ArrayList<>();
-        ArrayList<PrimitiveModule> primModules = new ArrayList<>();
+        List<Feature> moduleFeature = new ArrayList<>();
+        List<PrimitiveModule> primModules = new ArrayList<>();
         
         //Go through each of the modules primitives in forward order
         for (int i = 0; i < node.getSubmodules().size(); i++) {
@@ -471,8 +467,6 @@ public class PhoenixGrammar {
                 
                 PrimitiveModule wildCard = new PrimitiveModule(FeatureRole.WILDCARD, pm.getPrimitive().clone(), pm.getModuleFeature());
                 wildCard.getPrimitive().setOrientation(Orientation.REVERSE);
-                wildCard.setPrimitiveRole(FeatureRole.WILDCARD);
-                wildCard.setModuleFeature(pm.getModuleFeature());
                 primModules.add(wildCard);
                 moduleFeature.add(pm.getModuleFeature());
                 

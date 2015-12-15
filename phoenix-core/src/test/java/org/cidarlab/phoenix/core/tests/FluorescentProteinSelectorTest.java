@@ -101,11 +101,11 @@ public class FluorescentProteinSelectorTest {
         Clotho clothoObject = new Clotho(conn);
         
         Map fluorophoreQuery = new HashMap();
-        fluorophoreQuery.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
+        fluorophoreQuery.put("schema", Fluorophore.class.getCanonicalName());
         List<Fluorophore> FPs = ClothoAdaptor.queryFluorophores(fluorophoreQuery,clothoObject);
         
         Map cytometerQuery = new HashMap();
-        cytometerQuery.put("schema", "org.cidarlab.phoenix.core.dom.Cytometer");
+        cytometerQuery.put("schema", Cytometer.class.getCanonicalName());
         List<Cytometer> cytometers = ClothoAdaptor.queryCytometers(cytometerQuery,clothoObject);
         for (Cytometer c : cytometers) {
             FluorescentProteinSelector.solve(FPs, c, 1); 
@@ -122,11 +122,11 @@ public class FluorescentProteinSelectorTest {
         Clotho clothoObject = new Clotho(conn);
         
         Map fluorophoreQuery = new HashMap();
-        fluorophoreQuery.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
+        fluorophoreQuery.put("schema", Fluorophore.class.getCanonicalName());
         List<Fluorophore> FPs = ClothoAdaptor.queryFluorophores(fluorophoreQuery,clothoObject);
         
         Map cytometerQuery = new HashMap();
-        cytometerQuery.put("schema", "org.cidarlab.phoenix.core.dom.Cytometer");
+        cytometerQuery.put("schema", Cytometer.class.getCanonicalName());
         List<Cytometer> cytometers = ClothoAdaptor.queryCytometers(cytometerQuery,clothoObject);
         for (Cytometer c : cytometers) {
             FluorescentProteinSelector.solve(FPs, c, 5); 

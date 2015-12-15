@@ -3,6 +3,8 @@
     package org.cidarlab.phoenix.core.grammars.failuremode;
 
 
+import lombok.Getter;
+import lombok.Setter;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -13,12 +15,18 @@ import org.antlr.v4.runtime.tree.TerminalNode;
  * of the available methods.
  */
 public class SuperCoilingBaseListener implements SuperCoilingListener {
+    
+    @Getter
+    @Setter
+    private int superCoilingCount;
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRoot(SuperCoilingParser.RootContext ctx) { }
+	@Override public void enterRoot(SuperCoilingParser.RootContext ctx) {
+            this.superCoilingCount = 0;
+        }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -42,7 +50,9 @@ public class SuperCoilingBaseListener implements SuperCoilingListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSuper_coiling(SuperCoilingParser.Super_coilingContext ctx) { }
+	@Override public void enterSuper_coiling(SuperCoilingParser.Super_coilingContext ctx) {
+            this.superCoilingCount++;
+        }
 	/**
 	 * {@inheritDoc}
 	 *

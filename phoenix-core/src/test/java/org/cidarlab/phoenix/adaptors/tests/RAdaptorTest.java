@@ -6,6 +6,7 @@
 package org.cidarlab.phoenix.adaptors.tests;
 
 import java.io.IOException;
+import java.util.Map;
 import org.cidarlab.phoenix.core.adaptors.RAdaptor;
 import org.cidarlab.phoenix.core.controller.Utilities;
 import org.junit.Test;
@@ -18,9 +19,15 @@ public class RAdaptorTest {
     
     //@Test
     public void getAllDirectories() throws IOException{
-        String directory = "/home/prash/cidar/phoenixData/data/degradation/Degradation_102215";
-        //String blank = "";
-        RAdaptor.getAllData(directory);
+        String resourceFilepath = Utilities.getFilepath() + "/src/main/resources/RTest/";
+        String directory = resourceFilepath + "results/";
+        String filepath = Utilities.getFilepath() + "/src/main/resources/InstructionFiles/";
+        String keyFile = filepath + "testingInstructionsTest.csv";
+        String mapFile = filepath + "nameMapFileTest.csv";
+        Map<String,String> nameMap = RAdaptor.parseKeyMapFiles(keyFile, mapFile);
+        
+        RAdaptor.walk(directory,directory,nameMap);
+        
     }
     
     //@Test
@@ -29,6 +36,15 @@ public class RAdaptorTest {
         String resourceFilepath = Utilities.getFilepath() + "/src/main/resources/RTest/";
         String filepathR = resourceFilepath + "run.R";
         RAdaptor.runR(filepathR);
+    }
+    
+    @Test
+    public void parseKeyMapFilesTest(){
+       String filepath = Utilities.getFilepath() + "/src/main/resources/InstructionFiles/";
+       String keyFile = filepath + "testingInstructionsTest.csv";
+       String mapFile = filepath + "nameMapFileTest.csv";
+       RAdaptor.parseKeyMapFiles(keyFile, mapFile);
+       
     }
     
     //@Test

@@ -13,9 +13,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.cidarlab.phoenix.core.adaptors.*;
+import org.cidarlab.phoenix.core.dom.Arc;
 import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.Experiment;
+import org.cidarlab.phoenix.core.dom.Feature;
+import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
 import org.cidarlab.phoenix.core.dom.Module;
+import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
+import org.cidarlab.phoenix.core.dom.PrimitiveModule;
+import org.cidarlab.phoenix.core.dom.SmallMolecule;
 import org.cidarlab.phoenix.core.grammars.FailureModeGrammar;
 import org.cidarlab.phoenix.core.grammars.PhoenixGrammar;
 import org.cidarlab.phoenix.core.grammars.StructuralGrammar;
@@ -179,6 +185,88 @@ public class PhoenixController {
         return assmTestFiles;
     }
     
+    
+    private static Feature getExpresseeFeature(AssignedModule amodule){
+        for(PrimitiveModule pm:amodule.getSubmodules()){
+            if(pm.getModuleFeature().getRole().equals(FeatureRole.CDS) || pm.getModuleFeature().getRole().equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pm.getModuleFeature().getRole().equals(FeatureRole.CDS_ACTIVATOR) || pm.getModuleFeature().getRole().equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR) || pm.getModuleFeature().getRole().equals(FeatureRole.CDS_REPRESSOR)){
+                return pm.getModuleFeature();
+            }
+        }
+        return null;
+    }
+    
+    private static Feature getFPFeature(AssignedModule amodule){
+        for(PrimitiveModule pm:amodule.getSubmodules()){
+            if(pm.getModuleFeature().getRole().equals(FeatureRole.CDS_FLUORESCENT) || pm.getModuleFeature().getRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)){
+                return pm.getModuleFeature();
+            }
+        }
+        return null;
+    }
+    
+    private static SmallMolecule getFeatureSmallMolecule(AssignedModule amodule){
+        for(PrimitiveModule pm:amodule.getSubmodules()){
+            if(pm.getModuleFeature().getRole().equals(FeatureRole.CDS) || pm.getModuleFeature().getRole().equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pm.getModuleFeature().getRole().equals(FeatureRole.CDS_ACTIVATOR) || pm.getModuleFeature().getRole().equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR) || pm.getModuleFeature().getRole().equals(FeatureRole.CDS_REPRESSOR)){
+                for(Arc arc:pm.getModuleFeature().getArcs()){
+                    for(SmallMolecule sm:arc.getMolecules()){
+                        return sm;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    
+    
+    //This is currently a little funky. Needs to change for small molecules. Not sure how to handle it. Multiple SBML documents per sm?
+    public static void assignSBMLDocuments(Module module){
+        
+        //COPASIAdaptor sbmlfunctions = new COPASIAdaptor();
+        if(module.getRole().equals(ModuleRole.EXPRESSEE)){
+            for(AssignedModule amodule:module.getAssignedModules()){
+                amodule.getSBMLDocument().add(COPASIAdaptor.createDegradationModel(getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
+            }
+        }
+        else if(module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR)){
+            for(AssignedModule amodule:module.getAssignedModules()){
+                amodule.getSBMLDocument().add(COPASIAdaptor.createDegradationModel(getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
+                amodule.getSBMLDocument().add(COPASIAdaptor.createActivationModel(getExpresseeFeature(amodule).getClothoID(),getFPFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of the expressee and id of the FP, name of the expressee (cds), name of the FP
+            }
+        }
+        else if(module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR)){
+            for(AssignedModule amodule:module.getAssignedModules()){
+                amodule.getSBMLDocument().add(COPASIAdaptor.createDegradationModel(getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
+                amodule.getSBMLDocument().add(COPASIAdaptor.createActivationModel(getExpresseeFeature(amodule).getClothoID(),getFPFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of the expressee and id of the FP, name of the expressee (cds), name of the FP
+                amodule.getSBMLDocument().add(COPASIAdaptor.createInductionActivationModel(getFeatureSmallMolecule(amodule).getName(), getExpresseeFeature(amodule).getClothoID(),getFPFeature(amodule).getClothoID(),getFeatureSmallMolecule(amodule).getName(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of inducer (small molecule), id of the expressee and id of the FP, name of the inducer, name of the expressee (cds), name of the FP
+            }
+        }
+        else if(module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)){
+            for(AssignedModule amodule:module.getAssignedModules()){
+                amodule.getSBMLDocument().add(COPASIAdaptor.createDegradationModel(getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
+                amodule.getSBMLDocument().add(COPASIAdaptor.createRepressionModel(getExpresseeFeature(amodule).getClothoID(),getFPFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of the expressee and id of the FP, name of the expressee (cds), name of the FP
+            }
+        }
+        else if(module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR)){
+            for(AssignedModule amodule:module.getAssignedModules()){
+                amodule.getSBMLDocument().add(COPASIAdaptor.createDegradationModel(getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
+                amodule.getSBMLDocument().add(COPASIAdaptor.createRepressionModel(getExpresseeFeature(amodule).getClothoID(),getFPFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of the expressee and id of the FP, name of the expressee (cds), name of the FP
+                amodule.getSBMLDocument().add(COPASIAdaptor.createInductionRepressionModel(getFeatureSmallMolecule(amodule).getName(), getExpresseeFeature(amodule).getClothoID(),getFPFeature(amodule).getClothoID(),getFeatureSmallMolecule(amodule).getName(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of inducer (small molecule), id of the expressee and id of the FP, name of the inducer, name of the expressee (cds), name of the FP
+            }
+            
+        }
+        else if(module.getRole().equals(ModuleRole.EXPRESSOR)){
+            for(AssignedModule amodule:module.getAssignedModules()){
+                amodule.getSBMLDocument().add(COPASIAdaptor.createExpressionModel(null, null)); //
+                amodule.getSBMLDocument().add(COPASIAdaptor.createDegradationModel(null, null)); //name and id of expressee       
+            }
+        }
+        
+        for(Module child:module.getChildren()){
+            assignSBMLDocuments(child);
+        }
+        
+    }
+    
     public static List<AssignedModule> getAllAssignedModules(Module module){
         List<AssignedModule> modulesToTest = new ArrayList<AssignedModule>();
         for (AssignedModule amodule : module.getAssignedModules()) {
@@ -220,10 +308,10 @@ public class PhoenixController {
         currentExperiments.clear();
 
         //Run simulations to produce candidate part/feature matches
-        List<Module> bestCombinedModules = COPASIAdaptor.runSimulations(modules);
+        //List<Module> bestCombinedModules = COPASIAdaptor.runSimulations(modules);
 
         //Update module graphs based upon simulations
-        HashSet<Module> modulesToTest = FeatureAssignment.completeAssignmentSim(bestCombinedModules, modules);
+        //HashSet<Module> modulesToTest = FeatureAssignment.completeAssignmentSim(bestCombinedModules, modules);
         //ceateExperimentInstructions (modulesToTest);
         
         conn.closeConnection();

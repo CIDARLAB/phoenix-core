@@ -14,6 +14,7 @@ import org.cidarlab.phoenix.core.dom.Experiment.ExperimentType;
 
 /**
  *
+ * @author prash    
  * @author evanappleton
  */
 public class ExperimentResults {

@@ -244,7 +244,11 @@ public class RavenAdaptor {
                 //Correct type
                 type = a.getFeature().getRole().toString().toLowerCase();
                 if (type.contains("cds")) {
-                    type = "gene";
+                    if (type.contains("fluorescent")) {
+                        type = "reporter";
+                    } else {
+                        type = "gene";
+                    }
                 } else if (type.contains("promoter")) {
                     type = "promoter";
                 }
@@ -268,6 +272,7 @@ public class RavenAdaptor {
             newPlasmid.setTransientStatus(false);
             
         //Make Raven composite parts based on annotations
+        //TODO: Possible merges of tags with the previous part in a composition -> unclear if copmletely necessary at this point
         } else {
             
             //Scars and linkers
@@ -293,18 +298,8 @@ public class RavenAdaptor {
             for (int i = 0; i < startOrder.size(); i++) {
                                 
                 Annotation a = annotationOrderMap.get(startOrder.get(i));
-                
-                //Directions
-                ArrayList<String> aDir = new ArrayList();
-                if (a.isForwardStrand()) {
-                    directions.add("+");
-                    aDir.add("+");
-                } else {
-                    directions.add("-");
-                    aDir.add("-");
-                }
-                
-                //Scars and linkers
+
+                //Scars, linkers, and degradation tags
                 if (i > 0) {
               
                     String scar = "_";
@@ -325,6 +320,7 @@ public class RavenAdaptor {
                         linkers.add(linker);
                         scarSeq = partSeq.substring(a.getStart(), a.getEnd() + 1);
                         previousIsLinker = true;
+                        continue;
 
                     } else {
                         if (!previousIsLinker) {
@@ -341,15 +337,28 @@ public class RavenAdaptor {
                     scars.add(scar);
                 }
                 
+                //Directions
+                ArrayList<String> aDir = new ArrayList();
+                if (a.isForwardStrand()) {
+                    directions.add("+");
+                    aDir.add("+");
+                } else {
+                    directions.add("-");
+                    aDir.add("-");
+                }
+                
                 //Find Raven basic part for this composition
-                for (org.cidarlab.raven.datastructures.Part p : libParts) {
-                    if (p.getName().equalsIgnoreCase(a.getFeature().getName())) {
-                        if (p.getLeftOverhang().isEmpty() && p.getRightOverhang().isEmpty() && p.getDirections().equals(aDir)) {
-                            composition.add(p);
+                if (!previousIsLinker) {
+                    for (org.cidarlab.raven.datastructures.Part p : libParts) {
+                        if (p.getName().equalsIgnoreCase(a.getFeature().getName())) {
+                            if (p.getLeftOverhang().isEmpty() && p.getRightOverhang().isEmpty() && p.getDirections().equals(aDir)) {
+                                composition.add(p);
+                            }
                         }
                     }
                 }
                 
+                //Shift start and end indexes
                 if (i == 0) {
                     annotationStartIndex = a.getStart();
                     lastAnnotationEndIndex = a.getEnd();
@@ -358,12 +367,7 @@ public class RavenAdaptor {
                 } else {
                     lastAnnotationEndIndex = a.getEnd();
                 }                
-            }
-            
-//            //Determine MoClo overhangs, searching for 
-//            if (partSeq.substring(0, annotationStartIndex).length() < 4 || partSeq.substring(annotationEndIndex).length() < 4) {
-//                String flag = "";
-//            }            
+            }       
             
             moCloLO = getMoCloOHs(partSeq.substring(0, annotationStartIndex).toLowerCase(), true, libParts);           
             moCloRO = getMoCloOHs(partSeq.substring(annotationEndIndex).toLowerCase(), false, libParts);
@@ -445,6 +449,7 @@ public class RavenAdaptor {
                 //Regular parts with sequences
                 if (!pm.getModuleFeature().getSequence().getSequence().isEmpty() && pm.getPrimitiveRole() != FeatureRole.VECTOR) {
                     
+                    //Linker edge case
                     if (pm.getPrimitiveRole() == FeatureRole.CDS_LINKER) {
                         String fName = pm.getModuleFeature().getName().replaceAll(".ref", "");
                         
@@ -460,6 +465,33 @@ public class RavenAdaptor {
                         previousIsLinker = true;
                         linkers.add(linker);
                         
+                    //Degradation tag edge case
+                    } else if (pm.getPrimitiveRole() == FeatureRole.CDS_TAG && m.getSubmodules().size() > 1 && (m.getSubmodules().get(i-1).getPrimitiveRole() == FeatureRole.CDS_FLUORESCENT || m.getSubmodules().get(i-1).getPrimitiveRole() == FeatureRole.CDS_FLUORESCENT_FUSION)) {
+                        
+                        if (i > 0) {
+                            if (!previousIsLinker) {
+                                linkers.add(linker);
+                            } else {
+                                previousIsLinker = false;
+                            }
+                            //Scars and linkers
+                            scars.add(scar);
+                        }
+                        
+                        PrimitiveModule lastPM = m.getSubmodules().get(i - 1);
+                        String type = lastPM.getPrimitiveRole() + "_multiplex";
+                        String name = lastPM.getPrimitiveRole() + "?";
+                        ArrayList<String> typeM = new ArrayList();
+                        typeM.add(type);
+
+                        org.cidarlab.raven.datastructures.Part newBasicPart = org.cidarlab.raven.datastructures.Part.generateBasic(name, "", null, typeM, aDir, "", "");
+                        newBasicPart.setTransientStatus(false);
+                        libParts.add(newBasicPart);
+                        
+                        composition.remove(i-1);
+                        composition.add(newBasicPart);
+                        continue;
+                        
                     } else {
 
                         if (i > 0) {
@@ -472,19 +504,17 @@ public class RavenAdaptor {
                             scars.add(scar);
                         }
                         
-                        //for (Feature f : pm.getModuleFeatures()) {
-                            String fName = pm.getModuleFeature().getName().replaceAll(".ref", "");
+                        String fName = pm.getModuleFeature().getName().replaceAll(".ref", "");
 
-                            //Find Raven basic part for this composition
-                            for (org.cidarlab.raven.datastructures.Part p : libParts) {
-                                if (p.getName().equalsIgnoreCase(fName)) {
-                                    if (p.getLeftOverhang().isEmpty() && p.getRightOverhang().isEmpty() && p.getDirections().equals(aDir)) {
-                                        composition.add(p);
-                                        directions.addAll(aDir);
-                                    }
+                        //Find Raven basic part for this composition
+                        for (org.cidarlab.raven.datastructures.Part p : libParts) {
+                            if (p.getName().equalsIgnoreCase(fName)) {
+                                if (p.getLeftOverhang().isEmpty() && p.getRightOverhang().isEmpty() && p.getDirections().equals(aDir)) {
+                                    composition.add(p);
+                                    directions.addAll(aDir);
                                 }
                             }
-                        //}
+                        }
                     }
                     
                 //Vector edge case
@@ -545,7 +575,11 @@ public class RavenAdaptor {
                 String name = f.getName().replaceAll(".ref", "");
                 String type = f.getRole().toString().toLowerCase();
                 if (type.contains("cds")) {
-                    type = "gene";
+                    if (type.contains("fluorescent")) {
+                        type = "reporter";
+                    } else {
+                        type = "gene";
+                    }
                 } else if (type.contains("promoter")) {
                     type = "promoter";
                 }

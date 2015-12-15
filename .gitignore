@@ -7,5 +7,11 @@ phoenix_core/target/
 */run.Rout
 **/run.Rout
 /phoenix-core/target/
+<<<<<<< HEAD
 /phoenix-core/src/main/resources/RTest/
 phoenix-core/src/main/resources/RTest/
+=======
+**/.settings
+**/.classpath
+**/.project
+>>>>>>> ec8a735a2d6a4a2368024dd0a0a75721eb0d506e

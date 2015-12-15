@@ -24,7 +24,6 @@ public class AssignedModule extends Module {
         super(m.getName());
         this.experiments = new ArrayList<>();
         this.regulationDocument = new ArrayList<>();
-        this.SBMLDocument = new SBMLDocument();
         //this.controlModules = new ArrayList<>();
         
         List<Feature> fList = new ArrayList<>();
@@ -70,11 +69,38 @@ public class AssignedModule extends Module {
         clone.setRole(this.getRole());
         clone.setStage(this.getStage());
         
-        clone.SBMLDocument = this.SBMLDocument;
+        clone.setSBMLDocument(this.getSBMLDocument());
         clone.regulationDocument = this.regulationDocument;
         
         return clone;
     }
+    
+    public String getFeatureString(){
+        String features="";
+        
+        for(int i=0;i<this.getSubmodules().size()-1;i++){
+            PrimitiveModule pm = this.getSubmodules().get(i);
+            Feature f = pm.getModuleFeature();
+            if(f.getName() == null){
+                features += (pm.getPrimitiveRole() + "|");
+            } else if(f.getName().equals("")){
+                features += (pm.getPrimitiveRole() + "|");
+            } else{
+                features += (f.getName() + "|");
+            }
+        }
+        PrimitiveModule pm = this.getSubmodules().get(this.getSubmodules().size()-1);
+        Feature f = pm.getModuleFeature();
+        if (f.getName() == null) {
+            features += (pm.getPrimitiveRole());
+        } else if (f.getName().equals("")) {
+            features += (pm.getPrimitiveRole());
+        } else {
+            features += (f.getName());
+        }
+        
+        return features;
+    } 
     
     @Getter
     @Setter
@@ -85,11 +111,6 @@ public class AssignedModule extends Module {
     @Getter
     @Setter
     private List<AssignedModule> controlModules;
-    
-    //SBML Model
-    @Getter
-    @Setter
-    private SBMLDocument SBMLDocument;
     
     @Getter
     @Setter

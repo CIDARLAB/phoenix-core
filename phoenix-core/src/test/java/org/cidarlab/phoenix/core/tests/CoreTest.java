@@ -5,10 +5,7 @@
 package org.cidarlab.phoenix.core.tests;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.List;
 import org.cidarlab.phoenix.core.controller.PhoenixController;
-import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.junit.After;
 import org.junit.AfterClass;

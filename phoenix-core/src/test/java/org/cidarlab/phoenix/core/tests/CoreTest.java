@@ -5,10 +5,7 @@
 package org.cidarlab.phoenix.core.tests;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.List;
 import org.cidarlab.phoenix.core.controller.PhoenixController;
-import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -60,10 +57,19 @@ public class CoreTest {
 //        PhoenixController.preliminaryDataUpload (featureLib, plasmidLib, fluorophoreSpectra, cytometer);
         
         //Run a design decomposition
-        File structureFile = new File(getFilepath() + "/src/main/resources/miniEugeneFiles/oscillator-transcriptional-interference.eug");
+        File structureFile = new File(getFilepath() + "/src/main/resources/miniEugeneFiles/inverter.eug");
         Module bestModule = PhoenixController.initializeDesign(structureFile, null);
         //HashSet<AssignedModule> modulesToTestHash = new HashSet<>(modulesToTest);
         PhoenixController.createExperimentInstructions(bestModule, getFilepath() + "/src/main/resources/InstructionFiles");
+        
+        
+        //Assign SBML Documents
+        PhoenixController.assignSBMLDocuments(bestModule);
+        
+        String filepathSBML = getFilepath() + "/src/main/resources/sbmlDocs";
+        //Create SBML Documents
+        PhoenixController.createAllSBMLfiles(bestModule, filepathSBML);
+        
     }
     
     //Main testing class

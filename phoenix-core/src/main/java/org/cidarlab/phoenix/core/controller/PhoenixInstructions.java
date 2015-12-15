@@ -41,6 +41,8 @@ import org.cidarlab.phoenix.core.dom.Titration;
  * This includes part assembly and determination of testing points
  * 
  * @author evanappleton
+ * @author prash
+ * 
  */
 public class PhoenixInstructions {
     
@@ -241,10 +243,10 @@ public class PhoenixInstructions {
         File testingMap = new File(filePath + "/nameMapFileTest.csv");
         FileWriter mapFileWriter = new FileWriter(testingMap);
         try (BufferedWriter writer = new BufferedWriter(mapFileWriter)) {
-            writer.write("Short Name,Name,Custom Name");
+            writer.write("Short Name,Features,Custom Name");
             writer.newLine();
             for(AssignedModule amodule:amodules){
-                writer.write(amodule.getShortName()+","+amodule.getName()+",");
+                writer.write(amodule.getShortName()+","+amodule.getFeatureString()+",");
                 writer.newLine();
             }
         
@@ -254,24 +256,6 @@ public class PhoenixInstructions {
         return testingMap;
         
     }
-    
-    
-    public static File generateshortNameMapFile(List<Experiment> experiments, String filepath){
-        File file = new File(filepath);
-        try {
-            FileWriter writer = new FileWriter(file);
-            BufferedWriter bwriter = new BufferedWriter(writer);
-            for(Experiment experiment:experiments){
-                bwriter.write(experiment.getAmShortName()+","+experiment.getAmName()+","+experiment.getName());
-            }
-            bwriter.close();
-        } catch (IOException ex) {
-            Logger.getLogger(PhoenixInstructions.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        return file;
-    }
-    
     
     //Method for reading results file from R
     //This method needs to be fixed to assign results to the experiment, not the samples

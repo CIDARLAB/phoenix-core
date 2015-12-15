@@ -47,10 +47,26 @@
               </executions>
             </plugin>-->
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>**/*.*</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        
     </build>
     
     <dependencies>
     
+        <!--
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>7.0</version>
+        </dependency>
+        -->    
         <!-- JUnit -->
         <dependency>
             <groupId>junit</groupId>

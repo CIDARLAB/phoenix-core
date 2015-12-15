@@ -11,16 +11,9 @@ package org.cidarlab.phoenix.core.controller;
  */
 public class Args {
     
-    public static String getFilepath()
-    {
-        String filepath = PhoenixController.class.getClassLoader().getResource(".").getPath();
-        filepath = filepath.substring(0,filepath.indexOf("/target/"));
-        System.out.println("\n\nTHIS IS THE FILEPATH: " + filepath + "\n\n");
-        return filepath;
-    }
     
     public static final long maxTimeOut = 120;
     public static final String clothoLocation = "wss://localhost:8443/websocket";
     //public static final String flareJSONfilepath = "/C:/Users/zchap_000/Documents/BU_Spring_2015/phoenix-core/phoenix-core/src/main/webapp/flare.json";
-    public static final String flareJSONfilepath = getFilepath() + "/src/main/webapp/flare.json";
+    public static final String flareJSONfilepath = Utilities.getFilepath() + "/src/main/webapp/flare.json";
 }

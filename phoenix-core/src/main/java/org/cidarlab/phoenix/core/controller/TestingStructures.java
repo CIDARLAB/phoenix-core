@@ -39,6 +39,8 @@ import org.clothoapi.clotho3javaapi.ClothoConnection;
 /**
  *
  * @author evanappleton
+ * @author prash
+ * 
  */
 public class TestingStructures {
 
@@ -92,7 +94,8 @@ public class TestingStructures {
                 testSubmodules.add(testRBS);
                 testSubmodules.add(m.getSubmodules().get(0));
                 testSubmodules.add(testLinker);
-                testSubmodules.add(new PrimitiveModule(FeatureRole.CDS_FLUORESCENT_FUSION, new Primitive(new ComponentType("fc"), "FP"), new Feature("EXPRESSEE", new NucSeq(), null, Feature.FeatureRole.CDS_FLUORESCENT_FUSION)));
+                testSubmodules.add(new PrimitiveModule(FeatureRole.CDS_FLUORESCENT_FUSION, new Primitive(new ComponentType("fc"), "FP"), new Feature("EXPRESSEE", new NucSeq(), null, FeatureRole.CDS_FLUORESCENT_FUSION)));
+                testSubmodules.add(new PrimitiveModule(FeatureRole.CDS_TAG,new Primitive(new ComponentType("tg"),"TAG"),new Feature("TAG", new NucSeq(""),null,FeatureRole.CDS_TAG)));
                 testSubmodules.add(testTerminator);
                 testSubmodules.add(testVector1);
                 m.setSubmodules(testSubmodules);

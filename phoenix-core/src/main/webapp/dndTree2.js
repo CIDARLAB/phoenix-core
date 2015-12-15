@@ -19,8 +19,8 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
     var root;
 
     // size of the diagram
-    var viewerWidth = $("#tree-container").width();
-    var viewerHeight = $("#tree-container").height();
+    var viewerWidth = $(document).width();
+    var viewerHeight = $(document).height();
 
     var tree = d3.layout.tree()
         .size([viewerHeight, viewerWidth]);
@@ -357,7 +357,6 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
                 });
             }
         };
-
         childCount(0, root);
         var newHeight = d3.max(levelWidth) * 25; // 25 pixels per line  
         tree = tree.size([newHeight, viewerWidth]);
@@ -536,82 +535,6 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
             d.x0 = d.x;
             d.y0 = d.y;
         });
-
-        // multi-parent stuff here
-        // hard-coded parents and children for testing
-        var couplingParent1 = tree.nodes(root).filter(function(d) {
-                return d['name'] === 'TU_0_EXPRESSEE_0';    // in the future can't use name parameter because nodes can share names; identification must be unique
-            })[0];
-        var couplingChild1 = tree.nodes(root).filter(function(d) {
-                return d['name'] === 'EXPRESSION';
-            })[0];
-
-        var couplingParent2 = tree.nodes(root).filter(function(d) {
-                return d['name'] === 'TU_1_EXPRESSEE_0';
-            })[0];
-        var couplingChild2 = tree.nodes(root).filter(function(d) {
-                return d['name'] === 'TU_1_EXPRESSOR_0_0';
-            })[0];
-
-        // make sure each node is valid
-        if(typeof couplingParent1 == undefined){
-            couplingParent1 = null;
-        }
-        if(typeof couplingChild1 == undefined){
-            couplingChild1 = null;
-        }
-        if(typeof couplingParent2 == undefined){
-            couplingParent2 = null;
-        }
-        if(typeof couplingChild2 == undefined){
-            couplingChild2 = null;
-        }
-
-        // sanity check
-        // console.log("TU_0_EXPRESSEE_0 id = " + couplingParent1.id);
-        // console.log("EXPRESSION id = " + couplingChild1.id);
-        // console.log("TU_1_EXPRESSEE_0 id = " + couplingParent2.id);
-        // console.log("TU_1_EXPRESSOR_0_0 id = " + couplingChild2.id);
-        // console.log("source id: " + source.id);
-
-        // group multi-nodes together for easy manipulation
-        multiParents = [{adult: couplingParent2,
-                        child: couplingChild2},
-
-                        {adult: couplingParent1,
-                        child: couplingChild1}
-                        ];
-
-        // wipe all links
-        svgGroup.selectAll('path.additionalParentLink').remove();
-
-        // draw each valid link
-        multiParents.forEach(function(element) {
-                svgGroup.append("path", "g")
-                .attr("class", "additionalParentLink")
-                    .attr("d", function() {
-                        if (null != element.adult){             // if adult is present
-                            if(null != element.adult.children){ // if adult is not collapsed
-                                var oTarget = {                 // set target
-                                x: element.adult.x0,
-                                y: element.adult.y0
-                                };
-                            } else {return;}                    // shortcut return if conditions are not met
-                        } else {return;}                        // shortcut return if conditions are not met
-
-                        if(null != element.child){              // if child is present
-                            var oSource = {                     // set source
-                            x: element.child.x0,
-                            y: element.child.y0
-                            };
-                        } else {return;}                        // shortcut return if conditions are not met
-
-                        return diagonal({
-                            source: oSource,
-                            target: oTarget
-                        });
-                    });
-            });
     }
 
     // Append a group which holds all nodes and which the zoom Listener can act upon.
@@ -625,7 +548,40 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
     // Layout the tree initially and center on the root node.
     update(root);
     centerNode(root);
- 
+	
+	var couplingParent1 = tree.nodes(root).filter(function(d) {
+            return d['name'] === 'TU_0_EXPRESSEE_0'; // can use unique clotho id
+        })[0];
+	var couplingChild1 = tree.nodes(root).filter(function(d) {
+            return d['name'] === 'EXPRESSION';      // can use unique clotho id
+        })[0];
+	
+	multiParents = [{
+                    parent: couplingParent1,
+                    child: couplingChild1
+                }];
+	
+	multiParents.forEach(function(multiPair) {
+            svgGroup.append("path", "g")
+            .attr("class", "additionalParentLink")
+                .attr("d", function() {
+                    var oTarget = {
+                        x: multiPair.parent.x0,
+                        y: multiPair.parent.y0
+                    };
+                    var oSource = {
+                        x: multiPair.child.x0,
+                        y: multiPair.child.y0
+                    };
+                    /*if (multiPair.child.depth === multiPair.couplingParent1.depth) {
+                        return "M" + oSource.y + " " + oSource.x + " L" + (oTarget.y + ((Math.abs((oTarget.x - oSource.x))) * 0.25)) + " " + oTarget.x + " " + oTarget.y + " " + oTarget.x;
+                    }*/
+                    return diagonal({
+                        source: oSource,
+                        target: oTarget
+                    });
+                });
+        });	
 });
 
 function JSONupdate(){

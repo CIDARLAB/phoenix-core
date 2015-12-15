@@ -31,8 +31,8 @@ setwd(wd)
 	allControlRows <- key[which(!(key$CONTROL =="")),]
 	colorControlRows <- allControlRows[-which(TRUE == grepl("beads", allControlRows$CONTROL, ignore.case=TRUE)),]
 	negativeControlRows <- key[which(TRUE == grepl("negative", key$CONTROL, ignore.case=TRUE)),]
-	colorControlsFlowSet <- read.flowSet(path = "data", as.character(colorControlRows$FILENAME), phenoData=list(Filename="$FIL"))
-	negativeControlFlowSet <- read.flowSet(path = "data", as.character(negativeControlRows$FILENAME), phenoData=list(Filename="$FIL"))
+	colorControlsFlowSet <- read.flowSet(path = dataPath, as.character(colorControlRows$FILENAME), phenoData=list(Filename="$FIL"))
+	negativeControlFlowSet <- read.flowSet(path = dataPath, as.character(negativeControlRows$FILENAME), phenoData=list(Filename="$FIL"))
 	
 	#Filter out for only relevant color columns based on controls
 	columnIndexes <- match(colorControlRows$CONTROL, colnames(colorControlsFlowSet))
@@ -54,7 +54,8 @@ setwd(wd)
 	
 	#Find bead controls, apply bead normalization
 	beadsControlRow <- key[which(TRUE == grepl("beads", key$CONTROL, ignore.case=TRUE)),]
-	beadsControlFlowFrame <- BeadFlowFrame(fcs.filename = paste('data/', as.character(beadsControlRow$FILENAME), sep=''), bead.filename = "MEFLmatrix.csv")
+	beadFile <- paste(dataPath,'/', as.character(beadsControlRow$FILENAME), sep='')
+	beadsControlFlowFrame <- BeadFlowFrame(fcs.filename = beadFile, bead.filename = "MEFLmatrix.csv")
 	gatedBeadControlFlowFrame <- gateBeads(beadsControlFlowFrame)
 	
 	#Determine the spillover matrix
@@ -64,10 +65,16 @@ setwd(wd)
 	}
 	
 	#Get autofluorescence
-	autofluorescence <- getAutofluorescence(negativeControlFlowSet, gatedBeadControlFlowFrame)
+	autofluorescence <- getAutofluorescence(negativeControlFlowSet, gatedBeadControlFlowFrame)		
 	
 	#Get color multiplier vector relative to FITC-A channel for gfp control
 	colorMultiplierVector <- getColorMultiplier(colorControlsFlowSet, gatedBeadControlFlowFrame, autofluorescence, as.character(colorControlRows$FILENAME))
+	
+	# #Correct autofluorescence with color multiplier
+	# for (r in 1:length(colnames(autofluorescence))) {
+		# m <- as.numeric(colorMultiplierVector[,which(TRUE == grepl(colnames(autofluorescence)[r], colnames(colorMultiplierVector), ignore.case=TRUE))])
+		# autofluorescence[,r] <- m * autofluorescence[,r]
+	# }
 	
 	#Group files by part name
 	#Determine unique parts
@@ -271,7 +278,7 @@ setwd(wd)
 								#Do not evaluate files with less than 1000 events
 								finalFiles <- c()
 								for (nFile in 1:length(files)) {
-									frame <- read.flowSet(path = "data", files[nFile])
+									frame <- read.flowSet(path = dataPath, files[nFile])
 									if (length(frame[[1]]) > minEvents) {
 										finalFiles <- c(finalFiles, files[nFile])
 									}
@@ -279,7 +286,7 @@ setwd(wd)
 											
 								#Analyze this flowset if there are any files left after the filter for minimal events
 								if (!is.null(finalFiles)) {
-									experimentFlowSet <- read.flowSet(path = "data", finalFiles, phenoData=list(Filename="$FIL"))
+									experimentFlowSet <- read.flowSet(path = dataPath, finalFiles, phenoData=list(Filename="$FIL"))
 									experimentFlowSet <- experimentFlowSet[,columnIndexes]				
 													
 									#Process experiments for this flowSet
@@ -381,7 +388,7 @@ setwd(wd)
 					#Remove files with less than minEvents
 					finalFilesMediaConcentration <- c()
 					for (nFile in 1:length(filesMediaConcentration)) {
-						frame <- read.flowSet(path = "data", filesMediaConcentration[nFile])
+						frame <- read.flowSet(path = dataPath, filesMediaConcentration[nFile])
 						if (length(frame[[1]]) > minEvents) {
 							finalFilesMediaConcentration <- c(finalFilesMediaConcentration, filesMediaConcentration[nFile])
 						}
@@ -389,7 +396,7 @@ setwd(wd)
 			
 					#Analyze this flowset if there are any files left after the filter for minimal events
 					if (!is.null(finalFilesMediaConcentration)) {
-						experimentFlowSetMedia <- read.flowSet(path = "data", finalFilesMediaConcentration, phenoData=list(Filename="$FIL"))
+						experimentFlowSetMedia <- read.flowSet(path = dataPath, finalFilesMediaConcentration, phenoData=list(Filename="$FIL"))
 						experimentFlowSetMedia <- experimentFlowSetMedia[,columnIndexes]				
 										
 						#Process experiments for this flowSet

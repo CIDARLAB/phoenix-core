@@ -4,7 +4,13 @@ phoenix_core/target/
 **/.Rhistory
 */.RData
 */.Rhistory
+*/run.Rout
+**/run.Rout
 /phoenix-core/target/
+/phoenix-core/src/main/resources/RTest/
+phoenix-core/src/main/resources/RTest/
+/phoenix-core/src/main/resources/sbmlDocs/
+phoenix-core/src/main/resources/sbmlDocs/
 **/.settings
 **/.classpath
 **/.project

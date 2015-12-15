@@ -29,6 +29,8 @@ import org.clothoapi.clotho3javaapi.ClothoConnection;
 /**
  *
  * @author evanappleton
+ * @author prash
+ * 
  */
 public class FeatureAssignment {    
     
@@ -223,20 +225,40 @@ public class FeatureAssignment {
                     //Assign a regulator from the feature library
                     List<Feature> featuresOfRole = getAllFeaturesOfRole(features, pm.getPrimitiveRole());
                     for (Feature fR : featuresOfRole) {
-                        assignedRegulators.add(fR);
+                        
 
                         //Get rid of features that were saved when the module was saved that are only placeholders
                         if (!fR.getSequence().getSequence().isEmpty()) {
                             
-                            Module clone = m.clone(m.getName() + "_" + count);
-                            AssignedModule assignedClone = new AssignedModule(clone);
-                            count++;
-                            List<Feature> mfClone = new ArrayList<>();
-                            mfClone.add(fR);
+                            //This was assigned
+                            assignedRegulators.add(fR);
                             
+                            //Create AssignedModule
+                            Module clone = m.clone(m.getName() + "_" + count+"_TAG");
+                            AssignedModule assignedClone = new AssignedModule(clone);
                             assignedClone.getSubmodules().get(i).setModuleFeature(fR);
                             assignedClone.updateModuleFeatures();
+                            
+                            
+                            Module clone_no_tag = m.clone(m.getName() + "_" + count);
+                            AssignedModule assignedClone_no_tag = new AssignedModule(clone_no_tag);
+                            List<PrimitiveModule> am_pm = new ArrayList<PrimitiveModule>();
+                            for(PrimitiveModule pm_nt:m.getSubmodules()){
+                                if(!pm_nt.getPrimitiveRole().equals(FeatureRole.CDS_TAG)){
+                                    am_pm.add(pm_nt);
+                                }
+                            }
+                            am_pm.get(i).setModuleFeature(fR);
+                            assignedClone_no_tag.setSubmodules(am_pm);
+                            
+                            
                             m.getAssignedModules().add(assignedClone);
+                            m.getAssignedModules().add(assignedClone_no_tag);
+                            
+                            
+                            count++;
+                            
+                            
                         }
                     }
                 }

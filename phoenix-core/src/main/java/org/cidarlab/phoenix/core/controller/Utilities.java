@@ -19,6 +19,8 @@ import org.cidarlab.phoenix.core.dom.Titration;
  * THIS IS THE FILE FOR RANDOM UTILITY METHODS
  * 
  * @author evanappleton
+ * @author prash
+ * 
  */
 public class Utilities {
   
@@ -452,10 +454,33 @@ public class Utilities {
         return defaultTimeMap;
     }
     
+    
+    public static Double getCooperativity(String regulator){
+        
+        if(regulator.equals("lacIm.ref")){
+            return 4.0;
+        }
+        return 2.0;
+    }
+    
+    
     public static void printDebugStatement(String message){
         System.out.println("#########################################");
         System.out.println("######################" + message);
         System.out.println("#########################################");
+    }
+
+    public static String getFilepath() {
+        String filepath = PhoenixController.class.getClassLoader().getResource(".").getPath();
+        filepath = filepath.substring(0, filepath.indexOf("/target/"));
+        //System.out.println("\n\nTHIS IS THE FILEPATH: " + filepath + "\n\n");
+        return filepath;
+    }
+    public static String getCytometryFilepath(){
+        String filepath = getFilepath();
+        filepath = filepath.substring(0,filepath.lastIndexOf("/phoenix-core"));
+        
+        return filepath;
     }
     
 }

@@ -1,4 +1,3 @@
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -54,23 +53,20 @@ import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.SBMLReader;
 
 /**
- *
+ * 
  * @author ckmadsen
  * @author prash
  */
 public class COPASIAdaptor {
-	
-	public static void estimateParams(String modelFile, String dataFile,
-			String methodName) throws ServiceFaultMessage, IOException,
-			XMLStreamException {
+
+	public static void estimateParams(String modelFile, String dataFile, String methodName) throws ServiceFaultMessage,
+			IOException, XMLStreamException {
 		String serviceAddress = "http://www.comp-sys-bio.org/CopasiWS/services/ParameterEstimationService";
 		String userId = "phoenix";
 		String password = "cidarlab";
-		ParameterEstimationServiceStub stub = new ParameterEstimationServiceStub(
-				serviceAddress);
+		ParameterEstimationServiceStub stub = new ParameterEstimationServiceStub(serviceAddress);
 
-		CreateSimulationResourceDocument sim = CreateSimulationResourceDocument.Factory
-				.newInstance();
+		CreateSimulationResourceDocument sim = CreateSimulationResourceDocument.Factory.newInstance();
 		CreateSimulationResourceDocument.CreateSimulationResource simElement = CreateSimulationResourceDocument.CreateSimulationResource.Factory
 				.newInstance();
 		User user = User.Factory.newInstance();
@@ -78,14 +74,11 @@ public class COPASIAdaptor {
 		user.setPassword(password);
 		simElement.setUser(user);
 		sim.setCreateSimulationResource(simElement);
-		CreateSimulationResourceResponseDocument response = stub
-				.createSimulationResource(sim);
-		int resourceId = response.getCreateSimulationResourceResponse()
-				.getResourceId();
+		CreateSimulationResourceResponseDocument response = stub.createSimulationResource(sim);
+		int resourceId = response.getCreateSimulationResourceResponse().getResourceId();
 
 		SendModelDocument mod = SendModelDocument.Factory.newInstance();
-		SendModelDocument.SendModel modElement = SendModelDocument.SendModel.Factory
-				.newInstance();
+		SendModelDocument.SendModel modElement = SendModelDocument.SendModel.Factory.newInstance();
 		StringBuffer fileData = new StringBuffer(1000);
 		BufferedReader reader = new BufferedReader(new FileReader(modelFile));
 		char[] buf = new char[1024];
@@ -109,8 +102,7 @@ public class COPASIAdaptor {
 		data.setDataFileInStringFormat(trace.toCOPASIString());
 		ExperimentalData[] dataArray = new ExperimentalData[1];
 		dataArray[0] = data;
-		SendExperimentalDataDocument exp = SendExperimentalDataDocument.Factory
-				.newInstance();
+		SendExperimentalDataDocument exp = SendExperimentalDataDocument.Factory.newInstance();
 		SendExperimentalDataDocument.SendExperimentalData expElement = SendExperimentalDataDocument.SendExperimentalData.Factory
 				.newInstance();
 		expElement.setUserId(userId);
@@ -123,8 +115,7 @@ public class COPASIAdaptor {
 		params.setMethod(getMethod(methodName));
 		params.setItemToFitArray(getItemsToFit(sbmlModel));
 
-		SetFitItemsAndMethodDocument fit = SetFitItemsAndMethodDocument.Factory
-				.newInstance();
+		SetFitItemsAndMethodDocument fit = SetFitItemsAndMethodDocument.Factory.newInstance();
 		SetFitItemsAndMethodDocument.SetFitItemsAndMethod fitElement = SetFitItemsAndMethodDocument.SetFitItemsAndMethod.Factory
 				.newInstance();
 		fitElement.setUserId(userId);
@@ -133,8 +124,7 @@ public class COPASIAdaptor {
 		fit.setSetFitItemsAndMethod(fitElement);
 		stub.setFitItemsAndMethod(fit);
 
-		StartSimulatorDocument start = StartSimulatorDocument.Factory
-				.newInstance();
+		StartSimulatorDocument start = StartSimulatorDocument.Factory.newInstance();
 		StartSimulatorDocument.StartSimulator startElement = StartSimulatorDocument.StartSimulator.Factory
 				.newInstance();
 		startElement.setUserId(userId);
@@ -142,28 +132,23 @@ public class COPASIAdaptor {
 		start.setStartSimulator(startElement);
 		stub.startSimulator(start);
 
-		GetSimulatorStatusDocument status = GetSimulatorStatusDocument.Factory
-				.newInstance();
+		GetSimulatorStatusDocument status = GetSimulatorStatusDocument.Factory.newInstance();
 		GetSimulatorStatusDocument.GetSimulatorStatus statusElement = GetSimulatorStatusDocument.GetSimulatorStatus.Factory
 				.newInstance();
 		statusElement.setUserId(userId);
 		statusElement.setResourceId(resourceId);
 		status.setGetSimulatorStatus(statusElement);
 
-		while (stub.getSimulatorStatus(status).getGetSimulatorStatusResponse()
-				.getStatus().getCode() != StatusCode.COMPLETED) {
-			System.out.println(stub.getSimulatorStatus(status)
-					.getGetSimulatorStatusResponse().getStatus().getCode());
+		while (stub.getSimulatorStatus(status).getGetSimulatorStatusResponse().getStatus().getCode() != StatusCode.COMPLETED) {
+			System.out.println(stub.getSimulatorStatus(status).getGetSimulatorStatusResponse().getStatus().getCode());
 		}
 		GetResultDocument result = GetResultDocument.Factory.newInstance();
-		GetResultDocument.GetResult resultElement = GetResultDocument.GetResult.Factory
-				.newInstance();
+		GetResultDocument.GetResult resultElement = GetResultDocument.GetResult.Factory.newInstance();
 		resultElement.setUserId(userId);
 		resultElement.setResourceId(resourceId);
 		result.setGetResult(resultElement);
 		GetResultResponseDocument getResultResponse = stub.getResult(result);
-		OutputResult outputResult = getResultResponse.getGetResultResponse()
-				.getOutputResult();
+		OutputResult outputResult = getResultResponse.getGetResultResponse().getOutputResult();
 
 		System.out.println(outputResult.getResult());
 	}
@@ -171,81 +156,72 @@ public class COPASIAdaptor {
 	private static Method getMethod(String methodName) {
 		Method method = Method.Factory.newInstance();
 
-		if (methodName.equals("GENETIC_ALGORITHM")) {
-			method.setMethodName(Method.MethodName.GENETIC_ALGORITHM);
-			long NUMBER_OF_GENERATIONS = 200;
-			long POPULATION_SIZE = 20;
-			long RANDOM_NUMBER_GENERATOR = 1;
-			long SEED = 0;
-			GeneticAlgorithm geneticAlgorithm = GeneticAlgorithm.Factory
-					.newInstance();
-			geneticAlgorithm.setNumberOfGenerations(BigInteger
-					.valueOf(NUMBER_OF_GENERATIONS));
-			geneticAlgorithm.setPopulationSize(BigInteger
-					.valueOf(POPULATION_SIZE));
-			geneticAlgorithm.setRandomNumberGenerator(BigInteger
-					.valueOf(RANDOM_NUMBER_GENERATOR));
-			geneticAlgorithm.setSeed(BigInteger.valueOf(SEED));
-			method.setGeneticAlgorithm(geneticAlgorithm);
-		} else if (methodName.equals("LEVENBERG_MARQUARDT")) {
-			method.setMethodName(Method.MethodName.LEVENBERG_MARQUARDT);
-			long ITERATION_LIMIT = 200;
-			float TOLERANCE = 1e-5f;
-			LevenbergMarquardt levenbergMarquardt = LevenbergMarquardt.Factory
-					.newInstance();
-			levenbergMarquardt.setIterationLimit(BigInteger
-					.valueOf(ITERATION_LIMIT));
-			levenbergMarquardt.setTolerance(TOLERANCE);
-			method.setLevenbergMarquardt(levenbergMarquardt);
-		} else if (methodName.equals("PARTICLE_SWARM")) {
-			method.setMethodName(Method.MethodName.PARTICLE_SWARM);
-			long ITERATION_LIMIT = 2000;
-			long RANDOM_NUMBER_GENERATOR = 1;
-			long SEED = 0;
-			float STANDARD_DEVIATION = 1e-6f;
-			long SWARM_SIZE = 50;
-			ParticleSwarm particleSwarm = ParticleSwarm.Factory.newInstance();
-			particleSwarm
-					.setIterationLimit(BigInteger.valueOf(ITERATION_LIMIT));
-			particleSwarm.setRandomNumberGenerator(BigInteger
-					.valueOf(RANDOM_NUMBER_GENERATOR));
-			particleSwarm.setSeed(BigInteger.valueOf(SEED));
-			particleSwarm.setStandardDeviation(STANDARD_DEVIATION);
-			particleSwarm.setSwarmSize(BigInteger.valueOf(SWARM_SIZE));
-			method.setParticleSwarm(particleSwarm);
-		} else if (methodName.equals("SIMULATED_ANNEALING")) {
-			float COOLING_FACTOR = 0.85f;
-			long RANDOM_NUMBER_GENERATOR = 1;
-			long SEED = 0;
-			long START_TEMPERATURE = 1;
-			float TOLERANCE = 1e-6f;
-			SimulatedAnnealing simulatedAnnealing = SimulatedAnnealing.Factory
-					.newInstance();
-			simulatedAnnealing.setCoolingFactor(COOLING_FACTOR);
-			simulatedAnnealing.setRandomNumberGenerator(BigInteger
-					.valueOf(RANDOM_NUMBER_GENERATOR));
-			simulatedAnnealing.setSeed(BigInteger.valueOf(SEED));
-			simulatedAnnealing.setStartTemperature(BigInteger
-					.valueOf(START_TEMPERATURE));
-			simulatedAnnealing.setTolerance(TOLERANCE);
-			method.setSimulatedAnnealing(simulatedAnnealing);
+		if (methodName != null) {
+			if (methodName.equals("LEVENBERG_MARQUARDT")) {
+				method.setMethodName(Method.MethodName.LEVENBERG_MARQUARDT);
+				long ITERATION_LIMIT = 200;
+				float TOLERANCE = 1e-5f;
+				LevenbergMarquardt levenbergMarquardt = LevenbergMarquardt.Factory.newInstance();
+				levenbergMarquardt.setIterationLimit(BigInteger.valueOf(ITERATION_LIMIT));
+				levenbergMarquardt.setTolerance(TOLERANCE);
+				method.setLevenbergMarquardt(levenbergMarquardt);
+			}
+			else if (methodName.equals("PARTICLE_SWARM")) {
+				method.setMethodName(Method.MethodName.PARTICLE_SWARM);
+				long ITERATION_LIMIT = 2000;
+				long RANDOM_NUMBER_GENERATOR = 1;
+				long SEED = 0;
+				float STANDARD_DEVIATION = 1e-6f;
+				long SWARM_SIZE = 50;
+				ParticleSwarm particleSwarm = ParticleSwarm.Factory.newInstance();
+				particleSwarm.setIterationLimit(BigInteger.valueOf(ITERATION_LIMIT));
+				particleSwarm.setRandomNumberGenerator(BigInteger.valueOf(RANDOM_NUMBER_GENERATOR));
+				particleSwarm.setSeed(BigInteger.valueOf(SEED));
+				particleSwarm.setStandardDeviation(STANDARD_DEVIATION);
+				particleSwarm.setSwarmSize(BigInteger.valueOf(SWARM_SIZE));
+				method.setParticleSwarm(particleSwarm);
+			}
+			else if (methodName.equals("SIMULATED_ANNEALING")) {
+				float COOLING_FACTOR = 0.85f;
+				long RANDOM_NUMBER_GENERATOR = 1;
+				long SEED = 0;
+				long START_TEMPERATURE = 1;
+				float TOLERANCE = 1e-6f;
+				SimulatedAnnealing simulatedAnnealing = SimulatedAnnealing.Factory.newInstance();
+				simulatedAnnealing.setCoolingFactor(COOLING_FACTOR);
+				simulatedAnnealing.setRandomNumberGenerator(BigInteger.valueOf(RANDOM_NUMBER_GENERATOR));
+				simulatedAnnealing.setSeed(BigInteger.valueOf(SEED));
+				simulatedAnnealing.setStartTemperature(BigInteger.valueOf(START_TEMPERATURE));
+				simulatedAnnealing.setTolerance(TOLERANCE);
+				method.setSimulatedAnnealing(simulatedAnnealing);
+			}
+			else {
+				method.setMethodName(Method.MethodName.GENETIC_ALGORITHM);
+				long NUMBER_OF_GENERATIONS = 200;
+				long POPULATION_SIZE = 20;
+				long RANDOM_NUMBER_GENERATOR = 1;
+				long SEED = 0;
+				GeneticAlgorithm geneticAlgorithm = GeneticAlgorithm.Factory.newInstance();
+				geneticAlgorithm.setNumberOfGenerations(BigInteger.valueOf(NUMBER_OF_GENERATIONS));
+				geneticAlgorithm.setPopulationSize(BigInteger.valueOf(POPULATION_SIZE));
+				geneticAlgorithm.setRandomNumberGenerator(BigInteger.valueOf(RANDOM_NUMBER_GENERATOR));
+				geneticAlgorithm.setSeed(BigInteger.valueOf(SEED));
+				method.setGeneticAlgorithm(geneticAlgorithm);
+			}
 		}
 
 		return method;
 	}
 
-	private static ItemToFit[] getItemsToFit(String sbml)
-			throws XMLStreamException {
+	private static ItemToFit[] getItemsToFit(String sbml) throws XMLStreamException {
 		List<ItemToFit> items = new ArrayList<ItemToFit>();
 		double lowerBound = 1e-8;
 		double upperBound = 1e8;
 		float startValue = 1f;
-		SBMLDocument doc = SBMLReader.read(new ByteArrayInputStream(sbml
-				.getBytes()));
+		SBMLDocument doc = SBMLReader.read(new ByteArrayInputStream(sbml.getBytes()));
 		for (Reaction r : doc.getModel().getListOfReactions()) {
 			if (r.isSetKineticLaw()) {
-				for (LocalParameter p : r.getKineticLaw()
-						.getListOfLocalParameters()) {
+				for (LocalParameter p : r.getKineticLaw().getListOfLocalParameters()) {
 					ItemToFit itf = ItemToFit.Factory.newInstance();
 					itf.setLowerBound(lowerBound);
 					itf.setUpperBound(upperBound);
@@ -267,14 +243,12 @@ public class COPASIAdaptor {
 		return items.toArray(new ItemToFit[0]);
 	}
 
-	public static void simulate(String modelFile, long stepNumber,
-			float stepSize, float duration, float startTime)
+	public static void simulate(String modelFile, long stepNumber, float stepSize, float duration, float startTime)
 			throws IOException, ServiceFaultMessage {
 		String serviceAddress = "http://www.comp-sys-bio.org/CopasiWS/services/TimeCourseService";
 		TimeCourseServiceStub stub = new TimeCourseServiceStub(serviceAddress);
 
-		DeterministicParameters params = DeterministicParameters.Factory
-				.newInstance();
+		DeterministicParameters params = DeterministicParameters.Factory.newInstance();
 		params.setStepNumber(BigInteger.valueOf(stepNumber));
 		params.setStepSize(stepSize);
 		params.setDuration(duration);
@@ -293,15 +267,13 @@ public class COPASIAdaptor {
 		reader.close();
 		params.setSbml(fileData.toString());
 
-		RunDeterministicSimulatorDocument reqDoc = RunDeterministicSimulatorDocument.Factory
-				.newInstance();
+		RunDeterministicSimulatorDocument reqDoc = RunDeterministicSimulatorDocument.Factory.newInstance();
 		RunDeterministicSimulatorDocument.RunDeterministicSimulator reqElement = RunDeterministicSimulatorDocument.RunDeterministicSimulator.Factory
 				.newInstance();
 		reqElement.setParameters(params);
 		reqDoc.setRunDeterministicSimulator(reqElement);
 
-		RunDeterministicSimulatorResponseDocument resDoc = stub
-				.runDeterministicSimulator(reqDoc);
+		RunDeterministicSimulatorResponseDocument resDoc = stub.runDeterministicSimulator(reqDoc);
 		RunDeterministicSimulatorResponseDocument.RunDeterministicSimulatorResponse resElement = resDoc
 				.getRunDeterministicSimulatorResponse();
 		OutputResult outputResult = resElement.getOutputResult();
@@ -314,7 +286,7 @@ public class COPASIAdaptor {
 		buffWriter.close();
 		writer.close();
 	}
-	
+
 	public static class Trace {
 
 		private String[] variables;
@@ -323,8 +295,7 @@ public class COPASIAdaptor {
 
 		private double[] timePoints;
 
-		public Trace(List<String> variables, List<Double> timePoints,
-				List<List<Double>> data) {
+		public Trace(List<String> variables, List<Double> timePoints, List<List<Double>> data) {
 			convertListstoArrays(variables, timePoints, data);
 		}
 
@@ -369,8 +340,7 @@ public class COPASIAdaptor {
 			this(new Scanner(trace));
 		}
 
-		private void convertListstoArrays(List<String> variables,
-				List<Double> timePoints, List<List<Double>> data) {
+		private void convertListstoArrays(List<String> variables, List<Double> timePoints, List<List<Double>> data) {
 			this.variables = variables.toArray(new String[0]);
 			this.timePoints = new double[timePoints.size()];
 			for (int i = 0; i < timePoints.size(); i++) {
@@ -448,5 +418,5 @@ public class COPASIAdaptor {
 			return trace;
 		}
 	}
-    
+
 }

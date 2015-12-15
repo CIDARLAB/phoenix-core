@@ -33,6 +33,8 @@ import org.clothoapi.clotho3javaapi.ClothoConnection;
  * This is the primary class for managing the workflow of tools within Phoenix
  * 
  * @author evanappleton
+ * @author prash
+ * 
  */
 public class PhoenixController {
     
@@ -185,6 +187,14 @@ public class PhoenixController {
         return assmTestFiles;
     }
     
+    private static Feature getExpressorFeature(AssignedModule amodule){
+        for(PrimitiveModule pm:amodule.getSubmodules()){
+            if(pm.getModuleFeature().getRole().equals(FeatureRole.PROMOTER) || pm.getModuleFeature().getRole().equals(FeatureRole.PROMOTER_CONSTITUTIVE) || pm.getModuleFeature().getRole().equals(FeatureRole.PROMOTER_INDUCIBLE) || pm.getModuleFeature().getRole().equals(FeatureRole.PROMOTER_REPRESSIBLE)){
+                return pm.getModuleFeature();
+            }
+        }
+        return null;
+    }
     
     private static Feature getExpresseeFeature(AssignedModule amodule){
         for(PrimitiveModule pm:amodule.getSubmodules()){
@@ -218,46 +228,58 @@ public class PhoenixController {
     }
     
     
+    public static void createAllSBMLfiles(Module module, String filepath){
+        
+        for(AssignedModule amodule:module.getAssignedModules()){
+            if(!amodule.getSBMLDocument().isEmpty()){
+                SBMLAdaptor.createSBMLfiles(amodule, filepath);
+            }
+        }
+        for(Module child:module.getChildren()){
+            createAllSBMLfiles(child,filepath);
+        }
+    }
+    
     //This is currently a little funky. Needs to change for small molecules. Not sure how to handle it. Multiple SBML documents per sm?
     public static void assignSBMLDocuments(Module module){
         
         //COPASIAdaptor sbmlfunctions = new COPASIAdaptor();
         if(module.getRole().equals(ModuleRole.EXPRESSEE)){
             for(AssignedModule amodule:module.getAssignedModules()){
-                amodule.getSBMLDocument().add(COPASIAdaptor.createDegradationModel(getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
+                amodule.getSBMLDocument().add(SBMLAdaptor.createDegradationModel("_"+getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
             }
         }
         else if(module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR)){
             for(AssignedModule amodule:module.getAssignedModules()){
-                amodule.getSBMLDocument().add(COPASIAdaptor.createDegradationModel(getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
-                amodule.getSBMLDocument().add(COPASIAdaptor.createActivationModel(getExpresseeFeature(amodule).getClothoID(),getFPFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of the expressee and id of the FP, name of the expressee (cds), name of the FP
+                amodule.getSBMLDocument().add(SBMLAdaptor.createDegradationModel("_"+getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
+                amodule.getSBMLDocument().add(SBMLAdaptor.createActivationModel("_"+getExpresseeFeature(amodule).getClothoID(),"_"+getFPFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of the expressee and id of the FP, name of the expressee (cds), name of the FP
             }
         }
         else if(module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR)){
             for(AssignedModule amodule:module.getAssignedModules()){
-                amodule.getSBMLDocument().add(COPASIAdaptor.createDegradationModel(getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
-                amodule.getSBMLDocument().add(COPASIAdaptor.createActivationModel(getExpresseeFeature(amodule).getClothoID(),getFPFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of the expressee and id of the FP, name of the expressee (cds), name of the FP
-                amodule.getSBMLDocument().add(COPASIAdaptor.createInductionActivationModel(getFeatureSmallMolecule(amodule).getName(), getExpresseeFeature(amodule).getClothoID(),getFPFeature(amodule).getClothoID(),getFeatureSmallMolecule(amodule).getName(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of inducer (small molecule), id of the expressee and id of the FP, name of the inducer, name of the expressee (cds), name of the FP
+                amodule.getSBMLDocument().add(SBMLAdaptor.createDegradationModel("_"+getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
+                amodule.getSBMLDocument().add(SBMLAdaptor.createActivationModel("_"+getExpresseeFeature(amodule).getClothoID(),"_"+getFPFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of the expressee and id of the FP, name of the expressee (cds), name of the FP
+                amodule.getSBMLDocument().add(SBMLAdaptor.createInductionActivationModel("_"+(getFeatureSmallMolecule(amodule).getName().replaceAll(".", "_")), "_"+getExpresseeFeature(amodule).getClothoID(), "_"+getFPFeature(amodule).getClothoID(),getFeatureSmallMolecule(amodule).getName(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of inducer (small molecule), id of the expressee and id of the FP, name of the inducer, name of the expressee (cds), name of the FP
             }
         }
         else if(module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)){
             for(AssignedModule amodule:module.getAssignedModules()){
-                amodule.getSBMLDocument().add(COPASIAdaptor.createDegradationModel(getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
-                amodule.getSBMLDocument().add(COPASIAdaptor.createRepressionModel(getExpresseeFeature(amodule).getClothoID(),getFPFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of the expressee and id of the FP, name of the expressee (cds), name of the FP
+                amodule.getSBMLDocument().add(SBMLAdaptor.createDegradationModel("_"+getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
+                amodule.getSBMLDocument().add(SBMLAdaptor.createRepressionModel("_"+getExpresseeFeature(amodule).getClothoID(),"_"+getFPFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of the expressee and id of the FP, name of the expressee (cds), name of the FP
             }
         }
         else if(module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR)){
             for(AssignedModule amodule:module.getAssignedModules()){
-                amodule.getSBMLDocument().add(COPASIAdaptor.createDegradationModel(getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
-                amodule.getSBMLDocument().add(COPASIAdaptor.createRepressionModel(getExpresseeFeature(amodule).getClothoID(),getFPFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of the expressee and id of the FP, name of the expressee (cds), name of the FP
-                amodule.getSBMLDocument().add(COPASIAdaptor.createInductionRepressionModel(getFeatureSmallMolecule(amodule).getName(), getExpresseeFeature(amodule).getClothoID(),getFPFeature(amodule).getClothoID(),getFeatureSmallMolecule(amodule).getName(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of inducer (small molecule), id of the expressee and id of the FP, name of the inducer, name of the expressee (cds), name of the FP
+                amodule.getSBMLDocument().add(SBMLAdaptor.createDegradationModel("_"+getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
+                amodule.getSBMLDocument().add(SBMLAdaptor.createRepressionModel("_"+getExpresseeFeature(amodule).getClothoID(),"_"+getFPFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of the expressee and id of the FP, name of the expressee (cds), name of the FP
+                amodule.getSBMLDocument().add(SBMLAdaptor.createInductionRepressionModel("_"+(getFeatureSmallMolecule(amodule).getName().replaceAll(".", "_")), "_"+getExpresseeFeature(amodule).getClothoID(), "_"+getFPFeature(amodule).getClothoID(),getFeatureSmallMolecule(amodule).getName(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of inducer (small molecule), id of the expressee and id of the FP, name of the inducer, name of the expressee (cds), name of the FP
             }
             
         }
         else if(module.getRole().equals(ModuleRole.EXPRESSOR)){
             for(AssignedModule amodule:module.getAssignedModules()){
-                amodule.getSBMLDocument().add(COPASIAdaptor.createExpressionModel(null, null)); //
-                amodule.getSBMLDocument().add(COPASIAdaptor.createDegradationModel(null, null)); //name and id of expressee       
+                amodule.getSBMLDocument().add(SBMLAdaptor.createExpressionModel("_"+getExpressorFeature(amodule).getClothoID(), getExpressorFeature(amodule).getName())); //
+                amodule.getSBMLDocument().add(SBMLAdaptor.createDegradationModel("_"+getFPFeature(amodule).getClothoID(), getFPFeature(amodule).getName())); //id and name of expressee       
             }
         }
         

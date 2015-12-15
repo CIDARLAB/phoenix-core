@@ -19,6 +19,8 @@ import org.cidarlab.phoenix.core.dom.Titration;
  * THIS IS THE FILE FOR RANDOM UTILITY METHODS
  * 
  * @author evanappleton
+ * @author prash
+ * 
  */
 public class Utilities {
   

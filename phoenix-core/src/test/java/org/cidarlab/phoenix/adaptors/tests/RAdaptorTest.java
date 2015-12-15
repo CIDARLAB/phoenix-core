@@ -26,7 +26,7 @@ public class RAdaptorTest {
         String mapFile = filepath + "nameMapFileTest.csv";
         Map<String,String> nameMap = RAdaptor.parseKeyMapFiles(keyFile, mapFile);
         
-        RAdaptor.walk(directory,directory,nameMap);
+        RAdaptor.directoryWalk(directory,directory,nameMap,null);
         
     }
     

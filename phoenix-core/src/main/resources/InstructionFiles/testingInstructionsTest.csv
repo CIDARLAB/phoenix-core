@@ -39,78 +39,6 @@ FILENAME,PART,CONTROL,MEDIA,TIME,REGULATION
 ,exp_0_0_0_11,,M9_glucose,0,
 ,exp_0_0_0_11,,M9_glucose,0,
 ,exp_0_0_0_11,,M9_glucose,0,
-,exp_0_0_0_12,,M9_glucose,0,
-,exp_0_0_0_12,,M9_glucose,0,
-,exp_0_0_0_12,,M9_glucose,0,
-,exp_0_0_0_13,,M9_glucose,0,
-,exp_0_0_0_13,,M9_glucose,0,
-,exp_0_0_0_13,,M9_glucose,0,
-,exp_0_0_0_14,,M9_glucose,0,
-,exp_0_0_0_14,,M9_glucose,0,
-,exp_0_0_0_14,,M9_glucose,0,
-,exp_0_0_0_15,,M9_glucose,0,
-,exp_0_0_0_15,,M9_glucose,0,
-,exp_0_0_0_15,,M9_glucose,0,
-,exp_0_0_0_16,,M9_glucose,0,
-,exp_0_0_0_16,,M9_glucose,0,
-,exp_0_0_0_16,,M9_glucose,0,
-,exp_0_0_0_17,,M9_glucose,0,
-,exp_0_0_0_17,,M9_glucose,0,
-,exp_0_0_0_17,,M9_glucose,0,
-,exp_0_0_0_18,,M9_glucose,0,
-,exp_0_0_0_18,,M9_glucose,0,
-,exp_0_0_0_18,,M9_glucose,0,
-,exp_0_0_0_19,,M9_glucose,0,
-,exp_0_0_0_19,,M9_glucose,0,
-,exp_0_0_0_19,,M9_glucose,0,
-,exp_0_0_0_20,,M9_glucose,0,
-,exp_0_0_0_20,,M9_glucose,0,
-,exp_0_0_0_20,,M9_glucose,0,
-,exp_0_0_0_21,,M9_glucose,0,
-,exp_0_0_0_21,,M9_glucose,0,
-,exp_0_0_0_21,,M9_glucose,0,
-,exp_0_0_0_22,,M9_glucose,0,
-,exp_0_0_0_22,,M9_glucose,0,
-,exp_0_0_0_22,,M9_glucose,0,
-,exp_0_0_0_23,,M9_glucose,0,
-,exp_0_0_0_23,,M9_glucose,0,
-,exp_0_0_0_23,,M9_glucose,0,
-,exp_0_0_0_24,,M9_glucose,0,
-,exp_0_0_0_24,,M9_glucose,0,
-,exp_0_0_0_24,,M9_glucose,0,
-,exp_0_0_0_25,,M9_glucose,0,
-,exp_0_0_0_25,,M9_glucose,0,
-,exp_0_0_0_25,,M9_glucose,0,
-,exp_0_0_0_26,,M9_glucose,0,
-,exp_0_0_0_26,,M9_glucose,0,
-,exp_0_0_0_26,,M9_glucose,0,
-,exp_0_0_0_27,,M9_glucose,0,
-,exp_0_0_0_27,,M9_glucose,0,
-,exp_0_0_0_27,,M9_glucose,0,
-,exp_0_0_0_28,,M9_glucose,0,
-,exp_0_0_0_28,,M9_glucose,0,
-,exp_0_0_0_28,,M9_glucose,0,
-,exp_0_0_0_29,,M9_glucose,0,
-,exp_0_0_0_29,,M9_glucose,0,
-,exp_0_0_0_29,,M9_glucose,0,
-,exp_0_0_0_30,,M9_glucose,0,
-,exp_0_0_0_30,,M9_glucose,0,
-,exp_0_0_0_30,,M9_glucose,0,
-,exp_0_0_0_31,,M9_glucose,0,
-,exp_0_0_0_31,,M9_glucose,0,
-,exp_0_0_0_31,,M9_glucose,0,
-,exp_0_0_0_32,,M9_glucose,0,
-,exp_0_0_0_32,,M9_glucose,0,
-,exp_0_0_0_32,,M9_glucose,0,
-,exp_0_0_0_33,,M9_glucose,0,
-,exp_0_0_0_33,,M9_glucose,0,
-,exp_0_0_0_33,,M9_glucose,0,
-,exp_0_0_0_34,,M9_glucose,0,
-,exp_0_0_0_34,,M9_glucose,0,
-,exp_0_0_0_34,,M9_glucose,0,
-,exp_0_0_0_35,,M9_glucose,0,
-,exp_0_0_0_35,,M9_glucose,0,
-,exp_0_0_0_35,,M9_glucose,0,
 ,err_0_0_0_0,,M9_glucose + (10000 nM ara),0,
 ,err_0_0_0_0,,M9_glucose + (10000 nM ara),0,
 ,err_0_0_0_0,,M9_glucose + (10000 nM ara),0,
@@ -129,30 +57,30 @@ FILENAME,PART,CONTROL,MEDIA,TIME,REGULATION
 ,err_0_0_0_0,,M9_glucose + (10000 nM ara),60,
 ,err_0_0_0_0,,M9_glucose + (10000 nM ara),60,
 ,err_0_0_0_0,,M9_glucose + (10000 nM ara),60,
-,err_0_0_0_0,,M9_glucose + (0 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_0,,M9_glucose + (0 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_0,,M9_glucose + (0 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_0,,M9_glucose + (100 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_0,,M9_glucose + (100 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_0,,M9_glucose + (100 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_0,,M9_glucose + (1000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_0,,M9_glucose + (1000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_0,,M9_glucose + (1000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_0,,M9_glucose + (10000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_0,,M9_glucose + (10000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_0,,M9_glucose + (10000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_0,,M9_glucose + (0 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_0,,M9_glucose + (0 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_0,,M9_glucose + (0 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_0,,M9_glucose + (100 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_0,,M9_glucose + (100 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_0,,M9_glucose + (100 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_0,,M9_glucose + (1000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_0,,M9_glucose + (1000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_0,,M9_glucose + (1000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_0,,M9_glucose + (10000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_0,,M9_glucose + (10000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_0,,M9_glucose + (10000 nM ara),0,FITC-A| FITC-A
+,err_0_0_0_0,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_0,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_0,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_0,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_0,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_0,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_0,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_0,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_0,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_0,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_0,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_0,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_0,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_0,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_0,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_0,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_0,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_0,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_0,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_0,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_0,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_0,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_0,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_0,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
 ,err_0_0_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),0,
 ,err_0_0_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),0,
 ,err_0_0_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),0,
@@ -273,6 +201,168 @@ FILENAME,PART,CONTROL,MEDIA,TIME,REGULATION
 ,err_0_0_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),480,
 ,err_0_0_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),480,
 ,err_0_0_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),480,
+,err_0_0_0_1,,M9_glucose + (10000 nM ara),0,
+,err_0_0_0_1,,M9_glucose + (10000 nM ara),0,
+,err_0_0_0_1,,M9_glucose + (10000 nM ara),0,
+,err_0_0_0_1,,M9_glucose + (10000 nM ara),30,
+,err_0_0_0_1,,M9_glucose + (10000 nM ara),30,
+,err_0_0_0_1,,M9_glucose + (10000 nM ara),30,
+,err_0_0_0_1,,M9_glucose + (10000 nM ara),60,
+,err_0_0_0_1,,M9_glucose + (10000 nM ara),60,
+,err_0_0_0_1,,M9_glucose + (10000 nM ara),60,
+,err_0_0_0_1,,M9_glucose + (10000 nM ara),0,
+,err_0_0_0_1,,M9_glucose + (10000 nM ara),0,
+,err_0_0_0_1,,M9_glucose + (10000 nM ara),0,
+,err_0_0_0_1,,M9_glucose + (10000 nM ara),30,
+,err_0_0_0_1,,M9_glucose + (10000 nM ara),30,
+,err_0_0_0_1,,M9_glucose + (10000 nM ara),30,
+,err_0_0_0_1,,M9_glucose + (10000 nM ara),60,
+,err_0_0_0_1,,M9_glucose + (10000 nM ara),60,
+,err_0_0_0_1,,M9_glucose + (10000 nM ara),60,
+,err_0_0_0_1,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_1,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_1,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_1,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_1,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_1,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_1,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_1,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_1,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_1,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_1,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_1,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_1,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_1,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_1,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_1,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_1,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_1,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_1,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_1,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_1,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_1,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_1,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_1,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),0,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),0,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),0,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),120,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),120,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),120,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),240,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),240,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),240,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),360,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),360,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),360,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),480,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),480,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),480,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),0,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),0,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),0,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),120,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),120,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),120,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),240,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),240,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),240,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),360,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),360,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),360,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),480,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),480,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),480,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),0,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),0,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),0,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),120,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),120,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),120,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),240,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),240,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),240,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),360,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),360,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),360,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),480,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),480,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),480,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),0,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),0,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),0,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),120,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),120,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),120,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),240,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),240,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),240,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),360,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),360,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),360,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),480,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),480,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),480,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),0,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),0,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),0,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),120,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),120,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),120,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),240,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),240,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),240,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),360,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),360,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),360,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),480,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),480,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (0 nM DAPG),480,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),0,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),0,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),0,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),120,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),120,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),120,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),240,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),240,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),240,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),360,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),360,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),360,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),480,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),480,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (1 nM DAPG),480,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),0,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),0,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),0,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),120,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),120,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),120,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),240,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),240,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),240,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),360,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),360,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),360,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),480,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),480,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (10 nM DAPG),480,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),0,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),0,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),0,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),120,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),120,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),120,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),240,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),240,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),240,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),360,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),360,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),360,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),480,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),480,
+,err_0_0_0_1,,M9_glucose_10000_nM_ara + (100 nM DAPG),480,
 ,err_0_0_0_2,,M9_glucose + (10000 nM ara),0,
 ,err_0_0_0_2,,M9_glucose + (10000 nM ara),0,
 ,err_0_0_0_2,,M9_glucose + (10000 nM ara),0,
@@ -291,30 +381,30 @@ FILENAME,PART,CONTROL,MEDIA,TIME,REGULATION
 ,err_0_0_0_2,,M9_glucose + (10000 nM ara),60,
 ,err_0_0_0_2,,M9_glucose + (10000 nM ara),60,
 ,err_0_0_0_2,,M9_glucose + (10000 nM ara),60,
-,err_0_0_0_2,,M9_glucose + (0 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_2,,M9_glucose + (0 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_2,,M9_glucose + (0 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_2,,M9_glucose + (100 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_2,,M9_glucose + (100 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_2,,M9_glucose + (100 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_2,,M9_glucose + (1000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_2,,M9_glucose + (1000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_2,,M9_glucose + (1000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_2,,M9_glucose + (10000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_2,,M9_glucose + (10000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_2,,M9_glucose + (10000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_2,,M9_glucose + (0 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_2,,M9_glucose + (0 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_2,,M9_glucose + (0 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_2,,M9_glucose + (100 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_2,,M9_glucose + (100 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_2,,M9_glucose + (100 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_2,,M9_glucose + (1000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_2,,M9_glucose + (1000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_2,,M9_glucose + (1000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_2,,M9_glucose + (10000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_2,,M9_glucose + (10000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_2,,M9_glucose + (10000 nM ara),0,FITC-A| FITC-A
+,err_0_0_0_2,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_2,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_2,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_2,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_2,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_2,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_2,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_2,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_2,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_2,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_2,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_2,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_2,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_2,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_2,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_2,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_2,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_2,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_2,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_2,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_2,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_2,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_2,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_2,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
 ,err_0_0_0_2,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),0,
 ,err_0_0_0_2,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),0,
 ,err_0_0_0_2,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),0,
@@ -453,30 +543,30 @@ FILENAME,PART,CONTROL,MEDIA,TIME,REGULATION
 ,err_0_0_0_3,,M9_glucose + (10000 nM ara),60,
 ,err_0_0_0_3,,M9_glucose + (10000 nM ara),60,
 ,err_0_0_0_3,,M9_glucose + (10000 nM ara),60,
-,err_0_0_0_3,,M9_glucose + (0 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_3,,M9_glucose + (0 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_3,,M9_glucose + (0 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_3,,M9_glucose + (100 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_3,,M9_glucose + (100 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_3,,M9_glucose + (100 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_3,,M9_glucose + (1000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_3,,M9_glucose + (1000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_3,,M9_glucose + (1000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_3,,M9_glucose + (10000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_3,,M9_glucose + (10000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_3,,M9_glucose + (10000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_3,,M9_glucose + (0 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_3,,M9_glucose + (0 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_3,,M9_glucose + (0 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_3,,M9_glucose + (100 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_3,,M9_glucose + (100 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_3,,M9_glucose + (100 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_3,,M9_glucose + (1000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_3,,M9_glucose + (1000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_3,,M9_glucose + (1000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_3,,M9_glucose + (10000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_3,,M9_glucose + (10000 nM ara),0,FITC-A| FITC-A
-,err_0_0_0_3,,M9_glucose + (10000 nM ara),0,FITC-A| FITC-A
+,err_0_0_0_3,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_3,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_3,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_3,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_3,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_3,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_3,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_3,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_3,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_3,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_3,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_3,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_3,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_3,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_3,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_3,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_3,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_3,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_3,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_3,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_3,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_3,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_3,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
+,err_0_0_0_3,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
 ,err_0_0_0_3,,M9_glucose_10000_nM_ara + (0 nM DAPG),0,
 ,err_0_0_0_3,,M9_glucose_10000_nM_ara + (0 nM DAPG),0,
 ,err_0_0_0_3,,M9_glucose_10000_nM_ara + (0 nM DAPG),0,
@@ -705,489 +795,357 @@ FILENAME,PART,CONTROL,MEDIA,TIME,REGULATION
 ,exp_0_1_0_35,,M9_glucose,0,
 ,exp_0_1_0_35,,M9_glucose,0,
 ,exp_0_1_0_35,,M9_glucose,0,
-,err_0_1_0_0,,M9_glucose + (10000 nM ara),0,
-,err_0_1_0_0,,M9_glucose + (10000 nM ara),0,
-,err_0_1_0_0,,M9_glucose + (10000 nM ara),0,
-,err_0_1_0_0,,M9_glucose + (10000 nM ara),30,
-,err_0_1_0_0,,M9_glucose + (10000 nM ara),30,
-,err_0_1_0_0,,M9_glucose + (10000 nM ara),30,
-,err_0_1_0_0,,M9_glucose + (10000 nM ara),60,
-,err_0_1_0_0,,M9_glucose + (10000 nM ara),60,
-,err_0_1_0_0,,M9_glucose + (10000 nM ara),60,
-,err_0_1_0_0,,M9_glucose + (10000 nM ara),0,
-,err_0_1_0_0,,M9_glucose + (10000 nM ara),0,
-,err_0_1_0_0,,M9_glucose + (10000 nM ara),0,
-,err_0_1_0_0,,M9_glucose + (10000 nM ara),30,
-,err_0_1_0_0,,M9_glucose + (10000 nM ara),30,
-,err_0_1_0_0,,M9_glucose + (10000 nM ara),30,
-,err_0_1_0_0,,M9_glucose + (10000 nM ara),60,
-,err_0_1_0_0,,M9_glucose + (10000 nM ara),60,
-,err_0_1_0_0,,M9_glucose + (10000 nM ara),60,
-,err_0_1_0_0,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_0,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_0,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_0,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_0,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_0,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_0,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_0,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_0,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_0,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_0,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_0,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_0,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_0,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_0,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_0,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_0,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_0,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_0,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_0,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_0,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_0,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_0,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_0,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),0,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),0,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),0,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),120,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),120,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),120,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),240,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),240,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),240,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),360,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),360,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),360,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),480,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),480,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),480,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),0,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),0,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),0,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),120,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),120,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),120,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),240,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),240,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),240,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),360,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),360,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),360,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),480,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),480,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),480,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),0,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),0,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),0,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),120,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),120,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),120,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),240,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),240,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),240,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),360,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),360,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),360,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),480,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),480,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),480,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),0,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),0,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),0,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),120,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),120,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),120,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),240,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),240,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),240,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),360,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),360,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),360,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),480,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),480,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),480,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),0,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),0,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),0,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),120,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),120,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),120,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),240,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),240,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),240,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),360,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),360,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),360,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),480,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),480,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (0 nM IPTG),480,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),0,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),0,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),0,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),120,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),120,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),120,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),240,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),240,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),240,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),360,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),360,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),360,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),480,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),480,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (10 nM IPTG),480,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),0,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),0,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),0,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),120,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),120,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),120,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),240,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),240,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),240,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),360,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),360,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),360,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),480,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),480,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (100 nM IPTG),480,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),0,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),0,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),0,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),120,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),120,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),120,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),240,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),240,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),240,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),360,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),360,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),360,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),480,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),480,
-,err_0_1_0_0,,M9_glucose_10000_nM_ara + (1000 nM IPTG),480,
-,err_0_1_0_1,,M9_glucose + (10000 nM ara),0,
-,err_0_1_0_1,,M9_glucose + (10000 nM ara),0,
-,err_0_1_0_1,,M9_glucose + (10000 nM ara),0,
-,err_0_1_0_1,,M9_glucose + (10000 nM ara),30,
-,err_0_1_0_1,,M9_glucose + (10000 nM ara),30,
-,err_0_1_0_1,,M9_glucose + (10000 nM ara),30,
-,err_0_1_0_1,,M9_glucose + (10000 nM ara),60,
-,err_0_1_0_1,,M9_glucose + (10000 nM ara),60,
-,err_0_1_0_1,,M9_glucose + (10000 nM ara),60,
-,err_0_1_0_1,,M9_glucose + (10000 nM ara),0,
-,err_0_1_0_1,,M9_glucose + (10000 nM ara),0,
-,err_0_1_0_1,,M9_glucose + (10000 nM ara),0,
-,err_0_1_0_1,,M9_glucose + (10000 nM ara),30,
-,err_0_1_0_1,,M9_glucose + (10000 nM ara),30,
-,err_0_1_0_1,,M9_glucose + (10000 nM ara),30,
-,err_0_1_0_1,,M9_glucose + (10000 nM ara),60,
-,err_0_1_0_1,,M9_glucose + (10000 nM ara),60,
-,err_0_1_0_1,,M9_glucose + (10000 nM ara),60,
-,err_0_1_0_1,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_1,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_1,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_1,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_1,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_1,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_1,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_1,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_1,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_1,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_1,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_1,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_1,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_1,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_1,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_1,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_1,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_1,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_1,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_1,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_1,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_1,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_1,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_1,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),0,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),0,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),0,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),120,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),120,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),120,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),240,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),240,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),240,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),360,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),360,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),360,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),480,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),480,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),480,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),0,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),0,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),0,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),120,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),120,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),120,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),240,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),240,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),240,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),360,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),360,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),360,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),480,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),480,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),480,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),0,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),0,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),0,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),120,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),120,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),120,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),240,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),240,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),240,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),360,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),360,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),360,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),480,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),480,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),480,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),0,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),0,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),0,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),120,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),120,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),120,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),240,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),240,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),240,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),360,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),360,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),360,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),480,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),480,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),480,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),0,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),0,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),0,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),120,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),120,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),120,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),240,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),240,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),240,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),360,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),360,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),360,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),480,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),480,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (0 ng/mL aTc),480,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),0,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),0,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),0,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),120,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),120,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),120,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),240,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),240,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),240,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),360,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),360,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),360,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),480,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),480,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (1 ng/mL aTc),480,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),0,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),0,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),0,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),120,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),120,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),120,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),240,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),240,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),240,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),360,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),360,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),360,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),480,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),480,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (10 ng/mL aTc),480,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),0,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),0,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),0,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),120,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),120,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),120,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),240,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),240,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),240,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),360,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),360,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),360,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),480,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),480,
-,err_0_1_0_1,,M9_glucose_10000_nM_ara + (100 ng/mL aTc),480,
-,err_0_1_0_2,,M9_glucose + (10000 nM ara),0,
-,err_0_1_0_2,,M9_glucose + (10000 nM ara),0,
-,err_0_1_0_2,,M9_glucose + (10000 nM ara),0,
-,err_0_1_0_2,,M9_glucose + (10000 nM ara),30,
-,err_0_1_0_2,,M9_glucose + (10000 nM ara),30,
-,err_0_1_0_2,,M9_glucose + (10000 nM ara),30,
-,err_0_1_0_2,,M9_glucose + (10000 nM ara),60,
-,err_0_1_0_2,,M9_glucose + (10000 nM ara),60,
-,err_0_1_0_2,,M9_glucose + (10000 nM ara),60,
-,err_0_1_0_2,,M9_glucose + (10000 nM ara),0,
-,err_0_1_0_2,,M9_glucose + (10000 nM ara),0,
-,err_0_1_0_2,,M9_glucose + (10000 nM ara),0,
-,err_0_1_0_2,,M9_glucose + (10000 nM ara),30,
-,err_0_1_0_2,,M9_glucose + (10000 nM ara),30,
-,err_0_1_0_2,,M9_glucose + (10000 nM ara),30,
-,err_0_1_0_2,,M9_glucose + (10000 nM ara),60,
-,err_0_1_0_2,,M9_glucose + (10000 nM ara),60,
-,err_0_1_0_2,,M9_glucose + (10000 nM ara),60,
-,err_0_1_0_2,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_2,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_2,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_2,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_2,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_2,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_2,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_2,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_2,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_2,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_2,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_2,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_2,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_2,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_2,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_2,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_2,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_2,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_2,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_2,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_2,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_2,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_2,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_2,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),0,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),0,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),0,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),120,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),120,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),120,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),240,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),240,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),240,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),360,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),360,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),360,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),480,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),480,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),480,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),0,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),0,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),0,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),120,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),120,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),120,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),240,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),240,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),240,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),360,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),360,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),360,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),480,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),480,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),480,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),0,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),0,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),0,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),120,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),120,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),120,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),240,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),240,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),240,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),360,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),360,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),360,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),480,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),480,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),480,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),0,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),0,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),0,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),120,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),120,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),120,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),240,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),240,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),240,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),360,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),360,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),360,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),480,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),480,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),480,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),0,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),0,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),0,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),120,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),120,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),120,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),240,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),240,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),240,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),360,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),360,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),360,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),480,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),480,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (0 nM DAPG),480,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),0,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),0,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),0,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),120,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),120,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),120,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),240,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),240,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),240,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),360,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),360,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),360,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),480,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),480,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (1 nM DAPG),480,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),0,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),0,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),0,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),120,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),120,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),120,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),240,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),240,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),240,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),360,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),360,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),360,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),480,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),480,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (10 nM DAPG),480,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),0,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),0,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),0,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),120,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),120,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),120,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),240,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),240,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),240,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),360,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),360,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),360,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),480,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),480,
-,err_0_1_0_2,,M9_glucose_10000_nM_ara + (100 nM DAPG),480,
+,exp_0_1_0_36,,M9_glucose,0,
+,exp_0_1_0_36,,M9_glucose,0,
+,exp_0_1_0_36,,M9_glucose,0,
+,exp_0_1_0_37,,M9_glucose,0,
+,exp_0_1_0_37,,M9_glucose,0,
+,exp_0_1_0_37,,M9_glucose,0,
+,exp_0_1_0_38,,M9_glucose,0,
+,exp_0_1_0_38,,M9_glucose,0,
+,exp_0_1_0_38,,M9_glucose,0,
+,exp_0_1_0_39,,M9_glucose,0,
+,exp_0_1_0_39,,M9_glucose,0,
+,exp_0_1_0_39,,M9_glucose,0,
+,exp_0_1_0_40,,M9_glucose,0,
+,exp_0_1_0_40,,M9_glucose,0,
+,exp_0_1_0_40,,M9_glucose,0,
+,exp_0_1_0_41,,M9_glucose,0,
+,exp_0_1_0_41,,M9_glucose,0,
+,exp_0_1_0_41,,M9_glucose,0,
+,exp_0_1_0_42,,M9_glucose,0,
+,exp_0_1_0_42,,M9_glucose,0,
+,exp_0_1_0_42,,M9_glucose,0,
+,exp_0_1_0_43,,M9_glucose,0,
+,exp_0_1_0_43,,M9_glucose,0,
+,exp_0_1_0_43,,M9_glucose,0,
+,exp_0_1_0_44,,M9_glucose,0,
+,exp_0_1_0_44,,M9_glucose,0,
+,exp_0_1_0_44,,M9_glucose,0,
+,exp_0_1_0_45,,M9_glucose,0,
+,exp_0_1_0_45,,M9_glucose,0,
+,exp_0_1_0_45,,M9_glucose,0,
+,exp_0_1_0_46,,M9_glucose,0,
+,exp_0_1_0_46,,M9_glucose,0,
+,exp_0_1_0_46,,M9_glucose,0,
+,exp_0_1_0_47,,M9_glucose,0,
+,exp_0_1_0_47,,M9_glucose,0,
+,exp_0_1_0_47,,M9_glucose,0,
+,exp_0_1_0_48,,M9_glucose,0,
+,exp_0_1_0_48,,M9_glucose,0,
+,exp_0_1_0_48,,M9_glucose,0,
+,exp_0_1_0_49,,M9_glucose,0,
+,exp_0_1_0_49,,M9_glucose,0,
+,exp_0_1_0_49,,M9_glucose,0,
+,exp_0_1_0_50,,M9_glucose,0,
+,exp_0_1_0_50,,M9_glucose,0,
+,exp_0_1_0_50,,M9_glucose,0,
+,exp_0_1_0_51,,M9_glucose,0,
+,exp_0_1_0_51,,M9_glucose,0,
+,exp_0_1_0_51,,M9_glucose,0,
+,exp_0_1_0_52,,M9_glucose,0,
+,exp_0_1_0_52,,M9_glucose,0,
+,exp_0_1_0_52,,M9_glucose,0,
+,exp_0_1_0_53,,M9_glucose,0,
+,exp_0_1_0_53,,M9_glucose,0,
+,exp_0_1_0_53,,M9_glucose,0,
+,exp_0_1_0_54,,M9_glucose,0,
+,exp_0_1_0_54,,M9_glucose,0,
+,exp_0_1_0_54,,M9_glucose,0,
+,exp_0_1_0_55,,M9_glucose,0,
+,exp_0_1_0_55,,M9_glucose,0,
+,exp_0_1_0_55,,M9_glucose,0,
+,exp_0_1_0_56,,M9_glucose,0,
+,exp_0_1_0_56,,M9_glucose,0,
+,exp_0_1_0_56,,M9_glucose,0,
+,exp_0_1_0_57,,M9_glucose,0,
+,exp_0_1_0_57,,M9_glucose,0,
+,exp_0_1_0_57,,M9_glucose,0,
+,exp_0_1_0_58,,M9_glucose,0,
+,exp_0_1_0_58,,M9_glucose,0,
+,exp_0_1_0_58,,M9_glucose,0,
+,exp_0_1_0_59,,M9_glucose,0,
+,exp_0_1_0_59,,M9_glucose,0,
+,exp_0_1_0_59,,M9_glucose,0,
+,exp_0_1_0_60,,M9_glucose,0,
+,exp_0_1_0_60,,M9_glucose,0,
+,exp_0_1_0_60,,M9_glucose,0,
+,exp_0_1_0_61,,M9_glucose,0,
+,exp_0_1_0_61,,M9_glucose,0,
+,exp_0_1_0_61,,M9_glucose,0,
+,exp_0_1_0_62,,M9_glucose,0,
+,exp_0_1_0_62,,M9_glucose,0,
+,exp_0_1_0_62,,M9_glucose,0,
+,exp_0_1_0_63,,M9_glucose,0,
+,exp_0_1_0_63,,M9_glucose,0,
+,exp_0_1_0_63,,M9_glucose,0,
+,exp_0_1_0_64,,M9_glucose,0,
+,exp_0_1_0_64,,M9_glucose,0,
+,exp_0_1_0_64,,M9_glucose,0,
+,exp_0_1_0_65,,M9_glucose,0,
+,exp_0_1_0_65,,M9_glucose,0,
+,exp_0_1_0_65,,M9_glucose,0,
+,exp_0_1_0_66,,M9_glucose,0,
+,exp_0_1_0_66,,M9_glucose,0,
+,exp_0_1_0_66,,M9_glucose,0,
+,exp_0_1_0_67,,M9_glucose,0,
+,exp_0_1_0_67,,M9_glucose,0,
+,exp_0_1_0_67,,M9_glucose,0,
+,exp_0_1_0_68,,M9_glucose,0,
+,exp_0_1_0_68,,M9_glucose,0,
+,exp_0_1_0_68,,M9_glucose,0,
+,exp_0_1_0_69,,M9_glucose,0,
+,exp_0_1_0_69,,M9_glucose,0,
+,exp_0_1_0_69,,M9_glucose,0,
+,exp_0_1_0_70,,M9_glucose,0,
+,exp_0_1_0_70,,M9_glucose,0,
+,exp_0_1_0_70,,M9_glucose,0,
+,exp_0_1_0_71,,M9_glucose,0,
+,exp_0_1_0_71,,M9_glucose,0,
+,exp_0_1_0_71,,M9_glucose,0,
+,exp_0_1_0_72,,M9_glucose,0,
+,exp_0_1_0_72,,M9_glucose,0,
+,exp_0_1_0_72,,M9_glucose,0,
+,exp_0_1_0_73,,M9_glucose,0,
+,exp_0_1_0_73,,M9_glucose,0,
+,exp_0_1_0_73,,M9_glucose,0,
+,exp_0_1_0_74,,M9_glucose,0,
+,exp_0_1_0_74,,M9_glucose,0,
+,exp_0_1_0_74,,M9_glucose,0,
+,exp_0_1_0_75,,M9_glucose,0,
+,exp_0_1_0_75,,M9_glucose,0,
+,exp_0_1_0_75,,M9_glucose,0,
+,exp_0_1_0_76,,M9_glucose,0,
+,exp_0_1_0_76,,M9_glucose,0,
+,exp_0_1_0_76,,M9_glucose,0,
+,exp_0_1_0_77,,M9_glucose,0,
+,exp_0_1_0_77,,M9_glucose,0,
+,exp_0_1_0_77,,M9_glucose,0,
+,exp_0_1_0_78,,M9_glucose,0,
+,exp_0_1_0_78,,M9_glucose,0,
+,exp_0_1_0_78,,M9_glucose,0,
+,exp_0_1_0_79,,M9_glucose,0,
+,exp_0_1_0_79,,M9_glucose,0,
+,exp_0_1_0_79,,M9_glucose,0,
+,exp_0_1_0_80,,M9_glucose,0,
+,exp_0_1_0_80,,M9_glucose,0,
+,exp_0_1_0_80,,M9_glucose,0,
+,exp_0_1_0_81,,M9_glucose,0,
+,exp_0_1_0_81,,M9_glucose,0,
+,exp_0_1_0_81,,M9_glucose,0,
+,exp_0_1_0_82,,M9_glucose,0,
+,exp_0_1_0_82,,M9_glucose,0,
+,exp_0_1_0_82,,M9_glucose,0,
+,exp_0_1_0_83,,M9_glucose,0,
+,exp_0_1_0_83,,M9_glucose,0,
+,exp_0_1_0_83,,M9_glucose,0,
+,exr_0_1_0_0,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_0,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_0,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_0,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_0,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_0,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_0,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_0,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_0,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_0,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_0,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_0,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_0,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_0,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_0,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_0,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_0,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_0,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_0,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_0,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_0,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_0,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_0,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_0,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_0,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_0,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_0,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_0,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_0,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_0,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_0,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_0,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_0,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_0,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_0,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_0,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_0,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_0,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_0,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_0,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_0,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_0,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_1,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_1,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_1,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_1,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_1,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_1,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_1,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_1,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_1,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_1,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_1,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_1,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_1,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_1,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_1,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_1,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_1,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_1,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_1,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_1,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_1,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_1,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_1,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_1,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_1,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_1,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_1,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_1,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_1,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_1,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_1,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_1,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_1,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_1,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_1,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_1,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_1,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_1,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_1,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_1,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_1,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_1,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_2,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_2,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_2,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_2,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_2,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_2,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_2,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_2,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_2,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_2,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_2,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_2,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_2,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_2,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_2,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_2,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_2,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_2,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_2,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_2,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_2,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_2,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_2,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_2,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_2,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_2,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_2,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_2,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_2,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_2,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_2,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_2,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_2,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_2,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_2,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_2,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_2,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_2,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_2,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_2,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_2,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_2,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_3,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_3,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_3,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_3,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_3,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_3,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_3,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_3,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_3,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_3,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_3,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_3,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_3,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_3,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_3,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_3,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_3,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_3,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_3,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_3,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_3,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_3,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_3,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_3,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_3,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_3,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_3,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_3,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_3,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_3,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_3,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_3,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_3,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_3,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_3,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_3,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_3,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_3,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_3,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_3,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_3,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_3,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_4,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_4,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_4,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_4,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_4,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_4,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_4,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_4,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_4,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_4,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_4,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_4,,M9_glucose + (10000 nM ara),0,
+,exr_0_1_0_4,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_4,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_4,,M9_glucose + (10000 nM ara),30,
+,exr_0_1_0_4,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_4,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_4,,M9_glucose + (10000 nM ara),60,
+,exr_0_1_0_4,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_4,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_4,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_4,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_4,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_4,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_4,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_4,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_4,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_4,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_4,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_4,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_4,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_4,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_4,,M9_glucose + (0 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_4,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_4,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_4,,M9_glucose + (100 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_4,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_4,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_4,,M9_glucose + (1000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_4,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_4,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A
+,exr_0_1_0_4,,M9_glucose + (10000 nM ara),0,Pacific_Blue-A| FITC-A

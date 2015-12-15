@@ -54,6 +54,7 @@ import org.cidarlab.phoenix.core.dom.Vector;
 /**
  * This class has all methods for sending and receiving information to Clotho
  *
+ * @author prash
  * @author evanappleton
  */
 public class ClothoAdaptor {

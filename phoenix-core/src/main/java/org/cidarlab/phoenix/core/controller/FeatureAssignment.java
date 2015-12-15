@@ -29,6 +29,8 @@ import org.clothoapi.clotho3javaapi.ClothoConnection;
 /**
  *
  * @author evanappleton
+ * @author prash
+ * 
  */
 public class FeatureAssignment {    
     
@@ -243,7 +245,7 @@ public class FeatureAssignment {
                             List<PrimitiveModule> am_pm = new ArrayList<PrimitiveModule>();
                             for(PrimitiveModule pm_nt:m.getSubmodules()){
                                 if(!pm_nt.getPrimitiveRole().equals(FeatureRole.CDS_TAG)){
-                                    am_pm.add(pm);
+                                    am_pm.add(pm_nt);
                                 }
                             }
                             am_pm.get(i).setModuleFeature(fR);

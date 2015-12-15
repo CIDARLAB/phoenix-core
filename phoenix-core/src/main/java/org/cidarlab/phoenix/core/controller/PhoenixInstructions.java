@@ -41,6 +41,8 @@ import org.cidarlab.phoenix.core.dom.Titration;
  * This includes part assembly and determination of testing points
  * 
  * @author evanappleton
+ * @author prash
+ * 
  */
 public class PhoenixInstructions {
     
@@ -241,7 +243,7 @@ public class PhoenixInstructions {
         File testingMap = new File(filePath + "/nameMapFileTest.csv");
         FileWriter mapFileWriter = new FileWriter(testingMap);
         try (BufferedWriter writer = new BufferedWriter(mapFileWriter)) {
-            writer.write("Short Name,Name,Custom Name");
+            writer.write("Short Name,Features,Custom Name");
             writer.newLine();
             for(AssignedModule amodule:amodules){
                 writer.write(amodule.getShortName()+","+amodule.getFeatureString()+",");

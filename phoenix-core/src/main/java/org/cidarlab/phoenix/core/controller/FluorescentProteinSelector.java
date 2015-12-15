@@ -22,6 +22,7 @@ import org.cidarlab.phoenix.core.dom.Fluorophore;
  * It inputs a module graph, a cytometer with settings, and fluorophore set and returns a modified modified graph
  * 
  * @author evanappleton
+ * @author prash
  */
 public class FluorescentProteinSelector {
     

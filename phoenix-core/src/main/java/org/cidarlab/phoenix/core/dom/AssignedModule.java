@@ -13,7 +13,9 @@ import org.sbml.jsbml.SBMLDocument;
 
 /**
  *
+ * @author prash
  * @author evanappleton
+ * 
  */
 public class AssignedModule extends Module {
 
@@ -23,7 +25,7 @@ public class AssignedModule extends Module {
 //        AssignedModule aM = new AssignedModule(m.getName());
         super(m.getName());
         this.experiments = new ArrayList<>();
-        this.regulationDocument = new ArrayList<>();
+        
         //this.controlModules = new ArrayList<>();
         
         List<Feature> fList = new ArrayList<>();
@@ -70,7 +72,7 @@ public class AssignedModule extends Module {
         clone.setStage(this.getStage());
         
         clone.setSBMLDocument(this.getSBMLDocument());
-        clone.regulationDocument = this.regulationDocument;
+        
         
         return clone;
     }
@@ -112,11 +114,6 @@ public class AssignedModule extends Module {
     @Setter
     private List<AssignedModule> controlModules;
     
-    @Getter
-    @Setter
-    private List<SBMLDocument> regulationDocument;
-    
-        
     //Experiment associated with this module
     @Getter
     @Setter

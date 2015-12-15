@@ -57,10 +57,19 @@ public class CoreTest {
 //        PhoenixController.preliminaryDataUpload (featureLib, plasmidLib, fluorophoreSpectra, cytometer);
         
         //Run a design decomposition
-        File structureFile = new File(getFilepath() + "/src/main/resources/miniEugeneFiles/toggle-switch-full.eug");
+        File structureFile = new File(getFilepath() + "/src/main/resources/miniEugeneFiles/inverter.eug");
         Module bestModule = PhoenixController.initializeDesign(structureFile, null);
         //HashSet<AssignedModule> modulesToTestHash = new HashSet<>(modulesToTest);
         PhoenixController.createExperimentInstructions(bestModule, getFilepath() + "/src/main/resources/InstructionFiles");
+        
+        
+        //Assign SBML Documents
+        PhoenixController.assignSBMLDocuments(bestModule);
+        
+        String filepathSBML = getFilepath() + "/src/main/resources/sbmlDocs";
+        //Create SBML Documents
+        PhoenixController.createAllSBMLfiles(bestModule, filepathSBML);
+        
     }
     
     //Main testing class

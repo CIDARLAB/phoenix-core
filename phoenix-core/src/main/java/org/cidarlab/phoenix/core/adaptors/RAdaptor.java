@@ -16,11 +16,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.cidarlab.phoenix.core.controller.Utilities;
+import org.cidarlab.phoenix.core.dom.AssignedModule;
 
 /**
  *
@@ -29,7 +31,7 @@ import org.cidarlab.phoenix.core.controller.Utilities;
 public class RAdaptor {
     
     
-    public static void walk(String path, String resultsRoot,Map<String,String> nameMap) throws IOException{
+    public static void directoryWalk(String path, String resultsRoot, Map<String,String> nameMap, Map<String,AssignedModule> expexe) throws IOException{
         File root = new File( path );
         File[] list = root.listFiles();
         
@@ -37,7 +39,7 @@ public class RAdaptor {
         
         for ( File f : list ) {
             if ( f.isDirectory() ) {
-                walk(f.getAbsolutePath(),resultsRoot,nameMap);
+                directoryWalk(f.getAbsolutePath(), resultsRoot, nameMap, expexe);
                 //System.out.println( "Dir:" + f.getAbsoluteFile() );
             }
             else {
@@ -45,6 +47,8 @@ public class RAdaptor {
                     String pieces[] = filepathPieces(f.getAbsolutePath(),resultsRoot);
                     if(nameMap.containsKey(pieces[0])){
                         String amoduleShortName = nameMap.get(pieces[0]);
+                        AssignedModule amodule = expexe.get(amoduleShortName);
+                        
                         
                     }
                     //String relFilepath = f.getAbsolutePath().substring(f.getAbsolutePath().lastIndexOf(resultsRoot) + resultsRoot.length());
@@ -80,7 +84,7 @@ public class RAdaptor {
             
             String mapLine;
             while((mapLine = mapReader.readLine())!=null){
-                if(mapLine.equals("Short Name,Name,Custom Name"))
+                if(mapLine.equals("Short Name,Features,Custom Name"))
                     continue;
                 String names[] = mapLine.split(",");
                 shortNames.add(names[0]);
@@ -112,7 +116,7 @@ public class RAdaptor {
         } catch (IOException ex) {
             Logger.getLogger(RAdaptor.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        System.out.println(nameMap);
         return nameMap;
     }
     

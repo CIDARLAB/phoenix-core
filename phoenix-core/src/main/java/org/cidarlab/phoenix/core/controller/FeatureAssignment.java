@@ -74,16 +74,6 @@ public class FeatureAssignment {
             }
         }
         
-        System.out.println("Checking Expressees");
-        for(Module m:exe){
-            System.out.println("Assigned Modules :: " + m.getAssignedModules().size());
-            for(AssignedModule am:m.getAssignedModules()){
-                System.out.println("Expressee :: " + am.getSubmodules().get(2).getModuleFeature().getName());
-                System.out.println("Size of AM :: " + am.getSubmodules().size());
-            }
-            
-        }
-        
         List<Module> expexe = new ArrayList<Module>();
         expexe.addAll(exe);
         expexe.addAll(exp);
@@ -113,10 +103,6 @@ public class FeatureAssignment {
                         if(!multiplexedModulesList.contains(amoduleMplx)){
                             multiplexedModulesList.add(amoduleMplx);
                         }
-                        else{
-                            System.out.println("Already contains that");
-                        }
-                            
                     }
                     //multiplexedModulesList.addAll(multiplexModules);
                     modulesToTest.addAll(multiplexModules);
@@ -263,9 +249,6 @@ public class FeatureAssignment {
                             for(PrimitiveModule pm_nt:clone_no_tag.getSubmodules()){
                                 if(!pm_nt.getPrimitiveRole().equals(FeatureRole.CDS_TAG)){
                                     am_pm.add(pm_nt);
-                                }
-                                else{
-                                    System.out.println("It is tag");
                                 }
                             }
                             am_pm.get(i).setModuleFeature(fR);

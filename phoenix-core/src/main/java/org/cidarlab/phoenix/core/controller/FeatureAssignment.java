@@ -152,27 +152,59 @@ public class FeatureAssignment {
     
     private static void replaceAssignedModuleExpressorFP(AssignedModule amodule, Fluorophore oldFP, Fluorophore newFP){
         
+        boolean amoduleUpdated = false;
         for(PrimitiveModule pm:amodule.getSubmodules()){
             if(pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT)){
                 if(pm.getModuleFeature().getName().equals(oldFP.getName())){
                     pm.setModuleFeature(newFP);
+                    amoduleUpdated = true;
                 }
             }
         }
+        if(amoduleUpdated){
+            amodule.updateModuleFeatures();
+        }
         for(AssignedModule control:amodule.getControlModules()){
             //Due to symbolic links, this may not be triggered over and over again.
+            boolean controlUpdated = false;
             if (control.getRole().equals(ModuleRole.COLOR_CONTROL)) {
                 for (PrimitiveModule pm : control.getSubmodules()) {
-                    if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT)) {
+                    if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT)) {
                         if (pm.getModuleFeature().getName().equals(oldFP.getName())) {
                             pm.setModuleFeature(newFP);
+                            controlUpdated = true;
+                        }
+                    }
+                }
+            }
+            if(controlUpdated){
+                control.updateModuleFeatures();
+            }
+        }
+    }
+    
+    public static void replaceRegulationFP(Module module,Fluorophore oldFP, Fluorophore newFP){
+        if(module.getRole().equals(ModuleRole.EXPRESSEE) || module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR) || module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)){
+            for(AssignedModule amodule:module.getAssignedModules()){
+                for(AssignedModule control:amodule.getControlModules()){
+                    if(control.getRole().equals(ModuleRole.REGULATION_CONTROL)){
+                        boolean updated = false;
+                        for (PrimitiveModule pm : control.getSubmodules()) {
+                            if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT)) {
+                                if (pm.getModuleFeature().getName().equals(oldFP.getName())) {
+                                    pm.setModuleFeature(newFP);
+                                    updated = true;
+                                }
+                            }
+                        }
+                        if(updated){
+                            control.updateModuleFeatures();
                         }
                     }
                 }
             }
         }
     }
-    
     
     public static void replaceExpresseeFP(Module module, Fluorophore oldFP, Fluorophore newFP){
         
@@ -203,23 +235,33 @@ public class FeatureAssignment {
     
     private static void replaceAssignedModuleExpresseeFP(AssignedModule amodule, Fluorophore oldFP, Fluorophore newFP){
         
+        boolean amoduleUpdated = false;
         for(PrimitiveModule pm:amodule.getSubmodules()){
             if(pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)){
                 if(pm.getModuleFeature().getName().equals(oldFP.getName())){
                     pm.setModuleFeature(newFP);
+                    amoduleUpdated = true;
                 }
             }
         }
+        if(amoduleUpdated){
+            amodule.updateModuleFeatures();
+        }
         for(AssignedModule control:amodule.getControlModules()){
             //Due to symbolic links, this may not be triggered over and over again.
+            boolean controlUpdated = false;
             if (control.getRole().equals(ModuleRole.COLOR_CONTROL) || control.getRole().equals(ModuleRole.REGULATION_CONTROL)) {
                 for (PrimitiveModule pm : control.getSubmodules()) {
-                    if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
+                    if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT)) {
                         if (pm.getModuleFeature().getName().equals(oldFP.getName())) {
                             pm.setModuleFeature(newFP);
+                            controlUpdated = true;
                         }
                     }
                 }
+            }
+            if(controlUpdated){
+                control.updateModuleFeatures();
             }
         }
     }

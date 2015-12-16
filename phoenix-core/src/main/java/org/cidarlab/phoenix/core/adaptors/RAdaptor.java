@@ -71,6 +71,7 @@ public class RAdaptor {
         return relativeFilepath.split("/");
     }
     
+    /*
     public static Map<String,String> parseKeyMapFiles(String keyFile, String mapFile){
         Map<String,String> nameMap = new HashMap<>();
         
@@ -119,6 +120,61 @@ public class RAdaptor {
         System.out.println(nameMap);
         return nameMap;
     }
+    */
+    
+    public static Map<String,String> parseKeyMapFiles(String mapFile){
+        Map<String,String> nameMap = new HashMap<>();
+        
+        Map<String,String> customNameMap = new HashMap<>();
+        Set<String> shortNames = new HashSet<>();
+        //File key = new File(keyFile);
+        File map = new File(mapFile);
+        try {
+            //BufferedReader keyReader = new BufferedReader(new FileReader(key));
+            BufferedReader mapReader = new BufferedReader(new FileReader(map));
+            
+            String mapLine;
+            while((mapLine = mapReader.readLine())!=null){
+                if(mapLine.equals("Short Name,Features,Custom Name"))
+                    continue;
+                String names[] = mapLine.split(",");
+                shortNames.add(names[0]);
+                if(names.length == 3){
+                    if(!names[2].trim().equals(""))
+                        customNameMap.put(names[2], names[0]);
+                }
+                else{
+                    customNameMap.put(names[0], names[0]);
+                }
+            }
+            
+            /*
+            String keyLine;
+            while((keyLine = keyReader.readLine())!=null){
+                if(keyLine.equals("FILENAME,PART,CONTROL,MEDIA,TIME,REGULATION"))   
+                    continue;
+                String pieces[] = keyLine.split(",");
+                if(!pieces[0].trim().equals("")){
+                    if(shortNames.contains(pieces[1])){
+                        nameMap.put(pieces[0], pieces[1]);
+                    }
+                    else{
+                        if(customNameMap.containsKey(pieces[1])){
+                            nameMap.put(pieces[0], customNameMap.get(pieces[1]));
+                        }
+                    }
+                }
+            }*/
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(RAdaptor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(RAdaptor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println(customNameMap);
+        return customNameMap;
+    }
+    
     
     public static void createRunRScript(String runRFilepath, String keyFilepath, String AnalyzeRFilepath, String dataFilepath, String wd, int minEvents){
         

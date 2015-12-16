@@ -166,7 +166,7 @@ public class PhoenixController {
         //Create expreriment objects based upon the modules being tested
         List<AssignedModule> amodulesToTestList = new ArrayList<AssignedModule>();
         Set<AssignedModule> amodulesToTest = new HashSet<AssignedModule>();
-        amodulesToTestList = getAllAssignedModules(module);
+        amodulesToTestList = getModuleTreeAssignedModules(module);
         amodulesToTest.addAll(amodulesToTestList);
         List<Experiment> currentExperiments = new ArrayList<>();
         for (AssignedModule m : amodulesToTest) {
@@ -289,7 +289,7 @@ public class PhoenixController {
         
     }
     
-    public static List<AssignedModule> getAllAssignedModules(Module module){
+    public static List<AssignedModule> getModuleTreeAssignedModules(Module module){
         List<AssignedModule> modulesToTest = new ArrayList<AssignedModule>();
         for (AssignedModule amodule : module.getAssignedModules()) {
             if (!modulesToTest.contains(amodule)) {
@@ -297,7 +297,7 @@ public class PhoenixController {
             }
         }
         for(Module child:module.getChildren()){
-            for(AssignedModule amodule:getAllAssignedModules(child)){
+            for(AssignedModule amodule:getModuleTreeAssignedModules(child)){
                 if(!modulesToTest.contains(amodule)){
                     modulesToTest.add(amodule);
                 }

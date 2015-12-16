@@ -122,6 +122,108 @@ public class FeatureAssignment {
         conn.closeConnection();
     }
     
+    
+    public static void replaceExpressorFP(Module module, Fluorophore oldFP, Fluorophore newFP){
+        
+        boolean updated = false;
+        //Look for Feature of role CDS Fluoroscent Fusion which matches the old FP's name
+        for(PrimitiveModule pm:module.getSubmodules()){
+            if(pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT)){
+                if(pm.getModuleFeature().getName().equals(oldFP.getName())){
+                    pm.setModuleFeature(newFP);
+                    updated = true;
+                }
+            }
+        }
+        //If it was replaced, update the module Features
+        if(updated){
+            module.updateModuleFeatures();
+            //Now make changes in the AssignedModules associated. 
+            for(AssignedModule amodule:module.getAssignedModules()){
+                replaceAssignedModuleExpresseeFP(amodule,oldFP,newFP); //Replaces FP in AssignedModules, Color controls and Regulation Controls.
+            }
+        }        
+        
+        for(Module child:module.getChildren()){
+            replaceExpresseeFP(child,oldFP,newFP);
+        }
+        
+    }
+    
+    private static void replaceAssignedModuleExpressorFP(AssignedModule amodule, Fluorophore oldFP, Fluorophore newFP){
+        
+        for(PrimitiveModule pm:amodule.getSubmodules()){
+            if(pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT)){
+                if(pm.getModuleFeature().getName().equals(oldFP.getName())){
+                    pm.setModuleFeature(newFP);
+                }
+            }
+        }
+        for(AssignedModule control:amodule.getControlModules()){
+            //Due to symbolic links, this may not be triggered over and over again.
+            if (control.getRole().equals(ModuleRole.COLOR_CONTROL)) {
+                for (PrimitiveModule pm : control.getSubmodules()) {
+                    if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT)) {
+                        if (pm.getModuleFeature().getName().equals(oldFP.getName())) {
+                            pm.setModuleFeature(newFP);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    public static void replaceExpresseeFP(Module module, Fluorophore oldFP, Fluorophore newFP){
+        
+        boolean updated = false;
+        //Look for Feature of role CDS Fluoroscent Fusion which matches the old FP's name
+        for(PrimitiveModule pm:module.getSubmodules()){
+            if(pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)){
+                if(pm.getModuleFeature().getName().equals(oldFP.getName())){
+                    pm.setModuleFeature(newFP);
+                    updated = true;
+                }
+            }
+        }
+        //If it was replaced, update the module Features
+        if(updated){
+            module.updateModuleFeatures();
+            //Now make changes in the AssignedModules associated. 
+            for(AssignedModule amodule:module.getAssignedModules()){
+                replaceAssignedModuleExpresseeFP(amodule,oldFP,newFP); //Replaces FP in AssignedModules, Color controls and Regulation Controls.
+            }
+        }        
+        
+        for(Module child:module.getChildren()){
+            replaceExpresseeFP(child,oldFP,newFP);
+        }
+        
+    }
+    
+    private static void replaceAssignedModuleExpresseeFP(AssignedModule amodule, Fluorophore oldFP, Fluorophore newFP){
+        
+        for(PrimitiveModule pm:amodule.getSubmodules()){
+            if(pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)){
+                if(pm.getModuleFeature().getName().equals(oldFP.getName())){
+                    pm.setModuleFeature(newFP);
+                }
+            }
+        }
+        for(AssignedModule control:amodule.getControlModules()){
+            //Due to symbolic links, this may not be triggered over and over again.
+            if (control.getRole().equals(ModuleRole.COLOR_CONTROL) || control.getRole().equals(ModuleRole.REGULATION_CONTROL)) {
+                for (PrimitiveModule pm : control.getSubmodules()) {
+                    if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
+                        if (pm.getModuleFeature().getName().equals(oldFP.getName())) {
+                            pm.setModuleFeature(newFP);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     //Method for traverisng graphs, adding fluorescent proteins
     private static void addFPs(Module rootModule,Clotho clothoObject) {
                 

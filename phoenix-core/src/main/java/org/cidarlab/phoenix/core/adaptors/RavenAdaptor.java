@@ -447,7 +447,7 @@ public class RavenAdaptor {
                 }
                 
                 //Regular parts with sequences
-                if (!pm.getModuleFeature().getSequence().getSequence().isEmpty() && pm.getPrimitiveRole() != FeatureRole.VECTOR) {
+                if ((!pm.getModuleFeature().getSequence().getSequence().isEmpty() || pm.getPrimitiveRole() == FeatureRole.CDS_TAG) && pm.getPrimitiveRole() != FeatureRole.VECTOR) {
                     
                     //Linker edge case
                     if (pm.getPrimitiveRole() == FeatureRole.CDS_LINKER) {
@@ -468,15 +468,15 @@ public class RavenAdaptor {
                     //Degradation tag edge case
                     } else if (pm.getPrimitiveRole() == FeatureRole.CDS_TAG && m.getSubmodules().size() > 1 && (m.getSubmodules().get(i-1).getPrimitiveRole() == FeatureRole.CDS_FLUORESCENT || m.getSubmodules().get(i-1).getPrimitiveRole() == FeatureRole.CDS_FLUORESCENT_FUSION)) {
                         
-                        if (i > 0) {
-                            if (!previousIsLinker) {
-                                linkers.add(linker);
-                            } else {
-                                previousIsLinker = false;
-                            }
-                            //Scars and linkers
-                            scars.add(scar);
-                        }
+//                        if (i > 0) {
+//                            if (!previousIsLinker) {
+//                                linkers.add(linker);
+//                            } else {
+//                                previousIsLinker = false;
+//                            }
+//                            //Scars and linkers
+//                            scars.add(scar);
+//                        }
                         
                         PrimitiveModule lastPM = m.getSubmodules().get(i - 1);
                         String type = lastPM.getPrimitiveRole() + "_multiplex";
@@ -488,7 +488,7 @@ public class RavenAdaptor {
                         newBasicPart.setTransientStatus(false);
                         libParts.add(newBasicPart);
                         
-                        composition.remove(i-1);
+                        composition.remove(i-2);
                         composition.add(newBasicPart);
                         continue;
                         

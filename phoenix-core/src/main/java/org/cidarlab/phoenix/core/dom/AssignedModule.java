@@ -49,6 +49,7 @@ public class AssignedModule extends Module {
     public AssignedModule clone(String name) {
         //AssignedModule clone = new AssignedModule(name);
         AssignedModule clone = new AssignedModule(new Module(name));
+        
         List<Feature> fList = new ArrayList<>();
         for (Feature f : this.getModuleFeatures()) {
             fList.add(f.clone());
@@ -59,7 +60,7 @@ public class AssignedModule extends Module {
             pmList.add(pm.clone());
         }
         clone.setSubmodules(pmList);
-
+        
         List<Experiment> exList = new ArrayList<>();
         exList.addAll(this.experiments);
         clone.experiments = exList;
@@ -71,7 +72,10 @@ public class AssignedModule extends Module {
         clone.setRole(this.getRole());
         clone.setStage(this.getStage());
         
-        clone.setSBMLDocument(this.getSBMLDocument());
+        for(SBMLDocument doc:this.getSBMLDocument()){
+            clone.getSBMLDocument().add(doc.clone());
+        }
+        //clone.setSBMLDocument(this.getSBMLDocument());
         
         
         return clone;

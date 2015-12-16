@@ -38,7 +38,7 @@ public class RAdaptorTest {
         RAdaptor.runR(filepathR);
     }
     
-    @Test
+    //@Test
     public void parseKeyMapFilesTest(){
        String filepath = Utilities.getFilepath() + "/src/main/resources/InstructionFiles/";
        String keyFile = filepath + "testingInstructionsTest.csv";

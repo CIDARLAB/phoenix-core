@@ -73,6 +73,17 @@ public class FeatureAssignment {
                 promoterAssign(m, features, assignedRegulators);
             }
         }
+        
+        System.out.println("Checking Expressees");
+        for(Module m:exe){
+            System.out.println("Assigned Modules :: " + m.getAssignedModules().size());
+            for(AssignedModule am:m.getAssignedModules()){
+                System.out.println("Expressee :: " + am.getSubmodules().get(2).getModuleFeature().getName());
+                System.out.println("Size of AM :: " + am.getSubmodules().size());
+            }
+            
+        }
+        
         List<Module> expexe = new ArrayList<Module>();
         expexe.addAll(exe);
         expexe.addAll(exp);
@@ -99,8 +110,13 @@ public class FeatureAssignment {
                     multiplexed = true;
                     multiplexModules = addMultiplexModules(assignedM, percentage, features);
                     for(AssignedModule amoduleMplx:multiplexModules){
-                        if(!multiplexedModulesList.contains(amoduleMplx))
+                        if(!multiplexedModulesList.contains(amoduleMplx)){
                             multiplexedModulesList.add(amoduleMplx);
+                        }
+                        else{
+                            System.out.println("Already contains that");
+                        }
+                            
                     }
                     //multiplexedModulesList.addAll(multiplexModules);
                     modulesToTest.addAll(multiplexModules);
@@ -226,12 +242,13 @@ public class FeatureAssignment {
                     List<Feature> featuresOfRole = getAllFeaturesOfRole(features, pm.getPrimitiveRole());
                     for (Feature fR : featuresOfRole) {
                         
-
+                        //This was assigned
+                        assignedRegulators.add(fR);
+                        
                         //Get rid of features that were saved when the module was saved that are only placeholders
                         if (!fR.getSequence().getSequence().isEmpty()) {
                             
-                            //This was assigned
-                            assignedRegulators.add(fR);
+                            
                             
                             //Create AssignedModule
                             Module clone = m.clone(m.getName() + "_" + count+"_TAG");
@@ -243,9 +260,12 @@ public class FeatureAssignment {
                             Module clone_no_tag = m.clone(m.getName() + "_" + count);
                             AssignedModule assignedClone_no_tag = new AssignedModule(clone_no_tag);
                             List<PrimitiveModule> am_pm = new ArrayList<PrimitiveModule>();
-                            for(PrimitiveModule pm_nt:m.getSubmodules()){
+                            for(PrimitiveModule pm_nt:clone_no_tag.getSubmodules()){
                                 if(!pm_nt.getPrimitiveRole().equals(FeatureRole.CDS_TAG)){
                                     am_pm.add(pm_nt);
+                                }
+                                else{
+                                    System.out.println("It is tag");
                                 }
                             }
                             am_pm.get(i).setModuleFeature(fR);
@@ -458,11 +478,8 @@ public class FeatureAssignment {
                     assignedClone.updateModuleFeatures();
                     clonesThisModule.add(assignedClone);                    
                 }
-
-            } else {
-
                 //Get rid of features that were saved when the module was saved that are only placeholders
-                if (!fR.getSequence().getSequence().isEmpty()) {
+                else if (!fR.getSequence().getSequence().isEmpty()) {
                     Module clone = m.clone(m.getName() + "_" + count);
                     AssignedModule assignedClone = new AssignedModule(clone);
                     count++;
@@ -473,7 +490,7 @@ public class FeatureAssignment {
                     assignedClone.updateModuleFeatures();
                     clonesThisModule.add(assignedClone);  
                 }
-            }
+            } 
         }
         
         return count;
@@ -624,7 +641,20 @@ public class FeatureAssignment {
                 featuresOfRole.add(f);
             }
         }
-        
+        if(role.equals(FeatureRole.CDS_REPRESSOR)){
+            for (Feature f : allFeatures) {
+                if (f.getRole().equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR) && !f.getSequence().getSequence().isEmpty()) {
+                    featuresOfRole.add(f);
+                }
+            }
+        }
+        if(role.equals(FeatureRole.CDS_ACTIVATOR)){
+            for (Feature f : allFeatures) {
+                if (f.getRole().equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) && !f.getSequence().getSequence().isEmpty()) {
+                    featuresOfRole.add(f);
+                }
+            }
+        }
         return featuresOfRole;
     }
 }

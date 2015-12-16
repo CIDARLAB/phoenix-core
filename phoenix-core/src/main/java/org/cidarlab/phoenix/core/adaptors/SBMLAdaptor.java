@@ -80,7 +80,7 @@ public class SBMLAdaptor {
                 
                 try {
                     writer.write(doc, filepath + "/" + amodule.getShortName()+"_"+count);
-                    
+                    count++;
                 } catch (XMLStreamException ex) {
                     Logger.getLogger(SBMLAdaptor.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (FileNotFoundException ex) {

@@ -347,7 +347,7 @@ public class ClothoAdaptor {
     }
     
     public static Map createArcMap(Arc a){
-        System.out.println("In Create Arc Map");
+        //System.out.println("In Create Arc Map");
         Map map = new HashMap();
         map.put("schema", Arc.class.getCanonicalName());
         map.put("regulator", a.getRegulator().getName());
@@ -431,12 +431,13 @@ public class ClothoAdaptor {
     
     public static Map createPrimitiveModuleMap(PrimitiveModule pmodule) {
         Map map = new HashMap();
-        map.put("name", pmodule.getName());
         map.put("schema", PrimitiveModule.class.getCanonicalName());
+        if(pmodule.getName() != null){
+            map.put("name", pmodule.getName());
+        }
         map.put("moduleFeature", createFeatureMap(pmodule.getModuleFeature()));
-        map.put("isForward", pmodule.isForward());
         map.put("primitiveRole", pmodule.getPrimitiveRole().toString());
-
+        map.put("primitive", createPrimitiveMap(pmodule.getPrimitive()));
         //Decide about Primitive Object. Store only Sequence? Orientation can be gleaned from isForward??
         return map;
     }
@@ -444,15 +445,16 @@ public class ClothoAdaptor {
     //This can be removed if we don't need a map function for this. 
     public static Map createPrimitiveMap(Primitive primitive) {
         Map map = new HashMap();
-
+        map.put("name", primitive.getName());
+        map.put("type", primitive.getType());
         return map;
     }
 
     public static Map createFeatureMap(Feature f) {
-        System.out.println("In Create Feature Map");
+        //System.out.println("In Create Feature Map");
         Map map = new HashMap();
         map.put("schema", Feature.class.getCanonicalName());
-        map.put("name", f.getName());
+        //map.put("name", f.getName());
         System.out.println("Feature Name::" + f.getName());
         map.put("forwardColor", f.getForwardColor().getRGB());
         map.put("reverseColor", f.getReverseColor().getRGB());
@@ -470,7 +472,7 @@ public class ClothoAdaptor {
         map.put("sequence", createSequence);
 
         map.put("role", f.getRole().toString());
-        System.out.println("Now Create Arcs ::");
+        //System.out.println("Now Create Arcs ::");
         List<Map> arcList = new ArrayList<>();
         for (Arc a : f.getArcs()) {
             arcList.add(createArcMap(a));
@@ -499,49 +501,11 @@ public class ClothoAdaptor {
         }
         map.put("times", experimentTimes);
 
-        //String negativeControlId = createSample(experiment.getNegativeControl(), clothoObject);
-        //map.put("negativeControl", negativeControlId);
-        //String beadControlId = createSample(experiment.getBeadControl(), clothoObject);
-        //map.put("beadControl", beadControlId);
-
-        /*
-         JSONArray colorControlIds = new JSONArray();
-         for (Sample sample : experiment.getColorControls()) {
-         String colorControlId = createSample(sample, clothoObject);
-         colorControlIds.add(colorControlId);
-         }
-         map.put("colorControls", colorControlIds);
-         */
-        /*JSONArray experimentSampleIds = new JSONArray();
-         for (Sample sample : experiment.getExperimentSamples()) {
-         String expSampleId = createSample(sample, clothoObject);
-         experimentSampleIds.add(expSampleId);
-         }
-         map.put("experimentSamples", experimentSampleIds);
-         */
-        /*JSONArray exptDegControlIds = new JSONArray();
-         for (Sample sample : experiment.getExpDegControls()) {
-         String exptDegCntrlId = createSample(sample, clothoObject);
-         exptDegControlIds.add(exptDegCntrlId);
-         }
-         map.put("experimentDegreeControls", exptDegControlIds);
-         */
-        /*
-         JSONArray regulationControlIds = new JSONArray();
-         for (Sample sample : experiment.getRegulationControls()) {
-         String regulationCntrlId = createSample(sample, clothoObject);
-         regulationControlIds.add(regulationCntrlId);
-         }
-         map.put("regulationControls", regulationControlIds);
-         */
         JSONArray mediaConditions = new JSONArray();
         for (Medium medium : experiment.getMediaConditions()) {
             mediaConditions.add(createMediumMap(medium));
         }
         map.put("mediaConditions", mediaConditions);
-        
-        
-        
         
         return map;
     }

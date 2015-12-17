@@ -340,6 +340,7 @@ public class TestingStructures {
      }
      }
      */
+    
     private static ControlsMap getAllControls(Module module) {
         ControlsMap map = new ControlsMap();
         if (module.getRole().equals(ModuleRole.TRANSCRIPTIONAL_UNIT) || module.getRole().equals(ModuleRole.EXPRESSOR)) {

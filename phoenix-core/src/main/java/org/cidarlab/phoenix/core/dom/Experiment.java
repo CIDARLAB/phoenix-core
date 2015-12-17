@@ -13,15 +13,10 @@ import lombok.Setter;
  * This file is for the Experiment object
  * 
  * @author evanappleton
+ * @author prash
+ * 
  */
 public class Experiment {
-    
-    //No args constructor
-    public Experiment() {
-        mediaConditions = new ArrayList<>();
-        times = new ArrayList<>();
-        
-    }
     
     //No args constructor
     public Experiment(ExperimentType exptType, String _name, List<Medium> _media, List<String> _times) {
@@ -54,14 +49,9 @@ public class Experiment {
     
     //Experiment type
     @Getter
+    @Setter
     private ExperimentType exType;
         
-    //Set experiment type and create an experiment results object
-    public void setExType(ExperimentType _exType) {
-        exType = _exType;
-        results = new ExperimentResults(_exType);
-    }
-    
     //Time series for measurements
     @Setter
     @Getter

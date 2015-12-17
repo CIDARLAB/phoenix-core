@@ -1395,32 +1395,36 @@ public class ClothoAdaptor {
 
         JSONObject exptObj = new JSONObject();
         exptObj = (JSONObject) clothoObject.get(experimentid);
-        Experiment experiment = new Experiment();
-        experiment.setClothoID((String) exptObj.get("id"));
-        experiment.setExType(Experiment.ExperimentType.valueOf((String) exptObj.get("exType")));
+        
         JSONArray timeArray = new JSONArray();
+        List<String> times = new ArrayList<String>();
         if (timeArray.size() > 0) {
             for (Object obj : timeArray) {
-                experiment.getTimes().add((String) obj);
+                times.add((String) obj);
             }
         }
             
+        List<Medium> media = new ArrayList<Medium>();
+        
         //Get Media Conditions
         for (Object mediaObj : (JSONArray) exptObj.get("mediaConditions")) {
             Map mediaMap = new HashMap();
             String mediaName = (String) mediaMap.get("name");
             MediaType mediaType = MediaType.valueOf((String) mediaMap.get("type"));
-            Medium media = new Medium(mediaName, mediaType);
+            Medium medium = new Medium(mediaName, mediaType);
             Map smoleculeMap = new HashMap();
             smoleculeMap = (Map) mediaMap.get("smallMolecule");
             SmallMolecule smolecule = new SmallMolecule();
             smolecule.setName((String) smoleculeMap.get("name"));
             smolecule.setRole(SmallMolecule.SmallMoleculeRole.valueOf((String) smoleculeMap.get("role")));
             smolecule.setConcentration(Double.valueOf((String) smoleculeMap.get("concentration")));
-            media.setSmallmolecule(smolecule);
-            experiment.getMediaConditions().add(media);
+            medium.setSmallmolecule(smolecule);
+            media.add(medium);
         }
-
+        
+        Experiment experiment = new Experiment(Experiment.ExperimentType.valueOf((String) exptObj.get("exType")), (String)exptObj.getString("name"),media,times );
+        experiment.setClothoID((String) exptObj.get("id"));
+        
         return experiment;
     }
     

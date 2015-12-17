@@ -454,7 +454,7 @@ public class ClothoAdaptor {
         //System.out.println("In Create Feature Map");
         Map map = new HashMap();
         map.put("schema", Feature.class.getCanonicalName());
-        //map.put("name", f.getName());
+        map.put("name", f.getName());
         System.out.println("Feature Name::" + f.getName());
         map.put("forwardColor", f.getForwardColor().getRGB());
         map.put("reverseColor", f.getReverseColor().getRGB());
@@ -587,14 +587,7 @@ public class ClothoAdaptor {
         }
         map.put("submodules", submodules);
 
-        //Create and add ModuleFeatures
-        JSONArray featureIds = new JSONArray();
-        for (Feature f : module.getModuleFeatures()) {
-            String fId = createFeature(f, clothoObject);
-            featureIds.add(fId);
-        }
-        map.put("moduleFeatures", featureIds);
-
+        
         map.put("function", createSTLFunction(module.getFunction(), clothoObject));
 
         id = (String) clothoObject.set(map);
@@ -627,16 +620,6 @@ public class ClothoAdaptor {
             exptIds.add(createExperiment(experiment, clothoObject));
         }
         map.put("experiments", exptIds);
-
-        //if (amodule.getSBMLDocument() != null) {
-        //    map.put("SBMLDocument", amodule.getSBMLDocument().getSBMLDocumentAttributes());
-        //}
-
-        JSONArray featureIds = new JSONArray();
-        for (Feature f : amodule.getModuleFeatures()) {
-            featureIds.add(createFeature(f, clothoObject));
-        }
-        map.put("moduleFeatures", featureIds);
 
         JSONArray controlModuleIds = new JSONArray();
         for (Module cmodule : amodule.getControlModules()) {
@@ -1404,23 +1387,6 @@ public class ClothoAdaptor {
         module.setForward((boolean) map.get("isForward"));
         module.setRoot((boolean) map.get("isRoot"));
 
-        JSONArray featureIds = new JSONArray();
-        featureIds = (JSONArray) map.get("moduleFeatures");
-        JSONArray featureJSONArray = new JSONArray();
-        for (Object obj : featureIds) {
-            String featureId = (String) obj;
-
-            featureJSONArray.add(clothoObject.get(featureId));
-        }
-        List<Feature> featureSet = new ArrayList<Feature>();
-        featureSet = convertJSONArrayToFeatures(featureJSONArray,clothoObject);
-
-        List<Feature> features = new ArrayList<Feature>();
-        for (Feature f : featureSet) {
-            features.add(f);
-        }
-
-        module.setModuleFeatures(features);
         JSONArray children = new JSONArray();
         children = (JSONArray) map.get("children");
         for (Object childObj : children) {

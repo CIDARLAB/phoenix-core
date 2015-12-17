@@ -130,7 +130,6 @@ public class EugeneAdaptor {
             }
             
             phoenixModule.setRole(ModuleRole.HIGHER_FUNCTION);
-            phoenixModule.setModuleFeatures(moduleFeatures);
             phoenixModule.setSubmodules(primitiveModules); 
             phoenixModule.setRoot(true);
             phoenixModules.add(phoenixModule);             

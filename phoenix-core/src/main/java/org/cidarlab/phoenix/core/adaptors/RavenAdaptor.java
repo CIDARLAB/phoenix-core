@@ -51,16 +51,16 @@ public class RavenAdaptor {
         HashSet<List<Feature>> moduleFeatureHash = new HashSet<>();
         
         for (AssignedModule targetModule : modulesToTest) {
-            if (!moduleFeatureHash.contains(targetModule.getModuleFeatures())) {
+            if (!moduleFeatureHash.contains(targetModule.getAllModuleFeatures())) {
                 allModules.add(targetModule);
-                moduleFeatureHash.add(targetModule.getModuleFeatures());
+                moduleFeatureHash.add(targetModule.getAllModuleFeatures());
             }
 
             List<AssignedModule> controlModules = targetModule.getControlModules();
             for (AssignedModule controlModule : controlModules) {
-                if (!moduleFeatureHash.contains(controlModule.getModuleFeatures())) {
+                if (!moduleFeatureHash.contains(controlModule.getAllModuleFeatures())) {
                     allModules.add(controlModule);
-                    moduleFeatureHash.add(controlModule.getModuleFeatures());
+                    moduleFeatureHash.add(controlModule.getAllModuleFeatures());
                 }
             }
         }

@@ -1,298 +1,382 @@
 **********************************************
-Assembly Instructions for target part: inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG
+Assembly Instructions for target part: inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG
 **********************************************
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|2|[+], BM3R1|2|22(HelicalLinker)|[+], CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|5|[+], BM3R1|5|22(HelicalLinker)|[+], CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
--> Assemble BM3R1|2|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: 
+-> Assemble BCD8|1|5|[+] by performing a moclo cloning reaction with: BCD8|1|5|[+], pSB1A2|1|5
+
+-> Assemble BM3R1|5|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: BM3R1|5|22(HelicalLinker)|[+], pSB1A2|5|22
+
 -> Assemble CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+] by performing a moclo cloning reaction with: CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+], pSB1A2|22|3
 
-PCR CDS_FLUORESCENT_FUSION? part with oligos: phoenix1 and phoenix2 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+]
-PCR lacZ part with oligos: phoenix3 and phoenix4 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|22|3
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
-PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|22
+PCR BM3R1 part with oligos: phoenix1 and phoenix2 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): BM3R1|5|22(HelicalLinker)|[+]
+PCR CDS_FLUORESCENT_FUSION? part with oligos: phoenix3 and phoenix4 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+]
+PCR BCD8 part with oligos: phoenix5 and phoenix6 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): BCD8|1|5|[+]
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR lacZ part with oligos: phoenix9 and phoenix10 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|5
+PCR lacZ part with oligos: phoenix11 and phoenix12 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|22|3
+PCR lacZ part with oligos: phoenix13 and phoenix14 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|22
 
 **********************************************
-Assembly Instructions for target part: inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3
+Assembly Instructions for target part: inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3
 **********************************************
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|2|[+], BM3R1|2|22(HelicalLinker)|[+], EBFP2|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|5|[+], BM3R1|5|22(HelicalLinker)|[+], EBFP2|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
--> Assemble BM3R1|2|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: 
-PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|22
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+-> Assemble BCD8|1|5|[+] by performing a moclo cloning reaction with: BCD8|1|5|[+], pSB1A2|1|5
+
+-> Assemble BM3R1|5|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: BM3R1|5|22(HelicalLinker)|[+], pSB1A2|5|22
+
+PCR BM3R1 part with oligos: phoenix1 and phoenix2 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): BM3R1|5|22(HelicalLinker)|[+]
+PCR BCD8 part with oligos: phoenix5 and phoenix6 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): BCD8|1|5|[+]
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR lacZ part with oligos: phoenix9 and phoenix10 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|5
+PCR lacZ part with oligos: phoenix13 and phoenix14 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|22
 
 **********************************************
-Assembly Instructions for target part: inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_2_TAG
+Assembly Instructions for target part: inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_2_TAG
 **********************************************
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_2_TAG|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|2|[+], betI|2|22(HelicalLinker)|[+], CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_2_TAG|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|5|[+], betI|5|22(HelicalLinker)|[+], CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
--> Assemble betI|2|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: 
+-> Assemble BCD8|1|5|[+] by performing a moclo cloning reaction with: BCD8|1|5|[+], pSB1A2|1|5
+
+-> Assemble betI|5|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: betI|5|22(HelicalLinker)|[+], pSB1A2|5|22
+
 -> Assemble CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+] by performing a moclo cloning reaction with: CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+], pSB1A2|22|3
 
-PCR CDS_FLUORESCENT_FUSION? part with oligos: phoenix1 and phoenix2 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+]
-PCR lacZ part with oligos: phoenix3 and phoenix4 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|22|3
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
-PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|22
+PCR CDS_FLUORESCENT_FUSION? part with oligos: phoenix3 and phoenix4 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+]
+PCR BCD8 part with oligos: phoenix5 and phoenix6 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): BCD8|1|5|[+]
+PCR betI part with oligos: phoenix15 and phoenix16 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): betI|5|22(HelicalLinker)|[+]
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR lacZ part with oligos: phoenix9 and phoenix10 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|5
+PCR lacZ part with oligos: phoenix11 and phoenix12 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|22|3
+PCR lacZ part with oligos: phoenix13 and phoenix14 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|22
 
 **********************************************
-Assembly Instructions for target part: inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_2
+Assembly Instructions for target part: inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_2
 **********************************************
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_2|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|2|[+], betI|2|22(HelicalLinker)|[+], EBFP2|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_2|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|5|[+], betI|5|22(HelicalLinker)|[+], EBFP2|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
--> Assemble betI|2|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: 
-PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|22
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+-> Assemble BCD8|1|5|[+] by performing a moclo cloning reaction with: BCD8|1|5|[+], pSB1A2|1|5
+
+-> Assemble betI|5|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: betI|5|22(HelicalLinker)|[+], pSB1A2|5|22
+
+PCR BCD8 part with oligos: phoenix5 and phoenix6 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): BCD8|1|5|[+]
+PCR betI part with oligos: phoenix15 and phoenix16 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): betI|5|22(HelicalLinker)|[+]
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR lacZ part with oligos: phoenix9 and phoenix10 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|5
+PCR lacZ part with oligos: phoenix13 and phoenix14 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|22
 
 **********************************************
-Assembly Instructions for target part: inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_5_TAG
+Assembly Instructions for target part: inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_4_TAG
 **********************************************
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_5_TAG|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|2|[+], lacIm|2|22(HelicalLinker)|[+], CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_4_TAG|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|5|[+], lacIm|5|22(HelicalLinker)|[+], CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
--> Assemble lacIm|2|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: 
+-> Assemble BCD8|1|5|[+] by performing a moclo cloning reaction with: BCD8|1|5|[+], pSB1A2|1|5
+
+-> Assemble lacIm|5|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: lacIm|5|22(HelicalLinker)|[+], pSB1A2|5|22
+
 -> Assemble CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+] by performing a moclo cloning reaction with: CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+], pSB1A2|22|3
 
-PCR CDS_FLUORESCENT_FUSION? part with oligos: phoenix1 and phoenix2 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+]
-PCR lacZ part with oligos: phoenix3 and phoenix4 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|22|3
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
-PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|22
+PCR lacIm part with oligos: phoenix17 and phoenix18 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): lacIm|5|22(HelicalLinker)|[+]
+PCR CDS_FLUORESCENT_FUSION? part with oligos: phoenix3 and phoenix4 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+]
+PCR BCD8 part with oligos: phoenix5 and phoenix6 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): BCD8|1|5|[+]
+PCR lacZ part with oligos: phoenix9 and phoenix10 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|5
+PCR lacZ part with oligos: phoenix11 and phoenix12 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|22|3
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR lacZ part with oligos: phoenix13 and phoenix14 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|22
 
 **********************************************
-Assembly Instructions for target part: inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_5
+Assembly Instructions for target part: inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_4
 **********************************************
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_5|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|2|[+], lacIm|2|22(HelicalLinker)|[+], EBFP2|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_4|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|5|[+], lacIm|5|22(HelicalLinker)|[+], EBFP2|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
--> Assemble lacIm|2|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: 
-PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|22
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+-> Assemble BCD8|1|5|[+] by performing a moclo cloning reaction with: BCD8|1|5|[+], pSB1A2|1|5
+
+-> Assemble lacIm|5|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: lacIm|5|22(HelicalLinker)|[+], pSB1A2|5|22
+
+PCR lacIm part with oligos: phoenix17 and phoenix18 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): lacIm|5|22(HelicalLinker)|[+]
+PCR BCD8 part with oligos: phoenix5 and phoenix6 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): BCD8|1|5|[+]
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR lacZ part with oligos: phoenix9 and phoenix10 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|5
+PCR lacZ part with oligos: phoenix13 and phoenix14 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|22
 
 **********************************************
-Assembly Instructions for target part: inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_1_TAG
+Assembly Instructions for target part: inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_1_TAG
 **********************************************
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_1_TAG|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|2|[+], lmrA|2|22(HelicalLinker)|[+], CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_1_TAG|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|5|[+], lmrA|5|22(HelicalLinker)|[+], CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
--> Assemble lmrA|2|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: 
+-> Assemble BCD8|1|5|[+] by performing a moclo cloning reaction with: BCD8|1|5|[+], pSB1A2|1|5
+
+-> Assemble lmrA|5|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: lmrA|5|22(HelicalLinker)|[+], pSB1A2|5|22
+
 -> Assemble CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+] by performing a moclo cloning reaction with: CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+], pSB1A2|22|3
 
-PCR CDS_FLUORESCENT_FUSION? part with oligos: phoenix1 and phoenix2 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+]
-PCR lacZ part with oligos: phoenix3 and phoenix4 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|22|3
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
-PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|22
+PCR CDS_FLUORESCENT_FUSION? part with oligos: phoenix3 and phoenix4 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+]
+PCR lmrA part with oligos: phoenix19 and phoenix20 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): lmrA|5|22(HelicalLinker)|[+]
+PCR BCD8 part with oligos: phoenix5 and phoenix6 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): BCD8|1|5|[+]
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR lacZ part with oligos: phoenix9 and phoenix10 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|5
+PCR lacZ part with oligos: phoenix11 and phoenix12 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|22|3
+PCR lacZ part with oligos: phoenix13 and phoenix14 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|22
 
 **********************************************
-Assembly Instructions for target part: inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_1
+Assembly Instructions for target part: inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_1
 **********************************************
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_1|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|2|[+], lmrA|2|22(HelicalLinker)|[+], EBFP2|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_1|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|5|[+], lmrA|5|22(HelicalLinker)|[+], EBFP2|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
--> Assemble lmrA|2|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: 
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
-PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|22
+-> Assemble BCD8|1|5|[+] by performing a moclo cloning reaction with: BCD8|1|5|[+], pSB1A2|1|5
+
+-> Assemble lmrA|5|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: lmrA|5|22(HelicalLinker)|[+], pSB1A2|5|22
+
+PCR lmrA part with oligos: phoenix19 and phoenix20 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): lmrA|5|22(HelicalLinker)|[+]
+PCR BCD8 part with oligos: phoenix5 and phoenix6 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): BCD8|1|5|[+]
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR lacZ part with oligos: phoenix9 and phoenix10 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|5
+PCR lacZ part with oligos: phoenix13 and phoenix14 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|22
 
 **********************************************
-Assembly Instructions for target part: inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_4_TAG
+Assembly Instructions for target part: inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_6_TAG
 **********************************************
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_4_TAG|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|2|[+], phlF|2|22(HelicalLinker)|[+], CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_6_TAG|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|5|[+], phlF|5|22(HelicalLinker)|[+], CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
--> Assemble phlF|2|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: 
+-> Assemble BCD8|1|5|[+] by performing a moclo cloning reaction with: BCD8|1|5|[+], pSB1A2|1|5
+
+-> Assemble phlF|5|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: phlF|5|22(HelicalLinker)|[+], pSB1A2|5|22
+
 -> Assemble CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+] by performing a moclo cloning reaction with: CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+], pSB1A2|22|3
 
-PCR CDS_FLUORESCENT_FUSION? part with oligos: phoenix1 and phoenix2 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+]
-PCR lacZ part with oligos: phoenix3 and phoenix4 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|22|3
-PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|22
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR phlF part with oligos: phoenix21 and phoenix22 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): phlF|5|22(HelicalLinker)|[+]
+PCR CDS_FLUORESCENT_FUSION? part with oligos: phoenix3 and phoenix4 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+]
+PCR BCD8 part with oligos: phoenix5 and phoenix6 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): BCD8|1|5|[+]
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR lacZ part with oligos: phoenix9 and phoenix10 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|5
+PCR lacZ part with oligos: phoenix11 and phoenix12 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|22|3
+PCR lacZ part with oligos: phoenix13 and phoenix14 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|22
 
 **********************************************
-Assembly Instructions for target part: inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_4
+Assembly Instructions for target part: inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_6
 **********************************************
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_4|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|2|[+], phlF|2|22(HelicalLinker)|[+], EBFP2|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_6|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|5|[+], phlF|5|22(HelicalLinker)|[+], EBFP2|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
--> Assemble phlF|2|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: 
-PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|22
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+-> Assemble BCD8|1|5|[+] by performing a moclo cloning reaction with: BCD8|1|5|[+], pSB1A2|1|5
+
+-> Assemble phlF|5|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: phlF|5|22(HelicalLinker)|[+], pSB1A2|5|22
+
+PCR phlF part with oligos: phoenix21 and phoenix22 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): phlF|5|22(HelicalLinker)|[+]
+PCR BCD8 part with oligos: phoenix5 and phoenix6 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): BCD8|1|5|[+]
+PCR lacZ part with oligos: phoenix9 and phoenix10 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|5
+PCR lacZ part with oligos: phoenix13 and phoenix14 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|22
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
 
 **********************************************
-Assembly Instructions for target part: inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0_TAG
+Assembly Instructions for target part: inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0_TAG
 **********************************************
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0_TAG|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|2|[+], srpR|2|22(HelicalLinker)|[+], CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0_TAG|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|5|[+], srpR|5|22(HelicalLinker)|[+], CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
--> Assemble srpR|2|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: 
+-> Assemble BCD8|1|5|[+] by performing a moclo cloning reaction with: BCD8|1|5|[+], pSB1A2|1|5
+
+-> Assemble srpR|5|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: srpR|5|22(HelicalLinker)|[+], pSB1A2|5|22
+
 -> Assemble CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+] by performing a moclo cloning reaction with: CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+], pSB1A2|22|3
 
-PCR CDS_FLUORESCENT_FUSION? part with oligos: phoenix1 and phoenix2 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+]
-PCR lacZ part with oligos: phoenix3 and phoenix4 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|22|3
-PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|22
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR CDS_FLUORESCENT_FUSION? part with oligos: phoenix3 and phoenix4 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+]
+PCR BCD8 part with oligos: phoenix5 and phoenix6 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): BCD8|1|5|[+]
+PCR srpR part with oligos: phoenix23 and phoenix24 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): srpR|5|22(HelicalLinker)|[+]
+PCR lacZ part with oligos: phoenix13 and phoenix14 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|22
+PCR lacZ part with oligos: phoenix9 and phoenix10 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|5
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR lacZ part with oligos: phoenix11 and phoenix12 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|22|3
 
 **********************************************
-Assembly Instructions for target part: inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0
+Assembly Instructions for target part: inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0
 **********************************************
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|2|[+], srpR|2|22(HelicalLinker)|[+], EBFP2|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_0|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|5|[+], srpR|5|22(HelicalLinker)|[+], EBFP2|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
--> Assemble srpR|2|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: 
-PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|22
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+-> Assemble BCD8|1|5|[+] by performing a moclo cloning reaction with: BCD8|1|5|[+], pSB1A2|1|5
+
+-> Assemble srpR|5|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: srpR|5|22(HelicalLinker)|[+], pSB1A2|5|22
+
+PCR BCD8 part with oligos: phoenix5 and phoenix6 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): BCD8|1|5|[+]
+PCR srpR part with oligos: phoenix23 and phoenix24 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): srpR|5|22(HelicalLinker)|[+]
+PCR lacZ part with oligos: phoenix13 and phoenix14 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|22
+PCR lacZ part with oligos: phoenix9 and phoenix10 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|5
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
 
 **********************************************
-Assembly Instructions for target part: inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_6_TAG
+Assembly Instructions for target part: inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_5_TAG
 **********************************************
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_6_TAG|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|2|[+], tetR|2|22(HelicalLinker)|[+], CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_5_TAG|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|5|[+], tetR|5|22(HelicalLinker)|[+], CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
--> Assemble tetR|2|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: 
+-> Assemble BCD8|1|5|[+] by performing a moclo cloning reaction with: BCD8|1|5|[+], pSB1A2|1|5
+
+-> Assemble tetR|5|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: tetR|5|22(HelicalLinker)|[+], pSB1A2|5|22
+
 -> Assemble CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+] by performing a moclo cloning reaction with: CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+], pSB1A2|22|3
 
-PCR CDS_FLUORESCENT_FUSION? part with oligos: phoenix1 and phoenix2 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+]
-PCR lacZ part with oligos: phoenix3 and phoenix4 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|22|3
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
-PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|22
+PCR tetR part with oligos: phoenix25 and phoenix26 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): tetR|5|22(HelicalLinker)|[+]
+PCR CDS_FLUORESCENT_FUSION? part with oligos: phoenix3 and phoenix4 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): CDS_FLUORESCENT_FUSION?|22(HelicalLinker)|3|[+]
+PCR BCD8 part with oligos: phoenix5 and phoenix6 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): BCD8|1|5|[+]
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR lacZ part with oligos: phoenix9 and phoenix10 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|5
+PCR lacZ part with oligos: phoenix13 and phoenix14 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|22
+PCR lacZ part with oligos: phoenix11 and phoenix12 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|22|3
 
 **********************************************
-Assembly Instructions for target part: inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_6
+Assembly Instructions for target part: inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_5
 **********************************************
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_6|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|2|[+], tetR|2|22(HelicalLinker)|[+], EBFP2|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_5|0|4|[+, +, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], BCD8|1|5|[+], tetR|5|22(HelicalLinker)|[+], EBFP2|22(HelicalLinker)|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
--> Assemble tetR|2|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: 
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
-PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|2|22
+-> Assemble BCD8|1|5|[+] by performing a moclo cloning reaction with: BCD8|1|5|[+], pSB1A2|1|5
+
+-> Assemble tetR|5|22(HelicalLinker)|[+] by performing a moclo cloning reaction with: tetR|5|22(HelicalLinker)|[+], pSB1A2|5|22
+
+PCR tetR part with oligos: phoenix25 and phoenix26 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): tetR|5|22(HelicalLinker)|[+]
+PCR BCD8 part with oligos: phoenix5 and phoenix6 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): BCD8|1|5|[+]
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR lacZ part with oligos: phoenix9 and phoenix10 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|5
+PCR lacZ part with oligos: phoenix13 and phoenix14 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|5|22
 
 **********************************************
-Assembly Instructions for target part: inverter_3_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_6_6
+Assembly Instructions for target part: inverter_1_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_1_5
 **********************************************
 
--> Assemble inverter_3_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_6_6|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pA1LacO|0|1|[+], RBS?|1|2|[+], EGFPm|2|3|[+], TERMINATOR?|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_1_5|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pA1LacO|0|1|[+], RBS?|1|2|[+], EGFPm|2|3|[+], TERMINATOR?|3|4|[+], pSB1K3|0|4
 
 -> Assemble RBS?|1|2|[+] by performing a moclo cloning reaction with: RBS?|1|2|[+], pSB1A2|1|2
 
 -> Assemble TERMINATOR?|3|4|[+] by performing a moclo cloning reaction with: TERMINATOR?|3|4|[+], pSB1A2|3|4
 
-PCR RBS? part with oligos: phoenix9 and phoenix10 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
-PCR TERMINATOR? part with oligos: phoenix11 and phoenix12 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|3|4|[+]
-PCR lacZ part with oligos: phoenix13 and phoenix14 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|4
-PCR lacZ part with oligos: phoenix15 and phoenix16 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR TERMINATOR? part with oligos: phoenix27 and phoenix28 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|3|4|[+]
+PCR RBS? part with oligos: phoenix29 and phoenix30 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
+PCR lacZ part with oligos: phoenix31 and phoenix32 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
+PCR lacZ part with oligos: phoenix33 and phoenix34 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|4
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
 
 **********************************************
-Assembly Instructions for target part: inverter_3_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_0_5
+Assembly Instructions for target part: inverter_1_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_5
 **********************************************
 
--> Assemble inverter_3_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_0_5|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pBM3R1|0|1|[+], RBS?|1|2|[+], EGFPm|2|3|[+], TERMINATOR?|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_5|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pBM3R1|0|1|[+], RBS?|1|2|[+], EGFPm|2|3|[+], TERMINATOR?|3|4|[+], pSB1K3|0|4
 
 -> Assemble RBS?|1|2|[+] by performing a moclo cloning reaction with: RBS?|1|2|[+], pSB1A2|1|2
 
 -> Assemble TERMINATOR?|3|4|[+] by performing a moclo cloning reaction with: TERMINATOR?|3|4|[+], pSB1A2|3|4
 
-PCR RBS? part with oligos: phoenix9 and phoenix10 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
-PCR TERMINATOR? part with oligos: phoenix11 and phoenix12 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|3|4|[+]
-PCR lacZ part with oligos: phoenix13 and phoenix14 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|4
-PCR lacZ part with oligos: phoenix15 and phoenix16 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR TERMINATOR? part with oligos: phoenix27 and phoenix28 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|3|4|[+]
+PCR RBS? part with oligos: phoenix29 and phoenix30 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
+PCR lacZ part with oligos: phoenix31 and phoenix32 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR lacZ part with oligos: phoenix33 and phoenix34 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|4
 
 **********************************************
-Assembly Instructions for target part: inverter_3_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_2_4
+Assembly Instructions for target part: inverter_1_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_5_7
 **********************************************
 
--> Assemble inverter_3_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_2_4|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pBetI|0|1|[+], RBS?|1|2|[+], EGFPm|2|3|[+], TERMINATOR?|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_5_7|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pBetI|0|1|[+], RBS?|1|2|[+], EGFPm|2|3|[+], TERMINATOR?|3|4|[+], pSB1K3|0|4
 
 -> Assemble RBS?|1|2|[+] by performing a moclo cloning reaction with: RBS?|1|2|[+], pSB1A2|1|2
 
 -> Assemble TERMINATOR?|3|4|[+] by performing a moclo cloning reaction with: TERMINATOR?|3|4|[+], pSB1A2|3|4
 
-PCR RBS? part with oligos: phoenix9 and phoenix10 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
-PCR TERMINATOR? part with oligos: phoenix11 and phoenix12 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|3|4|[+]
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
-PCR lacZ part with oligos: phoenix13 and phoenix14 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|4
-PCR lacZ part with oligos: phoenix15 and phoenix16 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
+PCR TERMINATOR? part with oligos: phoenix27 and phoenix28 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|3|4|[+]
+PCR RBS? part with oligos: phoenix29 and phoenix30 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
+PCR lacZ part with oligos: phoenix31 and phoenix32 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR lacZ part with oligos: phoenix33 and phoenix34 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|4
 
 **********************************************
-Assembly Instructions for target part: inverter_3_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_5_10
+Assembly Instructions for target part: inverter_1_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_0_11
 **********************************************
 
--> Assemble inverter_3_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_5_10|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pLmrA|0|1|[+], RBS?|1|2|[+], EGFPm|2|3|[+], TERMINATOR?|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_0_11|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pLmrA|0|1|[+], RBS?|1|2|[+], EGFPm|2|3|[+], TERMINATOR?|3|4|[+], pSB1K3|0|4
 
 -> Assemble RBS?|1|2|[+] by performing a moclo cloning reaction with: RBS?|1|2|[+], pSB1A2|1|2
 
 -> Assemble TERMINATOR?|3|4|[+] by performing a moclo cloning reaction with: TERMINATOR?|3|4|[+], pSB1A2|3|4
 
-PCR RBS? part with oligos: phoenix9 and phoenix10 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
-PCR TERMINATOR? part with oligos: phoenix11 and phoenix12 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|3|4|[+]
-PCR lacZ part with oligos: phoenix13 and phoenix14 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|4
-PCR lacZ part with oligos: phoenix15 and phoenix16 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR TERMINATOR? part with oligos: phoenix27 and phoenix28 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|3|4|[+]
+PCR RBS? part with oligos: phoenix29 and phoenix30 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
+PCR lacZ part with oligos: phoenix31 and phoenix32 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR lacZ part with oligos: phoenix33 and phoenix34 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|4
 
 **********************************************
-Assembly Instructions for target part: inverter_3_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_4_9
+Assembly Instructions for target part: inverter_1_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_6_1
 **********************************************
 
--> Assemble inverter_3_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_4_9|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pLtetO-1|0|1|[+], RBS?|1|2|[+], EGFPm|2|3|[+], TERMINATOR?|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_6_1|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pLtetO-1|0|1|[+], RBS?|1|2|[+], EGFPm|2|3|[+], TERMINATOR?|3|4|[+], pSB1K3|0|4
 
 -> Assemble RBS?|1|2|[+] by performing a moclo cloning reaction with: RBS?|1|2|[+], pSB1A2|1|2
 
 -> Assemble TERMINATOR?|3|4|[+] by performing a moclo cloning reaction with: TERMINATOR?|3|4|[+], pSB1A2|3|4
 
-PCR RBS? part with oligos: phoenix9 and phoenix10 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
-PCR TERMINATOR? part with oligos: phoenix11 and phoenix12 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|3|4|[+]
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
-PCR lacZ part with oligos: phoenix13 and phoenix14 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|4
-PCR lacZ part with oligos: phoenix15 and phoenix16 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
+PCR TERMINATOR? part with oligos: phoenix27 and phoenix28 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|3|4|[+]
+PCR RBS? part with oligos: phoenix29 and phoenix30 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
+PCR lacZ part with oligos: phoenix31 and phoenix32 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR lacZ part with oligos: phoenix33 and phoenix34 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|4
 
 **********************************************
-Assembly Instructions for target part: inverter_3_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_1_3
+Assembly Instructions for target part: inverter_1_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_4_2
 **********************************************
 
--> Assemble inverter_3_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_1_3|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pPhlF|0|1|[+], RBS?|1|2|[+], EGFPm|2|3|[+], TERMINATOR?|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_4_2|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pPhlF|0|1|[+], RBS?|1|2|[+], EGFPm|2|3|[+], TERMINATOR?|3|4|[+], pSB1K3|0|4
 
 -> Assemble RBS?|1|2|[+] by performing a moclo cloning reaction with: RBS?|1|2|[+], pSB1A2|1|2
 
 -> Assemble TERMINATOR?|3|4|[+] by performing a moclo cloning reaction with: TERMINATOR?|3|4|[+], pSB1A2|3|4
 
-PCR RBS? part with oligos: phoenix9 and phoenix10 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
-PCR TERMINATOR? part with oligos: phoenix11 and phoenix12 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|3|4|[+]
-PCR lacZ part with oligos: phoenix13 and phoenix14 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|4
-PCR lacZ part with oligos: phoenix15 and phoenix16 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR TERMINATOR? part with oligos: phoenix27 and phoenix28 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|3|4|[+]
+PCR RBS? part with oligos: phoenix29 and phoenix30 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
+PCR lacZ part with oligos: phoenix31 and phoenix32 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR lacZ part with oligos: phoenix33 and phoenix34 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|4
 
 **********************************************
-Assembly Instructions for target part: inverter_3_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_3
+Assembly Instructions for target part: inverter_1_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_2_5
 **********************************************
 
--> Assemble inverter_3_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_3_3|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pSrpR|0|1|[+], RBS?|1|2|[+], EGFPm|2|3|[+], TERMINATOR?|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_F_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_2_5|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pSrpR|0|1|[+], RBS?|1|2|[+], EGFPm|2|3|[+], TERMINATOR?|3|4|[+], pSB1K3|0|4
 
 -> Assemble RBS?|1|2|[+] by performing a moclo cloning reaction with: RBS?|1|2|[+], pSB1A2|1|2
 
 -> Assemble TERMINATOR?|3|4|[+] by performing a moclo cloning reaction with: TERMINATOR?|3|4|[+], pSB1A2|3|4
 
-PCR RBS? part with oligos: phoenix9 and phoenix10 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
-PCR TERMINATOR? part with oligos: phoenix11 and phoenix12 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|3|4|[+]
-PCR lacZ part with oligos: phoenix13 and phoenix14 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|4
-PCR lacZ part with oligos: phoenix15 and phoenix16 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR TERMINATOR? part with oligos: phoenix27 and phoenix28 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|3|4|[+]
+PCR RBS? part with oligos: phoenix29 and phoenix30 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
+PCR lacZ part with oligos: phoenix31 and phoenix32 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR lacZ part with oligos: phoenix33 and phoenix34 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|4
 
 **********************************************
-Assembly Instructions for target part: inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_0_3
+Assembly Instructions for target part: inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_0_9
 **********************************************
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_0_3|0|4|[+, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], RBS?|1|2|[+], EGFPm|2|3|[+], TERMINATOR?|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSOR_0_9|0|4|[+, +, +, +] by performing a moclo cloning reaction with: para-1|0|1|[+], RBS?|1|2|[+], EGFPm|2|3|[+], TERMINATOR?|3|4|[+], pSB1K3|0|4
 
 -> Assemble RBS?|1|2|[+] by performing a moclo cloning reaction with: RBS?|1|2|[+], pSB1A2|1|2
 
 -> Assemble TERMINATOR?|3|4|[+] by performing a moclo cloning reaction with: TERMINATOR?|3|4|[+], pSB1A2|3|4
 
-PCR RBS? part with oligos: phoenix9 and phoenix10 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
-PCR TERMINATOR? part with oligos: phoenix11 and phoenix12 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|3|4|[+]
-PCR lacZ part with oligos: phoenix13 and phoenix14 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|4
-PCR lacZ part with oligos: phoenix15 and phoenix16 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR TERMINATOR? part with oligos: phoenix27 and phoenix28 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): TERMINATOR?|3|4|[+]
+PCR RBS? part with oligos: phoenix29 and phoenix30 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): RBS?|1|2|[+]
+PCR lacZ part with oligos: phoenix31 and phoenix32 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|1|2
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR lacZ part with oligos: phoenix33 and phoenix34 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|3|4
 
 **********************************************
 Assembly Instructions for target part: EBFP2_COLOR_CONTROL
@@ -302,9 +386,9 @@ Assembly Instructions for target part: EBFP2_COLOR_CONTROL
 
 -> Assemble J23104|4|1|[+] by performing a moclo cloning reaction with: J23104|4|1|[+], pSB1A2|4|1
 
-PCR J23104 part with oligos: phoenix17 and phoenix18 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|4|1|[+]
-PCR lacZ part with oligos: phoenix19 and phoenix20 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|4|5
-PCR lacZ part with oligos: phoenix21 and phoenix22 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|1
+PCR J23104 part with oligos: phoenix35 and phoenix36 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|4|1|[+]
+PCR lacZ part with oligos: phoenix37 and phoenix38 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|4|5
+PCR lacZ part with oligos: phoenix39 and phoenix40 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|1
 
 **********************************************
 Assembly Instructions for target part: EXPRESSION_DEGRADATION_CONTROL
@@ -314,184 +398,220 @@ Assembly Instructions for target part: EXPRESSION_DEGRADATION_CONTROL
 
 -> Assemble J23104|4|1|[+] by performing a moclo cloning reaction with: J23104|4|1|[+], pSB1A2|4|1
 
-PCR J23104 part with oligos: phoenix17 and phoenix18 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|4|1|[+]
-PCR lacZ part with oligos: phoenix19 and phoenix20 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|4|5
-PCR lacZ part with oligos: phoenix21 and phoenix22 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|1
+PCR J23104 part with oligos: phoenix35 and phoenix36 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|4|1|[+]
+PCR lacZ part with oligos: phoenix37 and phoenix38 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|4|5
+PCR lacZ part with oligos: phoenix39 and phoenix40 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|1
 
 **********************************************
 Assembly Instructions for target part: pA1LacO_REGULATION_CONTROL
 **********************************************
 
--> Assemble pA1LacO_REGULATION_CONTROL|0|5|[+, +, +, +, +, +, +, +] by performing a moclo cloning reaction with: inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_1_raven_WedDec1612:08:40EST2015|0|4|[+, +, +, +], inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_2_raven_WedDec1612:08:40EST2015|4|5|[+, +, +, +], pSB1A2|0|5
+-> Assemble pA1LacO_REGULATION_CONTROL|0|5|[+, +, +, +, +, +, +, +] by performing a moclo cloning reaction with: inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_1_raven_ThuDec1716:36:48EST2015|0|4|[+, +, +, +], inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_8_raven_ThuDec1716:36:48EST2015|4|5|[+, +, +, +], pSB1A2|0|5
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_1_raven_WedDec1612:08:40EST2015|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pA1LacO|0|1|[+], BCD8|1|2|[+], EGFPm|2|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_1_raven_ThuDec1716:36:48EST2015|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pA1LacO|0|1|[+], BCD8|1|2|[+], EGFPm|2|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_2_raven_WedDec1612:08:40EST2015|4|5|[+, +, +, +] by performing a moclo cloning reaction with: J23104|4|1|[+], BCD8|1|2|[+], araC|2|3|[+], B0015|3|5|[+], pSB1K3|4|5
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_8_raven_ThuDec1716:36:48EST2015|4|5|[+, +, +, +] by performing a moclo cloning reaction with: J23104|4|1|[+], BCD8|1|2|[+], araC|2|3|[+], B0015|3|5|[+], pSB1K3|4|5
 
 -> Assemble J23104|4|1|[+] by performing a moclo cloning reaction with: J23104|4|1|[+], pSB1A2|4|1
 
-PCR J23104 part with oligos: phoenix17 and phoenix18 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|4|1|[+]
-PCR lacZ part with oligos: phoenix19 and phoenix20 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|4|5
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
-PCR lacZ part with oligos: phoenix21 and phoenix22 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|1
-PCR lacZ part with oligos: phoenix23 and phoenix24 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|0|5
+PCR J23104 part with oligos: phoenix35 and phoenix36 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|4|1|[+]
+PCR lacZ part with oligos: phoenix41 and phoenix42 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|0|5
+PCR lacZ part with oligos: phoenix39 and phoenix40 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|1
+PCR lacZ part with oligos: phoenix37 and phoenix38 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|4|5
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
 
 **********************************************
 Assembly Instructions for target part: pBM3R1_REGULATION_CONTROL
 **********************************************
 
--> Assemble pBM3R1_REGULATION_CONTROL|0|5|[+, +, +, +, +, +, +, +] by performing a moclo cloning reaction with: inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_3_raven_WedDec1612:08:40EST2015|0|4|[+, +, +, +], inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_2_raven_WedDec1612:08:40EST2015|4|5|[+, +, +, +], pSB1A2|0|5
+-> Assemble pBM3R1_REGULATION_CONTROL|0|5|[+, +, +, +, +, +, +, +] by performing a moclo cloning reaction with: inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_2_raven_ThuDec1716:36:48EST2015|0|4|[+, +, +, +], inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_8_raven_ThuDec1716:36:48EST2015|4|5|[+, +, +, +], pSB1A2|0|5
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_3_raven_WedDec1612:08:40EST2015|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pBM3R1|0|1|[+], BCD8|1|2|[+], EGFPm|2|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_2_raven_ThuDec1716:36:48EST2015|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pBM3R1|0|1|[+], BCD8|1|2|[+], EGFPm|2|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_2_raven_WedDec1612:08:40EST2015|4|5|[+, +, +, +] by performing a moclo cloning reaction with: J23104|4|1|[+], BCD8|1|2|[+], araC|2|3|[+], B0015|3|5|[+], pSB1K3|4|5
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_8_raven_ThuDec1716:36:48EST2015|4|5|[+, +, +, +] by performing a moclo cloning reaction with: J23104|4|1|[+], BCD8|1|2|[+], araC|2|3|[+], B0015|3|5|[+], pSB1K3|4|5
 
 -> Assemble J23104|4|1|[+] by performing a moclo cloning reaction with: J23104|4|1|[+], pSB1A2|4|1
 
-PCR J23104 part with oligos: phoenix17 and phoenix18 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|4|1|[+]
-PCR lacZ part with oligos: phoenix19 and phoenix20 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|4|5
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
-PCR lacZ part with oligos: phoenix21 and phoenix22 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|1
-PCR lacZ part with oligos: phoenix23 and phoenix24 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|0|5
+PCR J23104 part with oligos: phoenix35 and phoenix36 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|4|1|[+]
+PCR lacZ part with oligos: phoenix41 and phoenix42 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|0|5
+PCR lacZ part with oligos: phoenix39 and phoenix40 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|1
+PCR lacZ part with oligos: phoenix37 and phoenix38 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|4|5
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
 
 **********************************************
 Assembly Instructions for target part: pBetI_REGULATION_CONTROL
 **********************************************
 
--> Assemble pBetI_REGULATION_CONTROL|0|5|[+, +, +, +, +, +, +, +] by performing a moclo cloning reaction with: inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_4_raven_WedDec1612:08:40EST2015|0|4|[+, +, +, +], inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_2_raven_WedDec1612:08:40EST2015|4|5|[+, +, +, +], pSB1A2|0|5
+-> Assemble pBetI_REGULATION_CONTROL|0|5|[+, +, +, +, +, +, +, +] by performing a moclo cloning reaction with: inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_3_raven_ThuDec1716:36:48EST2015|0|4|[+, +, +, +], inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_8_raven_ThuDec1716:36:48EST2015|4|5|[+, +, +, +], pSB1A2|0|5
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_4_raven_WedDec1612:08:40EST2015|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pBetI|0|1|[+], BCD8|1|2|[+], EGFPm|2|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_3_raven_ThuDec1716:36:48EST2015|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pBetI|0|1|[+], BCD8|1|2|[+], EGFPm|2|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_2_raven_WedDec1612:08:40EST2015|4|5|[+, +, +, +] by performing a moclo cloning reaction with: J23104|4|1|[+], BCD8|1|2|[+], araC|2|3|[+], B0015|3|5|[+], pSB1K3|4|5
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_8_raven_ThuDec1716:36:48EST2015|4|5|[+, +, +, +] by performing a moclo cloning reaction with: J23104|4|1|[+], BCD8|1|2|[+], araC|2|3|[+], B0015|3|5|[+], pSB1K3|4|5
 
 -> Assemble J23104|4|1|[+] by performing a moclo cloning reaction with: J23104|4|1|[+], pSB1A2|4|1
 
-PCR J23104 part with oligos: phoenix17 and phoenix18 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|4|1|[+]
-PCR lacZ part with oligos: phoenix19 and phoenix20 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|4|5
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
-PCR lacZ part with oligos: phoenix23 and phoenix24 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|0|5
-PCR lacZ part with oligos: phoenix21 and phoenix22 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|1
+PCR J23104 part with oligos: phoenix35 and phoenix36 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|4|1|[+]
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR lacZ part with oligos: phoenix39 and phoenix40 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|1
+PCR lacZ part with oligos: phoenix37 and phoenix38 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|4|5
+PCR lacZ part with oligos: phoenix41 and phoenix42 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|0|5
 
 **********************************************
 Assembly Instructions for target part: pLmrA_REGULATION_CONTROL
 **********************************************
 
--> Assemble pLmrA_REGULATION_CONTROL|0|5|[+, +, +, +, +, +, +, +] by performing a moclo cloning reaction with: inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_5_raven_WedDec1612:08:40EST2015|0|4|[+, +, +, +], inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_2_raven_WedDec1612:08:40EST2015|4|5|[+, +, +, +], pSB1A2|0|5
+-> Assemble pLmrA_REGULATION_CONTROL|0|5|[+, +, +, +, +, +, +, +] by performing a moclo cloning reaction with: inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_4_raven_ThuDec1716:36:48EST2015|0|4|[+, +, +, +], inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_8_raven_ThuDec1716:36:48EST2015|4|5|[+, +, +, +], pSB1A2|0|5
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_5_raven_WedDec1612:08:40EST2015|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pLmrA|0|1|[+], BCD8|1|2|[+], EGFPm|2|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_4_raven_ThuDec1716:36:48EST2015|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pLmrA|0|1|[+], BCD8|1|2|[+], EGFPm|2|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_2_raven_WedDec1612:08:40EST2015|4|5|[+, +, +, +] by performing a moclo cloning reaction with: J23104|4|1|[+], BCD8|1|2|[+], araC|2|3|[+], B0015|3|5|[+], pSB1K3|4|5
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_8_raven_ThuDec1716:36:48EST2015|4|5|[+, +, +, +] by performing a moclo cloning reaction with: J23104|4|1|[+], BCD8|1|2|[+], araC|2|3|[+], B0015|3|5|[+], pSB1K3|4|5
 
 -> Assemble J23104|4|1|[+] by performing a moclo cloning reaction with: J23104|4|1|[+], pSB1A2|4|1
 
-PCR J23104 part with oligos: phoenix17 and phoenix18 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|4|1|[+]
-PCR lacZ part with oligos: phoenix19 and phoenix20 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|4|5
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
-PCR lacZ part with oligos: phoenix21 and phoenix22 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|1
-PCR lacZ part with oligos: phoenix23 and phoenix24 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|0|5
+PCR J23104 part with oligos: phoenix35 and phoenix36 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|4|1|[+]
+PCR lacZ part with oligos: phoenix39 and phoenix40 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|1
+PCR lacZ part with oligos: phoenix37 and phoenix38 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|4|5
+PCR lacZ part with oligos: phoenix41 and phoenix42 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|0|5
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
 
 **********************************************
 Assembly Instructions for target part: pLtetO-1_REGULATION_CONTROL
 **********************************************
 
--> Assemble pLtetO-1_REGULATION_CONTROL|0|5|[+, +, +, +, +, +, +, +] by performing a moclo cloning reaction with: inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_6_raven_WedDec1612:08:40EST2015|0|4|[+, +, +, +], inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_2_raven_WedDec1612:08:40EST2015|4|5|[+, +, +, +], pSB1A2|0|5
+-> Assemble pLtetO-1_REGULATION_CONTROL|0|5|[+, +, +, +, +, +, +, +] by performing a moclo cloning reaction with: inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_5_raven_ThuDec1716:36:48EST2015|0|4|[+, +, +, +], inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_8_raven_ThuDec1716:36:48EST2015|4|5|[+, +, +, +], pSB1A2|0|5
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_6_raven_WedDec1612:08:40EST2015|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pLtetO-1|0|1|[+], BCD8|1|2|[+], EGFPm|2|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_5_raven_ThuDec1716:36:48EST2015|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pLtetO-1|0|1|[+], BCD8|1|2|[+], EGFPm|2|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_2_raven_WedDec1612:08:40EST2015|4|5|[+, +, +, +] by performing a moclo cloning reaction with: J23104|4|1|[+], BCD8|1|2|[+], araC|2|3|[+], B0015|3|5|[+], pSB1K3|4|5
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_8_raven_ThuDec1716:36:48EST2015|4|5|[+, +, +, +] by performing a moclo cloning reaction with: J23104|4|1|[+], BCD8|1|2|[+], araC|2|3|[+], B0015|3|5|[+], pSB1K3|4|5
 
 -> Assemble J23104|4|1|[+] by performing a moclo cloning reaction with: J23104|4|1|[+], pSB1A2|4|1
 
-PCR J23104 part with oligos: phoenix17 and phoenix18 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|4|1|[+]
-PCR lacZ part with oligos: phoenix19 and phoenix20 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|4|5
-PCR lacZ part with oligos: phoenix23 and phoenix24 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|0|5
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
-PCR lacZ part with oligos: phoenix21 and phoenix22 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|1
+PCR J23104 part with oligos: phoenix35 and phoenix36 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|4|1|[+]
+PCR lacZ part with oligos: phoenix41 and phoenix42 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|0|5
+PCR lacZ part with oligos: phoenix39 and phoenix40 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|1
+PCR lacZ part with oligos: phoenix37 and phoenix38 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|4|5
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
 
 **********************************************
 Assembly Instructions for target part: pPhlF_REGULATION_CONTROL
 **********************************************
 
--> Assemble pPhlF_REGULATION_CONTROL|0|5|[+, +, +, +, +, +, +, +] by performing a moclo cloning reaction with: inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_7_raven_WedDec1612:08:40EST2015|0|4|[+, +, +, +], inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_2_raven_WedDec1612:08:40EST2015|4|5|[+, +, +, +], pSB1A2|0|5
+-> Assemble pPhlF_REGULATION_CONTROL|0|5|[+, +, +, +, +, +, +, +] by performing a moclo cloning reaction with: inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_6_raven_ThuDec1716:36:48EST2015|0|4|[+, +, +, +], inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_8_raven_ThuDec1716:36:48EST2015|4|5|[+, +, +, +], pSB1A2|0|5
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_7_raven_WedDec1612:08:40EST2015|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pPhlF|0|1|[+], BCD8|1|2|[+], EGFPm|2|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_6_raven_ThuDec1716:36:48EST2015|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pPhlF|0|1|[+], BCD8|1|2|[+], EGFPm|2|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_2_raven_WedDec1612:08:40EST2015|4|5|[+, +, +, +] by performing a moclo cloning reaction with: J23104|4|1|[+], BCD8|1|2|[+], araC|2|3|[+], B0015|3|5|[+], pSB1K3|4|5
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_8_raven_ThuDec1716:36:48EST2015|4|5|[+, +, +, +] by performing a moclo cloning reaction with: J23104|4|1|[+], BCD8|1|2|[+], araC|2|3|[+], B0015|3|5|[+], pSB1K3|4|5
 
 -> Assemble J23104|4|1|[+] by performing a moclo cloning reaction with: J23104|4|1|[+], pSB1A2|4|1
 
-PCR J23104 part with oligos: phoenix17 and phoenix18 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|4|1|[+]
-PCR lacZ part with oligos: phoenix19 and phoenix20 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|4|5
-PCR lacZ part with oligos: phoenix23 and phoenix24 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|0|5
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
-PCR lacZ part with oligos: phoenix21 and phoenix22 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|1
+PCR J23104 part with oligos: phoenix35 and phoenix36 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|4|1|[+]
+PCR lacZ part with oligos: phoenix39 and phoenix40 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|1
+PCR lacZ part with oligos: phoenix37 and phoenix38 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|4|5
+PCR lacZ part with oligos: phoenix41 and phoenix42 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|0|5
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
 
 **********************************************
 Assembly Instructions for target part: pSrpR_REGULATION_CONTROL
 **********************************************
 
--> Assemble pSrpR_REGULATION_CONTROL|0|5|[+, +, +, +, +, +, +, +] by performing a moclo cloning reaction with: inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_8_raven_WedDec1612:08:40EST2015|0|4|[+, +, +, +], inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_2_raven_WedDec1612:08:40EST2015|4|5|[+, +, +, +], pSB1A2|0|5
+-> Assemble pSrpR_REGULATION_CONTROL|0|5|[+, +, +, +, +, +, +, +] by performing a moclo cloning reaction with: inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_7_raven_ThuDec1716:36:48EST2015|0|4|[+, +, +, +], inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_8_raven_ThuDec1716:36:48EST2015|4|5|[+, +, +, +], pSB1A2|0|5
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_8_raven_WedDec1612:08:40EST2015|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pSrpR|0|1|[+], BCD8|1|2|[+], EGFPm|2|3|[+], B0015|3|4|[+], pSB1K3|0|4
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_7_raven_ThuDec1716:36:48EST2015|0|4|[+, +, +, +] by performing a moclo cloning reaction with: pSrpR|0|1|[+], BCD8|1|2|[+], EGFPm|2|3|[+], B0015|3|4|[+], pSB1K3|0|4
 
--> Assemble inverter_3_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_2_raven_WedDec1612:08:40EST2015|4|5|[+, +, +, +] by performing a moclo cloning reaction with: J23104|4|1|[+], BCD8|1|2|[+], araC|2|3|[+], B0015|3|5|[+], pSB1K3|4|5
+-> Assemble inverter_1_R_TRANSCRIPTIONAL_UNIT_0_EXPRESSEE_3_TAG_intermediate_8_raven_ThuDec1716:36:48EST2015|4|5|[+, +, +, +] by performing a moclo cloning reaction with: J23104|4|1|[+], BCD8|1|2|[+], araC|2|3|[+], B0015|3|5|[+], pSB1K3|4|5
 
 -> Assemble J23104|4|1|[+] by performing a moclo cloning reaction with: J23104|4|1|[+], pSB1A2|4|1
 
-PCR J23104 part with oligos: phoenix17 and phoenix18 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|4|1|[+]
-PCR lacZ part with oligos: phoenix19 and phoenix20 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|4|5
-PCR lacZ part with oligos: phoenix5 and phoenix6 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
-PCR lacZ part with oligos: phoenix23 and phoenix24 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|0|5
-PCR lacZ part with oligos: phoenix21 and phoenix22 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|1
+PCR J23104 part with oligos: phoenix35 and phoenix36 to get part (NAME | LEFT OVERHANG | RIGHT OVERHANG | ORIENTATION): J23104|4|1|[+]
+PCR lacZ part with oligos: phoenix7 and phoenix8 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|0|4
+PCR lacZ part with oligos: phoenix39 and phoenix40 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|4|1
+PCR lacZ part with oligos: phoenix37 and phoenix38 and clone into vector: pSB1K3 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1K3|4|5
+PCR lacZ part with oligos: phoenix41 and phoenix42 and clone into vector: pSB1A2 with SpeI to get destination vector (NAME | LEFT OVERHANG | RIGHT OVERHANG): pSB1A2|0|5
 
 
 **********************************************
 OLIGOS
 >phoenix1
-atgaagacgtAAGAAGCTGCTGCTAAAGCT[ PART CDS_FLUORESCENT_FUSION? FORWARD HOMOLOGY REGION ]
+atgaagacgtCGCTATGGAAAGCACCCCGACCAAACAG
 >phoenix2
-acgaagacctACCT[ PART CDS_FLUORESCENT_FUSION? REVERSE HOMOLOGY REGION ]
+acgaagacctTCTTTAGCAGCAGCTTCAGCGCTCTGACGGCTCAGTGCTGCCCA
 >phoenix3
-gttctttactagtgggtctcaAAGAatgtcttctgcaccatatgcggtgtgaaatac
+atgaagacgtAAGAAGCTGCTGCTAAAGCT[ PART CDS_FLUORESCENT_FUSION? FORWARD HOMOLOGY REGION ]
 >phoenix4
-gcggccgctactagtaggtctctACCTacgtcttccccgcgcgttggccgattcattaa
+acgaagacctACCT[ PART CDS_FLUORESCENT_FUSION? REVERSE HOMOLOGY REGION ]
 >phoenix5
-gttctttactagtggaagacatGGAGagagacctgcaccatatgcggtgtgaaatac
+atgaagacgtTACTGGGCCCAAGTTCACTTAAAAAGGA
 >phoenix6
-gcggccgctactagtagaagacatAAGCagagacccccgcgcgttggccgattcattaa
+acgaagacctAGCGAGAAACGGTCCGATGCATGATTAA
 >phoenix7
-gttctttactagtgggtctcaAATGatgtcttctgcaccatatgcggtgtgaaatac
+gttctttactagtggaagacatGGAGagagacctgcaccatatgcggtgtgaaatac
 >phoenix8
-gcggccgctactagtaggtctctTCTTacgtcttccccgcgcgttggccgattcattaa
+gcggccgctactagtagaagacatAAGCagagacccccgcgcgttggccgattcattaa
 >phoenix9
-atgaagacgtTACT[ PART RBS? FORWARD HOMOLOGY REGION ]
->phoenix10
-acgaagacctCATT[ PART RBS? REVERSE HOMOLOGY REGION ]
->phoenix11
-atgaagacgtAGGT[ PART TERMINATOR? FORWARD HOMOLOGY REGION ]
->phoenix12
-acgaagacctAAGC[ PART TERMINATOR? REVERSE HOMOLOGY REGION ]
->phoenix13
-gttctttactagtgggtctcaAGGTatgtcttctgcaccatatgcggtgtgaaatac
->phoenix14
-gcggccgctactagtaggtctctAAGCacgtcttccccgcgcgttggccgattcattaa
->phoenix15
 gttctttactagtgggtctcaTACTatgtcttctgcaccatatgcggtgtgaaatac
+>phoenix10
+gcggccgctactagtaggtctctAGCGacgtcttccccgcgcgttggccgattcattaa
+>phoenix11
+gttctttactagtgggtctcaAAGAatgtcttctgcaccatatgcggtgtgaaatac
+>phoenix12
+gcggccgctactagtaggtctctACCTacgtcttccccgcgcgttggccgattcattaa
+>phoenix13
+gttctttactagtgggtctcaCGCTatgtcttctgcaccatatgcggtgtgaaatac
+>phoenix14
+gcggccgctactagtaggtctctTCTTacgtcttccccgcgcgttggccgattcattaa
+>phoenix15
+atgaagacgtCGCTGTGCCGAAACTGGGTATGCAGAGC
 >phoenix16
-gcggccgctactagtaggtctctCATTacgtcttccccgcgcgttggccgattcattaa
+acgaagacctTCTTTAGCAGCAGCTTCAGCATCGGTCGGCAGATGCTGGGTGAT
 >phoenix17
-atgaagacgtGCTTTTGACAGCTAGCTCAGTCCTAGGT
+atgaagacgtCGCTATGGTGAATGTGAAACCAGTAACG
 >phoenix18
-acgaagacctAGTAGCTAGCACAATACCTAGGACTGAG
+acgaagacctTCTTTAGCAGCAGCTTCAGCCTGCCCGCTTTCCAGTCGGGAAAC
 >phoenix19
-gttctttactagtggaagacatGCTTagagacctgcaccatatgcggtgtgaaatac
+atgaagacgtCGCTATGAGCTATGGTGATAGCCGTGAA
 >phoenix20
-gcggccgctactagtagaagacatAGCGagagacccccgcgcgttggccgattcattaa
+acgaagacctTCTTTAGCAGCAGCTTCAGCACGTTTCAGCAGATCCGGAATACA
 >phoenix21
-gttctttactagtgggtctcaGCTTatgtcttctgcaccatatgcggtgtgaaatac
+atgaagacgtCGCTATGGCACGTACCCCGAGCCGTAGC
 >phoenix22
-gcggccgctactagtaggtctctAGTAacgtcttccccgcgcgttggccgattcattaa
+acgaagacctTCTTTAGCAGCAGCTTCAGCACGCTGTGTACCCGGACAAACACC
 >phoenix23
-gttctttactagtgggtctcaGGAGatgtcttctgcaccatatgcggtgtgaaatac
+atgaagacgtCGCTATGGCACGTAAAACCGCAGCAGAA
 >phoenix24
+acgaagacctTCTTTAGCAGCAGCTTCAGCTTCGAAGGATTTCACCTGTTTAAT
+>phoenix25
+atgaagacgtCGCTATGTCCAGATTAGATAAAAGTAAA
+>phoenix26
+acgaagacctTCTTTAGCAGCAGCTTCAGCGGACCCACTTTCACATTTAAGTTG
+>phoenix27
+atgaagacgtAGGT[ PART TERMINATOR? FORWARD HOMOLOGY REGION ]
+>phoenix28
+acgaagacctAAGC[ PART TERMINATOR? REVERSE HOMOLOGY REGION ]
+>phoenix29
+atgaagacgtTACT[ PART RBS? FORWARD HOMOLOGY REGION ]
+>phoenix30
+acgaagacctCATT[ PART RBS? REVERSE HOMOLOGY REGION ]
+>phoenix31
+gttctttactagtgggtctcaTACTatgtcttctgcaccatatgcggtgtgaaatac
+>phoenix32
+gcggccgctactagtaggtctctCATTacgtcttccccgcgcgttggccgattcattaa
+>phoenix33
+gttctttactagtgggtctcaAGGTatgtcttctgcaccatatgcggtgtgaaatac
+>phoenix34
+gcggccgctactagtaggtctctAAGCacgtcttccccgcgcgttggccgattcattaa
+>phoenix35
+atgaagacgtGCTTTTGACAGCTAGCTCAGTCCTAGGT
+>phoenix36
+acgaagacctAGTAGCTAGCACAATACCTAGGACTGAG
+>phoenix37
+gttctttactagtggaagacatGCTTagagacctgcaccatatgcggtgtgaaatac
+>phoenix38
+gcggccgctactagtagaagacatAGCGagagacccccgcgcgttggccgattcattaa
+>phoenix39
+gttctttactagtgggtctcaGCTTatgtcttctgcaccatatgcggtgtgaaatac
+>phoenix40
+gcggccgctactagtaggtctctAGTAacgtcttccccgcgcgttggccgattcattaa
+>phoenix41
+gttctttactagtgggtctcaGGAGatgtcttctgcaccatatgcggtgtgaaatac
+>phoenix42
 gcggccgctactagtaggtctctAGCGacgtcttccccgcgcgttggccgattcattaa

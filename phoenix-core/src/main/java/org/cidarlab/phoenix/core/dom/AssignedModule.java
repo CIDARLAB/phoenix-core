@@ -28,11 +28,6 @@ public class AssignedModule extends Module {
         
         //this.controlModules = new ArrayList<>();
         
-        List<Feature> fList = new ArrayList<>();
-        for (Feature f : m.getModuleFeatures()) {
-            fList.add(f.clone());
-        }
-        this.setModuleFeatures(fList);
         List<PrimitiveModule> pmList = new ArrayList<>();
         for (PrimitiveModule pm : m.getSubmodules()) {
             pmList.add(pm.clone());
@@ -51,10 +46,7 @@ public class AssignedModule extends Module {
         AssignedModule clone = new AssignedModule(new Module(name));
         
         List<Feature> fList = new ArrayList<>();
-        for (Feature f : this.getModuleFeatures()) {
-            fList.add(f.clone());
-        }
-        clone.setModuleFeatures(fList);
+        
         List<PrimitiveModule> pmList = new ArrayList<>();
         for (PrimitiveModule pm : this.getSubmodules()) {
             pmList.add(pm.clone());

@@ -137,7 +137,6 @@ public class FeatureAssignment {
         }
         //If it was replaced, update the module Features
         if(updated){
-            module.updateModuleFeatures();
             //Now make changes in the AssignedModules associated. 
             for(AssignedModule amodule:module.getAssignedModules()){
                 replaceAssignedModuleExpresseeFP(amodule,oldFP,newFP); //Replaces FP in AssignedModules, Color controls and Regulation Controls.
@@ -152,33 +151,23 @@ public class FeatureAssignment {
     
     private static void replaceAssignedModuleExpressorFP(AssignedModule amodule, Fluorophore oldFP, Fluorophore newFP){
         
-        boolean amoduleUpdated = false;
         for(PrimitiveModule pm:amodule.getSubmodules()){
             if(pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT)){
                 if(pm.getModuleFeature().getName().equals(oldFP.getName())){
                     pm.setModuleFeature(newFP);
-                    amoduleUpdated = true;
                 }
             }
         }
-        if(amoduleUpdated){
-            amodule.updateModuleFeatures();
-        }
         for(AssignedModule control:amodule.getControlModules()){
             //Due to symbolic links, this may not be triggered over and over again.
-            boolean controlUpdated = false;
             if (control.getRole().equals(ModuleRole.COLOR_CONTROL)) {
                 for (PrimitiveModule pm : control.getSubmodules()) {
                     if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT)) {
                         if (pm.getModuleFeature().getName().equals(oldFP.getName())) {
                             pm.setModuleFeature(newFP);
-                            controlUpdated = true;
                         }
                     }
                 }
-            }
-            if(controlUpdated){
-                control.updateModuleFeatures();
             }
         }
     }
@@ -188,17 +177,12 @@ public class FeatureAssignment {
             for(AssignedModule amodule:module.getAssignedModules()){
                 for(AssignedModule control:amodule.getControlModules()){
                     if(control.getRole().equals(ModuleRole.REGULATION_CONTROL)){
-                        boolean updated = false;
                         for (PrimitiveModule pm : control.getSubmodules()) {
                             if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT)) {
                                 if (pm.getModuleFeature().getName().equals(oldFP.getName())) {
                                     pm.setModuleFeature(newFP);
-                                    updated = true;
                                 }
                             }
-                        }
-                        if(updated){
-                            control.updateModuleFeatures();
                         }
                     }
                 }
@@ -220,7 +204,6 @@ public class FeatureAssignment {
         }
         //If it was replaced, update the module Features
         if(updated){
-            module.updateModuleFeatures();
             //Now make changes in the AssignedModules associated. 
             for(AssignedModule amodule:module.getAssignedModules()){
                 replaceAssignedModuleExpresseeFP(amodule,oldFP,newFP); //Replaces FP in AssignedModules, Color controls and Regulation Controls.
@@ -235,33 +218,23 @@ public class FeatureAssignment {
     
     private static void replaceAssignedModuleExpresseeFP(AssignedModule amodule, Fluorophore oldFP, Fluorophore newFP){
         
-        boolean amoduleUpdated = false;
         for(PrimitiveModule pm:amodule.getSubmodules()){
             if(pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)){
                 if(pm.getModuleFeature().getName().equals(oldFP.getName())){
                     pm.setModuleFeature(newFP);
-                    amoduleUpdated = true;
                 }
             }
         }
-        if(amoduleUpdated){
-            amodule.updateModuleFeatures();
-        }
         for(AssignedModule control:amodule.getControlModules()){
             //Due to symbolic links, this may not be triggered over and over again.
-            boolean controlUpdated = false;
             if (control.getRole().equals(ModuleRole.COLOR_CONTROL) || control.getRole().equals(ModuleRole.REGULATION_CONTROL)) {
                 for (PrimitiveModule pm : control.getSubmodules()) {
                     if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT)) {
                         if (pm.getModuleFeature().getName().equals(oldFP.getName())) {
                             pm.setModuleFeature(newFP);
-                            controlUpdated = true;
                         }
                     }
                 }
-            }
-            if(controlUpdated){
-                control.updateModuleFeatures();
             }
         }
     }
@@ -333,17 +306,14 @@ public class FeatureAssignment {
                     cdsFlCount++;
                 }
             }
-            child.updateModuleFeatures();
             addFPsHelper(child, FPs);
         }        
-        module.updateModuleFeatures();
     }
     
     //If the structural design has any Feature names that match exactly to the Feature library, assign these
     private static void featureMatchAssign(List<Module> modules, List<Feature> features) {
   
         for (Module m : modules) {
-            
             //Look for regulators that are abstract
             for(PrimitiveModule pm:m.getSubmodules()){
                 for (Feature libF : getAllFeaturesOfRole(features, pm.getModuleFeature().getRole())) {
@@ -352,7 +322,6 @@ public class FeatureAssignment {
                     }
                 }
             }
-            m.updateModuleFeatures();
         }
     }
     
@@ -384,7 +353,6 @@ public class FeatureAssignment {
                             Module clone = m.clone(m.getName() + "_" + count+"_TAG");
                             AssignedModule assignedClone = new AssignedModule(clone);
                             assignedClone.getSubmodules().get(i).setModuleFeature(fR);
-                            assignedClone.updateModuleFeatures();
                             
                             
                             Module clone_no_tag = m.clone(m.getName() + "_" + count);
@@ -398,13 +366,10 @@ public class FeatureAssignment {
                             am_pm.get(i).setModuleFeature(fR);
                             assignedClone_no_tag.setSubmodules(am_pm);
                             
-                            
                             m.getAssignedModules().add(assignedClone);
                             m.getAssignedModules().add(assignedClone_no_tag);
                             
-                            
                             count++;
-                            
                             
                         }
                     }
@@ -451,8 +416,6 @@ public class FeatureAssignment {
                                 if (m.getSubmodules().get(i).equals(m.getSubmodules().get(index))) {
                                     for (Module clone : clonesThisModule) {
                                         clone.getSubmodules().get(i).setModuleFeature(clone.getSubmodules().get(index).getModuleFeature());
-                                        //clone.getSubmodules().get(i).setModuleFeatures(clone.getSubmodules().get(index).getModuleFeatures());
-                                        clone.updateModuleFeatures();
                                         differentPromoter = false;
                                     }
                                     break;
@@ -602,7 +565,6 @@ public class FeatureAssignment {
                     mfClone.add(fR);
                     //assignedClone.getSubmodules().get(i).setModuleFeatures(mfClone);
                     assignedClone.getSubmodules().get(i).setModuleFeature(fR);
-                    assignedClone.updateModuleFeatures();
                     clonesThisModule.add(assignedClone);                    
                 }
                 //Get rid of features that were saved when the module was saved that are only placeholders
@@ -614,7 +576,6 @@ public class FeatureAssignment {
                     mfClone.add(fR);
                     //assignedClone.getSubmodules().get(i).setModuleFeatures(mfClone);
                     assignedClone.getSubmodules().get(i).setModuleFeature(fR);
-                    assignedClone.updateModuleFeatures();
                     clonesThisModule.add(assignedClone);  
                 }
             } 

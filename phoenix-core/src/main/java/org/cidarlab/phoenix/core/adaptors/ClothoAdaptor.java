@@ -436,6 +436,8 @@ public class ClothoAdaptor {
             map.put("name", pmodule.getName());
         }
         map.put("moduleFeature", createFeatureMap(pmodule.getModuleFeature()));
+        //map.put("moduleFeature", pmodule.getModuleFeature().getName());
+        
         map.put("primitiveRole", pmodule.getPrimitiveRole().toString());
         map.put("primitive", createPrimitiveMap(pmodule.getPrimitive()));
         //Decide about Primitive Object. Store only Sequence? Orientation can be gleaned from isForward??
@@ -455,7 +457,7 @@ public class ClothoAdaptor {
         Map map = new HashMap();
         map.put("schema", Feature.class.getCanonicalName());
         map.put("name", f.getName());
-        System.out.println("Feature Name::" + f.getName());
+        //System.out.println("Feature Name::" + f.getName());
         map.put("forwardColor", f.getForwardColor().getRGB());
         map.put("reverseColor", f.getReverseColor().getRGB());
         

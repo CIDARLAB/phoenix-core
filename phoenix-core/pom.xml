@@ -68,6 +68,14 @@
         </dependency>
         -->    
         <!-- JUnit -->
+        
+        <dependency>
+            <groupId>org</groupId>
+            <artifactId>copasi</artifactId>
+            <version>4.6</version>
+        </dependency>
+      
+        
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

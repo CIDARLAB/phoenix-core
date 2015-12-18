@@ -57,7 +57,7 @@ import org.sbml.jsbml.SBMLReader;
  * @author ckmadsen
  * @author prash
  */
-public class COPASIAdaptor {
+public class CopasiWSAdaptor {
 
 	public static void estimateParams(String modelFile, String dataFile, String methodName) throws ServiceFaultMessage,
 			IOException, XMLStreamException {

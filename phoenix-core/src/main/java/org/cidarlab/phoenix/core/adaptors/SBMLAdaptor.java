@@ -79,8 +79,8 @@ public class SBMLAdaptor {
             for(SBMLDocument doc:amodule.getSBMLDocument()){
                 
                 try {
-                    writer.write(doc, filepath + "/" + amodule.getShortName()+"_"+count);
-                    
+                    writer.write(doc, filepath + "/" + amodule.getShortName()+"_"+count+".xml");
+                    count++;
                 } catch (XMLStreamException ex) {
                     Logger.getLogger(SBMLAdaptor.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (FileNotFoundException ex) {

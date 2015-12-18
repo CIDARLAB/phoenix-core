@@ -99,7 +99,6 @@ public class TestingStructures {
                 testSubmodules.add(testTerminator);
                 testSubmodules.add(testVector1);
                 m.setSubmodules(testSubmodules);
-                m.updateModuleFeatures();
             }
         }
     }
@@ -119,7 +118,6 @@ public class TestingStructures {
 
         testSubmodules.add(testVector1);
         m.setSubmodules(testSubmodules);
-        m.updateModuleFeatures();
     }
 
     //Add testing peices to a TRANSCRIPTIONAL_UNIT
@@ -138,7 +136,6 @@ public class TestingStructures {
 
         testSubmodules.add(finalVector);
         m.setSubmodules(testSubmodules);
-        m.updateModuleFeatures();
     }
 
     //Add testing peices to a HIGHER_FUNCTION
@@ -160,7 +157,6 @@ public class TestingStructures {
 
         testSubmodules.add(finalVector);
         m.setSubmodules(testSubmodules);
-        m.updateModuleFeatures();
     }
 
     //Add testing Features in WILDCARD 
@@ -191,8 +187,6 @@ public class TestingStructures {
                 }
             }
         }
-
-        m.updateModuleFeatures();
     }
 
     private static class ControlsMap {
@@ -340,6 +334,7 @@ public class TestingStructures {
      }
      }
      */
+    
     private static ControlsMap getAllControls(Module module) {
         ControlsMap map = new ControlsMap();
         if (module.getRole().equals(ModuleRole.TRANSCRIPTIONAL_UNIT) || module.getRole().equals(ModuleRole.EXPRESSOR)) {
@@ -423,7 +418,6 @@ public class TestingStructures {
         testSubmodules.add(testTerminator);
         testSubmodules.add(testVector1);
         expDegControlModule.setSubmodules(testSubmodules);
-        expDegControlModule.updateModuleFeatures();
         expDegControlModule.setRole(ModuleRole.EXPRESSION_DEGRATATION_CONTROL);
         AssignedModule expDegContAModule = new AssignedModule(expDegControlModule);
         return expDegContAModule;
@@ -439,7 +433,6 @@ public class TestingStructures {
         testSubmodules.add(testTerminator);
         testSubmodules.add(testVector1);
         colorControlModule.setSubmodules(testSubmodules);
-        colorControlModule.updateModuleFeatures();
         colorControlModule.setRole(ModuleRole.COLOR_CONTROL);
         return new AssignedModule(colorControlModule);
     }
@@ -486,7 +479,6 @@ public class TestingStructures {
         testSubmodules.add(testTerminator);
         testSubmodules.add(testVector2);
         regControlModule.setSubmodules(testSubmodules);
-        regControlModule.updateModuleFeatures();
         regControlModule.setRole(ModuleRole.REGULATION_CONTROL);
         AssignedModule regControl = new AssignedModule(regControlModule);
         return regControl;

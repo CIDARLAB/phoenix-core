@@ -68,6 +68,14 @@
         </dependency>
         -->    
         <!-- JUnit -->
+        
+        <dependency>
+            <groupId>org</groupId>
+            <artifactId>copasi</artifactId>
+            <version>4.6</version>
+        </dependency>
+      
+        
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -429,6 +437,12 @@
     		<artifactId>copasiws</artifactId>
     		<version>1.0</version>
     	</dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20151123</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
     
     

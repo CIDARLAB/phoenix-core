@@ -347,7 +347,7 @@ public class ClothoAdaptor {
     }
     
     public static Map createArcMap(Arc a){
-        System.out.println("In Create Arc Map");
+        //System.out.println("In Create Arc Map");
         Map map = new HashMap();
         map.put("schema", Arc.class.getCanonicalName());
         map.put("regulator", a.getRegulator().getName());
@@ -431,12 +431,15 @@ public class ClothoAdaptor {
     
     public static Map createPrimitiveModuleMap(PrimitiveModule pmodule) {
         Map map = new HashMap();
-        map.put("name", pmodule.getName());
         map.put("schema", PrimitiveModule.class.getCanonicalName());
+        if(pmodule.getName() != null){
+            map.put("name", pmodule.getName());
+        }
         map.put("moduleFeature", createFeatureMap(pmodule.getModuleFeature()));
-        map.put("isForward", pmodule.isForward());
+        //map.put("moduleFeature", pmodule.getModuleFeature().getName());
+        
         map.put("primitiveRole", pmodule.getPrimitiveRole().toString());
-
+        map.put("primitive", createPrimitiveMap(pmodule.getPrimitive()));
         //Decide about Primitive Object. Store only Sequence? Orientation can be gleaned from isForward??
         return map;
     }
@@ -444,16 +447,17 @@ public class ClothoAdaptor {
     //This can be removed if we don't need a map function for this. 
     public static Map createPrimitiveMap(Primitive primitive) {
         Map map = new HashMap();
-
+        map.put("name", primitive.getName());
+        map.put("type", primitive.getType());
         return map;
     }
 
     public static Map createFeatureMap(Feature f) {
-        System.out.println("In Create Feature Map");
+        //System.out.println("In Create Feature Map");
         Map map = new HashMap();
         map.put("schema", Feature.class.getCanonicalName());
         map.put("name", f.getName());
-        System.out.println("Feature Name::" + f.getName());
+        //System.out.println("Feature Name::" + f.getName());
         map.put("forwardColor", f.getForwardColor().getRGB());
         map.put("reverseColor", f.getReverseColor().getRGB());
         
@@ -470,7 +474,7 @@ public class ClothoAdaptor {
         map.put("sequence", createSequence);
 
         map.put("role", f.getRole().toString());
-        System.out.println("Now Create Arcs ::");
+        //System.out.println("Now Create Arcs ::");
         List<Map> arcList = new ArrayList<>();
         for (Arc a : f.getArcs()) {
             arcList.add(createArcMap(a));
@@ -499,49 +503,11 @@ public class ClothoAdaptor {
         }
         map.put("times", experimentTimes);
 
-        //String negativeControlId = createSample(experiment.getNegativeControl(), clothoObject);
-        //map.put("negativeControl", negativeControlId);
-        //String beadControlId = createSample(experiment.getBeadControl(), clothoObject);
-        //map.put("beadControl", beadControlId);
-
-        /*
-         JSONArray colorControlIds = new JSONArray();
-         for (Sample sample : experiment.getColorControls()) {
-         String colorControlId = createSample(sample, clothoObject);
-         colorControlIds.add(colorControlId);
-         }
-         map.put("colorControls", colorControlIds);
-         */
-        /*JSONArray experimentSampleIds = new JSONArray();
-         for (Sample sample : experiment.getExperimentSamples()) {
-         String expSampleId = createSample(sample, clothoObject);
-         experimentSampleIds.add(expSampleId);
-         }
-         map.put("experimentSamples", experimentSampleIds);
-         */
-        /*JSONArray exptDegControlIds = new JSONArray();
-         for (Sample sample : experiment.getExpDegControls()) {
-         String exptDegCntrlId = createSample(sample, clothoObject);
-         exptDegControlIds.add(exptDegCntrlId);
-         }
-         map.put("experimentDegreeControls", exptDegControlIds);
-         */
-        /*
-         JSONArray regulationControlIds = new JSONArray();
-         for (Sample sample : experiment.getRegulationControls()) {
-         String regulationCntrlId = createSample(sample, clothoObject);
-         regulationControlIds.add(regulationCntrlId);
-         }
-         map.put("regulationControls", regulationControlIds);
-         */
         JSONArray mediaConditions = new JSONArray();
         for (Medium medium : experiment.getMediaConditions()) {
             mediaConditions.add(createMediumMap(medium));
         }
         map.put("mediaConditions", mediaConditions);
-        
-        
-        
         
         return map;
     }
@@ -623,14 +589,7 @@ public class ClothoAdaptor {
         }
         map.put("submodules", submodules);
 
-        //Create and add ModuleFeatures
-        JSONArray featureIds = new JSONArray();
-        for (Feature f : module.getModuleFeatures()) {
-            String fId = createFeature(f, clothoObject);
-            featureIds.add(fId);
-        }
-        map.put("moduleFeatures", featureIds);
-
+        
         map.put("function", createSTLFunction(module.getFunction(), clothoObject));
 
         id = (String) clothoObject.set(map);
@@ -663,16 +622,6 @@ public class ClothoAdaptor {
             exptIds.add(createExperiment(experiment, clothoObject));
         }
         map.put("experiments", exptIds);
-
-        //if (amodule.getSBMLDocument() != null) {
-        //    map.put("SBMLDocument", amodule.getSBMLDocument().getSBMLDocumentAttributes());
-        //}
-
-        JSONArray featureIds = new JSONArray();
-        for (Feature f : amodule.getModuleFeatures()) {
-            featureIds.add(createFeature(f, clothoObject));
-        }
-        map.put("moduleFeatures", featureIds);
 
         JSONArray controlModuleIds = new JSONArray();
         for (Module cmodule : amodule.getControlModules()) {
@@ -1395,32 +1344,36 @@ public class ClothoAdaptor {
 
         JSONObject exptObj = new JSONObject();
         exptObj = (JSONObject) clothoObject.get(experimentid);
-        Experiment experiment = new Experiment();
-        experiment.setClothoID((String) exptObj.get("id"));
-        experiment.setExType(Experiment.ExperimentType.valueOf((String) exptObj.get("exType")));
+        
         JSONArray timeArray = new JSONArray();
+        List<String> times = new ArrayList<String>();
         if (timeArray.size() > 0) {
             for (Object obj : timeArray) {
-                experiment.getTimes().add((String) obj);
+                times.add((String) obj);
             }
         }
             
+        List<Medium> media = new ArrayList<Medium>();
+        
         //Get Media Conditions
         for (Object mediaObj : (JSONArray) exptObj.get("mediaConditions")) {
             Map mediaMap = new HashMap();
             String mediaName = (String) mediaMap.get("name");
             MediaType mediaType = MediaType.valueOf((String) mediaMap.get("type"));
-            Medium media = new Medium(mediaName, mediaType);
+            Medium medium = new Medium(mediaName, mediaType);
             Map smoleculeMap = new HashMap();
             smoleculeMap = (Map) mediaMap.get("smallMolecule");
             SmallMolecule smolecule = new SmallMolecule();
             smolecule.setName((String) smoleculeMap.get("name"));
             smolecule.setRole(SmallMolecule.SmallMoleculeRole.valueOf((String) smoleculeMap.get("role")));
             smolecule.setConcentration(Double.valueOf((String) smoleculeMap.get("concentration")));
-            media.setSmallmolecule(smolecule);
-            experiment.getMediaConditions().add(media);
+            medium.setSmallmolecule(smolecule);
+            media.add(medium);
         }
-
+        
+        Experiment experiment = new Experiment(Experiment.ExperimentType.valueOf((String) exptObj.get("exType")), (String)exptObj.getString("name"),media,times );
+        experiment.setClothoID((String) exptObj.get("id"));
+        
         return experiment;
     }
     
@@ -1436,23 +1389,6 @@ public class ClothoAdaptor {
         module.setForward((boolean) map.get("isForward"));
         module.setRoot((boolean) map.get("isRoot"));
 
-        JSONArray featureIds = new JSONArray();
-        featureIds = (JSONArray) map.get("moduleFeatures");
-        JSONArray featureJSONArray = new JSONArray();
-        for (Object obj : featureIds) {
-            String featureId = (String) obj;
-
-            featureJSONArray.add(clothoObject.get(featureId));
-        }
-        List<Feature> featureSet = new ArrayList<Feature>();
-        featureSet = convertJSONArrayToFeatures(featureJSONArray,clothoObject);
-
-        List<Feature> features = new ArrayList<Feature>();
-        for (Feature f : featureSet) {
-            features.add(f);
-        }
-
-        module.setModuleFeatures(features);
         JSONArray children = new JSONArray();
         children = (JSONArray) map.get("children");
         for (Object childObj : children) {

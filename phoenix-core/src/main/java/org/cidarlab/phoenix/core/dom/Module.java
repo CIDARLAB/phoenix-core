@@ -30,7 +30,6 @@ public class Module extends AbstractModule {
         this.parents = new ArrayList<>();
         this.assignedModules = new ArrayList<>();
         this.submodules = new ArrayList<>();
-        this.moduleFeatures = new ArrayList<>();
         this.failureModes = new ArrayList<>();
         this.SBMLDocument = new ArrayList<>();
         this.isForward = true;
@@ -54,11 +53,6 @@ public class Module extends AbstractModule {
     public Module clone(String name) {
         Module clone = new Module(name);
 
-        List<Feature> fList = new ArrayList<>();
-        for (Feature f : this.moduleFeatures) {
-            fList.add(f.clone());
-        }
-        clone.moduleFeatures = fList;
         List<PrimitiveModule> pmList = new ArrayList<>();
         for (PrimitiveModule pm : this.submodules) {
             pmList.add(pm.clone());
@@ -99,11 +93,6 @@ public class Module extends AbstractModule {
     @Setter
     private List<FailureMode> failureModes;
     
-    //Module features
-    @Getter
-    @Setter
-    private List<Feature> moduleFeatures;
-
     //STL function associated with this module
     @Getter
     @Setter
@@ -227,20 +216,18 @@ public class Module extends AbstractModule {
             child.printTree();
         }
     }
-    
-    //Update moduleFeatures based on submodule features
-    public void updateModuleFeatures() {
-        List<Feature> updatedFeatures = new ArrayList<>();
-        for (PrimitiveModule pm : this.submodules) {
-            updatedFeatures.add(pm.getModuleFeature());
-            //updatedFeatures.addAll(pm.getModuleFeatures());
+        
+    public List<Feature> getAllModuleFeatures(){
+        List<Feature> features = new ArrayList<>();
+        for(PrimitiveModule pm:this.submodules){
+            features.add(pm.getModuleFeature());
         }
-        this.setModuleFeatures(updatedFeatures);
+        return features;
     }
     
     public String getFeatureShortString(){
         String featureString = "";
-        for(Feature feature:this.moduleFeatures){
+        for(Feature feature:this.getAllModuleFeatures()){
             featureString += Feature.getShortFeatureRole(feature.getRole()) + " ";
         }
         featureString = featureString.trim();

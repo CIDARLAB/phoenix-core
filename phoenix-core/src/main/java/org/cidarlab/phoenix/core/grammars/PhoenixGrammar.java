@@ -29,284 +29,6 @@ import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
  * @author evanappleton
  */
 public class PhoenixGrammar {
-
-    public static HashMap<Nonterminal, List<ProductionRule>> definePhoenixGrammar() {
-
-        /*---------------
-         * TERMINALS
-         *---------------*/
-        //These terminals will ultimately be filled by the parts library
-        List<Terminal> terminals = new ArrayList<>();
-        terminals.add(new Terminal("p1"));
-        terminals.add(new Terminal("p2"));
-        terminals.add(new Terminal("p3"));
-        terminals.add(new Terminal("r1"));
-        terminals.add(new Terminal("r2"));
-        terminals.add(new Terminal("r3"));
-        terminals.add(new Terminal("c1"));
-        terminals.add(new Terminal("c2"));
-        terminals.add(new Terminal("c3"));
-        terminals.add(new Terminal("t1"));
-        terminals.add(new Terminal("t2"));
-        terminals.add(new Terminal("t2"));
-        terminals.add(new Terminal("s1"));
-        terminals.add(new Terminal("s2"));
-        terminals.add(new Terminal("s3"));
-        terminals.add(new Terminal("v1"));
-        terminals.add(new Terminal("v2"));
-        terminals.add(new Terminal("v3"));
-
-        /*---------------
-         * NONTERMINALS
-         *---------------*/
-        //Non terminals are abstract place-holders
-        //Layer 1
-        Nonterminal PROMOTER = new Nonterminal("PROMOTER");
-        Nonterminal RBS = new Nonterminal("RBS");
-        Nonterminal CDS = new Nonterminal("CDS");
-        Nonterminal TERMINATOR = new Nonterminal("TERMINATOR");
-        Nonterminal VECTOR = new Nonterminal("VECTOR");
-        Nonterminal SPACER = new Nonterminal("SPACER");
-
-        //Layer
-        Nonterminal TRANSCRIPTION_RF = new Nonterminal("TRANSCRIPTION_RF");
-        Nonterminal TRANSCRIPTION_START = new Nonterminal("TRANSCRIPTION_START");
-        Nonterminal TRANSCRIPT = new Nonterminal("TRANSCRIPT");
-        Nonterminal TRANSLATION_RF = new Nonterminal("TRANSLATION_RF");
-        Nonterminal TRANSCRIPTION_END = new Nonterminal("TRANSCRIPTION_END");
-
-        //Layer -> PERHAPS IN BREAKDOWN...
-//        Nonterminal EXPRESSOR = new Nonterminal("EXPRESSOR");
-//        Nonterminal EXPRESSEE = new Nonterminal("EXPRESSEE");
-        
-        //Layer
-        Nonterminal TU = new Nonterminal("TU");
-        Nonterminal INSERT = new Nonterminal("INSERT");
-
-        /*---------------
-         * PRODUCTION RULES
-         *---------------*/
-        List<ProductionRule> pR = new ArrayList<>();
-
-        //PROMOTER -> All promoters in library
-        List<Symbol> promoters = new ArrayList<>();
-        for (Terminal t : terminals) {
-            if (t.getName().startsWith("p")) {
-                promoters.add(t);
-            }
-        }
-        pR.add(new ProductionRule(PROMOTER, promoters));
-
-        //RBS -> All RBSs in library
-        List<Symbol> rbss = new ArrayList<>();
-        for (Terminal t : terminals) {
-            if (t.getName().startsWith("r")) {
-                rbss.add(t);
-            }
-        }
-        pR.add(new ProductionRule(RBS, rbss));
-
-        //CDS -> All CDSs in library
-        List<Symbol> cdss = new ArrayList<>();
-        for (Terminal t : terminals) {
-            if (t.getName().startsWith("c")) {
-                cdss.add(t);
-            }
-        }
-        pR.add(new ProductionRule(CDS, cdss));
-
-        //TERMINATOR -> All terminators in library
-        List<Symbol> terminators = new ArrayList<>();
-        for (Terminal t : terminals) {
-            if (t.getName().startsWith("t")) {
-                terminators.add(t);
-            }
-        }
-        pR.add(new ProductionRule(TERMINATOR, terminators));
-
-        //VECTOR -> All vectors in library
-        List<Symbol> vectors = new ArrayList<>();
-        for (Terminal t : terminals) {
-            if (t.getName().startsWith("v")) {
-                vectors.add(t);
-            }
-        }
-        pR.add(new ProductionRule(VECTOR, vectors));
-
-        //SPACER -> All spacers in library
-        List<Symbol> spacers = new ArrayList<>();
-        for (Terminal t : terminals) {
-            if (t.getName().startsWith("s")) {
-                spacers.add(t);
-            }
-        }
-        pR.add(new ProductionRule(SPACER, spacers));
-
-        //TRANSLATION_RF -> RBS, CDS
-        List<Symbol> trans_rfs = new ArrayList<>();
-        trans_rfs.add(RBS);
-        trans_rfs.add(CDS);
-        pR.add(new ProductionRule(TRANSLATION_RF, trans_rfs));
-
-        //TRANSCRIPT may have 1+ TRANSLATION_RF and 0+ SPACER
-        //TRANSCRIPT -> TRANSLATION_RF, SPACER
-        List<Symbol> trxs = new ArrayList<>();
-        trxs.add(TRANSLATION_RF);
-        trxs.add(SPACER);
-        pR.add(new ProductionRule(TRANSCRIPT, trxs));
-
-        //2+ TRANSLATION_RF
-        List<Symbol> trxs_multitrans = new ArrayList<>();
-        trxs_multitrans.add(TRANSLATION_RF);
-        trxs_multitrans.add(TRANSCRIPT);
-        pR.add(new ProductionRule(TRANSCRIPT, trxs_multitrans));
-
-        //2+ SPACER
-        List<Symbol> trxs_nospacer = new ArrayList<>();
-        trxs_nospacer.add(TRANSCRIPT);
-        trxs_nospacer.add(SPACER);
-        pR.add(new ProductionRule(TRANSCRIPT, trxs_nospacer));
-
-        //0 SPACER
-        List<Symbol> trxs_multispacer = new ArrayList<>();
-        trxs_multispacer.add(TRANSLATION_RF);
-        pR.add(new ProductionRule(TRANSCRIPT, trxs_multispacer));
-
-        //TRANSCRIPTION_START may have 1+ PROMOTER or 0+ SPACER
-        //TRANSCRIPTION_START -> PROMOTER, SPACER
-        List<Symbol> trx_start = new ArrayList<>();
-        trx_start.add(PROMOTER);
-        trx_start.add(SPACER);
-        pR.add(new ProductionRule(TRANSCRIPTION_START, trx_start));
-
-        //2+ PROMOTER
-        List<Symbol> trx_start_multiprom = new ArrayList<>();
-        trx_start_multiprom.add(PROMOTER);
-        trx_start_multiprom.add(TRANSCRIPTION_START);
-        pR.add(new ProductionRule(TRANSCRIPTION_START, trx_start_multiprom));
-
-        //2+ SPACER
-        List<Symbol> trx_start_multispacer = new ArrayList<>();
-        trx_start_multispacer.add(TRANSCRIPTION_START);
-        trx_start_multispacer.add(SPACER);
-        pR.add(new ProductionRule(TRANSCRIPTION_START, trx_start_multispacer));
-
-        //0 SPACER
-        List<Symbol> trx_start_nospacer = new ArrayList<>();
-        trx_start_nospacer.add(PROMOTER);
-        pR.add(new ProductionRule(TRANSCRIPTION_START, trx_start_nospacer));
-
-        //TRANSCRIPTION_START may have 1+ TERMINATOR or 0+ SPACER
-        //TRANSCRIPTION_END -> TERMINATOR, SPACER
-        List<Symbol> trx_end = new ArrayList<>();
-        trx_end.add(TERMINATOR);
-        trx_end.add(SPACER);
-        pR.add(new ProductionRule(TRANSCRIPTION_END, trx_end));
-
-        //2+ TERMINATOR
-        List<Symbol> trx_end_multiterm = new ArrayList<>();
-        trx_end_multiterm.add(TERMINATOR);
-        trx_end_multiterm.add(TRANSCRIPTION_END);
-        pR.add(new ProductionRule(TRANSCRIPTION_END, trx_end_multiterm));
-
-        //2+ SPACER
-        List<Symbol> trx_end_multispacer = new ArrayList<>();
-        trx_end_multispacer.add(TRANSCRIPTION_END);
-        trx_end_multispacer.add(SPACER);
-        pR.add(new ProductionRule(TRANSCRIPTION_END, trx_end_multispacer));
-
-        //0 SPACER
-        List<Symbol> trx_end_nospacer = new ArrayList<>();
-        trx_end_nospacer.add(TERMINATOR);
-        pR.add(new ProductionRule(TRANSCRIPTION_END, trx_end_nospacer));
-
-        //TRANSCRIPTION_RF may have 1+ TRANSCRIPTION_START and 1+ TRANSCRIPT
-        //TRANSCRIPTION_RF -> TRANSCRIPTION_START, TRANSCRIPT
-        List<Symbol> trx_rf = new ArrayList<>();
-        trx_rf.add(TRANSCRIPTION_START);
-        trx_rf.add(TRANSCRIPT);
-        pR.add(new ProductionRule(TRANSCRIPTION_RF, trx_rf));
-
-        //2+ TRANSCRIPTION_START
-        List<Symbol> trx_rf_multitrxrf = new ArrayList<>();
-        trx_rf_multitrxrf.add(TRANSCRIPTION_START);
-        trx_rf_multitrxrf.add(TRANSCRIPTION_RF);
-        pR.add(new ProductionRule(TRANSCRIPTION_RF, trx_rf_multitrxrf));
-
-        //2+ TRANSCRIPT
-        List<Symbol> trx_rf_multitrx = new ArrayList<>();
-        trx_rf_multitrx.add(TRANSCRIPTION_RF);
-        trx_rf_multitrx.add(TRANSCRIPT);
-        pR.add(new ProductionRule(TRANSCRIPTION_RF, trx_rf_multitrx));
-
-        //TRANSCRIPTION_RF may have 1+ TRANSCRIPT_RF and 1+ TRANSCRIPTION_END
-        //TU -> TRANSCRIPTION_RF, TRANSCRIPTION_END
-        List<Symbol> tu = new ArrayList<>();
-        tu.add(TRANSCRIPTION_RF);
-        tu.add(TRANSCRIPTION_END);
-        pR.add(new ProductionRule(TU, tu));
-
-        //2+ TRANSCRIPT_RF
-        List<Symbol> tu_multitrxrf = new ArrayList<>();
-        tu_multitrxrf.add(TRANSCRIPTION_RF);
-        tu_multitrxrf.add(TU);
-        pR.add(new ProductionRule(TU, tu_multitrxrf));
-
-        //2+ TRANSCRIPTION_END
-        List<Symbol> tu_multitrxend = new ArrayList<>();
-        tu_multitrxend.add(TU);
-        tu_multitrxend.add(TRANSCRIPTION_END);
-        pR.add(new ProductionRule(TU, tu_multitrxend));
-
-        //INSERT may have 0+ SPACER, 1+ TU, 0+ SPACER
-        //INSERT -> TU
-        List<Symbol> insert_tu = new ArrayList<>();
-        insert_tu.add(TU);
-        pR.add(new ProductionRule(INSERT, insert_tu));
-
-        //PRE-SPACERS
-        List<Symbol> insert_prespacer = new ArrayList<>();
-        insert_prespacer.add(SPACER);
-        insert_prespacer.add(INSERT);
-        pR.add(new ProductionRule(INSERT, insert_prespacer));
-        
-        //2+ TUs FRONT
-        List<Symbol> insert_multitu_front = new ArrayList<>();
-        insert_multitu_front.add(TU);
-        insert_multitu_front.add(INSERT);
-        pR.add(new ProductionRule(INSERT, insert_multitu_front));
-        
-        //POST-SPACERS
-        List<Symbol> insert_postspacer = new ArrayList<>();
-        insert_postspacer.add(INSERT);
-        insert_postspacer.add(SPACER);
-        pR.add(new ProductionRule(INSERT, insert_postspacer));
-        
-        //2+ TUs FRONT
-        List<Symbol> insert_multitu_back = new ArrayList<>();
-        insert_multitu_back.add(INSERT);
-        insert_multitu_back.add(TU);
-        pR.add(new ProductionRule(INSERT, insert_multitu_back));        
-
-        HashMap<Nonterminal, List<ProductionRule>> grammarMap = new HashMap<>();
-        grammarMap.put(INSERT, pR);
-        return grammarMap;
-    }
-
-    /*---------------
-     * GRAMMAR
-     *---------------*/
-    public static List<Grammar> instantiateGrammar(HashMap<Nonterminal, List<ProductionRule>> grammarMap) {
-
-        List<Grammar> grammars = new ArrayList<>();
-        for (Nonterminal start : grammarMap.keySet()) {
-            Grammar grammar = new Grammar(grammarMap.get(start), start);
-            grammars.add(grammar);
-            System.out.println(grammar.toString());
-        }
-
-        return grammars;
-    }
     
     /*---------------
      * 
@@ -325,7 +47,6 @@ public class PhoenixGrammar {
     public static void decompose(Module node) {
 
         int stack = 0;
-        ArrayList<Feature> moduleFeatures = null;
         List<PrimitiveModule> submoduleStack = null;
         Module child = null;
 
@@ -360,8 +81,7 @@ public class PhoenixGrammar {
                             
                             stack = 1;
                             submoduleStack = new ArrayList<>();
-                            moduleFeatures = new ArrayList<>();
-
+                            
                             //Create new Module to be made for each TRANSCRIPTIONAL_UNIT
                             child = new Module(node.getName() + "_" + ModuleRole.TRANSCRIPTIONAL_UNIT.toString() + "_" + TUCount);
                             TUCount++;
@@ -369,19 +89,16 @@ public class PhoenixGrammar {
                             child.setRoot(false);                 //Wont be the root.     
                             child.setForward(true);               //These are all Forward oriented. 
                             child.setRole(ModuleRole.TRANSCRIPTIONAL_UNIT);         //Set Child as a TU
-                            moduleFeatures.add(subnodes.getModuleFeature().clone());
                             submoduleStack.add(subnodes.clone());
                         }
 
                     } else if (stack == 1) {
 
-                        moduleFeatures.add(subnodes.getModuleFeature().clone());
                         submoduleStack.add(subnodes.clone());
                         
                         //Termintors pop the stack
                         if (subnodes.getPrimitiveRole().equals(FeatureRole.TERMINATOR)) {
                             stack = 0;
-                            child.setModuleFeatures(moduleFeatures);
                             child.setSubmodules(submoduleStack);
                             decompose(child);
                             node.getChildren().add(child);
@@ -402,7 +119,6 @@ public class PhoenixGrammar {
             expressor.setRole(ModuleRole.EXPRESSOR);
             expressor.setRoot(false);
             
-            moduleFeatures = new ArrayList<>();
             submoduleStack = new ArrayList<>();
             
             for (PrimitiveModule primitive : node.getSubmodules()) {
@@ -414,7 +130,6 @@ public class PhoenixGrammar {
                     Module expressee = new Module(node.getName() + "_" + ModuleRole.EXPRESSEE.toString());
                     
                     //Create a new EXPRESSEE from this CDS primitive and copy the feature
-                    moduleFeatures.add(primitive.getModuleFeature());
                     expressee = getExpresseeModule(primitive, expressee);
                     expressee.setStage(node.getStage() + 1);
                     expresseeList.add(expressee);
@@ -427,13 +142,11 @@ public class PhoenixGrammar {
                 //Else, continue adding features to EXPRESSOR    
                 } else {
                     
-                    moduleFeatures.add(primitive.getModuleFeature());
                     submoduleStack.add(primitive);
                 }
             }
             
             //Finalize EXPRESSOR primitives and links
-            expressor.setModuleFeatures(moduleFeatures);
             expressor.setSubmodules(submoduleStack);
 
             expressor.getParents().add(node);
@@ -454,7 +167,6 @@ public class PhoenixGrammar {
         forwardModule.setRoot(false);
         forwardModule.setRole(ModuleRole.HIGHER_FUNCTION);
         forwardModule.setStage(node.getStage()+1);
-        List<Feature> moduleFeature = new ArrayList<>();
         List<PrimitiveModule> primModules = new ArrayList<>();
         
         //Go through each of the modules primitives in forward order
@@ -468,7 +180,6 @@ public class PhoenixGrammar {
                 PrimitiveModule wildCard = new PrimitiveModule(FeatureRole.WILDCARD, pm.getPrimitive().clone(), pm.getModuleFeature());
                 wildCard.getPrimitive().setOrientation(Orientation.REVERSE);
                 primModules.add(wildCard);
-                moduleFeature.add(pm.getModuleFeature());
                 
             //If not, copy components
             } else {
@@ -476,11 +187,9 @@ public class PhoenixGrammar {
                 PrimitiveModule forModule = new PrimitiveModule(pm.getPrimitiveRole(),pm.getPrimitive().clone(),pm.getModuleFeature());
                 forModule.setPrimitiveRole(EugeneAdaptor.findRole(forModule.getPrimitive().getType()));
                 primModules.add(forModule);
-                moduleFeature.add(pm.getModuleFeature());
             }
         }
         
-        forwardModule.setModuleFeatures(moduleFeature);
         forwardModule.setSubmodules(primModules);
         return forwardModule;
     }
@@ -493,7 +202,6 @@ public class PhoenixGrammar {
         reverseModule.setRole(ModuleRole.HIGHER_FUNCTION);
         reverseModule.setStage(node.getStage()+1);
         reverseModule.setForward(true);    //Needed?
-        ArrayList<Feature> moduleFeature = new ArrayList<>();
         ArrayList<PrimitiveModule> primModules = new ArrayList<>();
         
         //Go through each of the modules primitives in reverse order
@@ -509,7 +217,6 @@ public class PhoenixGrammar {
                 wildCard.setPrimitiveRole(FeatureRole.WILDCARD);
                 wildCard.setModuleFeature(pm.getModuleFeature());
                 primModules.add(wildCard);
-                moduleFeature.add(pm.getModuleFeature()); // May have to comment this out later on?
             
             //If not, copy components
             } else {
@@ -518,11 +225,9 @@ public class PhoenixGrammar {
                 revModule.getPrimitive().setOrientation(Orientation.FORWARD); // Again needed?
                 revModule.setPrimitiveRole(EugeneAdaptor.findRole(revModule.getPrimitive().getType()));
                 primModules.add(revModule);
-                moduleFeature.add(pm.getModuleFeature()); //Does anything change here?? (Due to the flip in the orientation?)
             }
 
         }
-        reverseModule.setModuleFeatures(moduleFeature);
         reverseModule.setSubmodules(primModules);
         return reverseModule;
     }
@@ -542,7 +247,6 @@ public class PhoenixGrammar {
             expressee.setRole(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR);
         }
         
-        expressee.getModuleFeatures().add(node.getModuleFeature());
         expressee.setRoot(false);
         expressee.getSubmodules().add(node);
         return expressee;

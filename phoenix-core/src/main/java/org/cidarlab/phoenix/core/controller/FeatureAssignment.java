@@ -73,6 +73,7 @@ public class FeatureAssignment {
                 promoterAssign(m, features, assignedRegulators);
             }
         }
+        
         List<Module> expexe = new ArrayList<Module>();
         expexe.addAll(exe);
         expexe.addAll(exp);
@@ -99,8 +100,9 @@ public class FeatureAssignment {
                     multiplexed = true;
                     multiplexModules = addMultiplexModules(assignedM, percentage, features);
                     for(AssignedModule amoduleMplx:multiplexModules){
-                        if(!multiplexedModulesList.contains(amoduleMplx))
+                        if(!multiplexedModulesList.contains(amoduleMplx)){
                             multiplexedModulesList.add(amoduleMplx);
+                        }
                     }
                     //multiplexedModulesList.addAll(multiplexModules);
                     modulesToTest.addAll(multiplexModules);
@@ -118,6 +120,123 @@ public class FeatureAssignment {
             TestingStructures.wildcardAssign(m);
         }
         conn.closeConnection();
+    }
+    
+    
+    public static void replaceExpressorFP(Module module, Fluorophore oldFP, Fluorophore newFP){
+        
+        boolean updated = false;
+        //Look for Feature of role CDS Fluoroscent Fusion which matches the old FP's name
+        for(PrimitiveModule pm:module.getSubmodules()){
+            if(pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT)){
+                if(pm.getModuleFeature().getName().equals(oldFP.getName())){
+                    pm.setModuleFeature(newFP);
+                    updated = true;
+                }
+            }
+        }
+        //If it was replaced, update the module Features
+        if(updated){
+            //Now make changes in the AssignedModules associated. 
+            for(AssignedModule amodule:module.getAssignedModules()){
+                replaceAssignedModuleExpresseeFP(amodule,oldFP,newFP); //Replaces FP in AssignedModules, Color controls and Regulation Controls.
+            }
+        }        
+        
+        for(Module child:module.getChildren()){
+            replaceExpresseeFP(child,oldFP,newFP);
+        }
+        
+    }
+    
+    private static void replaceAssignedModuleExpressorFP(AssignedModule amodule, Fluorophore oldFP, Fluorophore newFP){
+        
+        for(PrimitiveModule pm:amodule.getSubmodules()){
+            if(pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT)){
+                if(pm.getModuleFeature().getName().equals(oldFP.getName())){
+                    pm.setModuleFeature(newFP);
+                }
+            }
+        }
+        for(AssignedModule control:amodule.getControlModules()){
+            //Due to symbolic links, this may not be triggered over and over again.
+            if (control.getRole().equals(ModuleRole.COLOR_CONTROL)) {
+                for (PrimitiveModule pm : control.getSubmodules()) {
+                    if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT)) {
+                        if (pm.getModuleFeature().getName().equals(oldFP.getName())) {
+                            pm.setModuleFeature(newFP);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    public static void replaceRegulationFP(Module module,Fluorophore oldFP, Fluorophore newFP){
+        if(module.getRole().equals(ModuleRole.EXPRESSEE) || module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR) || module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)){
+            for(AssignedModule amodule:module.getAssignedModules()){
+                for(AssignedModule control:amodule.getControlModules()){
+                    if(control.getRole().equals(ModuleRole.REGULATION_CONTROL)){
+                        for (PrimitiveModule pm : control.getSubmodules()) {
+                            if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT)) {
+                                if (pm.getModuleFeature().getName().equals(oldFP.getName())) {
+                                    pm.setModuleFeature(newFP);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    public static void replaceExpresseeFP(Module module, Fluorophore oldFP, Fluorophore newFP){
+        
+        boolean updated = false;
+        //Look for Feature of role CDS Fluoroscent Fusion which matches the old FP's name
+        for(PrimitiveModule pm:module.getSubmodules()){
+            if(pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)){
+                if(pm.getModuleFeature().getName().equals(oldFP.getName())){
+                    pm.setModuleFeature(newFP);
+                    updated = true;
+                }
+            }
+        }
+        //If it was replaced, update the module Features
+        if(updated){
+            //Now make changes in the AssignedModules associated. 
+            for(AssignedModule amodule:module.getAssignedModules()){
+                replaceAssignedModuleExpresseeFP(amodule,oldFP,newFP); //Replaces FP in AssignedModules, Color controls and Regulation Controls.
+            }
+        }        
+        
+        for(Module child:module.getChildren()){
+            replaceExpresseeFP(child,oldFP,newFP);
+        }
+        
+    }
+    
+    private static void replaceAssignedModuleExpresseeFP(AssignedModule amodule, Fluorophore oldFP, Fluorophore newFP){
+        
+        for(PrimitiveModule pm:amodule.getSubmodules()){
+            if(pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)){
+                if(pm.getModuleFeature().getName().equals(oldFP.getName())){
+                    pm.setModuleFeature(newFP);
+                }
+            }
+        }
+        for(AssignedModule control:amodule.getControlModules()){
+            //Due to symbolic links, this may not be triggered over and over again.
+            if (control.getRole().equals(ModuleRole.COLOR_CONTROL) || control.getRole().equals(ModuleRole.REGULATION_CONTROL)) {
+                for (PrimitiveModule pm : control.getSubmodules()) {
+                    if (pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION) || pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT)) {
+                        if (pm.getModuleFeature().getName().equals(oldFP.getName())) {
+                            pm.setModuleFeature(newFP);
+                        }
+                    }
+                }
+            }
+        }
     }
     
     //Method for traverisng graphs, adding fluorescent proteins
@@ -187,17 +306,14 @@ public class FeatureAssignment {
                     cdsFlCount++;
                 }
             }
-            child.updateModuleFeatures();
             addFPsHelper(child, FPs);
         }        
-        module.updateModuleFeatures();
     }
     
     //If the structural design has any Feature names that match exactly to the Feature library, assign these
     private static void featureMatchAssign(List<Module> modules, List<Feature> features) {
   
         for (Module m : modules) {
-            
             //Look for regulators that are abstract
             for(PrimitiveModule pm:m.getSubmodules()){
                 for (Feature libF : getAllFeaturesOfRole(features, pm.getModuleFeature().getRole())) {
@@ -206,7 +322,6 @@ public class FeatureAssignment {
                     }
                 }
             }
-            m.updateModuleFeatures();
         }
     }
     
@@ -226,24 +341,24 @@ public class FeatureAssignment {
                     List<Feature> featuresOfRole = getAllFeaturesOfRole(features, pm.getPrimitiveRole());
                     for (Feature fR : featuresOfRole) {
                         
-
+                        //This was assigned
+                        assignedRegulators.add(fR);
+                        
                         //Get rid of features that were saved when the module was saved that are only placeholders
                         if (!fR.getSequence().getSequence().isEmpty()) {
                             
-                            //This was assigned
-                            assignedRegulators.add(fR);
+                            
                             
                             //Create AssignedModule
                             Module clone = m.clone(m.getName() + "_" + count+"_TAG");
                             AssignedModule assignedClone = new AssignedModule(clone);
                             assignedClone.getSubmodules().get(i).setModuleFeature(fR);
-                            assignedClone.updateModuleFeatures();
                             
                             
                             Module clone_no_tag = m.clone(m.getName() + "_" + count);
                             AssignedModule assignedClone_no_tag = new AssignedModule(clone_no_tag);
                             List<PrimitiveModule> am_pm = new ArrayList<PrimitiveModule>();
-                            for(PrimitiveModule pm_nt:m.getSubmodules()){
+                            for(PrimitiveModule pm_nt:clone_no_tag.getSubmodules()){
                                 if(!pm_nt.getPrimitiveRole().equals(FeatureRole.CDS_TAG)){
                                     am_pm.add(pm_nt);
                                 }
@@ -251,13 +366,10 @@ public class FeatureAssignment {
                             am_pm.get(i).setModuleFeature(fR);
                             assignedClone_no_tag.setSubmodules(am_pm);
                             
-                            
                             m.getAssignedModules().add(assignedClone);
                             m.getAssignedModules().add(assignedClone_no_tag);
                             
-                            
                             count++;
-                            
                             
                         }
                     }
@@ -304,8 +416,6 @@ public class FeatureAssignment {
                                 if (m.getSubmodules().get(i).equals(m.getSubmodules().get(index))) {
                                     for (Module clone : clonesThisModule) {
                                         clone.getSubmodules().get(i).setModuleFeature(clone.getSubmodules().get(index).getModuleFeature());
-                                        //clone.getSubmodules().get(i).setModuleFeatures(clone.getSubmodules().get(index).getModuleFeatures());
-                                        clone.updateModuleFeatures();
                                         differentPromoter = false;
                                     }
                                     break;
@@ -455,14 +565,10 @@ public class FeatureAssignment {
                     mfClone.add(fR);
                     //assignedClone.getSubmodules().get(i).setModuleFeatures(mfClone);
                     assignedClone.getSubmodules().get(i).setModuleFeature(fR);
-                    assignedClone.updateModuleFeatures();
                     clonesThisModule.add(assignedClone);                    
                 }
-
-            } else {
-
                 //Get rid of features that were saved when the module was saved that are only placeholders
-                if (!fR.getSequence().getSequence().isEmpty()) {
+                else if (!fR.getSequence().getSequence().isEmpty()) {
                     Module clone = m.clone(m.getName() + "_" + count);
                     AssignedModule assignedClone = new AssignedModule(clone);
                     count++;
@@ -470,10 +576,9 @@ public class FeatureAssignment {
                     mfClone.add(fR);
                     //assignedClone.getSubmodules().get(i).setModuleFeatures(mfClone);
                     assignedClone.getSubmodules().get(i).setModuleFeature(fR);
-                    assignedClone.updateModuleFeatures();
                     clonesThisModule.add(assignedClone);  
                 }
-            }
+            } 
         }
         
         return count;
@@ -624,7 +729,20 @@ public class FeatureAssignment {
                 featuresOfRole.add(f);
             }
         }
-        
+        if(role.equals(FeatureRole.CDS_REPRESSOR)){
+            for (Feature f : allFeatures) {
+                if (f.getRole().equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR) && !f.getSequence().getSequence().isEmpty()) {
+                    featuresOfRole.add(f);
+                }
+            }
+        }
+        if(role.equals(FeatureRole.CDS_ACTIVATOR)){
+            for (Feature f : allFeatures) {
+                if (f.getRole().equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) && !f.getSequence().getSequence().isEmpty()) {
+                    featuresOfRole.add(f);
+                }
+            }
+        }
         return featuresOfRole;
     }
 }

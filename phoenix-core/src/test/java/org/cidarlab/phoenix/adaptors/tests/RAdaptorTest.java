@@ -24,7 +24,7 @@ public class RAdaptorTest {
         String filepath = Utilities.getFilepath() + "/src/main/resources/InstructionFiles/";
         String keyFile = filepath + "testingInstructionsTest.csv";
         String mapFile = filepath + "nameMapFileTest.csv";
-        Map<String,String> nameMap = RAdaptor.parseKeyMapFiles(keyFile, mapFile);
+        Map<String,String> nameMap = RAdaptor.parseKeyMapFiles(mapFile);
         
         RAdaptor.directoryWalk(directory,directory,nameMap,null);
         
@@ -42,10 +42,14 @@ public class RAdaptorTest {
     public void parseKeyMapFilesTest(){
        String filepath = Utilities.getFilepath() + "/src/main/resources/InstructionFiles/";
        String keyFile = filepath + "testingInstructionsTest.csv";
-       String mapFile = filepath + "nameMapFileTest.csv";
-       RAdaptor.parseKeyMapFiles(keyFile, mapFile);
+       String mapFile = filepath + "nameMapFileTest_ea_filled.csv";
+       RAdaptor.parseKeyMapFiles(mapFile);
        
     }
+    
+    
+    
+    
     
     //@Test
     public void createRunRTest(){

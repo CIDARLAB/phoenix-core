@@ -8,6 +8,7 @@ package org.cidarlab.phoenix.core.dom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import org.cidarlab.phoenix.core.dom.Experiment.ExperimentType;
@@ -22,33 +23,48 @@ public class ExperimentResults {
     //No args constructor
     public ExperimentResults (ExperimentType eType) {
         if (eType.equals(ExperimentType.DEGRADATION)) {
-            timeSeries = new HashMap();
+            meanTimeSeries = new HashMap();
+            stdTimeSeries = new HashMap();
         } else if (eType.equals(ExperimentType.EXPRESSION)) {
             steadyState = new ArrayList();
         } else if (eType.equals(ExperimentType.REGULATION)) {
             regulation = new HashMap();
         } else if (eType.equals(ExperimentType.SMALL_MOLECULE)) {
-            induction = new HashMap();
+            meanInduction = new HashMap();
+            stdInduction = new HashMap();
         } else {
-            timeSeries = new HashMap();
-            induction = new HashMap();
+            meanTimeSeries = new HashMap();
+            meanInduction = new HashMap();
+            stdTimeSeries = new HashMap();
+            stdInduction = new HashMap();
         }
     }
     
     //Time series metadata
     @Setter
     @Getter
-    private HashMap<Double, Double> timeSeries;
+    private Map<Double, Double> meanTimeSeries;
+    
+    //Time series metadata
+    @Setter
+    @Getter
+    private Map<Double, Double> stdTimeSeries;
+    
     
     //Media induction metadata
     @Setter
     @Getter
-    private HashMap<Medium, Double> induction;
+    private Map<Double, Double> meanInduction;
     
     //Media induction metadata
     @Setter
     @Getter
-    private HashMap<Double, Double> regulation;
+    private Map<Double, Double> stdInduction;
+    
+    //Media induction metadata
+    @Setter
+    @Getter
+    private Map<Double, Double> regulation;
     
     //Media induction metadata
     @Setter

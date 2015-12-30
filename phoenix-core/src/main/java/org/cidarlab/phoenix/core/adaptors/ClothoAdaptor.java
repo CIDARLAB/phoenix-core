@@ -37,6 +37,7 @@ import org.cidarlab.phoenix.core.dom.Arc.ArcRole;
 import org.cidarlab.phoenix.core.dom.AssemblyParameters;
 import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.ComponentType;
+import org.cidarlab.phoenix.core.dom.ExperimentResults;
 import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
 import org.cidarlab.phoenix.core.dom.Medium;
 import org.cidarlab.phoenix.core.dom.Medium.MediaType;
@@ -366,7 +367,6 @@ public class ClothoAdaptor {
 //        smallMoleculeMap = createSmallMoleculeMap(medium.getSmallmolecule());
         if (medium.getSmallmolecule() != null) {
             smallMoleculeMap = createSmallMoleculeMap(medium.getSmallmolecule());
-            smallMoleculeMap.put("concentration", medium.getSmallmolecule().getConcentration());
         }
         map.put("smallMolecule", smallMoleculeMap);
         return map;
@@ -414,14 +414,12 @@ public class ClothoAdaptor {
         Map map = new HashMap();
         map.put("schema", PrimitiveModule.class.getCanonicalName());
         map.put("moduleFeature", createFeature(pmodule.getModuleFeature(),clothoObject));
-        
         map.put("primitiveRole", pmodule.getPrimitiveRole().toString());
         map.put("primitive", createPrimitiveMap(pmodule.getPrimitive()));
         
         return map;
     }
 
-    //This can be removed if we don't need a map function for this. 
     public static Map createPrimitiveMap(Primitive primitive) {
         Map map = new HashMap();
         map.put("name", primitive.getName());
@@ -483,22 +481,19 @@ public class ClothoAdaptor {
     public static Map createExperimentMap(Experiment experiment){
         Map map = new HashMap();
         map.put("schema", Experiment.class.getCanonicalName());
-        if (experiment.getName() != null) {
-            map.put("name", experiment.getName());
-        }
+        map.put("name", experiment.getName());
         map.put("exType", experiment.getExType());
-
         if (experiment.getClothoID() != null) {
             map.put("id", experiment.getClothoID());
         }
-
-        JSONArray experimentTimes = new JSONArray();
-
+        
+        /*JSONArray experimentTimes = new JSONArray();
         for (String time : experiment.getTimes()) {
             experimentTimes.add(time);
         }
-        map.put("times", experimentTimes);
-
+        map.put("times", experimentTimes);*/
+        map.put("times", experiment.getTimes());
+        
         JSONArray mediaConditions = new JSONArray();
         for (Medium medium : experiment.getMediaConditions()) {
             mediaConditions.add(createMediumMap(medium));
@@ -506,6 +501,10 @@ public class ClothoAdaptor {
         map.put("mediaConditions", mediaConditions);
         
         return map;
+    }
+    
+    public static Map createExperimentResultsMap(ExperimentResults exResults){
+        return null;
     }
     
     //</editor-fold>
@@ -711,7 +710,6 @@ public class ClothoAdaptor {
         map.put("schema", STLFunction.class.getCanonicalName());
         return id;
     }
-    
     
     //Add parts to Clotho via Clotho Server API
     public static String createPart(Part p, Clotho clothoObject) {

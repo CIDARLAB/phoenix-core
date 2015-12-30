@@ -23,7 +23,7 @@ public class Experiment {
         exType = exptType;
         results = new ExperimentResults(exptType);
         name = _name;
-        clothoID = _name;
+        //clothoID = _name;
         mediaConditions = _media;
         times = _times;
     }   

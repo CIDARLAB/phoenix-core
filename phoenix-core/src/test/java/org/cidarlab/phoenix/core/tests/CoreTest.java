@@ -59,7 +59,7 @@ public class CoreTest {
         //Run a design decomposition
         File structureFile = new File(getFilepath() + "/src/main/resources/miniEugeneFiles/inverter.eug");
         Module bestModule = PhoenixController.initializeDesign(structureFile, null);
-        //HashSet<AssignedModule> modulesToTestHash = new HashSet<>(modulesToTest);
+        
         PhoenixController.createExperimentInstructions(bestModule, getFilepath() + "/src/main/resources/InstructionFiles");
         
         

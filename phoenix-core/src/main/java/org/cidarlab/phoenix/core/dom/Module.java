@@ -80,14 +80,6 @@ public class Module extends AbstractModule {
     private ModuleRole role;
 
     
-    //Repression or Activation Arcs. This will be used to indentify structures that can realize an Inverter, Oscillator or Switches
-    //Arcs created by this module
-    /*
-    @Getter
-    @Setter
-    private List<Arc> arcs;
-    */
-    
     //
     @Getter
     @Setter
@@ -97,8 +89,6 @@ public class Module extends AbstractModule {
     @Getter
     @Setter
     private STLFunction function;
-
-   
 
     //Parent module(s)
     @Getter
@@ -201,18 +191,40 @@ public class Module extends AbstractModule {
     @Override
     public String toString(){
         String _string = "";
-        if(this.isRoot){
+        /*if(this.isRoot){
             _string += ("Root Module; ");
-        }
+        }*/
         //_string += ("Name:"+this.name+";");
-        _string += ("Role:"+this.role+"; ");
-        _string += ("Feature String:"+this.getFeatureShortString()+";");
+        //_string += ("Role:"+this.role+"; ");
+        //_string += ("Feature String:"+this.getFeatureShortString()+";");
+        _string += this.name;
         return _string;
     }
     
-    public void printTree(){
-        System.out.println(this.toString());
+    public void assignTreeModuleStage(){
+        
+        int parentMaxStage = -2;
+        for(Module parent:this.parents){
+            if(parent.stage > parentMaxStage){
+                parentMaxStage = parent.stage;
+            }
+        }
+        if(this.isRoot){
+            parentMaxStage = -1;
+        }
+        this.stage = parentMaxStage + 1;
         for(Module child:this.children){
+            child.assignTreeModuleStage();
+        }
+    }
+    
+    public void printTree(){
+        
+        System.out.print(this.toString() + "\n");
+        for(Module child:this.children){
+            for(int i=0;i<this.stage;i++){
+                System.out.print("--");
+            }
             child.printTree();
         }
     }

@@ -137,8 +137,10 @@ public class PhoenixController {
         
         //Perform partial part assignments given the feature library
         FeatureAssignment.partialAssignment(bestModule, 0.5);
-        //removeDuplicateAssignedModules(bestModule);
         
+        bestModule.assignTreeModuleStage();
+        bestModule.printTree();
+
         //At this point, I have a Module tree, which has Assigned Modules for Expressors and Expressees  and a Many to Many relationship between modules and Assigned Modules. 
         //I just want to create Control Modules for AssignedModules & Create Experiment Objects for AssignedModules
         TestingStructures.createExperiments(bestModule);

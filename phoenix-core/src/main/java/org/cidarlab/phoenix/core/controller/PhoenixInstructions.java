@@ -144,12 +144,12 @@ public class PhoenixInstructions {
                             break;
                         case REGULATION:
                             
-                            System.out.println("Regulation ::");
+                            //System.out.println("Regulation ::");
                             //Find regulation Control Channel
                             String regChannel= "";
                             for(AssignedModule controlModule:amodule.getControlModules()){
                                 if(controlModule.getRole().equals(ModuleRole.REGULATION_CONTROL)){
-                                    System.out.println("Regulation Control Found");
+                                    //System.out.println("Regulation Control Found");
                                     for(PrimitiveModule pm:controlModule.getSubmodules()){
                                         if(pm.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT)){
                                             regChannel = Utilities.getChannelsMap().get(pm.getModuleFeature().getName());

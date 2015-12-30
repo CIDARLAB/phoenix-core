@@ -42,7 +42,7 @@ public class CopasiAdaptorTest {
     /**
      * Test of importSBML method, of class CopasiAdaptor.
      */
-    @Test
+    //@Test
     public void testImportSBML() {
         System.out.println("importSBML");
         String filepath = Utilities.getFilepath() + "/src/main/resources/copasiTest/exp_0_0_0_2_1.xml";

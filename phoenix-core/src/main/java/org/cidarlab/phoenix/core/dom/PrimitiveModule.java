@@ -38,17 +38,11 @@ public class PrimitiveModule extends AbstractModule {
         this.primitiveRole = role;
         this.primitive = primitive;
         this.moduleFeature = moduleFeature.clone();
-        //this.getModuleFeatures().add(moduleFeature);
     }
     
     @Override
     public PrimitiveModule clone() {
-        
         PrimitiveModule clone = new PrimitiveModule(this.primitiveRole,this.primitive,this.moduleFeature);
-        //List<Feature> mFeatures = new ArrayList<>();
-        //mFeatures.addAll(this.getModuleFeatures());
-        //clone.setModuleFeatures(mFeatures);
-        
         return clone;
     }
 }

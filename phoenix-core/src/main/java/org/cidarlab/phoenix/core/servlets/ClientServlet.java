@@ -61,8 +61,15 @@ public class ClientServlet extends HttpServlet {
     public static String getFilepath()
     {
         String filepath = ClientServlet.class.getClassLoader().getResource(".").getPath();
-        filepath = filepath.substring(0,filepath.indexOf("WEB-INF/classes/"));
-        filepath += "upload/";
+        System.out.println("File path :: " + filepath);
+        if(filepath.contains("WEB-INF/classes/")){
+            filepath = filepath.substring(0,filepath.indexOf("WEB-INF/classes/"));
+            filepath += "upload/";
+        }
+        else if(filepath.contains("/target/classes/")){
+            filepath = filepath.substring(0,filepath.indexOf("target/classes/"));
+            filepath += "src/main/resources/upload/";
+        }
         return filepath;
     }
     

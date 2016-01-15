@@ -9,6 +9,8 @@ phoenix_core/target/
 /phoenix-core/target/
 /phoenix-core/src/main/resources/RTest/
 phoenix-core/src/main/resources/RTest/
+/phoenix-core/src/main/resources/upload/
+phoenix-core/src/main/resources/upload/
 /phoenix-core/src/main/resources/sbmlDocs/*.xml
 phoenix-core/src/main/resources/sbmlDocs/*.xml
 **/.settings

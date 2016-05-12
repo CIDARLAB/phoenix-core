@@ -986,7 +986,7 @@ public class ClothoAdaptor {
             description = (String)map.get("description");
         }
         Feature origin = (Feature)getFeature((String)map.get("origin"),clothoObject);
-        Feature resistance = (Feature)getFeature((String)map.get("origin"),clothoObject);
+        Feature resistance = (Feature)getFeature((String)map.get("resistance"),clothoObject);
         Vector vector = new Vector(name, description, mapToNucSeq((Map)map.get("sequence")), null, null,origin,resistance);
         vector.setClothoID((String)map.get("id"));
         
@@ -1070,7 +1070,8 @@ public class ClothoAdaptor {
     }
     
     public static Fluorophore mapToFluorophore(Map map){
-        
+            
+            System.out.println("Map ID " + map.get("name"));
             String name = (String)map.get("name");
             Fluorophore fluorophore = new Fluorophore(name);
 
@@ -1113,6 +1114,8 @@ public class ClothoAdaptor {
             NucSeq sequence = new NucSeq(seq);
 
             //Get FeatureRole
+            System.out.println("Role :: " + map.get("role"));
+            System.out.println("Role string:: " + map.get("role").toString());
             fluorophore.setRole(FeatureRole.valueOf((String)map.get("role")));
             
             fluorophore.setForwardColor(new Color((int)map.get("forwardColor")));
@@ -1377,6 +1380,7 @@ public class ClothoAdaptor {
     
     public static Feature getFeature(String featureId,Clotho clothoObject){
         Object object = clothoObject.get(featureId);
+        System.out.println("Feature ID :: " + featureId);
         return mapToFeatureWithArcs((Map)object,clothoObject);
     }
     

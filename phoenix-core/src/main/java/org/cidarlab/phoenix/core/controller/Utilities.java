@@ -582,9 +582,25 @@ public class Utilities {
         return _filepath;
     }
     
+    public static String getResourcesFilepath(){
+        String filepath = getFilepath();
+        if(Utilities.isWindows()){
+            filepath += "\\src\\main\\resources\\";
+        }
+        else{
+            filepath += "/src/main/resources/";
+        }
+        return filepath;
+    }
+    
     public static String getCytometryFilepath(){
         String filepath = getFilepath();
-        filepath = filepath.substring(0,filepath.lastIndexOf("/phoenix-core"));
+        if(Utilities.isWindows()){
+            filepath = filepath.substring(0,filepath.lastIndexOf("\\phoenix-core"));
+        }
+        else{
+            filepath = filepath.substring(0,filepath.lastIndexOf("/phoenix-core"));
+        }
         
         return filepath;
     }
@@ -630,6 +646,13 @@ public class Utilities {
             Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
         }
         return filecontent;
+    }
+    
+    public static char getSeparater(){
+        if(Utilities.isWindows()){
+            return '\\';
+        }
+        return '/';
     }
     
     //</editor-fold>

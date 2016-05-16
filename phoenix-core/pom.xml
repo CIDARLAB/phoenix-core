@@ -506,6 +506,15 @@
             <artifactId>slf4j-simple</artifactId>
             <version>1.6.4</version>
         </dependency>
+        
+        <!-- Java Plot -->
+        <dependency>
+            <groupId>org.java.plot</groupId>
+            <artifactId>JavaPlot</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/src/main/resources/lib/JavaPlot.jar</systemPath>
+        </dependency>
     </dependencies>
     
     

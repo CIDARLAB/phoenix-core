@@ -227,6 +227,7 @@ public class ClientServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
     private JSONObject data;
     private boolean holdingData = false;
 }

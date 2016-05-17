@@ -12,6 +12,11 @@ import java.util.List;
 import java.util.Map;
 import org.cidarlab.phoenix.core.controller.Utilities;
 import org.cidarlab.phoenix.core.dom.TimeSeriesData;
+import javax.swing.JFrame;
+import javax.swing.JProgressBar;
+import analysis.dynamicsim.SimulatorSSADirect;
+import analysis.dynamicsim.SimulatorODERK;
+import java.io.IOException;
 
 /**
  *
@@ -202,5 +207,23 @@ public class IBioSimAdaptor {
         tsd.setGraphLabel("Time Series Data");
         tsd.setPointSets(pointSet);
         return tsd;
+    }
+    
+    public static void simulateODE() {
+        
+    }
+    
+    public static void simulateStocastic(String SBMLFileName, String outDir,
+            double timeLimit, double timeStep, double minTimeStep, long rndSeed,
+            double printInterval, double stoichAmpValue) throws IOException {
+        
+        JProgressBar progress = new JProgressBar();
+        JFrame running = new JFrame();
+        
+        SimulatorSSADirect simulator = new SimulatorSSADirect(SBMLFileName, outDir,
+                timeLimit, timeStep, minTimeStep, rndSeed, progress, printInterval,
+                stoichAmpValue, running, new String[0], "amount");
+        simulator.simulate();
+        
     }
 }

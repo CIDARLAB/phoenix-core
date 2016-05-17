@@ -151,7 +151,8 @@ public class ClientServlet extends HttpServlet {
                 File structuralSpec = partConverter(structuralPart, structuralPartName);
                 File functionalSpec = partConverter(functionalPart, functionalPartName);
                 // Pass files to correct method
-                initializeDesign(structuralSpec, functionalSpec);
+                Module bestModule = initializeDesign(structuralSpec, functionalSpec); //Get the best Module
+                
                 // If we made it here then everything was successful
                 System.out.println("\n\nINFO: SUCCESS\n\n");
                 holdingData = true;

@@ -28,46 +28,6 @@ import org.eclipse.jetty.webapp.WebAppContext;
  * @author prash
  */
 public class ClientSideAdaptor {
-    public static JSONObject convertModuleToJSON(Module module){
-        JSONObject json = new JSONObject();
-        json.put("name", module.getName());
-        json.put("clothoId", module.getClothoID());
-        json.put("hex", "#FF0000");
-        JSONArray children = new JSONArray();
-        for (Module child : module.getChildren()) {
-            children.add(convertModuleToJSON(child));
-        }
-        for (AssignedModule aModule : module.getAssignedModules()) {
-            JSONObject assignedModuleObj = new JSONObject();
-            assignedModuleObj.put("name", aModule.getName());
-            JSONArray exptChildren = new JSONArray();
-            if (aModule.getExperiments() != null) {
-                for (Experiment expt : aModule.getExperiments()) {
-                    JSONObject exptObj = new JSONObject();
-                    exptObj.put("name", expt.getExType());
-                    exptObj.put("hex", "#00FF00");
-                    exptChildren.add(exptObj);
-                }
-            }
-            if (exptChildren.size() > 0) {
-                assignedModuleObj.put("children", exptChildren);
-                assignedModuleObj.put("hex", "#0000FF");
-            }
-            children.add(assignedModuleObj);
-        }
-        if(!children.isEmpty()){
-            json.put("children", children);
-        }
-        
-        return json;
-    }
-    
-    public static void createFlareFile(String filepath, JSONObject json) throws IOException{
-        File file = new File(filepath);
-        Writer output = new BufferedWriter(new FileWriter(file));
-        output.write(json.toString());
-        output.close();
-    }
     
     public static void main(String[] args){
         Server server = new Server(9090);

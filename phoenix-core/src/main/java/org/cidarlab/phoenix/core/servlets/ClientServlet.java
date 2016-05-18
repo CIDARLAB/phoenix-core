@@ -24,8 +24,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import org.cidarlab.phoenix.core.adaptors.D3Adaptor;
 import static org.cidarlab.phoenix.core.controller.PhoenixController.initializeDesign;
 import static org.cidarlab.phoenix.core.controller.PhoenixController.preliminaryDataUpload;
+import org.cidarlab.phoenix.core.controller.Utilities;
 import org.cidarlab.phoenix.core.dom.Module;
 import static org.cidarlab.phoenix.core.servlets.ServletIO.writeUpdatedJSON;
 import org.json.JSONException;
@@ -152,6 +154,12 @@ public class ClientServlet extends HttpServlet {
                 File functionalSpec = partConverter(functionalPart, functionalPartName);
                 // Pass files to correct method
                 Module bestModule = initializeDesign(structuralSpec, functionalSpec); //Get the best Module
+                String flarefilepath = Utilities.getFilepath() + Utilities.getSeparater() + "src" + Utilities.getSeparater() + "main" + Utilities.getSeparater() + "webapp" + Utilities.getSeparater() + "flare.json";
+                String couplingfilepath = Utilities.getFilepath() + Utilities.getSeparater() + "src" + Utilities.getSeparater() + "main" + Utilities.getSeparater() + "webapp" + Utilities.getSeparater() + "couplings.json";
+                net.sf.json.JSONObject flarejsonObjects = new net.sf.json.JSONObject();
+                flarejsonObjects = D3Adaptor.convertModuleToJSON(bestModule);
+                D3Adaptor.createJSONFile(flarefilepath, flarejsonObjects.getJSONObject("flare"));
+                D3Adaptor.createJSONFile(couplingfilepath, flarejsonObjects.getJSONObject("coupling"));
                 
                 // If we made it here then everything was successful
                 System.out.println("\n\nINFO: SUCCESS\n\n");

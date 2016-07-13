@@ -320,7 +320,7 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-servlet</artifactId>
-            <version>8.1.10.v20130312</version>
+            <version>${jetty-version}</version>
             <type>jar</type>
         </dependency>
         <dependency>
@@ -497,7 +497,7 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-webapp</artifactId>
-            <version>8.1.16.v20140903</version>
+            <version>${jetty-version}</version>
             <type>jar</type>
         </dependency>
         <!--  SLF4J -->
@@ -518,11 +518,9 @@
         
         <!-- iBioSim -->
         <dependency>
-            <groupId>org.iBioSim</groupId>
-            <artifactId>iBioSim</artifactId>
-            <version>2.8.4</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/src/main/resources/lib/iBioSim.jar</systemPath>
+            <groupId>org</groupId>
+            <artifactId>ibiosim</artifactId>
+            <version>2.9</version>
         </dependency>
     </dependencies>
     
@@ -536,6 +534,8 @@
     </repositories>
     <properties>
         <!--<native.syslib>true</native.syslib>-->
+        <!--<jetty-version>9.3.10.v20160621</jetty-version>-->
+        <jetty-version>8.1.16.v20140903</jetty-version>
         <netbeans.hint.deploy.server>gfv3ee6</netbeans.hint.deploy.server>
     </properties>
 </project>

@@ -6,3 +6,4 @@ mvn install:install-file -Dfile=jsbml-1.0-with-dependencies.jar -DgroupId=org.sb
 mvn install:install-file -Dfile=COPASIWS_Services.jar -DgroupId=org.copasi -DartifactId=copasiws -Dversion=1.0 -Dpackaging=jar
 mvn install:install-file -Dfile=copasi.jar -DgroupId=org -DartifactId=copasi -Dversion=4.6 -Dpackaging=jar
 mvn install:install-file -Dfile=libCopasiJava.so -DgroupId=org -DartifactId=libCopasiJava -Dversion=4.6 -Dpackaging=so -DgeneratePom=true -Dclassifier=sources
+mvn install:install-file -Dfile=iBioSim.jar -DgroupId=org -DartifactId=ibiosim -Dversion=2.9 -Dpackaging=jar

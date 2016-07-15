@@ -37,7 +37,7 @@ import learn.parameterestimator.ParameterEstimator;
  */
 public class IBioSimAdaptor {
 
-    public static void estimateParameters(String sbmlFile, List<String> parameters, List<String> experimentFiles) throws IOException, XMLStreamException {
+    public static String estimateParameters(String sbmlFile, List<String> parameters, List<String> experimentFiles) throws IOException, XMLStreamException {
         String[] split = sbmlFile.split(File.separator);
         String root = sbmlFile.substring(0, sbmlFile.length() - split[split.length - 1].length());
         Experiments experiments = new Experiments();
@@ -45,7 +45,7 @@ public class IBioSimAdaptor {
         for (String experiment : experimentFiles) {
             parseCSV(experiment, speciesCollection, experiments);
         }
-        ParameterEstimator.estimate(sbmlFile, root, parameters, experiments, speciesCollection);
+        return ParameterEstimator.estimate(sbmlFile, root, parameters, experiments, speciesCollection);
     }
 
     private static void parseCSV(String filename, SpeciesCollection speciesCollection, Experiments experiments) {

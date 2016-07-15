@@ -8,6 +8,7 @@ package org.cidarlab.phoenix.adaptors.tests;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.xml.stream.XMLStreamException;
 import org.cidarlab.phoenix.core.adaptors.IBioSimAdaptor;
 import org.cidarlab.phoenix.core.controller.Utilities;
@@ -46,17 +47,21 @@ public class IBioSimAdaptorTest {
     /**
      * Test of importSBML method, of class CopasiAdaptor.
      */
-    //@Test
+    
+    
+    @Test
     public void testParameterEstimation() throws IOException, XMLStreamException {
         System.out.println("parameterEstimation");
         String sbml = Utilities.getFilepath() + "/src/main/resources/iBioSimTest/degrade.xml";
 	List<String> params = new ArrayList<String>();
-	params.add("deg_degradation___y");
-	params.add("deg_degradation___K_d");
+	params.add("y");
+	params.add("K_d");
 	List<String> experimentFiles = new ArrayList<String>();
 	experimentFiles.add(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/degrade.csv");
-	String results = IBioSimAdaptor.estimateParameters(sbml, params, experimentFiles);
-        System.out.println(results);
+	Map<String, Double> results = IBioSimAdaptor.estimateParameters(sbml, params, experimentFiles);
+        for(String param : results.keySet()) {
+            System.out.println(param + " = " + results.get(param));
+        }
     }
     
 }

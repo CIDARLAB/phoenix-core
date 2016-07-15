@@ -7,6 +7,10 @@
     <listOfSpecies>
       <species id="deg" constant="false" hasOnlySubstanceUnits="true" name="deg" boundaryCondition="false" compartment="cell"/>
     </listOfSpecies>
+    <listOfParameters>
+       <parameter constant="false" id="y" name="y" value="1"/>
+       <parameter constant="false" id="K_d" name="K_d" value="1"/>
+    </listOfParameters>
     <listOfReactions>
       <reaction id="deg_degradation" name="deg_degradation" reversible="false" fast="false">
         <listOfReactants>
@@ -36,10 +40,6 @@
               </apply>
             </apply>
           </math>
-                  <listOfLocalParameters>
-            <localParameter id="y" name="y" value="1"/>
-            <localParameter id="K_d" name="K_d" value="1"/>
-          </listOfLocalParameters>
         </kineticLaw>
       </reaction>
     </listOfReactions>

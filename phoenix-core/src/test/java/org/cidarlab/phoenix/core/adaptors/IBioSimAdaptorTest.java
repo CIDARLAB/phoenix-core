@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.cidarlab.phoenix.adaptors.tests;
+package org.cidarlab.phoenix.core.adaptors;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,12 +52,12 @@ public class IBioSimAdaptorTest {
     @Test
     public void testParameterEstimation() throws IOException, XMLStreamException {
         System.out.println("parameterEstimation");
-        String sbml = Utilities.getFilepath() + "/src/main/resources/iBioSimTest/degrade.xml";
+        String sbml = Utilities.getResourcesFilepath() + "iBioSimTest/degrade.xml";
 	List<String> params = new ArrayList<String>();
 	params.add("y");
 	params.add("K_d");
 	List<String> experimentFiles = new ArrayList<String>();
-	experimentFiles.add(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/degrade.csv");
+	experimentFiles.add(Utilities.getResourcesFilepath() + "iBioSimTest/degrade.csv");
 	Map<String, Double> results = IBioSimAdaptor.estimateParameters(sbml, params, experimentFiles);
         for(String param : results.keySet()) {
             System.out.println(param + " = " + results.get(param));

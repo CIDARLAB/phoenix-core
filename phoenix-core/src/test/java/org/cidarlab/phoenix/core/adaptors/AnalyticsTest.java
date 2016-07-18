@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.cidarlab.phoenix.adaptors.tests;
+package org.cidarlab.phoenix.core.adaptors;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -4,7 +4,9 @@
  */
 package org.cidarlab.phoenix.core.adaptors;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,13 +21,16 @@ import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.sbml.jsbml.ASTNode;
 import org.sbml.jsbml.Compartment;
 import org.sbml.jsbml.KineticLaw;
+import org.sbml.jsbml.ListOf;
 import org.sbml.jsbml.LocalParameter;
 import org.sbml.jsbml.Model;
 import org.sbml.jsbml.ModifierSpeciesReference;
 import org.sbml.jsbml.NamedSBase;
+import org.sbml.jsbml.Parameter;
 import org.sbml.jsbml.Reaction;
 import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.SBMLException;
+import org.sbml.jsbml.SBMLReader;
 import org.sbml.jsbml.SBMLWriter;
 import org.sbml.jsbml.SimpleSpeciesReference;
 import org.sbml.jsbml.Species;
@@ -44,6 +49,54 @@ import org.sbml.jsbml.text.parser.ParseException;
  */
 public class SBMLAdaptor {
 	
+    
+        public static SBMLDocument convertParamsLocalToGlobal(String filepath){
+            SBMLDocument doc = null; 
+            try {
+                doc = SBMLReader.read(new File(filepath));
+                Model model = doc.getModel();
+                ListOf<Reaction> reactions = model.getListOfReactions();
+                for(Reaction reaction: reactions){
+                    KineticLaw kineticLaw = reaction.getKineticLaw();
+                    ListOf<LocalParameter> localParameters = kineticLaw.getListOfLocalParameters();
+                    
+                    for(LocalParameter localParameter: localParameters){
+                        String newId = reaction.getId() + "_" + localParameter.getId();
+                        Parameter newParam = new Parameter(localParameter);
+                        newParam.setId(newId);
+                        model.addParameter(newParam);
+                        replaceNameASTNode(kineticLaw.getMath(),localParameter.getId(),newParam.getId());
+                        //kineticLaw.removeLocalParameter(localParameter);
+                    }
+                    
+                    int size = kineticLaw.getLocalParameterCount();
+                    
+                    for(int i=size-1;i>=0;i--){
+                        kineticLaw.removeLocalParameter(i);
+                    }
+                   
+                    
+                }
+            } catch (XMLStreamException ex) {
+                Logger.getLogger(SBMLAdaptor.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(SBMLAdaptor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return doc;
+        }
+        
+        private static void replaceNameASTNode(ASTNode node,String oldName, String newName){
+            
+            if(node.isVariable()){
+                if(node.getName().equals(oldName)){
+                    node.setName(newName);
+                }
+            }
+            for(ASTNode child:node.getChildren()){
+                replaceNameASTNode(child,oldName,newName);
+            }
+        }
+            
 	private static void testAdaptor() {
 		SBMLDocument degradationDoc = createDegradationModel("GFP");
 

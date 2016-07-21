@@ -198,7 +198,7 @@ public class PhoenixController {
         return null;
     }
     
-    private static Feature getExpresseeFeature(AssignedModule amodule){
+    public static Feature getExpresseeFeature(AssignedModule amodule){
         for(PrimitiveModule pm:amodule.getSubmodules()){
             if(pm.getModuleFeature().getRole().equals(FeatureRole.CDS) || pm.getModuleFeature().getRole().equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || pm.getModuleFeature().getRole().equals(FeatureRole.CDS_ACTIVATOR) || pm.getModuleFeature().getRole().equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR) || pm.getModuleFeature().getRole().equals(FeatureRole.CDS_REPRESSOR)){
                 return pm.getModuleFeature();
@@ -369,6 +369,33 @@ public class PhoenixController {
         Map<String, List<AssignedModule>> amap = getAssignedModulesMap(module);
         removeDuplicateAssignedModules(module,amap);
         
+    }
+    
+    public static Map<String, AssignedModule> getShortNameEXPEXEMap(Module module){
+        Map<String, AssignedModule> map = new HashMap();
+        getShortNameEXPEXEMap(module, map);
+        
+        return map;
+    }
+    
+    private static void getShortNameEXPEXEMap(Module module, Map<String, AssignedModule> map){
+        switch(module.getRole()){
+            case EXPRESSOR:
+            case EXPRESSEE:
+            case EXPRESSEE_REPRESSOR:
+            case EXPRESSEE_REPRESSIBLE_REPRESSOR:
+            case EXPRESSEE_ACTIVATOR:
+            case EXPRESSEE_ACTIVATIBLE_ACTIVATOR: 
+                for(AssignedModule am:module.getAssignedModules()){
+                    map.put(am.getShortName(), am);
+                }
+                break;
+            default:
+                break;
+        }
+        for(Module child:module.getChildren()){
+            getShortNameEXPEXEMap(child,map);
+        }
     }
     
     public static Map<String, List<AssignedModule>> getAssignedModulesMap(Module module){

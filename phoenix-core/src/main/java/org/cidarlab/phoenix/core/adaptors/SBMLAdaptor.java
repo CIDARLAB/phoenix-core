@@ -50,6 +50,35 @@ import org.sbml.jsbml.text.parser.ParseException;
 public class SBMLAdaptor {
 	
     
+        
+        public static SBMLDocument convertParamsLocalToGlobal(SBMLDocument doc){
+            Model model = doc.getModel();
+            ListOf<Reaction> reactions = model.getListOfReactions();
+            for (Reaction reaction : reactions) {
+                KineticLaw kineticLaw = reaction.getKineticLaw();
+                ListOf<LocalParameter> localParameters = kineticLaw.getListOfLocalParameters();
+
+                for (LocalParameter localParameter : localParameters) {
+                    String newId = reaction.getId() + "_" + localParameter.getId();
+                    Parameter newParam = new Parameter(localParameter);
+                    newParam.setId(newId);
+                    model.addParameter(newParam);
+                    replaceNameASTNode(kineticLaw.getMath(), localParameter.getId(), newParam.getId());
+                }
+
+                int size = kineticLaw.getLocalParameterCount();
+
+                for (int i = size - 1; i >= 0; i--) {
+                    kineticLaw.removeLocalParameter(i);
+                }
+
+            }
+
+            return doc;
+        }
+        
+    
+    
         public static SBMLDocument convertParamsLocalToGlobal(String filepath){
             SBMLDocument doc = null; 
             try {

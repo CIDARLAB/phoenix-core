@@ -36,7 +36,18 @@ import learn.parameterestimator.ParameterEstimator;
  * @author prash
  */
 public class IBioSimAdaptor {
-
+    
+    public static Map<String, Double> estimateParametersWithFileLines(String sbmlFile, List<String> parameters, List<List<String>> experimentFileLines) throws IOException, XMLStreamException {
+        String[] split = sbmlFile.split(File.separator);
+        String root = sbmlFile.substring(0, sbmlFile.length() - split[split.length - 1].length());
+        Experiments experiments = new Experiments();
+        SpeciesCollection speciesCollection = new SpeciesCollection();
+        for (List<String> experiment : experimentFileLines) {
+            parseCSV(experiment, speciesCollection, experiments);
+        }
+        return ParameterEstimator.estimate(sbmlFile, root, parameters, experiments, speciesCollection);
+    }
+    
     public static Map<String, Double> estimateParameters(String sbmlFile, List<String> parameters, List<String> experimentFiles) throws IOException, XMLStreamException {
         String[] split = sbmlFile.split(File.separator);
         String root = sbmlFile.substring(0, sbmlFile.length() - split[split.length - 1].length());
@@ -47,7 +58,33 @@ public class IBioSimAdaptor {
         }
         return ParameterEstimator.estimate(sbmlFile, root, parameters, experiments, speciesCollection);
     }
+    
+    
+    private static void parseCSV(List<String> fileLines, SpeciesCollection speciesCollection, Experiments experiments) {
+        int experiment = experiments.getNumOfExperiments();
+        Scanner scan = null;
+        boolean isFirst = true;
+        int row = 0;
+        for (String line : fileLines) {
+        
+            String[] values = line.split(",");
 
+            if (isFirst) {
+                for (int i = 0; i < values.length; i++) {
+                    speciesCollection.addSpecies(values[i], i);
+                }
+                isFirst = false;
+            } else {
+                for (int i = 0; i < values.length; i++) {
+                    experiments.addExperiment(experiment, row, i, Double.parseDouble(values[i]));
+                }
+                row++;
+            }
+        }
+
+    }
+    
+    
     private static void parseCSV(String filename, SpeciesCollection speciesCollection, Experiments experiments) {
         int experiment = experiments.getNumOfExperiments();
         Scanner scan = null;

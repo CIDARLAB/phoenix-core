@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Map;
 import org.cidarlab.phoenix.core.adaptors.RAdaptor;
 import org.cidarlab.phoenix.core.controller.Utilities;
+import org.cidarlab.phoenix.core.dataprocessing.AnalyzeData;
 import org.junit.Test;
 
 /**
@@ -24,9 +25,9 @@ public class RAdaptorTest {
         String filepath = Utilities.getFilepath() + "/src/main/resources/InstructionFiles/";
         String keyFile = filepath + "testingInstructionsTest.csv";
         String mapFile = filepath + "nameMapFileTest.csv";
-        Map<String,String> nameMap = RAdaptor.parseKeyMapFiles(mapFile);
+        Map<String,String> nameMap = AnalyzeData.parseKeyMapFiles(mapFile);
         
-        RAdaptor.directoryWalk(directory,directory,nameMap,null);
+        AnalyzeData.directoryWalk(directory,directory,"",nameMap,null);
         
     }
     
@@ -38,12 +39,12 @@ public class RAdaptorTest {
         RAdaptor.runR(filepathR);
     }
     
-    @Test
+    //@Test
     public void parseKeyMapFilesTest(){
        String filepath = Utilities.getFilepath() + "/src/main/resources/InstructionFiles/";
        String keyFile = filepath + "testingInstructionsTest.csv";
        String mapFile = filepath + "nameMapFileTest_ea_filled.csv";
-       RAdaptor.parseKeyMapFiles(mapFile);
+       AnalyzeData.parseKeyMapFiles(mapFile);
        
     }
     

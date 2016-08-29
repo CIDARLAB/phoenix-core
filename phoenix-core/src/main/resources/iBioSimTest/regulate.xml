@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment id="cell" constant="false" name="cell"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="out" constant="false" hasOnlySubstanceUnits="true" name="out" boundaryCondition="false" sboTerm="SBO:0000601" compartment="cell"/>
+      <species id="rep" constant="false" hasOnlySubstanceUnits="true" name="rep" boundaryCondition="false" sboTerm="SBO:0000600" compartment="cell"/>
+    </listOfSpecies>
+    <listOfParameters>
+       <parameter constant="false" id="y" name="y" value="1"/>
+       <parameter constant="false" id="K_d" name="K_d" value="1"/>
+       <parameter constant="false" id="k_EXR" name="k_EXR" value="1"/>
+       <parameter constant="false" id="K_r" name="K_r" value="1"/>
+       <parameter constant="false" id="n" name="n" value="2"/>
+    </listOfParameters>
+    <listOfReactions>
+      <reaction id="out_degradation" name="out_degradation" reversible="false" sboTerm="SBO:0000179" fast="false">
+        <listOfReactants>
+          <speciesReference constant="true" species="out" stoichiometry="1"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <divide/>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <ci> y </ci>
+                  <ci> out </ci>
+                </apply>
+                <ci> K_d </ci>
+              </apply>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <divide/>
+                  <ci> out </ci>
+                  <ci> K_d </ci>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="out_expression" name="out_expression" reversible="false" sboTerm="SBO:0000589" fast="false">
+        <listOfProducts>
+          <speciesReference constant="true" species="out" stoichiometry="1"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="rep" sboTerm="SBO:0000020"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <divide/>
+              <ci> k_EXR </ci>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <times/>
+                  <ci> K_r </ci>
+                  <apply>
+                    <power/>
+                    <ci> rep </ci>
+                    <ci> n </ci>
+                  </apply>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

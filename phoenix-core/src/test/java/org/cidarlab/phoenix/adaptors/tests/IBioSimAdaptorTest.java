@@ -50,7 +50,7 @@ public class IBioSimAdaptorTest {
     
     
     @Test
-    public void testParameterEstimation() throws IOException, XMLStreamException {
+    public void testDegradationParameterEstimation() throws IOException, XMLStreamException {
         System.out.println("parameterEstimation");
         String sbml = Utilities.getFilepath() + "/src/main/resources/iBioSimTest/degrade.xml";
 	List<String> params = new ArrayList<String>();
@@ -58,6 +58,21 @@ public class IBioSimAdaptorTest {
 	params.add("K_d");
 	List<String> experimentFiles = new ArrayList<String>();
 	experimentFiles.add(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/degrade.csv");
+	Map<String, Double> results = IBioSimAdaptor.estimateParameters(sbml, params, experimentFiles);
+        for(String param : results.keySet()) {
+            System.out.println(param + " = " + results.get(param));
+        }
+    }
+    
+    @Test
+    public void testRegulationParameterEstimation() throws IOException, XMLStreamException {
+        System.out.println("parameterEstimation");
+        String sbml = Utilities.getFilepath() + "/src/main/resources/iBioSimTest/regulate.xml";
+	List<String> params = new ArrayList<String>();
+	params.add("n");
+	params.add("K_r");
+	List<String> experimentFiles = new ArrayList<String>();
+	experimentFiles.add(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/regulate.csv");
 	Map<String, Double> results = IBioSimAdaptor.estimateParameters(sbml, params, experimentFiles);
         for(String param : results.keySet()) {
             System.out.println(param + " = " + results.get(param));

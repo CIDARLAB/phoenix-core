@@ -58,7 +58,7 @@ public class PhoenixController {
         ClothoAdaptor.uploadSequences(featureLib, true,clothoObject);
         ClothoAdaptor.uploadFluorescenceSpectrums(fluorophoreSpectra,clothoObject);
         ClothoAdaptor.uploadSequences(plasmidLib, false,clothoObject);
-        ClothoAdaptor.uploadCytometer(cytometer,clothoObject);
+        ClothoAdaptor.uploadCytometerData(cytometer,clothoObject);
         
         conn.closeConnection();
     }

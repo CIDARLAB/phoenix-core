@@ -45,6 +45,7 @@ public class ParameterEstimation {
         createSBMLFile(sbmldoc,sbmldocFilepath);
         List<List<String>> allExpLines = new ArrayList();
         allExpLines.add(csvFileLines);
+        System.out.println(allExpLines);
         try {
             Map<String,Double> params = IBioSimAdaptor.estimateParametersWithFileLines(sbmldocFilepath, getGlobalParams(sbmldoc), allExpLines);
             writeToNewSBMLDoc(sbmldoc,sbmldocFilepath,params);

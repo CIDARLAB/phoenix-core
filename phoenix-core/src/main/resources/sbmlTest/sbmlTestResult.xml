@@ -2,20 +2,20 @@
 <sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
   <model>
     <listOfCompartments>
-      <compartment id="cell" constant="false" name="cell"/>
+      <compartment name="cell" constant="false" id="cell"/>
     </listOfCompartments>
     <listOfSpecies>
-      <species id="_573433d944ae485fe68094c5" constant="false" hasOnlySubstanceUnits="true" name="pLmrA.ref" boundaryCondition="false" sboTerm="SBO:0000601" compartment="cell"/>
+      <species boundaryCondition="false" constant="false" hasOnlySubstanceUnits="true" sboTerm="SBO:0000601" compartment="cell" name="pLmrA.ref" id="_573433d944ae485fe68094c5"/>
     </listOfSpecies>
     <listOfParameters>
-      <parameter id="_573433d944ae485fe68094c5_degradation_y" constant="true" name="y" value="1"/>
-      <parameter id="_573433d944ae485fe68094c5_degradation_K_d" constant="true" name="K_d" value="1"/>
-      <parameter id="_573433d944ae485fe68094c5_expression_k_EXE" constant="true" name="k_EXE" value="1"/>
+      <parameter name="y" constant="true" id="_573433d944ae485fe68094c5_degradation_y" value="1"/>
+      <parameter name="K_d" constant="true" id="_573433d944ae485fe68094c5_degradation_K_d" value="1"/>
+      <parameter name="k_EXE" constant="true" id="_573433d944ae485fe68094c5_expression_k_EXE" value="1"/>
     </listOfParameters>
     <listOfReactions>
-      <reaction id="_573433d944ae485fe68094c5_degradation" name="pLmrA.ref_degradation" reversible="false" sboTerm="SBO:0000179" fast="false">
+      <reaction name="pLmrA.ref_degradation" fast="false" id="_573433d944ae485fe68094c5_degradation" reversible="false" sboTerm="SBO:0000179">
         <listOfReactants>
-          <speciesReference constant="true" species="_573433d944ae485fe68094c5" stoichiometry="1"/>
+          <speciesReference stoichiometry="1" constant="true" species="_573433d944ae485fe68094c5"/>
         </listOfReactants>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
@@ -43,9 +43,9 @@
           </math>
                 </kineticLaw>
       </reaction>
-      <reaction id="_573433d944ae485fe68094c5_expression" name="pLmrA.ref_expression" reversible="false" sboTerm="SBO:0000589" fast="false">
+      <reaction name="pLmrA.ref_expression" fast="false" id="_573433d944ae485fe68094c5_expression" reversible="false" sboTerm="SBO:0000589">
         <listOfProducts>
-          <speciesReference constant="true" species="_573433d944ae485fe68094c5" stoichiometry="1"/>
+          <speciesReference stoichiometry="1" constant="true" species="_573433d944ae485fe68094c5"/>
         </listOfProducts>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          

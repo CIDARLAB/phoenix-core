@@ -184,7 +184,7 @@ public class ClothoTest {
         String filePath = getFilepath() + "/src/main/resources/FluorescentProteins/cosbi_fortessa_bd.csv";
         File toLoad = new File(filePath);
         try {
-            ClothoAdaptor.uploadCytometer(toLoad,clothoObject);
+            ClothoAdaptor.uploadCytometerData(toLoad,clothoObject);
         } catch (Exception ex) {
             Logger.getLogger(ClothoTest.class.getName()).log(Level.SEVERE, null, ex);
         } 

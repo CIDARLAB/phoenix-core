@@ -18,6 +18,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.sf.json.JSONArray;
@@ -161,6 +163,71 @@ public class ClothoAdaptor {
     
     public static void uploadCytometer(File input, Clotho clothoObject) {
 
+        
+    }
+    
+    
+    */
+    
+    public static void uploadCytometerData(File file, Clotho clothoObject){
+        
+        HashSet<String> lasers = new HashSet<>();
+        HashSet<String> filters = new HashSet<>();
+        HashMap<String, ArrayList<String[]>> config = new HashMap<>();
+        
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line = "";
+            String name = "";
+            boolean laserMode = false;
+            String laser = "";
+            ArrayList<String[]> filterList = new ArrayList<>();
+            while( (line = reader.readLine()) != null ){
+                String pieces[] = line.split(",");
+                if(laserMode){
+                    if(!pieces[0].trim().isEmpty()){
+                        laser = pieces[2].trim() + ":" + pieces[3].trim();
+                        lasers.add(laser);
+                        filterList = new ArrayList<>();
+                        config.put(laser, filterList);
+                    }
+                    System.out.println(line);
+                    System.out.println("Number of pieces :: " + pieces.length);
+                    if (pieces.length > 6) {
+                        if (pieces[7] != null) {
+                            if (!pieces[7].trim().equals("")) {
+                                String mirrorPieces[] = pieces[7].trim().split(" ");
+                                String mirror = mirrorPieces[0].trim();//7
+                                String filterPieces[] = pieces[8].trim().split(" ");
+                                String filter = filterPieces[0].trim().replaceAll("/", ":");//8
+                                filters.add(mirror);
+                                filters.add(filter);
+                                filterList.add(new String[]{mirror, filter});
+                            }
+                        }
+                    }
+                    
+                
+                }
+                if(pieces[0].trim().equalsIgnoreCase("Configuration Name")){
+                    name = pieces[1].trim();
+                }
+                if(pieces[0].trim().equalsIgnoreCase("Laser Name")){
+                    laserMode = true;
+                }
+            }
+            
+            Cytometer c = new Cytometer(name, lasers, filters, config);
+            createCytometer(c, clothoObject);
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ClothoAdaptor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ClothoAdaptor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //<editor-fold desc="old uploadCytometer">
+        /*
         BufferedReader reader = null;
         try {
             //Import file, begin reading
@@ -260,12 +327,8 @@ public class ClothoAdaptor {
                 Logger.getLogger(ClothoAdaptor.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }
-    
-    
-    */
-    
-    public static void uploadCytometerData(File file, Clotho clothoObject){
+        */
+        //</editor-fold>
         
     }
     

@@ -40,6 +40,10 @@
                 <exec.args>-classpath %classpath ${packageClassName}</exec.args>
                 <exec.executable>java</exec.executable>
                 <exec.classpathScope>${classPathScope}</exec.classpathScope>
+                <run.args.extra>-noverify</run.args.extra>
+                
+                
+                
                 
             </properties>
         </action>

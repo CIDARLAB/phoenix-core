@@ -177,10 +177,10 @@ public class ClothoAdaptor {
         
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
-            String line = "";
+            String line;
             String name = "";
             boolean laserMode = false;
-            String laser = "";
+            String laser;
             ArrayList<String[]> filterList = new ArrayList<>();
             while( (line = reader.readLine()) != null ){
                 String pieces[] = line.split(",");
@@ -191,8 +191,6 @@ public class ClothoAdaptor {
                         filterList = new ArrayList<>();
                         config.put(laser, filterList);
                     }
-                    System.out.println(line);
-                    System.out.println("Number of pieces :: " + pieces.length);
                     if (pieces.length > 6) {
                         if (pieces[7] != null) {
                             if (!pieces[7].trim().equals("")) {

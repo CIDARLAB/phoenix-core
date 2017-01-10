@@ -21,11 +21,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import org.cidarlab.phoenix.core.dom.TimeSeriesData;
 
@@ -61,7 +58,7 @@ public class JavaPlotAdaptor {
             PointDataSet pds = new PointDataSet(value);
             DataSetPlot dsp = new DataSetPlot(pds);
             dsp.setTitle(key);
-            
+            dsp.setPlotStyle(ps);
             plot.addPlot(dsp);
         }
         

@@ -39,16 +39,19 @@ public class Annotation extends ObjBase {
 
     @Getter
     private String symbol;
+    
     @Getter
     private boolean isForwardStrand;
+    
     @Getter
-   
     private Person author;
+    
     @Getter
-  
     private Feature feature;
+    
     @Getter
     private int start, end;
+    
     @Getter
     private Color forwardColor, reverseColor;
 	

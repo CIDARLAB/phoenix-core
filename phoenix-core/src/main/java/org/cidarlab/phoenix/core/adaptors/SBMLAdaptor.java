@@ -256,6 +256,7 @@ public class SBMLAdaptor {
     	Compartment cell = compartmentMod.createCompartment(compID);
     	cell.setName(compName);
     	cell.setConstant(false);
+        cell.setSize(1);
     	return compartmentDoc;
 	}
 	
@@ -379,6 +380,10 @@ public class SBMLAdaptor {
     }
     
     private static Species createSpecies(String specID, String specName, Model mod) {
+    	return createSpecies(specID, specName, mod, 0.0);
+    }
+    
+    private static Species createSpecies(String specID, String specName, Model mod, double initialAmount) {
     	Species spec;
     	if (mod.getNumCompartments() > 0) {
     		spec = mod.createSpecies(specID, mod.getCompartment(0));
@@ -386,6 +391,7 @@ public class SBMLAdaptor {
     		spec = mod.createSpecies(specID);
     	}
     	spec.setName(specName);
+        spec.setInitialAmount(initialAmount);
     	spec.setHasOnlySubstanceUnits(true);
     	spec.setBoundaryCondition(false);
     	spec.setConstant(false);

@@ -292,7 +292,7 @@ public class IBioSimAdaptor {
         SimulatorODERK simulator = new SimulatorODERK(SBMLFileName, outDir, timeLimit,
                 timeStep, rndSeed, progress, printInterval, stoichAmpValue, running,
                 new String[0], numSteps, relError, absError, "amount");
-//        simulator.simulate();
+        simulator.simulate();
     }
 
     /**

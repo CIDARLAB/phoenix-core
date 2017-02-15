@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -30,6 +31,10 @@ import javax.xml.stream.XMLStreamException;
 import learn.genenet.Experiments;
 import learn.genenet.SpeciesCollection;
 import learn.parameterestimator.ParameterEstimator;
+import org.sbml.jsbml.Model;
+import org.sbml.jsbml.Reaction;
+import org.sbml.jsbml.SBMLDocument;
+import org.sbml.jsbml.SBMLWriter;
 
 /**
  *
@@ -46,6 +51,46 @@ public class IBioSimAdaptor {
             parseCSV(experiment, speciesCollection, experiments);
         }
         return ParameterEstimator.estimate(sbmlFile, root, parameters, experiments, speciesCollection);
+    }
+    
+    public static Map<String, Double> estimateExpressorParameters(String degTimeSeriesData, String expSteadyStateData) throws XMLStreamException, FileNotFoundException, IOException {
+        SBMLDocument degradationDoc = SBMLAdaptor.createDegradationModel("GFP");
+        degradationDoc.getModel().getReaction("GFP_degradation").getKineticLaw().removeLocalParameter("y");
+        degradationDoc.getModel().getReaction("GFP_degradation").getKineticLaw().removeLocalParameter("K_d");
+        degradationDoc.getModel().createParameter("y");
+        degradationDoc.getModel().createParameter("K_d");
+        SBMLWriter writer = new SBMLWriter();
+        writer.write(degradationDoc, "deg.xml");
+        List<String> params = new ArrayList<String>();
+	params.add("y");
+	params.add("K_d");
+        List<List<String>> data = parseCSV(degTimeSeriesData);
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).get(0).equals("\"MEAN_FITC.A\"")) {
+                data.get(i).set(0, "\"GFP\"");
+            }
+        }
+        writeCSV(data, "data.csv");
+        List<String> experimentFiles = new ArrayList<String>();
+	experimentFiles.add(new File("data.csv").getAbsolutePath());
+	Map<String, Double> results = estimateParameters(new File("deg.xml").getAbsolutePath(), params, experimentFiles);
+        new File("deg.xml").delete();
+        new File("data.csv").delete();
+        data = IBioSimAdaptor.parseCSV(expSteadyStateData);
+        double steady = 0;
+        int j = 1;
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).get(0).equals("\"MEAN_FITC.A\"")) {
+                for (j = 1; j < data.get(i).size(); j++) {
+                    steady += Double.parseDouble(data.get(i).get(j));
+                }
+            }
+        }
+        steady /= j;
+        double y = results.get("y");
+        double K_d = results.get("K_d");
+        results.put("k_EXE", (y * (steady/K_d))/(1+(steady/K_d)));
+        return results;
     }
 
     private static void parseCSV(String filename, SpeciesCollection speciesCollection, Experiments experiments) {
@@ -79,6 +124,57 @@ public class IBioSimAdaptor {
                 scan.close();
             }
 
+        }
+    }
+    
+    public static List<List<String>> parseCSV(String filename) {
+        List<List<String>> data = new ArrayList<List<String>>();
+        Scanner scan = null;
+        boolean isFirst = true;
+        try {
+            scan = new Scanner(new File(filename));
+            while (scan.hasNextLine()) {
+                String line = scan.nextLine();
+
+                String[] values = line.split(",");
+
+                if (isFirst) {
+                    for (int i = 0; i < values.length; i++) {
+                        List<String> dataLine = new ArrayList<String>();
+                        dataLine.add(values[i]);
+                        data.add(dataLine);
+                    }
+                    isFirst = false;
+                } else {
+                    for (int i = 0; i < values.length; i++) {
+                        data.get(i).add(values[i]);
+                    }
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Could not find the file!");
+        } finally {
+            if (scan != null) {
+                scan.close();
+            }
+
+        }
+        return data;
+    }
+    
+    public static void writeCSV(List<List<String>> data, String filename) {
+        try {
+            PrintWriter writer = new PrintWriter(filename);
+            for (int j = 0; j < data.get(0).size(); j ++) {
+                String line = data.get(0).get(j);
+                for (int i = 1; i < data.size(); i ++) {
+                    line += "," + data.get(i).get(j);
+                }
+                writer.println(line);
+            }
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Could not write to file!");
         }
     }
 

@@ -92,96 +92,31 @@ public class IBioSimAdaptorTest {
     
     @Test
     public void testExpressorEstimationAndSimulation() throws IOException, XMLStreamException {
-        System.out.println("parameterEstimation");
-        String sbml = Utilities.getFilepath() + "/src/main/resources/iBioSimTest/degrade.xml";
-	List<String> params = new ArrayList<String>();
-	params.add("y");
-	params.add("K_d");
-        List<List<String>> data = parseCSV(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/degradationTimeSeriesPlotPoints.csv");
-        for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).get(0).equals("\"MEAN_FITC.A\"")) {
-                data.get(i).set(0, "\"deg\"");
-            }
-        }
-        writeCSV(data, Utilities.getFilepath() + "/src/main/resources/iBioSimTest/data.csv");
-	List<String> experimentFiles = new ArrayList<String>();
-	experimentFiles.add(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/data.csv");
-	Map<String, Double> results = IBioSimAdaptor.estimateParameters(sbml, params, experimentFiles);
-        for(String param : results.keySet()) {
-            System.out.println(param + " = " + results.get(param));
-        }
-        data = parseCSV(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/expressorSteadyState.csv");
-        double Fl_t = 0;
-        for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).get(0).equals("\"MEAN_FITC.A\"")) {
-                Fl_t = Double.parseDouble(data.get(i).get(1));
-            }
-        }
+        Map<String, Double> results = IBioSimAdaptor.estimateExpressorParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/degradationTimeSeriesPlotPoints.csv",
+                Utilities.getFilepath() + "/src/main/resources/iBioSimTest/expressorSteadyState.csv");
         double y = results.get("y");
         double K_d = results.get("K_d");
-        double kp = (y * (Fl_t/K_d))/(1+(Fl_t/K_d));
+        double k_EXE = results.get("k_EXE");
         SBMLDocument doc = SBMLReader.read(new File(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/expression.xml"));
         Model model = doc.getModel();
         Reaction react = model.getReaction("exp_degradation");
         react.getKineticLaw().getLocalParameter("K_d").setValue(K_d);
         react.getKineticLaw().getLocalParameter("y").setValue(y);
         react = model.getReaction("exp_expression");
-        react.getKineticLaw().getLocalParameter("k_EXE").setValue(kp);
+        react.getKineticLaw().getLocalParameter("k_EXE").setValue(k_EXE);
         SBMLWriter writer = new SBMLWriter();
         writer.write(doc, Utilities.getFilepath() + "/src/main/resources/iBioSimTest/expressor_expression_with_params.xml");
         IBioSimAdaptor.simulateODE(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/expressor_expression_with_params.xml", Utilities.getFilepath() + "/src/main/resources/iBioSimTest/", 100, 1, 1);
     }
     
     
-    private static List<List<String>> parseCSV(String filename) {
-        List<List<String>> data = new ArrayList<List<String>>();
-        Scanner scan = null;
-        boolean isFirst = true;
-        try {
-            scan = new Scanner(new File(filename));
-            while (scan.hasNextLine()) {
-                String line = scan.nextLine();
-
-                String[] values = line.split(",");
-
-                if (isFirst) {
-                    for (int i = 0; i < values.length; i++) {
-                        List<String> dataLine = new ArrayList<String>();
-                        dataLine.add(values[i]);
-                        data.add(dataLine);
-                    }
-                    isFirst = false;
-                } else {
-                    for (int i = 0; i < values.length; i++) {
-                        data.get(i).add(values[i]);
-                    }
-                }
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("Could not find the file!");
-        } finally {
-            if (scan != null) {
-                scan.close();
-            }
-
-        }
-        return data;
+    @Test
+    public void testInverterEstimationAndSimulation() throws IOException, XMLStreamException {
+        Map<String, Double> pLacpBADExpParams = IBioSimAdaptor.estimateExpressorParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/gfp_EXP/M9_glucose_ara_CAM/degradationTimeSeriesPlotPoints.csv",
+                Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/pLac_pBAD_EXPRESSOR/one_media_MEFL/expressorSteadyState.csv");
+        Map<String, Double> pPhlFExpParams = IBioSimAdaptor.estimateExpressorParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/gfp_EXP/M9_glucose_ara_CAM/degradationTimeSeriesPlotPoints.csv",
+                Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/pPhlF_EXPRESSOR/one_media_MEFL/expressorSteadyState.csv");
+        Map<String, Double> pTetExpParams = IBioSimAdaptor.estimateExpressorParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/gfp_EXP/M9_glucose_ara_CAM/degradationTimeSeriesPlotPoints.csv",
+                Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/pTet_EXPRESSOR/one_media_MEFL/expressorSteadyState.csv");
     }
-    
-    private static void writeCSV(List<List<String>> data, String filename) {
-        try {
-            PrintWriter writer = new PrintWriter(filename);
-            for (int j = 0; j < data.get(0).size(); j ++) {
-                String line = data.get(0).get(j);
-                for (int i = 1; i < data.size(); i ++) {
-                    line += "," + data.get(i).get(j);
-                }
-                writer.println(line);
-            }
-            writer.close();
-        } catch (IOException e) {
-            System.out.println("Could not write to file!");
-        }
-    }
-    
 }

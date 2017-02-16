@@ -23,6 +23,7 @@ import org.sbml.jsbml.LocalParameter;
 import org.sbml.jsbml.Model;
 import org.sbml.jsbml.ModifierSpeciesReference;
 import org.sbml.jsbml.NamedSBase;
+import org.sbml.jsbml.Parameter;
 import org.sbml.jsbml.Reaction;
 import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.SBMLException;
@@ -375,15 +376,15 @@ public class SBMLAdaptor {
     	return inductionActivationDoc;
     }
     
-    private static Species createSpecies(String specID, Model mod) {
+    public static Species createSpecies(String specID, Model mod) {
     	return createSpecies(specID, specID, mod);
     }
     
-    private static Species createSpecies(String specID, String specName, Model mod) {
+    public static Species createSpecies(String specID, String specName, Model mod) {
     	return createSpecies(specID, specName, mod, 0.0);
     }
     
-    private static Species createSpecies(String specID, String specName, Model mod, double initialAmount) {
+    public static Species createSpecies(String specID, String specName, Model mod, double initialAmount) {
     	Species spec;
     	if (mod.getNumCompartments() > 0) {
     		spec = mod.createSpecies(specID, mod.getCompartment(0));
@@ -396,6 +397,22 @@ public class SBMLAdaptor {
     	spec.setBoundaryCondition(false);
     	spec.setConstant(false);
     	return spec;
+    }
+    
+    public static Parameter createParameter(String paramID, Model mod) {
+    	return createParameter(paramID, paramID, mod);
+    }
+    
+    public static Parameter createParameter(String paramID, String paramName, Model mod) {
+    	return createParameter(paramID, paramName, mod, 1.0);
+    }
+    
+    public static Parameter createParameter(String paramID, String paramName, Model mod, double value) {
+    	Parameter p = mod.createParameter(paramID);
+    	p.setName(paramName);
+        p.setValue(value);
+        p.setConstant(false);
+    	return p;
     }
     
     private static Reaction createDegradationReaction(Species degraded, Model mod) {

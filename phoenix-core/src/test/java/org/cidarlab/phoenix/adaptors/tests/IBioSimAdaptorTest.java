@@ -112,11 +112,11 @@ public class IBioSimAdaptorTest {
     
     @Test
     public void testInverterEstimationAndSimulation() throws IOException, XMLStreamException {
-        Map<String, Double> pLacpBADExpParams = IBioSimAdaptor.estimateExpressorParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/gfp_EXP/M9_glucose_ara_CAM/degradationTimeSeriesPlotPoints.csv",
+        Map<String, Double> pLacpBADExpParams = IBioSimAdaptor.estimateExpressorParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/gfp_EXP/M9_glucose_ara_CAM/timeSeriesPlotPoints.csv",
                 Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/pLac_pBAD_EXPRESSOR/one_media_MEFL/expressorSteadyState.csv");
-        Map<String, Double> pPhlFExpParams = IBioSimAdaptor.estimateExpressorParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/gfp_EXP/M9_glucose_ara_CAM/degradationTimeSeriesPlotPoints.csv",
+        Map<String, Double> pPhlFExpParams = IBioSimAdaptor.estimateExpressorParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/gfp_EXP/M9_glucose_ara_CAM/timeSeriesPlotPoints.csv",
                 Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/pPhlF_EXPRESSOR/one_media_MEFL/expressorSteadyState.csv");
-        Map<String, Double> pTetExpParams = IBioSimAdaptor.estimateExpressorParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/gfp_EXP/M9_glucose_ara_CAM/degradationTimeSeriesPlotPoints.csv",
+        Map<String, Double> pTetExpParams = IBioSimAdaptor.estimateExpressorParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/gfp_EXP/M9_glucose_ara_CAM/timeSeriesPlotPoints.csv",
                 Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/pTet_EXPRESSOR/one_media_MEFL/expressorSteadyState.csv");
     }
 }

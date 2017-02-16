@@ -31,8 +31,6 @@ import javax.xml.stream.XMLStreamException;
 import learn.genenet.Experiments;
 import learn.genenet.SpeciesCollection;
 import learn.parameterestimator.ParameterEstimator;
-import org.sbml.jsbml.Model;
-import org.sbml.jsbml.Reaction;
 import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.SBMLWriter;
 
@@ -57,8 +55,8 @@ public class IBioSimAdaptor {
         SBMLDocument degradationDoc = SBMLAdaptor.createDegradationModel("GFP");
         degradationDoc.getModel().getReaction("GFP_degradation").getKineticLaw().removeLocalParameter("y");
         degradationDoc.getModel().getReaction("GFP_degradation").getKineticLaw().removeLocalParameter("K_d");
-        degradationDoc.getModel().createParameter("y");
-        degradationDoc.getModel().createParameter("K_d");
+        degradationDoc.getModel().addParameter(SBMLAdaptor.createParameter("y", degradationDoc.getModel()));
+        degradationDoc.getModel().addParameter(SBMLAdaptor.createParameter("K_d", degradationDoc.getModel()));
         SBMLWriter writer = new SBMLWriter();
         writer.write(degradationDoc, "deg.xml");
         List<String> params = new ArrayList<String>();

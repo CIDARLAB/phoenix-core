@@ -75,9 +75,9 @@ public class IBioSimAdaptor {
         return results;
     }
     
-    public static Map<String, Double> estimateExpresseeParametersRepression(String degTimeSeriesData, Map<String, Double> expParams,
+    public static Map<String, Double> estimateExpresseeParameters(String degTimeSeriesData, Map<String, Double> expParams,
             String regulationSteadyStateData, String smallMoleculeSteadyStateData, String expresseeChannel, String regulatorChannel,
-            boolean regFromSmallMoleculeData) throws XMLStreamException, IOException {
+            boolean repression, boolean regFromSmallMoleculeData) throws XMLStreamException, IOException {
         Map<String, Double> results = estimateDegradationParams(degTimeSeriesData, expresseeChannel);
         results.put("k_EXE", expParams.get("k_EXE"));
         double y = results.get("y");
@@ -100,13 +100,23 @@ public class IBioSimAdaptor {
             for (j = 1; j < data.get(0).size(); j++) {
                 double expresseeSteady = Double.parseDouble(data.get(expresseeIndex).get(j));
                 double regulatorSteady = Double.parseDouble(data.get(regulatorIndex).get(j));
-                K_r += (((k_EXE * (1 + (expresseeSteady / K_d))) / (y * (expresseeSteady / K_d))) - 1) / regulatorSteady;
+                if (repression) {
+                    K_r += (((k_EXE * (1 + (expresseeSteady / K_d))) / (y * (expresseeSteady / K_d))) - 1) / regulatorSteady;
+                }
+                else {
+                    K_r += ((y * (expresseeSteady / K_d))/(1 + (expresseeSteady / K_d)))/(regulatorSteady * (k_EXE - ((y * (expresseeSteady / K_d))/(1 + (expresseeSteady / K_d)))));
+                }
             }
             K_r /= j;
             if (K_r == 0) {
                 K_r = 1;
             }
-            results.put("K_r", K_r);
+            if (repression) {
+                results.put("K_r", K_r);
+            }
+            else {
+                results.put("K_a", K_r);
+            }
         }
         else {
             data = parseCSV(smallMoleculeSteadyStateData);
@@ -123,12 +133,28 @@ public class IBioSimAdaptor {
                 double expresseeSteady = Double.parseDouble(data.get(expresseeIndex).get(j));
                 double regulatorSteady = Double.parseDouble(data.get(regulatorIndex).get(j));
                 if (smallMoleculeCount == 0) {
-                    K_r = (((k_EXE * (1 + (expresseeSteady / K_d))) / (y * (expresseeSteady / K_d))) - 1) / regulatorSteady;
+                    if (repression) {
+                        K_r = (((k_EXE * (1 + (expresseeSteady / K_d))) / (y * (expresseeSteady / K_d))) - 1) / regulatorSteady;
+                    }
+                    else {
+                        K_r = ((y * (expresseeSteady / K_d))/(1 + (expresseeSteady / K_d)))/(regulatorSteady * (k_EXE - ((y * (expresseeSteady / K_d))/(1 + (expresseeSteady / K_d)))));
+                    }
                 }
             }
-            results.put("K_r", K_r);
+            if (repression) {
+                results.put("K_r", K_r);
+            }
+            else {
+                results.put("K_a", K_r);
+            }
         }
-        double K_r = results.get("K_r");
+        double K_r;
+        if (repression) {
+            K_r = results.get("K_r");
+        }
+        else {
+            K_r = results.get("K_a");
+        }
         data = parseCSV(smallMoleculeSteadyStateData);
         for (int i = 0; i < data.size(); i++) {
             if (data.get(i).get(0).equals(expresseeChannel)) {
@@ -145,7 +171,12 @@ public class IBioSimAdaptor {
             double expresseeSteady = Double.parseDouble(data.get(expresseeIndex).get(j));
             double regulatorSteady = Double.parseDouble(data.get(regulatorIndex).get(j));
             if (smallMoleculeCount != 0) {
-                K_i += (((K_r*regulatorSteady)/(((k_EXE*(1+(expresseeSteady/K_d)))/(y*(expresseeSteady/K_d)))-1))-1)/smallMoleculeCount;
+                if (repression) {
+                    K_i += (((K_r*regulatorSteady)/(((k_EXE*(1+(expresseeSteady/K_d)))/(y*(expresseeSteady/K_d)))-1))-1)/smallMoleculeCount;
+                }
+                else {
+                    K_i += ((((y * (expresseeSteady / K_d))/(1 + (expresseeSteady / K_d)))/(k_EXE - ((y * (expresseeSteady / K_d))/(1 + (expresseeSteady / K_d)))))/((K_r*regulatorSteady)-(((y * (expresseeSteady / K_d))/(1 + (expresseeSteady / K_d)))/(k_EXE - ((y * (expresseeSteady / K_d))/(1 + (expresseeSteady / K_d)))))))/smallMoleculeCount;
+                }
                 count ++;
             }
         }

@@ -133,6 +133,7 @@ public class IBioSimAdaptorTest {
         double K_i = araCGFPExeParams.get("K_i");
         Model model = araCDoc.getModel();
         model.getSpecies("aTc").setBoundaryCondition(true);
+        model.getSpecies("aTc").setValue(100);
         Reaction react = model.getReaction("AraC_degradation");
         react.getKineticLaw().getLocalParameter("K_d").setValue(K_d);
         react.getKineticLaw().getLocalParameter("y").setValue(y);
@@ -148,6 +149,7 @@ public class IBioSimAdaptorTest {
         K_i = bfpExeParams.get("K_i");
         model = bfpDoc.getModel();
         model.getSpecies("ara").setBoundaryCondition(true);
+        model.getSpecies("ara").setValue(100);
         react = model.getReaction("BFP_degradation");
         react.getKineticLaw().getLocalParameter("K_d").setValue(K_d);
         react.getKineticLaw().getLocalParameter("y").setValue(y);
@@ -172,7 +174,7 @@ public class IBioSimAdaptorTest {
         SBMLDocument composedDoc = SBMLAdaptor.composeExpressionModels(mods);
         SBMLWriter writer = new SBMLWriter();
         writer.write(composedDoc, Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter.xml");
-        IBioSimAdaptor.simulateODE(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter.xml", Utilities.getFilepath() + "/src/main/resources/iBioSimTest/", 100, 1, 1);
+        IBioSimAdaptor.simulateODE(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter.xml", Utilities.getFilepath() + "/src/main/resources/iBioSimTest/", 1000.0, 0.5, 1.0, 314159, 2.0, 1000, 1e-6, 1e-9);
     }
 }
 

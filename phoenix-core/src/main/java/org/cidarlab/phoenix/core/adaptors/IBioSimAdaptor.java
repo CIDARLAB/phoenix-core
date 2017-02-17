@@ -51,10 +51,118 @@ public class IBioSimAdaptor {
         return ParameterEstimator.estimate(sbmlFile, root, parameters, experiments, speciesCollection);
     }
     
-    public static Map<String, Double> estimateExpressorParameters(String degTimeSeriesData, String expSteadyStateData) throws XMLStreamException, FileNotFoundException, IOException {
-        SBMLDocument degradationDoc = SBMLAdaptor.createDegradationModel("GFP");
-        degradationDoc.getModel().getReaction("GFP_degradation").getKineticLaw().removeLocalParameter("y");
-        degradationDoc.getModel().getReaction("GFP_degradation").getKineticLaw().removeLocalParameter("K_d");
+    public static Map<String, Double> estimateExpressorParameters(String degTimeSeriesData, String expSteadyStateData, String channel) throws XMLStreamException, FileNotFoundException, IOException {
+        SBMLDocument degradationDoc = SBMLAdaptor.createDegradationModel("exp");
+        Map<String, Double> results = estimateDegradationParams(degTimeSeriesData, channel);
+        List<List<String>> data = parseCSV(expSteadyStateData);
+        double y = results.get("y");
+        double K_d = results.get("K_d");
+        double k_EXE = 0;
+        int j = 1;
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).get(0).equals(channel)) {
+                for (j = 1; j < data.get(i).size(); j++) {
+                    double steady = Double.parseDouble(data.get(i).get(j));
+                    k_EXE += (y * (steady/K_d))/(1+(steady/K_d));
+                }
+            }
+        }
+        k_EXE /= j;
+        if (k_EXE == 0) {
+            k_EXE = 1;
+        }
+        results.put("k_EXE", k_EXE);
+        return results;
+    }
+    
+    public static Map<String, Double> estimateExpresseeParametersRepression(String degTimeSeriesData, Map<String, Double> expParams,
+            String regulationSteadyStateData, String smallMoleculeSteadyStateData, String expresseeChannel, String regulatorChannel,
+            boolean regFromSmallMoleculeData) throws XMLStreamException, IOException {
+        Map<String, Double> results = estimateDegradationParams(degTimeSeriesData, expresseeChannel);
+        results.put("k_EXE", expParams.get("k_EXE"));
+        double y = results.get("y");
+        double K_d = results.get("K_d");
+        double k_EXE = results.get("k_EXE");
+        int j = 1;
+        int expresseeIndex = -1;
+        int regulatorIndex = -1;
+        List<List<String>> data;
+        if (!regFromSmallMoleculeData) {
+            data = parseCSV(regulationSteadyStateData);
+            for (int i = 0; i < data.size(); i++) {
+                if (expresseeChannel.contains(data.get(i).get(0).replace("\"", ""))) {
+                    expresseeIndex = i;
+                } else if (regulatorChannel.contains(data.get(i).get(0).replace("\"", ""))) {
+                    regulatorIndex = i;
+                }
+            }
+            double K_r = 0;
+            for (j = 1; j < data.get(0).size(); j++) {
+                double expresseeSteady = Double.parseDouble(data.get(expresseeIndex).get(j));
+                double regulatorSteady = Double.parseDouble(data.get(regulatorIndex).get(j));
+                K_r += (((k_EXE * (1 + (expresseeSteady / K_d))) / (y * (expresseeSteady / K_d))) - 1) / regulatorSteady;
+            }
+            K_r /= j;
+            if (K_r == 0) {
+                K_r = 1;
+            }
+            results.put("K_r", K_r);
+        }
+        else {
+            data = parseCSV(smallMoleculeSteadyStateData);
+            for (int i = 0; i < data.size(); i++) {
+                if (data.get(i).get(0).equals(expresseeChannel)) {
+                    expresseeIndex = i;
+                } else if (data.get(i).get(0).equals(regulatorChannel)) {
+                    regulatorIndex = i;
+                }
+            }
+            double K_r = 0;
+            for (j = 1; j < data.get(0).size(); j++) {
+                double smallMoleculeCount = Double.parseDouble(data.get(0).get(j));
+                double expresseeSteady = Double.parseDouble(data.get(expresseeIndex).get(j));
+                double regulatorSteady = Double.parseDouble(data.get(regulatorIndex).get(j));
+                if (smallMoleculeCount == 0) {
+                    K_r = (((k_EXE * (1 + (expresseeSteady / K_d))) / (y * (expresseeSteady / K_d))) - 1) / regulatorSteady;
+                }
+            }
+            results.put("K_r", K_r);
+        }
+        double K_r = results.get("K_r");
+        data = parseCSV(smallMoleculeSteadyStateData);
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).get(0).equals(expresseeChannel)) {
+                expresseeIndex = i;
+            }
+            else if (data.get(i).get(0).equals(regulatorChannel)) {
+                regulatorIndex = i;
+            }
+        }
+        double K_i = 0;
+        int count = 0;
+        for (j = 1; j < data.get(0).size(); j++) {
+            double smallMoleculeCount = Double.parseDouble(data.get(0).get(j));
+            double expresseeSteady = Double.parseDouble(data.get(expresseeIndex).get(j));
+            double regulatorSteady = Double.parseDouble(data.get(regulatorIndex).get(j));
+            if (smallMoleculeCount != 0) {
+                K_i += (((K_r*regulatorSteady)/(((k_EXE*(1+(expresseeSteady/K_d)))/(y*(expresseeSteady/K_d)))-1))-1)/smallMoleculeCount;
+                count ++;
+            }
+        }
+        if (K_i == 0 || count == 0) {
+            K_i = 1;
+        }
+        else {
+            K_i /= count;
+        }
+        results.put("K_i", K_i);
+        return results;
+    }
+    
+    private static Map<String, Double> estimateDegradationParams(String degTimeSeriesData, String channel) throws XMLStreamException, FileNotFoundException, IOException {
+        SBMLDocument degradationDoc = SBMLAdaptor.createDegradationModel("exp");
+        degradationDoc.getModel().getReaction("exp_degradation").getKineticLaw().removeLocalParameter("y");
+        degradationDoc.getModel().getReaction("exp_degradation").getKineticLaw().removeLocalParameter("K_d");
         degradationDoc.getModel().addParameter(SBMLAdaptor.createParameter("y", degradationDoc.getModel()));
         degradationDoc.getModel().addParameter(SBMLAdaptor.createParameter("K_d", degradationDoc.getModel()));
         SBMLWriter writer = new SBMLWriter();
@@ -64,8 +172,8 @@ public class IBioSimAdaptor {
 	params.add("K_d");
         List<List<String>> data = parseCSV(degTimeSeriesData);
         for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).get(0).equals("\"MEAN_FITC.A\"")) {
-                data.get(i).set(0, "\"GFP\"");
+            if (data.get(i).get(0).equals(channel)) {
+                data.get(i).set(0, "\"exp\"");
             }
         }
         writeCSV(data, "data.csv");
@@ -74,20 +182,6 @@ public class IBioSimAdaptor {
 	Map<String, Double> results = estimateParameters(new File("deg.xml").getAbsolutePath(), params, experimentFiles);
         new File("deg.xml").delete();
         new File("data.csv").delete();
-        data = IBioSimAdaptor.parseCSV(expSteadyStateData);
-        double steady = 0;
-        int j = 1;
-        for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).get(0).equals("\"MEAN_FITC.A\"")) {
-                for (j = 1; j < data.get(i).size(); j++) {
-                    steady += Double.parseDouble(data.get(i).get(j));
-                }
-            }
-        }
-        steady /= j;
-        double y = results.get("y");
-        double K_d = results.get("K_d");
-        results.put("k_EXE", (y * (steady/K_d))/(1+(steady/K_d)));
         return results;
     }
 

@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -30,24 +31,15 @@ import javax.xml.stream.XMLStreamException;
 import learn.genenet.Experiments;
 import learn.genenet.SpeciesCollection;
 import learn.parameterestimator.ParameterEstimator;
+import org.sbml.jsbml.SBMLDocument;
+import org.sbml.jsbml.SBMLWriter;
 
 /**
  *
  * @author prash
  */
 public class IBioSimAdaptor {
-    
-    public static Map<String, Double> estimateParametersWithFileLines(String sbmlFile, List<String> parameters, List<List<String>> experimentFileLines) throws IOException, XMLStreamException {
-        String[] split = sbmlFile.split(File.separator);
-        String root = sbmlFile.substring(0, sbmlFile.length() - split[split.length - 1].length());
-        Experiments experiments = new Experiments();
-        SpeciesCollection speciesCollection = new SpeciesCollection();
-        for (List<String> experiment : experimentFileLines) {
-            parseCSV(experiment, speciesCollection, experiments);
-        }
-        return ParameterEstimator.estimate(sbmlFile, root, parameters, experiments, speciesCollection);
-    }
-    
+
     public static Map<String, Double> estimateParameters(String sbmlFile, List<String> parameters, List<String> experimentFiles) throws IOException, XMLStreamException {
         String[] split = sbmlFile.split(File.separator);
         String root = sbmlFile.substring(0, sbmlFile.length() - split[split.length - 1].length());
@@ -59,32 +51,171 @@ public class IBioSimAdaptor {
         return ParameterEstimator.estimate(sbmlFile, root, parameters, experiments, speciesCollection);
     }
     
-    
-    private static void parseCSV(List<String> fileLines, SpeciesCollection speciesCollection, Experiments experiments) {
-        int experiment = experiments.getNumOfExperiments();
-        Scanner scan = null;
-        boolean isFirst = true;
-        int row = 0;
-        for (String line : fileLines) {
-        
-            String[] values = line.split(",");
-
-            if (isFirst) {
-                for (int i = 0; i < values.length; i++) {
-                    speciesCollection.addSpecies(values[i], i);
+    public static Map<String, Double> estimateExpressorParameters(String degTimeSeriesData, String expSteadyStateData, String channel) throws XMLStreamException, FileNotFoundException, IOException {
+        SBMLDocument degradationDoc = SBMLAdaptor.createDegradationModel("exp");
+        Map<String, Double> results = estimateDegradationParams(degTimeSeriesData, channel);
+        List<List<String>> data = parseCSV(expSteadyStateData);
+        double y = results.get("y");
+        double K_d = results.get("K_d");
+        double k_EXE = 0;
+        int j = 1;
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).get(0).equals(channel)) {
+                for (j = 1; j < data.get(i).size(); j++) {
+                    double steady = Double.parseDouble(data.get(i).get(j));
+                    k_EXE += (y * (steady/K_d))/(1+(steady/K_d));
                 }
-                isFirst = false;
-            } else {
-                for (int i = 0; i < values.length; i++) {
-                    experiments.addExperiment(experiment, row, i, Double.parseDouble(values[i]));
-                }
-                row++;
             }
         }
-
+        k_EXE /= j;
+        if (k_EXE == 0) {
+            k_EXE = 1;
+        }
+        results.put("k_EXE", k_EXE);
+        return results;
     }
     
+    public static Map<String, Double> estimateExpresseeParameters(String degTimeSeriesData, Map<String, Double> expParams,
+            String regulationSteadyStateData, String smallMoleculeSteadyStateData, String expresseeChannel, String regulatorChannel,
+            boolean repression, boolean regFromSmallMoleculeData) throws XMLStreamException, IOException {
+        Map<String, Double> results = estimateDegradationParams(degTimeSeriesData, expresseeChannel);
+        results.put("k_EXE", expParams.get("k_EXE"));
+        double y = results.get("y");
+        double K_d = results.get("K_d");
+        double k_EXE = results.get("k_EXE");
+        int j = 1;
+        int expresseeIndex = -1;
+        int regulatorIndex = -1;
+        List<List<String>> data;
+        if (!regFromSmallMoleculeData) {
+            data = parseCSV(regulationSteadyStateData);
+            for (int i = 0; i < data.size(); i++) {
+                if (expresseeChannel.contains(data.get(i).get(0).replace("\"", ""))) {
+                    expresseeIndex = i;
+                } else if (regulatorChannel.contains(data.get(i).get(0).replace("\"", ""))) {
+                    regulatorIndex = i;
+                }
+            }
+            double K_r = 0;
+            for (j = 1; j < data.get(0).size(); j++) {
+                double expresseeSteady = Double.parseDouble(data.get(expresseeIndex).get(j));
+                double regulatorSteady = Double.parseDouble(data.get(regulatorIndex).get(j));
+                if (repression) {
+                    K_r += (((k_EXE * (1 + (expresseeSteady / K_d))) / (y * (expresseeSteady / K_d))) - 1) / regulatorSteady;
+                }
+                else {
+                    K_r += ((y * (expresseeSteady / K_d))/(1 + (expresseeSteady / K_d)))/(regulatorSteady * (k_EXE - ((y * (expresseeSteady / K_d))/(1 + (expresseeSteady / K_d)))));
+                }
+            }
+            K_r /= j;
+            if (K_r == 0) {
+                K_r = 1;
+            }
+            if (repression) {
+                results.put("K_r", K_r);
+            }
+            else {
+                results.put("K_a", K_r);
+            }
+        }
+        else {
+            data = parseCSV(smallMoleculeSteadyStateData);
+            for (int i = 0; i < data.size(); i++) {
+                if (data.get(i).get(0).equals(expresseeChannel)) {
+                    expresseeIndex = i;
+                } else if (data.get(i).get(0).equals(regulatorChannel)) {
+                    regulatorIndex = i;
+                }
+            }
+            double K_r = 0;
+            for (j = 1; j < data.get(0).size(); j++) {
+                double smallMoleculeCount = Double.parseDouble(data.get(0).get(j));
+                double expresseeSteady = Double.parseDouble(data.get(expresseeIndex).get(j));
+                double regulatorSteady = Double.parseDouble(data.get(regulatorIndex).get(j));
+                if (smallMoleculeCount == 0) {
+                    if (repression) {
+                        K_r = (((k_EXE * (1 + (expresseeSteady / K_d))) / (y * (expresseeSteady / K_d))) - 1) / regulatorSteady;
+                    }
+                    else {
+                        K_r = ((y * (expresseeSteady / K_d))/(1 + (expresseeSteady / K_d)))/(regulatorSteady * (k_EXE - ((y * (expresseeSteady / K_d))/(1 + (expresseeSteady / K_d)))));
+                    }
+                }
+            }
+            if (repression) {
+                results.put("K_r", K_r);
+            }
+            else {
+                results.put("K_a", K_r);
+            }
+        }
+        double K_r;
+        if (repression) {
+            K_r = results.get("K_r");
+        }
+        else {
+            K_r = results.get("K_a");
+        }
+        data = parseCSV(smallMoleculeSteadyStateData);
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).get(0).equals(expresseeChannel)) {
+                expresseeIndex = i;
+            }
+            else if (data.get(i).get(0).equals(regulatorChannel)) {
+                regulatorIndex = i;
+            }
+        }
+        double K_i = 0;
+        int count = 0;
+        for (j = 1; j < data.get(0).size(); j++) {
+            double smallMoleculeCount = Double.parseDouble(data.get(0).get(j));
+            double expresseeSteady = Double.parseDouble(data.get(expresseeIndex).get(j));
+            double regulatorSteady = Double.parseDouble(data.get(regulatorIndex).get(j));
+            if (smallMoleculeCount != 0) {
+                if (repression) {
+                    K_i += (((K_r*regulatorSteady)/(((k_EXE*(1+(expresseeSteady/K_d)))/(y*(expresseeSteady/K_d)))-1))-1)/smallMoleculeCount;
+                }
+                else {
+                    K_i += ((((y * (expresseeSteady / K_d))/(1 + (expresseeSteady / K_d)))/(k_EXE - ((y * (expresseeSteady / K_d))/(1 + (expresseeSteady / K_d)))))/((K_r*regulatorSteady)-(((y * (expresseeSteady / K_d))/(1 + (expresseeSteady / K_d)))/(k_EXE - ((y * (expresseeSteady / K_d))/(1 + (expresseeSteady / K_d)))))))/smallMoleculeCount;
+                }
+                count ++;
+            }
+        }
+        if (K_i == 0 || count == 0) {
+            K_i = 1;
+        }
+        else {
+            K_i /= count;
+        }
+        results.put("K_i", K_i);
+        return results;
+    }
     
+    private static Map<String, Double> estimateDegradationParams(String degTimeSeriesData, String channel) throws XMLStreamException, FileNotFoundException, IOException {
+        SBMLDocument degradationDoc = SBMLAdaptor.createDegradationModel("exp");
+        degradationDoc.getModel().getReaction("exp_degradation").getKineticLaw().removeLocalParameter("y");
+        degradationDoc.getModel().getReaction("exp_degradation").getKineticLaw().removeLocalParameter("K_d");
+        degradationDoc.getModel().addParameter(SBMLAdaptor.createParameter("y", degradationDoc.getModel()));
+        degradationDoc.getModel().addParameter(SBMLAdaptor.createParameter("K_d", degradationDoc.getModel()));
+        SBMLWriter writer = new SBMLWriter();
+        writer.write(degradationDoc, "deg.xml");
+        List<String> params = new ArrayList<String>();
+	params.add("y");
+	params.add("K_d");
+        List<List<String>> data = parseCSV(degTimeSeriesData);
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).get(0).equals(channel)) {
+                data.get(i).set(0, "\"exp\"");
+            }
+        }
+        writeCSV(data, "data.csv");
+        List<String> experimentFiles = new ArrayList<String>();
+	experimentFiles.add(new File("data.csv").getAbsolutePath());
+	Map<String, Double> results = estimateParameters(new File("deg.xml").getAbsolutePath(), params, experimentFiles);
+        new File("deg.xml").delete();
+        new File("data.csv").delete();
+        return results;
+    }
+
     private static void parseCSV(String filename, SpeciesCollection speciesCollection, Experiments experiments) {
         int experiment = experiments.getNumOfExperiments();
         Scanner scan = null;
@@ -116,6 +247,57 @@ public class IBioSimAdaptor {
                 scan.close();
             }
 
+        }
+    }
+    
+    public static List<List<String>> parseCSV(String filename) {
+        List<List<String>> data = new ArrayList<List<String>>();
+        Scanner scan = null;
+        boolean isFirst = true;
+        try {
+            scan = new Scanner(new File(filename));
+            while (scan.hasNextLine()) {
+                String line = scan.nextLine();
+
+                String[] values = line.split(",");
+
+                if (isFirst) {
+                    for (int i = 0; i < values.length; i++) {
+                        List<String> dataLine = new ArrayList<String>();
+                        dataLine.add(values[i]);
+                        data.add(dataLine);
+                    }
+                    isFirst = false;
+                } else {
+                    for (int i = 0; i < values.length; i++) {
+                        data.get(i).add(values[i]);
+                    }
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Could not find the file!");
+        } finally {
+            if (scan != null) {
+                scan.close();
+            }
+
+        }
+        return data;
+    }
+    
+    public static void writeCSV(List<List<String>> data, String filename) {
+        try {
+            PrintWriter writer = new PrintWriter(filename);
+            for (int j = 0; j < data.get(0).size(); j ++) {
+                String line = data.get(0).get(j);
+                for (int i = 1; i < data.size(); i ++) {
+                    line += "," + data.get(i).get(j);
+                }
+                writer.println(line);
+            }
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Could not write to file!");
         }
     }
 
@@ -304,7 +486,6 @@ public class IBioSimAdaptor {
         return tsd;
     }
 
-
     /**
      * Runs an ODE simulation of the model specified in SBMLFileName.
      *
@@ -312,7 +493,6 @@ public class IBioSimAdaptor {
      * @param outDir - the output directory
      * @param timeLimit - the time limit of the simulation
      * @param timeStep - the time step of the simulation
-
      * @param printInterval - how often the simulation data should be written to
      * the output
      * @param rndSeed - a random seed for the simulation
@@ -320,9 +500,7 @@ public class IBioSimAdaptor {
      * @param numSteps - number of steps to make in the simulation
      * @param relError - relative error
      * @param absError - absolute error
-
      * @throws IOException
-
      */
     public static void simulateODE(String SBMLFileName, String outDir, double timeLimit,
             double timeStep, double printInterval, long rndSeed, double stoichAmpValue,
@@ -333,8 +511,7 @@ public class IBioSimAdaptor {
         SimulatorODERK simulator = new SimulatorODERK(SBMLFileName, outDir, timeLimit,
                 timeStep, rndSeed, progress, printInterval, stoichAmpValue, running,
                 new String[0], numSteps, relError, absError, "amount");
-//        simulator.simulate();
-
+        simulator.simulate();
     }
 
     /**
@@ -361,7 +538,6 @@ public class IBioSimAdaptor {
      * @param outDir - the output directory
      * @param timeLimit - the time limit of the simulation
      * @param timeStep - the time step of the simulation
-
      * @param printInterval - how often the simulation data should be written to
      * the output
      * @param minTimeStep - the minimum time step of the simulation

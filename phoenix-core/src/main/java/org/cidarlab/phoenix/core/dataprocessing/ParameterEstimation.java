@@ -32,29 +32,29 @@ import org.sbml.jsbml.Species;
  */
 public class ParameterEstimation {
     
-    public static void estimateDegradationParameters(AssignedModule amodule, String sbmldirectory, List<String> dataLines){
-        String fname = PhoenixController.getExpresseeFeature(amodule).getName();
-        SBMLDocument sbmldoc = getSBMLDocument(amodule,fname);
-        
-        String speciesId = getDegradationSpeciesId(sbmldoc);
-        List<String> csvFileLines = new ArrayList<String>();
-        csvFileLines.add("Time,"+speciesId);
-        csvFileLines.addAll(dataLines);
-        sbmldoc = SBMLAdaptor.convertParamsLocalToGlobal(sbmldoc);
-        String sbmldocFilepath = sbmldirectory + "/" + amodule.getShortName() + "_deg.xml";
-        createSBMLFile(sbmldoc,sbmldocFilepath);
-        List<List<String>> allExpLines = new ArrayList();
-        allExpLines.add(csvFileLines);
-        System.out.println(allExpLines);
-        try {
-            Map<String,Double> params = IBioSimAdaptor.estimateParametersWithFileLines(sbmldocFilepath, getGlobalParams(sbmldoc), allExpLines);
-            writeToNewSBMLDoc(sbmldoc,sbmldocFilepath,params);
-        } catch (IOException ex) {
-            Logger.getLogger(ParameterEstimation.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (XMLStreamException ex) {
-            Logger.getLogger(ParameterEstimation.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+//    public static void estimateDegradationParameters(AssignedModule amodule, String sbmldirectory, List<String> dataLines){
+//        String fname = PhoenixController.getExpresseeFeature(amodule).getName();
+//        SBMLDocument sbmldoc = getSBMLDocument(amodule,fname);
+//        
+//        String speciesId = getDegradationSpeciesId(sbmldoc);
+//        List<String> csvFileLines = new ArrayList<String>();
+//        csvFileLines.add("Time,"+speciesId);
+//        csvFileLines.addAll(dataLines);
+//        sbmldoc = SBMLAdaptor.convertParamsLocalToGlobal(sbmldoc);
+//        String sbmldocFilepath = sbmldirectory + "/" + amodule.getShortName() + "_deg.xml";
+//        createSBMLFile(sbmldoc,sbmldocFilepath);
+//        List<List<String>> allExpLines = new ArrayList();
+//        allExpLines.add(csvFileLines);
+//        System.out.println(allExpLines);
+//        try {
+//            Map<String,Double> params = IBioSimAdaptor.estimateParametersWithFileLines(sbmldocFilepath, getGlobalParams(sbmldoc), allExpLines);
+//            writeToNewSBMLDoc(sbmldoc,sbmldocFilepath,params);
+//        } catch (IOException ex) {
+//            Logger.getLogger(ParameterEstimation.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (XMLStreamException ex) {
+//            Logger.getLogger(ParameterEstimation.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
     
     private static void writeToNewSBMLDoc(SBMLDocument doc, String filepath, Map<String,Double> params){
         Model model = doc.getModel();

@@ -60,7 +60,7 @@ public class AnalyzeData {
                             System.out.println("A Module Short Name :: " + amoduleShortName);
                             AssignedModule amodule = expexe.get(amoduleShortName);
                             List<String> csvLines = getDegradationMetaData(amodule,f.getAbsolutePath());
-                            ParameterEstimation.estimateDegradationParameters(amodule,sbmldirectory, csvLines);
+                            //ParameterEstimation.estimateDegradationParameters(amodule,sbmldirectory, csvLines);
                             
                         }
                     }

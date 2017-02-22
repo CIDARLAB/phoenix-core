@@ -246,8 +246,10 @@ public class Module extends AbstractModule {
         return featureString;
     }
     
-    //Make sure that every node's color is white. Initialize the entire tree. Work on this. 
     public void initializeColor() {
-
+        this.color = Color.white;
+        for(Module child:this.children){
+            child.initializeColor();
+        }
     }
 }

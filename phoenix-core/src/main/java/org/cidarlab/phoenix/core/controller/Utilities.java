@@ -606,7 +606,6 @@ public class Utilities {
     }
     //</editor-fold>
     
-    
     //<editor-fold desc="File content">
     
     public static String getFileContentAsString(String filepath){
@@ -654,6 +653,10 @@ public class Utilities {
         }
         return '/';
     }
+    
+    //</editor-fold>
+    
+    //<editor-fold desc="Email Management">
     
     //</editor-fold>
     

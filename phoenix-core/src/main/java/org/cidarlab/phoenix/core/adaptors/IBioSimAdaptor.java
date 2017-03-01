@@ -8,7 +8,6 @@ package org.cidarlab.phoenix.core.adaptors;
 import com.panayotis.gnuplot.dataset.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.cidarlab.phoenix.core.controller.Utilities;
 import org.cidarlab.phoenix.core.dom.TimeSeriesData;
@@ -16,8 +15,6 @@ import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 import analysis.dynamicsim.flattened.SimulatorSSADirect;
 import analysis.dynamicsim.flattened.SimulatorODERK;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -73,6 +70,57 @@ public class IBioSimAdaptor {
         }
         results.put("k_EXE", k_EXE);
         return results;
+    }
+    
+    public static Map<String, Double> estimateExpresseeParameters(String degTimeSeriesData, List<Double> smallMoleculesValues, List<String> smallMoleculeTimeSeriesData,
+            String expresseeChannel, String regulatedChannel, boolean repression) throws XMLStreamException, IOException {
+        Map<String, Double> results = estimateDegradationParams(degTimeSeriesData, expresseeChannel);
+        boolean includeRegulation = true;
+        if (smallMoleculesValues.contains(0.0)) {
+            int index = smallMoleculesValues.indexOf(0.0);
+            Map<String, Double> regulationResults = estimateRegulationParams(smallMoleculeTimeSeriesData.get(index), results, expresseeChannel, regulatedChannel, repression);
+            if (repression) {
+                results.put("k_EXR", regulationResults.get("k_EXR"));
+                results.put("K_r", regulationResults.get("K_r"));
+            }
+            else {
+                results.put("k_EXA", regulationResults.get("k_EXA"));
+                results.put("K_a", regulationResults.get("K_a"));
+            }
+            smallMoleculesValues.remove(index);
+            smallMoleculeTimeSeriesData.remove(index);
+            includeRegulation = false;
+        }
+        double k_EXE = 0.0;
+        double K_r = 0.0;
+        double K_i = 0.0;
+        for (int i = 0; i < smallMoleculesValues.size(); i ++) {
+            Map<String, Double> smallMoleculeResults = estimateSmallMoleculeRegulationParams(smallMoleculesValues.get(i), smallMoleculeTimeSeriesData.get(i),
+                    results, expresseeChannel, regulatedChannel, repression);
+            K_i += smallMoleculeResults.get("K_i");
+            if (includeRegulation) {
+                if (repression) {
+                    k_EXE += smallMoleculeResults.get("k_EXR");
+                    K_r += smallMoleculeResults.get("K_r");
+                }
+                else {
+                    k_EXE += smallMoleculeResults.get("k_EXA");
+                    K_r += smallMoleculeResults.get("K_a");
+                }
+            }
+        }
+        results.put("K_i", K_i/smallMoleculesValues.size());
+        if (includeRegulation) {
+            if (repression) {
+                results.put("k_EXR", k_EXE/smallMoleculesValues.size());
+                results.put("K_r", K_r/smallMoleculesValues.size());
+            }
+            else {
+                results.put("k_EXA", k_EXE/smallMoleculesValues.size());
+                results.put("K_a", K_r/smallMoleculesValues.size());
+            }
+        }
+        return results;        
     }
     
     public static Map<String, Double> estimateExpresseeParameters(String degTimeSeriesData, Map<String, Double> expParams,
@@ -196,22 +244,119 @@ public class IBioSimAdaptor {
         degradationDoc.getModel().getReaction("exp_degradation").getKineticLaw().removeLocalParameter("K_d");
         degradationDoc.getModel().addParameter(SBMLAdaptor.createParameter("y", degradationDoc.getModel()));
         degradationDoc.getModel().addParameter(SBMLAdaptor.createParameter("K_d", degradationDoc.getModel()));
+        List<String> estimateParams = new ArrayList<String>();
+	estimateParams.add("y");
+	estimateParams.add("K_d");
+        Map<String, String> channelMapping = new HashMap<String, String>();
+        channelMapping.put(channel, "\"exp\"");
+        return estimateParams(degradationDoc, estimateParams, degTimeSeriesData, channelMapping);
+    }
+    
+    private static Map<String, Double> estimateRegulationParams(String regulationTimeSeriesData, Map<String, Double> params,
+            String expresseeChannel, String regulatedChannel, boolean repression) throws XMLStreamException, FileNotFoundException, IOException {
+        SBMLDocument doc;
+        List<String> estimateParams = new ArrayList<String>();
+        if (repression) {
+            doc = SBMLAdaptor.createRepressionModel("expressee", "regulated");
+            doc.getModel().getReaction("regulated_expression").getKineticLaw().removeLocalParameter("k_EXR");
+            doc.getModel().addParameter(SBMLAdaptor.createParameter("k_EXR", doc.getModel()));
+            estimateParams.add("k_EXR");
+            doc.getModel().getReaction("regulated_expression").getKineticLaw().removeLocalParameter("K_r");
+            doc.getModel().addParameter(SBMLAdaptor.createParameter("K_r", doc.getModel()));
+            estimateParams.add("K_r");
+        }
+        else {
+            doc = SBMLAdaptor.createActivationModel("expressee", "regulated");
+            doc.getModel().getReaction("regulated_expression").getKineticLaw().removeLocalParameter("k_EXA");
+            doc.getModel().addParameter(SBMLAdaptor.createParameter("k_EXA", doc.getModel()));
+            estimateParams.add("k_EXA");
+            doc.getModel().getReaction("regulated_expression").getKineticLaw().removeLocalParameter("K_a");
+            doc.getModel().addParameter(SBMLAdaptor.createParameter("K_a", doc.getModel()));
+            estimateParams.add("K_a");
+        }
+        doc.getModel().getReaction("regulated_degradation").getKineticLaw().getLocalParameter("y").setValue(params.get("y"));
+        doc.getModel().getReaction("regulated_degradation").getKineticLaw().getLocalParameter("K_d").setValue(params.get("K_d"));
+        Map<String, String> channelMapping = new HashMap<String, String>();
+        channelMapping.put(expresseeChannel, "\"expressee\"");
+        channelMapping.put(regulatedChannel, "\"regulated\"");
+        return estimateParams(doc, estimateParams, regulationTimeSeriesData, channelMapping);
+    }
+    
+    private static Map<String, Double> estimateSmallMoleculeRegulationParams(Double smallMoleculesValue, String smallMoleculeTimeSeriesData, Map<String, Double> params,
+            String expresseeChannel, String regulatedChannel, boolean repression) throws XMLStreamException, FileNotFoundException, IOException {
+        if (smallMoleculesValue == 0.0) {
+            return estimateRegulationParams(smallMoleculeTimeSeriesData, params, expresseeChannel, regulatedChannel, repression);
+        }
+        SBMLDocument doc;
+        List<String> estimateParams = new ArrayList<String>();
+        if (repression) {
+            doc = SBMLAdaptor.createInductionRepressionModel("inducer", "expressee", "regulated");
+            if (params.containsKey("k_EXR")) {
+                doc.getModel().getReaction("regulated_degradation").getKineticLaw().getLocalParameter("k_EXR").setValue(params.get("k_EXR"));
+            }
+            else {
+                doc.getModel().getReaction("regulated_expression").getKineticLaw().removeLocalParameter("k_EXR");
+                doc.getModel().addParameter(SBMLAdaptor.createParameter("k_EXR", doc.getModel()));
+                estimateParams.add("k_EXR");
+            }
+            if (params.containsKey("K_r")) {
+                doc.getModel().getReaction("regulated_degradation").getKineticLaw().getLocalParameter("K_r").setValue(params.get("K_r"));
+            }
+            else {
+                doc.getModel().getReaction("regulated_expression").getKineticLaw().removeLocalParameter("K_r");
+                doc.getModel().addParameter(SBMLAdaptor.createParameter("K_r", doc.getModel()));
+                estimateParams.add("K_r");
+            }
+        }
+        else {
+            doc = SBMLAdaptor.createInductionActivationModel("inducer", "expressee", "regulated");
+            if (params.containsKey("k_EXA")) {
+                doc.getModel().getReaction("regulated_degradation").getKineticLaw().getLocalParameter("k_EXA").setValue(params.get("k_EXA"));
+            }
+            else {
+                doc.getModel().getReaction("regulated_expression").getKineticLaw().removeLocalParameter("k_EXA");
+                doc.getModel().addParameter(SBMLAdaptor.createParameter("k_EXA", doc.getModel()));
+                estimateParams.add("k_EXA");
+            }
+            if (params.containsKey("K_a")) {
+                doc.getModel().getReaction("regulated_degradation").getKineticLaw().getLocalParameter("K_a").setValue(params.get("K_a"));
+            }
+            else {    
+                doc.getModel().getReaction("regulated_expression").getKineticLaw().removeLocalParameter("K_a");
+                doc.getModel().addParameter(SBMLAdaptor.createParameter("K_a", doc.getModel()));
+                estimateParams.add("K_a");
+            }
+        }
+        doc.getModel().getReaction("regulated_expression").getKineticLaw().removeLocalParameter("K_i");
+        doc.getModel().addParameter(SBMLAdaptor.createParameter("K_i", doc.getModel()));
+        estimateParams.add("K_i");
+        doc.getModel().getReaction("regulated_degradation").getKineticLaw().getLocalParameter("y").setValue(params.get("y"));
+        doc.getModel().getReaction("regulated_degradation").getKineticLaw().getLocalParameter("K_d").setValue(params.get("K_d"));
+        doc.getModel().getSpecies("inducer").setBoundaryCondition(true);
+        doc.getModel().getSpecies("inducer").setValue(smallMoleculesValue);
+        Map<String, String> channelMapping = new HashMap<String, String>();
+        channelMapping.put(expresseeChannel, "\"expressee\"");
+        channelMapping.put(regulatedChannel, "\"regulated\"");
+        return estimateParams(doc, estimateParams, smallMoleculeTimeSeriesData, channelMapping);
+    }
+    
+    private static Map<String, Double> estimateParams(SBMLDocument doc, List<String> params, String timeSeriesDataFile,
+            Map<String, String> channelMapping) throws XMLStreamException, FileNotFoundException, IOException {
         SBMLWriter writer = new SBMLWriter();
-        writer.write(degradationDoc, "deg.xml");
-        List<String> params = new ArrayList<String>();
-	params.add("y");
-	params.add("K_d");
-        List<List<String>> data = parseCSV(degTimeSeriesData);
+        writer.write(doc, "sbml.xml");
+        List<List<String>> data = parseCSV(timeSeriesDataFile);
         for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).get(0).equals(channel)) {
-                data.get(i).set(0, "\"exp\"");
+            for (String channel : channelMapping.keySet()) {
+                if (data.get(i).get(0).equals(channel)) {
+                    data.get(i).set(0, channelMapping.get(channel));
+                }
             }
         }
         writeCSV(data, "data.csv");
         List<String> experimentFiles = new ArrayList<String>();
 	experimentFiles.add(new File("data.csv").getAbsolutePath());
-	Map<String, Double> results = estimateParameters(new File("deg.xml").getAbsolutePath(), params, experimentFiles);
-        new File("deg.xml").delete();
+        Map<String, Double> results = estimateParameters(new File("sbml.xml").getAbsolutePath(), params, experimentFiles);
+        new File("sbml.xml").delete();
         new File("data.csv").delete();
         return results;
     }

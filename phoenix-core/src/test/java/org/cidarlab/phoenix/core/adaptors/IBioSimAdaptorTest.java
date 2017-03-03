@@ -113,24 +113,50 @@ public class IBioSimAdaptorTest {
     
     @Test
     public void testInverterEstimationAndSimulation() throws IOException, XMLStreamException {
-        Map<String, Double> pTetExpParams = IBioSimAdaptor.estimateExpressorParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/gfp_EXP/M9_glucose_ara_CAM/timeSeriesPlotPoints.csv",
-                Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/pTet_EXPRESSOR/one_media_MEFL/oneMediaPlotPoints.csv", "\"MEAN_FITC.A\"");
-        Map<String, Double> araCGFPExeParams = IBioSimAdaptor.estimateExpresseeParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/araC_gfp_EXPRESSEE_pBAD_B_tetR_REG/M9_glucose_ara/timeSeriesPlotPoints.csv",
-                pTetExpParams, Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/araC_gfp_EXPRESSEE_pBAD_B_tetR_REG/M9_glucose/ng_mL_aTc/regulation/regulationPlotPoints.csv",
-                Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/araC_gfp_EXPRESSEE_pBAD_B_tetR_REG/M9_glucose/ng_mL_aTc/mediaTitrationPlotPoints.csv", "\"MEAN_FITC.A\"", "\"MEAN_Pacific_Blue.A\"", true, true);
-        Map<String, Double> pLacpBADExpParams = IBioSimAdaptor.estimateExpressorParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/bfp_EXP/M9_glucose_ara_CAM/timeSeriesPlotPoints.csv",
-                Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/pLac_pBAD_EXPRESSOR/one_media_MEFL/oneMediaPlotPoints.csv", "\"MEAN_Pacific_Blue.A\"");
-        Map<String, Double> bfpExeParams = IBioSimAdaptor.estimateExpresseeParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/bfp_EXP/M9_glucose_ara_CAM/timeSeriesPlotPoints.csv",
-                pLacpBADExpParams, Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/araC_gfp_EXPRESSEE_pBAD_B_tetR_REG/M9_glucose_ara/nM_ara/regulation/regulationPlotPoints.csv",
-                Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/araC_gfp_EXPRESSEE_pBAD_B_tetR_REG/M9_glucose_ara/nM_ara/mediaTitrationPlotPoints.csv", "\"MEAN_Pacific_Blue.A\"", "\"MEAN_FITC.A\"", false, false);
+        List<Double> smallMoleculesValues = new ArrayList<Double>();
+        smallMoleculesValues.add(100.0);
+        smallMoleculesValues.add(1000.0);
+        smallMoleculesValues.add(10000.0);
+        List<String> smallMoleculeTimeSeriesData = new ArrayList<String>();
+        smallMoleculeTimeSeriesData.add(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/araC_gfp_EXPRESSEE_pBAD_B_tetR_REG/M9_glucose_ara/nM_ara/100/timeSeriesPlotPoints.csv");
+        smallMoleculeTimeSeriesData.add(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/araC_gfp_EXPRESSEE_pBAD_B_tetR_REG/M9_glucose_ara/nM_ara/1000/timeSeriesPlotPoints.csv");
+        smallMoleculeTimeSeriesData.add(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/araC_gfp_EXPRESSEE_pBAD_B_tetR_REG/M9_glucose_ara/nM_ara/10000/timeSeriesPlotPoints.csv");
+        Map<String, Double> araCExeParams = IBioSimAdaptor.estimateExpresseeParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/bfp_EXP/M9_glucose_ara_CAM/timeSeriesPlotPoints.csv",
+                smallMoleculesValues, smallMoleculeTimeSeriesData, "\"MEAN_FITC.A\"", "\"MEAN_Pacific_Blue.A\"", false);
+                
+        smallMoleculesValues = new ArrayList<Double>();
+        smallMoleculesValues.add(1.0);
+        smallMoleculesValues.add(10.0);
+        smallMoleculesValues.add(100.0);
+        smallMoleculeTimeSeriesData = new ArrayList<String>();
+        smallMoleculeTimeSeriesData.add(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/tetR_bfp_AAV_EXPRESSEE_pTet_G_araC_REG/M9_glucose_ara/ng_mL_aTc/1/timeSeriesPlotPoints.csv");
+        smallMoleculeTimeSeriesData.add(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/tetR_bfp_AAV_EXPRESSEE_pTet_G_araC_REG/M9_glucose_ara/ng_mL_aTc/10/timeSeriesPlotPoints.csv");
+        smallMoleculeTimeSeriesData.add(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/tetR_bfp_AAV_EXPRESSEE_pTet_G_araC_REG/M9_glucose_ara/ng_mL_aTc/100/timeSeriesPlotPoints.csv");
+        Map<String, Double> tetRExeParams = IBioSimAdaptor.estimateExpresseeParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/gfp_EXP/M9_glucose_ara_CAM/timeSeriesPlotPoints.csv",
+                smallMoleculesValues, smallMoleculeTimeSeriesData, "\"MEAN_Pacific_Blue.A\"", "\"MEAN_FITC.A\"", true);
+        
         Map<String, Double> pPhlFExpParams = IBioSimAdaptor.estimateExpressorParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/gfp_EXP/M9_glucose_ara_CAM/timeSeriesPlotPoints.csv",
                 Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/pPhlF_EXPRESSOR/one_media_MEFL/oneMediaPlotPoints.csv", "\"MEAN_FITC.A\"");
+        
+        
+//        Map<String, Double> pTetExpParams = IBioSimAdaptor.estimateExpressorParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/gfp_EXP/M9_glucose_ara_CAM/timeSeriesPlotPoints.csv",
+//                Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/pTet_EXPRESSOR/one_media_MEFL/oneMediaPlotPoints.csv", "\"MEAN_FITC.A\"");
+//        Map<String, Double> araCGFPExeParams = IBioSimAdaptor.estimateExpresseeParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/araC_gfp_EXPRESSEE_pBAD_B_tetR_REG/M9_glucose_ara/timeSeriesPlotPoints.csv",
+//                pTetExpParams, Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/araC_gfp_EXPRESSEE_pBAD_B_tetR_REG/M9_glucose/ng_mL_aTc/regulation/regulationPlotPoints.csv",
+//                Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/araC_gfp_EXPRESSEE_pBAD_B_tetR_REG/M9_glucose/ng_mL_aTc/mediaTitrationPlotPoints.csv", "\"MEAN_FITC.A\"", "\"MEAN_Pacific_Blue.A\"", true, true);
+//        Map<String, Double> pLacpBADExpParams = IBioSimAdaptor.estimateExpressorParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/bfp_EXP/M9_glucose_ara_CAM/timeSeriesPlotPoints.csv",
+//                Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/pLac_pBAD_EXPRESSOR/one_media_MEFL/oneMediaPlotPoints.csv", "\"MEAN_Pacific_Blue.A\"");
+//        Map<String, Double> bfpExeParams = IBioSimAdaptor.estimateExpresseeParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/bfp_EXP/M9_glucose_ara_CAM/timeSeriesPlotPoints.csv",
+//                pLacpBADExpParams, Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/araC_gfp_EXPRESSEE_pBAD_B_tetR_REG/M9_glucose_ara/nM_ara/regulation/regulationPlotPoints.csv",
+//                Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/araC_gfp_EXPRESSEE_pBAD_B_tetR_REG/M9_glucose_ara/nM_ara/mediaTitrationPlotPoints.csv", "\"MEAN_Pacific_Blue.A\"", "\"MEAN_FITC.A\"", false, false);
+        
+        
         SBMLDocument araCDoc = SBMLAdaptor.createInductionRepressionModel("aTc", "TetR", "AraC");
-        double K_d = araCGFPExeParams.get("K_d");
-        double y = araCGFPExeParams.get("y");
-        double k_EXE = araCGFPExeParams.get("k_EXE");
-        double K_r = araCGFPExeParams.get("K_r");
-        double K_i = araCGFPExeParams.get("K_i");
+        double K_d = tetRExeParams.get("K_d");
+        double y = tetRExeParams.get("y");
+        double k_EXE = tetRExeParams.get("k_EXR");
+        double K_r = tetRExeParams.get("K_r");
+        double K_i = tetRExeParams.get("K_i");
         Model model = araCDoc.getModel();
         model.getSpecies("aTc").setBoundaryCondition(true);
         model.getSpecies("aTc").setValue(100);
@@ -142,11 +168,11 @@ public class IBioSimAdaptorTest {
         react.getKineticLaw().getLocalParameter("K_r").setValue(K_r);
         react.getKineticLaw().getLocalParameter("K_i").setValue(K_i);
         SBMLDocument bfpDoc = SBMLAdaptor.createInductionActivationModel("ara", "AraC", "BFP");
-        K_d = bfpExeParams.get("K_d");
-        y = bfpExeParams.get("y");
-        k_EXE = bfpExeParams.get("k_EXE");
-        K_r = bfpExeParams.get("K_a");
-        K_i = bfpExeParams.get("K_i");
+        K_d = araCExeParams.get("K_d");
+        y = araCExeParams.get("y");
+        k_EXE = araCExeParams.get("k_EXA");
+        K_r = araCExeParams.get("K_a");
+        K_i = araCExeParams.get("K_i");
         model = bfpDoc.getModel();
         model.getSpecies("ara").setBoundaryCondition(true);
         model.getSpecies("ara").setValue(100);

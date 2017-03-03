@@ -74,7 +74,7 @@ public class IBioSimAdaptor {
     
     public static Map<String, Double> estimateExpresseeParameters(String degTimeSeriesData, List<Double> smallMoleculesValues, List<String> smallMoleculeTimeSeriesData,
             String expresseeChannel, String regulatedChannel, boolean repression) throws XMLStreamException, IOException {
-        Map<String, Double> results = estimateDegradationParams(degTimeSeriesData, expresseeChannel);
+        Map<String, Double> results = estimateDegradationParams(degTimeSeriesData, regulatedChannel);
         boolean includeRegulation = true;
         if (smallMoleculesValues.contains(0.0)) {
             int index = smallMoleculesValues.indexOf(0.0);

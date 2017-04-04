@@ -1,9 +1,10 @@
 #Function for getting color multiplier values
 getColorMultiplier <- function(colorControlsFlowSet, gatedBeadControlFlowFrame, autofluorescence, dataFiles) {
 	
+	#Create color multiplier data frame with proper row and column names
 	colnames(colorControlsFlowSet) <- gsub("-",".", colnames(colorControlsFlowSet))
 	colorMultiplier <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=length(colorControlsFlowSet)))
-	colnames(colorMultiplier) <- gsub("-",".", colnames(negativeControlFlowSet))
+	colnames(colorMultiplier) <- gsub("-",".", colnames(colorControlsFlowSet))
 	rownames(colorMultiplier) <- gsub("-",".", dataFiles)	
 	
 	#Apply cell size filter -- we only want cells clustered in the middle of FSC and SSC range
@@ -38,10 +39,15 @@ getColorMultiplier <- function(colorControlsFlowSet, gatedBeadControlFlowFrame, 
 		}		
 	}
 
-	#Create multiple
+	#Create multiplier
 	FITC <- as.numeric(colorMultiplierVector[,which(TRUE == grepl("FITC", colnames(colorMultiplierVector), ignore.case=TRUE))])
 	for (s in 1:length(colorMultiplierVector)) {
 		colorMultiplierVector[s] <- FITC/colorMultiplierVector[s]
+		
+		#In cases where there is no FITC, make sure the multiplier for all values is 1
+		if (is.na(colorMultiplierVector[s])) {
+			colorMultiplierVector[s] <- 1
+		}
 	}
 
 	return(colorMultiplierVector)

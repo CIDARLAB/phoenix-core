@@ -6,9 +6,11 @@ library(flowDensity)
 library(data.table)
 library(matrixStats)
 library(ggplot2)
+library(ncdfFlow)
+library(flowWorkspace)
+library(ggcyto)
 library(stringr)
 library(FD)
-library(flowCore)
 library(flowClust)
 library(Biobase)
 library(xtable)
@@ -27,63 +29,140 @@ setwd(wd)
 #Overall analysis method call
 # analyzeKey <- function (key, minEvents) {
 	
-	#Find color controls, calculate overlap, apply compensation
+	#Determine if the stain option was passed in the run script and initalialze it to FALSE if it is not
+	if (!exists("stain")) {
+		stain <- FALSE
+	}
+	
+	#Check if the user input the plotGates option or not - this will plot singlet gates for stains if TRUE
+	if (!exists("plotGates")) {
+		plotGates <- FALSE
+	}
+	if (plotGates == TRUE) {
+		dir.create("plotted_gates")
+	}
+	
+	#Find color controls, negative controls depending upon stains/FPs
 	allControlRows <- key[which(!(key$CONTROL =="")),]
-	colorControlRows <- allControlRows[-which(TRUE == grepl("beads", allControlRows$CONTROL, ignore.case=TRUE)),]
-	negativeControlRows <- key[which(TRUE == grepl("negative", key$CONTROL, ignore.case=TRUE)),]
-	colorControlsFlowSet <- read.flowSet(path = dataPath, as.character(colorControlRows$FILENAME), phenoData=list(Filename="$FIL"))
+	negativeControlRows <- key[which(TRUE == grepl("\\bnegative\\b", key$CONTROL, ignore.case=TRUE)),]
 	negativeControlFlowSet <- read.flowSet(path = dataPath, as.character(negativeControlRows$FILENAME), phenoData=list(Filename="$FIL"))
 	
-	#Filter out for only relevant color columns based on controls
-	columnIndexes <- match(colorControlRows$CONTROL, colnames(colorControlsFlowSet))
-	FSCSSCIndexes <- match(c("FSC-A", "SSC-A"), colnames(colorControlsFlowSet)) 
-	columnIndexes <- c(FSCSSCIndexes[!is.na(FSCSSCIndexes)], columnIndexes[!is.na(columnIndexes)])
-	colorControlsFlowSet <- colorControlsFlowSet[,columnIndexes]
-	negativeControlFlowSet <- negativeControlFlowSet[,columnIndexes]
+	# Create color control flow set based upon whether staining and controlling with negative beads or expressing control colors within cells
+	if (stain == TRUE) {
+		
+		toMatch <- c("\\bbeads\\b", "\\bnegative\\b")
+		colorControlRows <- allControlRows[-which(TRUE == grepl(paste(toMatch,collapse="|"), allControlRows$CONTROL, ignore.case=TRUE)),]
+		colorControlsFlowSet <- read.flowSet(path = dataPath, as.character(colorControlRows$FILENAME), phenoData=list(Filename="$FIL"))
+		
+		#Filter out for only relevant color columns based on controls
+		columnIndexesColorControls <- match(colorControlRows$CONTROL, colnames(colorControlsFlowSet))
+		FSCSSCIndexesColorControls <- match(c("FSC-A", "SSC-A"), colnames(colorControlsFlowSet)) 
+		columnIndexesColorControls <- c(FSCSSCIndexesColorControls[!is.na(FSCSSCIndexesColorControls)], columnIndexesColorControls[!is.na(columnIndexesColorControls)])
+		
+		negativeControlBeadsRows <- key[which(TRUE == grepl("\\bnegative_beads\\b", key$CONTROL, ignore.case=TRUE)),]
+		negativeControlBeadsFlowSet <- read.flowSet(path = dataPath, as.character(negativeControlBeadsRows$FILENAME), phenoData=list(Filename="$FIL"))
+		negativeControlBeadsFlowSet <- negativeControlBeadsFlowSet[,columnIndexesColorControls]
+				
+		colorControlsFlowSet <- colorControlsFlowSet[,columnIndexesColorControls]
+		
+		columnIndexesNegControl <- match(colorControlRows$CONTROL, colnames(negativeControlFlowSet))
+		FSCSSCIndexesNegControl <- match(c("FSC-A", "SSC-A", "FSC-H", "SSC-H"), colnames(negativeControlFlowSet))
+		columnIndexesNegControl <- c(FSCSSCIndexesNegControl[!is.na(FSCSSCIndexesNegControl)], columnIndexesNegControl[!is.na(columnIndexesNegControl)])
+		negativeControlFlowSet <- negativeControlFlowSet[,columnIndexesNegControl]
+		columnIndexes <- columnIndexesNegControl
+		
+	} else {
+		
+		toMatch <- c("\\bbeads\\b", "\\bnegative_beads\\b")
+		colorControlRows <- allControlRows[-which(TRUE == grepl(paste(toMatch,collapse="|"), allControlRows$CONTROL, ignore.case=TRUE)),]
+		colorControlsFlowSet <- read.flowSet(path = dataPath, as.character(colorControlRows$FILENAME), phenoData=list(Filename="$FIL"))
+		
+		#Filter out for only relevant color columns based on controls
+		columnNames <- colnames(colorControlsFlowSet)
+		columnNames[] <- lapply(columnNames, gsub, pattern = " ", replacement = "_", fixed = TRUE)
+		columnIndexes <- match(colorControlRows$CONTROL, columnNames)
+		FSCSSCIndexes <- match(c("FSC-A", "SSC-A"), colnames(colorControlsFlowSet)) 
+		columnIndexes <- c(FSCSSCIndexes[!is.na(FSCSSCIndexes)], columnIndexes[!is.na(columnIndexes)])		
+		
+		colorControlsFlowSet <- colorControlsFlowSet[,columnIndexes]
+		negativeControlFlowSet <- negativeControlFlowSet[,columnIndexes]
+	}		
 	
 	#Define MEFL csv file based on which channels are controlled
 	MEFL <- cbind(c(NA,692,2192,6028,17493,35674,126907,290983))
 	MEFLDataFrame <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=8))
 	colnames(MEFLDataFrame) <- gsub("-A","", colnames(colorControlsFlowSet))
 	rownames(MEFLDataFrame) <- c(1:8)
-	# MEFLDataFrame <- MEFLDataFrame[,3:length(colnames(MEFLDataFrame))]
+
 	for (channel in 1:length(colnames(MEFLDataFrame))) {
 		MEFLDataFrame[,channel] <- MEFL  
 	}
-	write.table(file="MEFLmatrix.csv", x=MEFLDataFrame, row.names=FALSE, sep=";")
+	write.csv(file="MEFLmatrix.csv", x=MEFLDataFrame, row.names=FALSE)
 	
 	#Find bead controls, apply bead normalization
-	beadsControlRow <- key[which(TRUE == grepl("beads", key$CONTROL, ignore.case=TRUE)),]
+	beadsControlRow <- key[which(TRUE == grepl("\\bbeads\\b", key$CONTROL, ignore.case=TRUE)),]
 	beadFile <- paste(dataPath,'/', as.character(beadsControlRow$FILENAME), sep='')
 	beadsControlFlowFrame <- BeadFlowFrame(fcs.filename = beadFile, bead.filename = "MEFLmatrix.csv")
 	gatedBeadControlFlowFrame <- gateBeads(beadsControlFlowFrame)
 	
+	#Correct for discrepancies with spaces and underscores in column names
+	colnames(colorControlsFlowSet) <- gsub(" ","_", colnames(colorControlsFlowSet))
+	colnames(negativeControlFlowSet) <- gsub(" ","_", colnames(negativeControlFlowSet))
+	colnames(beadsControlFlowFrame) <- gsub(" ","_", colnames(beadsControlFlowFrame))
+	colnames(gatedBeadControlFlowFrame) <- gsub(" ","_", colnames(gatedBeadControlFlowFrame))
+	
 	#Determine the spillover matrix
 	comp.mat <- NULL
 	if (length(columnIndexes) > 3) {
-		comp.mat <- spillover(x=colorControlsFlowSet,unstained=sampleNames(negativeControlFlowSet),fsc="FSC-A",ssc="SSC-A",method="mean", stain_match = c("regexpr"))
+		
+		#With staining, the color controls are performed with beads, not cells, so this line is searched for in the color compensation calculation
+		if (stain == FALSE) {
+			comp.mat <- spillover(x=colorControlsFlowSet,unstained=sampleNames(negativeControlFlowSet),fsc="FSC-A",ssc="SSC-A",method="mean", stain_match = c("regexpr"))
+		} else {
+			columnIndexRemovals <- match(c("FSC-H", "SSC-H", "FSC-W", "SSC-W"), colnames(colorControlsFlowSet))
+			if (length(columnIndexRemovals[!is.na(columnIndexRemovals)]) > 1) {
+				removeFSCHSSCH <- setdiff(seq(from = 1, to = length(colnames(colorControlsFlowSet)), by = 1), columnIndexRemovals)
+				colorControlsFlowSet1 = colorControlsFlowSet[,removeFSCHSSCH]
+				negativeControlBeadsFlowSet1 = negativeControlBeadsFlowSet[,removeFSCHSSCH]
+				comp.mat <- spillover(x=colorControlsFlowSet1, unstained=sampleNames(negativeControlBeadsFlowSet1), fsc="FSC-A",ssc="SSC-A",method="mean", stain_match = c("regexpr"))
+			} else {
+				comp.mat <- spillover(x=colorControlsFlowSet, unstained=sampleNames(negativeControlBeadsFlowSet), fsc="FSC-A",ssc="SSC-A",method="mean", stain_match = c("regexpr"))
+			}
+		}		
 	}
+	write.csv(file=paste0(dataPath,"/compensation_matrix.csv"), x=comp.mat, row.names=TRUE)
 	
 	#Get autofluorescence
-	autofluorescence <- getAutofluorescence(negativeControlFlowSet, gatedBeadControlFlowFrame)		
+	autofluorescence <- getAutofluorescence(negativeControlFlowSet, gatedBeadControlFlowFrame, stain)		
 	
 	#Get color multiplier vector relative to FITC-A channel for gfp control
 	colorMultiplierVector <- getColorMultiplier(colorControlsFlowSet, gatedBeadControlFlowFrame, autofluorescence, as.character(colorControlRows$FILENAME))
-	
-	# #Correct autofluorescence with color multiplier
-	# for (r in 1:length(colnames(autofluorescence))) {
-		# m <- as.numeric(colorMultiplierVector[,which(TRUE == grepl(colnames(autofluorescence)[r], colnames(colorMultiplierVector), ignore.case=TRUE))])
-		# autofluorescence[,r] <- m * autofluorescence[,r]
-	# }
+	colnames(colorMultiplierVector) <- gsub("\\.","-", colnames(colorMultiplierVector))
 	
 	#Group files by part name
 	#Determine unique parts
 	partsRows <- key[which((key$CONTROL =="")),]
-	uniquePartNames <- unique(unlist(partsRows$PART))
 	
-	#Separate unique rows and duplicate rows by PART, MEDIA and TIME
-	allPartTimeMediaDuplicateRows <- partsRows[duplicated(interaction(partsRows$MEDIA, partsRows$TIME, partsRows$PART)),]
-	allPartTimeMediaUniqueRows <- partsRows[!duplicated(interaction(partsRows$MEDIA, partsRows$TIME, partsRows$PART)),]
+	#If the keyfile has the field STRAIN, use that variable throughout, otherwise, use PART
+	strain <- TRUE
+	if ("PART" %in% colnames(key)) {
+		strain <- FALSE
+	}
+	
+	if (strain) {
+		uniquePartNames <- unique(unlist(partsRows$STRAIN))
+	
+		#Separate unique rows and duplicate rows by STRAIN, MEDIA and TIME
+		allPartTimeMediaDuplicateRows <- partsRows[duplicated(interaction(partsRows$MEDIA, partsRows$TIME, partsRows$STRAIN)),]
+		allPartTimeMediaUniqueRows <- partsRows[!duplicated(interaction(partsRows$MEDIA, partsRows$TIME, partsRows$STRAIN)),]
+	} else {
+		uniquePartNames <- unique(unlist(partsRows$PART))
+	
+		#Separate unique rows and duplicate rows by PART, MEDIA and TIME
+		allPartTimeMediaDuplicateRows <- partsRows[duplicated(interaction(partsRows$MEDIA, partsRows$TIME, partsRows$PART)),]
+		allPartTimeMediaUniqueRows <- partsRows[!duplicated(interaction(partsRows$MEDIA, partsRows$TIME, partsRows$PART)),]
+	}
+	
 	
 	#Multiplex key
 	multiplexRows <- key[which(!(key$MULTIPLEX =="")),]
@@ -117,463 +196,513 @@ setwd(wd)
 	regMedia <- c()
 	
 	#Loop through all unique parts to make plots
-	for (i in 1:length(uniquePartNames)) {
-		
-		#Create a directory for this part
-		part <- as.character(uniquePartNames[i])
-		dir.create(part, showWarnings = FALSE)
-		
-		uniqueTimeMediaRows <- allPartTimeMediaUniqueRows[which(TRUE == grepl(paste("^", part, "$", sep = ''), allPartTimeMediaUniqueRows$PART)),]
-		
-		#Initialize media-SM data frame
-		mediaSMMap <- data.frame(matrix(ncol = 3, nrow=0))
-		colnames(mediaSMMap) <- c("BASE", "SM", "CONCENTRATION")
-		
-		#New way to find unique media types with regular media type and a plus sign to indicate inducers
-		uniqueMediaTypes <- c()
-		mediaTypes <- unique(uniqueTimeMediaRows$MEDIA)	
-	
-		#Build matrix of base medias, inducers and concentrations for analysis
-		for (x in 1:length(mediaTypes)) {
-			mediaTypeAndSM <- trimws(strsplit(as.character(mediaTypes[x]), "\\+")[[1]])
-			uniqueMediaTypes <- c(uniqueMediaTypes, as.character(mediaTypeAndSM[1]))
-	
-			#This contains some fancy regex from the internet, but separates the concentration values from the type of inducer if one exists
-			if (length(mediaTypeAndSM) > 1) {
-				SMConc <- trimws(gsub(".*\\((.*)\\).*", "\\1", mediaTypeAndSM[2]))
-				SM <- trimws(gsub("\\(?[0-9,.]+\\)?","", SMConc))
-				concentration <- unique(unlist(regmatches(SMConc, gregexpr("[0-9]+", SMConc))))
-				mediaSMMap[x,] <- c(mediaTypeAndSM[1], SM, concentration)
+	if (length(uniquePartNames) > 1) {
+		for (i in 1:length(uniquePartNames)) {
+			
+			#Create a directory for this part
+			part <- as.character(uniquePartNames[i])
+			dir.create(part, showWarnings = FALSE)
+			
+			#Find unique time media rows for this PART or STRAIN
+			if (strain) {
+				uniqueTimeMediaRows <- allPartTimeMediaUniqueRows[which(TRUE == grepl(paste("^", part, "$", sep = ''), allPartTimeMediaUniqueRows$STRAIN)),]
 			} else {
-				mediaSMMap[x,] <- c(mediaTypeAndSM[1], "", "")
-			}		
-		}
-	
-		uniqueMediaTypes <- as.character(unique(mediaSMMap$BASE))
-	
-		#Loop through each unique media type, ignoring numeric values in any entry
-		for (j in 1:length(uniqueMediaTypes)) {
-	
-			#Get list of small molecule additives
-			#Create a directory for this mediaType
-			mediaType <- as.character(uniqueMediaTypes[j])
-			mediaTypePath <- paste(part, "/", mediaType, sep = '')		
-			dir.create(mediaTypePath, showWarnings = FALSE)
+				uniqueTimeMediaRows <- allPartTimeMediaUniqueRows[which(TRUE == grepl(paste("^", part, "$", sep = ''), allPartTimeMediaUniqueRows$PART)),]
+			}
 			
-			MediaTypeSMs <- mediaSMMap[which(TRUE == grepl(paste("^", mediaType, "$", sep = ''), mediaSMMap$BASE)),]
-			uniqueMediaSMs <- as.character(unique(MediaTypeSMs$SM))			 
-					
-			#Get unique media rows with this media type				
-			uniqueMediaRows <- uniqueTimeMediaRows[which(TRUE == grepl(mediaType, uniqueTimeMediaRows$MEDIA)),]
 			
-			#Loop through all small molecule additions for this mediaType
-			for (y in 1:length(uniqueMediaSMs)) {
-							
-				SM <- as.character(uniqueMediaSMs[y])						
-				noSM <- c()										
-				media <- c()
+			#Initialize media-SM data frame
+			mediaSMMap <- data.frame(matrix(ncol = 3, nrow=0))
+			colnames(mediaSMMap) <- c("BASE", "SM", "CONCENTRATION")
 			
-				#Initialize data structures for meansMedia and standardDevsMedia
-				meansMedia <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=0))
-				colnames(meansMedia) <- gsub("-",".", colnames(colorControlsFlowSet))
-				standardDevsMedia <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=0))
-				colnames(standardDevsMedia) <- gsub("-",".", colnames(colorControlsFlowSet))
-												
-				#Process data for files with no small molecule additions
-				if (nchar(SM) == 0) {
-					
-					#Change the SM variable to an exact match on the media
-					noSM <- paste("^", mediaType, "$", sep = '')
-					uniqueMediaSMRowsAllTimes <- uniqueMediaRows[which(TRUE == grepl(noSM, uniqueMediaRows$MEDIA)),]			
-					
-					allSMConcs <- noSM
-					
-					currentMediaTypePath <- mediaTypePath
-										
-				} else {
-					
-					#Get the list of concentrations of this media with this small molecule additive			
-					uniqueMediaSMRowsAllTimes <- uniqueMediaRows[which(TRUE == grepl(SM, uniqueMediaRows$MEDIA)),]			
-					allSMConcs <- MediaTypeSMs[which(TRUE == grepl(SM, MediaTypeSMs$SM)),]$CONCENTRATION
-					
-					#If there is a media with no small molecule included in this set
-					if ("" %in% uniqueMediaSMs) {
-						noSM <- paste("^", mediaType, "$", sep = '')
-						noSMRows <- uniqueMediaRows[which(TRUE == grepl(noSM, uniqueMediaRows$MEDIA)),]
-						uniqueMediaSMRowsAllTimes <- rbind(noSMRows, uniqueMediaSMRowsAllTimes)	
-						allSMConcs <- c(noSM, allSMConcs)
-					}
-					
-					#Create a directory for this small molecule
-					SMdirName <- gsub("/", "_", SM)
-					SMdirName <- gsub(" ", "_", SMdirName)
-					currentMediaTypePath <- paste(mediaTypePath, "/", SMdirName, sep = '')
-					dir.create(currentMediaTypePath, showWarnings = FALSE)			
-				}
+			#New way to find unique media types with regular media type and a plus sign to indicate inducers
+			uniqueMediaTypes <- c()
+			mediaTypes <- unique(uniqueTimeMediaRows$MEDIA)	
 		
-				#Loop through all unique media concentrations for this part
-				for (k in 1:length(allSMConcs)) {				
-					
-					time <- c()		
-					conc <- allSMConcs[k]
-					
-					#Name this media with some extra formatting 
-					if (allSMConcs[k] == noSM && length(allSMConcs) == 1) {
-						mediaName <- as.character(mediaType)
-					} else if (allSMConcs[k] == noSM && length(allSMConcs) > 1) {
-						mediaName <- as.character(paste(mediaType, "0", SM,  sep = '_'))
-						media <- c(media, "0")
-					} else {
-						mediaName <- as.character(paste(mediaType, conc, SM,  sep = '_'))
-						media <- c(media, conc)
-					}						
-									
-					#Initialize data structures for meansMediaTime and standardDevsMediaTime
-					meansMediaTime <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=0))
-					colnames(meansMediaTime) <- gsub("-",".", colnames(colorControlsFlowSet))
-					standardDevsMediaTime <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=0))
-					colnames(standardDevsMediaTime) <- gsub("-",".", colnames(colorControlsFlowSet))
-					
-					#Get all unique times per one media condition
-					if (!is.na(as.numeric(conc)))  {
-						uniqueMediaRowsAllTimes <- uniqueMediaSMRowsAllTimes[which(TRUE == grepl(paste(conc, SM, sep = ' '), uniqueMediaSMRowsAllTimes$MEDIA)),]
-					} else {
-						uniqueMediaRowsAllTimes <- uniqueMediaSMRowsAllTimes[which(TRUE == grepl(conc, uniqueMediaSMRowsAllTimes$MEDIA)),]
-					}
-							
-					uniqueMediaTimes <- as.character(unique(uniqueMediaRowsAllTimes$TIME))
-					
-					#Hold replicates across all times per media concentration for media graphs
-					filesMediaConcentration <- c()
-					files <- c()
-					
-					#Loop through all times for this media and small molecule concentration for time series analysis
-					for (t in 1:length(uniqueMediaTimes)) {
+			#Build matrix of base medias, inducers and concentrations for analysis
+			for (x in 1:length(mediaTypes)) {
+				mediaTypeAndSM <- trimws(strsplit(as.character(mediaTypes[x]), "\\+")[[1]])
+				uniqueMediaTypes <- c(uniqueMediaTypes, as.character(mediaTypeAndSM[1]))
+		
+				#This contains some fancy regex from the internet, but separates the concentration values from the type of inducer if one exists
+				if (length(mediaTypeAndSM) > 1) {
+					SMConc <- trimws(gsub(".*\\((.*)\\).*", "\\1", mediaTypeAndSM[2]))
+					SM <- trimws(gsub("\\(?[0-9,.]+\\)?","", SMConc))
+					concentration <- unique(unlist(regmatches(SMConc, gregexpr("[0-9]+", SMConc))))
+					mediaSMMap[x,] <- c(mediaTypeAndSM[1], SM, concentration)
+				} else {
+					mediaSMMap[x,] <- c(mediaTypeAndSM[1], "", "")
+				}		
+			}
+		
+			uniqueMediaTypes <- as.character(unique(mediaSMMap$BASE))
+		
+			#Loop through each unique media type, ignoring numeric values in any entry
+			for (j in 1:length(uniqueMediaTypes)) {
+		
+				#Get list of small molecule additives
+				#Create a directory for this mediaType
+				mediaType <- as.character(uniqueMediaTypes[j])
+				mediaTypePath <- paste(part, "/", mediaType, sep = '')		
+				dir.create(mediaTypePath, showWarnings = FALSE)
+				
+				MediaTypeSMs <- mediaSMMap[which(TRUE == grepl(paste("^", mediaType, "$", sep = ''), mediaSMMap$BASE)),]
+				uniqueMediaSMs <- as.character(unique(MediaTypeSMs$SM))			 
 						
-						uniqueMediaTime <- uniqueMediaTimes[t]
-						uniqueMediaTime <- paste("^", uniqueMediaTime, "$", sep = '')
-						uniqueMediaTimeRow <- uniqueMediaRowsAllTimes[which(TRUE == grepl(uniqueMediaTime, uniqueMediaRowsAllTimes$TIME)),]
-						
-						time <- c(time, as.character(uniqueMediaTimes[t]))
-						Afile <- as.character(uniqueMediaTimeRow$FILENAME)
-						
-						#Search duplicate media matrix for duplicate files
-						partMediaKey <- c("MEDIA", "PART", "TIME")
-						uniqueRowsThisExactMedia <- data.table(uniqueMediaTimeRow, key=partMediaKey)
-						duplicateRowsThisExactMedia <- data.table(allPartTimeMediaDuplicateRows, key=partMediaKey)
-						replicateFiles <- as.character(merge(uniqueRowsThisExactMedia, duplicateRowsThisExactMedia)$FILENAME.y)
-						
-						#Summarize files for times in this media condition in addition to files for all times in this media condition
-						files <- c(Afile, replicateFiles)
-						if (uniqueMediaTimes[t] == uniqueMediaTimes[which.max(uniqueMediaTimes)]) {						
-							filesMediaConcentration <- c(filesMediaConcentration, files)				
-						}
-						
-						#Only process this data if there is more than one time for this media and small molecule
-						if (length(uniqueMediaTimes) > 1) {
-							
-							#Do not do a time series for the blank media in combination with supplemented media
-							if (allSMConcs[k] != noSM | length(allSMConcs) == 1) {
-						
-								#Do not evaluate files with less than 1000 events
-								finalFiles <- c()
-								for (nFile in 1:length(files)) {
-									frame <- read.flowSet(path = dataPath, files[nFile])
-									if (length(frame[[1]]) > minEvents) {
-										finalFiles <- c(finalFiles, files[nFile])
-									}
-								}
-											
-								#Analyze this flowset if there are any files left after the filter for minimal events
-								if (!is.null(finalFiles)) {
-									experimentFlowSet <- read.flowSet(path = dataPath, finalFiles, phenoData=list(Filename="$FIL"))
-									experimentFlowSet <- experimentFlowSet[,columnIndexes]				
+				#Get unique media rows with this media type				
+				uniqueMediaRows <- uniqueTimeMediaRows[which(TRUE == grepl(mediaType, uniqueTimeMediaRows$MEDIA)),]
+				
+				#Loop through all small molecule additions for this mediaType
+				for (y in 1:length(uniqueMediaSMs)) {
+								
+					SM <- as.character(uniqueMediaSMs[y])						
+					noSM <- c()										
+					media <- c()
+				
+					#Initialize data structures for meansMedia and standardDevsMedia
+					meansMedia <- data.frame(matrix(ncol = length(colnames(negativeControlFlowSet)), nrow=0))
+					colnames(meansMedia) <- gsub("-",".", colnames(negativeControlFlowSet))
+					colnames(meansMedia) <- gsub(" ","_", colnames(meansMedia))
+					standardDevsMedia <- data.frame(matrix(ncol = length(colnames(negativeControlFlowSet)), nrow=0))
+					colnames(standardDevsMedia) <- gsub("-",".", colnames(negativeControlFlowSet))
+					colnames(standardDevsMedia) <- gsub(" ","_", colnames(standardDevsMedia))
 													
-									#Process experiments for this flowSet
-									analyzedExptsMediaTimeEval <- process.samples(experimentFlowSet, colorControlsFlowSet, gatedBeadControlFlowFrame, comp.mat, autofluorescence, finalFiles, colorMultiplierVector)
-									meansMediaTime[t,] <- colMeans(analyzedExptsMediaTimeEval)
-									standardDevsMediaTime[t,] <- colSds(analyzedExptsMediaTimeEval)
-								}	
-							}
-						}	
-					}
-					
-					#Make a fluorescence v. time plot if more than one time entered to this media at this concentration
-					if (nrow(meansMediaTime) > 1) {					
-										
-						#Create a directory if there are multiple 
-						if (grepl(mediaType, conc) == TRUE) {
-							# currentMediaTypeConcPath <- paste(currentMediaTypePath, "/", "plain", sep='')
-							currentMediaTypeConcPath <- currentMediaTypePath
-						} else {
-							currentMediaTypeConcPath <- paste(currentMediaTypePath, "/", conc, sep='')
+					#Process data for files with no small molecule additions
+					if (nchar(SM) == 0) {
+						
+						#Change the SM variable to an exact match on the media
+						noSM <- paste("^", mediaType, "$", sep = '')
+						uniqueMediaSMRowsAllTimes <- uniqueMediaRows[which(TRUE == grepl(noSM, uniqueMediaRows$MEDIA)),]			
+						
+						allSMConcs <- noSM
+						
+						currentMediaTypePath <- mediaTypePath
+											
+					} else {
+						
+						#Get the list of concentrations of this media with this small molecule additive			
+						uniqueMediaSMRowsAllTimes <- uniqueMediaRows[which(TRUE == grepl(SM, uniqueMediaRows$MEDIA)),]			
+						allSMConcs <- MediaTypeSMs[which(TRUE == grepl(SM, MediaTypeSMs$SM)),]$CONCENTRATION
+						
+						#If there is a media with no small molecule included in this set
+						if ("" %in% uniqueMediaSMs) {
+							noSM <- paste("^", mediaType, "$", sep = '')
+							noSMRows <- uniqueMediaRows[which(TRUE == grepl(noSM, uniqueMediaRows$MEDIA)),]
+							uniqueMediaSMRowsAllTimes <- rbind(noSMRows, uniqueMediaSMRowsAllTimes)	
+							allSMConcs <- c(noSM, allSMConcs)
 						}
-						dir.create(currentMediaTypeConcPath, showWarnings = FALSE)
 						
-						### PLOTTING OF PART MEDIA TIMES ###
-						#Get rid of FSC and SSC
+						#Create a directory for this small molecule
+						SMdirName <- gsub("/", "_", SM)
+						SMdirName <- gsub(" ", "_", SMdirName)
+						currentMediaTypePath <- paste(mediaTypePath, "/", SMdirName, sep = '')
+						dir.create(currentMediaTypePath, showWarnings = FALSE)			
+					}
+			
+					#Loop through all unique media concentrations for this part
+					for (k in 1:length(allSMConcs)) {				
 						
-						#Edge case of only one color aside from FSC and SSC
-						storedColName <- colnames(meansMediaTime)[3]
+						time <- c()		
+						conc <- allSMConcs[k]
 						
-						meansMediaTime <- cbind(meansMediaTime[,3:length(meansMediaTime)])
-						meansMediaTime[is.na(meansMediaTime)] <- 0				
-						standardDevsMediaTime <- cbind(standardDevsMediaTime[,3:length(standardDevsMediaTime)])
-						standardDevsMediaTime[is.na(standardDevsMediaTime)] <- 0
+						#Name this media with some extra formatting 
+						if (allSMConcs[k] == noSM && length(allSMConcs) == 1) {
+							mediaName <- as.character(mediaType)
+						} else if (allSMConcs[k] == noSM && length(allSMConcs) > 1) {
+							mediaName <- as.character(paste(mediaType, "0", SM,  sep = '_'))
+							media <- c(media, "0")
+						} else {
+							mediaName <- as.character(paste(mediaType, conc, SM,  sep = '_'))
+							media <- c(media, conc)
+						}						
+										
+						#Initialize data structures for meansMediaTime and standardDevsMediaTime
+						meansMediaTime <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=0))
+						colnames(meansMediaTime) <- gsub("-",".", colnames(colorControlsFlowSet))
+						standardDevsMediaTime <- data.frame(matrix(ncol = length(colnames(colorControlsFlowSet)), nrow=0))
+						colnames(standardDevsMediaTime) <- gsub("-",".", colnames(colorControlsFlowSet))
 						
-						#Column name correction
-						if (length(colnames(meansMediaTime)) == 0) {
-							colnames(meansMediaTime) <- storedColName
-							colnames(standardDevsMediaTime) <- storedColName
+						#Get all unique times per one media condition
+						if (!is.na(as.numeric(conc)))  {
+							uniqueMediaRowsAllTimes <- uniqueMediaSMRowsAllTimes[which(TRUE == grepl(paste(conc, SM, sep = ' '), uniqueMediaSMRowsAllTimes$MEDIA)),]
+						} else {
+							uniqueMediaRowsAllTimes <- uniqueMediaSMRowsAllTimes[which(TRUE == grepl(conc, uniqueMediaSMRowsAllTimes$MEDIA)),]
+						}
+								
+						uniqueMediaTimes <- as.character(unique(uniqueMediaRowsAllTimes$TIME))
+						
+						#Hold replicates across all times per media concentration for media graphs
+						filesMediaConcentration <- c()
+						files <- c()
+						
+						#Loop through all times for this media and small molecule concentration for time series analysis
+						for (t in 1:length(uniqueMediaTimes)) {
+							
+							uniqueMediaTime <- uniqueMediaTimes[t]
+							uniqueMediaTime <- paste("^", uniqueMediaTime, "$", sep = '')
+							uniqueMediaTimeRow <- uniqueMediaRowsAllTimes[which(TRUE == grepl(uniqueMediaTime, uniqueMediaRowsAllTimes$TIME)),]
+							
+							time <- c(time, as.character(uniqueMediaTimes[t]))
+							Afile <- as.character(uniqueMediaTimeRow$FILENAME)
+							
+							#Search duplicate media matrix for duplicate files
+							if (strain) {
+								partMediaKey <- c("MEDIA", "STRAIN", "TIME")
+							} else {
+								partMediaKey <- c("MEDIA", "PART", "TIME")
+							}
+							
+							uniqueRowsThisExactMedia <- data.table(uniqueMediaTimeRow, key=partMediaKey)
+							duplicateRowsThisExactMedia <- data.table(allPartTimeMediaDuplicateRows, key=partMediaKey)
+							replicateFiles <- as.character(merge(uniqueRowsThisExactMedia, duplicateRowsThisExactMedia)$FILENAME.y)
+							
+							#Summarize files for times in this media condition in addition to files for all times in this media condition
+							files <- c(Afile, replicateFiles)
+							if (uniqueMediaTimes[t] == uniqueMediaTimes[which.max(uniqueMediaTimes)]) {						
+								filesMediaConcentration <- c(filesMediaConcentration, files)				
+							}
+							
+							#Only process this data if there is more than one time for this media and small molecule
+							if (length(uniqueMediaTimes) > 1) {
+								
+								#Do not do a time series for the blank media in combination with supplemented media
+								if (allSMConcs[k] != noSM | length(allSMConcs) == 1) {
+							
+									#Do not evaluate files with less than min events
+									finalFiles <- c()
+									for (nFile in 1:length(files)) {
+										frame <- read.flowSet(path = dataPath, files[nFile])
+										if (length(frame[[1]]) > minEvents) {
+											finalFiles <- c(finalFiles, files[nFile])
+										}
+									}
+												
+									#Analyze this flowset if there are any files left after the filter for minimal events
+									if (!is.null(finalFiles)) {
+										experimentFlowSet <- read.flowSet(path = dataPath, finalFiles, phenoData=list(Filename="$FIL"))
+										colnames(experimentFlowSet) <- gsub(" ","_", colnames(experimentFlowSet))
+										experimentFlowSet <- experimentFlowSet[,columnIndexes]				
+														
+										#Process experiments for this flowSet
+										analyzedExptsMediaTimeEval <- process.samples(experimentFlowSet, colorControlsFlowSet, gatedBeadControlFlowFrame, comp.mat, autofluorescence, finalFiles, colorMultiplierVector, stain, dataPath, plotGates)
+										meansMediaTime[t,] <- colMeans(analyzedExptsMediaTimeEval)
+										standardDevsMediaTime[t,] <- colSds(analyzedExptsMediaTimeEval)
+									}	
+								}
+							}	
+						}
+						
+						#Make a fluorescence v. time plot if more than one time entered to this media at this concentration
+						if (nrow(meansMediaTime) > 1) {					
+											
+							#Create a directory if there are multiple 
+							if (grepl(mediaType, conc) == TRUE) {
+								# currentMediaTypeConcPath <- paste(currentMediaTypePath, "/", "plain", sep='')
+								currentMediaTypeConcPath <- currentMediaTypePath
+							} else {
+								currentMediaTypeConcPath <- paste(currentMediaTypePath, "/", conc, sep='')
+							}
+							dir.create(currentMediaTypeConcPath, showWarnings = FALSE)
+							
+							### PLOTTING OF STRAIN MEDIA TIMES ###
+							#Get rid of FSC and SSC						
+							#Edge case of only one color aside from FSC and SSC
+							storedColName <- colnames(meansMediaTime)[3]
+							
+							#If stains, remove FSC-H and SSC-H also
+							if (stain == FALSE) {
+								meansMediaTime <- cbind(meansMediaTime[,3:length(meansMediaTime)])
+								standardDevsMediaTime <- cbind(standardDevsMediaTime[,3:length(standardDevsMediaTime)])
+							} else {
+								meansMediaTime <- cbind(meansMediaTime[,5:length(meansMediaTime)])
+								standardDevsMediaTime <- cbind(standardDevsMediaTime[,5:length(standardDevsMediaTime)])
+							}
+							meansMediaTime[is.na(meansMediaTime)] <- 0				
+							standardDevsMediaTime[is.na(standardDevsMediaTime)] <- 0
+							
+							#Column name correction
+							if (length(colnames(meansMediaTime)) == 0) {
+								colnames(meansMediaTime) <- storedColName
+								colnames(standardDevsMediaTime) <- storedColName
+							}			
+							
+							#Make plots				
+				    		colnames(meansMediaTime) <- paste("MEAN", colnames(meansMediaTime), sep = "_")
+				    		colnames(standardDevsMediaTime) <- paste("STD", colnames(standardDevsMediaTime), sep = "_")
+				    		xaxis <- as.numeric(str_extract_all(sub("","0",time),"\\(?[0-9,.]+\\)?"))
+				    		xaxis <- cbind(xaxis)
+				    		
+				    		plotMat <- cbind(meansMediaTime, standardDevsMediaTime)
+				    		plotMat <- cbind(xaxis, plotMat)
+				    		plotMat <- as.data.frame(plotMat)
+				    		
+				    		#Plot each color
+				    		for (u in 1:length(colnames(meansMediaTime))) {
+				    			title <- colnames(meansMediaTime)[u]
+				    			
+				    			#Define y values
+				    			yaxis <- cbind(meansMediaTime[,colnames(meansMediaTime)[u]])
+				    			yaxis <- as.numeric(yaxis)
+				    			
+				    			#Get standard error values for y values
+				    			error <- standardDevsMediaTime[,colnames(standardDevsMediaTime)[u]]
+				    			error <- as.numeric(error)	    			
+				    			ymin <- yaxis-error
+				    			ymax <- yaxis+error
+				    			limits <- aes(ymin=yaxis-error, ymax=yaxis+error)
+				
+								#File naming and placement in a subdirectory
+								name <- as.character(paste(part, "_", colnames(meansMediaTime)[u],".png", sep=''))
+								name <- str_replace_all(name, fixed(" "), "")
+								name <- sub("/","",name)
+								File <- as.character(paste(currentMediaTypeConcPath, "/plots/", name, sep=''))
+			   					File <- str_replace_all(File, fixed(" "), "")
+			   					dir.create(as.character(paste(currentMediaTypeConcPath, "/plots", sep='')))
+								dir.create(dirname(File), showWarnings = FALSE)
+				    			
+				    			#Plotting
+				    			png(File, width=960, height=960, res=120)
+				    			pt <- ggplot(data = plotMat, aes(x = xaxis, y = yaxis)) +
+				    			geom_errorbar(aes(ymin=yaxis-error, ymax=yaxis+error)) +
+								geom_line() +
+								scale_y_log10(limits = c(1e-1,1e6)) +
+				    			geom_point(size = 4, shape=21, fill="white") +
+				    			# ylim(0,max(ymax)) +
+				    			# #theme_bw() +
+				    			ggtitle(as.character(paste(part,mediaName,colnames(meansMediaTime)[u], sep = "_"))) +    	
+				    			xlab(as.character("TIME")) +
+								ylab(as.character(paste(colnames(meansMediaTime)[u]," (MEFL)"))) +
+						    	theme(axis.text.y  = element_text(colour="black")) +
+		    					theme(axis.text.x  = element_text(colour="black")) 
+				    			print(pt)
+				    			dev.off()		    			
+				    		}		    		
+				    		
+			    			#Output file
+							colnames(plotMat)[1] <- "Time"
+							filename <- as.character(paste(currentMediaTypeConcPath, "/", "timeSeriesPlotPoints.csv", sep=''))
+							write.csv(file=filename, x=plotMat, row.names=FALSE)
 						}			
+				
+						#Remove files with less than minEvents
+						finalFilesMediaConcentration <- c()
+						for (nFile in 1:length(filesMediaConcentration)) {
+							frame <- read.flowSet(path = dataPath, filesMediaConcentration[nFile])
+							if (length(frame[[1]]) > minEvents) {
+								finalFilesMediaConcentration <- c(finalFilesMediaConcentration, filesMediaConcentration[nFile])
+							}
+						}
+				
+						#Analyze this flowset if there are any files left after the filter for minimal events
+						if (!is.null(finalFilesMediaConcentration)) {
+							experimentFlowSetMedia <- read.flowSet(path = dataPath, finalFilesMediaConcentration, phenoData=list(Filename="$FIL"))
+							colnames(experimentFlowSetMedia) <- gsub(" ","_", colnames(experimentFlowSetMedia))
+							experimentFlowSetMedia <- experimentFlowSetMedia[,columnIndexes]				
+											
+							#Process experiments for this flowSet
+							analyzedExptsMediaEval <- process.samples(experimentFlowSetMedia, colorControlsFlowSet, gatedBeadControlFlowFrame, comp.mat, autofluorescence, finalFilesMediaConcentration, colorMultiplierVector, stain, dataPath, plotGates)
+							meansMedia[k,] <- colMeans(analyzedExptsMediaEval)
+							standardDevsMedia[k,] <- colSds(analyzedExptsMediaEval)							
+						}
+					}		
+					
+					#Make a fluorescence v. media plot if more than one time entered to this media at this concentration
+					if (nrow(meansMedia) > 1) {
+					
+						### PLOTTING OF STRAIN MEDIA CONDITIONS ###
+						#Get rid of FSC and SSC
+						#If stains, remove FSC-H and SSC-H also
+						if (stain == FALSE) {
+							meansMedia <- meansMedia[,3:length(meansMedia)]
+							standardDevsMedia <- standardDevsMedia[,3:length(standardDevsMedia)]
+						} else {
+							meansMedia <- meansMedia[,5:length(meansMedia)]
+							standardDevsMedia <- standardDevsMedia[,5:length(standardDevsMedia)]
+						}					
+						meansMedia[is.na(meansMedia)] <- 0					
+						standardDevsMedia[is.na(standardDevsMedia)] <- 0
 						
-						#Make plots				
-			    		colnames(meansMediaTime) <- paste("MEAN", colnames(meansMediaTime), sep = "_")
-			    		colnames(standardDevsMediaTime) <- paste("STD", colnames(standardDevsMediaTime), sep = "_")
-			    		xaxis <- as.numeric(str_extract_all(sub("","0",time),"\\(?[0-9,.]+\\)?"))
+						#Make plots
+			    		colnames(meansMedia) <- paste("MEAN", colnames(meansMedia), sep = "_")
+			    		colnames(standardDevsMedia) <- paste("STD", colnames(standardDevsMedia), sep = "_")
+			    		xaxis <- as.numeric(str_extract_all(sub("","0",media),"\\(?[0-9,.]+\\)?"))
 			    		xaxis <- cbind(xaxis)
 			    		
-			    		plotMat <- cbind(meansMediaTime, standardDevsMediaTime)
+			    		plotMat <- cbind(meansMedia, standardDevsMedia)
 			    		plotMat <- cbind(xaxis, plotMat)
-			    		plotMat <- as.data.frame(plotMat)
 			    		
 			    		#Plot each color
-			    		for (u in 1:length(colnames(meansMediaTime))) {
-			    			title <- colnames(meansMediaTime)[u]
+			    		for (l in 1:length(colnames(meansMedia))) {
+			    			
+			    			title <- colnames(meansMedia)[l]
 			    			
 			    			#Define y values
-			    			yaxis <- cbind(meansMediaTime[,colnames(meansMediaTime)[u]])
+			    			yaxis <- cbind(meansMedia[,colnames(meansMedia)[l]])
 			    			yaxis <- as.numeric(yaxis)
 			    			
 			    			#Get standard error values for y values
-			    			error <- standardDevsMediaTime[,colnames(standardDevsMediaTime)[u]]
-			    			error <- as.numeric(error)	    			
+			    			error <- standardDevsMedia[,colnames(standardDevsMedia)[l]]
+			    			error <- as.numeric(error)    			
 			    			ymin <- yaxis-error
 			    			ymax <- yaxis+error
 			    			limits <- aes(ymin=yaxis-error, ymax=yaxis+error)
 			
 							#File naming and placement in a subdirectory
-							name <- as.character(paste(part, "_", colnames(meansMediaTime)[u],".png", sep=''))
+							name <- as.character(paste(part, "_",colnames(meansMedia)[l],".png"), sep='')
 							name <- str_replace_all(name, fixed(" "), "")
 							name <- sub("/","",name)
-							File <- as.character(paste(currentMediaTypeConcPath, "/plots/", name, sep=''))
+							File <- as.character(paste(currentMediaTypePath, "/plots/", name, sep=''))
 		   					File <- str_replace_all(File, fixed(" "), "")
-		   					dir.create(as.character(paste(currentMediaTypeConcPath, "/plots", sep='')))
+		   					dir.create(as.character(paste(currentMediaTypePath, "/plots", sep='')))
 							dir.create(dirname(File), showWarnings = FALSE)
-			    			
-			    			#Plotting
-			    			png(File, width=960, height=960, res=120)
-			    			pt <- ggplot(data = plotMat, aes(x = xaxis, y = yaxis)) +
+																	
+							#Plotting
+							png(File, width=960, height=960, res=120)
+			    			p <- ggplot(plotMat, aes(x = xaxis, y = yaxis)) +
 			    			geom_errorbar(aes(ymin=yaxis-error, ymax=yaxis+error)) +
 							geom_line() +
 							scale_y_log10(limits = c(1e-1,1e6)) +
 			    			geom_point(size = 4, shape=21, fill="white") +
 			    			# ylim(0,max(ymax)) +
-			    			# #theme_bw() +
-			    			ggtitle(as.character(paste(part,mediaName,colnames(meansMediaTime)[u], sep = "_"))) +    	
-			    			xlab(as.character("TIME")) +
-							ylab(as.character(paste(colnames(meansMediaTime)[u]," (MEFL)"))) +
-					    	theme(axis.text.y  = element_text(colour="black")) +
-	    					theme(axis.text.x  = element_text(colour="black")) 
-			    			print(pt)
-			    			dev.off()		    			
-			    		}		    		
+			    			#theme_bw() +
+			    			ggtitle(as.character(part)) +    			
+			    			xlab(as.character(paste(mediaType, SM, sep ='+'))) +
+			    			ylab(as.character(paste(colnames(meansMedia)[l]," (MEFL)"))) +
+		    				theme(axis.text.y  = element_text(colour="black")) +
+		    				theme(axis.text.x  = element_text(colour="black")) 
+			    			print(p)
+			    			dev.off()	    								
+			    		}    	
 			    		
-		    			#Output file
-						colnames(plotMat)[1] <- "Time"
-						filename <- as.character(paste(currentMediaTypeConcPath, "/", "timeSeriesPlotPoints.csv", sep=''))
+			    		#Output file
+						colnames(plotMat)[1] <- SMdirName
+						filename <- as.character(paste(currentMediaTypePath, "/", "mediaTitrationPlotPoints.csv", sep=''))
 						write.csv(file=filename, x=plotMat, row.names=FALSE)
-					}			
-			
-					#Remove files with less than minEvents
-					finalFilesMediaConcentration <- c()
-					for (nFile in 1:length(filesMediaConcentration)) {
-						frame <- read.flowSet(path = dataPath, filesMediaConcentration[nFile])
-						if (length(frame[[1]]) > minEvents) {
-							finalFilesMediaConcentration <- c(finalFilesMediaConcentration, filesMediaConcentration[nFile])
-						}
-					}
-			
-					#Analyze this flowset if there are any files left after the filter for minimal events
-					if (!is.null(finalFilesMediaConcentration)) {
-						experimentFlowSetMedia <- read.flowSet(path = dataPath, finalFilesMediaConcentration, phenoData=list(Filename="$FIL"))
-						experimentFlowSetMedia <- experimentFlowSetMedia[,columnIndexes]				
-										
-						#Process experiments for this flowSet
-						analyzedExptsMediaEval <- process.samples(experimentFlowSetMedia, colorControlsFlowSet, gatedBeadControlFlowFrame, comp.mat, autofluorescence, finalFilesMediaConcentration, colorMultiplierVector)
-						meansMedia[k,] <- colMeans(analyzedExptsMediaEval)
-						standardDevsMedia[k,] <- colSds(analyzedExptsMediaEval)							
-					}
-				}		
-				
-				#Make a fluorescence v. media plot if more than one time entered to this media at this concentration
-				if (nrow(meansMedia) > 1) {
-				
-					### PLOTTING OF PART MEDIA CONDITIONS ###
-					#Get rid of FSC and SSC
-					meansMedia <- meansMedia[,3:length(meansMedia)]
-					meansMedia[is.na(meansMedia)] <- 0
-					standardDevsMedia <- standardDevsMedia[,3:length(standardDevsMedia)]
-					standardDevsMedia[is.na(standardDevsMedia)] <- 0
+			    		
+			    		#New regulation plotting bassis - for only a single strain, not across strains
+			    		if (!is.null(uniqueMediaRows$REGULATION)) {
+			    			
+			    			#This check needs to be extended to look for all rows that have regulation and only use those, but will not do that for the time being
+							if (!(uniqueMediaRows$REGULATION[1] == "")) {
+								
+								#Determine regulation control channels for plotting
+								regControlPartAndChannels <- trimws(strsplit(as.character(uniqueMediaRows$REGULATION[1]), "\\(")[[1]])
+								regControlPartAndChannels <- gsub("\\)","", regControlPartAndChannels)							
+								regControlChannels <- trimws(strsplit(as.character(trimws(gsub(".*\\((.*)\\).*", "\\1", regControlPartAndChannels[1]))), "\\|")[[1]])
+	
+								#Check how many channels are in this split - right now this is only going ot handle two, but could be extended to do more
+								if (length(regControlChannels) == 2) {
+									
+									ychannel <- gsub("-",".", regControlChannels[2])
+									yaxis <- meansMedia[,which(TRUE == grepl(ychannel, colnames(meansMedia)))]
+									yaxis <- as.numeric(yaxis)
+									xchannel <- gsub("-",".", regControlChannels[1])
+									xaxis <- meansMedia[,which(TRUE == grepl(xchannel, colnames(meansMedia)))]
+									xaxis <- as.numeric(xaxis)
+									ylabel <- as.character(paste(ychannel, " (MEFL)", sep=""))
+									xlabel <- as.character(paste(xchannel, " (MEFL)", sep=""))
+									plotMatColNames <- c(xchannel, ychannel)
+									
+									plotMat <- cbind(xaxis, as.numeric(yaxis))
+						    		plotMat <- as.data.frame(plotMat)
+						    		
+						    		title <- paste("Regulation of ", xlabel, " ON ", ylabel, sep='')
 					
-					#Make plots
-		    		colnames(meansMedia) <- paste("MEAN", colnames(meansMedia), sep = "_")
-		    		colnames(standardDevsMedia) <- paste("STD", colnames(standardDevsMedia), sep = "_")
-		    		xaxis <- as.numeric(str_extract_all(sub("","0",media),"\\(?[0-9,.]+\\)?"))
-		    		xaxis <- cbind(xaxis)
-		    		
-		    		plotMat <- cbind(meansMedia, standardDevsMedia)
-		    		plotMat <- cbind(xaxis, plotMat)
-		    		
-		    		#Plot each color
-		    		for (l in 1:length(colnames(meansMedia))) {
-		    			
-		    			title <- colnames(meansMedia)[l]
-		    			
-		    			#Define y values
-		    			yaxis <- cbind(meansMedia[,colnames(meansMedia)[l]])
-		    			yaxis <- as.numeric(yaxis)
-		    			
-		    			#Get standard error values for y values
-		    			error <- standardDevsMedia[,colnames(standardDevsMedia)[l]]
-		    			error <- as.numeric(error)    			
-		    			ymin <- yaxis-error
-		    			ymax <- yaxis+error
-		    			limits <- aes(ymin=yaxis-error, ymax=yaxis+error)
-		
-						#File naming and placement in a subdirectory
-						name <- as.character(paste(part, "_",colnames(meansMedia)[l],".png"), sep='')
-						name <- str_replace_all(name, fixed(" "), "")
-						name <- sub("/","",name)
-						File <- as.character(paste(currentMediaTypePath, "/plots/", name, sep=''))
-	   					File <- str_replace_all(File, fixed(" "), "")
-	   					dir.create(as.character(paste(currentMediaTypePath, "/plots", sep='')))
-						dir.create(dirname(File), showWarnings = FALSE)
-																
-						#Plotting
-						png(File, width=960, height=960, res=120)
-		    			p <- ggplot(plotMat, aes(x = xaxis, y = yaxis)) +
-		    			geom_errorbar(aes(ymin=yaxis-error, ymax=yaxis+error)) +
-						geom_line() +
-						scale_y_log10(limits = c(1e-1,1e6)) +
-		    			geom_point(size = 4, shape=21, fill="white") +
-		    			# ylim(0,max(ymax)) +
-		    			#theme_bw() +
-		    			ggtitle(as.character(part)) +    			
-		    			xlab(as.character(paste(mediaType, SM, sep ='+'))) +
-		    			ylab(as.character(paste(colnames(meansMedia)[l]," (MEFL)"))) +
-	    				theme(axis.text.y  = element_text(colour="black")) +
-	    				theme(axis.text.x  = element_text(colour="black")) 
-		    			print(p)
-		    			dev.off()	    								
-		    		}    	
-		    		
-		    		#Output file
-					colnames(plotMat)[1] <- SMdirName
-					filename <- as.character(paste(currentMediaTypePath, "/", "mediaTitrationPlotPoints.csv", sep=''))
-					write.csv(file=filename, x=plotMat, row.names=FALSE)
-		    		
-		    		#New regulation plotting bassis - for only a single strain, not across strains
-		    		if (!is.null(uniqueMediaRows$REGULATION)) {
-		    			
-		    			#This check needs to be extended to look for all rows that have regulation and only use those, but will not do that for the time being
-						if (!(uniqueMediaRows$REGULATION[1] == "")) {
-							
-							#Determine regulation control channels for plotting
-							regControlPartAndChannels <- trimws(strsplit(as.character(uniqueMediaRows$REGULATION[1]), "\\(")[[1]])
-							regControlPartAndChannels <- gsub("\\)","", regControlPartAndChannels)							
-							regControlChannels <- trimws(strsplit(as.character(trimws(gsub(".*\\((.*)\\).*", "\\1", regControlPartAndChannels[1]))), "\\|")[[1]])
-
-							#Check how many channels are in this split - right now this is only going ot handle two, but could be extended to do more
-							if (length(regControlChannels) == 2) {
-								
-								ychannel <- gsub("-",".", regControlChannels[2])
-								yaxis <- meansMedia[,which(TRUE == grepl(ychannel, colnames(meansMedia)))]
-								yaxis <- as.numeric(yaxis)
-								xchannel <- gsub("-",".", regControlChannels[1])
-								xaxis <- meansMedia[,which(TRUE == grepl(xchannel, colnames(meansMedia)))]
-								xaxis <- as.numeric(xaxis)
-								ylabel <- as.character(paste(ychannel, " (MEFL)", sep=""))
-								xlabel <- as.character(paste(xchannel, " (MEFL)", sep=""))
-								plotMatColNames <- c(xchannel, ychannel)
-								
-								plotMat <- cbind(xaxis, as.numeric(yaxis))
-					    		plotMat <- as.data.frame(plotMat)
-					    		
-					    		title <- paste("Regulation of ", xlabel, " ON ", ylabel, sep='')
-				
-								#File naming and placement in a subdirectory
-								name <- as.character(paste(ychannel, "_v_", xchannel,".png", sep=''))
-								name <- str_replace_all(name, fixed(" "), "")
-								name <- sub("/","",name)
-								File <- as.character(paste(currentMediaTypePath, "/regulation/plots/", name, sep=''))
-			   					File <- str_replace_all(File, fixed(" "), "")
-			   					dir.create(as.character(paste(currentMediaTypePath, "/regulation", sep='')))
-								dir.create(dirname(File), showWarnings = FALSE)	    			
-										    			
-				    			#Plotting																		
-								png(File, width=960, height=960, res=120)
-				    			pt <- ggplot(data = plotMat, aes(x = xaxis, y = as.numeric(yaxis))) +
-								#geom_line() +
-								# scale_y_log10(limits = c(1e-1,1e6)) +								
-								# scale_x_log10(limits = c(1e-1,1e6)) +
-								theme_bw() +
-				    			# geom_point(size = 4, shape=21, fill="white") +
-				    			geom_point(size = 4, shape=21, fill="red") +
-				    			ggtitle(as.character(title)) +    	
-				    			xlab(xlabel) +
-								ylab(ylabel) +
-			    				theme(axis.text.y  = element_text(colour="black")) +
-						    	theme(axis.text.x  = element_text(colour="black")) 
-				    			print(pt)
-				    			dev.off()
-				    			
-				    			#Output file
-								colnames(plotMat) <- plotMatColNames
-								filename <- as.character(paste(currentMediaTypePath, "/regulation/", "regulationPlotPoints.csv", sep=''))
-								write.csv(file=filename, x=plotMat, row.names=FALSE)
+									#File naming and placement in a subdirectory
+									name <- as.character(paste(ychannel, "_v_", xchannel,".png", sep=''))
+									name <- str_replace_all(name, fixed(" "), "")
+									name <- sub("/","",name)
+									File <- as.character(paste(currentMediaTypePath, "/regulation/plots/", name, sep=''))
+				   					File <- str_replace_all(File, fixed(" "), "")
+				   					dir.create(as.character(paste(currentMediaTypePath, "/regulation", sep='')))
+									dir.create(dirname(File), showWarnings = FALSE)	    			
+											    			
+					    			#Plotting																		
+									png(File, width=960, height=960, res=120)
+					    			pt <- ggplot(data = plotMat, aes(x = xaxis, y = as.numeric(yaxis))) +
+									#geom_line() +
+									# scale_y_log10(limits = c(1e-1,1e6)) +								
+									# scale_x_log10(limits = c(1e-1,1e6)) +
+									theme_bw() +
+					    			# geom_point(size = 4, shape=21, fill="white") +
+					    			geom_point(size = 4, shape=21, fill="red") +
+					    			ggtitle(as.character(title)) +    	
+					    			xlab(xlabel) +
+									ylab(ylabel) +
+				    				theme(axis.text.y  = element_text(colour="black")) +
+							    	theme(axis.text.x  = element_text(colour="black")) 
+					    			print(pt)
+					    			dev.off()
+					    			
+					    			#Output file
+									colnames(plotMat) <- plotMatColNames
+									filename <- as.character(paste(currentMediaTypePath, "/regulation/", "regulationPlotPoints.csv", sep=''))
+									write.csv(file=filename, x=plotMat, row.names=FALSE)
+								}
 							}
 						}
-					}
-			    	
-			    #If there is no media curve, we still want to take averages of duplicateTimeMediaRows
-				} else {
-					
-					#Remove extra directories if there are no time series, inducer titration or regulation
-					if(nrow(meansMediaTime) < 2) {
-						if (is.null(uniqueMediaRows$REGULATION) || (uniqueMediaRows$REGULATION[1] == "")) {
-							unlink(part, recursive = TRUE)
+				    	
+				    #If there is no media curve, we still want to take averages of duplicateTimeMediaRows
+					} else {
+						
+						#Remove extra directories if there are no time series, inducer titration or regulation
+						if (nrow(meansMediaTime) < 2) {
+							if (is.null(uniqueMediaRows$REGULATION) || (uniqueMediaRows$REGULATION[1] == "")) {
+								
+								#If there is only the blank media with no small molecule, this directory is unnecessary
+								if (length(uniqueMediaSMs) < 2) {
+									unlink(mediaTypePath, recursive = TRUE)
+								}
+								
+								#If this is the last media type and no plots have been made, collapse this directory
+								if (mediaType == uniqueMediaTypes[length(uniqueMediaTypes)]) {
+	
+									setwd(paste(wd, part, sep="/"))
+									if(length(dir(all.files=TRUE)) < 3) {
+										setwd(wd)
+										unlink(part, recursive = TRUE)
+									} else {
+										setwd(wd)
+									}								
+								}
+							}
+						}				
+						
+						oneMediaParts <- c(oneMediaParts, paste(part, mediaType, sep = "_"))				
+						meansOneMedia <- rbind(meansOneMedia, meansMedia[1,])
+						standardDevsOneMedia <- rbind(standardDevsOneMedia, standardDevsMedia[1,])
+						
+						if ("MULTIPLEX" %in% colnames(key)) {
+							if (!(uniqueMediaRows$MULTIPLEX == "")) {
+								x <- rbind(get(paste("MMeans",uniqueMediaRows$MULTIPLEX,sep="")),meansMedia)
+								assign(paste("MMeans",uniqueMediaRows$MULTIPLEX,sep=""), x)
+								y <- rbind(get(paste("MStds",uniqueMediaRows$MULTIPLEX,sep="")),standardDevsMedia)
+								assign(paste("MStds",uniqueMediaRows$MULTIPLEX,sep=""), y)
+							}
 						}
-					}				
-					
-					oneMediaParts <- c(oneMediaParts, paste(part, mediaType, sep = "_"))				
-					meansOneMedia <- rbind(meansOneMedia, meansMedia[1,])
-					standardDevsOneMedia <- rbind(standardDevsOneMedia, standardDevsMedia[1,])
-					
-					if ("MULTIPLEX" %in% colnames(key)) {
-						if (!(uniqueMediaRows$MULTIPLEX == "")) {
-							x <- rbind(get(paste("MMeans",uniqueMediaRows$MULTIPLEX,sep="")),meansMedia)
-							assign(paste("MMeans",uniqueMediaRows$MULTIPLEX,sep=""), x)
-							y <- rbind(get(paste("MStds",uniqueMediaRows$MULTIPLEX,sep="")),standardDevsMedia)
-							assign(paste("MStds",uniqueMediaRows$MULTIPLEX,sep=""), y)
-						}
-					}
+					}		
 				}		
-			}		
+			}
 		}
 	}
 	
 	#If a part has only one media, make bar plots for that part in its media
 	if (length(oneMediaParts) > 1) {
 		
-		### PLOTTING OF PART MEDIA CONDITIONS ###
+		### PLOTTING OF STRAIN MEDIA CONDITIONS ###
 		#Get rid of FSC and SSC
 		#Edge case of only one color aside from FSC and SSC
 		storedColName <- colnames(meansOneMedia)[3]
 		
-		meansOneMedia <- cbind(meansOneMedia[,3:length(meansOneMedia)])
-		meansOneMedia[is.na(meansOneMedia)] <- 0				
-		standardDevsOneMedia <- cbind(standardDevsOneMedia[,3:length(standardDevsOneMedia)])
+		#If stains, remove FSC-H and SSC-H also
+		if (stain == FALSE) {
+			meansOneMedia <- cbind(meansOneMedia[,3:length(meansOneMedia)])
+			standardDevsOneMedia <- cbind(standardDevsOneMedia[,3:length(standardDevsOneMedia)])
+		} else {
+			meansOneMedia <- cbind(meansOneMedia[,5:length(meansOneMedia)])
+			standardDevsOneMedia <- cbind(standardDevsOneMedia[,5:length(standardDevsOneMedia)])
+		}	
+		meansOneMedia[is.na(meansOneMedia)] <- 0						
 		standardDevsOneMedia[is.na(standardDevsOneMedia)] <- 0
 		
 		#Column name correction
@@ -626,10 +755,10 @@ setwd(wd)
 	    	scale_y_log10(limits = c(1e-1,1e6)) +
 	   		geom_errorbar(aes(ymin=yaxis-error, ymax=yaxis+error)) +
 	  		ggtitle(as.character("Mean Population Averages")) +    			
-	   		xlab(as.character("PARTS")) +
+	   		xlab(as.character("STRAINS")) +
 	   		ylab(as.character(paste(colnames(meansOneMedia)[v]," (MEFL)"))) +
 	   		theme(axis.title.x = element_blank()) +
-	   		theme(axis.text.x  = element_text(angle=45, vjust=0.5, size=8, colour="black")) +
+	   		theme(axis.text.x  = element_text(angle=90, vjust=0.5, size=8, colour="black")) +
 	   		theme(axis.text.y  = element_text(colour="black"))
 	   		print(po)
 	   		dev.off()

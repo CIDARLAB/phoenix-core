@@ -25,7 +25,7 @@ process.samples <- function(experimentFlowSet, colorControlsFlowSet, beadFlowFra
 		print(p1)
 	   	dev.off()
 		
-		cellSizeFilter <- norm2Filter(x = c("SSC-A", "FSC-A"), scale.factor = 3, filterId = "cellSize")
+		cellSizeFilter <- norm2Filter(x = c("SSC-A", "FSC-A"), scale.factor = 2, filterId = "cellSize")
 		cellSizeFilter.results <- filter (compensatedFlowSet, cellSizeFilter)			
 		compensatedFlowSet <- Subset(compensatedFlowSet, cellSizeFilter.results)
 		
@@ -40,37 +40,37 @@ process.samples <- function(experimentFlowSet, colorControlsFlowSet, beadFlowFra
 	   	dev.off()
 		
 	} else {
-		cellSizeFilter <- norm2Filter(x = c("SSC-A", "FSC-A"), scale.factor = 3, filterId = "cellSize")
+		cellSizeFilter <- norm2Filter(x = c("SSC-A", "FSC-A"), scale.factor = 2, filterId = "cellSize")
 		cellSizeFilter.results <- filter (compensatedFlowSet, cellSizeFilter)			
 		compensatedFlowSet <- Subset(compensatedFlowSet, cellSizeFilter.results)
 	}													
 				
 	#Extra gate specific to this experiment due to laser problems
-	# gs <- GatingSet(compensatedFlowSet)		
-	# polygonCellsOnly <- matrix(c(10^2,10^2,10^4,10^4,10^2.5,10^4.5,10^2.5,10^4.5),ncol=2,nrow=4)
+	gs <- GatingSet(compensatedFlowSet)		
+	polygonCellsOnly <- matrix(c(10^2,10^2,10^4,10^4,10^2.5,10^4.5,10^2.5,10^4.5),ncol=2,nrow=4)
 		
-	# #FSC singlet gate
-	# colnames(polygonCellsOnly) <- c("SSC-A","FSC-A")
-	# cog <- polygonGate(filterId="cellsOnly", .gate= polygonCellsOnly)
-	# add(gs, cog, parent = "root")
+	#FSC singlet gate
+	colnames(polygonCellsOnly) <- c("SSC-A","FSC-A")
+	cog <- polygonGate(filterId="cellsOnly", .gate= polygonCellsOnly)
+	add(gs, cog, parent = "root")
 		
-	# # if (plotGates) {
-		# # filename <- paste(flowSetName, "_cells_only.png", sep = '')
-		# # #File <- as.character(paste("./plotted_gates/", filename, sep = ''))
-		# # File <- as.character(paste("./plotted_gates/", flowSetName, "/", filename, sep = ''))
-		# # dir.create(dirname(File), showWarnings = FALSE)   		
-	 	# # png(File, width=960, height=960, res=120)
+	# if (plotGates) {
+		# filename <- paste(flowSetName, "_cells_only.png", sep = '')
+		# #File <- as.character(paste("./plotted_gates/", filename, sep = ''))
+		# File <- as.character(paste("./plotted_gates/", flowSetName, "/", filename, sep = ''))
+		# dir.create(dirname(File), showWarnings = FALSE)   		
+	 	# png(File, width=960, height=960, res=120)
 	   		
-		# # recompute(gs)
-		# # p <- autoplot(gs, "singlets_FSC") +
-		# # xlim(0, 250000) +
-		# # ylim(0, 250000)
-		# # print(p)
-	   	# # dev.off()
-	# # }
+		# recompute(gs)
+		# p <- autoplot(gs, "singlets_FSC") +
+		# xlim(0, 250000) +
+		# ylim(0, 250000)
+		# print(p)
+	   	# dev.off()
+	# }
 		
-	# cellsOnly.results <- filter(compensatedFlowSet,cog)
-	# compensatedFlowSet <- Subset(compensatedFlowSet, cellsOnly.results)		
+	cellsOnly.results <- filter(compensatedFlowSet,cog)
+	compensatedFlowSet <- Subset(compensatedFlowSet, cellsOnly.results)		
 				
 	#Apply a singlet filter if staining
 	# if (stain == TRUE) {		

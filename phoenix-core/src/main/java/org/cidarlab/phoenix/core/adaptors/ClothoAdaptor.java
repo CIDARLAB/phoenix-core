@@ -18,6 +18,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.sf.json.JSONArray;
@@ -46,8 +48,6 @@ import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.Person;
 import org.cidarlab.phoenix.core.dom.Primitive;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
-import org.cidarlab.phoenix.core.dom.Sample;
-import org.cidarlab.phoenix.core.dom.Sample.SampleType;
 import org.cidarlab.phoenix.core.dom.Sequence;
 import org.cidarlab.phoenix.core.dom.SmallMolecule;
 import org.cidarlab.phoenix.core.dom.Strain;
@@ -79,10 +79,10 @@ public class ClothoAdaptor {
             for (Feature f : features) {
                 createFeature(f, clothoObject);
             }
-            for(Fluorophore fluorophore:fluorophores){
+            for (Fluorophore fluorophore : fluorophores) {
                 createFluorophore(fluorophore, clothoObject);
             }
-            
+
         } else {
 
             //Get polynucleotides, nucseqs and parts from a multi-part genbank file
@@ -99,8 +99,8 @@ public class ClothoAdaptor {
             annotateParts(annotationFeatures, polyNucs);
 
             //Save all polynucleotides, nucseqs and parts to Clotho
-            for(Polynucleotide polynucleotide:polyNucs){
-                createPolynucleotide(polynucleotide,clothoObject);
+            for (Polynucleotide polynucleotide : polyNucs) {
+                createPolynucleotide(polynucleotide, clothoObject);
             }
         }
     }
@@ -160,101 +160,179 @@ public class ClothoAdaptor {
     }
 
     /*
-     * This method is for uploading fluorescence spectrum data to be associated with Fluorphore objects
-     */
-    public static void uploadCytometer(File input, Clotho clothoObject) throws FileNotFoundException, IOException {
+    
+    public static void uploadCytometer(File input, Clotho clothoObject) {
 
-        //Import file, begin reading
-        BufferedReader reader = new BufferedReader(new FileReader(input.getAbsolutePath()));
-
-        //Initialize parameters
-        String name = "";
+        
+    }
+    
+    
+    */
+    
+    public static void uploadCytometerData(File file, Clotho clothoObject){
+        
         HashSet<String> lasers = new HashSet<>();
         HashSet<String> filters = new HashSet<>();
         HashMap<String, ArrayList<String[]>> config = new HashMap<>();
-
-        //The first line describes the spectra
-        String line = reader.readLine();
-        while (line != null) {
-
-            String[] vals = line.split(",");
-
-            //Find name
-            if (vals[0].equalsIgnoreCase("Configuration Name")) {
-                name = vals[1];
-            }
-
-            //Once cytometer key rows are hit
-            if (vals[0].equalsIgnoreCase("Laser Name")) {
-
-                line = reader.readLine();
-
-                //Internal loop for each laser
-                while (line != null) {
-
-                    String[] cvals = line.split(",");
-                    String laser = cvals[2] + ":" + cvals[3];
-                    lasers.add(laser);
-
-                    String mirror = cvals[7].substring(0, cvals[7].length() - 3);
-                    String filter = cvals[8].substring(0, cvals[8].length() - 3).replaceAll("/", ":");
-                    filters.add(mirror);
-                    filters.add(filter);
-                    ArrayList<String[]> filterList = new ArrayList<>();
-                    filterList.add(new String[]{mirror, filter});
-                    config.put(laser, filterList);
-
-                    line = reader.readLine();
-                    cvals = line.split(",");
-
-                    //Loop kicked into once it reaches the lasers section of the file
-                    while (cvals[0].equals("")) {
-
-                        //Only look at row with filters, not empty slots
-                        if (cvals.length >= 9) {
-                            String newMirror;
-                            String newFilter;
-
-                            //If there is a longpass filter
-                            if (!cvals[7].isEmpty()) {
-                                newMirror = cvals[7].substring(0, cvals[7].length() - 3);
-                                filters.add(newMirror);
-
-                                //If there is a bandpass filter
-                                if (!cvals[8].isEmpty()) {
-                                    newFilter = cvals[8].substring(0, cvals[8].length() - 3).replaceAll("/", ":");
-                                    filters.add(newFilter);
-                                    filterList.add(new String[]{newMirror, newFilter});
-                                }
-
-                            } else {
-
-                                //If there is a bandpass filter
-                                if (!cvals[8].isEmpty()) {
-                                    newFilter = cvals[8].substring(0, cvals[8].length() - 3).replaceAll("/", ":");
-                                    filters.add(newFilter);
-                                    filterList.add(new String[]{newFilter});
-                                }
+        
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line = "";
+            String name = "";
+            boolean laserMode = false;
+            String laser = "";
+            ArrayList<String[]> filterList = new ArrayList<>();
+            while( (line = reader.readLine()) != null ){
+                String pieces[] = line.split(",");
+                if(laserMode){
+                    if(!pieces[0].trim().isEmpty()){
+                        laser = pieces[2].trim() + ":" + pieces[3].trim();
+                        lasers.add(laser);
+                        filterList = new ArrayList<>();
+                        config.put(laser, filterList);
+                    }
+                    System.out.println(line);
+                    System.out.println("Number of pieces :: " + pieces.length);
+                    if (pieces.length > 6) {
+                        if (pieces[7] != null) {
+                            if (!pieces[7].trim().equals("")) {
+                                String mirrorPieces[] = pieces[7].trim().split(" ");
+                                String mirror = mirrorPieces[0].trim();//7
+                                String filterPieces[] = pieces[8].trim().split(" ");
+                                String filter = filterPieces[0].trim().replaceAll("/", ":");//8
+                                filters.add(mirror);
+                                filters.add(filter);
+                                filterList.add(new String[]{mirror, filter});
                             }
                         }
+                    }
+                    
+                
+                }
+                if(pieces[0].trim().equalsIgnoreCase("Configuration Name")){
+                    name = pieces[1].trim();
+                }
+                if(pieces[0].trim().equalsIgnoreCase("Laser Name")){
+                    laserMode = true;
+                }
+            }
+            
+            Cytometer c = new Cytometer(name, lasers, filters, config);
+            createCytometer(c, clothoObject);
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ClothoAdaptor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ClothoAdaptor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //<editor-fold desc="old uploadCytometer">
+        /*
+        BufferedReader reader = null;
+        try {
+            //Import file, begin reading
+            reader = new BufferedReader(new FileReader(input));
+            //Initialize parameters
+            String name = "";
+            HashSet<String> lasers = new HashSet<>();
+            HashSet<String> filters = new HashSet<>();
+            HashMap<String, ArrayList<String[]>> config = new HashMap<>();
+            //The first line describes the spectra
+            String line = reader.readLine();
+            while (line != null) {
+
+                String[] vals = line.split(",");
+
+                //Find name
+                if (vals[0].equalsIgnoreCase("Configuration Name")) {
+                    name = vals[1];
+                }
+
+                //Once cytometer key rows are hit
+                if (vals[0].equalsIgnoreCase("Laser Name")) {
+
+                    line = reader.readLine();
+
+                    //Internal loop for each laser
+                    while (line != null) {
+
+                        String[] cvals = line.split(",");
+                        String laser = cvals[2] + ":" + cvals[3];
+                        lasers.add(laser);
+
+                        String mirror = cvals[7].substring(0, cvals[7].length() - 3);
+                        String filter = cvals[8].substring(0, cvals[8].length() - 3).replaceAll("/", ":");
+                        filters.add(mirror);
+                        filters.add(filter);
+                        ArrayList<String[]> filterList = new ArrayList<>();
+                        filterList.add(new String[]{mirror, filter});
+                        config.put(laser, filterList);
 
                         line = reader.readLine();
-                        if (line != null) {
-                            cvals = line.split(",");
-                        } else {
-                            cvals = new String[]{"end"};
+                        cvals = line.split(",");
+
+                        //Loop kicked into once it reaches the lasers section of the file
+                        while (cvals[0].equals("")) {
+
+                            //Only look at row with filters, not empty slots
+                            if (cvals.length >= 9) {
+                                String newMirror;
+                                String newFilter;
+
+                                //If there is a longpass filter
+                                if (!cvals[7].isEmpty()) {
+                                    newMirror = cvals[7].substring(0, cvals[7].length() - 3);
+                                    filters.add(newMirror);
+
+                                    //If there is a bandpass filter
+                                    if (!cvals[8].isEmpty()) {
+                                        newFilter = cvals[8].substring(0, cvals[8].length() - 3).replaceAll("/", ":");
+                                        filters.add(newFilter);
+                                        filterList.add(new String[]{newMirror, newFilter});
+                                    }
+
+                                } else {
+
+                                    //If there is a bandpass filter
+                                    if (!cvals[8].isEmpty()) {
+                                        newFilter = cvals[8].substring(0, cvals[8].length() - 3).replaceAll("/", ":");
+                                        filters.add(newFilter);
+                                        filterList.add(new String[]{newFilter});
+                                    }
+                                }
+                            }
+
+                            line = reader.readLine();
+                            if (line != null) {
+                                cvals = line.split(",");
+                            } else {
+                                cvals = new String[]{"end"};
+                            }
                         }
                     }
+                } else {
+                    line = reader.readLine();
                 }
-            } else {
-                line = reader.readLine();
+            }
+            Cytometer c = new Cytometer(name, lasers, filters, config);
+            createCytometer(c, clothoObject);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ClothoAdaptor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ClothoAdaptor.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException ex) {
+                Logger.getLogger(ClothoAdaptor.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
-        Cytometer c = new Cytometer(name, lasers, filters, config);
-        createCytometer(c, clothoObject);
+        */
+        //</editor-fold>
+        
     }
-
+    
+    
     /*
      * This method is for uploading fluorescence spectrum data to be associated with Fluorphore objects
      */
@@ -263,11 +341,8 @@ public class ClothoAdaptor {
     }
 
     //</editor-fold>
-    
     //<editor-fold desc="Create Methods">
-    
     //<editor-fold desc="Map Creation Methods">
-    
     public static Map createNucSeqMap(NucSeq ns) {
 
         //NucSeq schema
@@ -335,19 +410,19 @@ public class ClothoAdaptor {
 
         return createNucSeqMain;
     }
-    
+
     public static Map createSmallMoleculeMap(SmallMolecule smolecule) {
         Map map = new HashMap();
         map.put("name", smolecule.getName());
         map.put("schema", SmallMolecule.class.getCanonicalName());
         map.put("role", smolecule.getRole().toString());
-        if(smolecule.getConcentration()!=null){
+        if (smolecule.getConcentration() != null) {
             map.put("concentration", smolecule.getConcentration());
         }
-        
+
         return map;
     }
-    
+
     public static Map createStrainMap(Strain strain) {
         String id = "";
         Map map = new HashMap();
@@ -355,7 +430,7 @@ public class ClothoAdaptor {
         map.put("name", strain.getName());
         return map;
     }
-    
+
     public static Map createMediumMap(Medium medium) {
         String id = "";
         Map map = new HashMap();
@@ -371,8 +446,8 @@ public class ClothoAdaptor {
         map.put("smallMolecule", smallMoleculeMap);
         return map;
     }
-    
-    public static Map createPolynucleotideMap(Polynucleotide pn,Clotho clothoObject){
+
+    public static Map createPolynucleotideMap(Polynucleotide pn, Clotho clothoObject) {
         Map map = new HashMap();
         map.put("schema", Polynucleotide.class.getCanonicalName());
         map.put("name", pn.getAccession());
@@ -406,17 +481,17 @@ public class ClothoAdaptor {
         map.put("vector", vectorId);
         map.put("isDV", pn.isDV());
         map.put("level", pn.getLevel());
-        
+
         return map;
     }
-    
-    public static Map createPrimitiveModuleMap(PrimitiveModule pmodule,Clotho clothoObject) {
+
+    public static Map createPrimitiveModuleMap(PrimitiveModule pmodule, Clotho clothoObject) {
         Map map = new HashMap();
         map.put("schema", PrimitiveModule.class.getCanonicalName());
-        map.put("moduleFeature", createFeature(pmodule.getModuleFeature(),clothoObject));
+        map.put("moduleFeature", createFeature(pmodule.getModuleFeature(), clothoObject));
         map.put("primitiveRole", pmodule.getPrimitiveRole().toString());
         map.put("primitive", createPrimitiveMap(pmodule.getPrimitive()));
-        
+
         return map;
     }
 
@@ -433,22 +508,22 @@ public class ClothoAdaptor {
         map.put("schema", Feature.class.getCanonicalName());
         map.put("name", f.getName());
         map.put("role", f.getRole().toString());
-        
+
         map.put("forwardColor", f.getForwardColor().getRGB());
         map.put("reverseColor", f.getReverseColor().getRGB());
-        
+
         if (f.getClothoID() != null) {
             if (!f.isFP()) { //Better way to do this??
                 map.put("id", f.getClothoID());
             }
         }
-        
+
         //NucSeq sub-schema
         Map createSequence = new HashMap();
         createSequence.put("schema", Sequence.class.getCanonicalName());
         createSequence.put("sequence", f.getSequence().getSequence());
         map.put("sequence", createSequence);
-        
+
         List<Map> arcList = new ArrayList<>();
         for (Arc a : f.getArcs()) {
             arcList.add(createArcMap(a));
@@ -457,8 +532,8 @@ public class ClothoAdaptor {
 
         return map;
     }
-    
-    public static Map createArcMap(Arc a){
+
+    public static Map createArcMap(Arc a) {
         //System.out.println("In Create Arc Map");
         Map map = new HashMap();
         map.put("schema", Arc.class.getCanonicalName());
@@ -466,7 +541,7 @@ public class ClothoAdaptor {
         map.put("regulatee", a.getRegulatee().getName());
         //System.out.println("Regulator :: "+a.getRegulator().getName());
         //System.out.println("Regulatee :: "+a.getRegulatee().getName());
-        
+
         map.put("role", a.getRole().toString());
         List<Map> smList = new ArrayList<>();
 
@@ -477,8 +552,8 @@ public class ClothoAdaptor {
 
         return map;
     }
-    
-    public static Map createExperimentMap(Experiment experiment){
+
+    public static Map createExperimentMap(Experiment experiment) {
         Map map = new HashMap();
         map.put("schema", Experiment.class.getCanonicalName());
         map.put("name", experiment.getName());
@@ -486,33 +561,30 @@ public class ClothoAdaptor {
         if (experiment.getClothoID() != null) {
             map.put("id", experiment.getClothoID());
         }
-        
+
         /*JSONArray experimentTimes = new JSONArray();
-        for (String time : experiment.getTimes()) {
-            experimentTimes.add(time);
-        }
-        map.put("times", experimentTimes);*/
+         for (String time : experiment.getTimes()) {
+         experimentTimes.add(time);
+         }
+         map.put("times", experimentTimes);*/
         map.put("times", experiment.getTimes());
-        
+
         JSONArray mediaConditions = new JSONArray();
         for (Medium medium : experiment.getMediaConditions()) {
             mediaConditions.add(createMediumMap(medium));
         }
         map.put("mediaConditions", mediaConditions);
-        
+
         return map;
     }
-    
-    public static Map createExperimentResultsMap(ExperimentResults exResults){
+
+    public static Map createExperimentResultsMap(ExperimentResults exResults) {
         return null;
     }
-    
+
     //</editor-fold>
-    
     //<editor-fold desc="Clotho Object Creation Methods">
-    
     //<editor-fold  desc="Create a Module Tree in Clotho">
-    
     public static String createModuleTree(Module module, Clotho clothoObject) {
         String id = "";
         //Recursively create a Module Tree in Clotho. Returns the id of the Root Module
@@ -576,11 +648,10 @@ public class ClothoAdaptor {
         //Primitive Modules (Sub Modules)
         JSONArray submodules = new JSONArray();
         for (PrimitiveModule pm : module.getSubmodules()) {
-            submodules.add(createPrimitiveModuleMap(pm,clothoObject));
+            submodules.add(createPrimitiveModuleMap(pm, clothoObject));
         }
         map.put("submodules", submodules);
 
-        
         map.put("function", createSTLFunction(module.getFunction(), clothoObject));
 
         id = (String) clothoObject.set(map);
@@ -593,9 +664,8 @@ public class ClothoAdaptor {
 
         return id;
     }
-    
-    //</editor-fold>
 
+    //</editor-fold>
     public static String createAssignedModule(AssignedModule amodule, Clotho clothoObject) {
         String id = "";
         Map map = new HashMap();
@@ -620,29 +690,29 @@ public class ClothoAdaptor {
         }
         map.put("controlModules", controlModuleIds);
         map.put("shortName", amodule.getShortName());
-        
+
         id = (String) clothoObject.set(map);
         amodule.setClothoID(id);
         return id;
     }
-    
+
     public static String createExperiment(Experiment experiment, Clotho clothoObject) {
         String id = (String) clothoObject.set(createExperimentMap(experiment));
         experiment.setClothoID(id);
         return id;
     }
-    
+
     public static String createPolynucleotide(Polynucleotide pn, Clotho clothoObject) {
-        String id = (String) clothoObject.set(createPolynucleotideMap(pn,clothoObject));
+        String id = (String) clothoObject.set(createPolynucleotideMap(pn, clothoObject));
         pn.setClothoID(id);
         return id;
     }
-    
+
     public static String createFeature(Feature f, Clotho clothoObject) {
-        
+
         Map map = new HashMap();
         map = createFeatureMap(f);
-        
+
         String id = (String) clothoObject.set(map);
         f.setClothoID(id);
         return id;
@@ -703,14 +773,14 @@ public class ClothoAdaptor {
         f.setClothoID(id);
         return id;
     }
-    
+
     public static String createSTLFunction(STLFunction ltl, Clotho clothoObject) {
         String id = "";
         Map map = new HashMap();
         map.put("schema", STLFunction.class.getCanonicalName());
         return id;
     }
-    
+
     //Add parts to Clotho via Clotho Server API
     public static String createPart(Part p, Clotho clothoObject) {
 
@@ -721,11 +791,11 @@ public class ClothoAdaptor {
         createPart.put("name", p.getName());
 //        createPart.put("isVector", p.isVector());
         createPart.put("sequence", createNucSeqMap(p.getSequence()));
-        
-        if(p.getDescription() != null){
+
+        if (p.getDescription() != null) {
             createPart.put("description", p.getDescription());
         }
-        
+
         //Clotho ID
         if (p.getClothoID() != null) {
             createPart.put("id", p.getClothoID());
@@ -737,7 +807,7 @@ public class ClothoAdaptor {
         p.setClothoID(id);
         return id;
     }
-    
+
     //Add parts to Clotho via Clotho Server API
     public static String createVector(Vector vector, Clotho clothoObject) {
 
@@ -748,17 +818,17 @@ public class ClothoAdaptor {
         createVector.put("name", vector.getName());
 //        createPart.put("isVector", p.isVector());
         createVector.put("sequence", createNucSeqMap(vector.getSequence()));
-        
-        if(vector.getDescription() != null){
+
+        if (vector.getDescription() != null) {
             createVector.put("description", vector.getDescription());
         }
-        
-        String originId = createFeature(vector.getOrigin(),clothoObject);
+
+        String originId = createFeature(vector.getOrigin(), clothoObject);
         createVector.put("origin", originId);
-        
-        String resistanceId = createFeature(vector.getResistance(),clothoObject);
+
+        String resistanceId = createFeature(vector.getResistance(), clothoObject);
         createVector.put("resistance", resistanceId);
-        
+
         //Clotho ID
         if (vector.getClothoID() != null) {
             createVector.put("id", vector.getClothoID());
@@ -770,7 +840,7 @@ public class ClothoAdaptor {
         vector.setClothoID(id);
         return id;
     }
-    
+
     //Add fluorophores to Clotho via Clotho Server API
     public static String createCytometer(Cytometer c, Clotho clothoObject) {
         String id = "";
@@ -871,24 +941,22 @@ public class ClothoAdaptor {
     //</editor-fold>
 
     //</editor-fold>
-    
     //<editor-fold desc="Map to Object">
-    
-    public static Part mapToPart(Map map){
-        
-        String name = (String)map.get("name");
+    public static Part mapToPart(Map map) {
+
+        String name = (String) map.get("name");
         String description = "";
-        if(map.containsKey("description")){
-            description = (String)map.get("description");
+        if (map.containsKey("description")) {
+            description = (String) map.get("description");
         }
-        Part p = Part.generateBasic(name, description, mapToNucSeq((Map)map.get("sequence")), null, null);
+        Part p = Part.generateBasic(name, description, mapToNucSeq((Map) map.get("sequence")), null, null);
 //        p.setVector(Boolean.parseBoolean(map.get("isVector").toString()));
-        p.setClothoID((String)map.get("id"));
-        
+        p.setClothoID((String) map.get("id"));
+
         return p;
     }
-    
-    public static Module mapToModule(Map map,Clotho clothoObject){
+
+    public static Module mapToModule(Map map, Clotho clothoObject) {
         Module module = new Module(map.get("name").toString());
         module.setClothoID(map.get("id").toString());
         module.setRole(Module.ModuleRole.valueOf(map.get("role").toString()));
@@ -905,63 +973,62 @@ public class ClothoAdaptor {
             featureJSONArray.add(clothoObject.get(featureId));
         }
         List<Feature> featureSet = new ArrayList<Feature>();
-        featureSet = convertJSONArrayToFeatures(featureJSONArray,clothoObject);
+        featureSet = convertJSONArrayToFeatures(featureJSONArray, clothoObject);
 
         List<Feature> features = new ArrayList<Feature>();
         for (Feature f : featureSet) {
             features.add(f);
         }
-        
-        
+
         return module;
     }
-    
-    public static PrimitiveModule mapToPrimitiveModule(Map map,Clotho clothoObject){
-        FeatureRole role = FeatureRole.valueOf((String)map.get("primitiveRole"));
+
+    public static PrimitiveModule mapToPrimitiveModule(Map map, Clotho clothoObject) {
+        FeatureRole role = FeatureRole.valueOf((String) map.get("primitiveRole"));
         Map primitiveMap = new HashMap();
-        primitiveMap = (Map)map.get("primitive");
-        Primitive primitive = new Primitive(new ComponentType((String)primitiveMap.get("type")),(String)primitiveMap.get("name"));
+        primitiveMap = (Map) map.get("primitive");
+        Primitive primitive = new Primitive(new ComponentType((String) primitiveMap.get("type")), (String) primitiveMap.get("name"));
         Map moduleFeatureMap = new HashMap();
-        moduleFeatureMap = (Map)clothoObject.get((String)map.get("moduleFeature"));
-        return new PrimitiveModule(role,primitive,mapToFeatureWithArcs(moduleFeatureMap,clothoObject));
+        moduleFeatureMap = (Map) clothoObject.get((String) map.get("moduleFeature"));
+        return new PrimitiveModule(role, primitive, mapToFeatureWithArcs(moduleFeatureMap, clothoObject));
     }
-    
-    public static Feature mapToFeatureWithArcs(Map map,Clotho clothoObject){
-        Feature feature = new Feature((String)map.get("name"));
-        feature.setForwardColor(new Color((int)map.get("forwardColor")));
-        feature.setReverseColor(new Color((int)map.get("reverseColor")));
-        feature.setClothoID((String)map.get("id"));
-        feature.setSequence(mapToSequence((Map)map.get("sequence")));
-        feature.setRole(FeatureRole.valueOf((String)map.get("role")));
-        
-        HashMap<String,Feature> featureList = new HashMap<>();
+
+    public static Feature mapToFeatureWithArcs(Map map, Clotho clothoObject) {
+        Feature feature = new Feature((String) map.get("name"));
+        feature.setForwardColor(new Color((int) map.get("forwardColor")));
+        feature.setReverseColor(new Color((int) map.get("reverseColor")));
+        feature.setClothoID((String) map.get("id"));
+        feature.setSequence(mapToSequence((Map) map.get("sequence")));
+        feature.setRole(FeatureRole.valueOf((String) map.get("role")));
+
+        HashMap<String, Feature> featureList = new HashMap<>();
         featureList.put(feature.getName(), feature);
         //Something for ARCS???
-        for(Map arcMap: (List<Map>)map.get("arcs")){
+        for (Map arcMap : (List<Map>) map.get("arcs")) {
             Arc arc = new Arc();
-            arc.setRole(ArcRole.valueOf((String)arcMap.get("role")));
+            arc.setRole(ArcRole.valueOf((String) arcMap.get("role")));
             boolean otherIsRegulatee = false;
-            String otherFeatureName = (String)arcMap.get("regulator");
-            if(((String)arcMap.get("regulator")).equals(feature.getName())){
-                otherFeatureName = (String)arcMap.get("regulatee");
+            String otherFeatureName = (String) arcMap.get("regulator");
+            if (((String) arcMap.get("regulator")).equals(feature.getName())) {
+                otherFeatureName = (String) arcMap.get("regulatee");
                 otherIsRegulatee = true;
             }
             Map queryOtherFeature = new HashMap();
             queryOtherFeature.put("schema", Feature.class.getCanonicalName());
             queryOtherFeature.put("name", otherFeatureName);
-            Map otherFeatureMap = (Map)clothoObject.queryOne(queryOtherFeature);
+            Map otherFeatureMap = (Map) clothoObject.queryOne(queryOtherFeature);
             Feature otherFeature = mapToFeature(otherFeatureMap);
-            if(otherIsRegulatee){
+            if (otherIsRegulatee) {
                 arc.setRegulator(feature);
                 arc.setRegulatee(otherFeature);
                 feature.getArcs().add(arc);
                 otherFeature.getArcs().add(arc);
             }
-            
+
         }
         return feature;
     }
-    
+
     public static Feature mapToFeature(Map map) {
         Feature feature = new Feature((String) map.get("name"));
         feature.setForwardColor(new Color((int) map.get("forwardColor")));
@@ -971,71 +1038,68 @@ public class ClothoAdaptor {
         feature.setRole(FeatureRole.valueOf((String) map.get("role")));
         return feature;
     }
-    
-    public static Sequence mapToSequence(Map map){
-        Sequence sequence = new NucSeq((String)map.get("sequence"));
-        
+
+    public static Sequence mapToSequence(Map map) {
+        Sequence sequence = new NucSeq((String) map.get("sequence"));
+
         return sequence;
     }
-    
-    public static Vector mapToVector(Map map,Clotho clothoObject){
-        
-        String name = (String)map.get("name");
+
+    public static Vector mapToVector(Map map, Clotho clothoObject) {
+
+        String name = (String) map.get("name");
         String description = "";
-        if(map.containsKey("description")){
-            description = (String)map.get("description");
+        if (map.containsKey("description")) {
+            description = (String) map.get("description");
         }
-        Feature origin = (Feature)getFeature((String)map.get("origin"),clothoObject);
-        Feature resistance = (Feature)getFeature((String)map.get("resistance"),clothoObject);
-        Vector vector = new Vector(name, description, mapToNucSeq((Map)map.get("sequence")), null, null,origin,resistance);
-        vector.setClothoID((String)map.get("id"));
-        
+        Feature origin = (Feature) getFeature((String) map.get("origin"), clothoObject);
+        Feature resistance = (Feature) getFeature((String) map.get("resistance"), clothoObject);
+        Vector vector = new Vector(name, description, mapToNucSeq((Map) map.get("sequence")), null, null, origin, resistance);
+        vector.setClothoID((String) map.get("id"));
+
         return vector;
     }
-    
-    public static NucSeq mapToNucSeq(Map map){
-        
+
+    public static NucSeq mapToNucSeq(Map map) {
+
         String seq = map.get("sequence").toString();
         boolean circular = Boolean.parseBoolean(map.get("isCircular").toString());
         boolean ss = Boolean.parseBoolean(map.get("isSingleStranded").toString());
 
         NucSeq ns = new NucSeq(seq, ss, circular);
         ns.setName(map.get("name").toString() + ".ref");
-        
+
         //Get all Annotations
         List<Map> arrayAnnotations = new ArrayList<>();
-        arrayAnnotations = (List<Map>)map.get("annotations");
+        arrayAnnotations = (List<Map>) map.get("annotations");
 
-        for (Map annotationMap:arrayAnnotations) {
+        for (Map annotationMap : arrayAnnotations) {
 
             //Get annotation fields
-            
             int startAn = Integer.valueOf(annotationMap.get("start").toString());
             int endAn = Integer.valueOf(annotationMap.get("end").toString());
             boolean fwdStAn = Boolean.parseBoolean(annotationMap.get("isForwardStrand").toString());
-            
+
             /*
-            String fwdColorStAn = annotationMap.get("forwardColor").toString();
-            String[] rgbfwdAn = fwdColorStAn.substring(15, fwdColorStAn.length() - 1).split(",");
-            Color fwdColorAn = new Color(Integer.valueOf(rgbfwdAn[0].substring(2)), Integer.valueOf(rgbfwdAn[1].substring(2)), Integer.valueOf(rgbfwdAn[2].substring(2)));
-            String revColorStAn = annotationMap.get("reverseColor").toString();
-            String[] rgbrevAn = revColorStAn.substring(15, revColorStAn.length() - 1).split(",");
-            Color revColorAn = new Color(Integer.valueOf(rgbrevAn[0].substring(2)), Integer.valueOf(rgbrevAn[1].substring(2)), Integer.valueOf(rgbrevAn[2].substring(2)));
-            */
-            
+             String fwdColorStAn = annotationMap.get("forwardColor").toString();
+             String[] rgbfwdAn = fwdColorStAn.substring(15, fwdColorStAn.length() - 1).split(",");
+             Color fwdColorAn = new Color(Integer.valueOf(rgbfwdAn[0].substring(2)), Integer.valueOf(rgbfwdAn[1].substring(2)), Integer.valueOf(rgbfwdAn[2].substring(2)));
+             String revColorStAn = annotationMap.get("reverseColor").toString();
+             String[] rgbrevAn = revColorStAn.substring(15, revColorStAn.length() - 1).split(",");
+             Color revColorAn = new Color(Integer.valueOf(rgbrevAn[0].substring(2)), Integer.valueOf(rgbrevAn[1].substring(2)), Integer.valueOf(rgbrevAn[2].substring(2)));
+             */
             //Get feature fields
             JSONObject jsonFeature = (JSONObject) annotationMap.get("feature");
-            Feature feature = new Feature((String)jsonFeature.get("name"));
-            
+            Feature feature = new Feature((String) jsonFeature.get("name"));
+
             /*
-            String fwdColorSt = jsonFeature.get("forwardColor").toString();
-            String[] rgbfwd = fwdColorSt.substring(15, fwdColorSt.length() - 1).split(",");
-            Color fwdColor = new Color(Integer.valueOf(rgbfwd[0].substring(2)), Integer.valueOf(rgbfwd[1].substring(2)), Integer.valueOf(rgbfwd[2].substring(2)));
-            String revColorSt = jsonFeature.get("reverseColor").toString();
-            String[] rgbrev = revColorSt.substring(15, revColorSt.length() - 1).split(",");
-            Color revColor = new Color(Integer.valueOf(rgbrev[0].substring(2)), Integer.valueOf(rgbrev[1].substring(2)), Integer.valueOf(rgbrev[2].substring(2)));
-            */
-            
+             String fwdColorSt = jsonFeature.get("forwardColor").toString();
+             String[] rgbfwd = fwdColorSt.substring(15, fwdColorSt.length() - 1).split(",");
+             Color fwdColor = new Color(Integer.valueOf(rgbfwd[0].substring(2)), Integer.valueOf(rgbfwd[1].substring(2)), Integer.valueOf(rgbfwd[2].substring(2)));
+             String revColorSt = jsonFeature.get("reverseColor").toString();
+             String[] rgbrev = revColorSt.substring(15, revColorSt.length() - 1).split(",");
+             Color revColor = new Color(Integer.valueOf(rgbrev[0].substring(2)), Integer.valueOf(rgbrev[1].substring(2)), Integer.valueOf(rgbrev[2].substring(2)));
+             */
             //Get sequence object and fields
             JSONObject jsonSequence = (JSONObject) jsonFeature.get("sequence");
             String fseq = jsonSequence.get("sequence").toString();
@@ -1043,11 +1107,11 @@ public class ClothoAdaptor {
 
             //Get FeatureRole
             if (jsonFeature.has("role")) {
-                feature.setRole(FeatureRole.valueOf((String)jsonFeature.get("role")));
+                feature.setRole(FeatureRole.valueOf((String) jsonFeature.get("role")));
             }
-            feature.setForwardColor(new Color((int)jsonFeature.get("forwardColor")));
-            feature.setReverseColor(new Color((int)jsonFeature.get("reverseColor")));
-        
+            feature.setForwardColor(new Color((int) jsonFeature.get("forwardColor")));
+            feature.setReverseColor(new Color((int) jsonFeature.get("reverseColor")));
+
             feature.setSequence(fsequence);
 
             //Get person
@@ -1056,194 +1120,188 @@ public class ClothoAdaptor {
             author.setGivenName(jsonPerson.get("givenName").toString());
             author.setSurName(jsonPerson.get("surName").toString());
             author.setEmailAddress(jsonPerson.get("emailAddress").toString());
-            
-            
+
             //Assign all the annotation values to the object
-            Annotation annotation = new Annotation(feature, fsequence, new Color((int)annotationMap.get("forwardColor")), new Color((int)annotationMap.get("reverseColor")), startAn, endAn, author, fwdStAn, null);
+            Annotation annotation = new Annotation(feature, fsequence, new Color((int) annotationMap.get("forwardColor")), new Color((int) annotationMap.get("reverseColor")), startAn, endAn, author, fwdStAn, null);
             ns.addAnnotation(annotation);
         }
-        
-        ns.setClothoID((String)map.get("id"));
-        
+
+        ns.setClothoID((String) map.get("id"));
+
         return ns;
         //String name
     }
-    
-    public static Fluorophore mapToFluorophore(Map map){
-            
-            System.out.println("Map ID " + map.get("name"));
-            String name = (String)map.get("name");
-            Fluorophore fluorophore = new Fluorophore(name);
+
+    public static Fluorophore mapToFluorophore(Map map) {
+
+        System.out.println("Map ID " + map.get("name"));
+        String name = (String) map.get("name");
+        Fluorophore fluorophore = new Fluorophore(name);
 
             //Get fluorophore fields
             /*
-            String fwdColorSt = map.get("forwardColor").toString();
-            String[] rgbfwd = fwdColorSt.substring(15, fwdColorSt.length() - 1).split(",");
-            Color fwdColor = new Color(Integer.valueOf(rgbfwd[0].substring(2)), Integer.valueOf(rgbfwd[1].substring(2)), Integer.valueOf(rgbfwd[2].substring(2)));
-            String revColorSt = map.get("reverseColor").toString();
-            String[] rgbrev = revColorSt.substring(15, revColorSt.length() - 1).split(",");
-            Color revColor = new Color(Integer.valueOf(rgbrev[0].substring(2)), Integer.valueOf(rgbrev[1].substring(2)), Integer.valueOf(rgbrev[2].substring(2)));
-            */
-            
-            
-            Integer oligo = Integer.valueOf(map.get("oligomerization").toString());
-            Double brightness = Double.valueOf(map.get("brightness").toString());
-            Double ex = Double.valueOf(map.get("excitation_max").toString());
-            Double em = Double.valueOf(map.get("emission_max").toString());
+         String fwdColorSt = map.get("forwardColor").toString();
+         String[] rgbfwd = fwdColorSt.substring(15, fwdColorSt.length() - 1).split(",");
+         Color fwdColor = new Color(Integer.valueOf(rgbfwd[0].substring(2)), Integer.valueOf(rgbfwd[1].substring(2)), Integer.valueOf(rgbfwd[2].substring(2)));
+         String revColorSt = map.get("reverseColor").toString();
+         String[] rgbrev = revColorSt.substring(15, revColorSt.length() - 1).split(",");
+         Color revColor = new Color(Integer.valueOf(rgbrev[0].substring(2)), Integer.valueOf(rgbrev[1].substring(2)), Integer.valueOf(rgbrev[2].substring(2)));
+         */
+        Integer oligo = Integer.valueOf(map.get("oligomerization").toString());
+        Double brightness = Double.valueOf(map.get("brightness").toString());
+        Double ex = Double.valueOf(map.get("excitation_max").toString());
+        Double em = Double.valueOf(map.get("emission_max").toString());
 
-            //Get excitation and emmission spectrums
-            HashMap<Double, Double> em_spectrum = new HashMap<>();
-            JSONArray jsonEm_spectrum = (JSONArray) map.get("em_spectrum");
-            for (int j = 0; j < jsonEm_spectrum.size(); j++) {
-                JSONObject jsonObject = jsonEm_spectrum.getJSONObject(j);
-                em_spectrum.put(Double.valueOf(jsonObject.get("x").toString()), Double.valueOf(jsonObject.get("y").toString()));
-            }
-            fluorophore.setEm_spectrum(em_spectrum);
+        //Get excitation and emmission spectrums
+        HashMap<Double, Double> em_spectrum = new HashMap<>();
+        JSONArray jsonEm_spectrum = (JSONArray) map.get("em_spectrum");
+        for (int j = 0; j < jsonEm_spectrum.size(); j++) {
+            JSONObject jsonObject = jsonEm_spectrum.getJSONObject(j);
+            em_spectrum.put(Double.valueOf(jsonObject.get("x").toString()), Double.valueOf(jsonObject.get("y").toString()));
+        }
+        fluorophore.setEm_spectrum(em_spectrum);
 
-            HashMap<Double, Double> ex_spectrum = new HashMap<>();
-            JSONArray jsonEx_spectrum = (JSONArray) map.get("ex_spectrum");
-            for (int k = 0; k < jsonEx_spectrum.size(); k++) {
-                JSONObject jsonObject = jsonEx_spectrum.getJSONObject(k);
-                ex_spectrum.put(Double.valueOf(jsonObject.get("x").toString()), Double.valueOf(jsonObject.get("y").toString()));
-            }
-            fluorophore.setEx_spectrum(ex_spectrum);
+        HashMap<Double, Double> ex_spectrum = new HashMap<>();
+        JSONArray jsonEx_spectrum = (JSONArray) map.get("ex_spectrum");
+        for (int k = 0; k < jsonEx_spectrum.size(); k++) {
+            JSONObject jsonObject = jsonEx_spectrum.getJSONObject(k);
+            ex_spectrum.put(Double.valueOf(jsonObject.get("x").toString()), Double.valueOf(jsonObject.get("y").toString()));
+        }
+        fluorophore.setEx_spectrum(ex_spectrum);
 
-            //Get sequence object and fields
-            JSONObject jsonSequence = (JSONObject) map.get("sequence");
-            String seq = jsonSequence.get("sequence").toString();
-            NucSeq sequence = new NucSeq(seq);
+        //Get sequence object and fields
+        JSONObject jsonSequence = (JSONObject) map.get("sequence");
+        String seq = jsonSequence.get("sequence").toString();
+        NucSeq sequence = new NucSeq(seq);
 
-            //Get FeatureRole
-            System.out.println("Role :: " + map.get("role"));
-            System.out.println("Role string:: " + map.get("role").toString());
-            fluorophore.setRole(FeatureRole.valueOf((String)map.get("role")));
-            
-            fluorophore.setForwardColor(new Color((int)map.get("forwardColor")));
-            fluorophore.setReverseColor(new Color((int)map.get("reverseColor")));
-            
-            fluorophore.setName(name);
-            fluorophore.setSequence(sequence);
-            fluorophore.setOligomerization(oligo);
-            fluorophore.setBrightness(brightness);
-            fluorophore.setEmission_max(em);
-            fluorophore.setExcitation_max(ex);
-            fluorophore.setClothoID(map.get("id").toString());
-            return fluorophore;
-            
+        //Get FeatureRole
+        System.out.println("Role :: " + map.get("role"));
+        System.out.println("Role string:: " + map.get("role").toString());
+        fluorophore.setRole(FeatureRole.valueOf((String) map.get("role")));
+
+        fluorophore.setForwardColor(new Color((int) map.get("forwardColor")));
+        fluorophore.setReverseColor(new Color((int) map.get("reverseColor")));
+
+        fluorophore.setName(name);
+        fluorophore.setSequence(sequence);
+        fluorophore.setOligomerization(oligo);
+        fluorophore.setBrightness(brightness);
+        fluorophore.setEmission_max(em);
+        fluorophore.setExcitation_max(ex);
+        fluorophore.setClothoID(map.get("id").toString());
+        return fluorophore;
+
     }
-    
+
     //</editor-fold>
-    
     //<editor-fold desc="Query Methods">
-    
     public static List<Fluorophore> queryFluorophores(Map map, Clotho clothoObject) {
-        
+
         map.put("schema", Fluorophore.class.getCanonicalName());
-        
+
         Object query = clothoObject.query(map);
         JSONArray array = (JSONArray) query;
         List<Fluorophore> fluorophores = new ArrayList<>();
-        for(Object object:array){
-            fluorophores.add(mapToFluorophore((Map)object)) ;
+        for (Object object : array) {
+            fluorophores.add(mapToFluorophore((Map) object));
         }
         return fluorophores;
     }
-    
-    public static List<Vector> queryVectors(Map map, Clotho clothoObject){
-        
+
+    public static List<Vector> queryVectors(Map map, Clotho clothoObject) {
+
         map.put("schema", Vector.class.getCanonicalName());
-        
+
         List<Vector> vectors = new ArrayList<>();
         Object query = clothoObject.query(map);
         JSONArray array = new JSONArray();
         array = (JSONArray) query;
-        for(Object object:array){
-            vectors.add(mapToVector((Map)object,clothoObject));
+        for (Object object : array) {
+            vectors.add(mapToVector((Map) object, clothoObject));
         }
         return vectors;
     }
-    
+
     public static List<Part> queryParts(Map map, Clotho clothoObject) {
 
         map.put("schema", Part.class.getCanonicalName());
-        
+
         List<Part> parts = new ArrayList<>();
         Object query = clothoObject.query(map);
         JSONArray array = (JSONArray) query;
-        for(Object object:array){
-            parts.add(mapToPart((Map)object));
+        for (Object object : array) {
+            parts.add(mapToPart((Map) object));
         }
         return parts;
     }
-    
-    public static Feature querySingleFeature(Map map, Clotho clothoObject){
+
+    public static Feature querySingleFeature(Map map, Clotho clothoObject) {
         map.put("schema", Feature.class.getCanonicalName());
-        Map query = (Map)((JSONObject)clothoObject.queryOne(map));
-        HashMap<String,Feature> featureListMap = new HashMap<String,Feature>();
+        Map query = (Map) ((JSONObject) clothoObject.queryOne(map));
+        HashMap<String, Feature> featureListMap = new HashMap<String, Feature>();
         Feature feature = mapToFeature(query);
         featureListMap.put(feature.getName(), feature);
         JSONArray arrayArcs = (JSONArray) query.get("arcs");
-        if(arrayArcs!=null){
+        if (arrayArcs != null) {
             for (int j = 0; j < arrayArcs.size(); j++) {
-                    JSONObject jsonArc = arrayArcs.getJSONObject(j);
-                    String regulator = jsonArc.get("regulator").toString();
-                    String regulatee = jsonArc.get("regulatee").toString();
-                    
-                    Map queryRegulator = new HashMap();
-                    queryRegulator.put("schema",Feature.class.getCanonicalName());
-                    queryRegulator.put("name", regulator);
-                    Map regulatorResult = (Map)((JSONObject)clothoObject.queryOne(queryRegulator));
-                    Feature regulatorFeature = mapToFeature(regulatorResult);
-                    
-                    Map queryRegulatee = new HashMap();
-                    queryRegulatee.put("schema",Feature.class.getCanonicalName());
-                    queryRegulatee.put("name", regulatee);
-                    Map regulateeResult = (Map)((JSONObject)clothoObject.queryOne(queryRegulatee));
-                    Feature regulateeFeature = mapToFeature(regulateeResult);
-                    if(!featureListMap.containsKey(regulatorFeature.getName())){
-                        featureListMap.put(regulatorFeature.getName(), regulatorFeature);
-                    }
-                    if(!featureListMap.containsKey(regulateeFeature.getName())){
-                        featureListMap.put(regulateeFeature.getName(), regulateeFeature);
-                    }
-                    
-                    
-                    Arc arc = new Arc();
-                    arc.setRole(ArcRole.valueOf((String)jsonArc.get("role")));
-                    JSONArray arraySMs = (JSONArray) jsonArc.get("molecules");
+                JSONObject jsonArc = arrayArcs.getJSONObject(j);
+                String regulator = jsonArc.get("regulator").toString();
+                String regulatee = jsonArc.get("regulatee").toString();
 
-                    for (int k = 0; k < arraySMs.size(); k++) {
+                Map queryRegulator = new HashMap();
+                queryRegulator.put("schema", Feature.class.getCanonicalName());
+                queryRegulator.put("name", regulator);
+                Map regulatorResult = (Map) ((JSONObject) clothoObject.queryOne(queryRegulator));
+                Feature regulatorFeature = mapToFeature(regulatorResult);
 
-                        SmallMolecule sm = new SmallMolecule();
+                Map queryRegulatee = new HashMap();
+                queryRegulatee.put("schema", Feature.class.getCanonicalName());
+                queryRegulatee.put("name", regulatee);
+                Map regulateeResult = (Map) ((JSONObject) clothoObject.queryOne(queryRegulatee));
+                Feature regulateeFeature = mapToFeature(regulateeResult);
+                if (!featureListMap.containsKey(regulatorFeature.getName())) {
+                    featureListMap.put(regulatorFeature.getName(), regulatorFeature);
+                }
+                if (!featureListMap.containsKey(regulateeFeature.getName())) {
+                    featureListMap.put(regulateeFeature.getName(), regulateeFeature);
+                }
 
-                        //Get small molecule fields
-                        JSONObject jsonSM = arraySMs.getJSONObject(k);
-                        String smName = jsonSM.get("name").toString();
-                        sm.setName(smName);
+                Arc arc = new Arc();
+                arc.setRole(ArcRole.valueOf((String) jsonArc.get("role")));
+                JSONArray arraySMs = (JSONArray) jsonArc.get("molecules");
 
-                        sm.setRole(SmallMolecule.SmallMoleculeRole.valueOf((String)jsonSM.get("role")));
-                        arc.getMolecules().add(sm);
+                for (int k = 0; k < arraySMs.size(); k++) {
 
-                    }
-                    arc.setRegulatee(featureListMap.get(regulatee));
-                    arc.setRegulator(featureListMap.get(regulator));
-                    featureListMap.get(regulatee).getArcs().add(arc);
-                    featureListMap.get(regulator).getArcs().add(arc);
-                    
+                    SmallMolecule sm = new SmallMolecule();
+
+                    //Get small molecule fields
+                    JSONObject jsonSM = arraySMs.getJSONObject(k);
+                    String smName = jsonSM.get("name").toString();
+                    sm.setName(smName);
+
+                    sm.setRole(SmallMolecule.SmallMoleculeRole.valueOf((String) jsonSM.get("role")));
+                    arc.getMolecules().add(sm);
+
+                }
+                arc.setRegulatee(featureListMap.get(regulatee));
+                arc.setRegulator(featureListMap.get(regulator));
+                featureListMap.get(regulatee).getArcs().add(arc);
+                featureListMap.get(regulator).getArcs().add(arc);
+
             }
         }
-        
+
         return feature;
     }
-    
+
     public static List<Feature> queryFeatures(Map map, Clotho clothoObject) {
-        
+
         map.put("schema", Feature.class.getCanonicalName());
         Object query = clothoObject.query(map);
         JSONArray array = (JSONArray) query;
-        return convertJSONArrayToFeatures(array,clothoObject);
+        return convertJSONArrayToFeatures(array, clothoObject);
     }
-    
+
     //Get assembly parameters
     public static List<AssemblyParameters> queryAssemblyParameters(Map map, Clotho clothoObject) {
 
@@ -1266,7 +1324,7 @@ public class ClothoAdaptor {
     public static List<Polynucleotide> queryPolynucleotides(Map map, Clotho clothoObject) {
 
         map.put("schema", Polynucleotide.class.getCanonicalName());
-        
+
         //Establish Clotho connection
         List<Polynucleotide> polynucs = new ArrayList<>();
 
@@ -1291,15 +1349,14 @@ public class ClothoAdaptor {
             }
 
             //Imbedded objects
-            
             pn.setSequence(mapToNucSeq((Map) jsonPolynuc.get("sequence")));
             Map jsonPart = new HashMap();
             jsonPart = (Map) clothoObject.get((String) jsonPolynuc.get("part"));
             pn.setPart(mapToPart(jsonPart));
             Map jsonVec = new HashMap();
             jsonVec = (Map) clothoObject.get((String) jsonPolynuc.get("vector"));
-            pn.setVector(mapToVector(jsonVec,clothoObject));
-            
+            pn.setVector(mapToVector(jsonVec, clothoObject));
+
             pn.setClothoID(jsonPolynuc.get("id").toString());
             pn.setDV(Boolean.parseBoolean(jsonPolynuc.get("isDV").toString()));
             pn.setLevel(Integer.valueOf(jsonPolynuc.get("level").toString()));
@@ -1314,7 +1371,7 @@ public class ClothoAdaptor {
 
         //Establish Clotho connection
         map.put("schema", Cytometer.class.getCanonicalName());
-        
+
         List<Cytometer> cytometers = new ArrayList<>();
         Object query = clothoObject.query(map);
         JSONArray arrayCytometer = (JSONArray) query;
@@ -1370,44 +1427,41 @@ public class ClothoAdaptor {
     }
 
     //</editor-fold>
-    
     //<editor-fold desc="Get Methods">
-    
-    public static Fluorophore getFluorophore(String fluorophoreId, Clotho clothoObject){
+    public static Fluorophore getFluorophore(String fluorophoreId, Clotho clothoObject) {
         Object object = clothoObject.get(fluorophoreId);
-        return mapToFluorophore((Map)object);
+        return mapToFluorophore((Map) object);
     }
-    
-    public static Feature getFeature(String featureId,Clotho clothoObject){
+
+    public static Feature getFeature(String featureId, Clotho clothoObject) {
         Object object = clothoObject.get(featureId);
         System.out.println("Feature ID :: " + featureId);
-        return mapToFeatureWithArcs((Map)object,clothoObject);
+        return mapToFeatureWithArcs((Map) object, clothoObject);
     }
-    
-    public static Vector getVector(String vectorId, Clotho clothoObject){
+
+    public static Vector getVector(String vectorId, Clotho clothoObject) {
         Object object = clothoObject.get(vectorId);
-        return mapToVector((Map)object,clothoObject);    
+        return mapToVector((Map) object, clothoObject);
     }
-    
-    public static Part getPart(String partId, Clotho clothoObject){
+
+    public static Part getPart(String partId, Clotho clothoObject) {
         Object object = clothoObject.get(partId);
         //Do some check for map?
-        return mapToPart((Map)object);
+        return mapToPart((Map) object);
     }
-    
+
     //Over-ride with module? Maybe get Module parameters and then clone?
     public static AssignedModule getAssignedModule(String assignedModuleId, Clotho clothoObject) {
 
         JSONObject amObj = new JSONObject();
         amObj = (JSONObject) clothoObject.get(assignedModuleId);
-        
-        
-        AssignedModule amodule = new AssignedModule(mapToModule(amObj,clothoObject));
+
+        AssignedModule amodule = new AssignedModule(mapToModule(amObj, clothoObject));
         for (Object expId : (JSONArray) amObj.get("experiments")) {
             amodule.getExperiments().add(getExperiment((String) expId, clothoObject));
         }
-        if(amObj.containsKey("shortName")){
-            amodule.setShortName((String)amObj.get("shortName"));
+        if (amObj.containsKey("shortName")) {
+            amodule.setShortName((String) amObj.get("shortName"));
         }
         amodule.setClothoID(assignedModuleId);
         return amodule;
@@ -1418,7 +1472,7 @@ public class ClothoAdaptor {
 
         JSONObject exptObj = new JSONObject();
         exptObj = (JSONObject) clothoObject.get(experimentid);
-        
+
         JSONArray timeArray = new JSONArray();
         List<String> times = new ArrayList<String>();
         if (timeArray.size() > 0) {
@@ -1426,9 +1480,9 @@ public class ClothoAdaptor {
                 times.add((String) obj);
             }
         }
-            
+
         List<Medium> media = new ArrayList<Medium>();
-        
+
         //Get Media Conditions
         for (Object mediaObj : (JSONArray) exptObj.get("mediaConditions")) {
             Map mediaMap = new HashMap();
@@ -1444,13 +1498,13 @@ public class ClothoAdaptor {
             medium.setSmallmolecule(smolecule);
             media.add(medium);
         }
-        
-        Experiment experiment = new Experiment(Experiment.ExperimentType.valueOf((String) exptObj.get("exType")), (String)exptObj.getString("name"),media,times );
+
+        Experiment experiment = new Experiment(Experiment.ExperimentType.valueOf((String) exptObj.get("exType")), (String) exptObj.getString("name"), media, times);
         experiment.setClothoID((String) exptObj.get("id"));
-        
+
         return experiment;
     }
-    
+
     public static Module getModule(String rootModule, Clotho clothoObject) {
         Map map = new HashMap();
         map = (Map) clothoObject.get(rootModule);
@@ -1477,7 +1531,7 @@ public class ClothoAdaptor {
 
         return module;
     }
-    
+
     public static Polynucleotide getPolynucleotide(String polynucleotideId, Clotho clothoObject) {
         Polynucleotide pn = new Polynucleotide();
         JSONObject jsonPolynuc = new JSONObject();
@@ -1494,13 +1548,13 @@ public class ClothoAdaptor {
         }
 
         //Imbedded objects
-        pn.setSequence(mapToNucSeq((Map)jsonPolynuc.get("sequence")));
+        pn.setSequence(mapToNucSeq((Map) jsonPolynuc.get("sequence")));
         Map jsonPart = new HashMap();
         jsonPart = (Map) clothoObject.get((String) jsonPolynuc.get("part"));
         pn.setPart(mapToPart(jsonPart));
         Map jsonVec = new HashMap();
         jsonVec = (Map) clothoObject.get((String) jsonPolynuc.get("vector"));
-        pn.setVector(mapToVector(jsonVec,clothoObject));
+        pn.setVector(mapToVector(jsonVec, clothoObject));
 
         pn.setClothoID(jsonPolynuc.get("id").toString());
         pn.setDV(Boolean.parseBoolean(jsonPolynuc.get("isDV").toString()));
@@ -1508,7 +1562,7 @@ public class ClothoAdaptor {
 
         return pn;
     }
-    
+
     public static AssemblyParameters getAssemblyParameters(String id, Clotho clothoObject) {
         AssemblyParameters aP = new AssemblyParameters();
         Map assmParamMap = new HashMap<String, String>();
@@ -1524,24 +1578,23 @@ public class ClothoAdaptor {
         }
         return aP;
     }
-    
+
     //</editor-fold>
-    
     //<editor-fold desc="Helper functions">
     //Get all Clotho Features
-    public static List<Feature> convertJSONArrayToFeatures(JSONArray array,Clotho clothoObject) {
+    public static List<Feature> convertJSONArrayToFeatures(JSONArray array, Clotho clothoObject) {
 
-        HashMap<String,Feature> featureListMap = new HashMap<String,Feature>();
-        
-        for(Object obj:array){
+        HashMap<String, Feature> featureListMap = new HashMap<String, Feature>();
+
+        for (Object obj : array) {
             Map featureMap = new HashMap();
-            featureMap = (Map)obj;
+            featureMap = (Map) obj;
             Feature feature = mapToFeature(featureMap);
-            if(!featureListMap.containsKey(feature.getName())){
+            if (!featureListMap.containsKey(feature.getName())) {
                 featureListMap.put(feature.getName(), feature);
             }
-            JSONArray arrayArcs = (JSONArray)featureMap.get("arcs");
-            if(arrayArcs!=null){
+            JSONArray arrayArcs = (JSONArray) featureMap.get("arcs");
+            if (arrayArcs != null) {
                 for (int j = 0; j < arrayArcs.size(); j++) {
                     JSONObject jsonArc = arrayArcs.getJSONObject(j);
                     String regulator = jsonArc.get("regulator").toString();
@@ -1595,7 +1648,7 @@ public class ClothoAdaptor {
         featureList.addAll(featureListMap.values());
         return featureList;
     }
-    
+
     //Remove parts from a set with duplicate sequence
     public static void removeDuplicateParts(HashSet<Polynucleotide> polyNucs, Clotho clothoObject) {
 
@@ -1628,10 +1681,10 @@ public class ClothoAdaptor {
 
                 if (sequencePartMap.containsKey(partSeq)) {
                     Part existing = sequencePartMap.get(partSeq);
-                        pn.setPart(existing);
+                    pn.setPart(existing);
                 } else if (sequencePartMap.containsKey(revPartSeq)) {
                     Part existing = sequencePartMap.get(revPartSeq);
-                        pn.setPart(existing);
+                    pn.setPart(existing);
                 } else {
                     sequencePartMap.put(partSeq, part);
                 }
@@ -1728,9 +1781,8 @@ public class ClothoAdaptor {
         }
     }
     //</editor-fold>
-    
+
     //<editor-fold desc="Commented out code" defaultstate="collapsed">
-    
     //<editor-fold desc="Commenting out createSampleMethod" defaultstate="collapsed">
     /*
      public static String createSample(Sample sample, Clotho clothoObject) {
@@ -1772,51 +1824,48 @@ public class ClothoAdaptor {
      }
      */
     //</editor-fold>
-    
     //<editor-fold desc="Commenting out get Sample function" defaultstate="collapsed">
     /*
-    public static Sample getSample(String sampleId, Clotho clothoObject) {
-        JSONObject sampleObj = new JSONObject();
-        sampleObj = (JSONObject) clothoObject.get(sampleId);
-        //Get Sample Type
-        SampleType sType = SampleType.valueOf((String) sampleObj.get("type"));
+     public static Sample getSample(String sampleId, Clotho clothoObject) {
+     JSONObject sampleObj = new JSONObject();
+     sampleObj = (JSONObject) clothoObject.get(sampleId);
+     //Get Sample Type
+     SampleType sType = SampleType.valueOf((String) sampleObj.get("type"));
 
-        //Get Media Map from Sample and convert it to a Medium object
-        Map mediaMap = new HashMap();
-        mediaMap = (Map) sampleObj.get("media");
-        String mediaName = (String) mediaMap.get("name");
-        Medium.MediaType mediaType = MediaType.valueOf((String) mediaMap.get("type"));
-        Medium media = new Medium(mediaName, mediaType);
-        //Get SmallMolecule Map from Media Map and convert it to a SmallMolecule Object
-        Map smoleculeMap = new HashMap();
-        smoleculeMap = (Map) mediaMap.get("smallMolecule");
-        SmallMolecule smolecule = new SmallMolecule();
-        smolecule.setName((String) smoleculeMap.get("name"));
-        smolecule.setRole(SmallMolecule.SmallMoleculeRole.valueOf((String) smoleculeMap.get("role")));
-        smolecule.setConcentration(Double.valueOf((String) smoleculeMap.get("concentration")));
-        media.setSmallmolecule(smolecule);
+     //Get Media Map from Sample and convert it to a Medium object
+     Map mediaMap = new HashMap();
+     mediaMap = (Map) sampleObj.get("media");
+     String mediaName = (String) mediaMap.get("name");
+     Medium.MediaType mediaType = MediaType.valueOf((String) mediaMap.get("type"));
+     Medium media = new Medium(mediaName, mediaType);
+     //Get SmallMolecule Map from Media Map and convert it to a SmallMolecule Object
+     Map smoleculeMap = new HashMap();
+     smoleculeMap = (Map) mediaMap.get("smallMolecule");
+     SmallMolecule smolecule = new SmallMolecule();
+     smolecule.setName((String) smoleculeMap.get("name"));
+     smolecule.setRole(SmallMolecule.SmallMoleculeRole.valueOf((String) smoleculeMap.get("role")));
+     smolecule.setConcentration(Double.valueOf((String) smoleculeMap.get("concentration")));
+     media.setSmallmolecule(smolecule);
 
-        Map strainMap = new HashMap();
-        strainMap = (Map) sampleObj.get("strain");
-        Strain strain = new Strain((String) strainMap.get("name"));
+     Map strainMap = new HashMap();
+     strainMap = (Map) sampleObj.get("strain");
+     Strain strain = new Strain((String) strainMap.get("name"));
 
-        List<Polynucleotide> polynucleotides = new ArrayList<Polynucleotide>();
-        JSONArray polyNucIds = new JSONArray();
-        polyNucIds = (JSONArray) sampleObj.get("polynucleotides");
-        for (Object obj : polyNucIds) {
-            String polyNucId = (String) obj;
-            polynucleotides.add(getPolynucleotide(polyNucId, clothoObject));
-        }
-        String time = (String) sampleObj.get("time");
-        Sample sample = new Sample(sType, strain, polynucleotides, media, time);
-        sample.setClothoID((String) sampleObj.get("id"));
-        sample.setName((String) sampleObj.get("name"));
+     List<Polynucleotide> polynucleotides = new ArrayList<Polynucleotide>();
+     JSONArray polyNucIds = new JSONArray();
+     polyNucIds = (JSONArray) sampleObj.get("polynucleotides");
+     for (Object obj : polyNucIds) {
+     String polyNucId = (String) obj;
+     polynucleotides.add(getPolynucleotide(polyNucId, clothoObject));
+     }
+     String time = (String) sampleObj.get("time");
+     Sample sample = new Sample(sType, strain, polynucleotides, media, time);
+     sample.setClothoID((String) sampleObj.get("id"));
+     sample.setName((String) sampleObj.get("name"));
 
-        return sample;
-    }
-    */
+     return sample;
+     }
+     */
     //</editor-fold>
-    
     //</editor-fold>
-    
 }

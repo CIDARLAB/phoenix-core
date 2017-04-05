@@ -143,7 +143,13 @@ public class IBioSimAdaptor {
     public static SBMLDocument estimateExpresseeParameters(String degTimeSeriesData, List<Double> smallMoleculesValues, List<String> smallMoleculeTimeSeriesData,
             String expresseeChannel, String regulatedChannel, boolean repression, String inducer, String expressee, String regulated) throws XMLStreamException, IOException {
         Map<String, Double> params = getExpresseeParameters(degTimeSeriesData, smallMoleculesValues, smallMoleculeTimeSeriesData, expresseeChannel, regulatedChannel, repression);
-        SBMLDocument doc = SBMLAdaptor.createInductionRepressionModel(inducer, expressee, regulated);
+        SBMLDocument doc;
+        if (repression) {
+            doc = SBMLAdaptor.createInductionRepressionModel(inducer, expressee, regulated);
+        }
+        else {
+            doc = SBMLAdaptor.createInductionActivationModel(inducer, expressee, regulated);
+        }
         double K_d = params.get("K_d");
         double y = params.get("y");
         double k_EXE;

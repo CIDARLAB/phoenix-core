@@ -28,6 +28,8 @@ import javax.xml.stream.XMLStreamException;
 import learn.genenet.Experiments;
 import learn.genenet.SpeciesCollection;
 import learn.parameterestimator.ParameterEstimator;
+import org.sbml.jsbml.Model;
+import org.sbml.jsbml.Reaction;
 import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.SBMLWriter;
 
@@ -48,7 +50,7 @@ public class IBioSimAdaptor {
         return ParameterEstimator.estimate(sbmlFile, root, parameters, experiments, speciesCollection);
     }
     
-    public static Map<String, Double> estimateExpressorParameters(String degTimeSeriesData, String expSteadyStateData, String channel) throws XMLStreamException, FileNotFoundException, IOException {
+    public static Map<String, Double> getExpressorParameters(String degTimeSeriesData, String expSteadyStateData, String channel) throws XMLStreamException, FileNotFoundException, IOException {
         SBMLDocument degradationDoc = SBMLAdaptor.createDegradationModel("exp");
         Map<String, Double> results = estimateDegradationParams(degTimeSeriesData, channel);
         List<List<String>> data = parseCSV(expSteadyStateData);
@@ -72,7 +74,22 @@ public class IBioSimAdaptor {
         return results;
     }
     
-    public static Map<String, Double> estimateExpresseeParameters(String degTimeSeriesData, List<Double> smallMoleculesValues, List<String> smallMoleculeTimeSeriesData,
+    public static SBMLDocument estimateExpressorParameters(String degTimeSeriesData, String expSteadyStateData, String channel, String expName) throws XMLStreamException, FileNotFoundException, IOException {
+        Map<String, Double> params = getExpressorParameters(degTimeSeriesData, expSteadyStateData, channel);
+        SBMLDocument doc = SBMLAdaptor.createExpressionModel(expName);
+        double K_d = params.get("K_d");
+        double y = params.get("y");
+        double k_EXE = params.get("k_EXE");
+        Model model = doc.getModel();
+        Reaction react = model.getReaction(expName + "_degradation");
+        react.getKineticLaw().getLocalParameter("K_d").setValue(K_d);
+        react.getKineticLaw().getLocalParameter("y").setValue(y);
+        react = model.getReaction(expName + "_expression");
+        react.getKineticLaw().getLocalParameter("k_EXE").setValue(k_EXE);
+        return doc;
+    }
+    
+    public static Map<String, Double> getExpresseeParameters(String degTimeSeriesData, List<Double> smallMoleculesValues, List<String> smallMoleculeTimeSeriesData,
             String expresseeChannel, String regulatedChannel, boolean repression) throws XMLStreamException, IOException {
         Map<String, Double> results = estimateDegradationParams(degTimeSeriesData, regulatedChannel);
         boolean includeRegulation = true;
@@ -121,6 +138,41 @@ public class IBioSimAdaptor {
             }
         }
         return results;        
+    }
+    
+    public static SBMLDocument estimateExpresseeParameters(String degTimeSeriesData, List<Double> smallMoleculesValues, List<String> smallMoleculeTimeSeriesData,
+            String expresseeChannel, String regulatedChannel, boolean repression, String inducer, String expressee, String regulated) throws XMLStreamException, IOException {
+        Map<String, Double> params = getExpresseeParameters(degTimeSeriesData, smallMoleculesValues, smallMoleculeTimeSeriesData, expresseeChannel, regulatedChannel, repression);
+        SBMLDocument doc = SBMLAdaptor.createInductionRepressionModel(inducer, expressee, regulated);
+        double K_d = params.get("K_d");
+        double y = params.get("y");
+        double k_EXE;
+        double K_reg;
+        if (repression) {
+            k_EXE = params.get("k_EXR");
+            K_reg = params.get("K_r");
+        }
+        else {
+            k_EXE = params.get("k_EXA");
+            K_reg = params.get("K_a");
+        }
+        double K_i = params.get("K_i");
+        Model model = doc.getModel();
+        model.getSpecies(inducer).setBoundaryCondition(true);
+        Reaction react = model.getReaction(regulated + "_degradation");
+        react.getKineticLaw().getLocalParameter("K_d").setValue(K_d);
+        react.getKineticLaw().getLocalParameter("y").setValue(y);
+        react = model.getReaction(regulated + "_expression");
+        if (repression) {
+            react.getKineticLaw().getLocalParameter("k_EXR").setValue(k_EXE);
+            react.getKineticLaw().getLocalParameter("K_r").setValue(K_reg);
+        }
+        else {
+            react.getKineticLaw().getLocalParameter("k_EXA").setValue(k_EXE);
+            react.getKineticLaw().getLocalParameter("K_a").setValue(K_reg);
+        }
+        react.getKineticLaw().getLocalParameter("K_i").setValue(K_i);
+        return doc;
     }
     
 //    public static Map<String, Double> estimateExpresseeParameters(String degTimeSeriesData, Map<String, Double> expParams,
@@ -416,6 +468,41 @@ public class IBioSimAdaptor {
                 } else {
                     for (int i = 0; i < values.length; i++) {
                         data.get(i).add(values[i]);
+                    }
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Could not find the file!");
+        } finally {
+            if (scan != null) {
+                scan.close();
+            }
+
+        }
+        return data;
+    }
+    
+    public static List<List<String>> parseTSD(String filename) {
+        List<List<String>> data = new ArrayList<List<String>>();
+        Scanner scan = null;
+        boolean isFirst = true;
+        try {
+            scan = new Scanner(new File(filename));
+            while (scan.hasNextLine()) {
+                String line = scan.nextLine().replace("(", "").replace("),", "").replace("))", "");
+
+                String[] values = line.split(",");
+
+                if (isFirst) {
+                    for (int i = 0; i < values.length; i++) {
+                        List<String> dataLine = new ArrayList<String>();
+                        dataLine.add(values[i].trim());
+                        data.add(dataLine);
+                    }
+                    isFirst = false;
+                } else {
+                    for (int i = 0; i < values.length; i++) {
+                        data.get(i).add(values[i].trim());
                     }
                 }
             }

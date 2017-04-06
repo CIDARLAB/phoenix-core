@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment name="cell" constant="false" id="cell" size="1"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species boundaryCondition="false" constant="false" hasOnlySubstanceUnits="true" initialAmount="0" compartment="cell" name="exp" id="exp"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction name="exp_degradation" fast="false" id="exp_degradation" reversible="false">
+        <listOfReactants>
+          <speciesReference stoichiometry="1" constant="true" species="exp"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <divide/>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <ci> y </ci>
+                  <ci> exp </ci>
+                </apply>
+                <ci> K_d </ci>
+              </apply>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <divide/>
+                  <ci> exp </ci>
+                  <ci> K_d </ci>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+                  <listOfLocalParameters>
+            <localParameter name="y" id="y" value="36.88748386216019"/>
+            <localParameter name="K_d" id="K_d" value="3.6252195078241147"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction name="exp_expression" fast="false" id="exp_expression" reversible="false">
+        <listOfProducts>
+          <speciesReference stoichiometry="1" constant="true" species="exp"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <ci> k_EXE </ci>
+          </math>
+                  <listOfLocalParameters>
+            <localParameter name="k_EXE" id="k_EXE" value="33.19379439749666"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

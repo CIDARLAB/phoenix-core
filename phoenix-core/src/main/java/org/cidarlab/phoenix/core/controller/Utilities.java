@@ -6,10 +6,13 @@ package org.cidarlab.phoenix.core.controller;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.opencsv.CSVReader;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -532,8 +535,11 @@ public class Utilities {
     
     //<editor-fold desc="File and Directory checks">
     public static boolean makeDirectory(String filepath){
-        File file = new File(filepath);
-        return file.mkdir();
+        if(!isDirectory(filepath)){
+            File file = new File(filepath);
+            return file.mkdir();
+        } 
+        return false;
     }
     
     public static boolean validFilepath(String filepath){
@@ -546,6 +552,18 @@ public class Utilities {
         return file.isDirectory();
     }
     
+    public static boolean deleteDirectory(String filepath){
+        if(isDirectory(filepath)){
+            File file = new File(filepath);
+            return file.delete();
+        }
+        return false;
+    }
+    
+    public static boolean deleteFile(String filepath){
+        File file = new File(filepath);
+        return file.delete();
+    }
     
     public static String getFilepath() {
         String _filepath = Utilities.class.getClassLoader().getResource(".").getPath();
@@ -627,6 +645,26 @@ public class Utilities {
         return filecontent;
     }
     
+    public static List<String[]> getCSVFileContentAsList(String filepath){
+        List<String[]> listPieces = new ArrayList<String[]>();
+        try {
+            CSVReader reader = new CSVReader(new FileReader(filepath));
+            String[] nextline;
+            while( (nextline = reader.readNext()) != null ){
+                listPieces.add(nextline);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
+        }
+//        List<String> stringList = getFileContentAsStringList(filepath);
+//        for(String line:stringList){
+//            listPieces.add(line.split(","));
+//        }
+        return listPieces;
+    }
+    
     public static List<String> getFileContentAsStringList(String filepath){
         List<String> filecontent = null;
         
@@ -645,6 +683,31 @@ public class Utilities {
             Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
         }
         return filecontent;
+    }
+    
+    public static void writeToFile(String filepath, String content){
+        File file = new File(filepath);
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            writer.write(content);
+            writer.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public static void writeToFile(String filepath, List<String> lines){
+        File file = new File(filepath);
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            for(String line:lines){
+                writer.write(line);
+                writer.newLine();
+            }
+            writer.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public static char getSeparater(){

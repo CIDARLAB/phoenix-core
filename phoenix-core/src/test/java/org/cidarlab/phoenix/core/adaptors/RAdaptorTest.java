@@ -18,7 +18,7 @@ import org.junit.Test;
  */
 public class RAdaptorTest {
     
-    //@Test
+    @Test
     public void getAllDirectories() throws IOException{
         String resourceFilepath = Utilities.getFilepath() + "/src/main/resources/RTest/";
         String directory = resourceFilepath + "results/";

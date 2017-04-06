@@ -514,6 +514,12 @@
             <artifactId>ibiosim</artifactId>
             <version>2.9</version>
         </dependency>
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>3.4</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
     
     

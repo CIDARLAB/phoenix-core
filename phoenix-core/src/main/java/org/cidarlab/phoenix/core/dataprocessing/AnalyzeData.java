@@ -34,7 +34,110 @@ import org.cidarlab.phoenix.core.dom.PrimitiveModule;
  */
 public class AnalyzeData {
     
+    
     public static void directoryWalk(String path, String resultsRoot, String sbmldirectory, Map<String,String> nameMap, Map<String,AssignedModule> expexe) throws IOException{
+        Utilities.makeDirectory(resultsRoot + "tmp");
+        File root = new File( path );
+        File[] list = root.listFiles();
+        
+        if (list == null) return;
+        
+        for ( File f : list ) {
+            if ( f.isDirectory() ) {
+                directoryWalk(f.getAbsolutePath(), resultsRoot,sbmldirectory, nameMap, expexe);
+                //System.out.println( "Dir:" + f.getAbsoluteFile() );
+            }
+            else {
+                if(f.getName().equals("timeSeriesPlotPoints.csv")){
+                    String pieces[] = filepathPieces(f.getAbsolutePath(),resultsRoot);
+                    
+                    //folder structure: /part/media/nM_smallMolecule/conc/timeSeriesPlotPoints.csv
+                    if (pieces.length == 5) {
+                        //use this with /part/media/timeSeriesPlotPoints.csv
+                        List<String> mainFile = Utilities.getFileContentAsStringList(f.getAbsolutePath());
+
+                        if (Utilities.validFilepath(resultsRoot + pieces[0] + Utilities.getSeparater() + pieces[1] + Utilities.getSeparater() + "timeSeriesPlotPoints.csv")) {
+                            List<String> zeroVal = Utilities.getFileContentAsStringList(resultsRoot + pieces[0] + Utilities.getSeparater() + pieces[1] + Utilities.getSeparater() + "timeSeriesPlotPoints.csv");
+                            String zeroPieces[] = zeroVal.get(1).split(",");
+                            if (zeroPieces[0].trim().equals("0")) {
+                                mainFile.add(1, zeroVal.get(1));
+                            }
+
+                            String tmpFilepath = resultsRoot + "tmp" + Utilities.getSeparater() + "tmp.csv";
+                            Utilities.writeToFile(tmpFilepath, mainFile);
+                            //Use this file for Small molecule regulation.
+
+                            //Then delete it.
+                            //Utilities.deleteFile(tmpFilepath);
+                        }
+
+                    }
+
+                    //Find out if this is part of CAM
+                    if(pieces[1].endsWith("_CAM")){
+                        //Get Degradation From this (default).
+                    } else {
+                        if (pieces[1].endsWith("_ara") || pieces[1].endsWith("_aTc")) {
+                            if (!folderHasCAM(resultsRoot + pieces[0])) {
+                                //Use for degradation because root folder does not have a CAM folder.
+                            }
+                        } else {
+                            //Use this for regulation with /oneMediaMEFL/oneMediaPlotPoints.csv 
+                            List<String> mainFile = Utilities.getFileContentAsStringList(f.getAbsolutePath());
+                            List<String[]> oneMediaFile = Utilities.getCSVFileContentAsList(resultsRoot + "one_media_MEFL/oneMediaPlotPoints.csv");
+                            
+                            String zeroline = getRegulationOneMediaLine(oneMediaFile, pieces[0]);
+                            mainFile.add(1, zeroline);
+                            
+                            String tmpFilepath = resultsRoot + "tmp" + Utilities.getSeparater() + "tmp.csv";
+                            Utilities.writeToFile(tmpFilepath, mainFile);
+                            //Use this file for Regulation.
+                            
+                            //Then delete it.
+                            //Utilities.deleteFile(tmpFilepath);
+                        }
+                    }
+                }
+                
+            }
+        }
+    }
+    
+    private static String getCSVLineFromArray(String[] pieces){
+        String line = "";
+        for(int i=0;i<pieces.length-1;i++){
+            line += pieces[i] + ",";
+        }
+        line += pieces[pieces.length-1];
+        return line;
+    }
+    
+    private static String getRegulationOneMediaLine(List<String[]> lines, String part){
+        String specificline = "";
+        String key = part + "_M9_glucose";
+        for(String pieces[]:lines){
+            if(pieces[0].trim().equals(key)){
+                specificline = getCSVLineFromArray(pieces);
+                break;
+            }
+        }
+        specificline = specificline.replaceFirst(key, "0");
+        return specificline;
+    }
+    
+    private static boolean folderHasCAM(String filepath){
+        File file = new File(filepath);
+        for(File f: file.listFiles()){
+            String pieces[] = filepathPieces(f.getAbsolutePath(),filepath);
+            if(pieces[1].endsWith("_CAM")){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    public static void directoryWalk_old(String path, String resultsRoot, String sbmldirectory, Map<String,String> nameMap, Map<String,AssignedModule> expexe) throws IOException{
         File root = new File( path );
         File[] list = root.listFiles();
         

@@ -100,14 +100,14 @@ public class PhoenixController {
 
         //Create target modules with miniEugene        
         String path = structuralSpecification.getAbsolutePath();        
-        String miniEugeneFileName;
-        if (System.getProperty("os.name").contains("Mac")) {
-            miniEugeneFileName = path.substring(path.lastIndexOf("/") + 1, path.length() - 4);
-        } else if (System.getProperty("os.name").contains("Linux")) {
-            miniEugeneFileName = path.substring(path.lastIndexOf("/") + 1, path.length() - 4);
-        } else {
-            miniEugeneFileName = path.substring(path.lastIndexOf("\\") + 1, path.length() - 4);
-        }        
+        String miniEugeneFileName = path.substring(path.lastIndexOf(Utilities.getSeparater()) + 1, path.length() - 4);
+//        if (System.getProperty("os.name").contains("Mac")) {
+//            miniEugeneFileName = path.substring(path.lastIndexOf("/") + 1, path.length() - 4);
+//        } else if (System.getProperty("os.name").contains("Linux")) {
+//            miniEugeneFileName = path.substring(path.lastIndexOf("/") + 1, path.length() - 4);
+//        } else {
+//            miniEugeneFileName = path.substring(path.lastIndexOf("\\") + 1, path.length() - 4);
+//        }        
         
         List<Module> eugeneModules = EugeneAdaptor.getStructures(structuralSpecification, null, miniEugeneFileName);
         
@@ -149,10 +149,10 @@ public class PhoenixController {
         
         
         
-        ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
-        Clotho clothoObject = new Clotho(conn);
-        
-        conn.closeConnection();
+//        ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
+//        Clotho clothoObject = new Clotho(conn);
+//        
+//        conn.closeConnection();
         return bestModule;
         
     }

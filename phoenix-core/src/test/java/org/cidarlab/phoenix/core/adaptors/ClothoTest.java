@@ -152,12 +152,9 @@ public class ClothoTest {
         String filePath = getFilepath() + "/src/main/resources/BenchlingGenbankFiles/phoenix_feature_lib.gb";
         File toLoad = new File(filePath);
         try {
-//            ClothoAdaptor.queryFeatures();
-            Map featureQuery = new HashMap();
-            featureQuery.put("schema", Feature.class.getCanonicalName());
-        
+   
             ClothoAdaptor.uploadSequences(toLoad, true,clothoObject);
-            ClothoAdaptor.queryFeatures(featureQuery,clothoObject);
+
         } catch (Exception ex) {
             Logger.getLogger(ClothoTest.class.getName()).log(Level.SEVERE, null, ex);
         } 

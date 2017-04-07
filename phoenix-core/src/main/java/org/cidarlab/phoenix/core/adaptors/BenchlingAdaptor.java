@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import org.biojava.bio.BioException;
 import org.biojava.bio.seq.Sequence;
 import org.biojava.bio.seq.SequenceIterator;
@@ -669,7 +670,7 @@ public class BenchlingAdaptor {
         return clothoFeatures;
     }
     
-    public static HashSet<Fluorophore> getFluorophores(HashSet<Feature> features) {
+    public static HashSet<Fluorophore> getFluorophores(Set<Feature> features) {
         
         HashSet<Fluorophore> FPs = new HashSet<>();
         

@@ -88,7 +88,7 @@ public class ClothoAdaptor {
             //Get polynucleotides, nucseqs and parts from a multi-part genbank file
             //This automatic annotations of part NucSeqs relies on previously uploaded features
             HashSet<Polynucleotide> polyNucs = BenchlingAdaptor.getPolynucleotide(input);
-            removeDuplicateParts(polyNucs, clothoObject);
+            removeDuplicateParts(polyNucs, clothoObject); //If vectors and Parts have not been created at this point, then why do this step here?
             Map featureQuery = new HashMap();
             featureQuery.put("schema", Feature.class.getCanonicalName());
             List<Feature> annotationFeatures = queryFeatures(featureQuery, clothoObject);

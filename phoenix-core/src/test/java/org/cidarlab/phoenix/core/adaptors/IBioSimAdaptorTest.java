@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -113,27 +114,19 @@ public class IBioSimAdaptorTest {
     
     @Test
     public void testInverterEstimationAndSimulation() throws IOException, XMLStreamException {
-        List<Double> smallMoleculesValues = new ArrayList<Double>();
-        smallMoleculesValues.add(100.0);
-        smallMoleculesValues.add(1000.0);
-        smallMoleculesValues.add(10000.0);
-        List<String> smallMoleculeTimeSeriesData = new ArrayList<String>();
-        smallMoleculeTimeSeriesData.add(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/araC_gfp_EXPRESSEE_pBAD_B_tetR_REG/M9_glucose_ara/nM_ara/100/timeSeriesPlotPoints.csv");
-        smallMoleculeTimeSeriesData.add(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/araC_gfp_EXPRESSEE_pBAD_B_tetR_REG/M9_glucose_ara/nM_ara/1000/timeSeriesPlotPoints.csv");
-        smallMoleculeTimeSeriesData.add(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/araC_gfp_EXPRESSEE_pBAD_B_tetR_REG/M9_glucose_ara/nM_ara/10000/timeSeriesPlotPoints.csv");
+        Map<Double, String> smallMoleculeTimeSeriesData = new HashMap<Double, String>();
+        smallMoleculeTimeSeriesData.put(100.0, Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/araC_gfp_EXPRESSEE_pBAD_B_tetR_REG/M9_glucose_ara/nM_ara/100/timeSeriesPlotPoints.csv");
+        smallMoleculeTimeSeriesData.put(1000.0, Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/araC_gfp_EXPRESSEE_pBAD_B_tetR_REG/M9_glucose_ara/nM_ara/1000/timeSeriesPlotPoints.csv");
+        smallMoleculeTimeSeriesData.put(10000.0, Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/araC_gfp_EXPRESSEE_pBAD_B_tetR_REG/M9_glucose_ara/nM_ara/10000/timeSeriesPlotPoints.csv");
         SBMLDocument bfpDoc = IBioSimAdaptor.estimateExpresseeParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/bfp_EXP/M9_glucose_ara_CAM/timeSeriesPlotPoints.csv",
-                smallMoleculesValues, smallMoleculeTimeSeriesData, "\"MEAN_FITC.A\"", "\"MEAN_Pacific_Blue.A\"", false, "ara", "AraC", "BFP");
-                
-        smallMoleculesValues = new ArrayList<Double>();
-        smallMoleculesValues.add(1.0);
-        smallMoleculesValues.add(10.0);
-        smallMoleculesValues.add(100.0);
-        smallMoleculeTimeSeriesData = new ArrayList<String>();
-        smallMoleculeTimeSeriesData.add(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/tetR_bfp_AAV_EXPRESSEE_pTet_G_araC_REG/M9_glucose_ara/ng_mL_aTc/1/timeSeriesPlotPoints.csv");
-        smallMoleculeTimeSeriesData.add(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/tetR_bfp_AAV_EXPRESSEE_pTet_G_araC_REG/M9_glucose_ara/ng_mL_aTc/10/timeSeriesPlotPoints.csv");
-        smallMoleculeTimeSeriesData.add(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/tetR_bfp_AAV_EXPRESSEE_pTet_G_araC_REG/M9_glucose_ara/ng_mL_aTc/100/timeSeriesPlotPoints.csv");
+                smallMoleculeTimeSeriesData, "\"MEAN_FITC.A\"", "\"MEAN_Pacific_Blue.A\"", false, "ara", "AraC", "BFP");
+        
+        smallMoleculeTimeSeriesData = new HashMap<Double, String>();
+        smallMoleculeTimeSeriesData.put(1.0, Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/tetR_bfp_AAV_EXPRESSEE_pTet_G_araC_REG/M9_glucose_ara/ng_mL_aTc/1/timeSeriesPlotPoints.csv");
+        smallMoleculeTimeSeriesData.put(10.0, Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/tetR_bfp_AAV_EXPRESSEE_pTet_G_araC_REG/M9_glucose_ara/ng_mL_aTc/10/timeSeriesPlotPoints.csv");
+        smallMoleculeTimeSeriesData.put(100.0, Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/tetR_bfp_AAV_EXPRESSEE_pTet_G_araC_REG/M9_glucose_ara/ng_mL_aTc/100/timeSeriesPlotPoints.csv");
         SBMLDocument araCDoc = IBioSimAdaptor.estimateExpresseeParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/gfp_EXP/M9_glucose_ara_CAM/timeSeriesPlotPoints.csv",
-                smallMoleculesValues, smallMoleculeTimeSeriesData, "\"MEAN_Pacific_Blue.A\"", "\"MEAN_FITC.A\"", true, "aTc", "TetR", "AraC");
+                smallMoleculeTimeSeriesData, "\"MEAN_Pacific_Blue.A\"", "\"MEAN_FITC.A\"", true, "aTc", "TetR", "AraC");
         
         SBMLDocument tetRDoc = IBioSimAdaptor.estimateExpressorParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/gfp_EXP/M9_glucose_ara_CAM/timeSeriesPlotPoints.csv",
                 Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/pPhlF_EXPRESSOR/one_media_MEFL/oneMediaPlotPoints.csv", "\"MEAN_FITC.A\"", "TetR");

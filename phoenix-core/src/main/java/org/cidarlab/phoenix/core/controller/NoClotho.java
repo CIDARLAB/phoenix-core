@@ -5,19 +5,26 @@
  */
 package org.cidarlab.phoenix.core.controller;
 
+import com.fasterxml.uuid.EthernetAddress;
+import com.fasterxml.uuid.Generators;
+import com.fasterxml.uuid.impl.TimeBasedGenerator;
 import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -27,10 +34,16 @@ import lombok.Setter;
 import org.biojava.bio.BioException;
 import org.cidarlab.phoenix.core.adaptors.BenchlingAdaptor;
 import static org.cidarlab.phoenix.core.adaptors.ClothoAdaptor.annotate;
+import org.cidarlab.phoenix.core.dataprocessing.AnalyzeData;
 import org.cidarlab.phoenix.core.dom.Annotation;
+import org.cidarlab.phoenix.core.dom.AssemblyParameters;
+import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.Cytometer;
+import org.cidarlab.phoenix.core.dom.Experiment;
+import org.cidarlab.phoenix.core.dom.ExperimentProcessedData;
 import org.cidarlab.phoenix.core.dom.Feature;
 import org.cidarlab.phoenix.core.dom.Fluorophore;
+import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.NucSeq;
 import org.cidarlab.phoenix.core.dom.Part;
 import org.cidarlab.phoenix.core.dom.Person;
@@ -59,12 +72,255 @@ public class NoClotho {
     @Setter
     private Set<Polynucleotide> polynucleotide;
 
+    
+    @Getter
+    @Setter
+    private AssemblyParameters ap;
+    
+    private AtomicInteger counter ;
+    
+    private Set<String> allIds; 
+    
     public NoClotho() {
         features = new HashSet<Feature>();
         fluorophores = new HashSet<Fluorophore>();
         polynucleotide = new HashSet<Polynucleotide>();
+        allIds = new HashSet<String>();
+        counter = new AtomicInteger();
+        initializeAssemblyParameters();
+    }
+    
+    private void initializeAssemblyParameters(){
+        String[] efficiency = new String[]{"1.0", "1.0", "1.0", "1.0"};
+        ap = new AssemblyParameters();
+        List<String> effArray = Arrays.asList(efficiency);
+        
+        this.ap.setEfficiency(effArray);
+        this.ap.setMethod("moclo");
+        this.ap.setOligoNameRoot("phoenix");
+        this.ap.setName("default");
+    
+    }
+    
+    
+    
+    public static void main(String[] args) {
+        
+        String featureFilepath = Utilities.getResourcesFilepath() + "BenchlingGenbankFiles/phoenix_feature_lib.gb";
+        String fluorFilepath = Utilities.getResourcesFilepath() + "FluorescentProteins/fp_spectra.csv";
+        String plasmidFilepath = Utilities.getResourcesFilepath() + "BenchlingGenbankFiles/phoenix_plasmid_lib_72715.gb";
+        String cytometerFilepath = Utilities.getResourcesFilepath() + "FluorescentProteins/cosbi_fortessa_bd.csv";
+        NoClotho nc = new NoClotho();
+        nc.addFeatures(featureFilepath);
+        nc.addFluorophores(fluorFilepath);
+        nc.addPlasmid(plasmidFilepath);
+        nc.addCytometer(cytometerFilepath);
+        nc.assignNoClothoID();
+        
+        String tmpfilepath = Utilities.getResourcesFilepath() + "tmp/";
+        Utilities.makeDirectory(tmpfilepath);
+        
+        File structureFile = new File(Utilities.getResourcesFilepath() + "miniEugeneFiles/inverter.eug");
+        try {
+            //Step 1 : Get Best Module and Create Experiment Instructions
+            Module bestModule = PhoenixController.initializeDesign(structureFile, null, nc);
+            nc.assignID(bestModule);
+            PhoenixController.createExperimentInstructions(bestModule, Utilities.getResourcesFilepath() + "InstructionFiles", nc);
+            System.out.println("==========================================================================\n==============================End of Step 1.==============================\n==========================================================================\n\n");
+
+            //Step 2 : Get Analyzed Data
+            String directory = Utilities.getResourcesFilepath() + "RTest/results/";
+            String keyFile = Utilities.getResourcesFilepath() + "InstructionFiles/testingInstructionsTest.csv";
+            String mapFile = Utilities.getResourcesFilepath() + "InstructionFiles/nameMapFileTest.csv";
+            
+            String ea_mapFile = Utilities.getResourcesFilepath() + "InstructionFiles/nameMapFileTest_ea_filled.csv";
+            AnalyzeData.fillOutNameMap(ea_mapFile, mapFile);
+            
+            Map<String, String> nameMap = AnalyzeData.parseKeyMapFiles(mapFile);
+
+            Map<String, AssignedModule> expexe = new HashMap<String, AssignedModule>();
+            expexe = PhoenixController.getShortNameEXPEXEMap(bestModule);
+            
+            
+            
+            Map<String, ExperimentProcessedData> processedMap = new HashMap<String, ExperimentProcessedData>();
+            AnalyzeData.directoryWalk(directory, directory, processedMap);
+//            System.out.println(processedMap.size());
+//            System.out.println(processedMap.keySet());
+//            System.out.println("\n\n=======================================\n");
+//            
+//            for(String expexeKey: expexe.keySet()){
+//                System.out.print(expexe.get(expexeKey).getRole()  + "::" );
+//                System.out.println(expexe.get(expexeKey).getFeatureString());
+//            }
+            
+            for(String expexeKey: expexe.keySet()){
+                
+                AssignedModule am = expexe.get(expexeKey);
+                for(String processKey : processedMap.keySet()){
+                    if(am.getRole().equals(Module.ModuleRole.EXPRESSEE) || am.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || am.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATOR)  || am.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || am.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSOR)){
+                        if(!processedMap.get(processKey).getRole().equals(Module.ModuleRole.EXPRESSEE)){
+                            continue;
+                        }
+                        boolean fpFlag = false;
+                        boolean exeFlag = false;
+                        boolean tagFlag = isTag(processKey);
+                        boolean tagFeature = false;
+                        String fusedFP = getFusedFP(processKey);
+                        String exeFeature = getExpresee(processKey);
+                        for(Feature f:am.getAllModuleFeatures()){
+                            //System.out.println(f.getName());
+                            if(f.getName().toLowerCase().equals(getFusedFPfeature(fusedFP).toLowerCase())){
+                                fpFlag = true;
+                            }
+                            if(f.getName().toLowerCase().contains(exeFeature.toLowerCase())){
+                                exeFlag = true;
+                            }
+                            if(f.getName().equals("TAG")){
+                                tagFeature = true;
+                            }
+                        }
+                        if(fpFlag && exeFlag){
+                            if (tagFlag == tagFeature) {
+                                List<String> tmpFiles = new ArrayList<String>();
+                                //Do that Expressee Thaing here. 
+                                Map<Double, String> reg = new HashMap<Double, String>();
+                                for(Double d:processedMap.get(processKey).getRegulationData().keySet()){
+                                    String filepath = tmpfilepath + "tmp" + nc.counter.getAndIncrement() + ".csv";
+                                    tmpFiles.add(filepath);
+                                    Utilities.writeToFile(filepath, processedMap.get(processKey).getRegulationData().get(d));
+                                    reg.put(d, filepath);
+                                }
+                                
+                            }
+                        }
+                    }
+                    if(am.getRole().equals(Module.ModuleRole.EXPRESSOR)){
+                        if(!processedMap.get(processKey).getRole().equals(Module.ModuleRole.EXPRESSOR)){
+                            continue;
+                        }
+                    }
+                    
+                }
+            }
+            
+
+        } catch (Exception ex) {
+            Logger.getLogger(NoClotho.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
+    private static String getExpresee(String val){
+        String pieces[] = val.split("_");
+        return pieces[0].trim();
+    }
+    
+    private static String getFusedFP(String val){
+        String pieces[] = val.split("_");
+        return pieces[1].trim();
+    }
+    
+    private static String getRegulatedProtein(String val){
+        String pieces[] = val.split("_");
+        for(int i=0;i< pieces.length;i++){
+            if(pieces[i].trim().equals("EXPRESSEE")){
+                return pieces[i+1].trim();
+            }
+        }
+        return "";
+    }
+    
+    private static boolean isTag(String val){
+        
+        String pieces[] = val.split("_");
+        if(pieces.length < 3){
+            return false;
+        }
+        if(pieces[2].trim().equals("EXPRESSEE")){
+            return false;
+        }
+        return true;
+    }
+   
+    private static String getFusedFPfeature(String shortVer){
+        switch(shortVer){
+            case "GFP":
+                return "EGFPm.ref";
+        }
+        
+        return "";
+    }
+    
+    private static String getRegulatedFPfeature(String shortVer){
+        switch(shortVer){
+            case "G":
+                return "EGFPm.ref";
+            case "B":
+                return "EBFP.ref";
+        }
+        return "";
+    }
+    
+    static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    static SecureRandom rnd = new SecureRandom();
+
+    
+    String randomString(int len) {
+        StringBuilder sb = new StringBuilder(len);
+        for (int i = 0; i < len; i++) {
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        }
+        return sb.toString();
+    }
+    
+    public String getUUID(){
+        
+        String id = randomString(10);
+        while(this.allIds.contains(id)){
+            id = randomString(10);
+        }
+        this.allIds.add(id);
+        return id;
+//        TimeBasedGenerator gen = Generators.timeBasedGenerator(EthernetAddress.fromInterface());
+//        UUID uuid = gen.generate();
+//        return uuid.toString();
+    }
+    
+    public void assignNoClothoID(){
+        for(Feature f:this.features){
+            f.setClothoID(getUUID());
+        }
+        for(Fluorophore f:this.fluorophores){
+            f.setClothoID(getUUID());
+        }
+        for(Polynucleotide p:this.polynucleotide){
+            p.setClothoID(getUUID());
+        }
+        this.cytometer.setClothoID(getUUID());
+        this.ap.setClothoID(getUUID());
+    }
+    
+    public void assignID(Module m){
+        m.setClothoID(getUUID());
+        
+        for(AssignedModule am: m.getAssignedModules()){
+            am.setClothoID(getUUID());
+            for(AssignedModule cm:am.getControlModules()){
+                cm.setClothoID(getUUID());
+            }
+            for(Experiment ex:am.getExperiments()){
+                ex.setClothoID(getUUID());
+            }
+        }
+        for(Module child:m.getChildren()){
+            child.setClothoID(getUUID());
+        }
+        
+    }
+    
+    
+    
+    
     public void addFeatures(String filepath) {
         File file = new File(filepath);
         try {

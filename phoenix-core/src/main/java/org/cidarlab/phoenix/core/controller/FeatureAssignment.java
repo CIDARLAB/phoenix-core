@@ -123,6 +123,93 @@ public class FeatureAssignment {
     }
     
     
+    //Method for traverisng graphs performing a partial assignment
+    //This method will be hacky until we have a real part assignment algorithm based on simulation
+    public static void partialAssignment(Module rootModule, Double percentage, NoClotho nc) {
+                
+        HashSet<AssignedModule> modulesToTest = new HashSet<>();
+        HashSet<List<Feature>> assignedFeatureLists = new HashSet<>();
+        
+        //Add fluorescent proteins to each module
+        addFPs(rootModule,nc);
+        
+        //Query promoters and regulator features, assign to abstract spots for EXPRESSORS and EXPRESSEES
+        Map featureQuery = new HashMap();
+        List<Feature> features = new ArrayList<Feature>();
+        features.addAll(nc.getFeatures());
+        
+        List<Module> exe = getExpressees(rootModule);
+        List<Module> exp = getExpressors(rootModule);
+        featureMatchAssign(exe, features);
+        featureMatchAssign(exp, features);
+        
+        List<Feature> assignedRegulators = new ArrayList<>();
+                
+        for(Module m:exe){
+            if(!isAssigned(m)){
+                assignedRegulators.addAll(regulatorAssign(m, features));
+            }
+        }
+        
+//        int countexp=0;
+        for(Module m:exp){
+            if(!isAssigned(m)){
+//                System.out.println("Run "+countexp);
+//                countexp++;
+                promoterAssign(m, features, assignedRegulators);
+            }
+        }
+        
+        List<Module> expexe = new ArrayList<Module>();
+        expexe.addAll(exe);
+        expexe.addAll(exp);
+        
+        //CHECK FROM THIS PART ONWARDS!!!
+        for (Module m : expexe) {
+            Set<AssignedModule> multiplexModules = new HashSet<>();
+            boolean multiplexed=false;
+            List<AssignedModule> multiplexedModulesList = new ArrayList<>();
+            
+            //Add each of the assigned modules to the `modules to test' collection
+            for (AssignedModule assignedM : m.getAssignedModules()) {
+                
+                //Check the features to remove any duplicate assignments
+                List<Feature> assignedFeatureList = new ArrayList<>();
+                for (PrimitiveModule pm : assignedM.getSubmodules()) {
+                    if(!(pm.getModuleFeature().getSequence() == null)){
+                        assignedFeatureList.add(pm.getModuleFeature());
+                    }
+                }
+                
+                //If this is a unique feature assignment, add assigned modules and multiplex copies to the modules to test
+                if (assignedFeatureLists.add(assignedFeatureList)) {
+                    multiplexed = true;
+                    multiplexModules = addMultiplexModules(assignedM, percentage, features);
+                    for(AssignedModule amoduleMplx:multiplexModules){
+                        if(!multiplexedModulesList.contains(amoduleMplx)){
+                            multiplexedModulesList.add(amoduleMplx);
+                        }
+                    }
+                    //multiplexedModulesList.addAll(multiplexModules);
+                    modulesToTest.addAll(multiplexModules);
+                }
+            }
+            
+            if(multiplexed){
+                System.out.println("Set AssignedModules::Size of Multiplexed Modules List::"+multiplexedModulesList.size());
+                m.setAssignedModules(multiplexedModulesList);
+            }
+        }
+        
+        //Assign WILDCARDs for assigned modules
+        for (AssignedModule m : modulesToTest) {
+            TestingStructures.wildcardAssign(m);
+        }
+        
+    }
+    
+    
+    
     public static void replaceExpressorFP(Module module, Fluorophore oldFP, Fluorophore newFP){
         
         boolean updated = false;
@@ -252,6 +339,41 @@ public class FeatureAssignment {
         Map cytometerQuery = new HashMap();
         //cytometerQuery.put("schema", "org.cidarlab.phoenix.core.dom.Cytometer");
         List<Cytometer> allCytometers = ClothoAdaptor.queryCytometers(cytometerQuery,clothoObject);
+        for (Cytometer c : allCytometers) {
+            if (c.getName().startsWith("BU")) {
+                cytometer = c;
+            }
+        }
+        
+        //Determine how many FPs are needed
+        int count = 0;
+        for (PrimitiveModule p : rootModule.getSubmodules()) {            
+            if (p.getPrimitiveRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
+                count++;
+            }
+        }
+        
+//        System.out.println("Count: " + count);
+        List<Fluorophore> bestSet = FluorescentProteinSelector.solve(FPs, cytometer, count);
+        addFPsHelper(rootModule, bestSet);
+    }
+    
+    
+    //Method for traverisng graphs, adding fluorescent proteins
+    private static void addFPs(Module rootModule,NoClotho nc) {
+                
+        //Recieve data from Clotho
+        List<Fluorophore> FPs = new ArrayList<Fluorophore>();
+        Map fluorophoreQuery = new HashMap();
+        //fluorophoreQuery.put("schema", "org.cidarlab.phoenix.core.dom.Fluorophore");
+        FPs.addAll(nc.getFluorophores());
+        
+        Cytometer cytometer = new Cytometer();
+        Map cytometerQuery = new HashMap();
+        //cytometerQuery.put("schema", "org.cidarlab.phoenix.core.dom.Cytometer");
+        List<Cytometer> allCytometers = new ArrayList<Cytometer>();
+        allCytometers.add(nc.getCytometer());
+        
         for (Cytometer c : allCytometers) {
             if (c.getName().startsWith("BU")) {
                 cytometer = c;

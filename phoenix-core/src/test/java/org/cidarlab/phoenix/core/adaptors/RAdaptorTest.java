@@ -6,10 +6,12 @@
 package org.cidarlab.phoenix.core.adaptors;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import org.cidarlab.phoenix.core.adaptors.RAdaptor;
 import org.cidarlab.phoenix.core.controller.Utilities;
 import org.cidarlab.phoenix.core.dataprocessing.AnalyzeData;
+import org.cidarlab.phoenix.core.dom.ExperimentProcessedData;
 import org.junit.Test;
 
 /**
@@ -20,14 +22,17 @@ public class RAdaptorTest {
     
     @Test
     public void getAllDirectories() throws IOException{
-        String resourceFilepath = Utilities.getFilepath() + "/src/main/resources/RTest/";
+        String resourceFilepath = Utilities.getResourcesFilepath() + "RTest/";
         String directory = resourceFilepath + "results/";
-        String filepath = Utilities.getFilepath() + "/src/main/resources/InstructionFiles/";
+        String filepath = Utilities.getResourcesFilepath() + "InstructionFiles/";
         String keyFile = filepath + "testingInstructionsTest.csv";
         String mapFile = filepath + "nameMapFileTest.csv";
         Map<String,String> nameMap = AnalyzeData.parseKeyMapFiles(mapFile);
+        Map<String, ExperimentProcessedData> map = new HashMap<String, ExperimentProcessedData>();
+        AnalyzeData.directoryWalk(directory,directory,map);
         
-        AnalyzeData.directoryWalk(directory,directory,"",nameMap,null);
+        System.out.println("Map Size ::  " + map.size());
+        System.out.println(map.keySet());
         
     }
     

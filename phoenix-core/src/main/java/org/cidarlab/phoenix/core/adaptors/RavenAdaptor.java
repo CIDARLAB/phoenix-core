@@ -14,8 +14,10 @@ import java.util.Map;
 import java.util.Set;
 import net.sf.json.JSONObject;
 import org.cidarlab.phoenix.core.controller.Args;
+import org.cidarlab.phoenix.core.controller.NoClotho;
 import org.cidarlab.phoenix.core.controller.Utilities;
 import org.cidarlab.phoenix.core.dom.Annotation;
+import org.cidarlab.phoenix.core.dom.AssemblyParameters;
 import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.Component;
 import org.cidarlab.phoenix.core.dom.Feature;
@@ -170,8 +172,127 @@ public class RavenAdaptor {
         return assemblyInstructions;
     }
     
+    
+    //Create assembly plans for given parts and return instructions file
+    public static File generateAssemblyPlan(Set<AssignedModule> modulesToTest, String filePath, NoClotho nc) throws Exception {
+        
+        //Add testing modules to target modules
+        HashSet<AssignedModule> allModules = new HashSet<>();
+        HashSet<List<Feature>> moduleFeatureHash = new HashSet<>();
+        
+        for (AssignedModule targetModule : modulesToTest) {
+            if (!moduleFeatureHash.contains(targetModule.getAllModuleFeatures())) {
+                allModules.add(targetModule);
+                moduleFeatureHash.add(targetModule.getAllModuleFeatures());
+            }
+
+            List<AssignedModule> controlModules = targetModule.getControlModules();
+            for (AssignedModule controlModule : controlModules) {
+                if (!moduleFeatureHash.contains(controlModule.getAllModuleFeatures())) {
+                    allModules.add(controlModule);
+                    moduleFeatureHash.add(controlModule.getAllModuleFeatures());
+                }
+            }
+        }
+        
+        //Get Phoenix data from Clotho
+        org.json.JSONObject rParameters = convertAPToJSON(nc.getAp());
+        
+        
+        List<Feature> allFeatures = new ArrayList<Feature>();
+        allFeatures.addAll(nc.getFeatures());
+        
+        allFeatures.addAll(nc.getFluorophores());
+        
+        //Determine parts library
+        HashSet<org.cidarlab.raven.datastructures.Part> partsLibR = new HashSet();
+        HashSet<org.cidarlab.raven.datastructures.Vector> vectorsLibR = new HashSet();
+        
+        //Convert Phoenix Features to Raven Parts
+        partsLibR.addAll(phoenixFeaturesToRavenParts(allFeatures));
+                        
+        //Convert Phoenix Polynucleotides to Raven Parts, Vectors and Plasmids
+        HashMap<org.cidarlab.raven.datastructures.Part, org.cidarlab.raven.datastructures.Vector> libPairs = ravenPartVectorPairs(nc.getPolynucleotide(), partsLibR, vectorsLibR);
+        vectorsLibR.addAll(libPairs.values());
+        partsLibR.addAll(libPairs.keySet());
+        
+        //Convert Phoenix Modules to Raven Plasmids
+        ArrayList<HashSet<org.cidarlab.raven.datastructures.Part>> listTargetSets = new ArrayList();
+        HashSet<AssignedModule> expressees = new HashSet<>();
+        HashSet<AssignedModule> expressors = new HashSet<>();
+        for (AssignedModule m : allModules) {
+            if (m.getRole() == ModuleRole.EXPRESSEE || m.getRole() == ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR || m.getRole() == ModuleRole.EXPRESSEE_ACTIVATOR || m.getRole() == ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR || m.getRole() == ModuleRole.EXPRESSEE_REPRESSOR) {
+                expressees.add(m);
+            } else if (m.getRole() == ModuleRole.EXPRESSOR) {
+                expressors.add(m);
+            }
+        }
+        allModules.removeAll(expressees);
+        allModules.removeAll(expressors);
+             
+        listTargetSets.add(phoenixModulesToRavenParts(expressees, partsLibR));
+        listTargetSets.add(phoenixModulesToRavenParts(expressors, partsLibR));
+        listTargetSets.add(phoenixModulesToRavenParts(allModules, partsLibR));        
+     
+        //Run Raven to get assembly instructions
+        Raven raven = new Raven();         
+        RavenController assemblyObj = raven.assemblyObject(listTargetSets, partsLibR, vectorsLibR, libPairs, new HashMap(), rParameters, filePath);
+        
+        //This is the information to be saved into Clotho and grabbed for the Owl datasheets
+        //This information applies to all polynucleotides currently made in Phoenix
+        String assemblyMethod = "MoClo (GoldenGate)"; //Right now everythig in Phoenix requires MoClo RFC 94 - can be extended in future, but this is what it is right now
+        String assemblyRFC = "BBa_94";
+        String chassis = "E. coli"; //Also always the case for Phoenix right now
+        String supplementalComments = ""; //Nothing for now, perhaps this can be searched upon plasmid re-enrty?
+        
+        //This information is specific to each Polynucleotide
+        for (HashSet<org.cidarlab.raven.datastructures.Part> partSet : listTargetSets) {
+            for (org.cidarlab.raven.datastructures.Part p : partSet) {
+                
+                ArrayList<String> neighborNames = new ArrayList<>();
+                String pigeonCode = "";
+                                               
+                //This assumes part name and rootNode name are the same - I think this is true, but there might be a bug here
+                for (RGraph aG : assemblyObj.getAssemblyGraphs()) {
+                    if (aG.getRootNode().getName().equalsIgnoreCase(p.getName())) {
+                        
+                        //Unclear if we want to use this information... The PrimitiveModules already have feature and direction, but these lists place the scars between those features
+                        ArrayList<String> composition = aG.getRootNode().getComposition();
+                        ArrayList<String> direction = aG.getRootNode().getDirection();
+                        ArrayList<String> linkers = aG.getRootNode().getLinkers();
+                        ArrayList<String> scars = aG.getRootNode().getScars();
+                        ArrayList<String> type = aG.getRootNode().getType();
+                        
+                        //Neighbor names - Assembly components should be the neighbors of the root node - the parts put together in the last cloning reaction for this polynucleotide
+                        ArrayList<RNode> neighbors = aG.getRootNode().getNeighbors();
+                        for (RNode n : neighbors) {
+                            neighborNames.add(n.getName());
+                        }
+                        
+                        //Pigeon code
+                        if (assemblyObj.getPigeonTextFiles().containsKey(p.getName())) {
+                            pigeonCode = assemblyObj.getPigeonTextFiles().get(p.getName());
+                        }
+                    }
+                }
+            }
+        }
+        
+        File assemblyInstructions = assemblyObj.getInstructionsFile();
+        
+        /*
+        THESE ARE THE METHODS FOR MAKING THE RAVEN-PIGEON IMAGES
+        */
+//        WeyekinPoster.setDotText(RGraph.mergeWeyekinFiles(assemblyObj.getPigeonTextFiles()));
+//        WeyekinPoster.postMyVision();
+        
+       
+        return assemblyInstructions;
+    }
+    
+    
     //Convert Phoenix polynuclotides into their pairs
-    public static HashMap<org.cidarlab.raven.datastructures.Part, org.cidarlab.raven.datastructures.Vector> ravenPartVectorPairs(HashSet<Polynucleotide> polyNucs, HashSet<org.cidarlab.raven.datastructures.Part> libParts, HashSet<org.cidarlab.raven.datastructures.Vector> vectorsLib) {
+    public static HashMap<org.cidarlab.raven.datastructures.Part, org.cidarlab.raven.datastructures.Vector> ravenPartVectorPairs(Set<Polynucleotide> polyNucs, HashSet<org.cidarlab.raven.datastructures.Part> libParts, HashSet<org.cidarlab.raven.datastructures.Vector> vectorsLib) {
         
         HashMap<org.cidarlab.raven.datastructures.Part, org.cidarlab.raven.datastructures.Vector> plasmidPairs = new HashMap();
         
@@ -679,6 +800,40 @@ public class RavenAdaptor {
         for (Object key : old.keySet()) {
             newObj.put(key.toString(), old.get(key));
         }
+        
+        return newObj;
+    }
+    
+    public static org.json.JSONObject convertAPToJSON(AssemblyParameters aP) {
+       
+        
+        org.json.JSONObject newObj = new org.json.JSONObject();
+       
+        
+        newObj.put("schema", AssemblyParameters.class.getCanonicalName());
+        newObj.put("method", aP.getMethod());
+        newObj.put("name", aP.getName());
+        newObj.put("oligoNameRoot", aP.getOligoNameRoot());
+        newObj.put("meltingTemperature", aP.getMeltingTemperature());
+        newObj.put("minPCRLength", aP.getMinPCRLength());
+        newObj.put("targetHomologyLength", aP.getTargetHomologyLength());
+        newObj.put("minCloneLength", aP.getMinCloneLength());
+        newObj.put("maxPrimerLength", aP.getMaxPrimerLength());
+
+        List<String> recommended = new ArrayList<>(aP.getRecommended());
+        newObj.put("recommended", recommended);
+
+        List<String> required = new ArrayList<>(aP.getRequired());
+        newObj.put("required", required);
+
+        List<String> discouraged = new ArrayList<>(aP.getDiscouraged());
+        newObj.put("discouraged", discouraged);
+
+        List<String> forbidden = new ArrayList<>(aP.getForbidden());
+        newObj.put("forbidden", forbidden);
+
+        List<String> efficiency = new ArrayList<>(aP.getEfficiency());
+        newObj.put("efficiency", efficiency);
         
         return newObj;
     }

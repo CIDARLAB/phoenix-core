@@ -91,7 +91,7 @@ public class PhoenixController {
     
     //Main Phoenix design decomposition method
     //Remember to start Clotho before this initializeDesign
-    //FILES IN, NOTHING OUT
+    //FILES IN, Module OUT
     public static Module initializeDesign (File structuralSpecification, File functionalSpecification) throws Exception {
 
         //STL function decomposition
@@ -100,14 +100,7 @@ public class PhoenixController {
 
         //Create target modules with miniEugene        
         String path = structuralSpecification.getAbsolutePath();        
-        String miniEugeneFileName = path.substring(path.lastIndexOf(Utilities.getSeparater()) + 1, path.length() - 4);
-//        if (System.getProperty("os.name").contains("Mac")) {
-//            miniEugeneFileName = path.substring(path.lastIndexOf("/") + 1, path.length() - 4);
-//        } else if (System.getProperty("os.name").contains("Linux")) {
-//            miniEugeneFileName = path.substring(path.lastIndexOf("/") + 1, path.length() - 4);
-//        } else {
-//            miniEugeneFileName = path.substring(path.lastIndexOf("\\") + 1, path.length() - 4);
-//        }        
+        String miniEugeneFileName = path.substring(path.lastIndexOf(Utilities.getSeparater()) + 1, path.length() - 4);    
         
         List<Module> eugeneModules = EugeneAdaptor.getStructures(structuralSpecification, null, miniEugeneFileName);
         
@@ -157,12 +150,69 @@ public class PhoenixController {
         
     }
     
+    //FILES IN, Module OUT
+    public static Module initializeDesign (File structuralSpecification, File functionalSpecification, NoClotho nc) throws Exception {
+
+        //STL function decomposition
+        
+        //Map STL decomposition to structure contstraint libraries
+
+        //Create target modules with miniEugene        
+        String path = structuralSpecification.getAbsolutePath();        
+        String miniEugeneFileName = path.substring(path.lastIndexOf(Utilities.getSeparater()) + 1, path.length() - 4);    
+        
+        List<Module> eugeneModules = EugeneAdaptor.getStructures(structuralSpecification, null, miniEugeneFileName);
+        
+        //Check the validity of the Module's structure
+        List<Module> rootModules = new ArrayList<Module>();
+        for(Module module:eugeneModules){
+            if(StructuralGrammar.validStructure(module)){
+                rootModules.add(module);
+            }
+        }
+        
+        //Pick Module with least number of failure modes
+        for(Module module:rootModules){
+            FailureModeGrammar.assignFailureModes(module);
+        }
+        List<Module> sortedModules = new ArrayList<Module>();
+        sortedModules = FailureModeGrammar.sortByFailureModes(rootModules);
+        
+        //Best Module :: sortedModules.get(0);
+        Module bestModule = sortedModules.get(0);
+        
+        //Decompose Best Module with PhoenixGrammar to get a module graph
+        PhoenixGrammar.decompose(bestModule);
+        
+        //Adds Testing primitives to The Module Tree. 
+        TestingStructures.addTestingPrimitives(bestModule,nc);
+        
+        //Perform partial part assignments given the feature library
+        FeatureAssignment.partialAssignment(bestModule, 0.5, nc);
+        
+        bestModule.assignTreeModuleStage();
+        bestModule.printTree();
+
+        //At this point, I have a Module tree, which has Assigned Modules for Expressors and Expressees  and a Many to Many relationship between modules and Assigned Modules. 
+        //I just want to create Control Modules for AssignedModules & Create Experiment Objects for AssignedModules
+        TestingStructures.createExperiments(bestModule);
+        
+        assignShortName(bestModule);
+        
+        
+        
+//        ClothoConnection conn = new ClothoConnection(Args.clothoLocation,Args.maxTimeOut);
+//        Clotho clothoObject = new Clotho(conn);
+//        
+//        conn.closeConnection();
+        return bestModule;
+        
+    }
+    
      
     //Create assembly and testing instructions from a set of Modules that need to be built and tested
     //Root MODULE IN, FILES OUT
     public static List<File> createExperimentInstructions (Module module, String filePath) throws Exception {
-        
-        
         
         //Determine experiments from current module assignment state
         //Create expreriment objects based upon the modules being tested
@@ -185,6 +235,36 @@ public class PhoenixController {
         List<File> assmTestFiles = new ArrayList<>();
         assmTestFiles.add(testingInstructions);
         assmTestFiles.add(assemblyInstructions);
+        assmTestFiles.add(mapFile);
+        return assmTestFiles;
+    }
+    
+     
+    //Create assembly and testing instructions from a set of Modules that need to be built and tested
+    //Root MODULE IN, FILES OUT
+    public static List<File> createExperimentInstructions (Module module, String filePath, NoClotho nc) throws Exception {
+        
+        //Determine experiments from current module assignment state
+        //Create expreriment objects based upon the modules being tested
+        List<AssignedModule> amodulesToTestList = new ArrayList<AssignedModule>();
+        Set<AssignedModule> amodulesToTest = new HashSet<AssignedModule>();
+        amodulesToTestList = getModuleTreeAssignedModules(module);
+        amodulesToTest.addAll(amodulesToTestList);
+        List<Experiment> currentExperiments = new ArrayList<>();
+        for (AssignedModule m : amodulesToTest) {
+            currentExperiments.addAll(m.getExperiments());
+        }
+        System.out.println("amodulesToTest size " + amodulesToTest.size());
+        //Create assembly and testing plans
+        File testingInstructions = PhoenixInstructions.generateTestingInstructions(amodulesToTestList, filePath);
+        File mapFile = PhoenixInstructions.generateNameMapFile(amodulesToTestList, filePath);
+        
+        //File assemblyInstructions = RavenAdaptor.generateAssemblyPlan(amodulesToTest, filePath, nc);
+        
+        //Save these strings to files and return them from this method
+        List<File> assmTestFiles = new ArrayList<>();
+        assmTestFiles.add(testingInstructions);
+        //assmTestFiles.add(assemblyInstructions);
         assmTestFiles.add(mapFile);
         return assmTestFiles;
     }

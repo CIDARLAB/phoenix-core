@@ -482,3 +482,4 @@
 [17:32:32,329  WARN AbstractSBase:1635] - Trying to register parameter 'K_i', which is already registered under listOfParameters 'listOfParameters'.
 [17:32:49,884  WARN AbstractSBase:1635] - Trying to register parameter 'y', which is already registered under listOfParameters 'listOfParameters'.
 [17:32:49,887  WARN AbstractSBase:1635] - Trying to register parameter 'K_d', which is already registered under listOfParameters 'listOfParameters'.
+[23:58:03,829 ERROR Model:3938] - An element of type species with the id "_null" is already present in this model. The new element will not be added to the model.

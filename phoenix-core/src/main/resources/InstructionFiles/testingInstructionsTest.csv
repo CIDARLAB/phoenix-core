@@ -47,27 +47,6 @@ FILENAME,PART,CONTROL,MEDIA,TIME,REGULATION
 ,exr_0_0_0_0,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_0,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_0,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_0,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_0,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_0,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_0,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_0,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_0,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_0,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_0,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_0,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_0,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_0,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_0,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_0,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_0,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_0,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_0,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_0,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_0,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_0,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_0,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_0,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_0,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_0,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_0,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
@@ -89,27 +68,6 @@ FILENAME,PART,CONTROL,MEDIA,TIME,REGULATION
 ,exr_0_0_0_1,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_1,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_1,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_1,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_1,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_1,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_1,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_1,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_1,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_1,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_1,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_1,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_1,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_1,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_1,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_1,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_1,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_1,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_1,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_1,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_1,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_1,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_1,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_1,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_1,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_1,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_1,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
@@ -131,27 +89,6 @@ FILENAME,PART,CONTROL,MEDIA,TIME,REGULATION
 ,exr_0_0_0_2,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_2,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_2,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_2,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_2,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_2,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_2,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_2,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_2,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_2,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_2,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_2,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_2,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_2,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_2,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_2,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_2,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_2,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_2,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_2,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_2,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_2,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_2,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_2,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_2,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_2,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_2,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
@@ -173,27 +110,6 @@ FILENAME,PART,CONTROL,MEDIA,TIME,REGULATION
 ,exr_0_0_0_3,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_3,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_3,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_3,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_3,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_3,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_3,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_3,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_3,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_3,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_3,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_3,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_3,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_3,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_3,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_3,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_3,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_3,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_3,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_3,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_3,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_3,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_3,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_3,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_3,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_3,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_3,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
@@ -215,27 +131,6 @@ FILENAME,PART,CONTROL,MEDIA,TIME,REGULATION
 ,exr_0_0_0_4,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_4,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_4,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_4,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_4,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_4,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_4,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_4,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_4,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_4,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_4,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_4,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_4,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_4,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_4,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_4,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_4,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_4,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_4,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_4,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_4,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_4,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_4,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_4,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_4,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_4,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_4,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
@@ -257,27 +152,6 @@ FILENAME,PART,CONTROL,MEDIA,TIME,REGULATION
 ,exr_0_0_0_5,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_5,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_5,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_5,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_5,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_5,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_5,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_5,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_5,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_5,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_5,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_5,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_5,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_5,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_5,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_5,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_5,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_5,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_5,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_5,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_5,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_5,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_5,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_5,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_5,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_5,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_5,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
@@ -299,27 +173,6 @@ FILENAME,PART,CONTROL,MEDIA,TIME,REGULATION
 ,exr_0_0_0_6,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_6,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_6,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_6,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_6,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_6,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_6,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_6,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_6,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_6,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_6,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_6,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_6,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_6,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_6,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_6,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_6,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_6,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_6,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_6,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_6,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_6,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_6,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_6,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_6,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_6,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_6,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
@@ -341,27 +194,6 @@ FILENAME,PART,CONTROL,MEDIA,TIME,REGULATION
 ,exr_0_0_0_7,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_7,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_7,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_7,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_7,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_7,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_7,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_7,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_7,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_7,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_7,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_7,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_7,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_7,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_7,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_7,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_7,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_7,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_7,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_7,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_7,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_7,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_7,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_7,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_7,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_7,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_7,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
@@ -383,27 +215,6 @@ FILENAME,PART,CONTROL,MEDIA,TIME,REGULATION
 ,exr_0_0_0_8,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_8,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_8,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_8,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_8,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_8,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_8,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_8,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_8,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_8,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_8,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_8,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_8,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_8,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_8,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_8,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_8,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_8,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_8,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_8,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_8,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_8,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_8,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_8,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_8,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_8,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_8,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
@@ -425,27 +236,6 @@ FILENAME,PART,CONTROL,MEDIA,TIME,REGULATION
 ,exr_0_0_0_9,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_9,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_9,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_9,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_9,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_9,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_9,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_9,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_9,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_9,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_9,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_9,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_9,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_9,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_9,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_9,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_9,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_9,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_9,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_9,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_9,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_9,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_9,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_9,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_9,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_9,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_9,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
@@ -467,27 +257,6 @@ FILENAME,PART,CONTROL,MEDIA,TIME,REGULATION
 ,exr_0_0_0_10,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_10,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_10,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_10,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_10,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_10,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_10,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_10,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_10,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_10,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_10,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_10,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_10,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_10,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_10,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_10,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_10,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_10,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_10,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_10,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_10,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_10,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_10,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_10,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_10,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_10,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_10,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
@@ -509,27 +278,6 @@ FILENAME,PART,CONTROL,MEDIA,TIME,REGULATION
 ,exr_0_0_0_11,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_11,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_11,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_11,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_11,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_11,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_11,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_11,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_11,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_11,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_11,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_11,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_11,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_11,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_11,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_11,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_11,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_11,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_11,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_11,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_11,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_11,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_11,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_11,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_11,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_11,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_11,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
@@ -551,27 +299,6 @@ FILENAME,PART,CONTROL,MEDIA,TIME,REGULATION
 ,exr_0_0_0_12,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_12,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_12,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_12,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_12,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_12,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_12,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_12,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_12,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_12,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_12,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_12,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_12,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_12,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_12,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_12,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_12,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_12,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_12,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_12,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_12,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_12,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_12,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_12,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_12,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_12,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_12,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
@@ -593,27 +320,6 @@ FILENAME,PART,CONTROL,MEDIA,TIME,REGULATION
 ,exr_0_0_0_13,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_13,,M9_glucose + (10000 nM ara),60,
 ,exr_0_0_0_13,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_13,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_13,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_13,,M9_glucose + (10000 nM ara),0,
-,exr_0_0_0_13,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_13,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_13,,M9_glucose + (10000 nM ara),30,
-,exr_0_0_0_13,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_13,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_13,,M9_glucose + (10000 nM ara),60,
-,exr_0_0_0_13,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_13,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_13,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_13,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_13,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_13,,M9_glucose + (100 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_13,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_13,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_13,,M9_glucose + (1000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_13,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_13,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
-,exr_0_0_0_13,,M9_glucose + (10000 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_13,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_13,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A
 ,exr_0_0_0_13,,M9_glucose + (0 nM ara),0,FITC-A| Pacific_Blue-A

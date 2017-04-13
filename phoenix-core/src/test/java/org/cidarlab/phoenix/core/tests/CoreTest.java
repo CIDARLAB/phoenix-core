@@ -117,7 +117,7 @@ public class CoreTest {
         System.out.println(nameMap);
         System.out.println("=======================================\n\n");
         
-        AnalyzeData.directoryWalk(directory,directory,filepathSBML,nameMap,expexe);
+        AnalyzeData.directoryWalk_old(directory,directory,filepathSBML,nameMap,expexe);
         
         
         

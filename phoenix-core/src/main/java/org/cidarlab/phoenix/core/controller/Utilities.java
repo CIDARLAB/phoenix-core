@@ -602,12 +602,7 @@ public class Utilities {
     
     public static String getResourcesFilepath(){
         String filepath = getFilepath();
-        if(Utilities.isWindows()){
-            filepath += "\\src\\main\\resources\\";
-        }
-        else{
-            filepath += "/src/main/resources/";
-        }
+        filepath += Utilities.getSeparater() + "src" + Utilities.getSeparater() + "main" + Utilities.getSeparater() + "resources" + Utilities.getSeparater();
         return filepath;
     }
     

@@ -24,6 +24,8 @@ import org.cidarlab.phoenix.core.adaptors.RAdaptor;
 import org.cidarlab.phoenix.core.controller.Utilities;
 import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.Experiment;
+import org.cidarlab.phoenix.core.dom.Experiment.ExperimentType;
+import org.cidarlab.phoenix.core.dom.ExperimentProcessedData;
 import org.cidarlab.phoenix.core.dom.Feature;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.PrimitiveModule;
@@ -35,7 +37,12 @@ import org.cidarlab.phoenix.core.dom.PrimitiveModule;
 public class AnalyzeData {
     
     
-    public static void directoryWalk(String path, String resultsRoot, String sbmldirectory, Map<String,String> nameMap, Map<String,AssignedModule> expexe) throws IOException{
+    public static void directoryWalk(String path, String resultsRoot, Map<String, ExperimentProcessedData> map) throws IOException{
+        
+        if(map == null){
+            map = new HashMap();
+        }
+        
         Utilities.makeDirectory(resultsRoot + "tmp");
         File root = new File( path );
         File[] list = root.listFiles();
@@ -44,13 +51,15 @@ public class AnalyzeData {
         
         for ( File f : list ) {
             if ( f.isDirectory() ) {
-                directoryWalk(f.getAbsolutePath(), resultsRoot,sbmldirectory, nameMap, expexe);
+                directoryWalk(f.getAbsolutePath(), resultsRoot, map);
                 //System.out.println( "Dir:" + f.getAbsoluteFile() );
             }
             else {
                 if(f.getName().equals("timeSeriesPlotPoints.csv")){
                     String pieces[] = filepathPieces(f.getAbsolutePath(),resultsRoot);
-                    
+                    if(!map.containsKey(pieces[0].trim())){
+                        map.put(pieces[0].trim(), new ExperimentProcessedData());
+                    }
                     //folder structure: /part/media/nM_smallMolecule/conc/timeSeriesPlotPoints.csv
                     if (pieces.length == 5) {
                         //use this with /part/media/timeSeriesPlotPoints.csv
@@ -62,23 +71,27 @@ public class AnalyzeData {
                             if (zeroPieces[0].trim().equals("0")) {
                                 mainFile.add(1, zeroVal.get(1));
                             }
-
-                            String tmpFilepath = resultsRoot + "tmp" + Utilities.getSeparater() + "tmp.csv";
-                            Utilities.writeToFile(tmpFilepath, mainFile);
-                            //Use this file for Small molecule regulation.
-
-                            //Then delete it.
-                            //Utilities.deleteFile(tmpFilepath);
+                            
+                            String inducer = pieces[pieces.length-3].trim();
+                            map.get(pieces[0].trim()).setInducer(inducer);
+                            
+                            double smVal = Double.valueOf(pieces[pieces.length-2].trim());
+                            map.get(pieces[0].trim()).addRegulationFile(smVal, zeroVal);
+                            map.get(pieces[0].trim()).setRole(Module.ModuleRole.EXPRESSEE);
                         }
 
                     }
 
                     //Find out if this is part of CAM
-                    if(pieces[1].endsWith("_CAM")){
+                    if(pieces[1].endsWith("_CAM")){                       
+                        map.get(pieces[0].trim()).setDegradationFilepath(f.getAbsolutePath());
+                        map.get(pieces[0].trim()).setRole(Module.ModuleRole.EXPRESSEE);
                         //Get Degradation From this (default).
                     } else {
                         if (pieces[1].endsWith("_ara") || pieces[1].endsWith("_aTc")) {
                             if (!folderHasCAM(resultsRoot + pieces[0])) {
+                                map.get(pieces[0].trim()).setDegradationFilepath(f.getAbsolutePath());
+                                map.get(pieces[0].trim()).setRole(Module.ModuleRole.EXPRESSEE);
                                 //Use for degradation because root folder does not have a CAM folder.
                             }
                         } else {
@@ -88,13 +101,8 @@ public class AnalyzeData {
                             
                             String zeroline = getRegulationOneMediaLine(oneMediaFile, pieces[0]);
                             mainFile.add(1, zeroline);
-                            
-                            String tmpFilepath = resultsRoot + "tmp" + Utilities.getSeparater() + "tmp.csv";
-                            Utilities.writeToFile(tmpFilepath, mainFile);
-                            //Use this file for Regulation.
-                            
-                            //Then delete it.
-                            //Utilities.deleteFile(tmpFilepath);
+                            map.get(pieces[0].trim()).addRegulationFile(0.0, mainFile);
+                            map.get(pieces[0].trim()).setRole(Module.ModuleRole.EXPRESSEE);
                         }
                     }
                 }
@@ -145,7 +153,7 @@ public class AnalyzeData {
         
         for ( File f : list ) {
             if ( f.isDirectory() ) {
-                directoryWalk(f.getAbsolutePath(), resultsRoot,sbmldirectory, nameMap, expexe);
+                directoryWalk_old(f.getAbsolutePath(), resultsRoot, sbmldirectory, nameMap, expexe);
                 //System.out.println( "Dir:" + f.getAbsoluteFile() );
             }
             else {
@@ -443,7 +451,7 @@ public class AnalyzeData {
     }
     
     public static Map<String,String> parseKeyMapFiles(String mapFile){
-        Map<String,String> nameMap = new HashMap<>();
+        
         
         Map<String,String> customNameMap = new HashMap<>();
         Set<String> shortNames = new HashSet<>();

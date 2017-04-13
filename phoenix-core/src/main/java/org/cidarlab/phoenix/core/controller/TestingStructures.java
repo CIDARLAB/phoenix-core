@@ -52,6 +52,15 @@ public class TestingStructures {
         addTestingPrimitivesHelper(rootModule);
     }
 
+     //Traverse module graphs and add testing primitives
+    public static void addTestingPrimitives(Module rootModule, NoClotho nc) {
+
+        //For each module, traverse graph
+        initializeTestingPrimitiveModules(nc);
+        addTestingPrimitivesHelper(rootModule);
+    }
+
+    
     //Adding testing primitive module helper
     private static void addTestingPrimitivesHelper(Module module) {
 
@@ -484,6 +493,55 @@ public class TestingStructures {
         return regControl;
     }
 
+    
+    //Initialize testing primitive modules
+    private static void initializeTestingPrimitiveModules(NoClotho nc) {
+
+        //Initiate hashes for existing polynucleotides
+        
+        testConstitutivePromoter = new PrimitiveModule(FeatureRole.PROMOTER_CONSTITUTIVE, new Primitive(new ComponentType("p"), "pTEST"), findFeature(nc,"J23104.ref"));
+        
+        testControllablePromoter1 = new PrimitiveModule(FeatureRole.PROMOTER_INDUCIBLE, new Primitive(new ComponentType("p"), "pTEST"), findFeature(nc,"para-1.ref"));
+        
+        testControllablePromoter2 = new PrimitiveModule(FeatureRole.PROMOTER_REPRESSIBLE, new Primitive(new ComponentType("p"), "pTEST"), findFeature(nc,"pLtetO-1.ref"));
+
+        testRBS = new PrimitiveModule(FeatureRole.RBS, new Primitive(new ComponentType("r"), "rTEST"), findFeature(nc,"BCD8.ref"));
+
+        testLinker = new PrimitiveModule(FeatureRole.CDS_LINKER, new Primitive(new ComponentType("l"), "linkerTEST"), findFeature(nc,"HelicalLinker.ref"));
+        
+        testFP1 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("fl"), "cTEST1"), findFluorophore(nc,"EGFPm.ref"));
+        
+        testFP2 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("fl"), "cTEST2"), findFluorophore(nc,"EBFP2.ref"));
+        
+        testTerminator = new PrimitiveModule(FeatureRole.TERMINATOR, new Primitive(new ComponentType("t"), "tTEST"), findFeature(nc,"B0015.ref"));
+
+
+        testVector1 = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST1"), findFeature(nc,"ColE1.ref"));
+        
+        testVector2 = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST2"), findFeature(nc,"p15A.ref"));
+
+        finalVector = testVector1;
+
+    }
+    
+    private static Feature findFeature(NoClotho nc, String name){
+        for(Feature f:nc.getFeatures()){
+            if(f.getName().equals(name)){
+                return f;
+            }
+        }
+        return null;
+    }
+    
+    private static Fluorophore findFluorophore(NoClotho nc, String name){
+        for(Fluorophore f:nc.getFluorophores()){
+            if(f.getName().equals(name)){
+                return f;
+            }
+        }
+        return null;
+    }
+    
     //Initialize testing primitive modules
     private static void initializeTestingPrimitiveModules() {
 

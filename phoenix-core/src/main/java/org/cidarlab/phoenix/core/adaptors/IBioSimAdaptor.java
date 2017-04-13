@@ -93,7 +93,7 @@ public class IBioSimAdaptor {
             String regulatedChannel, boolean repression) throws XMLStreamException, IOException {
         Map<String, Double> results = estimateDegradationParams(degTimeSeriesData, regulatedChannel);
         boolean includeRegulation = true;
-        if (smallMoleculeTimeSeriesData.keySet().contains(0.0)) {
+        if (smallMoleculeTimeSeriesData.containsKey(0.0)) {
             Map<String, Double> regulationResults = estimateRegulationParams(smallMoleculeTimeSeriesData.get(0.0), results, expresseeChannel, regulatedChannel, repression);
             if (repression) {
                 results.put("k_EXR", regulationResults.get("k_EXR"));
@@ -103,37 +103,43 @@ public class IBioSimAdaptor {
                 results.put("k_EXA", regulationResults.get("k_EXA"));
                 results.put("K_a", regulationResults.get("K_a"));
             }
-            smallMoleculeTimeSeriesData.remove(0.0);
             includeRegulation = false;
         }
-        if (smallMoleculeTimeSeriesData.size() > 1) {
+        if ((smallMoleculeTimeSeriesData.containsKey(0.0) && smallMoleculeTimeSeriesData.size() > 1) ||
+                (!smallMoleculeTimeSeriesData.containsKey(0.0) && smallMoleculeTimeSeriesData.size() > 0)) {
+            int size = smallMoleculeTimeSeriesData.size();
+            if (smallMoleculeTimeSeriesData.containsKey(0.0)) {
+                size--;
+            }
             double k_EXE = 0.0;
             double K_r = 0.0;
             double K_i = 0.0;
             for (Double value : smallMoleculeTimeSeriesData.keySet()) {
-                Map<String, Double> smallMoleculeResults = estimateSmallMoleculeRegulationParams(value, smallMoleculeTimeSeriesData.get(value), results, expresseeChannel,
-                        regulatedChannel, repression);
-                K_i += smallMoleculeResults.get("K_i");
-                if (includeRegulation) {
-                    if (repression) {
-                        k_EXE += smallMoleculeResults.get("k_EXR");
-                        K_r += smallMoleculeResults.get("K_r");
-                    }
-                    else {
-                        k_EXE += smallMoleculeResults.get("k_EXA");
-                        K_r += smallMoleculeResults.get("K_a");
+                if (!value.equals(0.0)) {
+                    Map<String, Double> smallMoleculeResults = estimateSmallMoleculeRegulationParams(value, smallMoleculeTimeSeriesData.get(value), results,
+                            expresseeChannel, regulatedChannel, repression);
+                    K_i += smallMoleculeResults.get("K_i");
+                    if (includeRegulation) {
+                        if (repression) {
+                            k_EXE += smallMoleculeResults.get("k_EXR");
+                            K_r += smallMoleculeResults.get("K_r");
+                        }
+                        else {
+                            k_EXE += smallMoleculeResults.get("k_EXA");
+                            K_r += smallMoleculeResults.get("K_a");
+                        }
                     }
                 }
             }
-            results.put("K_i", K_i/smallMoleculeTimeSeriesData.size());
+            results.put("K_i", K_i/size);
             if (includeRegulation) {
                 if (repression) {
-                    results.put("k_EXR", k_EXE/smallMoleculeTimeSeriesData.size());
-                    results.put("K_r", K_r/smallMoleculeTimeSeriesData.size());
+                    results.put("k_EXR", k_EXE/size);
+                    results.put("K_r", K_r/size);
                 }
                 else {
-                    results.put("k_EXA", k_EXE/smallMoleculeTimeSeriesData.size());
-                    results.put("K_a", K_r/smallMoleculeTimeSeriesData.size());
+                    results.put("k_EXA", k_EXE/size);
+                    results.put("K_a", K_r/size);
                 }
             }
         }

@@ -62,23 +62,32 @@ public class AnalyzeData {
                     }
                     //folder structure: /part/media/nM_smallMolecule/conc/timeSeriesPlotPoints.csv
                     if (pieces.length == 5) {
-                        //use this with /part/media/timeSeriesPlotPoints.csv
-                        List<String> mainFile = Utilities.getFileContentAsStringList(f.getAbsolutePath());
+                        if (pieces[1].endsWith("_ara") || pieces[1].endsWith("_aTc")) {
+                            System.out.println(f.getAbsolutePath());
+                            //use this with /part/media/timeSeriesPlotPoints.csv
+                            List<String> mainFile = Utilities.getFileContentAsStringList(f.getAbsolutePath());
 
-                        if (Utilities.validFilepath(resultsRoot + pieces[0] + Utilities.getSeparater() + pieces[1] + Utilities.getSeparater() + "timeSeriesPlotPoints.csv")) {
-                            List<String> zeroVal = Utilities.getFileContentAsStringList(resultsRoot + pieces[0] + Utilities.getSeparater() + pieces[1] + Utilities.getSeparater() + "timeSeriesPlotPoints.csv");
-                            String zeroPieces[] = zeroVal.get(1).split(",");
-                            if (zeroPieces[0].trim().equals("0")) {
-                                mainFile.add(1, zeroVal.get(1));
+                            if (Utilities.validFilepath(resultsRoot + pieces[0] + Utilities.getSeparater() + pieces[1] + Utilities.getSeparater() + "timeSeriesPlotPoints.csv")) {
+                                List<String> zeroVal = Utilities.getFileContentAsStringList(resultsRoot + pieces[0] + Utilities.getSeparater() + pieces[1] + Utilities.getSeparater() + "timeSeriesPlotPoints.csv");
+                                String zeroPieces[] = zeroVal.get(1).split(",");
+                                if (zeroPieces[0].trim().equals("0")) {
+                                    mainFile.add(1, zeroVal.get(1));
+                                }
+
+                                String inducer = pieces[pieces.length - 3].trim();
+                                System.out.println(inducer);
+                                if (inducer == null) {
+                                    System.out.println("LOOK HERE::");
+                                    System.out.println(f.getAbsolutePath());
+                                }
+                                map.get(pieces[0].trim()).setInducer(inducer);
+
+                                double smVal = Double.valueOf(pieces[pieces.length - 2].trim());
+                                map.get(pieces[0].trim()).addRegulationFile(smVal, zeroVal);
+                                map.get(pieces[0].trim()).setRole(Module.ModuleRole.EXPRESSEE);
                             }
-                            
-                            String inducer = pieces[pieces.length-3].trim();
-                            map.get(pieces[0].trim()).setInducer(inducer);
-                            
-                            double smVal = Double.valueOf(pieces[pieces.length-2].trim());
-                            map.get(pieces[0].trim()).addRegulationFile(smVal, zeroVal);
-                            map.get(pieces[0].trim()).setRole(Module.ModuleRole.EXPRESSEE);
                         }
+                        
 
                     }
 

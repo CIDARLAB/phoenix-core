@@ -34,6 +34,7 @@ import lombok.Setter;
 import org.biojava.bio.BioException;
 import org.cidarlab.phoenix.core.adaptors.BenchlingAdaptor;
 import static org.cidarlab.phoenix.core.adaptors.ClothoAdaptor.annotate;
+import org.cidarlab.phoenix.core.adaptors.IBioSimAdaptor;
 import org.cidarlab.phoenix.core.dataprocessing.AnalyzeData;
 import org.cidarlab.phoenix.core.dom.Annotation;
 import org.cidarlab.phoenix.core.dom.AssemblyParameters;
@@ -117,6 +118,10 @@ public class NoClotho {
         nc.addCytometer(cytometerFilepath);
         nc.assignNoClothoID();
         
+//        for(Fluorophore f:nc.fluorophores){
+//            System.out.println(f.getName());
+//        }
+        
         String tmpfilepath = Utilities.getResourcesFilepath() + "tmp/";
         Utilities.makeDirectory(tmpfilepath);
         
@@ -191,6 +196,14 @@ public class NoClotho {
                                     Utilities.writeToFile(filepath, processedMap.get(processKey).getRegulationData().get(d));
                                     reg.put(d, filepath);
                                 }
+                                String expresseeChannel = Utilities.getChannelsMap().get(getFusedFPfeature(fusedFP));
+                                String regChannel = Utilities.getChannelsMap().get(getRegulatedFP(processKey));
+                                String inducer = processedMap.get(processKey).getInducer();
+                                System.out.println(inducer);
+                                if(inducer == null){
+                                    System.out.println(processKey);
+                                }
+                                //IBioSimAdaptor.estimateExpresseeParameters(processedMap.get(processKey).getDegradationFilepath(), reg, expresseeChannel, regChannel, true, processedMap.get(processKey).getInducer(), exeFeature, keyFile)
                                 
                             }
                         }
@@ -220,7 +233,7 @@ public class NoClotho {
         return pieces[1].trim();
     }
     
-    private static String getRegulatedProtein(String val){
+    private static String getRegulatedFeature(String val){
         String pieces[] = val.split("_");
         for(int i=0;i< pieces.length;i++){
             if(pieces[i].trim().equals("EXPRESSEE")){
@@ -230,6 +243,24 @@ public class NoClotho {
         return "";
     }
     
+    
+    
+    private static String getRegulatedFP(String val){
+        String pieces[] = val.split("_");
+        String regF = "";
+        for(int i=0;i< pieces.length;i++){
+            if(pieces[i].trim().equals("EXPRESSEE")){
+                regF = pieces[i+2].trim();
+            }
+        }
+        switch(regF){
+            case "B":
+                return "EBFP2.ref";
+            case "G":
+                return "EGFPm.ref";
+        }
+        return "";
+    }
     private static boolean isTag(String val){
         
         String pieces[] = val.split("_");
@@ -251,15 +282,7 @@ public class NoClotho {
         return "";
     }
     
-    private static String getRegulatedFPfeature(String shortVer){
-        switch(shortVer){
-            case "G":
-                return "EGFPm.ref";
-            case "B":
-                return "EBFP.ref";
-        }
-        return "";
-    }
+    
     
     static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     static SecureRandom rnd = new SecureRandom();

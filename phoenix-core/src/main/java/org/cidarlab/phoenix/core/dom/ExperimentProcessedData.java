@@ -51,6 +51,14 @@ public class ExperimentProcessedData {
     @Setter
     private String inducer;
     
+    @Getter
+    @Setter
+    private String expExpressor;
+    
+    @Getter
+    @Setter
+    private boolean isFP;
+    
     public ExperimentProcessedData(){
         regulationData = new HashMap<Double,List<String>>();
        

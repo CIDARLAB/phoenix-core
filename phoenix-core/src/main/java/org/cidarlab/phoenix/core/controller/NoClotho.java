@@ -43,6 +43,7 @@ import org.cidarlab.phoenix.core.dom.Cytometer;
 import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.ExperimentProcessedData;
 import org.cidarlab.phoenix.core.dom.Feature;
+import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
 import org.cidarlab.phoenix.core.dom.Fluorophore;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.NucSeq;
@@ -111,12 +112,19 @@ public class NoClotho {
         String fluorFilepath = Utilities.getResourcesFilepath() + "FluorescentProteins/fp_spectra.csv";
         String plasmidFilepath = Utilities.getResourcesFilepath() + "BenchlingGenbankFiles/phoenix_plasmid_lib_72715.gb";
         String cytometerFilepath = Utilities.getResourcesFilepath() + "FluorescentProteins/cosbi_fortessa_bd.csv";
+        
+        
         NoClotho nc = new NoClotho();
         nc.addFeatures(featureFilepath);
         nc.addFluorophores(fluorFilepath);
         nc.addPlasmid(plasmidFilepath);
         nc.addCytometer(cytometerFilepath);
         nc.assignNoClothoID();
+        
+//        System.out.println("LIST of Features");
+//        for(Feature f:nc.fluorophores){
+//            System.out.println(f.getName());
+//        }
         
 //        for(Fluorophore f:nc.fluorophores){
 //            System.out.println(f.getName());
@@ -203,16 +211,39 @@ public class NoClotho {
                                 if(inducer == null){
                                     System.out.println(processKey);
                                 }
-                                //IBioSimAdaptor.estimateExpresseeParameters(processedMap.get(processKey).getDegradationFilepath(), reg, expresseeChannel, regChannel, true, processedMap.get(processKey).getInducer(), exeFeature, keyFile)
+                                //am.setSBMLDocument(IBioSimAdaptor.estimateExpresseeParameters(processedMap.get(processKey).getDegradationFilepath(), reg, expresseeChannel, regChannel, true, processedMap.get(processKey).getInducer(), exeFeature, keyFile));
                                 
                             }
                         }
                     }
-                    if(am.getRole().equals(Module.ModuleRole.EXPRESSOR)){
-                        if(!processedMap.get(processKey).getRole().equals(Module.ModuleRole.EXPRESSOR)){
-                            continue;
+                }
+                if(am.getRole().equals(Module.ModuleRole.EXPRESSOR)) {
+                    System.out.println("Expressor encountered ::");
+                    String promoter = "";
+                    String fpFeature = "";
+                    String fp = "";
+                    for (Feature f : am.getAllModuleFeatures()) {
+                        if (f.getRole().equals(FeatureRole.PROMOTER) || f.getRole().equals(FeatureRole.PROMOTER_CONSTITUTIVE) || f.getRole().equals(FeatureRole.PROMOTER_INDUCIBLE) || f.getRole().equals(FeatureRole.PROMOTER_REPRESSIBLE)) {
+                            String featureName = f.getName().substring(0, f.getName().indexOf(".ref"));
+                            promoter += featureName + "_";
+                        }
+                        if(f.getRole().equals(FeatureRole.CDS_FLUORESCENT) || f.getRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)){
+                            System.out.println("FP FOUND :: " + f.getRole());
+                            fpFeature = f.getName();
+                            fp = getExpressorFP(f.getName());
                         }
                     }
+                    promoter += "EXPRESSOR";
+                    System.out.println(promoter);
+                    System.out.println(fp);
+                    if((!processedMap.containsKey(fp)) ||  (!processedMap.containsKey(promoter))){
+                        System.out.println("Experimental data for " + fp + " or " + promoter + " not found.");
+                        continue;
+                    }
+                    
+                    String fpChannel = Utilities.getChannelsMap().get(fpFeature);
+                    String fpFeatureShort = fpFeature.substring(0, fpFeature.indexOf(".ref"));
+                    am.setSBMLDocument(IBioSimAdaptor.estimateExpressorParameters(processedMap.get(fp).getExpExpressor(), processedMap.get(promoter).getExpExpressor(), fpChannel, fpFeatureShort));
                     
                 }
             }
@@ -243,7 +274,23 @@ public class NoClotho {
         return "";
     }
     
-    
+    private static String getExpressorFP(String fp){
+        
+        switch(fp){
+            case "EGFPm.ref" :
+                return "gfp_EXP";
+            case "EBFP2.ref" :
+                return "bfp_EXP";
+            case "T-Sapphire.ref":
+                return "TS_EXP";
+            case "DsRed.ref" :
+                return "rfp_EXP";
+//            case "" :
+//                break;
+//                
+        }
+        return "";
+    }
     
     private static String getRegulatedFP(String val){
         String pieces[] = val.split("_");

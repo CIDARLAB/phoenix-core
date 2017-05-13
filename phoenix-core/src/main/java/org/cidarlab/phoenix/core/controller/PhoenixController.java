@@ -309,68 +309,68 @@ public class PhoenixController {
         return null;
     }
     
-    
-    public static void createAllSBMLfiles(Module module, String filepath){
-        
-        for(AssignedModule amodule:module.getAssignedModules()){
-            if(!amodule.getSBMLDocument().isEmpty()){
-                SBMLAdaptor.createSBMLfiles(amodule, filepath);
-            }
-        }
-        for(Module child:module.getChildren()){
-            createAllSBMLfiles(child,filepath);
-        }
-    }
-    
-    //This is currently a little funky. Needs to change for small molecules. Not sure how to handle it. Multiple SBML documents per sm?
-    public static void assignSBMLDocuments(Module module){
-        
-        //COPASIAdaptor sbmlfunctions = new COPASIAdaptor();
-        if(module.getRole().equals(ModuleRole.EXPRESSEE)){
-            for(AssignedModule amodule:module.getAssignedModules()){
-                amodule.getSBMLDocument().add(SBMLAdaptor.createDegradationModel("_"+getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
-            }
-        }
-        else if(module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR)){
-            for(AssignedModule amodule:module.getAssignedModules()){
-                amodule.getSBMLDocument().add(SBMLAdaptor.createDegradationModel("_"+getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
-                amodule.getSBMLDocument().add(SBMLAdaptor.createActivationModel("_"+getExpresseeFeature(amodule).getClothoID(),"_"+getFPFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of the expressee and id of the FP, name of the expressee (cds), name of the FP
-            }
-        }
-        else if(module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR)){
-            for(AssignedModule amodule:module.getAssignedModules()){
-                amodule.getSBMLDocument().add(SBMLAdaptor.createDegradationModel("_"+getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
-                amodule.getSBMLDocument().add(SBMLAdaptor.createActivationModel("_"+getExpresseeFeature(amodule).getClothoID(),"_"+getFPFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of the expressee and id of the FP, name of the expressee (cds), name of the FP
-                amodule.getSBMLDocument().add(SBMLAdaptor.createInductionActivationModel("_"+(getFeatureSmallMolecule(amodule).getName().replaceAll(".", "_")), "_"+getExpresseeFeature(amodule).getClothoID(), "_"+getFPFeature(amodule).getClothoID(),getFeatureSmallMolecule(amodule).getName(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of inducer (small molecule), id of the expressee and id of the FP, name of the inducer, name of the expressee (cds), name of the FP
-            }
-        }
-        else if(module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)){
-            for(AssignedModule amodule:module.getAssignedModules()){
-                amodule.getSBMLDocument().add(SBMLAdaptor.createDegradationModel("_"+getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
-                amodule.getSBMLDocument().add(SBMLAdaptor.createRepressionModel("_"+getExpresseeFeature(amodule).getClothoID(),"_"+getFPFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of the expressee and id of the FP, name of the expressee (cds), name of the FP
-            }
-        }
-        else if(module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR)){
-            for(AssignedModule amodule:module.getAssignedModules()){
-                amodule.getSBMLDocument().add(SBMLAdaptor.createDegradationModel("_"+getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
-                amodule.getSBMLDocument().add(SBMLAdaptor.createRepressionModel("_"+getExpresseeFeature(amodule).getClothoID(),"_"+getFPFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of the expressee and id of the FP, name of the expressee (cds), name of the FP
-                amodule.getSBMLDocument().add(SBMLAdaptor.createInductionRepressionModel("_"+(getFeatureSmallMolecule(amodule).getName().replaceAll(".", "_")), "_"+getExpresseeFeature(amodule).getClothoID(), "_"+getFPFeature(amodule).getClothoID(),getFeatureSmallMolecule(amodule).getName(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of inducer (small molecule), id of the expressee and id of the FP, name of the inducer, name of the expressee (cds), name of the FP
-            }
-            
-        }
-        else if(module.getRole().equals(ModuleRole.EXPRESSOR)){
-            for(AssignedModule amodule:module.getAssignedModules()){
-                amodule.getSBMLDocument().add(SBMLAdaptor.createExpressionModel("_"+getExpressorFeature(amodule).getClothoID(), getExpressorFeature(amodule).getName())); //
-                amodule.getSBMLDocument().add(SBMLAdaptor.createDegradationModel("_"+getFPFeature(amodule).getClothoID(), getFPFeature(amodule).getName())); //id and name of expressee       
-            }
-        }
-        
-        for(Module child:module.getChildren()){
-            assignSBMLDocuments(child);
-        }
-        
-    }
-    
+//    
+//    public static void createAllSBMLfiles(Module module, String filepath){
+//        
+//        for(AssignedModule amodule:module.getAssignedModules()){
+//            if(!amodule.getSBMLDocument().isEmpty()){
+//                SBMLAdaptor.createSBMLfiles(amodule, filepath);
+//            }
+//        }
+//        for(Module child:module.getChildren()){
+//            createAllSBMLfiles(child,filepath);
+//        }
+//    }
+//    
+//    //This is currently a little funky. Needs to change for small molecules. Not sure how to handle it. Multiple SBML documents per sm?
+//    public static void assignSBMLDocuments(Module module){
+//        
+//        //COPASIAdaptor sbmlfunctions = new COPASIAdaptor();
+//        if(module.getRole().equals(ModuleRole.EXPRESSEE)){
+//            for(AssignedModule amodule:module.getAssignedModules()){
+//                amodule.getSBMLDocument().add(SBMLAdaptor.createDegradationModel("_"+getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
+//            }
+//        }
+//        else if(module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR)){
+//            for(AssignedModule amodule:module.getAssignedModules()){
+//                amodule.getSBMLDocument().add(SBMLAdaptor.createDegradationModel("_"+getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
+//                amodule.getSBMLDocument().add(SBMLAdaptor.createActivationModel("_"+getExpresseeFeature(amodule).getClothoID(),"_"+getFPFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of the expressee and id of the FP, name of the expressee (cds), name of the FP
+//            }
+//        }
+//        else if(module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR)){
+//            for(AssignedModule amodule:module.getAssignedModules()){
+//                amodule.getSBMLDocument().add(SBMLAdaptor.createDegradationModel("_"+getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
+//                amodule.getSBMLDocument().add(SBMLAdaptor.createActivationModel("_"+getExpresseeFeature(amodule).getClothoID(),"_"+getFPFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of the expressee and id of the FP, name of the expressee (cds), name of the FP
+//                amodule.getSBMLDocument().add(SBMLAdaptor.createInductionActivationModel("_"+(getFeatureSmallMolecule(amodule).getName().replaceAll(".", "_")), "_"+getExpresseeFeature(amodule).getClothoID(), "_"+getFPFeature(amodule).getClothoID(),getFeatureSmallMolecule(amodule).getName(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of inducer (small molecule), id of the expressee and id of the FP, name of the inducer, name of the expressee (cds), name of the FP
+//            }
+//        }
+//        else if(module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)){
+//            for(AssignedModule amodule:module.getAssignedModules()){
+//                amodule.getSBMLDocument().add(SBMLAdaptor.createDegradationModel("_"+getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
+//                amodule.getSBMLDocument().add(SBMLAdaptor.createRepressionModel("_"+getExpresseeFeature(amodule).getClothoID(),"_"+getFPFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of the expressee and id of the FP, name of the expressee (cds), name of the FP
+//            }
+//        }
+//        else if(module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR)){
+//            for(AssignedModule amodule:module.getAssignedModules()){
+//                amodule.getSBMLDocument().add(SBMLAdaptor.createDegradationModel("_"+getExpresseeFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName())); //name and id of expressee
+//                amodule.getSBMLDocument().add(SBMLAdaptor.createRepressionModel("_"+getExpresseeFeature(amodule).getClothoID(),"_"+getFPFeature(amodule).getClothoID(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of the expressee and id of the FP, name of the expressee (cds), name of the FP
+//                amodule.getSBMLDocument().add(SBMLAdaptor.createInductionRepressionModel("_"+(getFeatureSmallMolecule(amodule).getName().replaceAll(".", "_")), "_"+getExpresseeFeature(amodule).getClothoID(), "_"+getFPFeature(amodule).getClothoID(),getFeatureSmallMolecule(amodule).getName(), getExpresseeFeature(amodule).getName(),getFPFeature(amodule).getName(),Utilities.getCooperativity(getExpresseeFeature(amodule).getName()))); //id of inducer (small molecule), id of the expressee and id of the FP, name of the inducer, name of the expressee (cds), name of the FP
+//            }
+//            
+//        }
+//        else if(module.getRole().equals(ModuleRole.EXPRESSOR)){
+//            for(AssignedModule amodule:module.getAssignedModules()){
+//                amodule.getSBMLDocument().add(SBMLAdaptor.createExpressionModel("_"+getExpressorFeature(amodule).getClothoID(), getExpressorFeature(amodule).getName())); //
+//                amodule.getSBMLDocument().add(SBMLAdaptor.createDegradationModel("_"+getFPFeature(amodule).getClothoID(), getFPFeature(amodule).getName())); //id and name of expressee       
+//            }
+//        }
+//        
+//        for(Module child:module.getChildren()){
+//            assignSBMLDocuments(child);
+//        }
+//        
+//    }
+//    
     public static List<AssignedModule> getModuleTreeAssignedModules(Module module){
         List<AssignedModule> modulesToTest = new ArrayList<AssignedModule>();
         for (AssignedModule amodule : module.getAssignedModules()) {

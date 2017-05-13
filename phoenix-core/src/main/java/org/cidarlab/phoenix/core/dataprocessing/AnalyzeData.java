@@ -35,35 +35,36 @@ import org.cidarlab.phoenix.core.dom.PrimitiveModule;
  * @author prash
  */
 public class AnalyzeData {
-    
-    
-    public static void directoryWalk(String path, String resultsRoot, Map<String, ExperimentProcessedData> map) throws IOException{
-        
-        if(map == null){
+
+    public static void directoryWalk(String path, String resultsRoot, Map<String, ExperimentProcessedData> map) throws IOException {
+
+        if (map == null) {
             map = new HashMap();
         }
-        
+
         Utilities.makeDirectory(resultsRoot + "tmp");
-        File root = new File( path );
+        File root = new File(path);
         File[] list = root.listFiles();
-        
-        if (list == null) return;
-        
-        for ( File f : list ) {
-            if ( f.isDirectory() ) {
+
+        if (list == null) {
+            return;
+        }
+
+        for (File f : list) {
+            if (f.isDirectory()) {
                 directoryWalk(f.getAbsolutePath(), resultsRoot, map);
                 //System.out.println( "Dir:" + f.getAbsoluteFile() );
-            }
-            else {
-                if(f.getName().equals("timeSeriesPlotPoints.csv")){
-                    String pieces[] = filepathPieces(f.getAbsolutePath(),resultsRoot);
-                    if(!map.containsKey(pieces[0].trim())){
+            } else {
+                String pieces[] = filepathPieces(f.getAbsolutePath(), resultsRoot);
+                    
+                if (f.getName().equals("timeSeriesPlotPoints.csv")) {
+                    if (!map.containsKey(pieces[0].trim())) {
                         map.put(pieces[0].trim(), new ExperimentProcessedData());
                     }
                     //folder structure: /part/media/nM_smallMolecule/conc/timeSeriesPlotPoints.csv
                     if (pieces.length == 5) {
                         if (pieces[1].endsWith("_ara") || pieces[1].endsWith("_aTc")) {
-                            System.out.println(f.getAbsolutePath());
+                            //System.out.println(f.getAbsolutePath());
                             //use this with /part/media/timeSeriesPlotPoints.csv
                             List<String> mainFile = Utilities.getFileContentAsStringList(f.getAbsolutePath());
 
@@ -75,7 +76,7 @@ public class AnalyzeData {
                                 }
 
                                 String inducer = pieces[pieces.length - 3].trim();
-                                System.out.println(inducer);
+                                //System.out.println(inducer);
                                 if (inducer == null) {
                                     System.out.println("LOOK HERE::");
                                     System.out.println(f.getAbsolutePath());
@@ -87,12 +88,18 @@ public class AnalyzeData {
                                 map.get(pieces[0].trim()).setRole(Module.ModuleRole.EXPRESSEE);
                             }
                         }
-                        
 
                     }
 
                     //Find out if this is part of CAM
-                    if(pieces[1].endsWith("_CAM")){                       
+                    if (pieces[1].endsWith("_CAM")) {
+                        if (pieces[0].endsWith("_EXP")) {
+                            //This should be an expressor.
+                            map.put(pieces[0].trim(), new ExperimentProcessedData());
+                            map.get(pieces[0].trim()).setFP(true);
+                            map.get(pieces[0].trim()).setExpExpressor(f.getAbsolutePath());
+                            map.get(pieces[0].trim()).setRole(Module.ModuleRole.EXPRESSOR);
+                        }
                         map.get(pieces[0].trim()).setDegradationFilepath(f.getAbsolutePath());
                         map.get(pieces[0].trim()).setRole(Module.ModuleRole.EXPRESSEE);
                         //Get Degradation From this (default).
@@ -107,33 +114,40 @@ public class AnalyzeData {
                             //Use this for regulation with /oneMediaMEFL/oneMediaPlotPoints.csv 
                             List<String> mainFile = Utilities.getFileContentAsStringList(f.getAbsolutePath());
                             List<String[]> oneMediaFile = Utilities.getCSVFileContentAsList(resultsRoot + "one_media_MEFL/oneMediaPlotPoints.csv");
-                            
+
                             String zeroline = getRegulationOneMediaLine(oneMediaFile, pieces[0]);
                             mainFile.add(1, zeroline);
                             map.get(pieces[0].trim()).addRegulationFile(0.0, mainFile);
                             map.get(pieces[0].trim()).setRole(Module.ModuleRole.EXPRESSEE);
                         }
                     }
+                    
                 }
-                
+                else if (f.getName().equals("oneMediaPlotPoints.csv")) {
+                    map.put(pieces[0].trim(), new ExperimentProcessedData());
+                    map.get(pieces[0]).setFP(false);
+                    map.get(pieces[0]).setExpExpressor(f.getAbsolutePath());
+                    map.get(pieces[0].trim()).setRole(Module.ModuleRole.EXPRESSOR);
+                }
+
             }
         }
     }
-    
-    private static String getCSVLineFromArray(String[] pieces){
+
+    private static String getCSVLineFromArray(String[] pieces) {
         String line = "";
-        for(int i=0;i<pieces.length-1;i++){
+        for (int i = 0; i < pieces.length - 1; i++) {
             line += pieces[i] + ",";
         }
-        line += pieces[pieces.length-1];
+        line += pieces[pieces.length - 1];
         return line;
     }
-    
-    private static String getRegulationOneMediaLine(List<String[]> lines, String part){
+
+    private static String getRegulationOneMediaLine(List<String[]> lines, String part) {
         String specificline = "";
         String key = part + "_M9_glucose";
-        for(String pieces[]:lines){
-            if(pieces[0].trim().equals(key)){
+        for (String pieces[] : lines) {
+            if (pieces[0].trim().equals(key)) {
                 specificline = getCSVLineFromArray(pieces);
                 break;
             }
@@ -141,80 +155,77 @@ public class AnalyzeData {
         specificline = specificline.replaceFirst(key, "0");
         return specificline;
     }
-    
-    private static boolean folderHasCAM(String filepath){
+
+    private static boolean folderHasCAM(String filepath) {
         File file = new File(filepath);
-        for(File f: file.listFiles()){
-            String pieces[] = filepathPieces(f.getAbsolutePath(),filepath);
-            if(pieces[1].endsWith("_CAM")){
+        for (File f : file.listFiles()) {
+            String pieces[] = filepathPieces(f.getAbsolutePath(), filepath);
+            if (pieces[1].endsWith("_CAM")) {
                 return true;
             }
         }
-        
+
         return false;
     }
-    
-    public static void directoryWalk_old(String path, String resultsRoot, String sbmldirectory, Map<String,String> nameMap, Map<String,AssignedModule> expexe) throws IOException{
-        File root = new File( path );
+
+    public static void directoryWalk_old(String path, String resultsRoot, String sbmldirectory, Map<String, String> nameMap, Map<String, AssignedModule> expexe) throws IOException {
+        File root = new File(path);
         File[] list = root.listFiles();
-        
-        if (list == null) return;
-        
-        for ( File f : list ) {
-            if ( f.isDirectory() ) {
+
+        if (list == null) {
+            return;
+        }
+
+        for (File f : list) {
+            if (f.isDirectory()) {
                 directoryWalk_old(f.getAbsolutePath(), resultsRoot, sbmldirectory, nameMap, expexe);
                 //System.out.println( "Dir:" + f.getAbsoluteFile() );
-            }
-            else {
-                if(f.getName().equals("timeSeriesPlotPoints.csv")){
-                    String pieces[] = filepathPieces(f.getAbsolutePath(),resultsRoot);
+            } else {
+                if (f.getName().equals("timeSeriesPlotPoints.csv")) {
+                    String pieces[] = filepathPieces(f.getAbsolutePath(), resultsRoot);
                     //System.out.println("Pieces :: " + pieces[0] );
-                    for(String nameMapKey : nameMap.keySet()){
-                        if(pieces[0].toLowerCase().contains(nameMapKey.toLowerCase())){
-                            
+                    for (String nameMapKey : nameMap.keySet()) {
+                        if (pieces[0].toLowerCase().contains(nameMapKey.toLowerCase())) {
+
                             //System.out.println("f abs path :: " + f.getAbsolutePath());
                             System.out.println("pieces[0] :: " + pieces[0].toLowerCase());
                             System.out.println("nameMapKey :: " + nameMapKey.toLowerCase());
-                            
+
                             String amoduleShortName = nameMap.get(nameMapKey);
                             System.out.println("A Module Short Name :: " + amoduleShortName);
                             AssignedModule amodule = expexe.get(amoduleShortName);
-                            List<String> csvLines = getDegradationMetaData(amodule,f.getAbsolutePath());
+                            List<String> csvLines = getDegradationMetaData(amodule, f.getAbsolutePath());
                             //ParameterEstimation.estimateDegradationParameters(amodule,sbmldirectory, csvLines);
-                            
+
                         }
                     }
-                    if(nameMap.containsKey(pieces[0])){
+                    if (nameMap.containsKey(pieces[0])) {
                         //Ideally, this is how it should be. The above method adds additional complexity. need to figure out naming convention.
                     }
                     //String relFilepath = f.getAbsolutePath().substring(f.getAbsolutePath().lastIndexOf(resultsRoot) + resultsRoot.length());
                     //System.out.println( "File:" + relFilepath);
-                }
-                else if(f.getName().equals("mediaTitrationPlotPoints.csv")){
-                    String pieces[] = filepathPieces(f.getAbsolutePath(),resultsRoot);
-                    if(nameMap.containsKey(pieces[0])){
+                } else if (f.getName().equals("mediaTitrationPlotPoints.csv")) {
+                    String pieces[] = filepathPieces(f.getAbsolutePath(), resultsRoot);
+                    if (nameMap.containsKey(pieces[0])) {
                         String amoduleShortName = nameMap.get(pieces[0]);
                         AssignedModule amodule = expexe.get(amoduleShortName);
-                        getSmallMoleculeMetaData(amodule,f.getAbsolutePath());
+                        getSmallMoleculeMetaData(amodule, f.getAbsolutePath());
+                    }
+                    //System.out.println( "File:" + f.getAbsoluteFile() );
+                } else if (f.getName().equals("regulationPlotPoints.csv")) {
+                    String pieces[] = filepathPieces(f.getAbsolutePath(), resultsRoot);
+                    if (nameMap.containsKey(pieces[0])) {
+                        String amoduleShortName = nameMap.get(pieces[0]);
+                        AssignedModule amodule = expexe.get(amoduleShortName);
+                        getRegulationMetaData(amodule, f.getAbsolutePath());
                     }
                     //System.out.println( "File:" + f.getAbsoluteFile() );
                 }
-                else if(f.getName().equals("regulationPlotPoints.csv")){
-                     String pieces[] = filepathPieces(f.getAbsolutePath(),resultsRoot);
-                    if(nameMap.containsKey(pieces[0])){
-                        String amoduleShortName = nameMap.get(pieces[0]);
-                        AssignedModule amodule = expexe.get(amoduleShortName);
-                        getRegulationMetaData(amodule,f.getAbsolutePath());
-                    }
-                    //System.out.println( "File:" + f.getAbsoluteFile() );
-                }
-                
-                
+
             }
         }
     }
-    
-    
+
     private static void getRegulationMetaData(AssignedModule amodule, String filepath) {
         if (amodule == null) {
             return;
@@ -236,12 +247,12 @@ public class AnalyzeData {
                 expChannelName = expChannelName.replaceAll("-", ".");
             }
         }
-        
+
         String regChannelName = "";
-        for(AssignedModule control:amodule.getControlModules()){
-            if(control.getRole().equals(Module.ModuleRole.REGULATION_CONTROL)){
-                for(PrimitiveModule pm:control.getSubmodules()){
-                    if(pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_FLUORESCENT) || pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_FLUORESCENT_FUSION)){
+        for (AssignedModule control : amodule.getControlModules()) {
+            if (control.getRole().equals(Module.ModuleRole.REGULATION_CONTROL)) {
+                for (PrimitiveModule pm : control.getSubmodules()) {
+                    if (pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_FLUORESCENT) || pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_FLUORESCENT_FUSION)) {
                         String fpName = pm.getModuleFeature().getName();
                         regChannelName = Utilities.getChannelsMap().get(fpName);
                         if (regChannelName == null) {
@@ -257,7 +268,7 @@ public class AnalyzeData {
                 }
             }
         }
-        
+
         Experiment regExp = null;
         for (Experiment exp : amodule.getExperiments()) {
             if (exp.getExType().equals(Experiment.ExperimentType.REGULATION)) {
@@ -300,18 +311,17 @@ public class AnalyzeData {
             Logger.getLogger(RAdaptor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
+
     private static void getSmallMoleculeMetaData(AssignedModule amodule, String filepath) {
         if (amodule == null) {
             return;
         }
 
         String regChannelName = "";
-        for(AssignedModule control:amodule.getControlModules()){
-            if(control.getRole().equals(Module.ModuleRole.REGULATION_CONTROL)){
-                for(PrimitiveModule pm:control.getSubmodules()){
-                    if(pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_FLUORESCENT) || pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_FLUORESCENT_FUSION)){
+        for (AssignedModule control : amodule.getControlModules()) {
+            if (control.getRole().equals(Module.ModuleRole.REGULATION_CONTROL)) {
+                for (PrimitiveModule pm : control.getSubmodules()) {
+                    if (pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_FLUORESCENT) || pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_FLUORESCENT_FUSION)) {
                         String fpName = pm.getModuleFeature().getName();
                         regChannelName = Utilities.getChannelsMap().get(fpName);
                         if (regChannelName == null) {
@@ -364,7 +374,7 @@ public class AnalyzeData {
                     double stdVal = Double.parseDouble(pieces[stdRow].trim());
                     smExp.getResults().getMeanInduction().put((double) concVal, meanVal);
                     smExp.getResults().getStdInduction().put((double) concVal, stdVal);
-                    
+
                 }
             }
 
@@ -374,8 +384,7 @@ public class AnalyzeData {
             Logger.getLogger(RAdaptor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
+
     private static List<String> getDegradationMetaData(AssignedModule amodule, String filepath) {
         List<String> csvLines = new ArrayList<String>();
         //System.out.println("Going to get Degradation Data");
@@ -383,7 +392,7 @@ public class AnalyzeData {
             return null;
         }
         //System.out.println("Reached here?");
-        
+
         String channelName = "";
         for (PrimitiveModule pm : amodule.getSubmodules()) {
             if (pm.getPrimitiveRole().equals(Feature.FeatureRole.CDS_FLUORESCENT_FUSION)) {
@@ -412,10 +421,9 @@ public class AnalyzeData {
             System.out.println("Couldn't find Degradation experiment in Assigned Module");
             return null;
         }
-        
+
         int colIndex = 0;
-        
-        
+
         File file = new File(filepath);
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -441,7 +449,7 @@ public class AnalyzeData {
                     //System.out.println("meanVal :: " + meanVal);
                     //System.out.println("stdVal :: " + stdVal);
                     degExp.getResults().getMeanTimeSeries().put((double) timeVal, meanVal);
-                    degExp.getResults().getStdTimeSeries().put((double)timeVal, stdVal);
+                    degExp.getResults().getStdTimeSeries().put((double) timeVal, stdVal);
                     csvLines.add(timeVal + "," + meanVal);
                 }
             }
@@ -453,32 +461,32 @@ public class AnalyzeData {
         }
         return csvLines;
     }
-    
-    private static String[] filepathPieces(String filepath, String rootFilepath){
+
+    private static String[] filepathPieces(String filepath, String rootFilepath) {
         String relativeFilepath = filepath.substring(filepath.lastIndexOf(rootFilepath) + rootFilepath.length());
         return relativeFilepath.split("/");
     }
-    
-    public static Map<String,String> parseKeyMapFiles(String mapFile){
-        
-        
-        Map<String,String> customNameMap = new HashMap<>();
+
+    public static Map<String, String> parseKeyMapFiles(String mapFile) {
+
+        Map<String, String> customNameMap = new HashMap<>();
         Set<String> shortNames = new HashSet<>();
         File map = new File(mapFile);
         try {
             BufferedReader mapReader = new BufferedReader(new FileReader(map));
-            
+
             String mapLine;
-            while((mapLine = mapReader.readLine())!=null){
-                if(mapLine.equals("Short Name,Features,Custom Name"))
+            while ((mapLine = mapReader.readLine()) != null) {
+                if (mapLine.equals("Short Name,Features,Custom Name")) {
                     continue;
+                }
                 String names[] = mapLine.split(",");
                 shortNames.add(names[0]);
-                if(names.length == 3){
-                    if(!names[2].trim().equals(""))
+                if (names.length == 3) {
+                    if (!names[2].trim().equals("")) {
                         customNameMap.put(names[2], names[0]);
-                }
-                else{
+                    }
+                } else {
                     customNameMap.put(names[0], names[0]);
                 }
             }
@@ -490,86 +498,83 @@ public class AnalyzeData {
         //System.out.println(customNameMap);
         return customNameMap;
     }
-    
-    public static void fillOutNameMap(String fileFrom, String fileTo){
+
+    public static void fillOutNameMap(String fileFrom, String fileTo) {
         File from = new File(fileFrom);
         File to = new File(fileTo);
-        Map<String, List<String>> map = new HashMap<String,List<String>>();
-        
+        Map<String, List<String>> map = new HashMap<String, List<String>>();
+
         try {
             BufferedReader brFrom = new BufferedReader(new FileReader(from));
             String line = "";
-            while((line = brFrom.readLine()) != null){
-                if(line.trim().equals("Short Name,Features,Custom Name")){
+            while ((line = brFrom.readLine()) != null) {
+                if (line.trim().equals("Short Name,Features,Custom Name")) {
                     continue;
                 }
                 String pieces[] = line.trim().split(",");
-                
-                if(pieces.length == 3){
-                    if(!map.containsKey(pieces[1])){
+
+                if (pieces.length == 3) {
+                    if (!map.containsKey(pieces[1])) {
                         map.put(pieces[1], new ArrayList());
                     }
                     map.get(pieces[1]).add(pieces[2]);
                 }
             }
             brFrom.close();
-            Map<String,Integer> namecount = new HashMap();
+            Map<String, Integer> namecount = new HashMap();
             List<String> lines = new ArrayList<String>();
             BufferedReader brTo = new BufferedReader(new FileReader(to));
             boolean added = false;
-            while((line = brTo.readLine()) != null){
+            while ((line = brTo.readLine()) != null) {
                 String pieces[] = line.trim().split(",");
                 added = false;
-                if(map.containsKey(pieces[1])){
-                    if(!namecount.containsKey(pieces[1])){
+                if (map.containsKey(pieces[1])) {
+                    if (!namecount.containsKey(pieces[1])) {
                         namecount.put(pieces[1], 0);
                     }
-                    
+
                     int val = namecount.get(pieces[1]);
-                    
-                    for(String thirdcol:map.get(pieces[1])){
+
+                    for (String thirdcol : map.get(pieces[1])) {
                         String colpieces[] = thirdcol.split("_");
                         int colval = 0;
-                        try{
+                        try {
                             colval = Integer.parseInt(colpieces[2].trim());
-                            if( (val+1) == Integer.valueOf(colpieces[2].trim())){
+                            if ((val + 1) == Integer.valueOf(colpieces[2].trim())) {
+                                lines.add(line + thirdcol);
+                                added = true;
+                            }
+                        } catch (Exception e) {
                             lines.add(line + thirdcol);
-                            added = true;
                         }
-                        }catch(Exception e){
-                            lines.add(line + thirdcol);
-                        } 
-                        
-                        
+
                     }
                     namecount.put(pieces[1], ++val);
                 }
-                if(!added){
+                if (!added) {
                     lines.add(line);
                 }
             }
             brTo.close();
-            
+
             BufferedWriter writer = new BufferedWriter(new FileWriter(to));
-            for(String newLine:lines){
+            for (String newLine : lines) {
                 writer.write(newLine);
                 writer.newLine();
             }
             writer.close();
-            
+
         } catch (FileNotFoundException ex) {
             Logger.getLogger(AnalyzeData.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(AnalyzeData.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        
+
     }
-    
-    public static String getChannel(String filepathpiece){
+
+    public static String getChannel(String filepathpiece) {
         String pieces[] = filepathpiece.split("_");
-        switch(pieces[1]){
+        switch (pieces[1]) {
             case "bfp":
                 return "Pacific_Blue-A";
             case "rfp":
@@ -578,11 +583,10 @@ public class AnalyzeData {
                 return "FITC-A";
 //            case "yfp":
 //                break;
-                
+
         }
-        
-        
+
         return "";
     }
-    
+
 }

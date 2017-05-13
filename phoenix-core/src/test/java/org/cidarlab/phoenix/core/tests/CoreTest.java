@@ -70,11 +70,11 @@ public class CoreTest {
         
         
         //Assign SBML Documents
-        PhoenixController.assignSBMLDocuments(bestModule);
-        
-        String filepathSBML = getFilepath() + "/src/main/resources/sbmlDocs";
-        //Create SBML Documents
-        PhoenixController.createAllSBMLfiles(bestModule, filepathSBML);
+//        PhoenixController.assignSBMLDocuments(bestModule);
+//        
+//        String filepathSBML = getFilepath() + "/src/main/resources/sbmlDocs";
+//        //Create SBML Documents
+//        PhoenixController.createAllSBMLfiles(bestModule, filepathSBML);
         
     }
     
@@ -91,7 +91,7 @@ public class CoreTest {
         
         
         //Assign SBML Documents
-        PhoenixController.assignSBMLDocuments(bestModule);
+//        PhoenixController.assignSBMLDocuments(bestModule);
         
         String filepathSBML = getFilepath() + "/src/main/resources/sbmlDocs";
         //Create SBML Documents

@@ -64,9 +64,7 @@ public class AssignedModule extends Module {
         clone.setRole(this.getRole());
         clone.setStage(this.getStage());
         
-        for(SBMLDocument doc:this.getSBMLDocument()){
-            clone.getSBMLDocument().add(doc.clone());
-        }
+        clone.setSBMLDocument(this.getSBMLDocument().clone());
         //clone.setSBMLDocument(this.getSBMLDocument());
         
         

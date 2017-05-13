@@ -157,20 +157,16 @@ public class SBMLAdaptor {
 	
         public static void createSBMLfiles(AssignedModule amodule,String filepath){
             SBMLWriter writer = new SBMLWriter();
-            int count =0;
-            for(SBMLDocument doc:amodule.getSBMLDocument()){
-                
-                try {
-                    writer.write(doc, filepath + "/" + amodule.getShortName()+"_"+count+".xml");
-                    count++;
-                } catch (XMLStreamException ex) {
-                    Logger.getLogger(SBMLAdaptor.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (FileNotFoundException ex) {
-                    Logger.getLogger(SBMLAdaptor.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (SBMLException ex) {
-                    Logger.getLogger(SBMLAdaptor.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            try {
+                writer.write(amodule.getSBMLDocument(), filepath + "/" + amodule.getShortName()+".xml");
+            } catch (XMLStreamException ex) {
+                Logger.getLogger(SBMLAdaptor.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(SBMLAdaptor.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SBMLException ex) {
+                Logger.getLogger(SBMLAdaptor.class.getName()).log(Level.SEVERE, null, ex);
             }
+           
             
         }
         

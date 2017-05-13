@@ -109,16 +109,4 @@ public class ParameterEstimation {
         return "";
     } 
     
-    private static SBMLDocument getSBMLDocument(AssignedModule amodule, String fname){
-        for(SBMLDocument sbmldoc: amodule.getSBMLDocument()){
-            Model model = sbmldoc.getModel();
-            ListOf<Species> species = model.getListOfSpecies();
-            for(Species sp:species){
-                if(sp.getName().equals(fname)){
-                    return sbmldoc;
-                }
-            }
-        }
-        return null;
-    }
 }

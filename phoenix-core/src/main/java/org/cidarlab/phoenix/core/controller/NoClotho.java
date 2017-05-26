@@ -8,15 +8,19 @@ package org.cidarlab.phoenix.core.controller;
 import com.fasterxml.uuid.EthernetAddress;
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.TimeBasedGenerator;
+import com.google.common.collect.BiMap;
 import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -35,21 +39,34 @@ import org.biojava.bio.BioException;
 import org.cidarlab.phoenix.core.adaptors.BenchlingAdaptor;
 import static org.cidarlab.phoenix.core.adaptors.ClothoAdaptor.annotate;
 import org.cidarlab.phoenix.core.adaptors.IBioSimAdaptor;
+import org.cidarlab.phoenix.core.adaptors.SynBioHubAdaptor;
 import org.cidarlab.phoenix.core.dataprocessing.AnalyzeData;
 import org.cidarlab.phoenix.core.dom.Annotation;
+import org.cidarlab.phoenix.core.dom.Arc;
+import org.cidarlab.phoenix.core.dom.Arc.ArcRole;
 import org.cidarlab.phoenix.core.dom.AssemblyParameters;
 import org.cidarlab.phoenix.core.dom.AssignedModule;
 import org.cidarlab.phoenix.core.dom.Cytometer;
 import org.cidarlab.phoenix.core.dom.Experiment;
 import org.cidarlab.phoenix.core.dom.ExperimentProcessedData;
 import org.cidarlab.phoenix.core.dom.Feature;
+import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
 import org.cidarlab.phoenix.core.dom.Fluorophore;
 import org.cidarlab.phoenix.core.dom.Module;
 import org.cidarlab.phoenix.core.dom.NucSeq;
 import org.cidarlab.phoenix.core.dom.Part;
 import org.cidarlab.phoenix.core.dom.Person;
 import org.cidarlab.phoenix.core.dom.Polynucleotide;
+import org.cidarlab.phoenix.core.dom.SmallMolecule;
+import org.cidarlab.phoenix.core.dom.SmallMolecule.SmallMoleculeRole;
 import org.cidarlab.phoenix.core.dom.Vector;
+import org.sbolstandard.core2.ComponentDefinition;
+import org.sbolstandard.core2.Location;
+import org.sbolstandard.core2.OrientationType;
+import org.sbolstandard.core2.Range;
+import org.sbolstandard.core2.SBOLDocument;
+import org.sbolstandard.core2.SequenceAnnotation;
+import org.synbiohub.frontend.SynBioHubException;
 
 /**
  *
@@ -82,6 +99,8 @@ public class NoClotho {
     
     private Set<String> allIds; 
     
+    private SynBioHubAdaptor synBioHub;
+    
     public NoClotho() {
         features = new HashSet<Feature>();
         fluorophores = new HashSet<Fluorophore>();
@@ -89,6 +108,7 @@ public class NoClotho {
         allIds = new HashSet<String>();
         counter = new AtomicInteger();
         initializeAssemblyParameters();
+        synBioHub = new SynBioHubAdaptor("https://synbiohub.cidarlab.org/");
     }
     
     private void initializeAssemblyParameters(){
@@ -105,13 +125,16 @@ public class NoClotho {
     
     
     
-    public static void main(String[] args) {
-        
+    public static void main(String[] args) {        
         String featureFilepath = Utilities.getResourcesFilepath() + "BenchlingGenbankFiles/phoenix_feature_lib.gb";
         String fluorFilepath = Utilities.getResourcesFilepath() + "FluorescentProteins/fp_spectra.csv";
         String plasmidFilepath = Utilities.getResourcesFilepath() + "BenchlingGenbankFiles/phoenix_plasmid_lib_72715.gb";
         String cytometerFilepath = Utilities.getResourcesFilepath() + "FluorescentProteins/cosbi_fortessa_bd.csv";
         NoClotho nc = new NoClotho();
+        
+//        nc.addFeaturesFromRepo("https://synbiohub.programmingbiology.org/public/Cello_Parts/Cello_Parts_collection/1");
+        
+        
         nc.addFeatures(featureFilepath);
         nc.addFluorophores(fluorFilepath);
         nc.addPlasmid(plasmidFilepath);
@@ -341,7 +364,438 @@ public class NoClotho {
         
     }
     
-    
+    public void addFeaturesFromRepo(String collectionURI) {
+        //Arc hashes
+        HashMap<String, HashSet<String>> promoterRegulator = new HashMap<>();
+        HashMap<String, HashSet<String>> regulatorPromoter = new HashMap<>();
+        HashMap<String, HashSet<String>> regulatorMolecule = new HashMap<>();
+        try {
+            for (ComponentDefinition cd : synBioHub.getSBOL(collectionURI).getComponentDefinitions()) {
+                for (SequenceAnnotation sa : cd.getSequenceAnnotations()) {
+                    String name = cd.getDisplayId();
+                    int startFeat = 0;
+                    int endFeat = 0;
+                    NucSeq nucSeq = new NucSeq();
+                    Color fwd = new Color(0);
+                    Color rev = new Color(0);
+                    for (Location locas : sa.getLocations()) {
+                        if (locas instanceof Range) {
+                            startFeat = ((Range) locas).getStart();
+                            endFeat = ((Range) locas).getEnd();
+                        }
+                    }
+                
+
+                    //Correct sequence for circular sequences by adding beginnning and end sequence
+                    String seqString = cd.getImpliedNucleicAcidSequence();
+                    seqString = seqString.concat(seqString);
+                    if (startFeat > endFeat) {
+                        seqString = seqString.concat(seqString);
+                        endFeat = endFeat + seqString.length();
+                    }
+
+                    //Check for linearity
+                    boolean linearity = true;
+                    boolean ss = true;
+                    for (org.sbolstandard.core2.Annotation a : cd.getAnnotations()) {
+                        if (a.getQName().toString().equals("genbank:molecule")) {
+                            if (a.getStringValue().equals("ds-DNA")) {
+                                ss = false;
+                            } else {
+                                ss = true;
+                            }
+                        }
+                    }
+//                if (.getAnnotation().containsProperty("DIVISION")) {
+//                    if (seq.getAnnotation().getProperty("DIVISION").equals("circular")) {
+//                        linearity = false;
+//                    } else {
+//                        linearity = true;
+//                    }
+//                }
+
+                
+
+                    //Get rest of feature information and apply it to the features
+                    nucSeq = new NucSeq(seqString.substring(startFeat - 1, endFeat), ss, linearity);
+
+                    fwd = new Color(0);
+                    rev = new Color(0);
+                    for (org.sbolstandard.core2.Annotation a : sa.getAnnotations()) {
+                        if (a.getQName().toString().equals("gbconv:ApEinfo_fwdcolor")) {
+                            fwd = Color.decode(a.getStringValue());
+                        }
+                        else if (a.getQName().toString().equals("gbconv:ApEinfo_revcolor")) {
+                            rev = Color.decode(a.getStringValue());
+                        }
+                        else if (a.getQName().toString().equals("gbconv:label")) {
+                            name = a.getStringValue();
+                        }
+                    }
+                boolean keywords = false;
+                for (org.sbolstandard.core2.Annotation a : cd.getAnnotations()) {
+                    if (a.getQName().toString().equals("genbank:keywords")) {
+                        keywords = true;
+                        String tagstring = a.getStringValue();
+                        HashMap<String, String> tags = new HashMap<>();
+                        String[] tokens = tagstring.split("\" ");
+                        for (String token : tokens) {
+                            token.trim();
+                            token = token.substring(token.indexOf("\"") + 1);
+                            String[] split = token.split(":");
+                            if (split.length == 2) {
+                                tags.put(split[0].trim(), split[1].trim());
+                            }
+                        }
+                        
+                        //Set role assuming type and sub-type are present
+                        if (tags.containsKey("part-type") && tags.containsKey("part-subtype")) {
+                            
+                            String type = tags.get("part-type").replaceAll("\"", "").trim();
+                            String subtype = tags.get("part-subtype").replaceAll("\"", "").trim();
+                            
+                            //Only in the case of a fluorescent protein do we make a special feature
+                            if (subtype.contains("Fluorescent") && type.equalsIgnoreCase("CDS")) {
+                                
+                                Fluorophore fp = new Fluorophore(cd.getDisplayId());
+                                fp.setSequence(nucSeq);
+                                fp.setForwardColor(fwd);
+                                fp.setReverseColor(rev);
+                                fp.setRole(Feature.FeatureRole.CDS_FLUORESCENT);
+                                
+                                if (tags.containsKey("brightness") && tags.containsKey("excitation") && tags.containsKey("emission") && tags.containsKey("oligomerization")) {
+                                    fp.setOligomerization(Integer.valueOf(tags.get("oligomerization").replaceAll("\"", "").trim()));
+                                    fp.setBrightness(Double.valueOf(tags.get("brightness").replaceAll("\"", "").trim()));
+                                    fp.setExcitation_max(Double.valueOf(tags.get("excitation").replaceAll("\"", "").trim()));
+                                    fp.setEmission_max(Double.valueOf(tags.get("emission").replaceAll("\"", "").trim()));
+                                }
+                                
+                                fluorophores.add(fp);
+                                
+                            } else {
+                                
+                                Feature clothoFeature = new Feature(cd.getDisplayId());
+                                clothoFeature.setSequence(nucSeq);
+                                clothoFeature.setForwardColor(fwd);
+                                clothoFeature.setReverseColor(rev);
+                                
+                                if (type.equalsIgnoreCase("promoter") && subtype.equalsIgnoreCase("constitutive")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.PROMOTER_CONSTITUTIVE);
+                                } else if (type.equalsIgnoreCase("promoter") && subtype.equalsIgnoreCase("repressible")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.PROMOTER_REPRESSIBLE);
+                                    
+                                    if (tags.containsKey("regulation-regulator")) {
+                                        if (promoterRegulator.containsKey(clothoFeature.getName())) {
+                                            promoterRegulator.get(clothoFeature.getName()).add(tags.get("regulation-regulator").replaceAll("\"", ""));
+                                        } else {
+                                            HashSet<String> newMatches = new HashSet<>();
+                                            newMatches.add(tags.get("regulation-regulator").replaceAll("\"", ""));
+                                            promoterRegulator.put(clothoFeature.getName(), newMatches);
+                                        }                                      
+                                    }
+                                } else if (type.equalsIgnoreCase("promoter") && subtype.equalsIgnoreCase("inducible")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.PROMOTER_INDUCIBLE);
+                                    
+                                    if (tags.containsKey("regulation-regulator")) {
+                                        if (promoterRegulator.containsKey(clothoFeature.getName())) {
+                                            promoterRegulator.get(clothoFeature.getName()).add(tags.get("regulation-regulator").replaceAll("\"", ""));
+                                        } else {
+                                            HashSet<String> newMatches = new HashSet<>();
+                                            newMatches.add(tags.get("regulation-regulator").replaceAll("\"", ""));
+                                            promoterRegulator.put(clothoFeature.getName(), newMatches);
+                                        }                                      
+                                    }
+                                } else if (type.equalsIgnoreCase("5'UTR")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.RBS);
+                                } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("repressor")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.CDS_REPRESSOR);
+                                    
+                                    if (tags.containsKey("regulation-promoter")) {
+                                        if (regulatorPromoter.containsKey(clothoFeature.getName())) {
+                                            regulatorPromoter.get(clothoFeature.getName()).add(tags.get("regulation-promoter").replaceAll("\"", ""));
+                                        } else {
+                                            HashSet<String> newMatches = new HashSet<>();
+                                            newMatches.add(tags.get("regulation-promoter").replaceAll("\"", ""));
+                                            regulatorPromoter.put(clothoFeature.getName(), newMatches);
+                                        }                                      
+                                    }                                    
+                                } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("activator")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.CDS_REPRESSOR);
+                                    
+                                    if (tags.containsKey("regulation-promoter")) {
+                                        if (regulatorPromoter.containsKey(clothoFeature.getName())) {
+                                            regulatorPromoter.get(clothoFeature.getName()).add(tags.get("regulation-promoter").replaceAll("\"", ""));
+                                        } else {
+                                            HashSet<String> newMatches = new HashSet<>();
+                                            newMatches.add(tags.get("regulation-promoter").replaceAll("\"", ""));
+                                            regulatorPromoter.put(clothoFeature.getName(), newMatches);
+                                        }                                      
+                                    }
+                                } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("repressible-repressor")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.CDS_REPRESSIBLE_REPRESSOR);
+                                    
+                                    if (tags.containsKey("regulation-promoter")) {
+                                        if (regulatorPromoter.containsKey(clothoFeature.getName())) {
+                                            regulatorPromoter.get(clothoFeature.getName()).add(tags.get("regulation-promoter").replaceAll("\"", ""));
+                                        } else {
+                                            HashSet<String> newMatches = new HashSet<>();
+                                            newMatches.add(tags.get("regulation-promoter").replaceAll("\"", ""));
+                                            regulatorPromoter.put(clothoFeature.getName(), newMatches);
+                                        }                                      
+                                    }
+                                    
+                                    if (tags.containsKey("regulation-molecule")) {
+                                        if (regulatorMolecule.containsKey(clothoFeature.getName())) {
+                                            regulatorMolecule.get(clothoFeature.getName()).add(tags.get("regulation-molecule").replaceAll("\"", ""));
+                                        } else {
+                                            HashSet<String> newMatches = new HashSet<>();
+                                            newMatches.add(tags.get("regulation-molecule").replaceAll("\"", ""));
+                                            regulatorMolecule.put(clothoFeature.getName(), newMatches);
+                                        }
+                                    }
+                                } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("activatible-activator")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR);
+                                    
+                                    if (tags.containsKey("regulation-promoter")) {
+                                        if (regulatorPromoter.containsKey(clothoFeature.getName())) {
+                                            regulatorPromoter.get(clothoFeature.getName()).add(tags.get("regulation-promoter").replaceAll("\"", ""));
+                                        } else {
+                                            HashSet<String> newMatches = new HashSet<>();
+                                            newMatches.add(tags.get("regulation-promoter").replaceAll("\"", ""));
+                                            regulatorPromoter.put(clothoFeature.getName(), newMatches);
+                                        }                                      
+                                    }
+                                    
+                                    if (tags.containsKey("regulation-molecule")) {
+                                        if (regulatorMolecule.containsKey(clothoFeature.getName())) {
+                                            regulatorMolecule.get(clothoFeature.getName()).add(tags.get("regulation-molecule").replaceAll("\"", ""));
+                                        } else {
+                                            HashSet<String> newMatches = new HashSet<>();
+                                            newMatches.add(tags.get("regulation-molecule").replaceAll("\"", ""));
+                                            regulatorMolecule.put(clothoFeature.getName(), newMatches);
+                                        }
+                                    }
+                                } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("linker")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.CDS_LINKER);
+                                } else if (type.equalsIgnoreCase("CDS") && subtype.equalsIgnoreCase("resistance")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.CDS_RESISTANCE);
+                                } else if (type.equalsIgnoreCase("CDS") && subtype.contains("Tag")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.CDS_TAG);
+                                } else if (type.equalsIgnoreCase("CDS") && subtype.contains("Marker")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.MARKER);
+                                } else if (type.equalsIgnoreCase("terminator")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.TERMINATOR);
+                                } else if (type.equalsIgnoreCase("origin")) {
+                                    clothoFeature.setRole(Feature.FeatureRole.ORIGIN);
+                                } 
+                                
+                                features.add(clothoFeature);
+                            }
+                        }
+                    }
+                }
+                if (!keywords) {
+                    
+                    Feature clothoFeature = new Feature(name);
+                    clothoFeature.setSequence(nucSeq);
+                    clothoFeature.setForwardColor(fwd);
+                    clothoFeature.setReverseColor(rev);
+                    features.add(clothoFeature);
+                }
+                
+                
+            }
+            }}
+        catch (SynBioHubException ex) {
+            Logger.getLogger(NoClotho.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (URISyntaxException ex) {
+            Logger.getLogger(NoClotho.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        Set<Feature> clothoFeatures = new HashSet<Feature>();
+        clothoFeatures.addAll(features);
+        clothoFeatures.addAll(fluorophores);
+        
+        //Add regulation arcs from arc maps
+        HashSet<Arc> allArcs = new HashSet<>();
+        HashMap<HashSet<Feature>, Arc> arcHash = new HashMap<>();
+        HashSet<SmallMolecule> allMolecules = new HashSet<>();
+        
+        for (Feature f : clothoFeatures) {
+
+            //Promoters
+            if (promoterRegulator.containsKey(f.getName())) {
+
+                HashSet<String> regulators = promoterRegulator.get(f.getName());
+                for (String regulator : regulators) {
+                    HashSet<Arc> arcsThisP = new HashSet<>();
+                    
+                    for (Feature match : clothoFeatures) {
+
+                        if (match.getName().equalsIgnoreCase(regulator)) {
+                            
+                            if (f.getRole().equals(FeatureRole.PROMOTER_INDUCIBLE)) {
+
+                                HashSet<Feature> pair = new HashSet<>();
+                                pair.add(f);
+                                pair.add(match);
+                                Arc arc;
+                                if (arcHash.containsKey(pair)) {
+                                    arc = arcHash.get(pair);
+                                } else {
+                                    arc = new Arc(match, f, ArcRole.ACTIVATION);
+                                    arcHash.put(pair, arc);
+                                }
+                                arcsThisP.add(arc);
+                                
+                            } else if (f.getRole().equals(FeatureRole.PROMOTER_REPRESSIBLE)) {
+                                
+                                HashSet<Feature> pair = new HashSet<>();
+                                pair.add(f);
+                                pair.add(match);
+                                Arc arc;
+                                if (arcHash.containsKey(pair)) {
+                                    arc = arcHash.get(pair);
+                                } else {
+                                    arc = new Arc(match, f, ArcRole.REPRESSION);
+                                    arcHash.put(pair, arc);
+                                }
+                                arcsThisP.add(arc);
+                            }
+                        }
+                    }
+                    
+                    List<Arc> arcList = new ArrayList<>(arcsThisP);
+                    f.setArcs(arcList);
+                }
+            }
+            
+            //Regulators
+            if (regulatorPromoter.containsKey(f.getName())) {
+                
+                HashSet<String> promoters = regulatorPromoter.get(f.getName());
+                for (String promoter : promoters) {
+                    HashSet<Arc> arcsThisR = new HashSet<>();
+                    
+                    for (Feature match : clothoFeatures) {
+                        
+                        if (match.getName().equalsIgnoreCase(promoter)) {
+                            
+                            if (f.getRole().equals(FeatureRole.CDS_ACTIVATOR)) {
+                                
+                                HashSet<Feature> pair = new HashSet<>();
+                                pair.add(f);
+                                pair.add(match);
+                                Arc arc;
+                                if (arcHash.containsKey(pair)) {
+                                    arc = arcHash.get(pair);
+                                } else {
+                                    arc = new Arc(f, match, ArcRole.ACTIVATION);
+                                    arcHash.put(pair, arc);
+                                }
+                                arcsThisR.add(arc);
+                            
+                            } else if (f.getRole().equals(FeatureRole.CDS_REPRESSOR)) {
+                                
+                                HashSet<Feature> pair = new HashSet<>();
+                                pair.add(f);
+                                pair.add(match);
+                                Arc arc;
+                                if (arcHash.containsKey(pair)) {
+                                    arc = arcHash.get(pair);
+                                } else {
+                                    arc = new Arc(f, match, ArcRole.REPRESSION);
+                                    arcHash.put(pair, arc);
+                                }
+                                arcsThisR.add(arc);
+                            
+                            } else if (f.getRole().equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR)) {
+                                
+                                HashSet<Feature> pair = new HashSet<>();
+                                pair.add(f);
+                                pair.add(match);
+                                Arc arc;
+                                if (arcHash.containsKey(pair)) {
+                                    arc = arcHash.get(pair);
+                                } else {
+                                    arc = new Arc(f, match, ArcRole.ACTIVATION);
+                                    arcHash.put(pair, arc);
+                                }
+                                arcsThisR.add(arc);
+                                
+                                List<SmallMolecule> smThisArc = new ArrayList<>();
+                                
+                                //If this arc has a small molecule regulator indicated
+                                if (regulatorMolecule.containsKey(f.getName())) {
+                                    HashSet<String> molecules = regulatorMolecule.get(f.getName());
+                                
+                                    for (String molecule : molecules) {
+                                        
+                                        SmallMolecule sm = new SmallMolecule(molecule, SmallMoleculeRole.ACTIVATION);
+                                        smThisArc.add(sm);
+                                    }
+                                    
+                                    arc.setMolecules(smThisArc);
+                                    allMolecules.addAll(smThisArc);
+                                }                                
+                                arcsThisR.add(arc);
+                                
+                            } else if (f.getRole().equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR)) {
+                                
+                                HashSet<Feature> pair = new HashSet<>();
+                                pair.add(f);
+                                pair.add(match);
+                                Arc arc;
+                                if (arcHash.containsKey(pair)) {
+                                    arc = arcHash.get(pair);
+                                } else {
+                                    arc = new Arc(f, match, ArcRole.REPRESSION);
+                                    arcHash.put(pair, arc);
+                                }
+                                arcsThisR.add(arc);
+                                
+                                List<SmallMolecule> smThisArc = new ArrayList<>();
+                                
+                                //If this arc has a small molecule regulator indicated
+                                if (regulatorMolecule.containsKey(f.getName())) {
+                                    HashSet<String> molecules = regulatorMolecule.get(f.getName());
+                                
+                                    for (String molecule : molecules) {
+                                        
+                                        SmallMolecule sm = new SmallMolecule(molecule, SmallMoleculeRole.REPRESSION);
+                                        smThisArc.add(sm);
+                                    }
+                                    
+                                    arc.setMolecules(smThisArc);
+                                    allMolecules.addAll(smThisArc);
+                                }
+                                arcsThisR.add(arc);
+                            }
+                        }
+                    }
+                    List<Arc> arcList = new ArrayList<>(arcsThisR);
+                    f.setArcs(arcList);
+                    allArcs.addAll(arcsThisR);
+                }
+            }
+        }
+        
+        
+//        File file = new File(filepath);
+//        try {
+//            this.features.addAll(BenchlingAdaptor.getFeatures(file));
+//            this.fluorophores.addAll(BenchlingAdaptor.getFluorophores(this.features));
+//            this.features.removeAll(this.fluorophores);
+//
+//        } catch (FileNotFoundException ex) {
+//            Logger.getLogger(NoClotho.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (NoSuchElementException ex) {
+//            Logger.getLogger(NoClotho.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (BioException ex) {
+//            Logger.getLogger(NoClotho.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+    }
     
     
     public void addFeatures(String filepath) {
@@ -417,6 +871,76 @@ public class NoClotho {
         } catch (NoSuchElementException ex) {
             Logger.getLogger(NoClotho.class.getName()).log(Level.SEVERE, null, ex);
         } catch (FileNotFoundException ex) {
+            Logger.getLogger(NoClotho.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BioException ex) {
+            Logger.getLogger(NoClotho.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void addPlasmidFromRepo(String collectionURI) {
+
+        try {
+            for (ComponentDefinition cd : synBioHub.getSBOL(collectionURI).getComponentDefinitions()) {
+
+                Polynucleotide polyNuc = new Polynucleotide();
+
+                for (org.sbolstandard.core2.Annotation a : cd.getAnnotations()) {
+                    if (a.getQName().toString().equals("genbank:molecule")) {
+                        if (a.getStringValue().equals("ds-DNA")) {
+                            polyNuc.setSingleStranded(false);
+                        } else {
+                            polyNuc.setSingleStranded(true);
+                        }
+                    } else if (a.getQName().toString().equals("genbank:comment")) {
+                        polyNuc.setDescription(a.getStringValue());
+                    } else if (a.getQName().toString().equals("genbank:date")) {
+                        Date date = new Date(a.getStringValue());
+                        polyNuc.setSubmissionDate(date);
+                    }
+                }
+//            //Check for linearity
+//            if (seq.getAnnotation().getProperty("DIVISION").equals("circular")) {
+//                polyNuc.setLinear(false);
+//            } else {
+//                polyNuc.setLinear(true);
+//            }
+//
+//            //Check for strandedness
+//            if (seq.getAnnotation().containsProperty("CIRCULAR")) {
+//                if (seq.getAnnotation().getProperty("CIRCULAR").equals("ds-DNA")) {
+//                    polyNuc.setSingleStranded(false);
+//                } else {
+//                    polyNuc.setSingleStranded(true);
+//                }
+//            } else {
+//                polyNuc.setSingleStranded(true);
+//            }            
+
+                //
+                if (cd.getImpliedNucleicAcidSequence().contains(BenchlingAdaptor._lacZalphaL0) || cd.getImpliedNucleicAcidSequence().contains(Utilities.reverseComplement(BenchlingAdaptor._lacZalphaL0)) || cd.getImpliedNucleicAcidSequence().contains(BenchlingAdaptor._lacZalphaL1) || cd.getImpliedNucleicAcidSequence().contains(Utilities.reverseComplement(BenchlingAdaptor._lacZalphaL1))) {
+                    polyNuc.setDV(true);
+                }
+
+                //Get sequence
+                polyNuc.setSequence(new NucSeq(cd.getImpliedNucleicAcidSequence()));
+
+                //Get part and vector
+//            getMoCloParts(polyNuc, seq, vectorName);
+                getMoCloParts(polyNuc, cd);
+
+                polyNuc.setAccession(cd.getDisplayId() + "_Polynucleotide");
+
+                polynucleotide.add(polyNuc);
+            }
+            removeDuplicatePartsVectors();
+            annotateParts();
+        } catch (SynBioHubException ex) {
+            Logger.getLogger(NoClotho.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(NoClotho.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(NoClotho.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchElementException ex) {
             Logger.getLogger(NoClotho.class.getName()).log(Level.SEVERE, null, ex);
         } catch (BioException ex) {
             Logger.getLogger(NoClotho.class.getName()).log(Level.SEVERE, null, ex);
@@ -598,4 +1122,147 @@ public class NoClotho {
         }
     }
     
+    /*
+     * Creates a Part set from a Biojava sequence object
+     * This will create basic parts out of all incoming plasmids
+     */
+    public static HashSet<Part> getMoCloParts(Polynucleotide pn, ComponentDefinition cd) throws FileNotFoundException, NoSuchElementException, BioException {        
+        
+        HashSet<Part> partSet = new HashSet<>();
+
+        //First we check for MoClo format... This is is a pretty hacky, inflexible way to do it
+        //If MoClo sites are found, all features in between sites used to determine parts
+
+        //Correct sequence for circular sequences by adding beginnning and end sequence
+        String seqString = cd.getImpliedNucleicAcidSequence();
+        String searchSeq = cd.getImpliedNucleicAcidSequence();
+//        if (seq.getAnnotation().getProperty("DIVISION").equals("circular")) {
+            searchSeq = seqString.substring(seqString.length() - 5) + seqString;
+//        }
+        
+        int start;
+        int end;
+        int level;
+
+        //Looks for flanking BbsI or BsaI sites if there are more than one, this method will break
+        //This also assumes there are either exactly two of each site, not both or a mix
+        boolean containsBBsI = searchSeq.contains(BenchlingAdaptor._BbsIfwd) && searchSeq.contains(BenchlingAdaptor._BbsIrev);
+        boolean containsBsaI = searchSeq.contains(BenchlingAdaptor._BsaIfwd) && searchSeq.contains(BenchlingAdaptor._BsaIrev);
+
+        if (containsBBsI && !containsBsaI) {
+
+            //If there is only one and exactly one BbsI site in each direction does it conform to MoClo format
+            if (searchSeq.indexOf(BenchlingAdaptor._BbsIfwd) == searchSeq.lastIndexOf(BenchlingAdaptor._BbsIfwd) && searchSeq.indexOf(BenchlingAdaptor._BbsIrev) == searchSeq.lastIndexOf(BenchlingAdaptor._BbsIrev)) {
+                start = searchSeq.indexOf(BenchlingAdaptor._BbsIfwd) + 8 - 5;
+                end = searchSeq.indexOf(BenchlingAdaptor._BbsIrev) - 2 - 5;
+                level = 1;
+            } else {
+                return partSet;
+            }
+
+        } else if (containsBsaI && !containsBBsI) {
+
+            //If there is only one and exactly one BbsI site in each direction does it conform to MoClo format
+            if (searchSeq.indexOf(BenchlingAdaptor._BsaIfwd) == searchSeq.lastIndexOf(BenchlingAdaptor._BsaIfwd) && searchSeq.indexOf(BenchlingAdaptor._BsaIrev) == searchSeq.lastIndexOf(BenchlingAdaptor._BsaIrev)) {
+                start = searchSeq.indexOf(BenchlingAdaptor._BsaIfwd) + 7 - 5;
+                end = searchSeq.indexOf(BenchlingAdaptor._BsaIrev) - 1 - 5;
+                level = 0;
+            } else {
+                return partSet;
+            }
+
+        } else if (containsBsaI && containsBBsI) {
+
+            //Destination vector edge case
+            if (searchSeq.indexOf(BenchlingAdaptor._BsaIfwd) == searchSeq.lastIndexOf(BenchlingAdaptor._BsaIfwd) && searchSeq.indexOf(BenchlingAdaptor._BsaIrev) == searchSeq.lastIndexOf(BenchlingAdaptor._BsaIrev) && searchSeq.indexOf(BenchlingAdaptor._BbsIfwd) == searchSeq.lastIndexOf(BenchlingAdaptor._BbsIfwd) && searchSeq.indexOf(BenchlingAdaptor._BbsIrev) == searchSeq.lastIndexOf(BenchlingAdaptor._BbsIrev)) {
+
+                //Find if the plasmid has the level0 or level1 lacZalpha fragment to determine the level
+                String lacZsearch = seqString + seqString;
+                if (lacZsearch.contains(BenchlingAdaptor._lacZalphaL0) || lacZsearch.contains(Utilities.reverseComplement(BenchlingAdaptor._lacZalphaL0))) {
+                    start = searchSeq.indexOf(BenchlingAdaptor._BsaIfwd) + 7 - 5;
+                    end = searchSeq.indexOf(BenchlingAdaptor._BsaIrev) - 1 - 5;
+                    level = 0;
+                } else if (lacZsearch.contains(BenchlingAdaptor._lacZalphaL1) || lacZsearch.contains(Utilities.reverseComplement(BenchlingAdaptor._lacZalphaL1))) {
+                    start = searchSeq.indexOf(BenchlingAdaptor._BbsIfwd) + 8 - 5;
+                    end = searchSeq.indexOf(BenchlingAdaptor._BbsIrev) - 2 - 5;
+                    level = 1;
+                } else {
+                    return partSet;
+                }
+
+            } else {
+                return partSet;
+            }
+        } else {
+            return partSet;
+        }
+
+        //Correct for indexing
+        if (end <= 0) {
+            end = end + seqString.length();
+        }
+        if (start >= seqString.length()) {
+            start = seqString.length() - start;
+        }
+
+        //Get part sequences
+        //If the part range goes through index 0, the start index will be after the end index, so the sequence needs to be adjusted
+        String partSeq;
+        String vecSeq;
+        
+        if (start > end) {
+            partSeq = seqString.substring(start, seqString.length()) + seqString.substring(0, end + 1);
+            vecSeq = partSeq.substring(partSeq.length() - 4) + seqString.substring(start, end) + partSeq.substring(0, 4);            
+        } else {
+            partSeq = seqString.substring(start, end);
+            vecSeq = partSeq.substring(partSeq.length() - 4) + seqString.substring(end, seqString.length()) + seqString.substring(0, start) + partSeq.substring(0, 4);
+        }
+        
+        //Find MoClo OHs
+        String LO;
+        String RO;
+        RO = partSeq.substring(partSeq.length() - 4);
+        LO = partSeq.substring(0, 4);
+        BiMap<String, String> moCloOHseqs = Utilities.getMoCloOHseqs();
+        BiMap<String, String> inverse = moCloOHseqs.inverse();
+        
+        if (inverse.containsKey(LO)) {
+            LO = inverse.get(LO);
+        }
+        if (inverse.containsKey(RO)) {
+            RO = inverse.get(RO);
+        }
+        RO = RO.replaceAll("\\*", "#");
+        LO = LO.replaceAll("\\*","#");
+        
+        //Make a new Part and Vector
+        Part part = null;
+        Vector vector = null;
+        
+        //Get rid of these tags and add a field to part with two features that constitute the vector
+        //There will be some assumptions about MoClo format here as well
+        
+        //Generate parts and vector parts
+        boolean comment = false;
+        for (org.sbolstandard.core2.Annotation a : cd.getAnnotations()) {
+            if (a.getQName().toString().equals("genbank:comment")) {
+                part = Part.generateBasic(cd.getDisplayId() + "_part_" + LO + "_" + RO, a.getStringValue(), new NucSeq(partSeq), null, null);
+                vector = new Vector(cd.getDisplayId() + "_vector_" + LO + "_" + RO, "", new NucSeq(vecSeq), null, null, null, null);
+                comment = true;
+            }
+        }
+        if (!comment) {
+            part = Part.generateBasic(cd.getDisplayId() + "_part_" + LO + "_" + RO, "", new NucSeq(partSeq), null, null);
+            vector = new Vector(cd.getDisplayId() + "_vector_" + LO + "_" + RO, "", new NucSeq(vecSeq), null, null, null, null);
+        }
+
+        partSet.add(part);
+        partSet.add(vector);
+
+        pn.setPart(part);
+        pn.setVector(vector);
+        pn.setLevel(level);
+        
+        return partSet;
+    }
 }

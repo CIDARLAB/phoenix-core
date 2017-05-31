@@ -379,20 +379,20 @@ public class Utilities {
     public static Map<String,String> getChannelsMap(){
         
         Map<String,String> channelMap = new HashMap<>();
-        channelMap.put("T-Sapphire.ref", "Pacific_Orange-A");
-        channelMap.put("mCitrine.ref", "");
-        channelMap.put("iRFP.ref", "PE-Texas_Red-A");
-        channelMap.put("mOrange.ref", "");
-        channelMap.put("EYFP.ref", "");
-        channelMap.put("EBFP2.ref", "Pacific_Blue-A");
-        channelMap.put("mRFP1.4m.ref", "");
-        channelMap.put("mAmetrine.ref", "");
-        channelMap.put("DsRed.ref", "");
-        channelMap.put("LSS-mOrange.ref", "");
-        channelMap.put("E2-Crimson.ref", "");
-        channelMap.put("CyPet.ref", "");
-        channelMap.put("mNeptune.ref", "");
-        channelMap.put("EGFPm.ref", "FITC-A");
+        channelMap.put("T-Sapphire", "Pacific_Orange-A");
+        channelMap.put("mCitrine", "");
+        channelMap.put("iRFP", "PE-Texas_Red-A");
+        channelMap.put("mOrange", "");
+        channelMap.put("EYFP", "");
+        channelMap.put("EBFP2", "Pacific_Blue-A");
+        channelMap.put("mRFP1.4m", "");
+        channelMap.put("mAmetrine", "");
+        channelMap.put("DsRed", "");
+        channelMap.put("LSS-mOrange", "");
+        channelMap.put("E2-Crimson", "");
+        channelMap.put("CyPet", "");
+        channelMap.put("mNeptune", "");
+        channelMap.put("EGFPm", "FITC-A");
         
         return channelMap;
     }
@@ -434,10 +434,10 @@ public class Utilities {
         iptg.setUnits("nM");
         
         
-        regTitreMap.put("araC.ref", ara);
-        regTitreMap.put("tetR.ref", atc);
-        regTitreMap.put("phlF.ref", dapg);
-        regTitreMap.put("lacIm.ref", iptg);
+        regTitreMap.put("araC", ara);
+        regTitreMap.put("tetR", atc);
+        regTitreMap.put("phlF", dapg);
+        regTitreMap.put("lacIm", iptg);
         
         return regTitreMap;
     }
@@ -469,7 +469,7 @@ public class Utilities {
     
     public static Double getCooperativity(String regulator){
         
-        if(regulator.equals("lacIm.ref")){
+        if(regulator.equals("lacIm")){
             return 4.0;
         }
         return 2.0;

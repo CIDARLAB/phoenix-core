@@ -37,7 +37,7 @@ ORIGIN
 LOCUS       araC                 879 bp ds-DNA     linear       16-JUN-2015
 DEFINITION  .
 KEYWORDS    "part-subtype:Activatible-Activator"                               
-            "regulation-promoter:para-1" "source:BBa"
+            "regulation-promoter:para_1" "source:BBa"
             "regulation-molecule:arabinose" "part-type:CDS"
 COMMENT     MoClo basic part: Activator                                        
 FEATURES             Location/Qualifiers
@@ -1118,7 +1118,7 @@ LOCUS       tetR                 624 bp ds-DNA     linear       16-JUN-2015
 DEFINITION  .
 KEYWORDS    "regulation-molecule:aTc" "source:BBa"                             
             "part-subtype:Repressible-Repressor"
-            "regulation-promoter:pLtetO-1" "part-type:CDS"
+            "regulation-promoter:pLtetO_1" "part-type:CDS"
 COMMENT     MoClo basic part: Repressor                                        
 FEATURES             Location/Qualifiers
      CDS             1..621

@@ -240,7 +240,7 @@ public class PhoenixInstructions {
     }
     
     public static File generateNameMapFile(List<AssignedModule> amodules, String filePath) throws IOException{
-        File testingMap = new File(filePath + "/nameMapFileTest.csv");
+        File testingMap = new File(filePath + "/nameMapFileTest_no_ref.csv");
         FileWriter mapFileWriter = new FileWriter(testingMap);
         try (BufferedWriter writer = new BufferedWriter(mapFileWriter)) {
             writer.write("Short Name,Features,Custom Name");

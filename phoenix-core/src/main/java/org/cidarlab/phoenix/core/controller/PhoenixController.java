@@ -185,17 +185,17 @@ public class PhoenixController {
         PhoenixGrammar.decompose(bestModule);
         
         //Adds Testing primitives to The Module Tree. 
-        TestingStructures.addTestingPrimitives(bestModule,nc);
+//        TestingStructures.addTestingPrimitives(bestModule,nc); // COMMENTED OUT TO TEST WITH OTHER COLLECTIONS OF PARTS
         
         //Perform partial part assignments given the feature library
-        FeatureAssignment.partialAssignment(bestModule, 0.5, nc);
+//        FeatureAssignment.partialAssignment(bestModule, 0.5, nc); // COMMENTED OUT TO TEST WITH OTHER COLLECTIONS OF PARTS
         
         bestModule.assignTreeModuleStage();
         bestModule.printTree();
 
         //At this point, I have a Module tree, which has Assigned Modules for Expressors and Expressees  and a Many to Many relationship between modules and Assigned Modules. 
         //I just want to create Control Modules for AssignedModules & Create Experiment Objects for AssignedModules
-        TestingStructures.createExperiments(bestModule);
+//        TestingStructures.createExperiments(bestModule); // COMMENTED OUT TO TEST WITH OTHER COLLECTIONS OF PARTS
         
         assignShortName(bestModule);
         

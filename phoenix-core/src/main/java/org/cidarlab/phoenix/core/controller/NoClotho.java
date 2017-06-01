@@ -109,7 +109,7 @@ public class NoClotho {
         allIds = new HashSet<String>();
         counter = new AtomicInteger();
         initializeAssemblyParameters();
-        synBioHub = new SynBioHubAdaptor("https://synbiohub.programmingbiology.org/");
+        synBioHub = new SynBioHubAdaptor("https://synbiohub.cidarlab.org/");
     }
     
     private void initializeAssemblyParameters(){
@@ -133,11 +133,11 @@ public class NoClotho {
         String cytometerFilepath = Utilities.getResourcesFilepath() + "FluorescentProteins/cosbi_fortessa_bd.csv";
         NoClotho nc = new NoClotho();
         
-        nc.addFeaturesFromRepo("https://synbiohub.programmingbiology.org/public/garuda_20170531/garuda_20170531_collection/1.0");
+//        nc.addFeaturesFromRepo("https://synbiohub.programmingbiology.org/public/garuda_20170531/garuda_20170531_collection/1.0");
         
         
-//        nc.addFeaturesFromRepo("https://synbiohub.cidarlab.org/public/phoenix_feature_lib/phoenix_feature_lib_collection/1");
-//        nc.addPlasmidFromRepo("https://synbiohub.cidarlab.org/public/phoenix_plasmid_lib/phoenix_plasmid_lib_collection/1");
+        nc.addFeaturesFromRepo("https://synbiohub.cidarlab.org/public/phoenix_feature_lib/phoenix_feature_lib_collection/1");
+        nc.addPlasmidFromRepo("https://synbiohub.cidarlab.org/public/phoenix_plasmid_lib/phoenix_plasmid_lib_collection/1");
         
         
 //        nc.addFeatures(featureFilepath);
@@ -377,8 +377,8 @@ public class NoClotho {
         try {
             int count = 0;
             for (ComponentDefinition cd : synBioHub.getSBOL(collectionURI).getComponentDefinitions()) {
-                System.out.println(cd.getDisplayId());
-                count++;
+//                System.out.println(cd.getDisplayId());
+//                count++;
                 for (SequenceAnnotation sa : cd.getSequenceAnnotations()) {
                     String name = cd.getDisplayId();
                     int startFeat = 0;

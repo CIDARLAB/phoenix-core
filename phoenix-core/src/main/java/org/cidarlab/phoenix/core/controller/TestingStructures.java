@@ -501,13 +501,9 @@ public class TestingStructures {
         
         testConstitutivePromoter = new PrimitiveModule(FeatureRole.PROMOTER_CONSTITUTIVE, new Primitive(new ComponentType("p"), "pTEST"), findFeature(nc,"J23104")); //.ref"));
         
-//        testControllablePromoter1 = new PrimitiveModule(FeatureRole.PROMOTER_INDUCIBLE, new Primitive(new ComponentType("p"), "pTEST"), findFeature(nc,"para-1.ref"));
-//        
-//        testControllablePromoter2 = new PrimitiveModule(FeatureRole.PROMOTER_REPRESSIBLE, new Primitive(new ComponentType("p"), "pTEST"), findFeature(nc,"pLtetO-1.ref"));
+        testControllablePromoter1 = new PrimitiveModule(FeatureRole.PROMOTER_INDUCIBLE, new Primitive(new ComponentType("p"), "pTEST"), findFeature(nc,"para-1")); //.ref\"));
         
-        testControllablePromoter1 = new PrimitiveModule(FeatureRole.PROMOTER_INDUCIBLE, new Primitive(new ComponentType("p"), "pTEST"), findFeature(nc,"para_1")); //.ref\"));
-        
-        testControllablePromoter2 = new PrimitiveModule(FeatureRole.PROMOTER_REPRESSIBLE, new Primitive(new ComponentType("p"), "pTEST"), findFeature(nc,"pLtetO_1")); //.ref\"));.ref"));
+        testControllablePromoter2 = new PrimitiveModule(FeatureRole.PROMOTER_REPRESSIBLE, new Primitive(new ComponentType("p"), "pTEST"), findFeature(nc,"pLtetO-1")); //.ref\"));.ref"));
 
         testRBS = new PrimitiveModule(FeatureRole.RBS, new Primitive(new ComponentType("r"), "rTEST"), findFeature(nc,"BCD8")); //.ref\"));.ref"));
 

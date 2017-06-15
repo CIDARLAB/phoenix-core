@@ -1,5 +1,5 @@
 LOCUS       AAV                   36 bp ds-DNA     linear       07-JAN-2015
-DEFINITION  .
+DEFINITION  CDS - Degradation Tag
 KEYWORDS    "part-subtype:Degradation Tag" "source:unknown" "speed:slow"       
             "part-type:CDS"
 COMMENT     AAV Degradation Tag                                                
@@ -12,7 +12,7 @@ ORIGIN
         1 GCGGCGAACG ATGAAAACTA TGCGGCGGCG GTGTAA
 //
 LOCUS       ampR                 663 bp ds-DNA     linear       28-APR-2015
-DEFINITION  .
+DEFINITION  CDS - Resistance
 KEYWORDS    "part-type:CDS" "part-subtype:Resistance" "source:BBa"             
 COMMENT     Ampicilin Resistance                                               
 FEATURES             Location/Qualifiers
@@ -35,7 +35,7 @@ ORIGIN
       661 taa
 //
 LOCUS       araC                 879 bp ds-DNA     linear       16-JUN-2015
-DEFINITION  .
+DEFINITION  CDS - Activatible-Activator
 KEYWORDS    "part-subtype:Activatible-Activator"                               
             "regulation-promoter:para_1" "source:BBa"
             "regulation-molecule:arabinose" "part-type:CDS"
@@ -63,7 +63,7 @@ ORIGIN
       841 gaagaaaaag tgaatgatgt agccgtcaag ttgtcataa
 //
 LOCUS       B0015                129 bp ds-DNA     linear       25-FEB-2015
-DEFINITION  .
+DEFINITION  Terminator - Natural
 KEYWORDS    "part-subtype:Natural" "part-type:Terminator " "source:BBa"        
 COMMENT     MoClo basic part: Terminator                                       
 FEATURES             Location/Qualifiers
@@ -77,7 +77,7 @@ ORIGIN
       121 gcgtttata
 //
 LOCUS       BCD1                  84 bp ds-DNA     linear       25-NOV-2014
-DEFINITION  .
+DEFINITION  5'UTR - BiCistronic Design
 KEYWORDS    "part-subtype:BiCistronic Design" "source:PMID\:23474465 "         
             "part-type:5'UTR "
 COMMENT     MoClo basic part: BiCistronic Design                               
@@ -91,7 +91,7 @@ ORIGIN
        61 ttaatcatgc acaggagact ttct
 //
 LOCUS       BCD12                 84 bp ds-DNA     linear       25-NOV-2014
-DEFINITION  .
+DEFINITION  5'UTR - BiCistronic Design
 KEYWORDS    "part-subtype:BiCistronic Design" "source:PMID\:23474465 "         
             "part-type:5'UTR "
 COMMENT     MoClo basic part: BiCistronic Design                               
@@ -105,7 +105,7 @@ ORIGIN
        61 ttaatcatgc tgcggagggt ttct
 //
 LOCUS       BCD13                 84 bp ds-DNA     linear       25-NOV-2014
-DEFINITION  .
+DEFINITION  5'UTR - BiCistronic Design
 KEYWORDS    "source:PMID\:23474465 " "part-subtype:BiCistronic Design"         
             "part-type:5'UTR "
 COMMENT     MoClo basic part: BiCistronic Design                               
@@ -119,7 +119,7 @@ ORIGIN
        61 ttaatcatgc aatggaggct ttct
 //
 LOCUS       BCD16                 84 bp ds-DNA     linear       25-NOV-2014
-DEFINITION  .
+DEFINITION  5'UTR - BiCistronic Design
 KEYWORDS    "part-subtype:BiCistronic Design" "source:PMID\:23474465 "         
             "part-type:5'UTR "
 COMMENT     MoClo basic part: BiCistronic Design                               
@@ -133,7 +133,7 @@ ORIGIN
        61 ttaatcatgc ttaggagtct ttct
 //
 LOCUS       BCD2                  84 bp ds-DNA     linear       25-NOV-2014
-DEFINITION  .
+DEFINITION  5'UTR - BiCistronic Design
 KEYWORDS    "part-type:5'UTR " "part-subtype:BiCistronic Design"               
             "source:PMID\:23474465 "
 COMMENT     MoClo basic part: BiCistronic Design                               
@@ -147,7 +147,7 @@ ORIGIN
        61 ttaatcatgc taaggaggtt ttct
 //
 LOCUS       BCD8                  84 bp ds-DNA     linear       25-NOV-2014
-DEFINITION  .
+DEFINITION  5'UTR - BiCistronic Design
 KEYWORDS    "part-type:5'UTR " "part-subtype:BiCistronic Design"               
             "source:PMID\:23474465 "
 COMMENT     MoClo basic part: BiCistronic Design                               
@@ -161,7 +161,7 @@ ORIGIN
        61 ttaatcatgc atcggaccgt ttct
 //
 LOCUS       betI                 588 bp ds-DNA     linear       16-JUN-2015
-DEFINITION  .
+DEFINITION  CDS - Repressor
 KEYWORDS    "source:Addgene 49357" "part-type:CDS" "part-subtype:Repressor"    
             "regulation-promoter:pBetI"
 COMMENT     MoClo basic part: Repressor                                        
@@ -183,7 +183,7 @@ ORIGIN
       541 AATAGCCTGA CCCGTCATTT TATCACCCAG CATCTGCCGA CCGATTAA
 //
 LOCUS       BM3R1                579 bp ds-DNA     linear       16-JUN-2015
-DEFINITION  .
+DEFINITION  CDS - Repressor
 KEYWORDS    "part-type:CDS" "part-subtype:Repressor" "source:Addgene 49358"    
             "regulation-promoter:pBM3R1"
 COMMENT     MoClo basic part: Repressor                                        
@@ -205,7 +205,7 @@ ORIGIN
       541 GAAGAAAGCC TGTGGGCAGC ACTGAGCCGT CAGAGCTAA
 //
 LOCUS       cmR                  660 bp ds-DNA     linear       26-NOV-2014
-DEFINITION  .
+DEFINITION  CDS - Resistance
 KEYWORDS    "part-subtype:Resistance" "source:BBa" "part-type:CDS"             
 COMMENT     Chloramphenicol Resistance                                         
 FEATURES             Location/Qualifiers
@@ -227,7 +227,7 @@ ORIGIN
       601 gtcggcagaa tgcttaatga attacaacag tactgcgatg agtggcaggg cggggcgtaa
 //
 LOCUS       ColE1                683 bp ds-DNA     linear       26-NOV-2014
-DEFINITION  .
+DEFINITION  Origin - High Copy
 KEYWORDS    "part-subtype:High Copy" "source:PMID\: 23041931"                  
             "part-type:Origin"
 COMMENT     ColE1 Origin of Replication                                        
@@ -251,7 +251,7 @@ ORIGIN
       661 acgttaaggg attttggtca tga
 //
 LOCUS       CyPet                735 bp ds-DNA     linear       30-JUL-2015
-DEFINITION  .
+DEFINITION  CDS - Fluorescent Reporter
 KEYWORDS    "part-type:CDS " "source:Addgene 14030" "brightness:53"            
             "part-subtype:Fluorescent Reporter" "oligomerization:2"
             "excitation:435" "emission:477"
@@ -277,7 +277,7 @@ ORIGIN
       721 caccaccacc actaa
 //
 LOCUS       DAS                   36 bp ds-DNA     linear       07-JAN-2015
-DEFINITION  .
+DEFINITION  CDS - Degradation Tag
 KEYWORDS    "source:unknown" "speed:Medium" "part-subtype:Degradation Tag"     
             "part-type:CDS"
 COMMENT     DAS Degradation Tag                                                
@@ -290,7 +290,7 @@ ORIGIN
         1 GCGGCGAACG ATGAAAACTA TGCGGATGCG AGCTAA
 //
 LOCUS       DsRed                669 bp ds-DNA     linear       08-JAN-2015
-DEFINITION  .
+DEFINITION  CDS - Fluorescent Reporter
 KEYWORDS    "emission:583" "brightness:176" "source:Addgene 26248"             
             "part-type:CDS " "excitation:558" "oligomerization:4"
             "part-subtype:Fluorescent Reporter"
@@ -315,7 +315,7 @@ ORIGIN
       661 ttcctgtaa
 //
 LOCUS       E2_Crimson           678 bp ds-DNA     linear       08-JAN-2015
-DEFINITION  .
+DEFINITION  CDS - Fluorescent Reporter
 KEYWORDS    "excitation:611" "brightness:59" "part-type:CDS" "emission:646"    
             "oligomerization:4" "part-subtype:Fluorescent Reporter"
             "source:Glick Lab"
@@ -340,7 +340,7 @@ ORIGIN
       661 caccacctgt tccagtag
 //
 LOCUS       EBFP2                792 bp ds-DNA     linear       08-JAN-2015
-DEFINITION  .
+DEFINITION  CDS - Fluorescent Reporter
 KEYWORDS    "oligomerization:2" "part-subtype:Fluorescent Reporter"            
             "emission:448" "brightness:60" "part-type:CDS" "excitation:383"
             "source:Addgene 14891"
@@ -367,7 +367,7 @@ ORIGIN
       781 accgccgcct ga
 //
 LOCUS       ECK120015170          47 bp ds-DNA     linear       26-NOV-2014
-DEFINITION  .
+DEFINITION  Terminator - Natural
 KEYWORDS    "part-subtype:Natural" "part-type:Terminator" "source:Addgene      
             46006"
 COMMENT     MoClo basic part: Terminator                                       
@@ -380,7 +380,7 @@ ORIGIN
         1 ACAATTTTCG AAAAAACCCG CTTCGGCGGG TTTTTTTATA GCTAAAA
 //
 LOCUS       EGFPm                720 bp ds-DNA     linear       28-APR-2015
-DEFINITION  .
+DEFINITION  CDS - Fluorescent Reporter
 KEYWORDS    "source:BBa" "oligomerization:2" "excitation:501"                  
             "part-subtype:Fluorescent Reporter" "emission:511" "brightness:100"
             "part-type:CDS"
@@ -406,7 +406,7 @@ ORIGIN
       661 cttgagtttg taacagctgc tgggattaca catggcatgg atgaactata caaataataa
 //
 LOCUS       EYFP                 723 bp ds-DNA     linear       16-JAN-2015
-DEFINITION  .
+DEFINITION  CDS - Fluorescent Reporter
 KEYWORDS    "part-subtype:Fluorescent Reporter" "source:BBa" "excitation:514"  
             "oligomerization:2" "part-type:CDS " "emission:527"
             "brightness:151"
@@ -432,7 +432,7 @@ ORIGIN
       721 taa
 //
 LOCUS       HelicalLinker         36 bp ds-DNA     linear       30-MAR-2015
-DEFINITION  .
+DEFINITION  CDS - Linker
 KEYWORDS    "part-type:CDS" "part-subtype:Linker" "source:paper"               
 COMMENT     Linker Sequence 3 for fusion proteins                              
 FEATURES             Location/Qualifiers
@@ -444,7 +444,7 @@ ORIGIN
         1 GCTGAAGCTG CTGCTAAAGA AGCTGCTGCT AAAGCT
 //
 LOCUS       IR1_IR2_Term2        150 bp ds-DNA     linear       26-NOV-2014
-DEFINITION  .
+DEFINITION  Terminator - Natural
 KEYWORDS    "part-subtype:Natural" "part-type:Terminator "                     
             "source:PMID\:19478183 "
 COMMENT     MoClo basic part: Terminator from the DIC counters                 
@@ -459,7 +459,7 @@ ORIGIN
       121 cggatggcct ttttgcgttt ctacaaactc
 //
 LOCUS       iRFP                 861 bp ds-DNA     linear       30-JUL-2015
-DEFINITION  .
+DEFINITION  CDS - Fluorescent Reporter
 KEYWORDS    "part-type:CDS" "excitation:690" "emission:713" "oligomerization:2"
             "source:Addgene 31855" "brightness:100" "part-subtype:Fluorescent
             Reporter"
@@ -487,7 +487,7 @@ ORIGIN
       841 catctggaat tgaggaatta a
 //
 LOCUS       J23104                35 bp ds-DNA     linear       26-NOV-2014
-DEFINITION  .
+DEFINITION  Promoter - Constitutive
 KEYWORDS    "source:BBa" "part-subtype:Constitutive" "part-type:Promoter "     
 COMMENT     MoClo basic part: Promoter                                         
 FEATURES             Location/Qualifiers
@@ -499,7 +499,7 @@ ORIGIN
         1 ttgacagcta gctcagtcct aggtattgtg ctagc
 //
 LOCUS       kanR                 762 bp ds-DNA     linear       26-NOV-2014
-DEFINITION  .
+DEFINITION  CDS - Resistance
 KEYWORDS    "part-subtype:Resistance" "part-type:CDS" "source:BBa"             
 COMMENT     Kanamycin Resistance                                               
 FEATURES             Location/Qualifiers
@@ -523,7 +523,7 @@ ORIGIN
       721 aataaattgc agtttcattt gatgctcgat gagtttttct aa
 //
 LOCUS       L3S1P00_              91 bp ds-DNA     linear       26-NOV-2014
-DEFINITION  .
+DEFINITION  Terminator - Synthetic
 KEYWORDS    "part-subtype:Synthetic" "source:PMID\: 23727987"                  
             "part-type:Terminator"
 COMMENT     MoClo basic part: Terminator                                       
@@ -537,7 +537,7 @@ ORIGIN
        61 atgtcgttag tgacgcttac ctcttaagag g
 //
 LOCUS       L3S1P13_              89 bp ds-DNA     linear       26-NOV-2014
-DEFINITION  .
+DEFINITION  Terminator - Synthetic
 KEYWORDS    "part-subtype:Synthetic" "part-type:Terminator" "source:PMID\:     
             23727987"
 COMMENT     MoClo basic part: Terminator                                       
@@ -551,7 +551,7 @@ ORIGIN
        61 ttacctctta agaggtcact gacctaaca
 //
 LOCUS       L3S1P22_              86 bp ds-DNA     linear       26-NOV-2014
-DEFINITION  .
+DEFINITION  Terminator - Synthetic
 KEYWORDS    "part-subtype:Synthetic" "source:PMID\: 23727987"                  
             "part-type:Terminator"
 COMMENT     MoClo basic part: Terminator                                       
@@ -565,7 +565,7 @@ ORIGIN
        61 gtaactgaac ccaatgtcgt tagtga
 //
 LOCUS       L3S2P21_              60 bp ds-DNA     linear       16-JUL-2015
-DEFINITION  .
+DEFINITION  Terminator - Synthetic
 KEYWORDS    "part-subtype:Synthetic" "part-type:Terminator" "source:Addgene    
             46004"
 COMMENT     MoClo basic part: Terminator                                       
@@ -578,7 +578,7 @@ ORIGIN
         1 TCGGTACCAA ATTCCAGAAA AGAGGCCTCC CGAAAGGGGG GCCTTTTTTC GTTTTGGTCC
 //
 LOCUS       LAA                   36 bp ds-DNA     linear       07-JAN-2015
-DEFINITION  .
+DEFINITION  CDS - Degradation Tag
 KEYWORDS    "part-subtype:Degradation Tag" "speed:Fast" "source:unknown"       
             "part-type:CDS"
 COMMENT     LAA Degradation Tag                                                
@@ -591,7 +591,7 @@ ORIGIN
         1 GCGGCGAACG ATGAAAACTA TGCGCTGGCG GCGTAA
 //
 LOCUS       lacIm               1092 bp ds-DNA     linear       16-JUN-2015
-DEFINITION  .
+DEFINITION  CDS - Repressible-Repressor
 KEYWORDS    "part-type:CDS" "regulation-promoter:pA1LacO" "source:BBa"     
             "part-subtype:Repressible-Repressor" "regulation-molecule:IPTG"
 COMMENT     MoClo basic part: Repressor                                        
@@ -622,7 +622,7 @@ ORIGIN
      1081 agcgggcagt aa
 //
 LOCUS       lacZalpha            482 bp ds-DNA     linear       08-JUN-2015
-DEFINITION  .
+DEFINITION  CDS - Selectable Marker
 KEYWORDS    "part-subtype:Selectable Marker" "part-type:CDS" "source:unknown"  
 COMMENT     lacZ alpha fragment                                                
 FEATURES             Location/Qualifiers
@@ -642,7 +642,7 @@ ORIGIN
       481 GG
 //
 LOCUS       lmrA                 567 bp ds-DNA     linear       17-JUN-2015
-DEFINITION  .
+DEFINITION  CDS - Repressor
 KEYWORDS    "part-subtype:Repressor" "regulation-promoter:pLmrA"           
             "part-type:CDS" "source:Addgene 49364"
             "promoter-regulation:pLmrA"
@@ -665,7 +665,7 @@ ORIGIN
       541 TGTATTCCGG ATCTGCTGAA ACGTTAA
 //
 LOCUS       LSS_mOrange          711 bp ds-DNA     linear       30-JUL-2015
-DEFINITION  .
+DEFINITION  CDS - Fluorescent Reporter
 KEYWORDS    "part-subtype:Fluorescent Reporter" "part-type:CDS"                
             "oligomerization:1" "source:Addgene 37129" "excitation:437"
             "emission:572" "brightness:77"
@@ -690,7 +690,7 @@ ORIGIN
       661 cgcgccgagg gccgccactc caccggcggc atggacgagc tgtacaagta a
 //
 LOCUS       LVA                   36 bp ds-DNA     linear       28-APR-2015
-DEFINITION  .
+DEFINITION  CDS - Degradation Tag
 KEYWORDS    "part-subtype:Degradation Tag" "source:BBa" "speed:Fast"           
             "part-type:CDS"
 COMMENT     LVA Degradation Tag                                                
@@ -703,7 +703,7 @@ ORIGIN
         1 gctgcaaacg acgaaaacta cgctttagta gcttaa
 //
 LOCUS       mAmetrine            720 bp ds-DNA     linear       08-JAN-2015
-DEFINITION  .
+DEFINITION  CDS - Fluorescent Reporter
 KEYWORDS    "part-subtype:Fluorescent Reporter" "brightness:77" "part-type:CDS"
             "oligomerization:1" "emission:526" "source:Addgene 18083"
             "excitation:406"
@@ -728,7 +728,7 @@ ORIGIN
       661 ctgctggagt tcgttaccgc cgccgggatc actcccggca tggacgagct gtacaagtaa
 //
 LOCUS       mCitrine             720 bp ds-DNA     linear       08-JAN-2015
-DEFINITION  .
+DEFINITION  CDS - Fluorescent Reporter
 KEYWORDS    "excitation:516" "oligomerization:1" "brightness:174"              
             "part-subtype:Fluorescent Reporter" "part-type:CDS " "source:Tsien
             Lab (UCSD)" "emission:529"
@@ -753,7 +753,7 @@ ORIGIN
       661 ctgctggagt tcgtgaccgc cgccgggatc actctcggca tggacgagct gtacaagtaa
 //
 LOCUS       mNeptune             735 bp ds-DNA     linear       08-JAN-2015
-DEFINITION  .
+DEFINITION  CDS - Fluorescent Reporter
 KEYWORDS    "source:Tsien Lab (UCSD)" "excitation:600" "oligomerization:1"     
             "brightness:25" "emission:650" "part-subtype:Fluorescent Reporter"
             "part-type:CDS"
@@ -779,7 +779,7 @@ ORIGIN
       721 gagctgtaca agtaa
 //
 LOCUS       mOrange              687 bp ds-DNA     linear       30-JUL-2015
-DEFINITION  .
+DEFINITION  CDS - Fluorescent Reporter
 KEYWORDS    "emission:562" "brightness:146" "oligomerization:1"                
             "part-subtype:Fluorescent Reporter" "source:Addgene 29770"
             "excitation:548" "part-type:CDS "
@@ -804,7 +804,7 @@ ORIGIN
       661 ggcatggacg agctgtacaa gtagtaa
 //
 LOCUS       mRFP1_4m             681 bp ds-DNA     linear       16-JAN-2015
-DEFINITION  .
+DEFINITION  CDS - Fluorescent Reporter
 KEYWORDS    "part-subtype:Fluorescent Reporter" "oligomerization:1"            
             "brightness:44" "emission:607" "excitation:584" "part-type:CDS "
             "source:BBa"
@@ -830,7 +830,7 @@ ORIGIN
       661 cactccaccg gtgcttaata a
 //
 LOCUS       p15A                 841 bp ds-DNA     linear       26-NOV-2014
-DEFINITION  .
+DEFINITION  Origin - Medium Copy
 KEYWORDS    "part-subtype:Medium Copy" "part-type:Origin" "source:PMID\:       
             23041931"
 COMMENT     p15A Origin of Replication                                         
@@ -857,7 +857,7 @@ ORIGIN
       841 t
 //
 LOCUS       pA1LacO               84 bp ds-DNA     linear       16-JUN-2015
-DEFINITION  .
+DEFINITION  Promoter - Repressible
 KEYWORDS    "source:PMID\:19478183 " "part-type:Promoter "                     
             "part-subtype:Repressible" "regulation-regulator:lacIm"
 COMMENT     MoClo basic part: lacI Promoter                                    
@@ -871,7 +871,7 @@ ORIGIN
        61 gtgagcggat aacaatttca caca
 //
 LOCUS       para_1               286 bp ds-DNA     linear       16-JUN-2015
-DEFINITION  .
+DEFINITION  Promoter - Inducible
 KEYWORDS    "part-subtype:Inducible" "regulation-regulator:araC"           
             "source:PMID\:19478183" "part-type:Promoter "
 COMMENT     MoClo basic part: pBAD Promoter                                    
@@ -888,7 +888,7 @@ ORIGIN
       241 atcctacctg acgcttttta tcgcaactct ctactgtttc tccata
 //
 LOCUS       pBetI                 54 bp ds-DNA     linear       16-JUN-2015
-DEFINITION  .
+DEFINITION  Promoter - Repressible
 KEYWORDS    "part-subtype:Repressible" "regulation-regulator:betI"         
             "source:Addgene 49357" "part-type:Promoter"
 COMMENT     MoClo basic part: Promoter (betI)                                  
@@ -901,7 +901,7 @@ ORIGIN
         1 ttcatggatt cgttaccaat tgacaATTgA TTGGACGTTC AATATAAtgc tagc
 //
 LOCUS       pBM3R1                46 bp ds-DNA     linear       16-JUN-2015
-DEFINITION  .
+DEFINITION  Promoter - Repressible
 KEYWORDS    "part-subtype:Repressible" "regulation-regulator:BM3R1"        
             "source:Addgene 49358" "part-type:Promoter"
 COMMENT     MoClo basic part: BM3R1 Promoter                                   
@@ -914,7 +914,7 @@ ORIGIN
         1 ttcgttacca attgaCGGAA TGAACGTTCA TTCCGataat gctagc
 //
 LOCUS       phlF                 603 bp ds-DNA     linear       16-JUN-2015
-DEFINITION  .
+DEFINITION  CDS - Repressible-Repressor
 KEYWORDS    "regulation-promoter:pPhlF" "part-type:CDS"                    
             "part-subtype:Repressible-Repressor" "source:Addgene 49367"
             "regulation-molecule:DAPG"
@@ -938,7 +938,7 @@ ORIGIN
       601 TAA
 //
 LOCUS       pLmrA                 58 bp ds-DNA     linear       16-JUN-2015
-DEFINITION  .
+DEFINITION  Promoter - Repressible
 KEYWORDS    "part-subtype:Repressible" "source:Addgene 49364"                  
             "regulation-regulator:lmrA" "part-type:Promoter"
 COMMENT     MoClo basic part: lmrA Promoter                                    
@@ -951,7 +951,7 @@ ORIGIN
         1 ttcgttacca attgacaact ggtggtcgaa tcaaGATAAT AGACCAGTCA CTATATTT
 //
 LOCUS       pLtetO_1              77 bp ds-DNA     linear       16-JUN-2015
-DEFINITION  .
+DEFINITION  Promoter - Repressible
 KEYWORDS    "part-type:Promoter " "source:PMID\:19478183 "                     
             "part-subtype:Repressible" "regulation-regulator:tetR"
 COMMENT     MoClo basic part: tetR Promoter                                    
@@ -965,7 +965,7 @@ ORIGIN
        61 aggacgcact gaccgaa
 //
 LOCUS       pMB1                 614 bp ds-DNA     linear       26-NOV-2014
-DEFINITION  .
+DEFINITION  Origin - High Copy
 KEYWORDS    "part-subtype:High Copy" "source:BBa" "part-type:Origin"           
 COMMENT     pMB1 Origin of Replication                                         
 FEATURES             Location/Qualifiers
@@ -987,7 +987,7 @@ ORIGIN
       601 caagaagatc cttt
 //
 LOCUS       PolyGlycineLinker     18 bp ds-DNA     linear       30-MAR-2015
-DEFINITION  .
+DEFINITION  CDS - Linker
 KEYWORDS    "part-subtype:Linker" "part-type:CDS" "source:paper"               
 COMMENT     Linker Sequence 2 for fusion proteins                              
 FEATURES             Location/Qualifiers
@@ -999,7 +999,7 @@ ORIGIN
         1 GGCGGCGGCG GCGGCCAT
 //
 LOCUS       pPhlF                 46 bp ds-DNA     linear       16-JUN-2015
-DEFINITION  .
+DEFINITION  Promoter - Repressible
 KEYWORDS    "part-subtype:Repressible" "part-type:Promoter" "source:Addgene    
             49367" "regulation-regulator:phlF"
 COMMENT     MoClo basic part: Promoter (phlF)                                  
@@ -1012,7 +1012,7 @@ ORIGIN
         1 ttcgttacca attgacATGA TACGAAACGT ACCGTATCGT TAAGGT
 //
 LOCUS       pSC101               951 bp ds-DNA     linear       26-NOV-2014
-DEFINITION  .
+DEFINITION  Origin - Low Copy
 KEYWORDS    "part-subtype:Low Copy" "source:PMID\: 23041931" "part-type:Origin"
 COMMENT     pSC101 Origin of Replication                                       
 FEATURES             Location/Qualifiers
@@ -1039,7 +1039,7 @@ ORIGIN
       901 atagcgacta atcgctagtt catttgcttt gaaaacaact aattcagaca t
 //
 LOCUS       pSrpR                 65 bp ds-DNA     linear       16-JUN-2015
-DEFINITION  .
+DEFINITION  Promoter - Repressible
 KEYWORDS    "regulation-regulator:srpR" "source:Addgene 49372"             
             "part-subtype:Repressible" "part-type:Promoter"
 COMMENT     MoClo basic part: Promoter (srpR)                                  
@@ -1053,7 +1053,7 @@ ORIGIN
        61 TAAAC
 //
 LOCUS       srpR                 642 bp ds-DNA     linear       16-JUN-2015
-DEFINITION  .
+DEFINITION  CDS - Repressor
 KEYWORDS    "part-type:CDS" "source:Addgene 49372" "part-subtype:Repressor"    
             "regulation-promoter:pSrpR"
 COMMENT     MoClo basic part: Repressor                                        
@@ -1076,7 +1076,7 @@ ORIGIN
       601 TGTGAAGAAG CACAGATTAA ACAGGTGAAA TCCTTCGAAT AA
 //
 LOCUS       T_Sapphire           720 bp ds-DNA     linear       08-JAN-2015
-DEFINITION  .
+DEFINITION  CDS - Fluorescent Reporter
 KEYWORDS    "part-subtype:Fluorescent Reporter" "excitation:399"               
             "source:Griesbeck" "emission:511" "part-type:CDS" "brightness:78"
             "oligomerization:2"
@@ -1101,7 +1101,7 @@ ORIGIN
       661 ctgctggagt tcgtgaccgc cgccgggatc actctgggca tggacgagct gtacaagtaa
 //
 LOCUS       T1                   105 bp ds-DNA     linear       26-NOV-2014
-DEFINITION  .
+DEFINITION  Terminator - Natural
 KEYWORDS    "part-type:Terminator " "part-subtype:Natural"                     
             "source:PMID\:19478183 "
 COMMENT     MoClo basic part: Terminator from the DIC counters                 
@@ -1115,7 +1115,7 @@ ORIGIN
        61 tgtcggtgaa cgctctcctg agtaggacaa atccgccgcc ctaga
 //
 LOCUS       tetR                 624 bp ds-DNA     linear       16-JUN-2015
-DEFINITION  .
+DEFINITION  CDS - Repressible-Repressor
 KEYWORDS    "regulation-molecule:aTc" "source:BBa"                             
             "part-subtype:Repressible-Repressor"
             "regulation-promoter:pLtetO_1" "part-type:CDS"

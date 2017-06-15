@@ -553,7 +553,7 @@ public class SBMLAdaptor {
 		coop.setName("n");
 		coop.setValue(cooperativity);
 		repressibleExpressionLaw.setMath(parseFormula(maxExpressionRate.getId() 
-				+ "/(1+"+ repressionBindingEquilibrium.getId() + "*" + repressor.getId() + "^" + coop + ")"));
+				+ "/(1+"+ repressionBindingEquilibrium.getId() + "*" + repressor.getId() + "^" + coop.getId() + ")"));
     	return repressibleExpression;
     }
     
@@ -577,8 +577,8 @@ public class SBMLAdaptor {
 		coop.setName("n");
 		coop.setValue(cooperativity);
 		activatableExpressionLaw.setMath(parseFormula(maxExpressionRate.getId() 
-				+ "*" + activationBindingEquilibrium.getId() + "*" + activator.getId() + "^" + coop
-				+  "/(1+"+ activationBindingEquilibrium.getId() + "*" + activator.getId() + "^" + coop + ")"));
+				+ "*" + activationBindingEquilibrium.getId() + "*" + activator.getId() + "^" + coop.getId()
+				+  "/(1+"+ activationBindingEquilibrium.getId() + "*" + activator.getId() + "^" + coop.getId() + ")"));
     	return activatableExpression;
     }
     
@@ -606,7 +606,7 @@ public class SBMLAdaptor {
 		coop.setName("n");
 		coop.setValue(cooperativity);
     	inducibleRepressibleExpressionLaw.setMath(parseFormula(maxExpressionRate.getId() 
-    			+ "/(1+"+ repressionBindingEqulibrium.getId() + "*" + repressor.getId() + "^" + coop 
+    			+ "/(1+"+ repressionBindingEqulibrium.getId() + "*" + repressor.getId() + "^" + coop.getId() 
     			+ "/(1+" + inducibleBindingEquilibrium.getId() + "*" + inducer.getId() + "))"));
     	return inducibleRepressibleExpression;
     }
@@ -635,9 +635,9 @@ public class SBMLAdaptor {
 		coop.setName("n");
 		coop.setValue(cooperativity);
     	inducibleActivatableExpressionLaw.setMath(parseFormula(maxExpressionRate.getId() 
-    			+ "*" + activationBindingEqulibrium.getId() + "*" + activator.getId() + "^" + coop + "*" + inducibleBindingEquilibrium.getId() + "*" + inducer.getId() 
+    			+ "*" + activationBindingEqulibrium.getId() + "*" + activator.getId() + "^" + coop.getId() + "*" + inducibleBindingEquilibrium.getId() + "*" + inducer.getId() 
     			+ "/(1+" + inducibleBindingEquilibrium.getId() + "*" + inducer.getId() + ")"
-    			+ "/(1+"+ activationBindingEqulibrium.getId() + "*" + activator.getId() + "^" + coop + "*" + inducibleBindingEquilibrium.getId() + "*" + inducer.getId()
+    			+ "/(1+"+ activationBindingEqulibrium.getId() + "*" + activator.getId() + "^" + coop.getId() + "*" + inducibleBindingEquilibrium.getId() + "*" + inducer.getId()
     			+ "/(1+" + inducibleBindingEquilibrium.getId() + "*" + inducer.getId() + "))"));
     	return inducibleActivatableExpression;
     }

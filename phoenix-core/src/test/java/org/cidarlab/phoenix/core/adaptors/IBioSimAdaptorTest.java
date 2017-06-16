@@ -189,11 +189,14 @@ public class IBioSimAdaptorTest {
 //        react = model.getReaction("TetR_expression");
 //        react.getKineticLaw().getLocalParameter("k_EXE").setValue(k_EXE);
         List<Model> mods = new ArrayList<Model>();
+        SBMLWriter writer = new SBMLWriter();
+//        writer.write(araCDoc, Utilities.getFilepath() + "/src/main/resources/iBioSimTest/araCDoc.xml");
+//        writer.write(bfpDoc, Utilities.getFilepath() + "/src/main/resources/iBioSimTest/bfpDoc.xml");
+//        writer.write(tetRDoc, Utilities.getFilepath() + "/src/main/resources/iBioSimTest/tetRDoc.xml");
         mods.add(araCDoc.getModel());
         mods.add(bfpDoc.getModel());
         mods.add(tetRDoc.getModel());
         SBMLDocument composedDoc = SBMLAdaptor.composeExpressionModels(mods);
-        SBMLWriter writer = new SBMLWriter();
         writer.write(composedDoc, Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter.xml");
         IBioSimAdaptor.simulateODE(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter.xml", Utilities.getFilepath() + "/src/main/resources/iBioSimTest/", 1000.0, 0.5, 1.0, 314159, 2.0, 1000, 1e-6, 1e-9);
         IBioSimAdaptor.writeCSV(IBioSimAdaptor.parseTSD(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/run-1.tsd"), Utilities.getFilepath() + "/src/main/resources/iBioSimTest/run-1.csv");

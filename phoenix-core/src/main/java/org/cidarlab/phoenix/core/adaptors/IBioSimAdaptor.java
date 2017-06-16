@@ -419,18 +419,33 @@ public class IBioSimAdaptor {
             Map<String, String> channelMapping) throws XMLStreamException, FileNotFoundException, IOException, BioSimException {
         SBMLWriter writer = new SBMLWriter();
         writer.write(doc, "sbml.xml");
+//        File dataFile = new File(timeSeriesDataFile);
+//        String outdir = dataFile.getAbsolutePath().substring(0, dataFile.getAbsolutePath().length() - dataFile.getAbsolutePath().split(File.separator)[dataFile.getAbsolutePath().split(File.separator).length - 1].length());
         List<List<String>> data = parseCSV(timeSeriesDataFile);
+//        double maxTime = Double.parseDouble(data.get(0).get(data.get(0).size() - 1));
+//        Map<String, Double> specMapping = new HashMap<String, Double>();
         for (int i = 0; i < data.size(); i++) {
             for (String channel : channelMapping.keySet()) {
                 if (data.get(i).get(0).equals(channel)) {
                     data.get(i).set(0, channelMapping.get(channel));
+//                    specMapping.put(channelMapping.get(channel).replace("\"",""), Double.parseDouble(data.get(i).get(1)));
                 }
             }
         }
+//        new File(outdir + File.separator + "sim").mkdir();
+//        for (String file : new File(outdir + File.separator + "sim").list()) {
+//            new File(outdir + File.separator + "sim" + File.separator + file).delete();
+//        }
         writeCSV(data, "data.csv");
+//        writeTSD(data, outdir + File.separator + "sim" + File.separator + "run-2.tsd");
         List<String> experimentFiles = new ArrayList<String>();
 	experimentFiles.add(new File("data.csv").getAbsolutePath());
         SBMLDocument result = estimateParameters(new File("sbml.xml").getAbsolutePath(), params, experimentFiles);
+//        for (String spec : specMapping.keySet()) {
+//            result.getModel().getSpecies(spec).setValue(specMapping.get(spec));
+//        }
+//        writer.write(result, outdir + File.separator + "sim" + File.separator + "sbml.xml");
+//        simulateODE(outdir + File.separator + "sim" + File.separator + "sbml.xml", outdir + File.separator + "sim" + File.separator, maxTime, maxTime / 10, maxTime / 10);
         new File("sbml.xml").delete();
         new File("data.csv").delete();
         return result;
@@ -550,6 +565,24 @@ public class IBioSimAdaptor {
                 }
                 writer.println(line);
             }
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Could not write to file!");
+        }
+    }
+    
+    public static void writeTSD(List<List<String>> data, String filename) {
+        try {
+            PrintWriter writer = new PrintWriter(filename);
+            writer.println("(");
+            for (int j = 0; j < data.get(0).size(); j ++) {
+                String line = "(" + data.get(0).get(j);
+                for (int i = 1; i < data.size(); i ++) {
+                    line += "," + data.get(i).get(j);
+                }
+                writer.println(line + ")");
+            }
+            writer.println(")");
             writer.close();
         } catch (IOException e) {
             System.out.println("Could not write to file!");
@@ -800,8 +833,8 @@ public class IBioSimAdaptor {
      * @param stoichAmpValue - stoichiometry amplification value
      * @throws IOException
      */
-    public static void simulateStocastic(String SBMLFileName, String outDir,
-            double timeLimit, double timeStep, double printInterval, double minTimeStep,
+    public static void simulateStochastic(String SBMLFileName, String outDir,
+            double timeLimit, double timeStep, double printInterval, int numOfRuns, double minTimeStep,
             long rndSeed, double stoichAmpValue) throws IOException {
 
         JProgressBar progress = new JProgressBar();
@@ -811,6 +844,11 @@ public class IBioSimAdaptor {
                 timeLimit, timeStep, minTimeStep, rndSeed, progress, printInterval,
                 stoichAmpValue, running, new String[0], "amount");
         simulator.simulate();
+        for (int i = 2; i <= numOfRuns ; i++) {
+            simulator.clear();
+            simulator.setupForNewRun(i);
+            simulator.simulate();
+        }
 
     }
 
@@ -825,10 +863,10 @@ public class IBioSimAdaptor {
      * the output
      * @throws IOException
      */
-    public static void simulateStocastic(String SBMLFileName, String outDir,
-            double timeLimit, double timeStep, double printInterval) throws IOException {
+    public static void simulateStochastic(String SBMLFileName, String outDir,
+            double timeLimit, double timeStep, double printInterval, int numOfRuns) throws IOException {
 
-        simulateStocastic(SBMLFileName, outDir, timeLimit, timeStep, printInterval, 0.0, 314159, 2.0);
+        simulateStochastic(SBMLFileName, outDir, timeLimit, timeStep, printInterval, numOfRuns, 0.0, 314159, 2.0);
 
     }
 }

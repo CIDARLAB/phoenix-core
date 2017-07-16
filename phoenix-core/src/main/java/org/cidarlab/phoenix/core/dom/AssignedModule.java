@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
+import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
 import org.sbml.jsbml.SBMLDocument;
 
 /**
@@ -97,6 +98,27 @@ public class AssignedModule extends Module {
         
         return features;
     } 
+    
+    public String getRoleFeature(){
+        if(this.getRole().equals(ModuleRole.EXPRESSOR)){
+            //Return Promoter
+            for(Feature f:this.getAllModuleFeatures()){
+                if(f.getRole().equals(FeatureRole.PROMOTER) || f.getRole().equals(FeatureRole.PROMOTER_CONSTITUTIVE) || f.getRole().equals(FeatureRole.PROMOTER_INDUCIBLE) || f.getRole().equals(FeatureRole.PROMOTER_REPRESSIBLE)){
+                    return f.getName();
+                }
+            }
+        } else if(this.getRole().equals(ModuleRole.EXPRESSEE)  ||  this.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) ||  this.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR) ||  this.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) ||  this.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR)) {
+            //Return CDS
+            for(Feature f:this.getAllModuleFeatures()){
+                if(f.getRole().equals(FeatureRole.CDS) || f.getRole().equals(FeatureRole.CDS_ACTIVATIBLE_ACTIVATOR) || f.getRole().equals(FeatureRole.CDS_ACTIVATOR) || f.getRole().equals(FeatureRole.CDS_REPRESSIBLE_REPRESSOR) || f.getRole().equals(FeatureRole.CDS_REPRESSOR) || f.getRole().equals(FeatureRole.CDS_FLUORESCENT) || f.getRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION) || f.getRole().equals(FeatureRole.CDS_LINKER) || f.getRole().equals(FeatureRole.CDS_RESISTANCE) || f.getRole().equals(FeatureRole.CDS_TAG)){
+                    return f.getName();
+                }
+            }
+        } else {
+                return this.getRole().toString();
+        }
+        return null;
+    }
     
     @Getter
     @Setter

@@ -134,6 +134,10 @@ public class Module extends AbstractModule {
     @Setter
     private Color color;
 
+    
+    @Getter
+    private boolean expAssigned;
+    
     //Graph Traversal
     public enum Color {
 
@@ -186,6 +190,17 @@ public class Module extends AbstractModule {
             default:
                 return "";
         }
+    }
+    
+    public void setModuleAssignmentFlag(){
+        boolean oneAssigned = false;
+        for(AssignedModule am: this.assignedModules){
+            if(am.isExpAssigned()){
+                oneAssigned = true;
+                break;
+            }
+        }
+        this.expAssigned = oneAssigned;
     }
     
     @Override

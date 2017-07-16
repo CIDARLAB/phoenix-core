@@ -5,9 +5,6 @@
  */
 package org.cidarlab.phoenix.core.controller;
 
-import com.fasterxml.uuid.EthernetAddress;
-import com.fasterxml.uuid.Generators;
-import com.fasterxml.uuid.impl.TimeBasedGenerator;
 import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,17 +20,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.xml.stream.XMLStreamException;
 import lombok.Getter;
 import lombok.Setter;
 import org.biojava.bio.BioException;
 import org.cidarlab.phoenix.core.adaptors.BenchlingAdaptor;
-import static org.cidarlab.phoenix.core.adaptors.ClothoAdaptor.annotate;
 import org.cidarlab.phoenix.core.adaptors.IBioSimAdaptor;
 import org.cidarlab.phoenix.core.dataprocessing.AnalyzeData;
 import org.cidarlab.phoenix.core.dom.Annotation;
@@ -46,6 +42,7 @@ import org.cidarlab.phoenix.core.dom.Feature;
 import org.cidarlab.phoenix.core.dom.Feature.FeatureRole;
 import org.cidarlab.phoenix.core.dom.Fluorophore;
 import org.cidarlab.phoenix.core.dom.Module;
+import org.cidarlab.phoenix.core.dom.Module.ModuleRole;
 import org.cidarlab.phoenix.core.dom.NucSeq;
 import org.cidarlab.phoenix.core.dom.Part;
 import org.cidarlab.phoenix.core.dom.Person;
@@ -74,15 +71,14 @@ public class NoClotho {
     @Setter
     private Set<Polynucleotide> polynucleotide;
 
-    
     @Getter
     @Setter
     private AssemblyParameters ap;
-    
-    private AtomicInteger counter ;
-    
-    private Set<String> allIds; 
-    
+
+    private AtomicInteger counter;
+
+    private Set<String> allIds;
+
     public NoClotho() {
         features = new HashSet<Feature>();
         fluorophores = new HashSet<Fluorophore>();
@@ -91,48 +87,40 @@ public class NoClotho {
         counter = new AtomicInteger();
         initializeAssemblyParameters();
     }
-    
-    private void initializeAssemblyParameters(){
+
+    private void initializeAssemblyParameters() {
         String[] efficiency = new String[]{"1.0", "1.0", "1.0", "1.0"};
         ap = new AssemblyParameters();
         List<String> effArray = Arrays.asList(efficiency);
-        
+
         this.ap.setEfficiency(effArray);
         this.ap.setMethod("moclo");
         this.ap.setOligoNameRoot("phoenix");
         this.ap.setName("default");
-    
+
     }
-    
-    
-    
+
     public static void main(String[] args) {
-        
+
         String featureFilepath = Utilities.getResourcesFilepath() + "BenchlingGenbankFiles/phoenix_feature_lib.gb";
         String fluorFilepath = Utilities.getResourcesFilepath() + "FluorescentProteins/fp_spectra.csv";
         String plasmidFilepath = Utilities.getResourcesFilepath() + "BenchlingGenbankFiles/phoenix_plasmid_lib_72715.gb";
         String cytometerFilepath = Utilities.getResourcesFilepath() + "FluorescentProteins/cosbi_fortessa_bd.csv";
-        
-        
+
         NoClotho nc = new NoClotho();
         nc.addFeatures(featureFilepath);
         nc.addFluorophores(fluorFilepath);
         nc.addPlasmid(plasmidFilepath);
         nc.addCytometer(cytometerFilepath);
         nc.assignNoClothoID();
-        
+
 //        System.out.println("LIST of Features");
 //        for(Feature f:nc.fluorophores){
 //            System.out.println(f.getName());
 //        }
-        
 //        for(Fluorophore f:nc.fluorophores){
 //            System.out.println(f.getName());
 //        }
-        
-        String tmpfilepath = Utilities.getResourcesFilepath() + "tmp/";
-        Utilities.makeDirectory(tmpfilepath);
-        
         File structureFile = new File(Utilities.getResourcesFilepath() + "miniEugeneFiles/inverter.eug");
         try {
             //Step 1 : Get Best Module and Create Experiment Instructions
@@ -145,145 +133,216 @@ public class NoClotho {
             String directory = Utilities.getResourcesFilepath() + "RTest/results/";
             String keyFile = Utilities.getResourcesFilepath() + "InstructionFiles/testingInstructionsTest.csv";
             String mapFile = Utilities.getResourcesFilepath() + "InstructionFiles/nameMapFileTest.csv";
-            
+
             String ea_mapFile = Utilities.getResourcesFilepath() + "InstructionFiles/nameMapFileTest_ea_filled.csv";
             AnalyzeData.fillOutNameMap(ea_mapFile, mapFile);
-            
+
             Map<String, String> nameMap = AnalyzeData.parseKeyMapFiles(mapFile);
 
             Map<String, AssignedModule> expexe = new HashMap<String, AssignedModule>();
             expexe = PhoenixController.getShortNameEXPEXEMap(bestModule);
-            
-            
-            
+
             Map<String, ExperimentProcessedData> processedMap = new HashMap<String, ExperimentProcessedData>();
             AnalyzeData.directoryWalk(directory, directory, processedMap);
-//            System.out.println(processedMap.size());
-//            System.out.println(processedMap.keySet());
-//            System.out.println("\n\n=======================================\n");
-//            
-//            for(String expexeKey: expexe.keySet()){
-//                System.out.print(expexe.get(expexeKey).getRole()  + "::" );
-//                System.out.println(expexe.get(expexeKey).getFeatureString());
-//            }
-            
-            for(String expexeKey: expexe.keySet()){
-                
-                AssignedModule am = expexe.get(expexeKey);
-                for(String processKey : processedMap.keySet()){
-                    if(am.getRole().equals(Module.ModuleRole.EXPRESSEE) || am.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || am.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATOR)  || am.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || am.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSOR)){
-                        if(!processedMap.get(processKey).getRole().equals(Module.ModuleRole.EXPRESSEE)){
-                            continue;
-                        }
-                        boolean fpFlag = false;
-                        boolean exeFlag = false;
-                        boolean tagFlag = isTag(processKey);
-                        boolean tagFeature = false;
-                        String fusedFP = getFusedFP(processKey);
-                        String exeFeature = getExpresee(processKey);
-                        for(Feature f:am.getAllModuleFeatures()){
-                            //System.out.println(f.getName());
-                            if(f.getName().toLowerCase().equals(getFusedFPfeature(fusedFP).toLowerCase())){
-                                fpFlag = true;
-                            }
-                            if(f.getName().toLowerCase().contains(exeFeature.toLowerCase())){
-                                exeFlag = true;
-                            }
-                            if(f.getName().equals("TAG")){
-                                tagFeature = true;
-                            }
-                        }
-                        if(fpFlag && exeFlag){
-                            if (tagFlag == tagFeature) {
-                                List<String> tmpFiles = new ArrayList<String>();
-                                //Do that Expressee Thaing here. 
-                                Map<Double, String> reg = new HashMap<Double, String>();
-                                for(Double d:processedMap.get(processKey).getRegulationData().keySet()){
-                                    String filepath = tmpfilepath + "tmp" + nc.counter.getAndIncrement() + ".csv";
-                                    tmpFiles.add(filepath);
-                                    Utilities.writeToFile(filepath, processedMap.get(processKey).getRegulationData().get(d));
-                                    reg.put(d, filepath);
-                                }
-                                String expresseeChannel = Utilities.getChannelsMap().get(getFusedFPfeature(fusedFP));
-                                String regChannel = Utilities.getChannelsMap().get(getRegulatedFP(processKey));
-                                String inducer = processedMap.get(processKey).getInducer();
-                                System.out.println(inducer);
-                                if(inducer == null){
-                                    System.out.println(processKey);
-                                }
-                                //am.setSBMLDocument(IBioSimAdaptor.estimateExpresseeParameters(processedMap.get(processKey).getDegradationFilepath(), reg, expresseeChannel, regChannel, true, processedMap.get(processKey).getInducer(), exeFeature, keyFile));
-                                
-                            }
-                        }
-                    }
-                }
-                if(am.getRole().equals(Module.ModuleRole.EXPRESSOR)) {
-                    System.out.println("Expressor encountered ::");
-                    String promoter = "";
-                    String fpFeature = "";
-                    String fp = "";
-                    for (Feature f : am.getAllModuleFeatures()) {
-                        if (f.getRole().equals(FeatureRole.PROMOTER) || f.getRole().equals(FeatureRole.PROMOTER_CONSTITUTIVE) || f.getRole().equals(FeatureRole.PROMOTER_INDUCIBLE) || f.getRole().equals(FeatureRole.PROMOTER_REPRESSIBLE)) {
-                            String featureName = f.getName().substring(0, f.getName().indexOf(".ref"));
-                            promoter += featureName + "_";
-                        }
-                        if(f.getRole().equals(FeatureRole.CDS_FLUORESCENT) || f.getRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)){
-                            System.out.println("FP FOUND :: " + f.getRole());
-                            fpFeature = f.getName();
-                            fp = getExpressorFP(f.getName());
-                        }
-                    }
-                    promoter += "EXPRESSOR";
-                    System.out.println(promoter);
-                    System.out.println(fp);
-                    if((!processedMap.containsKey(fp)) ||  (!processedMap.containsKey(promoter))){
-                        System.out.println("Experimental data for " + fp + " or " + promoter + " not found.");
-                        continue;
-                    }
-                    
-                    String fpChannel = Utilities.getChannelsMap().get(fpFeature);
-                    String fpFeatureShort = fpFeature.substring(0, fpFeature.indexOf(".ref"));
-                    am.setSBMLDocument(IBioSimAdaptor.estimateExpressorParameters(processedMap.get(fp).getExpExpressor(), processedMap.get(promoter).getExpExpressor(), fpChannel, fpFeatureShort));
-                    
-                }
-            }
-            
 
+            //assignExperimentResults(expexe, processedMap, nc);
+            generateAllAssignments(bestModule);
+                
         } catch (Exception ex) {
             Logger.getLogger(NoClotho.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private static String getExpresee(String val){
+    private static void generateAllAssignments(Module module){
+        List<Module> order = new ArrayList<Module>();
+        getOrderedModules(module,order);
+        System.out.println("EXP EXE " +order.size());
+        int index = 0;
+        List<Integer> currentIndex = new ArrayList<Integer>();
+        for(Module m:order){
+            currentIndex.add(0);
+        }
+        traversePossibilities(order, currentIndex);
+        
+        
+    }
+    
+    private static void traversePossibilities(List<Module> order, List<Integer> currentIndex){
+       
+        Map<Module,Integer> assigned = new HashMap<Module,Integer>();
+        int header = 0;
+        while(assigned.size()!= order.size()){
+            if(!assigned.containsKey(order.get(header))){
+                assigned.put(order.get(header), currentIndex.get(header));
+                //Check if Module is Expressee
+            } else {
+                header++;
+            }
+        }
+        
+        for(int i=0;i<order.size();i++){
+            System.out.print(order.get(i).getAssignedModules().get(currentIndex.get(i)).getRoleFeature() + " || ");
+        }
+        System.out.println("");    
+        boolean complete = true;
+        //Reset counter
+        for(int i=currentIndex.size()-1;i>=0;i--){
+            if(currentIndex.get(i) < order.get(i).getAssignedModules().size()-1){
+                int indx = currentIndex.get(i);
+                indx++;
+                currentIndex.set(i, indx);
+                complete = false;
+                break;
+            } else{
+                currentIndex.set(i, 0);
+            } 
+        }
+        
+        if(!complete){
+            traversePossibilities(order,currentIndex);
+        }
+    }
+    
+    
+    private static void getOrderedModules(Module module, List<Module> order){
+        if(module.getRole().equals(ModuleRole.EXPRESSOR) || module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || module.getRole().equals(ModuleRole.EXPRESSEE_ACTIVATOR) || module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || module.getRole().equals(ModuleRole.EXPRESSEE_REPRESSOR) || module.getRole().equals(ModuleRole.EXPRESSOR)){
+            order.add(module);
+        }
+        for(Module child:module.getChildren()){
+            getOrderedModules(child,order);
+        }
+    }
+    
+    private static void assignExperimentResults(Map<String, AssignedModule> expexe, Map<String, ExperimentProcessedData> processedMap, NoClotho nc) {
+        String tmpfilepath = Utilities.getResourcesFilepath() + "tmp/";
+        Utilities.makeDirectory(tmpfilepath);
+
+        for (String expexeKey : expexe.keySet()) {
+
+            AssignedModule am = expexe.get(expexeKey);
+            for (String processKey : processedMap.keySet()) {
+                if (am.getRole().equals(Module.ModuleRole.EXPRESSEE) || am.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATIBLE_ACTIVATOR) || am.getRole().equals(Module.ModuleRole.EXPRESSEE_ACTIVATOR) || am.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSIBLE_REPRESSOR) || am.getRole().equals(Module.ModuleRole.EXPRESSEE_REPRESSOR)) {
+                    if (!processedMap.get(processKey).getRole().equals(Module.ModuleRole.EXPRESSEE)) {
+                        continue;
+                    }
+                    boolean fpFlag = false;
+                    boolean exeFlag = false;
+                    boolean tagFlag = isTag(processKey);
+                    boolean tagFeature = false;
+                    String fusedFP = getFusedFP(processKey);
+                    String exeFeature = getExpresee(processKey);
+                    for (Feature f : am.getAllModuleFeatures()) {
+                        //System.out.println(f.getName());
+                        if (f.getName().toLowerCase().equals(getFusedFPfeature(fusedFP).toLowerCase())) {
+                            fpFlag = true;
+                        }
+                        if (f.getName().toLowerCase().contains(exeFeature.toLowerCase())) {
+                            exeFlag = true;
+                        }
+                        if (f.getName().equals("TAG")) {
+                            tagFeature = true;
+                        }
+                    }
+                    if (fpFlag && exeFlag) {
+                        if (tagFlag == tagFeature) {
+                            List<String> tmpFiles = new ArrayList<String>();
+                            //Do that Expressee Thaing here. 
+                            Map<Double, String> reg = new HashMap<Double, String>();
+                            for (Double d : processedMap.get(processKey).getRegulationData().keySet()) {
+                                String filepath = tmpfilepath + "tmp" + nc.counter.getAndIncrement() + ".csv";
+                                tmpFiles.add(filepath);
+                                Utilities.writeToFile(filepath, processedMap.get(processKey).getRegulationData().get(d));
+                                reg.put(d, filepath);
+                            }
+                            String expresseeChannel = Utilities.getChannelsMap().get(getFusedFPfeature(fusedFP));
+                            String regulatedFP = getRegulatedFP(processKey);
+                            String regChannel = Utilities.getChannelsMap().get(getRegulatedFP(processKey));
+                            String inducer = processedMap.get(processKey).getInducer();
+                            System.out.println(inducer);
+                            if (inducer == null) {
+                                System.out.println(processKey);
+                            }
+                            try {
+                                am.setSBMLDocument(IBioSimAdaptor.estimateExpresseeParameters(processedMap.get(processKey).getDegradationFilepath(), reg, expresseeChannel, regChannel, true, processedMap.get(processKey).getInducer(), exeFeature, regulatedFP)); //Ask Curtis!
+                            } catch (XMLStreamException ex) {
+                                Logger.getLogger(NoClotho.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (IOException ex) {
+                                Logger.getLogger(NoClotho.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+
+                        }
+                    }
+                }
+            }
+            if (am.getRole().equals(Module.ModuleRole.EXPRESSOR)) {
+                System.out.println("Expressor encountered ::");
+                String promoter = "";
+                String fpFeature = "";
+                String fp = "";
+                for (Feature f : am.getAllModuleFeatures()) {
+                    if (f.getRole().equals(FeatureRole.PROMOTER) || f.getRole().equals(FeatureRole.PROMOTER_CONSTITUTIVE) || f.getRole().equals(FeatureRole.PROMOTER_INDUCIBLE) || f.getRole().equals(FeatureRole.PROMOTER_REPRESSIBLE)) {
+                        String featureName = f.getName().substring(0, f.getName().indexOf(".ref"));
+                        promoter += featureName + "_";
+                    }
+                    if (f.getRole().equals(FeatureRole.CDS_FLUORESCENT) || f.getRole().equals(FeatureRole.CDS_FLUORESCENT_FUSION)) {
+                        System.out.println("FP FOUND :: " + f.getRole());
+                        fpFeature = f.getName();
+                        fp = getExpressorFP(f.getName());
+                    }
+                }
+                promoter += "EXPRESSOR";
+                System.out.println(promoter);
+                System.out.println(fp);
+                if ((!processedMap.containsKey(fp)) || (!processedMap.containsKey(promoter))) {
+                    System.out.println("Experimental data for " + fp + " or " + promoter + " not found.");
+                    continue;
+                }
+
+                String fpChannel = Utilities.getChannelsMap().get(fpFeature);
+                String fpFeatureShort = fpFeature.substring(0, fpFeature.indexOf(".ref"));
+                try {
+                    am.setSBMLDocument(IBioSimAdaptor.estimateExpressorParameters(processedMap.get(fp).getExpExpressor(), processedMap.get(promoter).getExpExpressor(), fpChannel, fpFeatureShort));
+
+                } catch (XMLStreamException ex) {
+                    Logger.getLogger(NoClotho.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(NoClotho.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        }
+    }
+
+    private static String getExpresee(String val) {
         String pieces[] = val.split("_");
         return pieces[0].trim();
     }
-    
-    private static String getFusedFP(String val){
+
+    private static String getFusedFP(String val) {
         String pieces[] = val.split("_");
         return pieces[1].trim();
     }
-    
-    private static String getRegulatedFeature(String val){
+
+    private static String getRegulatedFeature(String val) {
         String pieces[] = val.split("_");
-        for(int i=0;i< pieces.length;i++){
-            if(pieces[i].trim().equals("EXPRESSEE")){
-                return pieces[i+1].trim();
+        for (int i = 0; i < pieces.length; i++) {
+            if (pieces[i].trim().equals("EXPRESSEE")) {
+                return pieces[i + 1].trim();
             }
         }
         return "";
     }
-    
-    private static String getExpressorFP(String fp){
-        
-        switch(fp){
-            case "EGFPm.ref" :
+
+    private static String getExpressorFP(String fp) {
+
+        switch (fp) {
+            case "EGFPm.ref":
                 return "gfp_EXP";
-            case "EBFP2.ref" :
+            case "EBFP2.ref":
                 return "bfp_EXP";
             case "T-Sapphire.ref":
                 return "TS_EXP";
-            case "DsRed.ref" :
+            case "DsRed.ref":
                 return "rfp_EXP";
 //            case "" :
 //                break;
@@ -291,16 +350,16 @@ public class NoClotho {
         }
         return "";
     }
-    
-    private static String getRegulatedFP(String val){
+
+    private static String getRegulatedFP(String val) {
         String pieces[] = val.split("_");
         String regF = "";
-        for(int i=0;i< pieces.length;i++){
-            if(pieces[i].trim().equals("EXPRESSEE")){
-                regF = pieces[i+2].trim();
+        for (int i = 0; i < pieces.length; i++) {
+            if (pieces[i].trim().equals("EXPRESSEE")) {
+                regF = pieces[i + 2].trim();
             }
         }
-        switch(regF){
+        switch (regF) {
             case "B":
                 return "EBFP2.ref";
             case "G":
@@ -308,33 +367,31 @@ public class NoClotho {
         }
         return "";
     }
-    private static boolean isTag(String val){
-        
+
+    private static boolean isTag(String val) {
+
         String pieces[] = val.split("_");
-        if(pieces.length < 3){
+        if (pieces.length < 3) {
             return false;
         }
-        if(pieces[2].trim().equals("EXPRESSEE")){
+        if (pieces[2].trim().equals("EXPRESSEE")) {
             return false;
         }
         return true;
     }
-   
-    private static String getFusedFPfeature(String shortVer){
-        switch(shortVer){
+
+    private static String getFusedFPfeature(String shortVer) {
+        switch (shortVer) {
             case "GFP":
                 return "EGFPm.ref";
         }
-        
+
         return "";
     }
-    
-    
-    
+
     static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     static SecureRandom rnd = new SecureRandom();
 
-    
     String randomString(int len) {
         StringBuilder sb = new StringBuilder(len);
         for (int i = 0; i < len; i++) {
@@ -342,11 +399,11 @@ public class NoClotho {
         }
         return sb.toString();
     }
-    
-    public String getUUID(){
-        
+
+    public String getUUID() {
+
         String id = randomString(10);
-        while(this.allIds.contains(id)){
+        while (this.allIds.contains(id)) {
             id = randomString(10);
         }
         this.allIds.add(id);
@@ -355,42 +412,39 @@ public class NoClotho {
 //        UUID uuid = gen.generate();
 //        return uuid.toString();
     }
-    
-    public void assignNoClothoID(){
-        for(Feature f:this.features){
+
+    public void assignNoClothoID() {
+        for (Feature f : this.features) {
             f.setClothoID(getUUID());
         }
-        for(Fluorophore f:this.fluorophores){
+        for (Fluorophore f : this.fluorophores) {
             f.setClothoID(getUUID());
         }
-        for(Polynucleotide p:this.polynucleotide){
+        for (Polynucleotide p : this.polynucleotide) {
             p.setClothoID(getUUID());
         }
         this.cytometer.setClothoID(getUUID());
         this.ap.setClothoID(getUUID());
     }
-    
-    public void assignID(Module m){
+
+    public void assignID(Module m) {
         m.setClothoID(getUUID());
-        
-        for(AssignedModule am: m.getAssignedModules()){
+
+        for (AssignedModule am : m.getAssignedModules()) {
             am.setClothoID(getUUID());
-            for(AssignedModule cm:am.getControlModules()){
+            for (AssignedModule cm : am.getControlModules()) {
                 cm.setClothoID(getUUID());
             }
-            for(Experiment ex:am.getExperiments()){
+            for (Experiment ex : am.getExperiments()) {
                 ex.setClothoID(getUUID());
             }
         }
-        for(Module child:m.getChildren()){
+        for (Module child : m.getChildren()) {
             child.setClothoID(getUUID());
         }
-        
+
     }
-    
-    
-    
-    
+
     public void addFeatures(String filepath) {
         File file = new File(filepath);
         try {
@@ -454,8 +508,8 @@ public class NoClotho {
             Logger.getLogger(NoClotho.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void addPlasmid(String filepath){
+
+    public void addPlasmid(String filepath) {
         File file = new File(filepath);
         try {
             this.polynucleotide.addAll(BenchlingAdaptor.getPolynucleotide(file));
@@ -469,13 +523,13 @@ public class NoClotho {
             Logger.getLogger(NoClotho.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void addCytometer(String filepath){
+
+    public void addCytometer(String filepath) {
         File file = new File(filepath);
         HashSet<String> lasers = new HashSet<>();
         HashSet<String> filters = new HashSet<>();
         HashMap<String, ArrayList<String[]>> config = new HashMap<>();
-        
+
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
@@ -483,10 +537,10 @@ public class NoClotho {
             boolean laserMode = false;
             String laser;
             ArrayList<String[]> filterList = new ArrayList<>();
-            while( (line = reader.readLine()) != null ){
+            while ((line = reader.readLine()) != null) {
                 String pieces[] = line.split(",");
-                if(laserMode){
-                    if(!pieces[0].trim().isEmpty()){
+                if (laserMode) {
+                    if (!pieces[0].trim().isEmpty()) {
                         laser = pieces[2].trim() + ":" + pieces[3].trim();
                         lasers.add(laser);
                         filterList = new ArrayList<>();
@@ -505,33 +559,31 @@ public class NoClotho {
                             }
                         }
                     }
-                    
-                
+
                 }
-                if(pieces[0].trim().equalsIgnoreCase("Configuration Name")){
+                if (pieces[0].trim().equalsIgnoreCase("Configuration Name")) {
                     name = pieces[1].trim();
                 }
-                if(pieces[0].trim().equalsIgnoreCase("Laser Name")){
+                if (pieces[0].trim().equalsIgnoreCase("Laser Name")) {
                     laserMode = true;
                 }
             }
-            
+
             this.cytometer = new Cytometer(name, lasers, filters, config);
-            
-            
+
         } catch (FileNotFoundException ex) {
             Logger.getLogger(NoClotho.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(NoClotho.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private void removeDuplicatePartsVectors(){
-        
+
+    private void removeDuplicatePartsVectors() {
+
         Map<String, Part> sequencePartMap = new HashMap();
         Map<String, Vector> sequenceVectorMap = new HashMap();
-        
-        for(Polynucleotide pn:this.polynucleotide){
+
+        for (Polynucleotide pn : this.polynucleotide) {
             sequencePartMap.put(pn.getPart().getSequence().getSeq(), pn.getPart());
             sequenceVectorMap.put(pn.getVector().getSequence().getSeq(), pn.getVector());
         }
@@ -567,13 +619,13 @@ public class NoClotho {
             }
         }
     }
-    
-    private void annotateParts(){
-        
+
+    private void annotateParts() {
+
         List<Feature> allFeatures = new ArrayList<Feature>();
         allFeatures.addAll(this.features);
         allFeatures.addAll(this.fluorophores);
-        
+
         for (Polynucleotide pn : this.polynucleotide) {
             if (pn.getPart() != null && pn.getVector() != null) {
                 annotate(allFeatures, pn.getPart().getSequence());
@@ -582,7 +634,7 @@ public class NoClotho {
             }
         }
     }
-    
+
     //Automatically annotate a NucSeq with a feature library
     private static void annotate(List<Feature> features, NucSeq ns) {
 
@@ -644,5 +696,5 @@ public class NoClotho {
             ns.setAnnotations(annotations);
         }
     }
-    
+
 }

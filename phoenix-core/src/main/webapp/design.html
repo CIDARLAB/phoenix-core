@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Phoenix | Design</title>
+	<!-- load paper.js -->
+    <script type="text/javascript" src="./javascript/paper-full.js"></script>
+    <script type="text/javascript" src="./javascript/sbol-vis-canvas.js"></script>
+    <!-- load jquery -->
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+	<!-- load bootstrap css -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+        integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+        crossorigin="anonymous">
+    <!-- load font awesome (glyphicons) -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	<!-- load custom stylesheet -->
+    <link rel="stylesheet" href="./styles/style.css"></link>
+    <!--<script type="text/paperscript" canvas="sbolCanvas">
+        var sbolVisImg = new Raster('sbolVisImg'); // get sbol image directly from ID
+        sbolVisImg.position = view.center;
+        sbolVisImg.scale(0.5);
+    </script>-->
+</head>
+<body>
+    <nav class="navbar navbar-toggleable-sm navbar-inverse bg-inverse main-nav">
+        <div class="container">
+            <ul class="collapse navbar-collapse flex">
+                <img src="./images/logo/phoenix_banner.png">
+            </ul>
+            <ul class="collapse navbar-collapse flex justify-content-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">SPECIFY</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">DESIGN</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">TEST</a>
+                </li>
+            </ul>
+            <ul class="collapse navbar-collapse flex">
+                <button class="btn btn-secondary dropdown-toggle" type="button" onClick="openLogin()">
+                    LOGIN
+                </button>
+                <div id="login-form" class="login-form">
+                    <a href="javascript:void(0)" class="closebtn" onClick="closeLogin()">x</a>
+                    <input class="login-form-item" placeholder="Username">
+                    <input class="login-form-item" placeholder="Password">
+                </div>
+            </ul>
+        </div>
+    </nav>
+	<div class="container grid-border">
+		<div class="row">
+			<div class="col col-6 des-height">
+                File Explorer
+                <div class="row d-flex flex-row">
+                    <div class="col col-12">
+                        <form class="form-inline treeview d-flex justify-content-start">
+                            <div class="form-group">
+                                <label for="input-search" class="sr-only">Search Tree:</label>
+                                <input type="input" class="form-control" id="input-search" placeholder="Type to search..." value="">
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" class="checkbox" id="chk-exact-match" value="false">
+                                    Exact Match
+                                </label>
+                            </div>
+                            <div class="ml-auto">
+                                <button type="button" class="btn btn-secondary btn-sm align-self-end" id="btn-search">Search</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-12">
+                        <div id="treeview-searchable"></div>
+                    </div>
+                </div>
+			</div>
+			<div class="col col-6 des-height">
+                Upload/View Metadata
+                <div class="row flex">
+                    <div class="col col-12 flex align-items-stretch">
+                        <form class="box" method="post" action="" enctype="multipart/form-data">
+                            <div class="box-input d-flex align-self-stretch">
+                                <label for="file"><span class="box-dragndrop">Upload File</span></label>
+                                <button class="box-button" type="submit">Upload</button>
+                            </div>
+                            <div class="box-uploading">Uploading&hellip;</div>
+                            <div class="box-success">Done!</div>
+                            <div class="box-error">Error!<span></span></div>
+                        </form>
+                    </div>
+                </div>
+			</div>
+		</div>
+        <div class="row">
+            <div class="col col-12">
+                <div class="row">
+                    <div class="col col-12">
+                        SBOL VISUAL
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-12">
+                        <canvas id="sbolCanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
+    <!-- load bootstrap javascript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+        integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+        integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <!-- load treeview script -->
+    <script type="text/javascript" src="./javascript/treeview.js"></script>    
+    <!-- load drag n drop script -->
+    <script type="text/javascript" src="./javascript/dragdrop.js"></script>
+
+    <!--<script type="text/javascript">
+        $(function() {
+            $('form').each(function() {
+                $(this).find('input').keypress(function(e) {
+                    // Enter pressed?
+                    if(e.which == 10 || e.which == 13) {
+                        this.form.submit();
+                    }
+                });
+
+                $(this).find('button[type=submit]').hide();
+            });
+        });
+    </script>-->
+
+</body>
+</html>

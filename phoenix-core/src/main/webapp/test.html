@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Phoenix | Test</title>
+	<!-- load paper.js -->
+    <script type="text/javascript" src="./javascript/paper-full.js"></script>
+    <script type="text/javascript" src="./javascript/sbol-vis-canvas.js"></script>
+    <!-- load jquery -->
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+	<!-- load bootstrap css -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+        integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+        crossorigin="anonymous">
+    <!-- load font awesome (glyphicons) -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	<!-- load custom stylesheet -->
+    <link rel="stylesheet" href="./styles/style.css"></link>
+</head>
+<body>
+    <nav class="navbar navbar-toggleable-sm navbar-inverse bg-inverse main-nav">
+        <div class="container">
+            <ul class="collapse navbar-collapse flex">
+                <img src="./images/logo/phoenix_banner.png">
+            </ul>
+            <ul class="collapse navbar-collapse flex justify-content-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">SPECIFY</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">DESIGN</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">TEST</a>
+                </li>
+            </ul>
+            <ul class="collapse navbar-collapse flex">
+                <button class="btn btn-secondary dropdown-toggle" type="button" onClick="openLogin()">
+                    LOGIN
+                </button>
+                <div id="login-form" class="login-form">
+                    <a href="javascript:void(0)" class="closebtn" onClick="closeLogin()">x</a>
+                    <input class="login-form-item" placeholder="Username">
+                    <input class="login-form-item" placeholder="Password">
+                </div>
+            </ul>
+        </div>
+    </nav>
+	<div class="container grid-border">
+		<div class="row d-flex">
+			<div class="col col-12 test-graph d-flex justify-content-center">
+                Graph from Curtis/Prashant
+			</div>
+		</div>
+        <div class="row d-flex">
+            <div class="col col-12 test-pigeon d-flex justify-content-center">
+                PIGEON full circuit Image
+            </div>
+        </div>
+	</div>
+    <!-- load bootstrap javascript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+        integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+        integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+</body>
+</html>

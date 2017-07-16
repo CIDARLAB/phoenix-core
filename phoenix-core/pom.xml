@@ -3,7 +3,7 @@
     <groupId>phoenix-core</groupId>
     <artifactId>phoenix-core</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <build>
         <plugins>
             <plugin>
@@ -14,34 +14,8 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
-<!--            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.1</version>
-                <executions>
-                    <execution>
-                        <id>copy</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>org</groupId>
-                                    <artifactId>CopasiJava</artifactId>
-                                    <version>4.6</version>
-                                    <type>so</type>
-                                    <destFileName>libCopasiJava.so</destFileName>
-                                </artifactItem>
-                            </artifactItems>
-                            <outputDirectory>${project.build.directory}</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>-->
             
-            <plugin>
+<!--            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>nbm-maven-plugin</artifactId>
                 <configuration>
@@ -57,41 +31,11 @@
                 <configuration>
                     <argLine>-noverify</argLine>
                 </configuration>
-            </plugin>
-<!--            <plugin>
-                <groupId>com.googlecode.mavennatives</groupId>
-                <artifactId>maven-nativedependencies-plugin</artifactId>
-                <version>0.0.7</version>
-                <executions>
-                    <execution>
-                        <id>unpacknatives</id>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>-->
-            <!--<plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-shade-plugin</artifactId>
-              <version>1.6</version>
-              <executions>
-                <execution>
-                  <phase>package</phase>
-                  <goals>
-                    <goal>shade</goal>
-                  </goals>
-                </execution>
-              </executions>
-            </plugin>-->
-            
-            
-            
-            
+            </plugin>-->                        
         </plugins>
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>src/main/resources/RTest</directory>
                 <excludes>
                     <exclude>**/*.*</exclude>
                 </excludes>
@@ -102,33 +46,30 @@
     
     <dependencies>
     
-        <!--
         <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>7.0</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>4.3.0.RELEASE</version>
+            <type>jar</type>
         </dependency>
-        -->    
-        <!-- JUnit -->
-        
         <dependency>
-            <groupId>org</groupId>
-            <artifactId>copasi</artifactId>
-            <version>4.6</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+            <version>1.3.6.RELEASE</version>
+            <type>jar</type>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <version>1.5.3.RELEASE</version>
+        </dependency>
+
         <dependency>
             <groupId>com.fasterxml.uuid</groupId>
             <artifactId>java-uuid-generator</artifactId>
             <version>3.1.3</version>
         </dependency>
         
-<!--        <dependency>
-            <groupId>org</groupId>
-            <artifactId>libCopasiJava</artifactId>
-            <version>4.6</version>
-            <scope>runtime</scope>
-            <type>so</type>
-        </dependency>-->
         
         <dependency>
             <groupId>junit</groupId>
@@ -236,11 +177,11 @@
             <version>1.16</version>
             <type>jar</type>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
             <version>${jetty-version}</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-core</artifactId>
@@ -313,18 +254,18 @@
             <version>1.2.2</version>
             <type>jar</type>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-servlet</artifactId>
             <version>${jetty-version}</version>
             <type>jar</type>
-        </dependency>
-        <dependency>
+        </dependency>-->
+<!--        <dependency>
             <groupId>com.google.inject.extensions</groupId>
             <artifactId>guice-servlet</artifactId>
             <version>3.0</version>
             <type>jar</type>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
@@ -479,23 +420,23 @@
     		<artifactId>axiom-impl</artifactId>
     		<version>1.2.16</version>
     	</dependency>
-    	<dependency>
+<!--    	<dependency>
     		<groupId>org.copasi</groupId>
     		<artifactId>copasiws</artifactId>
     		<version>1.0</version>
-    	</dependency>
+    	</dependency>-->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20151123</version>
             <type>jar</type>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-webapp</artifactId>
             <version>${jetty-version}</version>
             <type>jar</type>
-        </dependency>
+        </dependency>-->
         <!--  SLF4J -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -535,7 +476,11 @@
         </repository>
     </repositories>
     <properties>
-        <jetty-version>9.3.10.v20160621</jetty-version>
-        <netbeans.hint.deploy.server>gfv3ee6</netbeans.hint.deploy.server>
+        <!--<jetty-version>9.3.10.v20160621</jetty-version>-->
+        <!--<netbeans.hint.deploy.server>gfv3ee6</netbeans.hint.deploy.server>-->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+        <start-class>org.cidarlab.gridtli.Visualize.Webapp.Application</start-class>
     </properties>
 </project>

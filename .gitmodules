@@ -1,0 +1,3 @@
+[submodule "phoenix-core/src/main/webapp"]
+	path = phoenix-core/src/main/webapp
+	url = https://github.com/CIDARLAB/Phoenix-GUI

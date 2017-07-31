@@ -5,6 +5,7 @@
  */
 package org.cidarlab.phoenix.core.adaptors;
 
+import edu.utah.ece.async.ibiosim.dataModels.util.exceptions.BioSimException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -15,8 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import javax.xml.stream.XMLStreamException;
-import learn.genenet.Experiments;
-import learn.genenet.SpeciesCollection;
+import edu.utah.ece.async.ibiosim.learn.genenet.Experiments;
+import edu.utah.ece.async.ibiosim.learn.genenet.SpeciesCollection;
 import org.cidarlab.phoenix.core.adaptors.IBioSimAdaptor;
 import org.cidarlab.phoenix.core.adaptors.SBMLAdaptor;
 import org.cidarlab.phoenix.core.controller.Utilities;
@@ -27,6 +28,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.sbml.jsbml.Model;
+import org.sbml.jsbml.Parameter;
 import org.sbml.jsbml.Reaction;
 import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.SBMLReader;
@@ -63,7 +65,7 @@ public class IBioSimAdaptorTest {
     
     
     @Test
-    public void testDegradationParameterEstimation() throws IOException, XMLStreamException {
+    public void testDegradationParameterEstimation() throws IOException, XMLStreamException, BioSimException {
         System.out.println("parameterEstimation");
         String sbml = Utilities.getResourcesFilepath() + "iBioSimTest/degrade.xml";
 	List<String> params = new ArrayList<String>();
@@ -71,14 +73,14 @@ public class IBioSimAdaptorTest {
 	params.add("K_d");
 	List<String> experimentFiles = new ArrayList<String>();
 	experimentFiles.add(Utilities.getResourcesFilepath() + "iBioSimTest/degrade.csv");
-	Map<String, Double> results = IBioSimAdaptor.estimateParameters(sbml, params, experimentFiles);
-        for(String param : results.keySet()) {
-            System.out.println(param + " = " + results.get(param));
+	SBMLDocument result = IBioSimAdaptor.estimateParameters(sbml, params, experimentFiles);
+        for(Parameter param : result.getModel().getListOfParameters()) {
+            System.out.println(param.getId() + " = " + param.getValue());
         }
     }
     
     @Test
-    public void testRegulationParameterEstimation() throws IOException, XMLStreamException {
+    public void testRegulationParameterEstimation() throws IOException, XMLStreamException, BioSimException {
         System.out.println("parameterEstimation");
         String sbml = Utilities.getFilepath() + "/src/main/resources/iBioSimTest/regulate.xml";
 	List<String> params = new ArrayList<String>();
@@ -86,14 +88,14 @@ public class IBioSimAdaptorTest {
 	params.add("K_r");
 	List<String> experimentFiles = new ArrayList<String>();
 	experimentFiles.add(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/regulate.csv");
-	Map<String, Double> results = IBioSimAdaptor.estimateParameters(sbml, params, experimentFiles);
-        for(String param : results.keySet()) {
-            System.out.println(param + " = " + results.get(param));
+	SBMLDocument result = IBioSimAdaptor.estimateParameters(sbml, params, experimentFiles);
+        for(Parameter param : result.getModel().getListOfParameters()) {
+            System.out.println(param.getId() + " = " + param.getValue());
         }
     }
     
     @Test
-    public void testExpressorEstimationAndSimulation() throws IOException, XMLStreamException {
+    public void testExpressorEstimationAndSimulation() throws IOException, XMLStreamException, FileNotFoundException, BioSimException {
         Map<String, Double> results = IBioSimAdaptor.getExpressorParameters(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/degradationTimeSeriesPlotPoints.csv",
                 Utilities.getFilepath() + "/src/main/resources/iBioSimTest/expressorSteadyState.csv", "\"MEAN_FITC.A\"");
         double y = results.get("y");
@@ -113,7 +115,7 @@ public class IBioSimAdaptorTest {
     
     
     @Test
-    public void testInverterEstimationAndSimulation() throws IOException, XMLStreamException {
+    public void testInverterEstimationAndSimulation() throws IOException, XMLStreamException, FileNotFoundException, BioSimException {
         Map<Double, String> smallMoleculeTimeSeriesData = new HashMap<Double, String>();
         smallMoleculeTimeSeriesData.put(100.0, Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/araC_gfp_EXPRESSEE_pBAD_B_tetR_REG/M9_glucose_ara/nM_ara/100/timeSeriesPlotPoints.csv");
         smallMoleculeTimeSeriesData.put(1000.0, Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter/araC_gfp_EXPRESSEE_pBAD_B_tetR_REG/M9_glucose_ara/nM_ara/1000/timeSeriesPlotPoints.csv");
@@ -187,11 +189,14 @@ public class IBioSimAdaptorTest {
 //        react = model.getReaction("TetR_expression");
 //        react.getKineticLaw().getLocalParameter("k_EXE").setValue(k_EXE);
         List<Model> mods = new ArrayList<Model>();
+        SBMLWriter writer = new SBMLWriter();
+//        writer.write(araCDoc, Utilities.getFilepath() + "/src/main/resources/iBioSimTest/araCDoc.xml");
+//        writer.write(bfpDoc, Utilities.getFilepath() + "/src/main/resources/iBioSimTest/bfpDoc.xml");
+//        writer.write(tetRDoc, Utilities.getFilepath() + "/src/main/resources/iBioSimTest/tetRDoc.xml");
         mods.add(araCDoc.getModel());
         mods.add(bfpDoc.getModel());
         mods.add(tetRDoc.getModel());
         SBMLDocument composedDoc = SBMLAdaptor.composeExpressionModels(mods);
-        SBMLWriter writer = new SBMLWriter();
         writer.write(composedDoc, Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter.xml");
         IBioSimAdaptor.simulateODE(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/inverter.xml", Utilities.getFilepath() + "/src/main/resources/iBioSimTest/", 1000.0, 0.5, 1.0, 314159, 2.0, 1000, 1e-6, 1e-9);
         IBioSimAdaptor.writeCSV(IBioSimAdaptor.parseTSD(Utilities.getFilepath() + "/src/main/resources/iBioSimTest/run-1.tsd"), Utilities.getFilepath() + "/src/main/resources/iBioSimTest/run-1.csv");

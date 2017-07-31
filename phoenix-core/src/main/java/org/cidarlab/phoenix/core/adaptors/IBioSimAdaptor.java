@@ -13,8 +13,9 @@ import org.cidarlab.phoenix.core.controller.Utilities;
 import org.cidarlab.phoenix.core.dom.TimeSeriesData;
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
-import analysis.dynamicsim.flattened.SimulatorSSADirect;
-import analysis.dynamicsim.flattened.SimulatorODERK;
+import edu.utah.ece.async.ibiosim.analysis.simulation.flattened.SimulatorSSADirect;
+import edu.utah.ece.async.ibiosim.analysis.simulation.flattened.SimulatorODERK;
+import edu.utah.ece.async.ibiosim.dataModels.util.exceptions.BioSimException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,9 +26,9 @@ import java.util.Scanner;
 
 import javax.xml.stream.XMLStreamException;
 
-import learn.genenet.Experiments;
-import learn.genenet.SpeciesCollection;
-import learn.parameterestimator.ParameterEstimator;
+import edu.utah.ece.async.ibiosim.learn.genenet.Experiments;
+import edu.utah.ece.async.ibiosim.learn.genenet.SpeciesCollection;
+import edu.utah.ece.async.ibiosim.learn.parameterestimator.ParameterEstimator;
 import org.sbml.jsbml.Model;
 import org.sbml.jsbml.Reaction;
 import org.sbml.jsbml.SBMLDocument;
@@ -39,7 +40,7 @@ import org.sbml.jsbml.SBMLWriter;
  */
 public class IBioSimAdaptor {
 
-    public static Map<String, Double> estimateParameters(String sbmlFile, List<String> parameters, List<String> experimentFiles) throws IOException, XMLStreamException {
+    public static SBMLDocument estimateParameters(String sbmlFile, List<String> parameters, List<String> experimentFiles) throws IOException, XMLStreamException, BioSimException {
         String[] split = sbmlFile.split(File.separator);
         String root = sbmlFile.substring(0, sbmlFile.length() - split[split.length - 1].length());
         Experiments experiments = new Experiments();
@@ -50,12 +51,11 @@ public class IBioSimAdaptor {
         return ParameterEstimator.estimate(sbmlFile, root, parameters, experiments, speciesCollection);
     }
     
-    public static Map<String, Double> getExpressorParameters(String degTimeSeriesData, String expSteadyStateData, String channel) throws XMLStreamException, FileNotFoundException, IOException {
-        SBMLDocument degradationDoc = SBMLAdaptor.createDegradationModel("exp");
-        Map<String, Double> results = estimateDegradationParams(degTimeSeriesData, channel);
+    public static Map<String, Double> getExpressorParameters(String degTimeSeriesData, String expSteadyStateData, String channel) throws XMLStreamException, FileNotFoundException, IOException, BioSimException {
+        SBMLDocument degradationDoc = estimateDegradationParams(degTimeSeriesData, channel);
         List<List<String>> data = parseCSV(expSteadyStateData);
-        double y = results.get("y");
-        double K_d = results.get("K_d");
+        double y = degradationDoc.getModel().getParameter("y").getValue();
+        double K_d = degradationDoc.getModel().getParameter("K_d").getValue();
         double k_EXE = 0;
         int j = 1;
         for (int i = 0; i < data.size(); i++) {
@@ -70,11 +70,14 @@ public class IBioSimAdaptor {
         if (k_EXE == 0) {
             k_EXE = 1;
         }
+        Map<String, Double> results = new HashMap<String, Double>();
+        results.put("y", y);
+        results.put("K_d", K_d);
         results.put("k_EXE", k_EXE);
         return results;
     }
     
-    public static SBMLDocument estimateExpressorParameters(String degTimeSeriesData, String expSteadyStateData, String channel, String expName) throws XMLStreamException, FileNotFoundException, IOException {
+    public static SBMLDocument estimateExpressorParameters(String degTimeSeriesData, String expSteadyStateData, String channel, String expName) throws XMLStreamException, FileNotFoundException, IOException, BioSimException {
         Map<String, Double> params = getExpressorParameters(degTimeSeriesData, expSteadyStateData, channel);
         SBMLDocument doc = SBMLAdaptor.createExpressionModel(expName);
         double K_d = params.get("K_d");
@@ -90,18 +93,21 @@ public class IBioSimAdaptor {
     }
     
     public static Map<String, Double> getExpresseeParameters(String degTimeSeriesData, Map<Double, String> smallMoleculeTimeSeriesData, String expresseeChannel,
-            String regulatedChannel, boolean repression) throws XMLStreamException, IOException {
-        Map<String, Double> results = estimateDegradationParams(degTimeSeriesData, regulatedChannel);
+            String regulatedChannel, boolean repression) throws XMLStreamException, IOException, FileNotFoundException, BioSimException {
+        SBMLDocument doc = estimateDegradationParams(degTimeSeriesData, regulatedChannel);
+        Map<String, Double> results = new HashMap<String, Double>();
+        results.put("y", doc.getModel().getParameter("y").getValue());
+        results.put("K_d", doc.getModel().getParameter("K_d").getValue());
         boolean includeRegulation = true;
         if (smallMoleculeTimeSeriesData.keySet().contains(0.0)) {
-            Map<String, Double> regulationResults = estimateRegulationParams(smallMoleculeTimeSeriesData.get(0.0), results, expresseeChannel, regulatedChannel, repression);
+            SBMLDocument regulationDoc  = estimateRegulationParams(smallMoleculeTimeSeriesData.get(0.0), results, expresseeChannel, regulatedChannel, repression);
             if (repression) {
-                results.put("k_EXR", regulationResults.get("k_EXR"));
-                results.put("K_r", regulationResults.get("K_r"));
+                results.put("k_EXR", regulationDoc.getModel().getParameter("k_EXR").getValue());
+                results.put("K_r", regulationDoc.getModel().getParameter("K_r").getValue());
             }
             else {
-                results.put("k_EXA", regulationResults.get("k_EXA"));
-                results.put("K_a", regulationResults.get("K_a"));
+                results.put("k_EXA", regulationDoc.getModel().getParameter("k_EXA").getValue());
+                results.put("K_a", regulationDoc.getModel().getParameter("K_a").getValue());
             }
             smallMoleculeTimeSeriesData.remove(0.0);
             includeRegulation = false;
@@ -111,17 +117,17 @@ public class IBioSimAdaptor {
             double K_r = 0.0;
             double K_i = 0.0;
             for (Double value : smallMoleculeTimeSeriesData.keySet()) {
-                Map<String, Double> smallMoleculeResults = estimateSmallMoleculeRegulationParams(value, smallMoleculeTimeSeriesData.get(value), results, expresseeChannel,
+                SBMLDocument smallMoleculeDoc = estimateSmallMoleculeRegulationParams(value, smallMoleculeTimeSeriesData.get(value), results, expresseeChannel,
                         regulatedChannel, repression);
-                K_i += smallMoleculeResults.get("K_i");
+                K_i += smallMoleculeDoc.getModel().getParameter("K_i").getValue();
                 if (includeRegulation) {
                     if (repression) {
-                        k_EXE += smallMoleculeResults.get("k_EXR");
-                        K_r += smallMoleculeResults.get("K_r");
+                        k_EXE += smallMoleculeDoc.getModel().getParameter("k_EXR").getValue();
+                        K_r += smallMoleculeDoc.getModel().getParameter("K_r").getValue();
                     }
                     else {
-                        k_EXE += smallMoleculeResults.get("k_EXA");
-                        K_r += smallMoleculeResults.get("K_a");
+                        k_EXE += smallMoleculeDoc.getModel().getParameter("k_EXA").getValue();
+                        K_r += smallMoleculeDoc.getModel().getParameter("K_a").getValue();
                     }
                 }
             }
@@ -141,7 +147,7 @@ public class IBioSimAdaptor {
     }
     
     public static SBMLDocument estimateExpresseeParameters(String degTimeSeriesData, Map<Double, String> smallMoleculeTimeSeriesData,
-            String expresseeChannel, String regulatedChannel, boolean repression, String inducer, String expressee, String regulated) throws XMLStreamException, IOException {
+            String expresseeChannel, String regulatedChannel, boolean repression, String inducer, String expressee, String regulated) throws XMLStreamException, IOException, FileNotFoundException, BioSimException {
         Map<String, Double> params = getExpresseeParameters(degTimeSeriesData, smallMoleculeTimeSeriesData, expresseeChannel, regulatedChannel, repression);
         SBMLDocument doc;
         if (params.containsKey("K_i")) {
@@ -307,7 +313,7 @@ public class IBioSimAdaptor {
 //        return results;
 //    }
     
-    private static Map<String, Double> estimateDegradationParams(String degTimeSeriesData, String channel) throws XMLStreamException, FileNotFoundException, IOException {
+    private static SBMLDocument estimateDegradationParams(String degTimeSeriesData, String channel) throws XMLStreamException, FileNotFoundException, IOException, BioSimException {
         SBMLDocument degradationDoc = SBMLAdaptor.createDegradationModel("exp");
         degradationDoc.getModel().getReaction("exp_degradation").getKineticLaw().removeLocalParameter("y");
         degradationDoc.getModel().getReaction("exp_degradation").getKineticLaw().removeLocalParameter("K_d");
@@ -321,8 +327,8 @@ public class IBioSimAdaptor {
         return estimateParams(degradationDoc, estimateParams, degTimeSeriesData, channelMapping);
     }
     
-    private static Map<String, Double> estimateRegulationParams(String regulationTimeSeriesData, Map<String, Double> params,
-            String expresseeChannel, String regulatedChannel, boolean repression) throws XMLStreamException, FileNotFoundException, IOException {
+    private static SBMLDocument estimateRegulationParams(String regulationTimeSeriesData, Map<String, Double> params,
+            String expresseeChannel, String regulatedChannel, boolean repression) throws XMLStreamException, FileNotFoundException, IOException, BioSimException {
         SBMLDocument doc;
         List<String> estimateParams = new ArrayList<String>();
         if (repression) {
@@ -351,8 +357,8 @@ public class IBioSimAdaptor {
         return estimateParams(doc, estimateParams, regulationTimeSeriesData, channelMapping);
     }
     
-    private static Map<String, Double> estimateSmallMoleculeRegulationParams(Double smallMoleculesValue, String smallMoleculeTimeSeriesData, Map<String, Double> params,
-            String expresseeChannel, String regulatedChannel, boolean repression) throws XMLStreamException, FileNotFoundException, IOException {
+    private static SBMLDocument estimateSmallMoleculeRegulationParams(Double smallMoleculesValue, String smallMoleculeTimeSeriesData, Map<String, Double> params,
+            String expresseeChannel, String regulatedChannel, boolean repression) throws XMLStreamException, FileNotFoundException, IOException, BioSimException {
         if (smallMoleculesValue == 0.0) {
             return estimateRegulationParams(smallMoleculeTimeSeriesData, params, expresseeChannel, regulatedChannel, repression);
         }
@@ -409,25 +415,40 @@ public class IBioSimAdaptor {
         return estimateParams(doc, estimateParams, smallMoleculeTimeSeriesData, channelMapping);
     }
     
-    private static Map<String, Double> estimateParams(SBMLDocument doc, List<String> params, String timeSeriesDataFile,
-            Map<String, String> channelMapping) throws XMLStreamException, FileNotFoundException, IOException {
+    private static SBMLDocument estimateParams(SBMLDocument doc, List<String> params, String timeSeriesDataFile,
+            Map<String, String> channelMapping) throws XMLStreamException, FileNotFoundException, IOException, BioSimException {
         SBMLWriter writer = new SBMLWriter();
         writer.write(doc, "sbml.xml");
+//        File dataFile = new File(timeSeriesDataFile);
+//        String outdir = dataFile.getAbsolutePath().substring(0, dataFile.getAbsolutePath().length() - dataFile.getAbsolutePath().split(File.separator)[dataFile.getAbsolutePath().split(File.separator).length - 1].length());
         List<List<String>> data = parseCSV(timeSeriesDataFile);
+//        double maxTime = Double.parseDouble(data.get(0).get(data.get(0).size() - 1));
+//        Map<String, Double> specMapping = new HashMap<String, Double>();
         for (int i = 0; i < data.size(); i++) {
             for (String channel : channelMapping.keySet()) {
                 if (data.get(i).get(0).equals(channel)) {
                     data.get(i).set(0, channelMapping.get(channel));
+//                    specMapping.put(channelMapping.get(channel).replace("\"",""), Double.parseDouble(data.get(i).get(1)));
                 }
             }
         }
+//        new File(outdir + File.separator + "sim").mkdir();
+//        for (String file : new File(outdir + File.separator + "sim").list()) {
+//            new File(outdir + File.separator + "sim" + File.separator + file).delete();
+//        }
         writeCSV(data, "data.csv");
+//        writeTSD(data, outdir + File.separator + "sim" + File.separator + "run-2.tsd");
         List<String> experimentFiles = new ArrayList<String>();
 	experimentFiles.add(new File("data.csv").getAbsolutePath());
-        Map<String, Double> results = estimateParameters(new File("sbml.xml").getAbsolutePath(), params, experimentFiles);
+        SBMLDocument result = estimateParameters(new File("sbml.xml").getAbsolutePath(), params, experimentFiles);
+//        for (String spec : specMapping.keySet()) {
+//            result.getModel().getSpecies(spec).setValue(specMapping.get(spec));
+//        }
+//        writer.write(result, outdir + File.separator + "sim" + File.separator + "sbml.xml");
+//        simulateODE(outdir + File.separator + "sim" + File.separator + "sbml.xml", outdir + File.separator + "sim" + File.separator, maxTime, maxTime / 10, maxTime / 10);
         new File("sbml.xml").delete();
         new File("data.csv").delete();
-        return results;
+        return result;
     }
 
     private static void parseCSV(String filename, SpeciesCollection speciesCollection, Experiments experiments) {
@@ -544,6 +565,24 @@ public class IBioSimAdaptor {
                 }
                 writer.println(line);
             }
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Could not write to file!");
+        }
+    }
+    
+    public static void writeTSD(List<List<String>> data, String filename) {
+        try {
+            PrintWriter writer = new PrintWriter(filename);
+            writer.println("(");
+            for (int j = 0; j < data.get(0).size(); j ++) {
+                String line = "(" + data.get(0).get(j);
+                for (int i = 1; i < data.size(); i ++) {
+                    line += "," + data.get(i).get(j);
+                }
+                writer.println(line + ")");
+            }
+            writer.println(")");
             writer.close();
         } catch (IOException e) {
             System.out.println("Could not write to file!");
@@ -794,8 +833,8 @@ public class IBioSimAdaptor {
      * @param stoichAmpValue - stoichiometry amplification value
      * @throws IOException
      */
-    public static void simulateStocastic(String SBMLFileName, String outDir,
-            double timeLimit, double timeStep, double printInterval, double minTimeStep,
+    public static void simulateStochastic(String SBMLFileName, String outDir,
+            double timeLimit, double timeStep, double printInterval, int numOfRuns, double minTimeStep,
             long rndSeed, double stoichAmpValue) throws IOException {
 
         JProgressBar progress = new JProgressBar();
@@ -805,6 +844,11 @@ public class IBioSimAdaptor {
                 timeLimit, timeStep, minTimeStep, rndSeed, progress, printInterval,
                 stoichAmpValue, running, new String[0], "amount");
         simulator.simulate();
+        for (int i = 2; i <= numOfRuns ; i++) {
+            simulator.clear();
+            simulator.setupForNewRun(i);
+            simulator.simulate();
+        }
 
     }
 
@@ -819,10 +863,10 @@ public class IBioSimAdaptor {
      * the output
      * @throws IOException
      */
-    public static void simulateStocastic(String SBMLFileName, String outDir,
-            double timeLimit, double timeStep, double printInterval) throws IOException {
+    public static void simulateStochastic(String SBMLFileName, String outDir,
+            double timeLimit, double timeStep, double printInterval, int numOfRuns) throws IOException {
 
-        simulateStocastic(SBMLFileName, outDir, timeLimit, timeStep, printInterval, 0.0, 314159, 2.0);
+        simulateStochastic(SBMLFileName, outDir, timeLimit, timeStep, printInterval, numOfRuns, 0.0, 314159, 2.0);
 
     }
 }

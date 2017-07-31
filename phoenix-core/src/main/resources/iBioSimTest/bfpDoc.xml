@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment constant="false" id="cell" name="cell" size="1"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species boundaryCondition="false" compartment="cell" constant="false" hasOnlySubstanceUnits="true" id="BFP" initialAmount="0" name="BFP" sboTerm="SBO:0000601"/>
+      <species boundaryCondition="false" compartment="cell" constant="false" hasOnlySubstanceUnits="true" id="AraC" initialAmount="0" name="AraC" sboTerm="SBO:0000600"/>
+      <species boundaryCondition="true" compartment="cell" constant="false" hasOnlySubstanceUnits="true" id="ara" initialAmount="0" name="ara" sboTerm="SBO:0000600"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction fast="false" id="BFP_degradation" name="BFP_degradation" reversible="false" sboTerm="SBO:0000179">
+        <listOfReactants>
+          <speciesReference constant="true" species="BFP" stoichiometry="1"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <divide/>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <ci> y </ci>
+                  <ci> BFP </ci>
+                </apply>
+                <ci> K_d </ci>
+              </apply>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <divide/>
+                  <ci> BFP </ci>
+                  <ci> K_d </ci>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+                  <listOfLocalParameters>
+            <localParameter id="y" name="y" value="36.88748386216019"/>
+            <localParameter id="K_d" name="K_d" value="3.6252195078241147"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="BFP_expression" name="BFP_expression" reversible="false" sboTerm="SBO:0000589">
+        <listOfProducts>
+          <speciesReference constant="true" species="BFP" stoichiometry="1"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference sboTerm="SBO:0000459" species="AraC"/>
+          <modifierSpeciesReference sboTerm="SBO:0000459" species="ara"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <divide/>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <apply>
+                    <times/>
+                    <apply>
+                      <times/>
+                      <apply>
+                        <times/>
+                        <ci> k_EXA </ci>
+                        <ci> K_a </ci>
+                      </apply>
+                      <apply>
+                        <power/>
+                        <ci> AraC </ci>
+                        <ci> n </ci>
+                      </apply>
+                    </apply>
+                    <ci> K_i </ci>
+                  </apply>
+                  <ci> ara </ci>
+                </apply>
+                <apply>
+                  <plus/>
+                  <cn type="integer"> 1 </cn>
+                  <apply>
+                    <times/>
+                    <ci> K_i </ci>
+                    <ci> ara </ci>
+                  </apply>
+                </apply>
+              </apply>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <divide/>
+                  <apply>
+                    <times/>
+                    <apply>
+                      <times/>
+                      <apply>
+                        <times/>
+                        <ci> K_a </ci>
+                        <apply>
+                          <power/>
+                          <ci> AraC </ci>
+                          <ci> n </ci>
+                        </apply>
+                      </apply>
+                      <ci> K_i </ci>
+                    </apply>
+                    <ci> ara </ci>
+                  </apply>
+                  <apply>
+                    <plus/>
+                    <cn type="integer"> 1 </cn>
+                    <apply>
+                      <times/>
+                      <ci> K_i </ci>
+                      <ci> ara </ci>
+                    </apply>
+                  </apply>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+                  <listOfLocalParameters>
+            <localParameter id="k_EXA" name="k_EXA" value="42.51871072963302"/>
+            <localParameter id="K_a" name="K_a" value="47.103049100727794"/>
+            <localParameter id="K_i" name="K_i" value="51.06776177815539"/>
+            <localParameter id="n" name="n" value="2"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

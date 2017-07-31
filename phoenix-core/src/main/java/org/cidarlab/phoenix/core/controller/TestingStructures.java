@@ -499,26 +499,26 @@ public class TestingStructures {
 
         //Initiate hashes for existing polynucleotides
         
-        testConstitutivePromoter = new PrimitiveModule(FeatureRole.PROMOTER_CONSTITUTIVE, new Primitive(new ComponentType("p"), "pTEST"), findFeature(nc,"J23104.ref"));
+        testConstitutivePromoter = new PrimitiveModule(FeatureRole.PROMOTER_CONSTITUTIVE, new Primitive(new ComponentType("p"), "pTEST"), findFeature(nc,"J23104")); //.ref"));
         
-        testControllablePromoter1 = new PrimitiveModule(FeatureRole.PROMOTER_INDUCIBLE, new Primitive(new ComponentType("p"), "pTEST"), findFeature(nc,"para-1.ref"));
+        testControllablePromoter1 = new PrimitiveModule(FeatureRole.PROMOTER_INDUCIBLE, new Primitive(new ComponentType("p"), "pTEST"), findFeature(nc,"para-1")); //.ref\"));
         
-        testControllablePromoter2 = new PrimitiveModule(FeatureRole.PROMOTER_REPRESSIBLE, new Primitive(new ComponentType("p"), "pTEST"), findFeature(nc,"pLtetO-1.ref"));
+        testControllablePromoter2 = new PrimitiveModule(FeatureRole.PROMOTER_REPRESSIBLE, new Primitive(new ComponentType("p"), "pTEST"), findFeature(nc,"pLtetO-1")); //.ref\"));.ref"));
 
-        testRBS = new PrimitiveModule(FeatureRole.RBS, new Primitive(new ComponentType("r"), "rTEST"), findFeature(nc,"BCD8.ref"));
+        testRBS = new PrimitiveModule(FeatureRole.RBS, new Primitive(new ComponentType("r"), "rTEST"), findFeature(nc,"BCD8")); //.ref\"));.ref"));
 
-        testLinker = new PrimitiveModule(FeatureRole.CDS_LINKER, new Primitive(new ComponentType("l"), "linkerTEST"), findFeature(nc,"HelicalLinker.ref"));
+        testLinker = new PrimitiveModule(FeatureRole.CDS_LINKER, new Primitive(new ComponentType("l"), "linkerTEST"), findFeature(nc,"HelicalLinker")); //.ref\"));.ref"));
         
-        testFP1 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("fl"), "cTEST1"), findFluorophore(nc,"EGFPm.ref"));
+        testFP1 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("fl"), "cTEST1"), findFluorophore(nc,"EGFPm")); //.ref\"));.ref"));
         
-        testFP2 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("fl"), "cTEST2"), findFluorophore(nc,"EBFP2.ref"));
+        testFP2 = new PrimitiveModule(FeatureRole.CDS_FLUORESCENT, new Primitive(new ComponentType("fl"), "cTEST2"), findFluorophore(nc,"EBFP2")); //.ref\"));.ref"));
         
-        testTerminator = new PrimitiveModule(FeatureRole.TERMINATOR, new Primitive(new ComponentType("t"), "tTEST"), findFeature(nc,"B0015.ref"));
+        testTerminator = new PrimitiveModule(FeatureRole.TERMINATOR, new Primitive(new ComponentType("t"), "tTEST"), findFeature(nc,"B0015")); //.ref\"));.ref"));
 
 
-        testVector1 = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST1"), findFeature(nc,"ColE1.ref"));
+        testVector1 = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST1"), findFeature(nc,"ColE1")); //.ref\"));.ref"));
         
-        testVector2 = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST2"), findFeature(nc,"p15A.ref"));
+        testVector2 = new PrimitiveModule(FeatureRole.VECTOR, new Primitive(new ComponentType("v"), "vTEST2"), findFeature(nc,"p15A")); //.ref\"));.ref"));
 
         finalVector = testVector1;
 

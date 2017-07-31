@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
+  <model>
+    <listOfCompartments>
+      <compartment constant="false" id="cell" name="cell" size="1"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species boundaryCondition="false" compartment="cell" constant="false" hasOnlySubstanceUnits="true" id="regulated" initialAmount="559.212440374346" name="regulated" sboTerm="SBO:0000601"/>
+      <species boundaryCondition="false" compartment="cell" constant="false" hasOnlySubstanceUnits="true" id="expressee" initialAmount="2867.29899577628" name="expressee" sboTerm="SBO:0000600"/>
+      <species boundaryCondition="true" compartment="cell" constant="false" hasOnlySubstanceUnits="true" id="inducer" initialAmount="1000" name="inducer" sboTerm="SBO:0000600"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter constant="false" id="k_EXA" name="k_EXA" value="36.07299671084344"/>
+      <parameter constant="false" id="K_a" name="K_a" value="13.707013143177328"/>
+      <parameter constant="false" id="K_i" name="K_i" value="48.09540472593113"/>
+    </listOfParameters>
+    <listOfReactions>
+      <reaction fast="false" id="regulated_degradation" name="regulated_degradation" reversible="false" sboTerm="SBO:0000179">
+        <listOfReactants>
+          <speciesReference constant="true" species="regulated" stoichiometry="1"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <divide/>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <ci> y </ci>
+                  <ci> regulated </ci>
+                </apply>
+                <ci> K_d </ci>
+              </apply>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <divide/>
+                  <ci> regulated </ci>
+                  <ci> K_d </ci>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+                  <listOfLocalParameters>
+            <localParameter id="y" name="y" value="36.88748386216019"/>
+            <localParameter id="K_d" name="K_d" value="3.6252195078241147"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction fast="false" id="regulated_expression" name="regulated_expression" reversible="false" sboTerm="SBO:0000589">
+        <listOfProducts>
+          <speciesReference constant="true" species="regulated" stoichiometry="1"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference sboTerm="SBO:0000459" species="expressee"/>
+          <modifierSpeciesReference sboTerm="SBO:0000459" species="inducer"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">          
+            <apply>
+              <divide/>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <apply>
+                    <times/>
+                    <apply>
+                      <times/>
+                      <apply>
+                        <times/>
+                        <ci> k_EXA </ci>
+                        <ci> K_a </ci>
+                      </apply>
+                      <apply>
+                        <power/>
+                        <ci> expressee </ci>
+                        <ci> n </ci>
+                      </apply>
+                    </apply>
+                    <ci> K_i </ci>
+                  </apply>
+                  <ci> inducer </ci>
+                </apply>
+                <apply>
+                  <plus/>
+                  <cn type="integer"> 1 </cn>
+                  <apply>
+                    <times/>
+                    <ci> K_i </ci>
+                    <ci> inducer </ci>
+                  </apply>
+                </apply>
+              </apply>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <divide/>
+                  <apply>
+                    <times/>
+                    <apply>
+                      <times/>
+                      <apply>
+                        <times/>
+                        <ci> K_a </ci>
+                        <apply>
+                          <power/>
+                          <ci> expressee </ci>
+                          <ci> n </ci>
+                        </apply>
+                      </apply>
+                      <ci> K_i </ci>
+                    </apply>
+                    <ci> inducer </ci>
+                  </apply>
+                  <apply>
+                    <plus/>
+                    <cn type="integer"> 1 </cn>
+                    <apply>
+                      <times/>
+                      <ci> K_i </ci>
+                      <ci> inducer </ci>
+                    </apply>
+                  </apply>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+                  <listOfLocalParameters>
+            <localParameter id="n" name="n" value="2"/>
+          </listOfLocalParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

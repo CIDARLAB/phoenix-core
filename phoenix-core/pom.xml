@@ -291,9 +291,14 @@
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>org.sbml</groupId>
+            <groupId>org.sbml.jsbml</groupId>
             <artifactId>jsbml</artifactId>
-            <version>1.0</version>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.sbolstandard</groupId>
+            <artifactId>libSBOLj</artifactId>
+            <version>2.2.0</version>
         </dependency>
         <dependency>
             <groupId>Raven</groupId>
@@ -464,6 +469,24 @@
             <artifactId>opencsv</artifactId>
             <version>3.4</version>
             <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <scope>test</scope>
+            <version>2.44.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.opera</groupId>
+            <artifactId>operadriver</artifactId>
+            <scope>test</scope>
+            <version>1.5</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-remote-driver</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
     

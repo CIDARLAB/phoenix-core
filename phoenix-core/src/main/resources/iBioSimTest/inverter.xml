@@ -2,21 +2,21 @@
 <sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" level="3" version="1">
   <model>
     <listOfCompartments>
-      <compartment name="cell" constant="false" id="cell" size="1"/>
+      <compartment constant="false" id="cell" name="cell" size="1"/>
     </listOfCompartments>
     <listOfSpecies>
-      <species boundaryCondition="false" constant="false" hasOnlySubstanceUnits="true" initialAmount="0" compartment="cell" name="AraC" id="AraC"/>
-      <species boundaryCondition="true" constant="false" hasOnlySubstanceUnits="true" initialAmount="100" sboTerm="SBO:0000600" compartment="cell" name="aTc" id="aTc"/>
-      <species boundaryCondition="false" constant="false" hasOnlySubstanceUnits="true" initialAmount="0" sboTerm="SBO:0000601" compartment="cell" name="BFP" id="BFP"/>
-      <species boundaryCondition="true" constant="false" hasOnlySubstanceUnits="true" initialAmount="100" sboTerm="SBO:0000600" compartment="cell" name="ara" id="ara"/>
-      <species boundaryCondition="false" constant="false" hasOnlySubstanceUnits="true" initialAmount="0" compartment="cell" name="TetR" id="TetR"/>
+      <species boundaryCondition="false" compartment="cell" constant="false" hasOnlySubstanceUnits="true" id="AraC" initialAmount="0" name="AraC"/>
+      <species boundaryCondition="true" compartment="cell" constant="false" hasOnlySubstanceUnits="true" id="aTc" initialAmount="0" name="aTc" sboTerm="SBO:0000600"/>
+      <species boundaryCondition="false" compartment="cell" constant="false" hasOnlySubstanceUnits="true" id="BFP" initialAmount="0" name="BFP" sboTerm="SBO:0000601"/>
+      <species boundaryCondition="true" compartment="cell" constant="false" hasOnlySubstanceUnits="true" id="ara" initialAmount="0" name="ara" sboTerm="SBO:0000600"/>
+      <species boundaryCondition="false" compartment="cell" constant="false" hasOnlySubstanceUnits="true" id="TetR" initialAmount="0" name="TetR"/>
     </listOfSpecies>
     <listOfReactions>
-      <reaction name="AraC_degradation" fast="false" id="AraC_degradation" reversible="false" sboTerm="SBO:0000179">
+      <reaction fast="false" id="AraC_degradation" name="AraC_degradation" reversible="false" sboTerm="SBO:0000179">
         <listOfReactants>
-          <speciesReference stoichiometry="1" constant="true" species="AraC"/>
+          <speciesReference constant="true" species="AraC" stoichiometry="1"/>
         </listOfReactants>
-        <kineticLaw>
+                        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <divide/>
@@ -41,18 +41,18 @@
             </apply>
           </math>
                   <listOfLocalParameters>
-            <localParameter name="y" id="y" value="26.62204490041637"/>
-            <localParameter name="K_d" id="K_d" value="90.32999014305992"/>
+            <localParameter id="y" name="y" value="26.62204490041637"/>
+            <localParameter id="K_d" name="K_d" value="90.32999014305992"/>
           </listOfLocalParameters>
         </kineticLaw>
       </reaction>
-      <reaction name="AraC_expression" fast="false" id="AraC_expression" reversible="false" sboTerm="SBO:0000589">
-        <listOfProducts>
-          <speciesReference stoichiometry="1" constant="true" species="AraC"/>
+      <reaction fast="false" id="AraC_expression" name="AraC_expression" reversible="false" sboTerm="SBO:0000589">
+                <listOfProducts>
+          <speciesReference constant="true" species="AraC" stoichiometry="1"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="TetR" sboTerm="SBO:0000020"/>
-          <modifierSpeciesReference species="aTc" sboTerm="SBO:0000459"/>
+          <modifierSpeciesReference sboTerm="SBO:0000020" species="TetR"/>
+          <modifierSpeciesReference sboTerm="SBO:0000459" species="aTc"/>
         </listOfModifiers>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
@@ -87,18 +87,18 @@
             </apply>
           </math>
                   <listOfLocalParameters>
-            <localParameter name="k_EXR" id="k_EXR" value="44.486487351889586"/>
-            <localParameter name="K_r" id="K_r" value="47.31286903116672"/>
-            <localParameter name="K_i" id="K_i" value="20.135349378607398"/>
-            <localParameter name="n" id="n" value="2"/>
+            <localParameter id="k_EXR" name="k_EXR" value="44.486487351889586"/>
+            <localParameter id="K_r" name="K_r" value="47.31286903116672"/>
+            <localParameter id="K_i" name="K_i" value="20.135349378607398"/>
+            <localParameter id="n" name="n" value="2"/>
           </listOfLocalParameters>
         </kineticLaw>
       </reaction>
-      <reaction name="BFP_degradation" fast="false" id="BFP_degradation" reversible="false" sboTerm="SBO:0000179">
+      <reaction fast="false" id="BFP_degradation" name="BFP_degradation" reversible="false" sboTerm="SBO:0000179">
         <listOfReactants>
-          <speciesReference stoichiometry="1" constant="true" species="BFP"/>
+          <speciesReference constant="true" species="BFP" stoichiometry="1"/>
         </listOfReactants>
-        <kineticLaw>
+                        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <divide/>
@@ -123,18 +123,18 @@
             </apply>
           </math>
                   <listOfLocalParameters>
-            <localParameter name="y" id="y" value="5.665002630538911"/>
-            <localParameter name="K_d" id="K_d" value="98.06182484408983"/>
+            <localParameter id="y" name="y" value="5.665002630538911"/>
+            <localParameter id="K_d" name="K_d" value="98.06182484408983"/>
           </listOfLocalParameters>
         </kineticLaw>
       </reaction>
-      <reaction name="BFP_expression" fast="false" id="BFP_expression" reversible="false" sboTerm="SBO:0000589">
-        <listOfProducts>
-          <speciesReference stoichiometry="1" constant="true" species="BFP"/>
+      <reaction fast="false" id="BFP_expression" name="BFP_expression" reversible="false" sboTerm="SBO:0000589">
+                <listOfProducts>
+          <speciesReference constant="true" species="BFP" stoichiometry="1"/>
         </listOfProducts>
         <listOfModifiers>
-          <modifierSpeciesReference species="AraC" sboTerm="SBO:0000459"/>
-          <modifierSpeciesReference species="ara" sboTerm="SBO:0000459"/>
+          <modifierSpeciesReference sboTerm="SBO:0000459" species="AraC"/>
+          <modifierSpeciesReference sboTerm="SBO:0000459" species="ara"/>
         </listOfModifiers>
         <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
@@ -209,18 +209,18 @@
             </apply>
           </math>
                   <listOfLocalParameters>
-            <localParameter name="k_EXA" id="k_EXA" value="76.9553575555186"/>
-            <localParameter name="K_a" id="K_a" value="41.0227682072048"/>
-            <localParameter name="K_i" id="K_i" value="62.300955348930565"/>
-            <localParameter name="n" id="n" value="2"/>
+            <localParameter id="k_EXA" name="k_EXA" value="76.9553575555186"/>
+            <localParameter id="K_a" name="K_a" value="41.0227682072048"/>
+            <localParameter id="K_i" name="K_i" value="62.300955348930565"/>
+            <localParameter id="n" name="n" value="2"/>
           </listOfLocalParameters>
         </kineticLaw>
       </reaction>
-      <reaction name="TetR_degradation" fast="false" id="TetR_degradation" reversible="false" sboTerm="SBO:0000179">
+      <reaction fast="false" id="TetR_degradation" name="TetR_degradation" reversible="false" sboTerm="SBO:0000179">
         <listOfReactants>
-          <speciesReference stoichiometry="1" constant="true" species="TetR"/>
+          <speciesReference constant="true" species="TetR" stoichiometry="1"/>
         </listOfReactants>
-        <kineticLaw>
+                        <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <apply>
               <divide/>
@@ -245,21 +245,21 @@
             </apply>
           </math>
                   <listOfLocalParameters>
-            <localParameter name="y" id="y" value="61.713515728990565"/>
-            <localParameter name="K_d" id="K_d" value="28.342252983374927"/>
+            <localParameter id="y" name="y" value="61.713515728990565"/>
+            <localParameter id="K_d" name="K_d" value="28.342252983374927"/>
           </listOfLocalParameters>
         </kineticLaw>
       </reaction>
-      <reaction name="TetR_expression" fast="false" id="TetR_expression" reversible="false" sboTerm="SBO:0000589">
-        <listOfProducts>
-          <speciesReference stoichiometry="1" constant="true" species="TetR"/>
+      <reaction fast="false" id="TetR_expression" name="TetR_expression" reversible="false" sboTerm="SBO:0000589">
+                <listOfProducts>
+          <speciesReference constant="true" species="TetR" stoichiometry="1"/>
         </listOfProducts>
-        <kineticLaw>
+                <kineticLaw>
           <math xmlns="http://www.w3.org/1998/Math/MathML">          
             <ci> k_EXE </ci>
           </math>
                   <listOfLocalParameters>
-            <localParameter name="k_EXE" id="k_EXE" value="49.29930256808312"/>
+            <localParameter id="k_EXE" name="k_EXE" value="49.29930256808312"/>
           </listOfLocalParameters>
         </kineticLaw>
       </reaction>
